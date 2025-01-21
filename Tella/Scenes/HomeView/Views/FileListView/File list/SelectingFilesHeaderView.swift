@@ -15,8 +15,8 @@ struct SelectingFilesHeaderView: View {
                                  backButtonAction: { backAction() },
                                  middleButtonType: fileListViewModel.shouldShowShareButton ? .share : .none,
                                  middleButtonAction: {showActivityViewController()},
-                                 trailingButton: fileListViewModel.selectedItemsNumber > 0 ? .custom : .none,
-                                 trailingButtonView:moreFileActionButton)
+                                 rightButtonType: fileListViewModel.selectedItemsNumber > 0 ? .custom : .none,
+                                 rightButtonView:moreFileActionButton)
         }
     }
     

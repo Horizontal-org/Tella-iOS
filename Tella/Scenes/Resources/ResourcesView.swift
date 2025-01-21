@@ -43,8 +43,8 @@ struct ResourcesView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableResources.resourcesServerTitle.localized,
                              backButtonAction: {backAction()},
-                             trailingButton: .reload,
-                             trailingButtonAction: { resourcesViewModel.getAvailableForDownloadResources() })
+                             rightButtonType: .reload,
+                             rightButtonAction: { resourcesViewModel.getAvailableForDownloadResources() })
     }
     
     private func backAction() {

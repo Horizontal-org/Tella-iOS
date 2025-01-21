@@ -90,9 +90,9 @@ struct FileListView: View {
         if !fileListViewModel.shouldHideNavigationBar {
             
             NavigationHeaderView(title: title,
-                                 trailingButton: fileListViewModel.shouldShowSelectButton ? .validate : .none,
-                                 trailingButtonAction: { attachFiles() },
-                                 isTrailingButtonEnabled: fileListViewModel.selectButtonEnabled)
+                                 rightButtonType: fileListViewModel.shouldShowSelectButton ? .validate : .none,
+                                 rightButtonAction: { attachFiles() },
+                                 isRightButtonEnabled: fileListViewModel.selectButtonEnabled)
         }
     }
     

@@ -49,9 +49,9 @@ struct DraftView: View  {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {backAction()},
-                             trailingButton: .save,
-                             trailingButtonAction: { viewModel.saveDraftReport() },
-                             isTrailingButtonEnabled: viewModel.reportIsDraft)
+                             rightButtonType: .save,
+                             rightButtonAction: { viewModel.saveDraftReport() },
+                             isRightButtonEnabled: viewModel.reportIsDraft)
     }
     
     

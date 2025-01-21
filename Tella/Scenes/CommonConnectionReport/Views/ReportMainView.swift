@@ -93,8 +93,8 @@ struct ReportMainView: View {
         NavigationHeaderView(title: self.reportsMainViewModel.title,
                              navigationBarType: .large,
                              backButtonAction: {self.popToRoot()},
-                             trailingButton: reportsMainViewModel.shouldShowClearButton ? .text(text: LocalizableReport.clearAppBar.localized) : .none,
-                             trailingButtonAction: { showDeleteAllSubmittedReportConfirmationView() })
+                             rightButtonType: reportsMainViewModel.shouldShowClearButton ? .text(text: LocalizableReport.clearAppBar.localized) : .none,
+                             rightButtonAction: { showDeleteAllSubmittedReportConfirmationView() })
     }
     
     private func showBottomSheet(cardViewModel:CommonCardViewModel) {

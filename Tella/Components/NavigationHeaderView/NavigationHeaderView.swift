@@ -24,12 +24,12 @@ struct NavigationHeaderView: View {
     
     var isMiddleButtonEnabled: Bool = true
     
-    var trailingButton: TrailingButtonType = .none
-    var trailingButtonAction: (() -> Void)?
+    var rightButtonType: RightButtonType = .none
+    var rightButtonAction: (() -> Void)?
     
-    var trailingButtonView: (AnyView)? = nil
+    var rightButtonView: (AnyView)? = nil
     
-    var isTrailingButtonEnabled: Bool = true
+    var isRightButtonEnabled: Bool = true
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -42,7 +42,7 @@ struct NavigationHeaderView: View {
                 if middleButtonType != .none {
                     middleButton
                 }
-                trailingView
+                rightView
                 
             }.frame(height: 57)
                 .padding(.horizontal, 16)
@@ -83,11 +83,11 @@ struct NavigationHeaderView: View {
             .frame(height: 50)
     }
     
-    private var trailingView : some View {
-        switch trailingButton {
+    private var rightView : some View {
+        switch rightButtonType {
             
         case .custom:
-            trailingButtonView!
+            rightButtonView!
         case .none:
             AnyView( EmptyView())
             
@@ -105,9 +105,9 @@ struct NavigationHeaderView: View {
     }
     
     private var rightButton: some View {
-        Button(action: { trailingButtonAction?() }) {
+        Button(action: { rightButtonAction?() }) {
             
-            switch trailingButton {
+            switch rightButtonType {
             case .text(let text):
                 Text(text)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -115,76 +115,18 @@ struct NavigationHeaderView: View {
                     .frame(height:25,alignment:.trailing)
                 
             default:
-                Image(trailingButton.imageName)
-                    .opacity(isTrailingButtonEnabled ? 1 : 0.4)
+                Image(rightButtonType.imageName)
+                    .opacity(isRightButtonEnabled ? 1 : 0.4)
                     .padding()
             }
-        }.disabled(!isTrailingButtonEnabled)
+        }.disabled(!isRightButtonEnabled)
     }
 }
 
-//#Preview {
-//    NavigationHeaderView(backButtonAction: {}, rightButtonAction: {}, trailingButton: .save)
-//}
-
-enum TrailingButtonType {
-    
-    case save
-    case validate
-    case reload
-    case delete
-    case editFile
-    case more
-    case text(text:String)
-    case custom
-    case none
-    
-    var imageName: String {
-        switch self {
-        case .save: return "reports.save"
-        case .validate: return "report.select-files"
-        case .reload: return "arrow.clockwise"
-        case .delete: return "delete-icon-bin"
-        case .editFile: return "edit.audio.cut"
-        case .more: return "files.more"
-        case .text, .custom, .none : return ""
-        }
-    }
-}
-
-enum MiddleButtonType  {
-    
-    case editFile
-    case share
-    case none
-    
-    var imageName: String {
-        switch self {
-        case .editFile: return "file.edit"
-        case .share: return "share-icon"
-        case .none: return ""
-        }
-    }
-}
-
-enum BackButtonType {
-    
-    case back
-    case close
-    case none
-
-    var imageName: String {
-        switch self {
-        case .close: return "close"
-        case .back: return "back"
-        case .none: return ""
-
-        }
-    }
-}
-
-
-enum NavigationBarType {
-    case inline
-    case large
+#Preview {
+    NavigationHeaderView( title: "Title",
+                          navigationBarType: .inline,
+                          backButtonType: .back,
+                          middleButtonType: .editFile,
+                          rightButtonType: .editFile)
 }

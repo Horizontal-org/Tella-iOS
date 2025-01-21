@@ -122,8 +122,8 @@ struct FileDetailsView: View {
                         NavigationHeaderView(title: file.name,
                                              middleButtonType: .editFile,
                                              middleButtonAction: {showEditView()},
-                                             trailingButton: .custom,
-                                             trailingButtonView:moreFileActionButton )
+                                             rightButtonType: .custom,
+                                             rightButtonView:moreFileActionButton )
                         view
                     }
                 })

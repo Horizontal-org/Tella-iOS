@@ -332,6 +332,7 @@
 		12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12AFF1B82D3FACBC00C2455C /* NavigationHeaderTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFF1B72D3FACA000C2455C /* NavigationHeaderTypes.swift */; };
 		12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */; };
 		12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */; };
 		12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */; };
@@ -981,6 +982,7 @@
 		12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12AFF1B72D3FACA000C2455C /* NavigationHeaderTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderTypes.swift; sourceTree = "<group>"; };
 		12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesItemView.swift; sourceTree = "<group>"; };
 		12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesViewModel.swift; sourceTree = "<group>"; };
 		12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableBackgroundActivities.swift; sourceTree = "<group>"; };
@@ -2414,6 +2416,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		12AFF1B62D3FAC2900C2455C /* NavigationHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */,
+				12AFF1B72D3FACA000C2455C /* NavigationHeaderTypes.swift */,
+			);
+			path = NavigationHeaderView;
+			sourceTree = "<group>";
+		};
 		12B370342B18E3EE00DDA9E9 /* BackgroundActivities */ = {
 			isa = PBXGroup;
 			children = (
@@ -2593,7 +2604,7 @@
 				12603DAB2A56C72900FB1492 /* ToastView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
 				15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */,
-				15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */,
+				12AFF1B62D3FAC2900C2455C /* NavigationHeaderView */,
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */,
@@ -3785,6 +3796,7 @@
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
 				CCF8D5C22AE994BF000D27C5 /* SupportingFileWidget.swift in Sources */,
+				12AFF1B82D3FACBC00C2455C /* NavigationHeaderTypes.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,

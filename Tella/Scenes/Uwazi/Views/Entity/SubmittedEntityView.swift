@@ -39,8 +39,8 @@ struct SubmittedEntityView: View {
     
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableUwazi.submitted_AppBar.localized,
-                             trailingButton: .delete,
-                             trailingButtonAction: { showDeleteConfirmationView() })
+                             rightButtonType: .delete,
+                             rightButtonAction: { showDeleteConfirmationView() })
         
     }
     

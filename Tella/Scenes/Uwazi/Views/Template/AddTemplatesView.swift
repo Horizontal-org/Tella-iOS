@@ -31,8 +31,8 @@ struct AddTemplatesView: View {
     
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableUwazi.uwaziAddTemplateTitle.localized,
-                             trailingButton: .reload,
-                             trailingButtonAction: { self.uwaziTemplateViewModel.getTemplates() })
+                             rightButtonType: .reload,
+                             rightButtonAction: { self.uwaziTemplateViewModel.getTemplates() })
     }
     
     var contentView: some View {

@@ -17,8 +17,8 @@ struct EditMediaHeaderView: View {
         
         NavigationHeaderView(title: viewModel.headerTitle,
                              backButtonAction: {self.closeView()},
-                             trailingButton: viewModel.isDurationHasChanged() ? .editFile : .none,
-                             trailingButtonAction: { viewModel.trim() })
+                             rightButtonType: viewModel.isDurationHasChanged() ? .editFile : .none,
+                             rightButtonAction: { viewModel.trim() })
     }
     
     private func closeView() {

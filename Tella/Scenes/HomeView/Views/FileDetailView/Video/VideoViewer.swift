@@ -44,8 +44,8 @@ struct VideoViewer: View {
                              backButtonAction: { backAction() },
                              middleButtonType: .editFile,
                              middleButtonAction: {showEditVideoView()},
-                             trailingButton: .custom,
-                             trailingButtonView:moreFileActionButton)
+                             rightButtonType: .custom,
+                             rightButtonView:moreFileActionButton)
     }
     
     var moreFileActionButton : AnyView {

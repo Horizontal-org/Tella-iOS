@@ -57,8 +57,8 @@ struct OutboxDetailsView<T: Server>: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {handleBackAction()},
-                             trailingButton: .delete,
-                             trailingButtonAction: { showDeleteReportConfirmationView() })
+                             rightButtonType: .delete,
+                             rightButtonAction: { showDeleteReportConfirmationView() })
     }
     
     private var reportDetails :some View {
