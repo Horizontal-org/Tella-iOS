@@ -22,19 +22,16 @@ struct CustomNavigation<Content:View>: View {
                     self.content()
                     
                 } .navigationViewStyle(.stack)
-                    .navigationBarHidden(true)
             } else {
                 NavigationStack {
                     self.content()
                 }
-                .navigationBarHidden(true)
             }
         } else {
             NavigationView{
                 self.content()
                 
             } .navigationViewStyle(.stack)
-                .navigationBarHidden(true)
         }
         
     }

@@ -25,13 +25,7 @@ struct NavigationContainerView<Content:View>: View {
                     .edgesIgnoringSafeArea(.all)
                 self.content()
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
-            .navigationBarTitle("", displayMode: .inline)
         }
         .accentColor(.white)
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
-        
     }
 }

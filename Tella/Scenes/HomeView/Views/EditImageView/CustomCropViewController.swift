@@ -15,9 +15,12 @@ class CustomCropViewController: Mantis.CropViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavigationItem()
-        UIApplication.shared.setupApperance(with: .black)
     }
-    
+
+    override func viewWillLayoutSubviews() {
+        self.navigationController?.navigationBar.isHidden = false
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.setupApperance()

@@ -29,12 +29,10 @@ struct EditMediaHeaderView: View {
             self.dismiss()
         }
     }
+    
     private func cancelAction() {
         isBottomSheetShown = true
-        let content = EditFileCancelBottomSheet( saveAction:  { viewModel.trim() })
+        let content = EditFileCancelBottomSheet( saveAction:  { viewModel.trim() }, cancelAction: {self.dismiss()} )
         self.showBottomSheetView(content: content, modalHeight: 171, isShown: $isBottomSheetShown)
     }
-    
 }
-
-

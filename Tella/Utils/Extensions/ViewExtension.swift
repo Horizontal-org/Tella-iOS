@@ -35,12 +35,9 @@ extension View {
     }
     
     func present<Content: View>(style: UIModalPresentationStyle = .automatic, transitionStyle: UIModalTransitionStyle = .coverVertical, @ViewBuilder builder: () -> Content) {
-        let toPresent = UIHostingController(rootView: AnyView(EmptyView()))
+        let toPresent = UIHostingController(rootView: builder())
         toPresent.modalPresentationStyle = style
         toPresent.modalTransitionStyle = transitionStyle
-        toPresent.rootView = AnyView(
-            builder()
-        )
         toPresent.view.isOpaque = false
         toPresent.view.backgroundColor = .clear
 
