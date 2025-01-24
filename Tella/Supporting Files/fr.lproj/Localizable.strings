@@ -425,15 +425,6 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Uwazi_Entity_Relationship_MultipleConnections" = "entités connectées";
 "Uwazi_Relationship_List_Expl" = "Recherchez ou sélectionnez les entités que vous souhaitez connecter à cette propriété.";
 "Uwazi_Relationship_SearchBar_Title" = "Rechercher";
-"Vault_DeniedPhotoLibraryPermission_Expl" = "L'application Tella n'est pas autorisée à accéder à la gallerie de photos.\
-\
-Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, procédez de la manière suivante :\
-1. Accédez aux paramètres de votre téléphone et recherchez l'application Tella.\
-2. Activez les autorisations pour les photos.\
-3. Ouvrez l'application Tella.\
-";
-"Vault_DeniedPhotosPermission_Action_Settings" = "Paramètres";
-"Vault_DeniedPhotosPermission_Action_Cancel" = "ANNULER";
 "Vault_LimitedPhotoLibraryPermission_Expl" = "L'application Tella dispose d'une autorisation limitée pour accéder à la galerie de photos.\
 \
 Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, procédez de la manière suivante :\
@@ -536,3 +527,21 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Settings_SettAbout_Tutorial" = "Tutoriel";
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
 "Settings_SettLang_Bangla_Expl" = "Bangla";
+"Vault_DeniedPhotoLibraryPermission_SheetTitle" = "Permission required";
+"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella does not have permission to access your photo library. If you want to add a photo or video from your device, please:\
+1. Navigate to your phone's settings\
+2. Find the Tella app\
+3. Enable photo permissions";
+"Vault_DeniedPhotosPermission_Settings_SheetSelect" = "Phone Settings";
+"Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancel";
+"Vault_LimitedPhotoLibrary_AppBar" = "Import files";
+"Vault_LimitedPhotoLibrary_Title" = "Limited access";
+"Vault_LimitedPhotoLibrary_Expl" = "Tella only has access to limited photos and videos from your device library. Add more files or change device access here.";
+"Vault_LimitedPhotoLibrary_Action_Manage" = "Manage";
+"Vault_LimitedPhotoLibrary_EmptyFiles_Expl" = "Tap “Manage” to add your first photos and videos.";
+"Vault_LimitedPhotoLibrary_Add_SheetSelect" = "Add more photos and videos";
+"Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect" = "Change permissions";
+"Vault_LimitedPhotoLibrary_ManageAccess_Title" = "Manage access";
+"Vault_LimitedPhotoLibrary_Select_Expl" = "Select from these photos and videos to import them to Tella.";
+"Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
+"Setting_Server_AdvancedSettings" = "Paramètres avancés";
