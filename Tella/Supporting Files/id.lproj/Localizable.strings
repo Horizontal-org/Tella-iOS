@@ -388,7 +388,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Burmese_Expl" = "Burmese";
 "Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
 "Settings_SettLang_Bangla_Expl" = "Bangla";
-"Settings_SettLang_Indonesian_Expl" = "Indonesian";
 "Common_Error" = "An error has occurred";
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
