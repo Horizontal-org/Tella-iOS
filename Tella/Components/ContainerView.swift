@@ -55,15 +55,11 @@ struct ContainerViewWithHeader<Header:View,Content:View>: View {
     }
     
     var body: some View {
-        ZStack {
-            Styles.Colors.backgroundMain
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                if let headerView = headerView() {
-                    headerView
-                }
-                self.content()
-            }
-        }
-    }
+              VStack {
+                  if let headerView = headerView() {
+                      headerView
+                  }
+                  self.content()
+              }.containerStyle()
+       }
 }

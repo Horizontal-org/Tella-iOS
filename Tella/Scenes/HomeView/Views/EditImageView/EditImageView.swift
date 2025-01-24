@@ -13,7 +13,6 @@ struct EditImageView: View {
     @EnvironmentObject var sheetManager: SheetManager
     @StateObject var viewModel: EditImageViewModel
     @State var isBottomSheetShown : Bool = false
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         ZStack {
