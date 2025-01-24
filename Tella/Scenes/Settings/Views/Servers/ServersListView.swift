@@ -16,26 +16,30 @@ struct ServersListView: View {
     
     var body: some View {
         
-        ContainerView {
-            ScrollView {
-                VStack(spacing: 0) {
-                    
-                    Spacer()
-                        .frame(height: 8)
-                    
-                    SettingsCardView<AnyView> (cardViewArray: serversView())
-                    
-                    Spacer()
-                }
-            }
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
             EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
         })
-        
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.settConnections.localized)
-        }
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.settConnections.localized)
+    }
+    
+    var contentView: some View {
+        VStack(spacing: 0) {
+            
+            Spacer()
+                .frame(height: 8)
+            
+            SettingsCardView<AnyView> (cardViewArray: serversView())
+            
+            Spacer()
+        }.scrollOnOverflow()
     }
     
     private func serversView<T>() -> [T] {
@@ -73,7 +77,7 @@ struct ServersListView: View {
             showDeleteServerConfirmationView(server: server)
         }
     }
-
+    
     fileprivate func handleEditServer(_ server: Server) {
         guard let serverType = server.serverType else { return }
         switch serverType {
@@ -82,7 +86,7 @@ struct ServersListView: View {
         case .uwazi:
             guard let server = server as? UwaziServer else {return}
             navigateToUwaziAddServerView( server)
-                
+            
         default:
             break
         }
@@ -90,15 +94,15 @@ struct ServersListView: View {
     private func showDeleteServerConfirmationView(server: Server) {
         sheetManager.showBottomSheet(modalHeight: 210) {
             ConfirmBottomSheet(titleText: String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, server.name ?? ""),
-                                      msgText: LocalizableSettings.settServerDeleteConnectionMessage.localized,
-                                      cancelText: LocalizableSettings.settServerCancelSheetAction.localized,
-                                      actionText: LocalizableSettings.settServerDeleteSheetAction.localized,
+                               msgText: LocalizableSettings.settServerDeleteConnectionMessage.localized,
+                               cancelText: LocalizableSettings.settServerCancelSheetAction.localized,
+                               actionText: LocalizableSettings.settServerDeleteSheetAction.localized,
                                didConfirmAction: {
                 serversViewModel.deleteServer()
             })
         }
     }
-
+    
     fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
         navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel, currentServer: server))
             .environmentObject(serversViewModel))

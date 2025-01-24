@@ -8,10 +8,9 @@
 
 import UIKit
 
-extension UINavigationController: UIGestureRecognizerDelegate {
+extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     
     open override func viewWillLayoutSubviews() {
-        navigationBar.topItem?.backButtonDisplayMode = .minimal
+        navigationBar.isHidden = true
     }
 }
-

@@ -17,95 +17,85 @@ struct ReportMainView: View {
     var showDraftViewAction: ((Int?) -> Void)?
     var showSubmittedViewAction: ((Int?) -> Void)?
     var showOutboxViewAction: ((Int?) -> Void)?
-        
-    var body: some View {
-        contentView
-            .navigationBarTitle(self.reportsMainViewModel.title, displayMode: .large)
-            .onAppear(perform: {
-                reportsMainViewModel.getReports()
-            })
-    }
     
-    private var contentView :some View {
+    var body: some View {
         
-        ContainerView {
-            VStack(alignment: .center) {
-                
-                PageView(selectedOption: self.$reportsMainViewModel.selectedPage, pageViewItems: reportsMainViewModel.pageViewItems)
-                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
-                
-                VStack (spacing: 0) {
-                    Spacer()
-                    
-                    switch self.reportsMainViewModel.selectedPage {
-                        
-                    case .draft:
-                        CommonReportListView(message: LocalizableReport.draftListExpl.localized,
-                                             emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
-                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportsMainViewModel.draftReportsViewModel,
-                                             showDetails: showDetailsView(cardViewModel: ),
-                                             showBottomSheet: showBottomSheet(cardViewModel:))
-                        
-                    case .outbox:
-                        CommonReportListView(message: LocalizableReport.outboxListExpl.localized,
-                                             emptyMessage: LocalizableReport.reportsOutboxEmpty.localized,
-                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportsMainViewModel.outboxedReportsViewModel,
-                                             showDetails: showDetailsView(cardViewModel: ),
-                                             showBottomSheet: showBottomSheet(cardViewModel:))
-                        
-                    case .submitted:
-                        CommonReportListView(message: LocalizableReport.submittedListExpl.localized,
-                                             emptyMessage: LocalizableReport.reportsSubmitedEmpty.localized,
-                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportsMainViewModel.submittedReportsViewModel,
-                                             showDetails: showDetailsView(cardViewModel: ),
-                                             showBottomSheet: showBottomSheet(cardViewModel:))
-                    default:
-                        EmptyView()
-                    }
-                    
-                    Spacer()
-                }
-                
-                TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
-                                          nextButtonAction: .action,
-                                          buttonType: .yellow,
-                                          isValid: .constant(true)) {
-                    showDraftViewAction?(nil)
-                } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
-                
-            }.background(Styles.Colors.backgroundMain)
-                .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: backButton)
+        .onAppear(perform: {
+            reportsMainViewModel.getReports()
+        })
         .onReceive(reportsMainViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {
                 Toast.displayToast(message: reportsMainViewModel.toastMessage)
                 reportsMainViewModel.shouldShowToast = false
             }
         }
-        .if(self.reportsMainViewModel.selectedPage == .submitted && self.reportsMainViewModel.submittedReportsViewModel.count > 0, transform: { view in
-            view.toolbar {
-                TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
-                    showDeleteAllSubmittedReportConfirmationView()
+    }
+    
+    private var contentView :some View {
+        
+        VStack(alignment: .center) {
+            
+            PageView(selectedOption: self.$reportsMainViewModel.selectedPage, pageViewItems: reportsMainViewModel.pageViewItems)
+                .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+            
+            VStack (spacing: 0) {
+                Spacer()
+                
+                switch self.reportsMainViewModel.selectedPage {
+                    
+                case .draft:
+                    CommonReportListView(message: LocalizableReport.draftListExpl.localized,
+                                         emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
+                                         emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                         cardsViewModel: $reportsMainViewModel.draftReportsViewModel,
+                                         showDetails: showDetailsView(cardViewModel: ),
+                                         showBottomSheet: showBottomSheet(cardViewModel:))
+                    
+                case .outbox:
+                    CommonReportListView(message: LocalizableReport.outboxListExpl.localized,
+                                         emptyMessage: LocalizableReport.reportsOutboxEmpty.localized,
+                                         emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                         cardsViewModel: $reportsMainViewModel.outboxedReportsViewModel,
+                                         showDetails: showDetailsView(cardViewModel: ),
+                                         showBottomSheet: showBottomSheet(cardViewModel:))
+                    
+                case .submitted:
+                    CommonReportListView(message: LocalizableReport.submittedListExpl.localized,
+                                         emptyMessage: LocalizableReport.reportsSubmitedEmpty.localized,
+                                         emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                         cardsViewModel: $reportsMainViewModel.submittedReportsViewModel,
+                                         showDetails: showDetailsView(cardViewModel: ),
+                                         showBottomSheet: showBottomSheet(cardViewModel:))
+                default:
+                    EmptyView()
                 }
+                
+                Spacer()
             }
-        })
+            
+            TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
+                                      nextButtonAction: .action,
+                                      buttonType: .yellow,
+                                      isValid: .constant(true)) {
+                showDraftViewAction?(nil)
+            } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
+            
+        }.background(Styles.Colors.backgroundMain)
+            .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
     }
     
-    var backButton : some View {
-        Button {
-            self.popToRoot()
-        } label: {
-            Image("back")
-                .flipsForRightToLeftLayoutDirection(true)
-                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
-        }
+    var navigationBarView: some View {
+        NavigationHeaderView(title: self.reportsMainViewModel.title,
+                             navigationBarType: .large,
+                             backButtonAction: {self.popToRoot()},
+                             rightButtonType: reportsMainViewModel.shouldShowClearButton ? .text(text: LocalizableReport.clearAppBar.localized) : .none,
+                             rightButtonAction: { showDeleteAllSubmittedReportConfirmationView() })
     }
-    
     
     private func showBottomSheet(cardViewModel:CommonCardViewModel) {
         sheetManager.showBottomSheet(modalHeight: 176) {

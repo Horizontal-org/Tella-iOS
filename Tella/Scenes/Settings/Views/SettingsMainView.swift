@@ -9,7 +9,7 @@ struct SettingsMainView: View {
     
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var appViewState : AppViewState
-
+    
     @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
@@ -22,26 +22,35 @@ struct SettingsMainView: View {
     
     var body: some View {
         
-        ContainerView {
-            
-            VStack(spacing:0) {
-                
-                Spacer()
-                    .frame(height: 8)
-                
-                SettingsCardView(cardViewArray: [generalView.eraseToAnyView(),
-                                                 securityView.eraseToAnyView(),
-                                                 serversView.eraseToAnyView(),
-                                                 helpView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [feedbackView.eraseToAnyView()])
-                
-                Spacer()
-            }
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
-
         .onDisappear {
             appModel.publishUpdates()
+        }
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.settAppBar.localized,
+                             backButtonType: .none)
+    }
+    
+    var contentView: some View {
+        VStack(spacing:0) {
+            
+            Spacer()
+                .frame(height: 8)
+            
+            SettingsCardView(cardViewArray: [generalView.eraseToAnyView(),
+                                             securityView.eraseToAnyView(),
+                                             serversView.eraseToAnyView(),
+                                             helpView.eraseToAnyView()])
+            
+            SettingsCardView(cardViewArray: [feedbackView.eraseToAnyView()])
+            
+            Spacer()
         }
     }
     
@@ -76,7 +85,7 @@ struct SettingsMainView: View {
     var securitySettingsView: SecuritySettingsView {
         SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState, settingsViewModel:settingsViewModel)
     }
-
+    
     var feedbackView: some View {
         SettingsItemView(imageName: "settings.feedback",
                          title: LocalizableSettings.settFeedback.localized,

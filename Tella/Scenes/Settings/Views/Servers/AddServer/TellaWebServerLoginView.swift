@@ -78,7 +78,6 @@ struct TellaWebServerLoginView: View {
             }
             
         }
-        .navigationBarHidden(true)
         .onReceive(serverViewModel.$showNextSuccessLoginView) { value in
             if value {
                 navigateTo(destination: successLoginView)

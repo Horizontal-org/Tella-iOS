@@ -68,9 +68,6 @@ struct TellaWebAddServerURLView: View {
                 }
             }
         }
-        
-        .navigationBarHidden(true)
-
     }
     
     private var serverLoginView: some View {

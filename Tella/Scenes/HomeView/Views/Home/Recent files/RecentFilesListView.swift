@@ -41,7 +41,8 @@ struct RecentFilesListView: View {
                     RecentFileCell(recentFile: recentFiles[i].wrappedValue,
                                    desination: FileDetailsView(appModel: appModel,
                                                                currentFile: recentFiles[i].wrappedValue,
-                                                               fileListViewModel: FileListViewModel(appModel: appModel))
+                                                               fileListViewModel: FileListViewModel(appModel: appModel,
+                                                                                                    selectedFile: recentFiles[i].wrappedValue))
                     )
                 }
                 

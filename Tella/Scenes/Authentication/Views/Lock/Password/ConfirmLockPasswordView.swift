@@ -30,7 +30,7 @@ struct ConfirmLockPasswordView: View {
                     lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
                 }
             }
-        }.navigationBarBackButtonHidden(true)
+        }
     }
     
     func lockWithPassword() {

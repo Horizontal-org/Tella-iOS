@@ -13,37 +13,24 @@ struct SummaryEntityView: View {
     @StateObject var summaryViewModel : SummaryViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(mainAppModel: MainAppModel, 
+    init(mainAppModel: MainAppModel,
          entityInstance: UwaziEntityInstance? = nil,
          entityInstanceId: Int? = nil) {
-        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel, 
+        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel,
                                                                        entityInstance: entityInstance,
                                                                        entityInstanceId:entityInstanceId))
     }
     var body: some View {
-        ContainerView {
-            VStack {
-                entityContentView
-                
-                if summaryViewModel.shouldHideBottomActionView {
-                    UwaziDividerWidget()
-                    bottomActionView
-                }
+        ZStack {
+            
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
             }
             
             if summaryViewModel.isLoading {
                 CircularActivityIndicatory()
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack {
-                    Text(LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
-                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading) // Align to leading
-                }
             }
         }
         .onReceive(summaryViewModel.$shouldHideView, perform: { shouldHideView in
@@ -51,7 +38,21 @@ struct SummaryEntityView: View {
                 dismissViews()
             }
         })
-
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
+    }
+    
+    var contentView: some View {
+        VStack {
+            entityContentView
+            
+            if summaryViewModel.shouldHideBottomActionView {
+                UwaziDividerWidget()
+                bottomActionView
+            }
+        }
     }
     
     var entityContentView: some View {
@@ -93,13 +94,13 @@ struct SummaryEntityView: View {
         }
         .padding()
     }
-
+    
     var entityFilesView: some View {
         VStack {
             entityResponseItem
             UwaziFileItems(files: summaryViewModel.uwaziVaultFiles)
         }           .padding(.horizontal, 16)
-
+        
     }
     
     var bottomActionView: some View {
@@ -122,7 +123,7 @@ struct SummaryEntityView: View {
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {
                 
-                summaryViewModel.submitEntity() 
+                summaryViewModel.submitEntity()
                 
             }
             
@@ -130,14 +131,14 @@ struct SummaryEntityView: View {
     }
     
     var entityResponseItem: some View {
-
+        
         VaultFileItemView(file: VaultFileItemViewModel(image: AnyView(Image("document")),
-                                              name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
-                                              size: summaryViewModel.getEntityResponseSize()))
+                                                       name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
+                                                       size: summaryViewModel.getEntityResponseSize()))
         .padding(.bottom, 17)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
+    
     private func dismissViews() {
         self.popTo(ViewClassType.uwaziView)
     }
@@ -152,9 +153,9 @@ struct UwaziFileItems: View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
                 VaultFileItemView(file: VaultFileItemViewModel(image: file.listImage,
-                                                      name: file.name,
-                                                      size: file.size.getFormattedFileSize(),
-                                                      iconName: file.statusIcon))
+                                                               name: file.name,
+                                                               size: file.size.getFormattedFileSize(),
+                                                               iconName: file.statusIcon))
                 .padding(.bottom, 17)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

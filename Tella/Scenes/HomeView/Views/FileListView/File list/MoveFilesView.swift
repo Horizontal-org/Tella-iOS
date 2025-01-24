@@ -7,12 +7,13 @@ import SwiftUI
 struct MoveFilesView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var title : String = ""
     
-    init(title : String = "") {
+    init(title : String = "", fileListViewModel : FileListViewModel) {
         self.title = title
+        self.fileListViewModel = fileListViewModel
     }
     
     var body: some View {
@@ -24,11 +25,12 @@ struct MoveFilesView: View {
                 
                 titleView
                 
-                FolderListView()
+                FolderListView(fileListViewModel: fileListViewModel)
                 
                 VStack {
-                    ManageFileView()
-                    FileItemsView(files: fileListViewModel.vaultFiles)
+                    ManageFileView(fileListViewModel: fileListViewModel)
+                    FileItemsView(fileListViewModel: fileListViewModel,
+                                  files: fileListViewModel.vaultFiles)
                 }
                 .background(Color.white.opacity(0.12))
                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
@@ -36,7 +38,7 @@ struct MoveFilesView: View {
                 bottomView
             }
             
-            AddNewFolderView()
+            AddNewFolderView(fileListViewModel: fileListViewModel)
         }
     }
     
@@ -97,9 +99,8 @@ struct MoveFilesView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .top) {
             Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
-            MoveFilesView(title: "Move “IMG9092.jpg”")
+            MoveFilesView(title: "Move “IMG9092.jpg”", fileListViewModel: FileListViewModel.stub())
         }
         .environmentObject(MainAppModel.stub())
-        .environmentObject(FileListViewModel.stub())
     }
 }

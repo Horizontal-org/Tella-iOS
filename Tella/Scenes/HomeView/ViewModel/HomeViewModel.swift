@@ -9,14 +9,15 @@ import Combine
 class HomeViewModel: ObservableObject {
     
     var appModel: MainAppModel
-
+    
     @Published var showingAddFileSheet = false
     @Published var serverDataItemArray : [ServerDataItem] = []
     @Published var recentFiles : [VaultFileDB] = []
+    @Published var items : [BackgroundActivityModel] = []
+    private var subscribers = Set<AnyCancellable>()
     
     var hasRecentFile = false
     
-    private var subscribers = Set<AnyCancellable>()
     
     var showingFilesTitle: Bool {
         return (hasRecentFile && appModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
@@ -25,9 +26,11 @@ class HomeViewModel: ObservableObject {
         self.appModel = appModel
         getServersList()
         listenToShouldReloadFiles()
+        listenToBackgroundItems()
     }
+    
     func getServersList() {
-
+        
         self.getServers()
         
         self.appModel.tellaData?.shouldReloadServers
@@ -45,7 +48,7 @@ class HomeViewModel: ObservableObject {
         self.serverDataItemArray.removeAll()
         
         let serverArray = self.appModel.tellaData?.getServers() ?? []
-
+        
         var serverConnections: [ServerConnectionType: [Server]] = [:]
         
         for server in serverArray {
@@ -56,6 +59,13 @@ class HomeViewModel: ObservableObject {
         for (serverType, servers) in serverConnections {
             self.serverDataItemArray.append(ServerDataItem(servers: servers, serverType: serverType ))
         }
+    }
+    
+    private func listenToBackgroundItems() {
+        appModel.encryptionService?.$backgroundItems
+            .sink(receiveValue: { items in
+                self.items = items
+            }).store(in: &subscribers)
     }
     
     func getFiles()   {

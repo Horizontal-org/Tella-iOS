@@ -2,7 +2,7 @@
 //  LockPasswordView.swift
 //  Tella
 //
-//   
+//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -21,8 +21,7 @@ struct LockPasswordView: View {
                      destination: ConfirmLockPasswordView().environmentObject(lockViewModel))
             .onAppear {
                 lockViewModel.initLockData()
-            }.navigationBarBackButtonHidden(true)
-
+            }
     }
 }
 

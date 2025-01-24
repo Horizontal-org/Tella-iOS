@@ -13,7 +13,7 @@ class EncryptionService: ObservableObject {
     var vaultFilesManager : VaultFilesManager?
     var mainAppModel: MainAppModel
     
-    @Published var items : [BackgroundActivityModel] = []
+    @Published var backgroundItems : [BackgroundActivityModel] = []
     
     init(vaultFilesManager:VaultFilesManager?, mainAppModel: MainAppModel) {
         let queue = OperationQueue()
@@ -50,7 +50,7 @@ class EncryptionService: ObservableObject {
             
             let backgroundActivityModel = BackgroundActivityModel(vaultFile: fileDetail.file)
             DispatchQueue.main.async {
-                self.items.append(backgroundActivityModel)
+                self.backgroundItems.append(backgroundActivityModel)
             }
         }
         
@@ -73,7 +73,7 @@ class EncryptionService: ObservableObject {
                         switch backgroundResult {
                         case .failed, .completed:
                             self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
-                            self.items.removeAll(where: {$0.id == fileDetail.file.id})
+                            self.backgroundItems.removeAll(where: {$0.id == fileDetail.file.id})
                             shouldReloadVaultFiles?.wrappedValue = true
                         default:
                             break

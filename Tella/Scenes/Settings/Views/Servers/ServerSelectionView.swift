@@ -23,21 +23,12 @@ struct ServerSelectionView: View {
     }
     
     var body: some View {
-        ContainerView {
-            VStack(spacing: 20) {
-                Spacer()
-                HeaderView()
-                buttonViews()
-                if(!serversViewModel.unavailableServers.isEmpty) {
-                    unavailableConnectionsView()
-                }
-                Spacer()
-                bottomView()
-            }.scrollOnOverflow()
-                .toolbar {
-                    LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
-                }
-        }.onReceive(gDriveServerVM.$signInState){ signInState in
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
+        }
+        .onReceive(gDriveServerVM.$signInState){ signInState in
             if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
@@ -48,6 +39,23 @@ struct ServerSelectionView: View {
         .onOpenURL { url in
             dropboxServerVM.handleURLRedirect(url: url)
         }
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.settServersAppBar.localized)
+    }
+    
+    var contentView: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            HeaderView()
+            buttonViews()
+            if(!serversViewModel.unavailableServers.isEmpty) {
+                unavailableConnectionsView()
+            }
+            Spacer()
+            bottomView()
+        }.scrollOnOverflow()
     }
     
     fileprivate func buttonViews() -> some View {
@@ -120,9 +128,9 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToDropbox() {
-        dropboxServerVM.handleSignIn() 
+        dropboxServerVM.handleSignIn()
     }
-
+    
     fileprivate func unavailableConnectionsView() -> some View {
         VStack(spacing: 20) {
             SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
@@ -161,7 +169,7 @@ struct ServerSelectionView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-
+                
                 learnMoreView
                 Text(LocalizableSettings.settServerSelectionPart2Message.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))

@@ -46,7 +46,6 @@ struct AddServerURLView: View {
             handleState
         }
         .containerStyle()
-        .navigationBarHidden(true)
         .onReceive(viewModel.$checkServerState) { value in
             if value == .loaded(true) {
                 successCheckServerAction?()

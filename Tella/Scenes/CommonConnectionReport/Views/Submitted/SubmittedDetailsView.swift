@@ -12,32 +12,15 @@ struct SubmittedDetailsView: View {
     
     var rootView: AnyClass = ViewClassType.reportMainView
     private let delayTimeInSecond = 0.1
-
+    
     var body: some View {
-        
-        ContainerView {
-            
-            VStack {
-                
-                outboxReportHeaderView
-                
-                ZStack {
-                    
-                    ScrollView {
-                        
-                        VStack(alignment: .leading, spacing: 0) {
-                            
-                            reportDetails
-                            
-                            Spacer()
-                                .frame(width: 16)
-                            
-                            itemsListView
-                        }
-                    }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
-                }
-            }
+
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
+        
         .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
             if value {
                 dismissViews()
@@ -53,36 +36,30 @@ struct SubmittedDetailsView: View {
                 dismissViews()
             }
         })
-        .navigationBarHidden(true)
     }
     
-    var outboxReportHeaderView: some View {
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableReport.reportsText.localized,
+                             backButtonAction: {dismissViews()},
+                             rightButtonType: .delete,
+                             rightButtonAction: { showDeleteReportConfirmationView() })
+    }
+    
+    private var contentView : some View {
+        ScrollView {
+            
+            VStack(alignment: .leading, spacing: 0) {
+                
+                reportDetails
+                
+                Spacer()
+                    .frame(width: 16)
+                
+                itemsListView
+            }
+        }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
         
-        HStack(spacing: 0) {
-            Button {
-                dismissViews()
-            } label: {
-                Image("back")
-                    .flipsForRightToLeftLayoutDirection(true)
-                    .padding()
-            }
-            
-            Text(LocalizableReport.reportsText.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.white)
-            
-            Spacer()
-            
-            Button {
-                showDeleteReportConfirmationView()
-            } label: {
-                Image("report.delete-outbox")
-                    .padding(.all, 22)
-            }
-            
-        }.frame(height: 56)
     }
-    
     
     private var reportDetails: some View {
         Group {

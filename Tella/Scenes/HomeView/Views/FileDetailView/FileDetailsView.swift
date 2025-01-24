@@ -19,18 +19,17 @@ struct FileDetailsView: View {
     
     var body: some View {
         ZStack {
-            detailsView()
-            FileActionMenu()
-            toolbar()
-            if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+            
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                detailsView()
             }
             
+            FileActionMenu(fileListViewModel: fileListViewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
-        .environmentObject(fileListViewModel)
         .ignoresSafeArea(edges: .bottom)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
@@ -76,7 +75,8 @@ struct FileDetailsView: View {
             VideoViewer(appModel: fileListViewModel.appModel,
                         currentFile: viewModel.currentFile,
                         playList: self.fileListViewModel.getVideoFiles(),
-                        rootFile: fileListViewModel.rootFile)
+                        rootFile: fileListViewModel.rootFile,
+                        fileListViewModel: fileListViewModel)
         } else {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
@@ -92,43 +92,47 @@ struct FileDetailsView: View {
                         QuickLookView(file: urlDocument)
                     }
                 }
+            } else {
+                progressView
             }
         }
     }
     
-    func fileActionTrailingView() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            HStack {
-                editView()
-                MoreFileActionButton(file: self.fileListViewModel.selectedFiles.first, moreButtonType: .navigationBar)
-            }
-        }
+    func showEditView() {
+        isEditFilePresented = true
+        self.editFileAction()
     }
     
-    @ViewBuilder
-    func editView() -> some View {
-        if viewModel.shouldAddEditView {
-            Button {
-                //open edit view
-                isEditFilePresented = true
-                self.editFileAction()
-            } label: {
-                Image("file.edit")
-            }
-        }
+    var moreFileActionButton : AnyView {
+        AnyView(MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                     file: self.fileListViewModel.selectedFiles.first,
+                                     moreButtonType: .navigationBar))
     }
     
     @ViewBuilder
-    func toolbar() -> some View {
+    var navigationBarView : some View {
         if let file = self.fileListViewModel.selectedFiles.first {
             
             ZStack{}
                 .if(file.tellaFileType != .video, transform: { view in
-                    view.toolbar {
-                        LeadingTitleToolbar(title: file.name)
-                        fileActionTrailingView()
+                    VStack {
+                        NavigationHeaderView(title: file.name,
+                                             middleButtonType: .editFile,
+                                             middleButtonAction: {showEditView()},
+                                             rightButtonType: .custom,
+                                             rightButtonView:moreFileActionButton )
+                        view
                     }
                 })
+        }
+    }
+    
+    var progressView: some View  {
+        VStack {
+            Spacer()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+            Spacer()
         }
     }
 }

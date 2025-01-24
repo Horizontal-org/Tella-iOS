@@ -10,7 +10,7 @@ struct AddFileView: View {
     @State private var isValid = false
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
     var body: some View {
@@ -128,8 +128,7 @@ struct AddFileView: View {
 
 struct AddFileButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFileView()
+        AddFileView(fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

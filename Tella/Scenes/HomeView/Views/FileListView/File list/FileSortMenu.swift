@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FileSortMenu: View {
     
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
     var fileSortOptions : [FileSortOptions] = [.nameAZ, .nameZA, .newestToOldest, .oldestToNewest]
@@ -56,8 +56,7 @@ struct FileSortMenu: View {
 
 struct FileSortSheet_Previews: PreviewProvider {
     static var previews: some View {
-        FileSortMenu()
+        FileSortMenu(fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

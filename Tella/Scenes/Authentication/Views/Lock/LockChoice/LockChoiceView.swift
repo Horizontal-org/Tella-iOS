@@ -2,7 +2,7 @@
 //  AuthenticationView.swift
 //  Tella
 //
-//   
+//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -17,62 +17,51 @@ struct LockChoiceView: View {
     
     var body: some View {
         
-        ContainerView {
-            VStack {
-                if lockViewModel.unlockType == .update {
-                    LockChoiceHeaderView()
-                }
-                
-                VStack(alignment: .center, spacing: 24) {
-                    Spacer()
-                    Image("lock.phone")
-                        .frame(width: 60, height: 100)
-                        .aspectRatio(contentMode: .fit)
-                    
-                    Text(LocalizableLock.lockSelectSubhead.localized)
-                        .font(.custom(Styles.Fonts.boldFontName, size: 18))
-                        .foregroundColor(.white)
-                    
-                    VStack(spacing: 15) {
-                        
-                        LockButtonView(lockButtonProtocol: PasswordLockButton(),
-                                       destination: LockPasswordView().environmentObject(lockViewModel))
-                        
-                        LockButtonView(lockButtonProtocol: PINLockButton(),
-                                       destination: LockPinView().environmentObject(lockViewModel))
-                    }
-                    Spacer()
-                }
-                .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+        ContainerViewWithHeader {
+            if lockViewModel.unlockType == .update {
+                navigationBarView
             }
+        } content: {
+            contentView
         }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
         .onReceive(appViewState.$shouldHidePresentedView) { value in
             if(value) {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
     }
-}
-
-struct LockChoiceHeaderView : View {
-
-    var body: some View {
-        
-        HStack {
-            Button {
-                self.popTo(ViewClassType.securitySettingsView)
-            } label: {
-                Image("close")
-            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableLock.lockSelectTitle.localized,
+                             backButtonType: .close,
+                             backButtonAction: {self.popTo(ViewClassType.securitySettingsView)})
+    }
+    
+    var contentView: some View {
+        VStack {
             
-            Text(LocalizableLock.lockSelectTitle.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(Color.white)
-            Spacer()
-        }.padding(.top, 15)
-        
+            VStack(alignment: .center, spacing: 24) {
+                Spacer()
+                Image("lock.phone")
+                    .frame(width: 60, height: 100)
+                    .aspectRatio(contentMode: .fit)
+                
+                Text(LocalizableLock.lockSelectSubhead.localized)
+                    .font(.custom(Styles.Fonts.boldFontName, size: 18))
+                    .foregroundColor(.white)
+                
+                VStack(spacing: 15) {
+                    
+                    LockButtonView(lockButtonProtocol: PasswordLockButton(),
+                                   destination: LockPasswordView().environmentObject(lockViewModel))
+                    
+                    LockButtonView(lockButtonProtocol: PINLockButton(),
+                                   destination: LockPinView().environmentObject(lockViewModel))
+                }
+                Spacer()
+            }
+            .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+        }
     }
 }
 

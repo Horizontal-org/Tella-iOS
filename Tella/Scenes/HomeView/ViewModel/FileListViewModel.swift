@@ -138,6 +138,19 @@ class FileListViewModel: ObservableObject {
         return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles
     }
     
+    var shouldShowSelectButton: Bool {
+        fileListType == .selectFiles
+    }
+
+    var selectButtonEnabled: Bool {
+        resultFile?.wrappedValue?.isEmpty ?? false
+    }
+    
+    var shouldShowShareButton : Bool {
+        shouldActivateShare && selectedItemsNumber > 0
+    }
+
+    
     var fileActionItems: [ListActionSheetItem] {
         
         var items: [ListActionSheetItem] = []

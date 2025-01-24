@@ -35,7 +35,6 @@ struct ServerCreateFolderView: View {
                 CircularActivityIndicatory()
             }
         }
-        .navigationBarHidden(true)
         .containerStyle()
         .onReceive(createFolderViewModel.$createFolderState) { value in
             if value == .loaded(true) {

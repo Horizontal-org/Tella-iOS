@@ -7,7 +7,7 @@ import SwiftUI
 struct FileActionMenu: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var isPresented = true
@@ -32,14 +32,13 @@ struct FileActionMenu: View {
     }
     
     var moveFilesView : some View {
-        MoveFilesView(title: fileListViewModel.fileActionsTitle)
+        MoveFilesView(title: fileListViewModel.fileActionsTitle, fileListViewModel: fileListViewModel)
     }
 }
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu()
+        FileActionMenu(fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

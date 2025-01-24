@@ -12,14 +12,22 @@ struct ResourcePDFView: View {
     var file: URL
     var resourceTitle: String
     @State private var navigationBarHidden = false
+    @State private var dragOffset: CGFloat = 0
+    
     var body: some View {
-        ZStack {
+        
+        ContainerViewWithHeader {
+            navigationBarHidden ? nil : navigationBarView
+        } content: {
             PDFKitView(url: file)
-        }.toolbar {
-            LeadingTitleToolbar(title: resourceTitle)
-        }.gesture(DragGesture().onChanged { value in
-            navigationBarHidden = value.translation.height < 0
-        }).navigationBarHidden(navigationBarHidden)
+                .gesture(DragGesture().onChanged { value in
+                    navigationBarHidden = value.translation.height < 0
+                })
+        }
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: resourceTitle)
     }
 }
 
