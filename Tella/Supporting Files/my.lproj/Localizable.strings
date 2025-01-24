@@ -425,15 +425,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
 "Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
 "Uwazi_Relationship_SearchBar_Title" = "Search";
-"Vault_DeniedPhotoLibraryPermission_Expl" = "The Tella app does not have permission to access the photo library.\
-\
-If you want to add a picture or a video from the photo library, proceed in the following way:\
-1. Navigate to your phone's settings and find the Tella app.\
-2. Enable permissions for Photos.\
-3. Open the Tella app.\
-";
-"Vault_DeniedPhotosPermission_Action_Settings" = "ချိန်ညှိ့သည့်နေရာ";
-"Vault_DeniedPhotosPermission_Action_Cancel" = "CANCEL";
 "Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\
 \
 If you want to add a picture or a video from the photo library, proceed in the following way:\
@@ -536,3 +527,22 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettAbout_Tutorial" = "သင်ခန်းစာ";
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
 "Settings_SettLang_Bangla_Expl" = "Bangla";
+"Vault_DeniedPhotoLibraryPermission_SheetTitle" = "Permission required";
+"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella does not have permission to access your photo library. If you want to add a photo or video from your device, please:\
+1. Navigate to your phone's settings\
+2. Find the Tella app\
+3. Enable photo permissions";
+"Vault_DeniedPhotosPermission_Settings_SheetSelect" = "Phone Settings";
+"Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancel";
+"Vault_LimitedPhotoLibrary_AppBar" = "Import files";
+"Vault_LimitedPhotoLibrary_Title" = "Limited access";
+"Vault_LimitedPhotoLibrary_Expl" = "Tella only has access to limited photos and videos from your device library. Add more files or change device access here.";
+"Vault_LimitedPhotoLibrary_Action_Manage" = "Manage";
+"Vault_LimitedPhotoLibrary_EmptyFiles_Expl" = "Tap “Manage” to add your first photos and videos.";
+"Vault_LimitedPhotoLibrary_Add_SheetSelect" = "Add more photos and videos";
+"Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect" = "Change permissions";
+"Vault_LimitedPhotoLibrary_ManageAccess_Title" = "Manage access";
+"Vault_LimitedPhotoLibrary_Select_Expl" = "Select from these photos and videos to import them to Tella.";
+"Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
+"Setting_Server_AdvancedSettings" = "အဆင့်မြင့် ဆက်တင်များ";
+"Settings_SettLang_Indonesian_Expl" = "Indonesian";
