@@ -64,7 +64,11 @@ struct VideoViewer: View {
     }
     
     func backAction() {
-        self.popToRoot()
+        if navigationHasClassType(ViewClassType.fileListView) {
+            self.popTo(ViewClassType.fileListView)
+        } else {
+            self.popToRoot()
+        }
         playerVM.deleteTmpFile()
     }
     
