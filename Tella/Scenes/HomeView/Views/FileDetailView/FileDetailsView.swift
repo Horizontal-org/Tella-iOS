@@ -27,11 +27,6 @@ struct FileDetailsView: View {
             }
             
             FileActionMenu(fileListViewModel: fileListViewModel)
-            
-            if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
@@ -97,6 +92,8 @@ struct FileDetailsView: View {
                         QuickLookView(file: urlDocument)
                     }
                 }
+            } else {
+                progressView
             }
         }
     }
@@ -127,6 +124,15 @@ struct FileDetailsView: View {
                         view
                     }
                 })
+        }
+    }
+    
+    var progressView: some View  {
+        VStack {
+            Spacer()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+            Spacer()
         }
     }
 }
