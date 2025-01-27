@@ -62,7 +62,7 @@ struct UnlockView: View {
             if presentingLockChoice {
                 showLockChoiceView()
             }
-        }
+        }.navigationBarHidden(true)
     }
     
     

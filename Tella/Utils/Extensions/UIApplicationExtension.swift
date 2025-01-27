@@ -85,16 +85,24 @@ extension UIApplication {
     }
     
     func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
+        
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().isTranslucent = true
         UITabBar.appearance().backgroundColor = backgroundColor
-
+        
+        let coloredAppearance = UINavigationBarAppearance()
+        coloredAppearance.configureWithTransparentBackground()
+        coloredAppearance.backgroundColor = backgroundColor
+        
+        UINavigationBar.appearance().standardAppearance = coloredAppearance
+        UINavigationBar.appearance().compactAppearance = coloredAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+        UINavigationBar.appearance().backgroundColor = backgroundColor
+        
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
-        
-        UINavigationBar.appearance().isHidden = true
     }
 
     var rootViewController: UIViewController? {

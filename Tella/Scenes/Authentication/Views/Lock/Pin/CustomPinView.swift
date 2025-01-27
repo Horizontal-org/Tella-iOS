@@ -79,7 +79,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                     })
                 }
             }
-        }
+        }.navigationBarHidden(true)
     }
 }
 

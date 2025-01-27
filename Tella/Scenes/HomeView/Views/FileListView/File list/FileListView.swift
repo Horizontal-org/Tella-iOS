@@ -91,8 +91,7 @@ struct FileListView: View {
             
             NavigationHeaderView(title: title,
                                  rightButtonType: fileListViewModel.shouldShowSelectButton ? .validate : .none,
-                                 rightButtonAction: { attachFiles() },
-                                 isRightButtonEnabled: fileListViewModel.selectButtonEnabled)
+                                 rightButtonAction: { attachFiles()})
         }
     }
     

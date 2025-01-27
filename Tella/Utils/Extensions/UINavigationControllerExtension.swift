@@ -8,9 +8,9 @@
 
 import UIKit
 
-extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
-    
-    open override func viewWillLayoutSubviews() {
-        navigationBar.isHidden = true
-    }
-}
+//extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
+//    
+//    open override func viewWillLayoutSubviews() {
+//        navigationBar.isHidden = true
+//    }
+//}

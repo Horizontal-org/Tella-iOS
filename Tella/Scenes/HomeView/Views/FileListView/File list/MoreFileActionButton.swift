@@ -96,7 +96,7 @@ struct MoreFileActionButton: View {
             showSaveConfirmationSheet()
             
         case .info:
-            fileListViewModel.showFileInfoActive = true
+            self.showFileInfoView()
             self.hideMenu()
             
         case .delete:
@@ -179,6 +179,13 @@ struct MoreFileActionButton: View {
                 fileListViewModel.renameSelectedFile()
             })
         })
+    }
+    
+    
+    func showFileInfoView() {
+        guard let file else { return }
+        let destination = FileInfoView(viewModel: self.fileListViewModel, file: file)
+        self.navigateTo(destination: destination)
     }
     
     func showDeleteConfirmationSheet() {
