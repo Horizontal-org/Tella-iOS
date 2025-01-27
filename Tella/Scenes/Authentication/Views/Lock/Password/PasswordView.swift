@@ -63,7 +63,7 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }        
-        }
+        }.navigationBarHidden(true)
     }
 }
 

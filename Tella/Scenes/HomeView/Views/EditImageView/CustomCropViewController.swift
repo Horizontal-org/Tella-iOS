@@ -8,21 +8,19 @@
 
 import Mantis
 import Combine
+import SwiftUICore
 class CustomCropViewController: Mantis.CropViewController {
     
     @Published var isUpdatingImage = PassthroughSubject<Bool, Never>()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavigationItem()
+        UIApplication.shared.setupApperance(with: .black)
     }
-
-    override func viewWillLayoutSubviews() {
-        self.navigationController?.navigationBar.isHidden = false
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         UIApplication.shared.setupApperance()
     }
 

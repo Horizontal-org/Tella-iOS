@@ -51,7 +51,7 @@ struct NavigationHeaderView: View {
                 largeTitleView
                     .padding(.horizontal, 16)
             }
-        }
+        }.navigationBarHidden(true)
     }
     
     private var backButton: some View {
