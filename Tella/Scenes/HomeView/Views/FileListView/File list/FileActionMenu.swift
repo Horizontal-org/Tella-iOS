@@ -16,19 +16,6 @@ struct FileActionMenu: View {
         if fileListViewModel.showingMoveFileView {
             moveFilesView
         }
-        showFileInfoLink
-    }
-
-    @ViewBuilder
-    private var showFileInfoLink : some View{
-        if let currentSelectedVaultFile = fileListViewModel.currentSelectedVaultFile {
-            NavigationLink(destination:
-                            FileInfoView(viewModel: self.fileListViewModel, file: currentSelectedVaultFile),
-                           isActive: $fileListViewModel.showFileInfoActive) {
-                EmptyView()
-            }.frame(width: 0, height: 0)
-                .hidden()
-        }
     }
     
     var moveFilesView : some View {
