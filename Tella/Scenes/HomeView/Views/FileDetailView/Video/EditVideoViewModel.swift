@@ -42,19 +42,7 @@ class EditVideoViewModel: EditMediaViewModel {
         isPlaying ? seekVideo(to: currentPosition) : onPause()
     }
     
-    private func setupListeners() {
-//        $shouldSeekMedia
-//            .dropFirst()
-//            .filter({ $0 == false })
-//            .sink(receiveValue: { [weak self] _ in
-//                guard let self = self else { return }
-//                print("should seek media is triggered", shouldSeekMedia)
-//                if isDurationHasChanged() {
-//                    seekVideo(to: self.currentPosition)
-//                }
-//            })
-//            .store(in: &cancellables)
-        
+    private func setupListeners() {        
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
             if self.isSeekInProgress == false {
