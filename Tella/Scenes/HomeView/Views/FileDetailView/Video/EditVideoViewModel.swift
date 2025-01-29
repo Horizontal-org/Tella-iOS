@@ -42,7 +42,7 @@ class EditVideoViewModel: EditMediaViewModel {
         isPlaying ? seekVideo(to: currentPosition) : onPause()
     }
     
-    private func setupListeners() {        
+    private func setupListeners() {
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
             if self.isSeekInProgress == false {

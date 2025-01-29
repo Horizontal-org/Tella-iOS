@@ -68,7 +68,6 @@ struct EditAudioView: View {
             }
         }.frame(height: 210)
             .offset(x: 5, y: 10 )
-        -…
     }
     
     private func trimBackgroundView() -> some View {
