@@ -12,12 +12,10 @@ import SwiftUI
 import AVFoundation
 
 class EditVideoViewModel: EditMediaViewModel {
-    
     private var timeObserver: Any?
+    
     let player = AVPlayer()
     
-    @Published var currentPosition: Double = .zero
-    @Published var shouldSeekVideo = false
     @Published var thumbnails: [UIImage] = []
     
     var isSeekInProgress = false {
@@ -38,28 +36,31 @@ class EditVideoViewModel: EditMediaViewModel {
         self.thumbnails = fileURL.generateThumbnails()
         let playerItem = AVPlayerItem(url:fileURL)
         self.player.replaceCurrentItem(with: playerItem)
-        self.onPlay()
+     }
+    override func handlePlayButton() {
+        isPlaying.toggle()
+        isPlaying ? seekVideo(to: currentPosition) : onPause()
     }
     
     private func setupListeners() {
-        $shouldSeekVideo
-            .dropFirst()
-            .filter({ $0 == false })
-            .sink(receiveValue: { [weak self] _ in
-                guard let self = self else { return }
-                seekVideo(to: self.currentPosition)
-            })
-            .store(in: &cancellables)
+//        $shouldSeekMedia
+//            .dropFirst()
+//            .filter({ $0 == false })
+//            .sink(receiveValue: { [weak self] _ in
+//                guard let self = self else { return }
+//                print("should seek media is triggered", shouldSeekMedia)
+//                if isDurationHasChanged() {
+//                    seekVideo(to: self.currentPosition)
+//                }
+//            })
+//            .store(in: &cancellables)
         
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
             if self.isSeekInProgress == false {
-                
-                self.currentPosition = time.seconds
-                self.updateOffset(time: currentPosition)
-                
-                if time.seconds == self.file?.duration {
-                    seekVideo(to: 0.0, and: false)
+                 self.currentPosition = time.seconds
+                 if time.seconds >= endTime {
+                     seekVideo(to: startTime, and: false)
                 }
             }
         }
@@ -78,7 +79,10 @@ class EditVideoViewModel: EditMediaViewModel {
             }
         }
     }
-    
+    override func didReachSliderLimit() {
+        onPause()
+        currentPosition = startTime
+    }
     override func onPlay() {
         isPlaying = true
         player.play()
@@ -88,4 +92,4 @@ class EditVideoViewModel: EditMediaViewModel {
         isPlaying = false
         player.pause()
     }
- }
+}

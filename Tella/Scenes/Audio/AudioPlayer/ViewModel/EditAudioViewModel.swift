@@ -17,7 +17,7 @@ class EditAudioViewModel: EditMediaViewModel {
     
     //MARK: - Private attributes
     private var currentData : Data?
-    
+ 
     override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
         super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
         if let currentFile = file {
@@ -39,10 +39,26 @@ class EditAudioViewModel: EditMediaViewModel {
         }
     }
     
-    private func listenToAudioPlayerUpdates() {
-        self.audioPlayerManager.audioPlayer.currentTime.sink { value in
+    override func didReachSliderLimit() {
+        onPause()
+        currentPosition = startTime
+        currentTime =  startTime.formattedAsHHMMSS()
+    }
+    override func handlePlayButton() {
+        isPlaying.toggle()
+        isPlaying ? seekAudio(to: self.currentPosition) : onPause()
+    }
+
+    private func listenToAudioPlayerUpdates() { 
+        self.audioPlayerManager.audioPlayer.currentTime.sink { [self] value in
             self.currentTime = value.formattedAsHHMMSS()
-            self.updateOffset(time: Double(value) )
+            self.currentPosition  = Double(value)
+            
+            if Double(value) >= self.endTime {
+                 seekAudio(to: startTime )
+                print("time is over")
+               }
+
         }.store(in: &self.cancellables)
         
         self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
@@ -50,11 +66,20 @@ class EditAudioViewModel: EditMediaViewModel {
         }.store(in: &self.cancellables)
     }
     
+    func seekAudio(to position: Double, shouldPlay: Bool = true ) {
+        audioPlayerManager.audioPlayer.seekAudio(to: position)
+        if shouldPlay {
+            onPlay()
+        }
+
+    }
     override func onPlay() {
+        isPlaying = true
         audioPlayerManager.playRecord()
     }
     
     override func onPause() {
+        isPlaying = false
         audioPlayerManager.pauseRecord()
     }
         

@@ -47,16 +47,28 @@ struct EditAudioView: View {
                 ZStack(alignment: .leading) {
                     // This image is for the playing view
                     trimBackgroundView()
-                    Image("edit.audio.play.line")
-                        .frame(height: 220)
-                        .offset(x: viewModel.playingOffset)
-                    
+                    tapeLineSliderView
                     leadingSliderView()
                 }.frame(maxWidth: viewModel.kTrimViewWidth)
                 trailingSliderView()
             }
             
         }.frame(maxWidth: viewModel.kTrimViewWidth)
+    }
+    
+    private var tapeLineSliderView: some View {
+        CustomThumbnailSlider(value: $viewModel.currentPosition,
+                              range: 0...viewModel.timeDuration,
+                              sliderHeight: 210,
+                              sliderWidth: 5.0,
+                              sliderImage: "edit.audio.play.line") { isEditing in
+            viewModel.onPause()
+            if !isEditing {
+                viewModel.currentTime = viewModel.currentPosition.formattedAsHHMMSS()
+            }
+        }.frame(height: 210)
+            .offset(x: 5, y: 10 )
+        -…
     }
     
     private func trimBackgroundView() -> some View {
@@ -84,7 +96,8 @@ struct EditAudioView: View {
         .offset(y: 20)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
-        })
+            viewModel.didReachSliderLimit()
+         })
     }
     
     private func trailingSliderView() -> some View {
@@ -98,7 +111,8 @@ struct EditAudioView: View {
         .offset(y:20)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
-        })
+            viewModel.didReachSliderLimit()
+         })
     }
     
     var timeLabelsView: some View {

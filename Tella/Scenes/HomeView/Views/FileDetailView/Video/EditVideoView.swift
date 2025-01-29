@@ -13,7 +13,7 @@ struct EditVideoView: View {
     
     @ObservedObject var viewModel: EditVideoViewModel
     @State private var thumbnail: UIImage? = nil
- 
+    
     var body: some View {
         ZStack {
             VStack {
@@ -27,7 +27,6 @@ struct EditVideoView: View {
                 trimView
                     .padding(.bottom, 40)
                     .padding(.top, 16)
-
                 Spacer()
             }
         }
@@ -55,16 +54,23 @@ struct EditVideoView: View {
                     .frame(maxWidth: .infinity)
             }
         }.border(Color.white.opacity(0.8), width: 1)
-        .padding(0)
-        .frame(maxWidth: viewModel.kTrimViewWidth, maxHeight: 36)
-        .padding(.bottom, 20)
+            .padding(0)
+            .padding(.bottom, 20)
     }
     
     var trimView: some View {
         VStack {
             ZStack(alignment: .trailing) {
-                ZStack(alignment: .leading) {
-                    thumbnailsView
+                ZStack(alignment: .center) {
+                    HStack(spacing: 0) {
+                        Spacer()
+                            .frame(width: 18, height: 36)
+ 
+                        thumbnailsView
+                        Spacer()
+                            .frame(width: 18, height: 36)
+                     }
+                     .frame(maxWidth: viewModel.kTrimViewWidth)
                     // This image is for the playing view
                     tapeLineSliderView
                     leadingSliderView()
@@ -80,9 +86,9 @@ struct EditVideoView: View {
                               sliderHeight: 36,
                               sliderWidth: 5.0,
                               sliderImage: "edit.video.play.line") { isEditing in
-            viewModel.isSeekInProgress = true
-            viewModel.shouldSeekVideo = isEditing
+            viewModel.onPause()
         }.frame(height: 40)
+            .offset(x: 18)
     }
     
     private func leadingSliderView() -> some View {
@@ -97,6 +103,7 @@ struct EditVideoView: View {
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            viewModel.didReachSliderLimit()
         })
     }
     
@@ -111,9 +118,11 @@ struct EditVideoView: View {
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            viewModel.didReachSliderLimit()
         })
+        .offset(x: -18)
     }
- 
+    
     private func handleTrimState(value:ViewModelState<Bool>) {
         switch value {
         case .loaded(let isSaved):
