@@ -18,6 +18,7 @@ struct ServerCreateFolderView: View {
         ZStack {
             VStack(spacing: 20) {
                 Spacer()
+                    .frame(height: 57)
                 headerView
                 textField
                 Spacer()
