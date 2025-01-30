@@ -55,8 +55,7 @@ class EditAudioViewModel: EditMediaViewModel {
             self.currentPosition  = Double(value)
             
             if Double(value) >= self.endTime {
-                 seekAudio(to: startTime )
-                print("time is over")
+                seekAudio(to: startTime, shouldPlay: false )
                }
 
         }.store(in: &self.cancellables)
@@ -68,10 +67,7 @@ class EditAudioViewModel: EditMediaViewModel {
     
     func seekAudio(to position: Double, shouldPlay: Bool = true ) {
         audioPlayerManager.audioPlayer.seekAudio(to: position)
-        if shouldPlay {
-            onPlay()
-        }
-
+        shouldPlay ? onPlay() : onPause()
     }
     override func onPlay() {
         isPlaying = true
