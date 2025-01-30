@@ -36,6 +36,7 @@ struct ServerCreateFolderView: View {
             }
         }
         .containerStyle()
+        .navigationBarHidden(true)
         .onReceive(createFolderViewModel.$createFolderState) { value in
             if value == .loaded(true) {
                 navigateToSuccessLogin?()
