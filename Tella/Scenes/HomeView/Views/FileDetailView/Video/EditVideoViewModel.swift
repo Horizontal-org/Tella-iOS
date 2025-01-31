@@ -17,13 +17,7 @@ class EditVideoViewModel: EditMediaViewModel {
     let player = AVPlayer()
     
     @Published var thumbnails: [UIImage] = []
-    
-    var isSeekInProgress = false {
-        didSet {
-            self.onPause()
-        }
-    }
-    
+ 
     override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
         super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
         setupListeners()
@@ -45,24 +39,20 @@ class EditVideoViewModel: EditMediaViewModel {
     private func setupListeners() {
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
-            if self.isSeekInProgress == false {
-                 self.currentPosition = time.seconds
-                 if time.seconds >= endTime {
+                  self.currentPosition = time.seconds
+             if self.currentPosition >= endTime {
                      seekVideo(to: startTime, and: false)
                 }
-            }
-        }
+         }
     }
     private func seekVideo(to position: Double, and shouldPlay: Bool = true) {
         
-        self.isSeekInProgress = true
-        self.currentPosition = position
+         self.currentPosition = position
         
         let targetTime = CMTime(seconds: self.currentPosition ,
                                 preferredTimescale: 600)
         self.player.seek(to: targetTime) { _ in
-            self.isSeekInProgress = false
-            if shouldPlay {
+             if shouldPlay {
                 self.onPlay()
             }
         }
