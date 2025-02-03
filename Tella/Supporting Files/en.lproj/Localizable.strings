@@ -549,3 +549,22 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
+
+
+"PeerToPeer_AppBar" = "Nearby sharing";
+
+
+"PeerToPeer_AppBar" = "Nearby sharing";
+"PeerToPeer_NearbySharing_Subhead" = "How it works";
+"PeerToPeer_NearbySharing_Expl" = "Share files with nearby devices without an Internet connection \
+1. Both devices must be connected to the same Wifi network \
+2. Make sure you trust the person you are sharing files with";
+
+"PeerToPeer_NearbySharing_SendFiles" = "Send files";
+"PeerToPeer_NearbySharing_ReceiveFiles" = "Receive files";
+
+
+"PeerToPeer_NearbySharing_LearnMore" = "Learn more about nearby sharing";
+
+
+

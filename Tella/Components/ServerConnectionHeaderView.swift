@@ -19,18 +19,22 @@ struct ServerConnectionHeaderView: View {
     
     var body: some View {
         VStack(spacing: 8) {
+            
             Image(imageIconName)
                 .padding(.bottom, 16)
+            
             Text(title)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
-                .multilineTextAlignment(subtitleTextAlignment)
+                .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+            
             Text(subtitle)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(subtitleTextAlignment)
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

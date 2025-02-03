@@ -186,7 +186,7 @@ struct ServerSelectionView: View {
             } label: {
                 Text(LocalizableSettings.settServerSelectionPart1Message.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.yellow)
+                    .foregroundColor(Styles.Colors.yellow)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
