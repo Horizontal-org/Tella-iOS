@@ -36,6 +36,10 @@ struct ConnectionsView: View {
     var serverItems : some View {
         HStack(spacing: 7) {
             
+            ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
+                                image: "share-icon",
+                                destination: peerToPeerMainView)
+
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
                     
@@ -86,7 +90,12 @@ struct ConnectionsView: View {
     }
     
     var dropboxMainView: DropboxReportMainView {
-        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.mainAppModel, dropboxRepository: DropboxRepository()))
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.appModel,
+                                                                     dropboxRepository: DropboxRepository()))
+    }
+
+    var peerToPeerMainView: PeerToPeerMainView {
+        PeerToPeerMainView()
     }
 }
 

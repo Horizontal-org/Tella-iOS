@@ -214,6 +214,8 @@
 		126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
+		126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */; };
+		126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */; };
 		126FC6BE2F1E482900FC9316 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6BD2F1E482900FC9316 /* LinkView.swift */; };
 		126FC6C12F20111200FC9316 /* BottomButtonActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
@@ -892,6 +894,8 @@
 		126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftViewModel.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
+		126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizablePeerToPeer.swift; sourceTree = "<group>"; };
+		126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerMainView.swift; sourceTree = "<group>"; };
 		126FC6BD2F1E482900FC9316 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonActionView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -2046,6 +2050,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
+			isa = PBXGroup;
+			children = (
+				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+			);
+			path = PeerToPeer;
+			sourceTree = "<group>";
+		};
 		126FC6BF2F20108B00FC9316 /* BackNextButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -2646,6 +2658,7 @@
 				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
 				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
+				126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -3223,6 +3236,7 @@
 				0DD99E0126910378009327B3 /* Camera */,
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
+				126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */,
 				127BCA1F2E85208900902C59 /* Onboarding */,
 			);
 			path = Scenes;
@@ -3977,6 +3991,7 @@
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
+				126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
@@ -4214,6 +4229,7 @@
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */,
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
+				126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
 				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
