@@ -21,7 +21,7 @@ struct WifiConnetionView: View {
             VStack {
                 getConnectedView
                 tipsView
-                lineView
+                DividerView()
                 currentWifiView
                 sameWifiNetworkView
                 Spacer()
@@ -37,7 +37,7 @@ struct WifiConnetionView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: "Wi-Fi",
+        NavigationHeaderView(title: LocalizablePeerToPeer.wifi.localized ,
                              navigationBarType: .inline,
                              backButtonAction: {self.popToRoot()},
                              rightButtonType: .none)
