@@ -54,13 +54,10 @@ struct WifiConnetionView: View {
             Spacer().frame(height: 20)
             VStack {
                 ResizableImage("wifi.icon").frame(width: 43, height: 30)
-                Text(LocalizablePeerToPeer.getConnected.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                    .foregroundColor(Color.white)
+                RegularText(LocalizablePeerToPeer.getConnected.localized, size: 18)
             }
-            Text(LocalizablePeerToPeer.wifiConnectionDescription.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white)
+            
+            RegularText(LocalizablePeerToPeer.wifiConnectionDescription.localized)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
         }.frame(maxWidth: .infinity)
@@ -69,9 +66,7 @@ struct WifiConnetionView: View {
     var tipsView: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                Text(LocalizablePeerToPeer.wifiConnectionTipsToConnect.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.white)
+                RegularText(LocalizablePeerToPeer.wifiConnectionTipsToConnect.localized)
                 Spacer()
                 if isExpanded {
                     Text(LocalizablePeerToPeer.wifiConnectionTipsToConnectDescription.localized)
@@ -93,16 +88,11 @@ struct WifiConnetionView: View {
     
     var currentWifiView: some View {
         HStack {
-            Text(LocalizablePeerToPeer.currentWifi.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white)
+            RegularText(LocalizablePeerToPeer.currentWifi.localized)
             Spacer()
             
             if let ssid = viewModel.ssid {
-                Text("\(ssid)")
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.white)
-                
+                RegularText("\(ssid)")
             } else {
                 Text("Not connected") //Add text to localizable when it is confirmed
                     .foregroundColor(.gray)
@@ -116,9 +106,7 @@ struct WifiConnetionView: View {
     }
     var sameWifiNetworkView: some View {
         HStack {
-            Text(LocalizablePeerToPeer.wifiSameNetworkDescription.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white)
+            RegularText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized)
             Spacer()
             ResizableImage( isCheckboxOn ? "checkbox.on" : "checkbox.off" ).frame(width: 24, height: 24)
                 .onTapGesture {
