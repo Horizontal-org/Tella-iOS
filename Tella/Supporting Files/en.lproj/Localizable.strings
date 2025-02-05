@@ -573,3 +573,5 @@ If you want to add a picture or a video from the photo library, proceed in the f
 3. Disable any VPN connections.";
 "PeerToPeer_CurrentWifi" = "Current Wifi Network";
 "PeerToPeer_SameNetworkDescription" = "Yes, we are on the same Wi-Fi network";
+"PeerToPeer_ConnectToDevice" = "Connect to device";
+"PeerToPeer_ScanCode" = "Scan the recipient’s QR code";
