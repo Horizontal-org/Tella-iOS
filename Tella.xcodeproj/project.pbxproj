@@ -503,6 +503,8 @@
 		204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
+		209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* ConnectToDeviceView.swift */; };
+		209107F52D5391B000808BCF /* RegularText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F42D5391B000808BCF /* RegularText.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
 		209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6772C2D5C9800492356 /* AddServerURLView.swift */; };
 		209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6792C2D5E3500492356 /* ServerViewModel.swift */; };
@@ -1199,6 +1201,8 @@
 		204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaControlButtonsView.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
+		209107F22D538CF200808BCF /* ConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceView.swift; sourceTree = "<group>"; };
+		209107F42D5391B000808BCF /* RegularText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularText.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
 		209AC6772C2D5C9800492356 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		209AC6792C2D5E3500492356 /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
@@ -2061,6 +2065,7 @@
 			children = (
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+				209107F22D538CF200808BCF /* ConnectToDeviceView.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";
@@ -2734,6 +2739,7 @@
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
 				1212677C2C0E77A2005F75A4 /* VaultFileItem */,
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
+				209107F42D5391B000808BCF /* RegularText.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
 				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
@@ -4049,6 +4055,7 @@
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
+				209107F52D5391B000808BCF /* RegularText.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
@@ -4159,6 +4166,7 @@
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
+				209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */,
 				128EE4E92E8FC3F000DF55C5 /* ServerOnboardingView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */,
