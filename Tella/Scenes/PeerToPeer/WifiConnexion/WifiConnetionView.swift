@@ -21,9 +21,7 @@ struct WifiConnetionView: View {
             VStack {
                 getConnectedView
                 tipsView
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(.white.opacity(0.2))
+                lineView
                 currentWifiView
                 sameWifiNetworkView
                 Spacer()
@@ -43,6 +41,12 @@ struct WifiConnetionView: View {
                              navigationBarType: .inline,
                              backButtonAction: {self.popToRoot()},
                              rightButtonType: .none)
+    }
+    
+    var lineView: some View {
+        Rectangle()
+            .frame(height: 1)
+            .foregroundColor(.white.opacity(0.2))
     }
     
     var getConnectedView: some View {
