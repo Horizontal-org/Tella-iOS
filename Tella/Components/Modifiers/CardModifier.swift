@@ -6,7 +6,6 @@
 //  Copyright © 2025 HORIZONTAL. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 
 struct CardModifier: ViewModifier {

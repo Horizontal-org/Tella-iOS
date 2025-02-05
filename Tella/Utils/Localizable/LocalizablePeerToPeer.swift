@@ -25,4 +25,6 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case wifiConnectionTipsToConnectDescription = "PeerToPeer_WifiConnection_TipsToConnect_Desc"
     case currentWifi = "PeerToPeer_CurrentWifi"
     case wifiSameNetworkDescription = "PeerToPeer_SameNetworkDescription"
+    case connectToDevice = "PeerToPeer_ConnectToDevice"
+    case scanCode = "PeerToPeer_ScanCode"
 }
