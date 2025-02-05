@@ -118,6 +118,9 @@
     
     <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
     <string>YES</string>
-
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs location access to detect the Wi-Fi network.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>This app needs network access to identify the Wi-Fi SSID.</string>
 </dict>
 </plist>

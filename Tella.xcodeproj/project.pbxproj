@@ -499,6 +499,9 @@
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
+		20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */; };
+		20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FB02D522551006DD8B9 /* CardModifier.swift */; };
+		20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
 		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
 		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
@@ -1165,6 +1168,9 @@
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
+		20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionViewModel.swift; sourceTree = "<group>"; };
+		20BA4FB02D522551006DD8B9 /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
+		20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
 		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
 		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
@@ -1999,6 +2005,7 @@
 		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
 			isa = PBXGroup;
 			children = (
+				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
 			);
 			path = PeerToPeer;
@@ -2957,10 +2964,20 @@
 			path = Connections;
 			sourceTree = "<group>";
 		};
+		20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */ = {
+			isa = PBXGroup;
+			children = (
+				20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */,
+				20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */,
+			);
+			path = WifiConnexion;
+			sourceTree = "<group>";
+		};
 		20BF26712C9843C200E81535 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
 				20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */,
+				20BA4FB02D522551006DD8B9 /* CardModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -3793,6 +3810,7 @@
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
+				20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */,
 				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
@@ -4017,6 +4035,7 @@
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
+				20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
@@ -4109,6 +4128,7 @@
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
+				20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */,
 				15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */,
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
 				127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */,
@@ -4669,7 +4689,7 @@
 			baseConfigurationReference = D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Tella/TellaRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;

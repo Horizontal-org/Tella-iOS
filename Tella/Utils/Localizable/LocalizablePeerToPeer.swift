@@ -19,5 +19,10 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case receiveFiles = "PeerToPeer_NearbySharing_ReceiveFiles"
     
     case learnMore = "PeerToPeer_NearbySharing_LearnMore"
-    
+    case getConnected = "PeerToPeer_Getconnected"
+    case wifiConnectionDescription = "PeerToPeer_WifiConnection_Desc"
+    case wifiConnectionTipsToConnect = "PeerToPeer_WifiConnection_TipsToConnect_Txt"
+    case wifiConnectionTipsToConnectDescription = "PeerToPeer_WifiConnection_TipsToConnect_Desc"
+    case currentWifi = "PeerToPeer_CurrentWifi"
+    case wifiSameNetworkDescription = "PeerToPeer_SameNetworkDescription"
 }

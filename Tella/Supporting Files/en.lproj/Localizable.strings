@@ -565,6 +565,11 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 
 "PeerToPeer_NearbySharing_LearnMore" = "Learn more about nearby sharing";
-
-
-
+"PeerToPeer_Getconnected" = "Get Connected";
+"PeerToPeer_WifiConnection_Desc" = "Make sure both devices are connected to the same Wi-Fi network";
+"PeerToPeer_WifiConnection_TipsToConnect_Txt" = "Tips to connect";
+"PeerToPeer_WifiConnection_TipsToConnect_Desc" = "1. The Wi-Fi network does not need to be connected to the internet.
+2. You can create your own Wi-Fi network using your phone’s hotspot feature.
+3. Disable any VPN connections.";
+"PeerToPeer_CurrentWifi" = "Current Wifi Network";
+"PeerToPeer_SameNetworkDescription" = "Yes, we are on the same Wi-Fi network";
