@@ -482,6 +482,8 @@
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
 		209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* ConnectToDeviceView.swift */; };
 		209107F52D5391B000808BCF /* RegularText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F42D5391B000808BCF /* RegularText.swift */; };
+		209107F72D53BA7800808BCF /* ConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */; };
+		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
 		209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6772C2D5C9800492356 /* AddServerURLView.swift */; };
 		209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6792C2D5E3500492356 /* ServerViewModel.swift */; };
@@ -1153,6 +1155,8 @@
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		209107F22D538CF200808BCF /* ConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceView.swift; sourceTree = "<group>"; };
 		209107F42D5391B000808BCF /* RegularText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularText.swift; sourceTree = "<group>"; };
+		209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
+		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyViewModel.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
 		209AC6772C2D5C9800492356 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		209AC6792C2D5E3500492356 /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
@@ -2012,6 +2016,8 @@
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
 				209107F22D538CF200808BCF /* ConnectToDeviceView.swift */,
+				209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */,
+				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";
@@ -4325,6 +4331,7 @@
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
 				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
+				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
@@ -4385,6 +4392,7 @@
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */,
+				209107F72D53BA7800808BCF /* ConnectToDeviceManuallyView.swift in Sources */,
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
