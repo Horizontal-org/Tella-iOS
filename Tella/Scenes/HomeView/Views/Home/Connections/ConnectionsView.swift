@@ -14,16 +14,14 @@ struct ConnectionsView: View {
     
     var body: some View {
         
-        if homeViewModel.serverDataItemArray.count > 0 {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Connections")
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                
-                serversView
-            }
-            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Connections")
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                .foregroundColor(.white)
+            
+            serversView
         }
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
     }
     
     var serversView: some View {
@@ -39,7 +37,7 @@ struct ConnectionsView: View {
             ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
                                 image: "share-icon",
                                 destination: peerToPeerMainView)
-
+            
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
                     
@@ -93,7 +91,7 @@ struct ConnectionsView: View {
         DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.appModel,
                                                                      dropboxRepository: DropboxRepository()))
     }
-
+    
     var peerToPeerMainView: PeerToPeerMainView {
         PeerToPeerMainView()
     }
