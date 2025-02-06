@@ -30,5 +30,9 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case havingTrouble = "PeerToPeer_HavingTrouble"
     case wifi = "PeerToPeer_Wifi"
     case connectManually = "PeerToPeer_ConnectManually"
-
+    case enterDeviceInformation = "PeerToPeer_EnterDevice_Information"
+    case ipAddress = "PeerToPeer_IpAddress"
+    case pin = "PeerToPeer_Pin"
+    case port = "PeerToPeer_Port"
+    case publicKey = "PeerToPeer_PublicKey"
 }
