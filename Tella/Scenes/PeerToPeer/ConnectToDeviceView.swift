@@ -41,7 +41,8 @@ struct ConnectToDeviceView: View {
         TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
                         nextButtonAction: .destination,
                         destination: TellaWebServerLoginView(),
-                        isValid: .constant(true) )
+                        isValid: .constant(true),
+                        buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
     }
 }
