@@ -28,30 +28,33 @@ struct TellaButtonView<Destination:View> : View {
             return ClearButtonStyle()
         }
     }
-    
+    var buttonRole: ButtonRole = .primary
     var body: some View {
-        Button {
-            
-            UIApplication.shared.endEditing()
-
-            if nextButtonAction == .action  {
-                action?()
+        GeometryReader { geometry in
+            Button {
+                
+                UIApplication.shared.endEditing()
+                
+                if nextButtonAction == .action  {
+                    action?()
+                }
+                if (destination != nil) {
+                    navigateTo(destination: destination)
+                }
+            } label: {
+                Text(title)
+                    .frame(maxWidth:.infinity)
+                    .frame(height: 55)
+                    .contentShape(Rectangle())
+                
             }
-            if (destination != nil) {
-                navigateTo(destination: destination)
-            }
-        } label: {
-            Text(title)
-                .frame(maxWidth:.infinity)
-                .frame(height: 55)
-                .contentShape(Rectangle())
-            
-        }.cornerRadius(20)
+            .cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
                      RoundedRectangle(cornerRadius: 20)
                 .stroke(.white, lineWidth: 4) : nil)
+        }
     }
 }
 
