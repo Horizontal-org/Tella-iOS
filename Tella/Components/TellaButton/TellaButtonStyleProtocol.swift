@@ -10,6 +10,10 @@ enum ButtonType {
     case yellow
     case clear
 }
+enum ButtonRole {
+    case primary
+    case secondary
+}
 
 protocol TellaButtonStyleProtocol {
     var backgroundColor : Color {get}
