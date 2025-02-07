@@ -480,9 +480,9 @@
 		204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
-		209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* ConnectToDeviceView.swift */; };
+		209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */; };
 		209107F52D5391B000808BCF /* RegularText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F42D5391B000808BCF /* RegularText.swift */; };
-		209107F72D53BA7800808BCF /* ConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */; };
+		209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */; };
 		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
 		209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6772C2D5C9800492356 /* AddServerURLView.swift */; };
@@ -1153,9 +1153,9 @@
 		204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaControlButtonsView.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
-		209107F22D538CF200808BCF /* ConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceView.swift; sourceTree = "<group>"; };
+		209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceView.swift; sourceTree = "<group>"; };
 		209107F42D5391B000808BCF /* RegularText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularText.swift; sourceTree = "<group>"; };
-		209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
+		209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
 		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyViewModel.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
 		209AC6772C2D5C9800492356 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
@@ -2015,8 +2015,8 @@
 			children = (
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
-				209107F22D538CF200808BCF /* ConnectToDeviceView.swift */,
-				209107F62D53BA7800808BCF /* ConnectToDeviceManuallyView.swift */,
+				209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */,
+				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
 				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
 			);
 			path = PeerToPeer;
@@ -4047,7 +4047,7 @@
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
-				209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */,
+				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
@@ -4392,7 +4392,7 @@
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */,
-				209107F72D53BA7800808BCF /* ConnectToDeviceManuallyView.swift in Sources */,
+				209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */,
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
