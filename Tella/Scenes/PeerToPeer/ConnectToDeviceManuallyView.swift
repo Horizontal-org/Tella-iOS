@@ -28,7 +28,7 @@ struct ConnectToDeviceManuallyView: View {
                     ipAddressTextFieldView
                     pinTextFieldView
                     portTextFieldView
-                    publicKeyTextFieldView
+//                    publicKeyTextFieldView //We need to check if we need this or not
                 }
             }
             Spacer()
