@@ -565,6 +565,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_SameNetworkDescription" = "Yes, we are on the same Wi-Fi network";
 "PeerToPeer_ConnectToDevice" = "Connect to device";
 "PeerToPeer_ScanCode" = "Scan the recipient’s QR code";
+"PeerToPeer_ShowQrCode" = "Show this QR code for the sender to scan";
 "PeerToPeer_HavingTrouble" = "Having trouble with the QR code?";
 "PeerToPeer_Wifi" = "Wi-Fi";
 "PeerToPeer_ConnectManually" = "Connect Manually";

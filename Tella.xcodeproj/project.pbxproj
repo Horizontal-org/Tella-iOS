@@ -491,6 +491,7 @@
 		200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */; };
 		200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399022CE60B2B00DCFCF0 /* ResizableImage.swift */; };
 		200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */; };
+		2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
@@ -1191,6 +1192,7 @@
 		200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoViewModel.swift; sourceTree = "<group>"; };
 		200399022CE60B2B00DCFCF0 /* ResizableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableImage.swift; sourceTree = "<group>"; };
 		200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaViewModel.swift; sourceTree = "<group>"; };
+		2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceView.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -2067,10 +2069,10 @@
 		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
 			isa = PBXGroup;
 			children = (
+				2012D5442D5697B9000E0443 /* Recipient */,
+				2012D5432D5697B0000E0443 /* Sender */,
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
-				209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */,
-				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
 				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
 			);
 			path = PeerToPeer;
@@ -3071,6 +3073,23 @@
 			path = EditMedia;
 			sourceTree = "<group>";
 		};
+		2012D5432D5697B0000E0443 /* Sender */ = {
+			isa = PBXGroup;
+			children = (
+				209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */,
+				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
+			);
+			path = Sender;
+			sourceTree = "<group>";
+		};
+		2012D5442D5697B9000E0443 /* Recipient */ = {
+			isa = PBXGroup;
+			children = (
+				2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */,
+			);
+			path = Recipient;
+			sourceTree = "<group>";
+		};
 		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3951,6 +3970,7 @@
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
 				123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */,
+				2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */,
 				20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
 				15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */,
