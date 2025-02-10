@@ -64,7 +64,7 @@ struct TellaButtonView<Destination:View> : View {
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
-                     RoundedRectangle(cornerRadius: 20)
+                     RoundedRectangle(cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2)
                 .stroke(.white, lineWidth: 4) : nil)
         }
     }
