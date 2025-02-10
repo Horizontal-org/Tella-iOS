@@ -523,6 +523,8 @@
 		209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */; };
 		209AC6962C332F6000492356 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6922C332F6000492356 /* CLLocationExtension.swift */; };
 		209FFD182CED19B8009B7D51 /* EditMediaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */; };
+		20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */; };
+		20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD482D5A495D009E5E12 /* CardItemView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
@@ -1224,6 +1226,8 @@
 		209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		209AC6922C332F6000492356 /* CLLocationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
 		209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaHeaderView.swift; sourceTree = "<group>"; };
+		20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
+		20A3BD482D5A495D009E5E12 /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
@@ -2773,6 +2777,7 @@
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				12A6B6642D132E290002F74B /* CardFrame.swift */,
+				20A3BD482D5A495D009E5E12 /* CardItemView.swift */,
 				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
 				126FC6BF2F20108B00FC9316 /* BackNextButton */,
 				126FC6BD2F1E482900FC9316 /* LinkView.swift */,
@@ -3086,6 +3091,7 @@
 			isa = PBXGroup;
 			children = (
 				2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */,
+				20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */,
 			);
 			path = Recipient;
 			sourceTree = "<group>";
@@ -4181,6 +4187,7 @@
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */,
 				153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */,
+				20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */,
@@ -4517,6 +4524,7 @@
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				1275A8492C5E6EFF0071A97D /* NextcloudConstants.swift in Sources */,
+				20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */,
 				126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,

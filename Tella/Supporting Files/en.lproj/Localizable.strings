@@ -574,6 +574,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_Pin" = "PIN";
 "PeerToPeer_Port" = "Port";
  "PeerToPeer_PublicKey" = "Public key";
+"PeerToPeer_ShowDeviceInformation" = "Show your device information";
+"PeerToPeer_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
 
 
 
