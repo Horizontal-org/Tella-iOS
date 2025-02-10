@@ -36,4 +36,6 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case pin = "PeerToPeer_Pin"
     case port = "PeerToPeer_Port"
     case publicKey = "PeerToPeer_PublicKey"
+    case showDeviceInformation = "PeerToPeer_ShowDeviceInformation"
+    case sendInputDesc = "PeerToPeer_ConnectToDevice_SenderInputDesc"
 }
