@@ -662,3 +662,5 @@ This feedback is anonymous, so make sure to include contact information if you w
 "PeerToPeer_Pin" = "PIN";
 "PeerToPeer_Port" = "Port";
  "PeerToPeer_PublicKey" = "Public key";
+"PeerToPeer_ShowDeviceInformation" = "Show your device information";
+"PeerToPeer_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
