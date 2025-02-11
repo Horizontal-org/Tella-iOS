@@ -10,9 +10,11 @@ import SwiftUI
 
 struct WifiConnetionView: View {
     
-    @StateObject private var viewModel = WifiConnetionViewModel()
+    @StateObject var viewModel: WifiConnetionViewModel
+    
     @State private var isExpanded = false
     @State var isCheckboxOn = false
+    @EnvironmentObject private var sheetManager: SheetManager
 
     var body: some View {
         ContainerViewWithHeader {
@@ -31,8 +33,10 @@ struct WifiConnetionView: View {
                 .padding([.leading, .trailing], 20)
             
         }
-        .alert(isPresented: $viewModel.showPermissionAlert) {
-            getSettingsAlertView()
+        .onReceive(viewModel.$showPermissionAlert) { showPermissionAlert in
+            if showPermissionAlert {
+                getSettingsAlertView()
+            }
         }
     }
     
@@ -94,7 +98,7 @@ struct WifiConnetionView: View {
             if let ssid = viewModel.ssid {
                 RegularText("\(ssid)")
             } else {
-                Text("Not connected") //Add text to localizable when it is confirmed
+                Text(LocalizablePeerToPeer.notConnected.localized) 
                     .foregroundColor(.gray)
             }
             
@@ -120,36 +124,34 @@ struct WifiConnetionView: View {
         BottomLockView<AnyView>(isValid: $isCheckboxOn,
                                 nextButtonAction: .action,
                                 nextAction: {
-            /*
-            TODO:
-             */
-
-        },
-                                backAction: {
-            /*
-            TODO:
-             */
+            switch viewModel.participent {
+            case .sender:
+                navigateTo(destination: SenderConnectToDeviceView())
+            case .recipient:
+                navigateTo(destination: RecipientConnectToDeviceView())
+            }
+        },  backAction: {
+            self.dismiss()
         })
-        
     }
-    
-    
-    private func getSettingsAlertView() -> Alert {
-        // To Fix Text
-        Alert(title: Text(""),
-              message: Text("Please enable location access in Settings to detect the Wi-Fi network."),
-              primaryButton: .default(Text(LocalizableRecorder.deniedAudioPermissionActionCancel.localized), action: {
-            self.viewModel.showPermissionAlert = false
-            
-        }), secondaryButton: .default(Text(LocalizableRecorder.deniedAudioPermissionActionSettings.localized), action: {
-            UIApplication.shared.openSettings()
-        }))
+    private func getSettingsAlertView() {
         
+        sheetManager.showBottomSheet(modalHeight: 170) {
+            ConfirmBottomSheet(titleText: LocalizablePeerToPeer.locationAccess.localized,
+                                               msgText: LocalizablePeerToPeer.detectWifiSettingsDesc.localized,
+                                               cancelText: LocalizablePeerToPeer.cancel.localized.uppercased(),
+                                               actionText: LocalizablePeerToPeer.settings.localized.uppercased(), didConfirmAction: {
+                UIApplication.shared.openSettings()
+            }, didCancelAction: {
+                self.viewModel.showPermissionAlert = false
+                sheetManager.hide()
+            })
+        }
     }
 }
 
 #Preview {
-    WifiConnetionView()
+    WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient))
 }
 
 
