@@ -586,3 +586,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
  "PeerToPeer_PublicKey" = "Public key";
 "PeerToPeer_ShowDeviceInformation" = "Show your device information";
 "PeerToPeer_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
+"PeerToPeer_LocationAccess" = "Location access";
+"PeerToPeer_WifiSettingsDesc"  = "To detect the Wi-Fi network, please enable location access in your device Settings.";
+"PeerToPeer_Cancel" = "Cancel";
+"PeerToPeer_Settings" = "Settings";
+"PeerToPeer_NotConnected" = "Not connected";
