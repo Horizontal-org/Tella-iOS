@@ -33,23 +33,24 @@ struct PeerToPeerMainView: View {
             Spacer()
                 .frame(height: 24)
             
-            TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
-                            nextButtonAction: .destination,
-                            destination: TellaWebServerLoginView(),
-                            isValid: .constant(true) )
+            VStack(spacing: 12) {
+                TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+                                nextButtonAction: .destination,
+                                destination: WifiConnetionView(),
+                                isValid: .constant(true))
+                .frame(height: 54)
+                                
+                TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
+                                nextButtonAction: .destination,
+                                destination: WifiConnetionView(),
+                                isValid: .constant(true))
+                .frame(height: 54)
+            }
             
-            Spacer()
-                .frame(height: 12)
-            
-            TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
-                            nextButtonAction: .destination,
-                            destination: TellaWebServerLoginView(),
-                            isValid: .constant(true) )
-            
-            Spacer()
-                .frame(height: 24)
+//            Spacer()
+//                .frame(height: 24)
 
-            learnMoreView
+            learnMoreView.padding()
 
             Spacer()
         }
