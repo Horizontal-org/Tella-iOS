@@ -15,14 +15,17 @@ class WifiConnetionViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
     @Published var ssid: String?
     @Published var showPermissionAlert = false
     
-    private let locationManager = CLLocationManager()
+    var participent: PeerToPeerParticipent
     
-    override init() {
+    init(participent: PeerToPeerParticipent) {
+        self.participent = participent
         super.init()
         locationManager.delegate = self
         fetchSSID()
     }
     
+    private let locationManager = CLLocationManager()
+
     func fetchSSID() {
         let status = locationManager.authorizationStatus
         if status == .authorizedWhenInUse || status == .authorizedAlways {

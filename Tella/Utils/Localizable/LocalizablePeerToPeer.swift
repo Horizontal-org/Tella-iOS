@@ -38,4 +38,9 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case publicKey = "PeerToPeer_PublicKey"
     case showDeviceInformation = "PeerToPeer_ShowDeviceInformation"
     case sendInputDesc = "PeerToPeer_ConnectToDevice_SenderInputDesc"
+    case locationAccess = "PeerToPeer_LocationAccess"
+    case detectWifiSettingsDesc = "PeerToPeer_WifiSettingsDesc"
+    case cancel = "PeerToPeer_Cancel"
+    case settings = "PeerToPeer_Settings"
+    case notConnected = "PeerToPeer_NotConnected"
 }
