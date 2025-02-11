@@ -36,19 +36,17 @@ struct PeerToPeerMainView: View {
             VStack(spacing: 12) {
                 TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
                                 nextButtonAction: .destination,
-                                destination: WifiConnetionView(),
+                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .sender)),
                                 isValid: .constant(true))
                 .frame(height: 54)
                                 
                 TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
                                 nextButtonAction: .destination,
-                                destination: WifiConnetionView(),
+                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient)),
                                 isValid: .constant(true))
                 .frame(height: 54)
             }
             
-//            Spacer()
-//                .frame(height: 24)
 
             learnMoreView.padding()
 
