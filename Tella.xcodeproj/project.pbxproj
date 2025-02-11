@@ -491,6 +491,7 @@
 		200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */; };
 		200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399022CE60B2B00DCFCF0 /* ResizableImage.swift */; };
 		200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */; };
+		200751D42D5B91F1000CC076 /* PeerToPeerParticipent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */; };
 		2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
@@ -1194,6 +1195,7 @@
 		200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoViewModel.swift; sourceTree = "<group>"; };
 		200399022CE60B2B00DCFCF0 /* ResizableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableImage.swift; sourceTree = "<group>"; };
 		200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaViewModel.swift; sourceTree = "<group>"; };
+		200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerParticipent.swift; sourceTree = "<group>"; };
 		2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceView.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
@@ -2078,6 +2080,7 @@
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
 				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
+				200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";
@@ -4019,6 +4022,7 @@
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
 				CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
+				200751D42D5B91F1000CC076 /* PeerToPeerParticipent.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
 				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
