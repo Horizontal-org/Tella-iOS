@@ -61,7 +61,7 @@ struct TellaButtonView<Destination:View> : View {
 
         }.cornerRadius(20)
             .cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
-            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
+            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid, cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
                      RoundedRectangle(cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2)
@@ -74,14 +74,15 @@ struct TellaButtonStyle : ButtonStyle {
     
     var buttonStyle : TellaButtonStyleProtocol
     var isValid : Bool
+    var cornerRadius: CGFloat = 20
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor())
-            .cornerRadius(20)
+            .cornerRadius(cornerRadius)
             .overlay(
-                configuration.isPressed && isValid ? RoundedRectangle(cornerRadius: 20)
-                    .stroke(buttonStyle.overlayColor, lineWidth: 4) : RoundedRectangle(cornerRadius: 20).stroke(Color.clear, lineWidth: 0)
+                configuration.isPressed && isValid ? RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(buttonStyle.overlayColor, lineWidth: 4) : RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
             )
             .foregroundColor(isValid ? .white : .white.opacity(0.38))
             .font(.custom(Styles.Fonts.boldFontName, size: 16))
