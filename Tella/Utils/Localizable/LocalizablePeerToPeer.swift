@@ -43,4 +43,5 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case cancel = "PeerToPeer_Cancel"
     case settings = "PeerToPeer_Settings"
     case notConnected = "PeerToPeer_NotConnected"
+    case waitingForSenderDesc = "PeerToPeer_WaitingForSenderDesc"
 }
