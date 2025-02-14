@@ -20,7 +20,6 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     private var photoOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureMovieFileOutput?
-    private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     private let sessionQueue = DispatchQueue(label: "session queue")
     

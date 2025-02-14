@@ -9,6 +9,7 @@
 
 
 import Foundation
+import UIKit
 
 
 extension Encodable {
@@ -47,4 +48,23 @@ extension Encodable {
             return [[:]]
         }
     }
+    
+    func generateQRCode(size: CGFloat = 160) -> UIImage {
+        let data = self.jsonString?.data(using: .utf8)
+        
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return UIImage() }
+        filter.setValue(data, forKey: "inputMessage")
+        filter.setValue("H", forKey: "inputCorrectionLevel") // High error correction
+        
+        guard let ciImage = filter.outputImage else { return UIImage() }
+        
+        let transform = CGAffineTransform(scaleX: size / ciImage.extent.width, y: size / ciImage.extent.height)
+        let scaledImage = ciImage.transformed(by: transform)
+        
+        let context = CIContext()
+        guard let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) else { return UIImage() }
+        
+        return UIImage(cgImage: cgImage)
+    }
+    
 }

@@ -126,9 +126,9 @@ struct WifiConnetionView: View {
                                 nextAction: {
             switch viewModel.participent {
             case .sender:
-                navigateTo(destination: SenderConnectToDeviceView())
+                navigateTo(destination: SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel()))
             case .recipient:
-                navigateTo(destination: RecipientConnectToDeviceView())
+                navigateTo(destination: RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel()))
             }
         },  backAction: {
             self.dismiss()
