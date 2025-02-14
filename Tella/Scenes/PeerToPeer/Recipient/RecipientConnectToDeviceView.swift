@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct RecipientConnectToDeviceView: View {
+    
+    @StateObject var viewModel: RecipientConnectToDeviceViewModel
+    
     var body: some View {
         ContainerViewWithHeader {
             navigationBarView
@@ -33,9 +36,17 @@ struct RecipientConnectToDeviceView: View {
                              rightButtonType: .none)
     }
     var qrCodeView: some View {
-        Rectangle().fill(Styles.Colors.yellow).cornerRadius(8)
-            .frame(width: 248, height: 248)
-        //TODO: Add a QRCode reader
+        Image(uiImage: viewModel.qrCodeInfos.generateQRCode())
+            .resizable()
+            .scaledToFill()
+            .frame(width: 160, height: 160)
+            .padding(.all, 16)
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Styles.Colors.yellow, lineWidth: 8)
+            )
     }
     
     var connectManuallyButton: some View {
@@ -49,5 +60,5 @@ struct RecipientConnectToDeviceView: View {
 }
 
 #Preview {
-    SenderConnectToDeviceView()
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel())
 }
