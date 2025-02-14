@@ -527,6 +527,7 @@
 		20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */; };
 		20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD482D5A495D009E5E12 /* CardItemView.swift */; };
 		20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */; };
+		20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
@@ -1232,6 +1233,7 @@
 		20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
 		20A3BD482D5A495D009E5E12 /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
 		20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientWaitingView.swift; sourceTree = "<group>"; };
+		20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFilesRequestView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
@@ -3098,6 +3100,7 @@
 				2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */,
 				20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */,
 				20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */,
+				20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */,
 			);
 			path = Recipient;
 			sourceTree = "<group>";
@@ -4051,6 +4054,7 @@
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
+				20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
