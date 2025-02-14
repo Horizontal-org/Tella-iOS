@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct SenderConnectToDeviceView: View {
+    
+    @StateObject var viewModel: SenderConnectToDeviceViewModel
+    
     var body: some View {
         ContainerViewWithHeader {
             navigationBarView
@@ -33,8 +36,13 @@ struct SenderConnectToDeviceView: View {
                              rightButtonType: .none)
     }
     var qrCodeView: some View {
-        ResizableImage("qrCode.icon").frame(width: 248, height: 248)
-        //TODO: Add a QRCode reader
+        ZStack{
+            QRCodeScannerView(scannedCode: $viewModel.scannedCode)
+                .cornerRadius(12)
+                .padding(.all,4)
+            ResizableImage("qrCode.icon")
+            
+        }.frame(width: 248, height: 248)
     }
     
     var connectManuallyButton: some View {
@@ -48,5 +56,5 @@ struct SenderConnectToDeviceView: View {
 }
 
 #Preview {
-    SenderConnectToDeviceView()
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel())
 }
