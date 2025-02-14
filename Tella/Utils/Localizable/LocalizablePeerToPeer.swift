@@ -44,4 +44,9 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case settings = "PeerToPeer_Settings"
     case notConnected = "PeerToPeer_NotConnected"
     case waitingForSenderDesc = "PeerToPeer_WaitingForSenderDesc"
+    case senderRequestFilesNumberDesc = "PeerToPeer_SenderRequest_NumberOfFiles_Desc"
+    case requestQuestion = "PeerToPeer_RequestQuestion"
+    case accept = "PeerToPeer_Accept"
+    case reject = "PeerToPeer_Reject" 
+
 }
