@@ -117,7 +117,7 @@ struct FileDetailsView: View {
                 .if(file.tellaFileType != .video, transform: { view in
                     VStack {
                         NavigationHeaderView(title: file.name,
-                                             middleButtonType: .editFile,
+                                             middleButtonType: fileListViewModel.shouldAddEditView ? .editFile : .none,
                                              middleButtonAction: {showEditView()},
                                              rightButtonType: .custom,
                                              rightButtonView:moreFileActionButton )
