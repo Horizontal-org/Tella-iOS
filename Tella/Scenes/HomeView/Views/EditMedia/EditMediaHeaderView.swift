@@ -16,6 +16,7 @@ struct EditMediaHeaderView: View {
     var body: some View {
         
         NavigationHeaderView(title: viewModel.headerTitle,
+                             backButtonType: .close,
                              backButtonAction: {self.closeView()},
                              rightButtonType: viewModel.isDurationHasChanged() ? .editFile : .none,
                              rightButtonAction: { viewModel.trim() })
