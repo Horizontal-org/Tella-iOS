@@ -41,6 +41,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangVietnamese = "Settings_SettLang_Vietnamese_Expl"
     case settLangBangla = "Settings_SettLang_Bangla_Expl"
     case settLangIndonesian = "Settings_SettLang_Indonesian_Expl"
+    case settLangPortugueseMozambique = "Settings_SettLang_PortugueseMozambique_Expl"
+    case settLangTsonga = "Settings_SettLang_Tsonga_Expl"
 
     // Security
     
