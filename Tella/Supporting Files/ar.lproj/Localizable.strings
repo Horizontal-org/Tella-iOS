@@ -546,3 +546,5 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
 "Setting_Server_AdvancedSettings" = "إعدادات متقدمة";
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
+"Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
+"Settings_SettLang_Tsonga_Expl" = "Tsonga";
