@@ -66,7 +66,7 @@ struct TellaButtonView<Destination:View> : View {
             .overlay(self.isOverlay ?
                      RoundedRectangle(cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2)
                 .stroke(.white, lineWidth: 4) : nil)
-        }
+        }.frame(height: 55)
     }
 }
 
