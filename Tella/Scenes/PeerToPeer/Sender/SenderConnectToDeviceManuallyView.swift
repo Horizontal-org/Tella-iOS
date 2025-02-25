@@ -28,7 +28,6 @@ struct SenderConnectToDeviceManuallyView: View {
                     ipAddressTextFieldView
                     pinTextFieldView
                     portTextFieldView
-//                    publicKeyTextFieldView //We need to check if we need this or not
                 }
             }
             Spacer()
@@ -55,34 +54,32 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var ipAddressTextFieldView: some View {
         TextfieldView(fieldContent: $viewModel.ipAddress,
-                      isValid: $viewModel.valid,
-                      shouldShowError: .constant(false),
-                      fieldType: .text,
-                      placeholder : LocalizablePeerToPeer.ipAddress.localized)
+                      isValid: $viewModel.isValidIpAddress,
+                      shouldShowError: $viewModel.shouldShowIpAddressError,
+                      errorMessage: LocalizablePeerToPeer.invalidIpAddress.localized,
+                      fieldType: .ipAddress,
+                      placeholder : LocalizablePeerToPeer.ipAddress.localized,
+                      shouldValidateOnChange: true)
         .frame(height: 78)
     }
+    
     var pinTextFieldView: some View {
         TextfieldView(fieldContent: $viewModel.pin,
-                      isValid: $viewModel.valid,
-                      shouldShowError: .constant(false),
-                      fieldType: .text,
-                      placeholder : LocalizablePeerToPeer.pin.localized)
+                      isValid: $viewModel.isValidPin,
+                      shouldShowError: $viewModel.shouldShowPinError ,
+                      errorMessage:LocalizablePeerToPeer.invalidPin.localized,
+                      fieldType: .pin,
+                      placeholder : LocalizablePeerToPeer.pin.localized,
+                      shouldValidateOnChange: true)
         .frame(height: 78)
     }
+    
     var portTextFieldView: some View {
         TextfieldView(fieldContent: $viewModel.port,
-                      isValid: $viewModel.valid,
-                      shouldShowError: .constant(false),
+                      isValid: $viewModel.isValidPort,
+                      shouldShowError:  .constant(false),
                       fieldType: .text,
                       placeholder : LocalizablePeerToPeer.port.localized)
-        .frame(height: 78)
-    }
-    var publicKeyTextFieldView: some View {
-        TextfieldView(fieldContent: $viewModel.publicKey,
-                      isValid: $viewModel.valid,
-                      shouldShowError: .constant(false),
-                      fieldType: .text,
-                      placeholder : LocalizablePeerToPeer.publicKey.localized)
         .frame(height: 78)
     }
     

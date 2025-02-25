@@ -596,3 +596,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_RequestQuestion" = "Would you like to accept them?";
 "PeerToPeer_Accept" = "Accept";
 "PeerToPeer_Reject" = "Reject";
+"PeerToPeer_InvalidIpAddress" = "Invalid IP address";
+"PeerToPeer_InvalidPin" = "Invalid PIN";
+
