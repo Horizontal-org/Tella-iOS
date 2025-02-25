@@ -674,3 +674,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "PeerToPeer_RequestQuestion" = "Would you like to accept them?";
 "PeerToPeer_Accept" = "Accept";
 "PeerToPeer_Reject" = "Reject";
+"PeerToPeer_InvalidIpAddress" = "Invalid IP address";
+"PeerToPeer_InvalidPin" = "Invalid PIN";
+
