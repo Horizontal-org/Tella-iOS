@@ -24,9 +24,11 @@ struct Regex {
     static let usernameRegex = "^.{3,}"
     static let urlRegex = #"^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$"#
     static let codeRegex = "^[0-9]{6,6}$"
+    static let ipAddressRegex = "^[\\d.-]+$"
+    static let pinRegex = "^[0-9]{6}$"
 }
 
-func validateRegex(value: String, pattern:String) -> Bool {
+    func validateRegex(value: String, pattern:String) -> Bool {
     do {
         let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         return !regex.notMatchedIn(value: value)
@@ -94,5 +96,25 @@ extension String {
         }
         return true
     }
+    func ipAddressValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.ipAddressRegex) else {
+            return false
+        }
+        return true
+    }
+    
+    func pinValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.pinRegex) else {
+            return false
+        }
+        return true
+    }
+
 }
 
