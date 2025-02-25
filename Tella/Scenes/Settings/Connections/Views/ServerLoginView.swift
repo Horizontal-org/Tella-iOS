@@ -39,8 +39,8 @@ struct ServerLoginView: View {
                 successLoginAction?()
             }
         }
-
         .containerStyle()
+        .navigationBarHidden(true)
     }
     
     fileprivate func usernameTextFieldView() -> some View {

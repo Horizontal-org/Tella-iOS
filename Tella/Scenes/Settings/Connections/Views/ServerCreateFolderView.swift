@@ -18,6 +18,7 @@ struct ServerCreateFolderView: View {
         ZStack {
             VStack(spacing: 20) {
                 Spacer()
+                    .frame(height: 57)
                 headerView
                 textField
                 Spacer()
@@ -36,6 +37,7 @@ struct ServerCreateFolderView: View {
             }
         }
         .containerStyle()
+        .navigationBarHidden(true)
         .onReceive(createFolderViewModel.$createFolderState) { value in
             if value == .loaded(true) {
                 navigateToSuccessLogin?()

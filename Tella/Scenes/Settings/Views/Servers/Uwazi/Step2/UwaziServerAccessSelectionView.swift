@@ -40,7 +40,7 @@ struct UwaziServerAccessSelectionView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-        }
+        }.navigationBarHidden(true)
     }
     
     struct HeaderView: View {

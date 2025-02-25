@@ -47,7 +47,7 @@ struct SuccessLoginView: View {
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
-        }
+        }.navigationBarHidden(true)
     }
     
     var topview: some View {

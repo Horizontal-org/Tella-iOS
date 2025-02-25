@@ -47,7 +47,7 @@ struct AddServerAccessChoiceView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }
-        }
+        }.navigationBarHidden(true)
     }
 }
 
