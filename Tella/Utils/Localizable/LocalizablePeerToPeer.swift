@@ -50,5 +50,7 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case reject = "PeerToPeer_Reject"
     case invalidIpAddress = "PeerToPeer_InvalidIpAddress"
     case invalidPin = "PeerToPeer_InvalidPin"
-
+    case selectFilesToSend = "PeerToPeer_SelectFilesToSend"
+    case title = "PeerToPeer_Title"
 }
+
