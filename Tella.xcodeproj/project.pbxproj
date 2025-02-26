@@ -477,6 +477,7 @@
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
+		203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */; };
 		203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */; };
 		20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */; };
 		20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */; };
@@ -507,6 +508,13 @@
 		209FFD182CED19B8009B7D51 /* EditMediaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */; };
 		20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */; };
 		20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD482D5A495D009E5E12 /* CardItemView.swift */; };
+		20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */; };
+		20A8BBB42D6F2C70009D52AF /* AddFileGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */; };
+		20A8BBB62D6F4777009D52AF /* AddFileBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */; };
+		20A8BBB82D6F47CD009D52AF /* AddFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */; };
+		20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */; };
+		20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */; };
+		20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */; };
 		20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */; };
 		20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
@@ -1160,6 +1168,7 @@
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
+		203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PSendFilesView.swift; sourceTree = "<group>"; };
 		203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomThumbnailSlider.swift; sourceTree = "<group>"; };
 		20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerReportsMainView.swift; sourceTree = "<group>"; };
 		20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerSubmittedDetailsView.swift; sourceTree = "<group>"; };
@@ -1190,6 +1199,13 @@
 		209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaHeaderView.swift; sourceTree = "<group>"; };
 		20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
 		20A3BD482D5A495D009E5E12 /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
+		20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileGridView.swift; sourceTree = "<group>"; };
+		20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileGridItemView.swift; sourceTree = "<group>"; };
+		20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileBottomSheetView.swift; sourceTree = "<group>"; };
+		20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesViewModel.swift; sourceTree = "<group>"; };
+		20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileCameraView.swift; sourceTree = "<group>"; };
+		20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileRecordView.swift; sourceTree = "<group>"; };
+		20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilePhotoVideoPickerView.swift; sourceTree = "<group>"; };
 		20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientWaitingView.swift; sourceTree = "<group>"; };
 		20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFilesRequestView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
@@ -2653,6 +2669,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				20A8BBB02D6F2BF0009D52AF /* AddFileGridViewComponent */,
 				20BF26712C9843C200E81535 /* Modifiers */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
@@ -2994,6 +3011,7 @@
 				128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */,
 				1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */,
 				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
+				203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */,
 			);
 			path = Sender;
 			sourceTree = "<group>";
@@ -3028,6 +3046,20 @@
 				20E4DA802C36E89A00123843 /* Views */,
 			);
 			path = Connections;
+			sourceTree = "<group>";
+		};
+		20A8BBB02D6F2BF0009D52AF /* AddFileGridViewComponent */ = {
+			isa = PBXGroup;
+			children = (
+				20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */,
+				20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */,
+				20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */,
+				20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */,
+				20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */,
+				20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */,
+				20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */,
+			);
+			path = AddFileGridViewComponent;
 			sourceTree = "<group>";
 		};
 		20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */ = {
@@ -3971,6 +4003,7 @@
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
+				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
@@ -4019,6 +4052,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
@@ -4044,6 +4078,7 @@
 				126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */,
 				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
+				20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
@@ -4068,6 +4103,7 @@
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
+				20A8BBB62D6F4777009D52AF /* AddFileBottomSheetView.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */,
@@ -4211,6 +4247,7 @@
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				20A8BBB82D6F47CD009D52AF /* AddFilesViewModel.swift in Sources */,
 				1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
@@ -4243,6 +4280,7 @@
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
+				20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
@@ -4261,6 +4299,7 @@
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
 				126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */,
 				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
+				20A8BBB42D6F2C70009D52AF /* AddFileGridItemView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
@@ -4432,6 +4471,7 @@
 				15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */,
 				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
+				20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
