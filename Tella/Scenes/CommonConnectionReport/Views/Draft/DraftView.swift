@@ -31,7 +31,7 @@ struct DraftView: View  {
             }
             
             serverListMenuView
-            photoVideoPickerView
+            AddFilePhotoVideoPickerView(viewModel: viewModel.addFilesViewModel)
         }
 
         .onReceive(viewModel.successSavingReportPublisher)  { successSavingReport in
@@ -44,8 +44,8 @@ struct DraftView: View  {
                 handleReportFailure()
             }
         }
-        .overlay(recordView)
-        .overlay(cameraView)
+        .overlay(AddFileRecordView(viewModel: viewModel.addFilesViewModel))
+        .overlay(AddFileCameraView(viewModel: viewModel.addFilesViewModel, sourceView: SourceView.addReportFile))
     }
     
     var navigationBarView: some View {
@@ -123,7 +123,7 @@ struct DraftView: View  {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView(draftReportVM: viewModel)
+                    AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizableReport.attachFiles.localized)
                     
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -193,29 +193,6 @@ struct DraftView: View  {
         ) {
             viewModel.submitReport()
         }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
-    }
-    
-    var photoVideoPickerView: some View {
-        PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
-                             showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
-                             mainAppModel: viewModel.mainAppModel,
-                             resultFile: $viewModel.resultFile)
-    }
-    
-    var recordView: some View {
-        viewModel.showingRecordView ?
-        RecordView(mainAppModel: viewModel.mainAppModel,
-                   sourceView: .addReportFile,
-                   showingRecoredrView: $viewModel.showingRecordView,
-                   resultFile: $viewModel.resultFile) : nil
-    }
-    
-    var cameraView: some View {
-        viewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addReportFile,
-                   showingCameraView: $viewModel.showingCamera,
-                   resultFile: $viewModel.resultFile,
-                   mainAppModel: viewModel.mainAppModel) : nil
     }
     
     private func backAction() {
