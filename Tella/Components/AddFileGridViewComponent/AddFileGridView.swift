@@ -17,7 +17,6 @@ struct AddFileGridView: View {
     private let gridItemHeight = (UIScreen.screenWidth - 64.0) / 3
     
     @ObservedObject var viewModel: AddFilesViewModel
-    @EnvironmentObject var sheetManager: SheetManager
     
     var titleText: String
     
