@@ -13,8 +13,7 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     
     var prompt: any UwaziEntryPrompt
-    @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         
@@ -35,9 +34,9 @@ struct RenderPropertyComponentView: View {
                 case .dataTypeSelect:
                     UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt)
                 case .dataTypeMultiFiles:
-                    SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt)
+                    SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt, entityViewModel: entityViewModel)
                 case .dataTypeMultiPDFFiles:
-                    PrimaryDocuments(prompt: prompt as! UwaziFilesEntryPrompt)
+                    PrimaryDocuments(prompt: prompt as! UwaziFilesEntryPrompt, entityViewModel: entityViewModel)
                 case .dataTypeDivider:
                     UwaziDividerWidget()
                 case .dataTypeDate:

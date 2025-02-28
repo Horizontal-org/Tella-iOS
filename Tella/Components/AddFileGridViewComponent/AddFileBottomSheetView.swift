@@ -8,25 +8,31 @@
 
 import SwiftUI
 
-struct AddFileBottomSheetView: View {
+struct AddFileBottomSheetView<Content: View>: View {
     
     @ObservedObject var viewModel: AddFilesViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    
-    var imageIcon = "add.file.icon"
-    
+    var content: () -> Content
+    var moreAction: (() -> ())? = nil
+
+    init(viewModel: AddFilesViewModel, content: @escaping () -> Content, moreAction: (() -> ())? = nil ) {
+        self.viewModel = viewModel
+        self.content = content
+        self.moreAction = moreAction
+    }
     var body: some View {
         Button {
             UIApplication.shared.endEditing()
+            moreAction?()
             showAddFileSheet()
         } label: {
-            Image(imageIcon)
+            content()
         }
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet(modalHeight: CGFloat(viewModel.addFileBottomSheetItems.count * 50 + 90), content: {
-            ActionListBottomSheet(items: viewModel.addFileBottomSheetItems,
+        sheetManager.showBottomSheet(modalHeight: CGFloat(viewModel.bottomSheetItems.count * 50 + 90), content: {
+            ActionListBottomSheet(items: viewModel.bottomSheetItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action: { item in
                 self.handleActions(item: item)
@@ -62,7 +68,7 @@ struct AddFileBottomSheetView: View {
     
     var fileListView: some View {
         FileListView(appModel: viewModel.mainAppModel,
-                     filterType: .audioPhotoVideo,
+                     filterType: viewModel.shouldShowDocumentsOnly ? .documents : .audioPhotoVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $viewModel.resultFile)
