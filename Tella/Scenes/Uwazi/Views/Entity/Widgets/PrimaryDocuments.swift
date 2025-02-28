@@ -12,62 +12,33 @@ import SwiftUI
 
 struct PrimaryDocuments: View {
     @ObservedObject var prompt: UwaziFilesEntryPrompt
-    @EnvironmentObject var sheetManager: SheetManager
     @ObservedObject var entityViewModel: UwaziEntityViewModel
     
+    init(prompt: UwaziFilesEntryPrompt, entityViewModel: UwaziEntityViewModel) {
+        self.prompt = prompt
+        self.entityViewModel = entityViewModel
+    }
+    
     var body: some View {
-        UwaziFileSelector(prompt: prompt, addFiles: {
-            UIApplication.shared.endEditing()
-            showAddFileSheet()
-        }, title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
+        VStack {
+            Spacer()
+            Text(prompt.helpText!)
+                .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                .foregroundColor(Color.white.opacity(0.87))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            AddFileBottomSheetView(viewModel:  entityViewModel.addFilesViewModel, content: {
+                UwaziSelectFileComponent(title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
+            }, moreAction: {
+                entityViewModel.addFilesViewModel.shouldShowDocumentsOnly = true
+            })
+            .background(Color.white.opacity(0.08))
+            .cornerRadius(15)
+            
+        }
+
         FileItems(files: prompt.value)
         
     }
     
-    func showAddFileSheet() {
-        
-        sheetManager.showBottomSheet {
-            ActionListBottomSheet(items: addFileToPdfItems,
-                                  headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
-                                  action:  {item in
-                self.handleActions(item : item)
-            })
-        }
-    }
-    
-    func showAddPhotoVideoSheet() {
-        entityViewModel.showingImportDocumentPicker = true
-    }
-    
-    var fileListView : some View {
-        FileListView(mainAppModel: entityViewModel.mainAppModel,
-                     filterType: .documents,
-                     title: LocalizableReport.selectFiles.localized,
-                     fileListType: .selectFiles,
-                     resultFile: $entityViewModel.resultFile)
-    }
-    
-    private func handleActions(item: ListActionSheetItem) {
-        
-        guard let type = item.type as? ManageFileType else { return }
-        
-        switch type {
-            
-        case .fromDevice:
-            showAddPhotoVideoSheet()
-            
-        case .tellaFile:
-            sheetManager.hide()
-            navigateTo(destination: fileListView)
-            
-        default:
-            break
-        }
-    }
 }
-
-//struct PrimaryDocuments_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PrimaryDocuments()
-//    }
-//}

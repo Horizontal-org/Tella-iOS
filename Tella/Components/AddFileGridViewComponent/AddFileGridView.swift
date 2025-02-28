@@ -27,7 +27,9 @@ struct AddFileGridView: View {
             
             itemsGridView
             
-            AddFileBottomSheetView(viewModel: viewModel)
+            AddFileBottomSheetView(viewModel: viewModel) {
+                Image("add.file.icon")
+            }
         }
     }
     

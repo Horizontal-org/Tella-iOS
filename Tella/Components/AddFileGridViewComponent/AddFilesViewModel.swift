@@ -18,30 +18,44 @@ class AddFilesViewModel: ObservableObject {
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
     @Published var resultFile : [VaultFileDB]?
+    var shouldShowDocumentsOnly: Bool = false
     
     var mainAppModel: MainAppModel
     var subscribers = Set<AnyCancellable>()
     
-    init( mainAppModel: MainAppModel) {
+    init(mainAppModel: MainAppModel, shouldShowDocumentsOnly: Bool = false) {
         self.mainAppModel = mainAppModel
+        self.shouldShowDocumentsOnly = shouldShowDocumentsOnly
+        
         bindVaultFileTaken()
     }
-    
-    var addFileBottomSheetItems : [ListActionSheetItem] { return [
+    var bottomSheetItems: [ListActionSheetItem]  {
+        var items: [ListActionSheetItem] = []
+
+        let basicItems = [
+            ListActionSheetItem(imageName: "gallery.icon",
+                                content: LocalizableReport.galleryFilled.localized,
+                                type: ManageFileType.tellaFile),
+            ListActionSheetItem(imageName: "phone.icon",
+                                content: LocalizableReport.phoneFilled.localized,
+                                type: ManageFileType.fromDevice)
+        ]
         
-        ListActionSheetItem(imageName: "camera-filled.icon",
-                            content: LocalizableReport.cameraFilled.localized,
-                            type: ManageFileType.camera),
-        ListActionSheetItem(imageName: "mic-filled.icon",
-                            content: LocalizableReport.micFilled.localized,
-                            type: ManageFileType.recorder),
-        ListActionSheetItem(imageName: "gallery.icon",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "phone.icon",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
+        let secondaryItems = [ListActionSheetItem(imageName: "camera-filled.icon",
+                                                  content: LocalizableReport.cameraFilled.localized,
+                                                  type: ManageFileType.camera),
+                              ListActionSheetItem(imageName: "mic-filled.icon",
+                                                  content: LocalizableReport.micFilled.localized,
+                                                  type: ManageFileType.recorder)]
+        
+        if !shouldShowDocumentsOnly {
+            items = basicItems + secondaryItems
+        }else {
+            items = basicItems
+        }
+        return items
+    }
+    
     
     func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in
