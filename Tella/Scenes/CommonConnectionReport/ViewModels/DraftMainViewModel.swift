@@ -59,22 +59,6 @@ class DraftMainViewModel: ObservableObject {
     }
     
 
-    var addFileToDraftItems : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "report.camera-filled",
-                            content: LocalizableReport.cameraFilled.localized,
-                            type: ManageFileType.camera),
-        ListActionSheetItem(imageName: "report.mic-filled",
-                            content: LocalizableReport.micFilled.localized,
-                            type: ManageFileType.recorder),
-        ListActionSheetItem(imageName: "report.gallery",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "report.phone",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
-    
     init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         
         self.mainAppModel = reportsMainViewModel.mainAppModel

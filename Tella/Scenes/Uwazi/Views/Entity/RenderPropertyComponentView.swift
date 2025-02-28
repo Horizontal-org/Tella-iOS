@@ -13,7 +13,6 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     
     var prompt: any UwaziEntryPrompt
-    @EnvironmentObject var sheetManager: SheetManager
     var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
