@@ -81,6 +81,7 @@ struct DragView<Content: View> : View {
                             TapGesture()
                                 .onEnded { _ in
                                     if shouldHideOnTap {
+                                        self.dismiss()
                                         self.isShown = false
                                         UIApplication.shared.endEditing()
                                     }
