@@ -62,7 +62,7 @@ enum Language: String, CaseIterable {
         case .indonesian:
             return "id"
         case .portugueseMozambique:
-            return "pt_MZ"
+            return "pt-MZ"
         case .tsonga:
             return "ts"
         }
