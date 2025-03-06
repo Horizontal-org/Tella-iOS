@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ConnectionsView: View {
     
-    var homeViewModel: HomeViewModel
+    @StateObject var homeViewModel: HomeViewModel
     
     var body: some View {
         
