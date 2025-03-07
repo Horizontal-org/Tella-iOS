@@ -37,7 +37,6 @@ struct EditAudioView: View {
             handleTrimState(value: value)
         }
         
-        .navigationBarHidden(true)
         .background(Color.black.ignoresSafeArea())
     }
     

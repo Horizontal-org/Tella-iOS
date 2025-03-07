@@ -8,10 +8,11 @@
 
 import Mantis
 import Combine
+import SwiftUICore
 class CustomCropViewController: Mantis.CropViewController {
     
     @Published var isUpdatingImage = PassthroughSubject<Bool, Never>()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavigationItem()
@@ -22,7 +23,7 @@ class CustomCropViewController: Mantis.CropViewController {
         super.viewDidDisappear(animated)
         UIApplication.shared.setupApperance()
     }
-    
+
     private func setUpNavigationItem() {
         let close = UIBarButtonItem(
             image: UIImage.init(named: "close")?.withRenderingMode(.alwaysOriginal),

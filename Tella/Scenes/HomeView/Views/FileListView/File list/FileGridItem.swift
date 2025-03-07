@@ -13,7 +13,7 @@ struct FileGridItem: View {
     var file: VaultFileDB
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var body: some View {
         ZStack {
@@ -70,7 +70,8 @@ struct FileGridItem: View {
                 Spacer()
                 if !fileListViewModel.showingMoveFileView {
                     if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
-                        MoreFileActionButton(file: file, moreButtonType: .grid)
+                        MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                             file: file, moreButtonType: .grid)
                     }
                 }
             }
@@ -108,9 +109,8 @@ struct FileGridItem: View {
 
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        FileGridItem(file: VaultFileDB.stub())
+        FileGridItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
         
     }
 }

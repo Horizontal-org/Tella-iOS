@@ -25,7 +25,6 @@ struct LockConfirmPinView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     func lockWithPin() {

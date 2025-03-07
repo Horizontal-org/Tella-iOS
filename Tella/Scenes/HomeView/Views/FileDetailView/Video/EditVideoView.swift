@@ -12,8 +12,6 @@ import AVFoundation
 struct EditVideoView: View {
     
     @ObservedObject var viewModel: EditVideoViewModel
-    
-    
     @State private var thumbnail: UIImage? = nil
  
     var body: some View {
@@ -43,7 +41,6 @@ struct EditVideoView: View {
         .onReceive(viewModel.$trimState) { value in
             handleTrimState(value: value)
         }
-        .navigationBarHidden(true)
         .background(Color.black.ignoresSafeArea())
     }
     

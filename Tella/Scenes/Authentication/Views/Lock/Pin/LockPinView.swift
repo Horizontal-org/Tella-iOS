@@ -22,8 +22,7 @@ struct LockPinView: View {
             .onAppear {
                 lockViewModel.initLockData()
 
-            }.navigationBarBackButtonHidden(true)
-
+            }
     }
 }
 

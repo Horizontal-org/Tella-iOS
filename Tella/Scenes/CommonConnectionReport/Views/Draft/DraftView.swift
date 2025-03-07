@@ -19,12 +19,19 @@ struct DraftView: View  {
     var showOutboxDetailsViewAction: (() -> Void)
     
     var body: some View {
-        ContainerView {
-            contentView
+        
+        ZStack {
+            
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
+            }
+            
             serverListMenuView
             photoVideoPickerView
         }
-        .navigationBarHidden(true)
+
         .onReceive(viewModel.successSavingReportPublisher)  { successSavingReport in
             if successSavingReport {
                 handleSuccessSavingReport()
@@ -39,22 +46,17 @@ struct DraftView: View  {
         .overlay(cameraView)
     }
     
-    var draftHeaderView: some View {
-        NavigationHeaderView(
-            backButtonAction: {
-                UIApplication.shared.endEditing()
-                showSaveReportConfirmationView()
-            },
-            rightButtonAction: { viewModel.saveDraftReport() },
-            type: .draft,
-            isRightButtonEnabled: viewModel.reportIsDraft
-        )
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableReport.reportsText.localized,
+                             backButtonAction: {backAction()},
+                             rightButtonType: .save,
+                             rightButtonAction: { viewModel.saveDraftReport() },
+                             isRightButtonEnabled: viewModel.reportIsDraft)
     }
     
     
     var contentView: some View {
         VStack(alignment: .leading) {
-            draftHeaderView
             draftContentView
             bottomDraftView
         }
@@ -213,6 +215,11 @@ struct DraftView: View  {
                    showingCameraView: $viewModel.showingCamera,
                    resultFile: $viewModel.resultFile,
                    mainAppModel: viewModel.mainAppModel) : nil
+    }
+    
+    private func backAction() {
+        UIApplication.shared.endEditing()
+        showSaveReportConfirmationView()
     }
     
     private func showSaveReportConfirmationView() {

@@ -53,7 +53,19 @@ extension UIApplication {
         })
     }
     
-    
+    func navigationHasClassType(_ classType: AnyClass) -> Bool {
+        
+        let window = keyWindow
+        
+        let nvc = window?.rootViewController?.children.last as? UINavigationController
+        
+        if let matchingVC = nvc?.viewControllers.first(where: { $0.isKind(of: classType) }) {
+            return true
+        }
+
+        return false
+    }
+
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         
         if let nav = base as? UINavigationController {
@@ -73,6 +85,7 @@ extension UIApplication {
     }
     
     func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
+        
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
@@ -82,14 +95,6 @@ extension UIApplication {
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
         coloredAppearance.backgroundColor = backgroundColor
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
-                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
-                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
-        let image = UIImage(named: "back")
-        image?.imageFlippedForRightToLeftLayoutDirection()
-        
-        coloredAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance
@@ -99,7 +104,7 @@ extension UIApplication {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
     }
-    
+
     var rootViewController: UIViewController? {
         return keyWindow?.rootViewController
     }

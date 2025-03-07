@@ -13,7 +13,7 @@ struct EditImageView: View {
     @EnvironmentObject var sheetManager: SheetManager
     @StateObject var viewModel: EditImageViewModel
     @State var isBottomSheetShown : Bool = false
-
+    
     var body: some View {
         ZStack {
             if viewModel.isDataLoaded {
@@ -37,7 +37,8 @@ struct EditImageView: View {
     
     private func cancelAction() {
         isBottomSheetShown = true
-        let content = EditFileCancelBottomSheet( saveAction:  { handleSaveAction() })
+        let content = EditFileCancelBottomSheet(saveAction:  { handleSaveAction() },
+                                                cancelAction: {self.dismiss()})
         self.showBottomSheetView(content: content , modalHeight: 171, isShown: $isBottomSheetShown)
     }
     

@@ -39,7 +39,6 @@ struct ServerLoginView: View {
                 successLoginAction?()
             }
         }
-
         .containerStyle()
         .navigationBarHidden(true)
     }

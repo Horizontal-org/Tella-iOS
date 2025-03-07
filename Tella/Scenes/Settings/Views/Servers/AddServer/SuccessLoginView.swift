@@ -38,7 +38,7 @@ struct SuccessLoginView: View {
                     .frame(height: 12)
                 
                 if type == .tella {
-                    TellaButtonView (title: "Advanced settings",
+                    TellaButtonView (title: LocalizableSettings.advancedSettings.localized,
                                      nextButtonAction: .destination,
                                      destination: AdvancedServerSettingsView()
                         .environmentObject(serverViewModel),
@@ -47,8 +47,7 @@ struct SuccessLoginView: View {
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
-        }
-        .navigationBarHidden(true)
+        }.navigationBarHidden(true)
     }
     
     var topview: some View {

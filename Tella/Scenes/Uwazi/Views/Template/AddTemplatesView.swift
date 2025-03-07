@@ -12,37 +12,45 @@ struct AddTemplatesView: View {
     @EnvironmentObject var uwaziTemplateViewModel: AddTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
     var body: some View {
-        ContainerView {
-            ZStack {
-                VStack {
-                    headerView()
-                    if !self.uwaziTemplateViewModel.isLoading {
-                        handleListView()
-                    }
-                    Spacer()
-                }.padding(.top, 0)
-                if uwaziTemplateViewModel.isLoading {
-                    CircularActivityIndicatory()
-                }
+        
+        ZStack {
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
             }
-        }
-        // TODO: Remove this line with more appropiate solution
-        .navigationBarTitle("", displayMode: .inline)
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableUwazi.uwaziAddTemplateTitle.localized)
-            ReloadButton(action: { self.uwaziTemplateViewModel.getTemplates() })
+            
+            if uwaziTemplateViewModel.isLoading {
+                CircularActivityIndicatory()
+            }
         }
         .onAppear {
             self.uwaziTemplateViewModel.getTemplates()
         }
     }
-
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableUwazi.uwaziAddTemplateTitle.localized,
+                             rightButtonType: .reload,
+                             rightButtonAction: { self.uwaziTemplateViewModel.getTemplates() })
+    }
+    
+    var contentView: some View {
+        VStack {
+            headerView()
+            if !self.uwaziTemplateViewModel.isLoading {
+                handleListView()
+            }
+            Spacer()
+        }.padding(.top, 0)
+    }
+    
     fileprivate func headerView() -> some View {
         let firstPart = Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
             .foregroundColor(.white)
         let secondPart = Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
             .foregroundColor(Styles.Colors.yellow)
-
+        
         return Group {
             HStack {
                 firstPart + secondPart
@@ -54,7 +62,7 @@ struct AddTemplatesView: View {
         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
         .padding(.all, 18)
     }
-
+    
     fileprivate func handleListView() -> some View {
         VStack {
             if uwaziTemplateViewModel.templateItemsViewModel.count > 0 {

@@ -13,7 +13,7 @@ struct SubmittedEntityView: View {
     @StateObject var submittedEntityViewModel : SubmittedEntityViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var sheetManager: SheetManager
-
+    
     init(mainAppModel: MainAppModel,
          entityInstance: UwaziEntityInstance? = nil,
          entityInstanceId: Int? = nil) {
@@ -21,27 +21,36 @@ struct SubmittedEntityView: View {
                                                                                        entityInstance: entityInstance,
                                                                                        entityInstanceId:entityInstanceId))
     }
+    
     var body: some View {
-        ContainerView {
-            VStack(spacing: 20) {
-                templateData
-                
-                entityContent
-                
-                Spacer()
-                
-            }
+        
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableUwazi.submitted_AppBar.localized)
-            TrailingImageButtonToolBar(imageName: "report.delete-outbox", completion: {showDeleteConfirmationView()})
-        }      
         .onReceive(submittedEntityViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {
                 Toast.displayToast(message: submittedEntityViewModel.toastMessage)
                 self.popTo(ViewClassType.uwaziView)
             }
+        }
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableUwazi.submitted_AppBar.localized,
+                             rightButtonType: .delete,
+                             rightButtonAction: { showDeleteConfirmationView() })
+        
+    }
+    
+    var contentView: some View {
+        VStack(spacing: 20) {
+            templateData
+            
+            entityContent
+            
+            Spacer()
         }
     }
     
@@ -57,12 +66,12 @@ struct SubmittedEntityView: View {
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                
                 Text(submittedEntityViewModel.uploadedOn)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                
                 Text(submittedEntityViewModel.filesDetails)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
@@ -79,24 +88,23 @@ struct SubmittedEntityView: View {
         }.padding(.horizontal, 20)
         
     }
-    
-    
+
     var entityResponseItem: some View {
         
         VaultFileItemView(file: VaultFileItemViewModel(image: AnyView(Image("document")),
-                                              name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
-                                              size: submittedEntityViewModel.getEntityResponseSize(),
-                                              iconName: "report.submitted"))
+                                                       name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
+                                                       size: submittedEntityViewModel.getEntityResponseSize(),
+                                                       iconName: "report.submitted"))
         .padding(.bottom, 17)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     private func showDeleteConfirmationView() {
-       let deleteTitle = LocalizableUwazi.submittedDeleteSheetTitle.localized
+        let deleteTitle = LocalizableUwazi.submittedDeleteSheetTitle.localized
         let deleteMessage = LocalizableUwazi.submittedDeleteSheetExpl.localized
         let cancelText = LocalizableUwazi.submittedDeleteCancelAction.localized
         let actionText = LocalizableUwazi.submittedDeleteDeleteAction.localized
-
+        
         sheetManager.showBottomSheet(modalHeight: 200) {
             return ConfirmBottomSheet(titleText: deleteTitle,
                                       msgText: deleteMessage,

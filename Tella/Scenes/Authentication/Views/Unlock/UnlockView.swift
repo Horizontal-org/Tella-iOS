@@ -58,11 +58,14 @@ struct UnlockView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
+        .onReceive(viewModel.appModel.settings.$deleteAfterFail) { value  in
+            viewModel.resetMaxAttempts()
+        }
         .onReceive(viewModel.$presentingLockChoice) { presentingLockChoice in
             if presentingLockChoice {
                 showLockChoiceView()
             }
-        }
+        }.navigationBarHidden(true)
     }
     
     

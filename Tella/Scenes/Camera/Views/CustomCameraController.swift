@@ -7,16 +7,14 @@ import AVFoundation
 import Combine
 import CoreLocation
 
+struct CameraImageCompletion {
+    var capturePhoto: AVCapturePhoto?
+    var currentLocation: CLLocation?
+}
+
 public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
-    
-    struct CameraImageCompletion {
-        let imageData: Data
-        var currentLocation: CLLocation?
-    }
-    
+
     // MARK: - Private properties
-    private var backCamera: AVCaptureDevice?
-    private var frontCamera: AVCaptureDevice?
     
     private var photoOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureMovieFileOutput?
@@ -25,7 +23,6 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     private let sessionQueue = DispatchQueue(label: "session queue")
     
     private var locationManager = LocationManager()
-    var currentLocation: CLLocation?
     var shouldPreserveMetadata: Bool = false
     
     weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
@@ -50,6 +47,19 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
     }
     
+    var photoSettings : AVCapturePhotoSettings {
+        
+        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+        
+        photoSettings.isHighResolutionPhotoEnabled = true
+
+        if let currentLocation = locationManager.currentLocation {
+            photoSettings.add(location: currentLocation)
+        }
+        
+        return photoSettings
+    }
+    
     func startRunningCaptureSession() {
         if shouldPreserveMetadata {
             locationManager.initializeLocationManager()
@@ -67,14 +77,15 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     func takePhoto() {
-        let settings = AVCapturePhotoSettings()
+        
         guard let delegate = captureDelegate else {
             return
         }
         if let photoOutputConnection = self.photoOutput?.connection(with: .video) {
             photoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
         }
-        photoOutput?.capturePhoto(with: settings, delegate: delegate)
+        
+        photoOutput?.capturePhoto(with: photoSettings, delegate: delegate)
         shouldShowProgressView = true
     }
     
@@ -163,7 +174,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     private func setupCaptureSession() {
-        captureSession.sessionPreset = AVCaptureSession.Preset.high
+        captureSession.sessionPreset = AVCaptureSession.Preset.photo
     }
     
     private func createTempFileURL() -> URL {
@@ -186,6 +197,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         
         guard let photoOutput = photoOutput else { return }
+        
+        photoOutput.isHighResolutionCaptureEnabled = true // Required for isHighResolutionPhotoEnabled of AVCapturePhotoSettings, default is false
         
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
@@ -328,9 +341,8 @@ extension CameraService  {
     public func photoOutput(_ output: AVCapturePhotoOutput,
                             didFinishProcessingPhoto photo: AVCapturePhoto,
                             error: Error?) {
-        if let data = photo.fileDataRepresentation() {
-            self.imageCompletion = CameraImageCompletion(imageData: data, currentLocation: currentLocation)
-        }
+        self.imageCompletion = CameraImageCompletion(capturePhoto: photo,
+                                                     currentLocation: locationManager.currentLocation)
     }
     
     public func fileOutput(_ output: AVCaptureFileOutput,

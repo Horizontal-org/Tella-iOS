@@ -8,8 +8,7 @@ import SwiftUI
 
 struct ConnectionsView: View {
     
-    @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
+    @StateObject var homeViewModel: HomeViewModel
     
     var body: some View {
         
@@ -44,14 +43,14 @@ struct ConnectionsView: View {
                                         destination: reportsMainView)
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
-                                        destination: ResourcesView(mainAppModel: appModel),
+                                        destination: ResourcesView(mainAppModel: homeViewModel.appModel),
                                         largeTitle: false,
                                         showTitle: false
                     )
                 case .uwazi:
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
-                                        destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: server.servers.first)))
+                                        destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: homeViewModel.appModel, server: server.servers.first)))
                 case .gDrive:
                     ConnectionsItemView(title: LocalizableGDrive.gDriveAppBar.localized,
                                         image: "home.drive",
@@ -72,19 +71,19 @@ struct ConnectionsView: View {
     }
     
     var reportsMainView: TellaServerReportsMainView { //Check if we can rename it
-        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: appModel))
+        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: homeViewModel.appModel))
     }
     
     var gDriveMainView : GdriveReportMainView {
-        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: appModel, gDriveRepository: GDriveRepository()))
+        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: homeViewModel.appModel, gDriveRepository: GDriveRepository()))
     }
     
     var nextcloudMainView : NextcloudReportMainView {
-        NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: appModel, nextcloudRepository: NextcloudRepository()))
+        NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: homeViewModel.appModel, nextcloudRepository: NextcloudRepository()))
     }
     
     var dropboxMainView: DropboxReportMainView {
-        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: appModel, dropboxRepository: DropboxRepository()))
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.appModel, dropboxRepository: DropboxRepository()))
     }
 }
 
@@ -122,6 +121,6 @@ struct ConnectionsItemView<Destination:View>: View {
 
 struct ConnectionsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionsView()
+        ConnectionsView(homeViewModel: HomeViewModel(appModel: MainAppModel.stub()))
     }
 }

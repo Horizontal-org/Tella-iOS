@@ -25,7 +25,9 @@ enum FileSource {
 }
 
 enum FileExtension : String {
-    case heic = "heic"
+    case heic = "HEIC"
     case mov = "mov"
     case mp4 = "mp4"
+    case png = "png"
+    case jpeg = "jpeg"
 }

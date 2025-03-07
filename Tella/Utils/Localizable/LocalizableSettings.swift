@@ -40,6 +40,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangPortuguese = "Settings_SettLang_Portuguese_Expl"
     case settLangVietnamese = "Settings_SettLang_Vietnamese_Expl"
     case settLangBangla = "Settings_SettLang_Bangla_Expl"
+    case settLangIndonesian = "Settings_SettLang_Indonesian_Expl"
+    case settLangPortugueseMozambique = "Settings_SettLang_PortugueseMozambique_Expl"
+    case settLangTsonga = "Settings_SettLang_Tsonga_Expl"
 
     // Security
     
@@ -105,6 +108,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerDeleteSheetAction = "Settings_SettServer_Delete_SheetAction"
     case settServerCancelSheetAction = "Settings_SettServer_Cancel_SheetAction"
     case serverURL = "Setting_Server_URL"
+    case advancedSettings = "Setting_Server_AdvancedSettings"
     case serverUsername = "Setting_Server_Uwazi_Username"
     case serverPassword = "Setting_Server_Password"
 

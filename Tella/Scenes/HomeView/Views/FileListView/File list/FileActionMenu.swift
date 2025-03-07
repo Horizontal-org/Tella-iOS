@@ -7,54 +7,25 @@ import SwiftUI
 struct FileActionMenu: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var isPresented = true
     
     var body: some View {
-        fileDocumentExporter
         if fileListViewModel.showingMoveFileView {
             moveFilesView
-        }
-        ShareFileView()
-        showFileInfoLink
-    }
-    
-    var fileDocumentExporter: some View {
-        ZStack {
-            
-        }
-        .sheet(isPresented: $fileListViewModel.showingDocumentPicker, onDismiss: {
-            appModel.vaultManager.clearTmpDirectory()
-        }, content: {
-            DocumentPickerView(documentPickerType: .forExport,
-                               URLs: appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)  ) { _ in
-            }
-        })
-    }
-    
-    @ViewBuilder
-    private var showFileInfoLink : some View{
-        if let currentSelectedVaultFile = fileListViewModel.currentSelectedVaultFile {
-            NavigationLink(destination:
-                            FileInfoView(viewModel: self.fileListViewModel, file: currentSelectedVaultFile),
-                           isActive: $fileListViewModel.showFileInfoActive) {
-                EmptyView()
-            }.frame(width: 0, height: 0)
-                .hidden()
         }
     }
     
     var moveFilesView : some View {
-        MoveFilesView(title: fileListViewModel.fileActionsTitle)
+        MoveFilesView(title: fileListViewModel.fileActionsTitle, fileListViewModel: fileListViewModel)
     }
 }
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu()
+        FileActionMenu(fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

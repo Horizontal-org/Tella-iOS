@@ -120,14 +120,36 @@ enum LocalizableVault: String, LocalizableDelegate {
     
     case fileAudioUpdateSecondTime = "Vault_FileAudio_UpdateSecondTime"
 
-    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_Expl"
-    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Action_Settings"
-    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Action_Cancel"
+    
+    
+    case deniedPhotoLibraryPermissionTitle = "Vault_DeniedPhotoLibraryPermission_SheetTitle"
+    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_SheetExpl"
+    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Settings_SheetSelect"
+    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Cancel_SheetSelect"
 
+    
+    
     case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
     case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
     case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
     
+    
+    case limitedPhotoLibraryAppBar = "Vault_LimitedPhotoLibrary_AppBar"
+
+    case limitedPhotoLibraryTitle =  "Vault_LimitedPhotoLibrary_Title"
+    case limitedPhotoLibraryExpl =  "Vault_LimitedPhotoLibrary_Expl"
+    case limitedPhotoLibraryManage =  "Vault_LimitedPhotoLibrary_Action_Manage"
+
+    case limitedPhotoLibraryEmptyFiles =  "Vault_LimitedPhotoLibrary_EmptyFiles_Expl"
+
+    case limitedPhotoLibraryManageAccess =  "Vault_LimitedPhotoLibrary_ManageAccess_Title"
+    case limitedPhotoLibraryAdd =  "Vault_LimitedPhotoLibrary_Add_SheetSelect"
+    case limitedPhotoLibraryChangePermission = "Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect"
+
+    case limitedPhotoLibrarySelectExpl = "Vault_LimitedPhotoLibrary_Select_Expl"
+    
+    case limitedPhotoLibraryImport = "Vault_LimitedPhotoLibrary_Action_Import"
+
     case copy = "Vault_Copy_Text"
 
 }

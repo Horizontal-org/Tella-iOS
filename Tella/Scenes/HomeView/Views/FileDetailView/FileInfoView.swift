@@ -12,34 +12,39 @@ struct FileInfoView: View {
     
     var body: some View {
         
-        ZStack {
-            Styles.Colors.backgroundMain
-                .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .leading, spacing: 12){
-                FileInfoItem(title: LocalizableVault.verifInfoFileName.localized, content: file.name)
-                
-                if file.tellaFileType != .folder {
-                    FileInfoItem(title: LocalizableVault.verifInfoSize.localized, content: file.size.getFormattedFileSize())
-                    FileInfoItem(title: LocalizableVault.verifInfoFormat.localized, content: file.fileExtension)
-                }
-                
-                FileInfoItem(title: LocalizableVault.verifInfoCreated.localized, content: "\(file.longFormattedCreationDate)")
-                
-                if (file.tellaFileType == .video) || (file.tellaFileType == .image)  {
-                    FileInfoItem(title: LocalizableVault.verifInfoResolution.localized, content: file.formattedResolution ?? "")
-                }
-                
-                if file.tellaFileType == .video || file.tellaFileType == .audio {
-                    FileInfoItem(title: LocalizableVault.verifInfoLength.localized, content: file.formattedDuration ?? "")
-                }
-                
-                FileInfoItem(title: LocalizableVault.verifInfoFilePath.localized, content: viewModel.filePath)
-                Spacer()
-            } .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableVault.verifInfoAppBar.localized)
-        }
+    }
+
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableVault.verifInfoAppBar.localized)
+    }
+
+    var contentView: some View {
+        VStack(alignment: .leading, spacing: 12){
+            FileInfoItem(title: LocalizableVault.verifInfoFileName.localized, content: file.name)
+            
+            if file.tellaFileType != .folder {
+                FileInfoItem(title: LocalizableVault.verifInfoSize.localized, content: file.size.getFormattedFileSize())
+                FileInfoItem(title: LocalizableVault.verifInfoFormat.localized, content: file.fileExtension)
+            }
+            
+            FileInfoItem(title: LocalizableVault.verifInfoCreated.localized, content: "\(file.longFormattedCreationDate)")
+            
+            if (file.tellaFileType == .video) || (file.tellaFileType == .image)  {
+                FileInfoItem(title: LocalizableVault.verifInfoResolution.localized, content: file.formattedResolution ?? "")
+            }
+            
+            if file.tellaFileType == .video || file.tellaFileType == .audio {
+                FileInfoItem(title: LocalizableVault.verifInfoLength.localized, content: file.formattedDuration ?? "")
+            }
+            
+            FileInfoItem(title: LocalizableVault.verifInfoFilePath.localized, content: viewModel.filePath)
+            Spacer()
+        } .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
     }
 }
 

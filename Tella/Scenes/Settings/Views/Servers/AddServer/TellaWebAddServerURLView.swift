@@ -67,10 +67,7 @@ struct TellaWebAddServerURLView: View {
                     CircularActivityIndicatory()
                 }
             }
-        }
-        
-        .navigationBarHidden(true)
-
+        }.navigationBarHidden(true)
     }
     
     private var serverLoginView: some View {

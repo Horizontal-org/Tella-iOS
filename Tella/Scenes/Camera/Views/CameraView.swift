@@ -88,8 +88,7 @@ struct CameraView: View {
         
             .onReceive(model.service.$imageCompletion) { imageCompletion in
                 guard let imageCompletion else { return }
-                cameraViewModel.currentLocation = imageCompletion.currentLocation
-                cameraViewModel.imageData = imageCompletion.imageData
+                cameraViewModel.capturePhoto = imageCompletion.capturePhoto
                 cameraViewModel.saveImage()
             }
         

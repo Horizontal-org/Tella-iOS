@@ -6,12 +6,12 @@ import SwiftUI
 
 struct ManageFileView: View {
     
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var body: some View {
         HStack(spacing: 0) {
             
-            FileSortMenu()
+            FileSortMenu(fileListViewModel: fileListViewModel)
             
             Spacer()
             
@@ -76,8 +76,6 @@ struct ManageFileView: View {
 
 struct ManageFileView_Previews: PreviewProvider {
     static var previews: some View {
-        ManageFileView()
-            .environmentObject(FileListViewModel.stub())
-        
+        ManageFileView(fileListViewModel: FileListViewModel.stub())
     }
 }

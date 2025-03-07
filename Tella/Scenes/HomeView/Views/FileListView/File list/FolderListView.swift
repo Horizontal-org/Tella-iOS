@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FolderListView: View {
     
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
     
     var body: some View {
@@ -63,9 +63,8 @@ struct FolderListView: View {
 
 struct FolderListView_Previews: PreviewProvider {
     static var previews: some View {
-        FolderListView()
+        FolderListView(fileListViewModel: FileListViewModel.stub())
             .background(Styles.Colors.backgroundMain)
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

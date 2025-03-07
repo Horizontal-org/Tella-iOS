@@ -13,7 +13,7 @@ enum MoreButtonType {
 
 struct MoreFileActionButton: View {
     
-    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var appModel: MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -43,8 +43,8 @@ struct MoreFileActionButton: View {
             showFileActionSheet()
         } label: {
             Image("files.more")
-                .frame(width: 40, height: 40)
-        }.frame(width: 40, height: 40)
+                .padding(.all, moreButtonType == .navigationBar ? 20 : 13)
+        }
     }
     
     var gridMoreButton: some View {
@@ -56,8 +56,9 @@ struct MoreFileActionButton: View {
                 .frame(width: 35, height: 35)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
+            
     }
-
+    
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
@@ -79,8 +80,7 @@ struct MoreFileActionButton: View {
             
         case .share:
             hideMenu()
-            fileListViewModel.showingShareFileView = true
-            
+            showActivityViewController()
         case .move:
             self.hideMenu()
             fileListViewModel.showingMoveFileView = true
@@ -96,7 +96,7 @@ struct MoreFileActionButton: View {
             showSaveConfirmationSheet()
             
         case .info:
-            fileListViewModel.showFileInfoActive = true
+            self.showFileInfoView()
             self.hideMenu()
             
         case .delete:
@@ -126,9 +126,9 @@ struct MoreFileActionButton: View {
     }
     private func showEditVideoView() {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
-                                            rootFile: fileListViewModel.rootFile,
-                                            appModel: fileListViewModel.appModel,
-                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           rootFile: fileListViewModel.rootFile,
+                                           appModel: fileListViewModel.appModel,
+                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
@@ -139,7 +139,7 @@ struct MoreFileActionButton: View {
             }
         }
     }
-
+    
     private func showEditImageView() {
         self.present(style: .fullScreen) {
             EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
@@ -179,6 +179,13 @@ struct MoreFileActionButton: View {
                 fileListViewModel.renameSelectedFile()
             })
         })
+    }
+    
+    
+    func showFileInfoView() {
+        guard let file else { return }
+        let destination = FileInfoView(viewModel: self.fileListViewModel, file: file)
+        self.navigateTo(destination: destination)
     }
     
     func showDeleteConfirmationSheet() {
@@ -225,15 +232,31 @@ struct MoreFileActionButton: View {
                                cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
                                actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized.uppercased(),
                                didConfirmAction: {
-                fileListViewModel.showingDocumentPicker = true
+                showDocumentPickerView()
             })
         })
+    }
+    
+    func showDocumentPickerView() {
+        self.present(style: .pageSheet) {
+            DocumentPickerView(documentPickerType: .forExport,
+                               URLs: appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
+            }.edgesIgnoringSafeArea(.all)
+        }
+    }
+    
+    func showActivityViewController() {
+        self.present(style: .pageSheet) {
+            ActivityViewController(fileData: fileListViewModel.getDataToShare())
+                .edgesIgnoringSafeArea(.all)
+        }
     }
 }
 
 struct MoreFileActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        MoreFileActionButton( moreButtonType: .navigationBar)
-            .background(Color.red)
+        MoreFileActionButton( fileListViewModel: FileListViewModel.stub(),
+                              moreButtonType: .navigationBar)
+        .background(Color.red)
     }
 }

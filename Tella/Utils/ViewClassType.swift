@@ -11,12 +11,13 @@ import SwiftUI
 
 struct ViewClassType {
     static let uwaziView : AnyClass = UIHostingController<ModifiedContent<UwaziView, _EnvironmentKeyWritingModifier<UwaziViewModel?>>>.self
-    static let securitySettingsView : AnyClass = UIHostingController<Optional<ModifiedContent<SecuritySettingsView, _EnvironmentKeyWritingModifier<Optional<SettingsViewModel>>>>>.self
+    static let securitySettingsView : AnyClass = UIHostingController<Optional<SecuritySettingsView>>.self
     static let serversListView : AnyClass = UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self
     static let reportMainView : AnyClass = UIHostingController<ReportMainView>.self
     static let nextcloudReportMainView : AnyClass = UIHostingController<NextcloudReportMainView>.self
     static let gdriveReportMainView : AnyClass = UIHostingController<GdriveReportMainView>.self
     static let tellaServerReportMainView : AnyClass = UIHostingController<TellaServerReportsMainView>.self
     static let dropboxReportMainView: AnyClass = UIHostingController<DropboxReportMainView>.self
+    static let fileListView: AnyClass = UIHostingController<FileListView>.self
 }
 

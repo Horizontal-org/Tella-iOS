@@ -17,20 +17,10 @@ struct GeneralView: View {
     
     var body: some View {
         
-        ContainerView {
-            VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 8)
-                
-                SettingsCardView(cardViewArray: [languageView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [recentFilesView.eraseToAnyView()])
-                
-                Spacer()
-            }
-        }
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.settGenAppBar.localized)
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
         .fullScreenCover(isPresented: $presentingLanguage) {
             
@@ -39,8 +29,24 @@ struct GeneralView: View {
         }
     }
     
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.settGenAppBar.localized)
+    }
+    
+    var contentView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+                .frame(height: 8)
+            
+            SettingsCardView(cardViewArray: [languageView.eraseToAnyView()])
+            
+            SettingsCardView(cardViewArray: [recentFilesView.eraseToAnyView()])
+            
+            Spacer()
+        }
+    }
+    
     var languageView: some View {
-        
         SettingsItemView<AnyView>(imageName: "settings.language",
                                   title: LocalizableSettings.settGenLanguage.localized,
                                   value: LanguageManager.shared.currentLanguage.name,
@@ -50,7 +56,6 @@ struct GeneralView: View {
     }
     
     var recentFilesView: some View {
-        
         SettingToggleItem(title: LocalizableSettings.settGenRecentFiles.localized,
                           description: LocalizableSettings.settGenRecentFilesExpl.localized,
                           toggle: $appModel.settings.showRecentFiles)

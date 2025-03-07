@@ -35,12 +35,9 @@ extension View {
     }
     
     func present<Content: View>(style: UIModalPresentationStyle = .automatic, transitionStyle: UIModalTransitionStyle = .coverVertical, @ViewBuilder builder: () -> Content) {
-        let toPresent = UIHostingController(rootView: AnyView(EmptyView()))
+        let toPresent = UIHostingController(rootView: builder())
         toPresent.modalPresentationStyle = style
         toPresent.modalTransitionStyle = transitionStyle
-        toPresent.rootView = AnyView(
-            builder()
-        )
         toPresent.view.isOpaque = false
         toPresent.view.backgroundColor = .clear
 
@@ -48,10 +45,13 @@ extension View {
     }
     
     func dismiss() {
-        UIApplication.shared.topNavigationController()?.dismiss(animated: false)
+        UIApplication.getTopViewController()?.dismiss(animated: false)
+    }
+    
+    func dismiss(completion:@escaping () -> Void) {
+        UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
     }
 
-    
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
         
@@ -101,6 +101,10 @@ extension View {
         UIApplication.shared.popTo(classType)
     }
     
+    func navigationHasClassType(_ classType: AnyClass) -> Bool {
+        UIApplication.shared.navigationHasClassType(classType)
+    }
+    
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
@@ -116,7 +120,7 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
     
-    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool>) {
+    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool> = .constant(true)) {
         let viewToShow = DragView(modalHeight: modalHeight, isShown: isShown, content: {content})
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
