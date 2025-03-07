@@ -9,9 +9,12 @@
 import SwiftUI
 
 struct ServerConnectionHeaderView: View {
+    
     var title: String
     var subtitle: String
     var imageIconName: String
+    var subtitleTextAlignment: TextAlignment = .center
+    
     var body: some View {
         VStack(spacing: 8) {
             Image(imageIconName)
@@ -19,12 +22,14 @@ struct ServerConnectionHeaderView: View {
             Text(title)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
-                .multilineTextAlignment(.center)
+                .multilineTextAlignment(subtitleTextAlignment)
+                .fixedSize(horizontal: false, vertical: true)
             Text(subtitle)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-        }.padding(.horizontal, 20)
+                .multilineTextAlignment(subtitleTextAlignment)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 

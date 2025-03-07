@@ -28,10 +28,13 @@ struct CustomNavigation<Content:View>: View {
                 }
             }
         } else {
-            NavigationView{
+            NavigationView {
                 self.content()
-                
-            } .navigationViewStyle(.stack)
+                .navigationBarHidden(true)
+                .navigationBarTitle("", displayMode: .inline)
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+
         }
         
     }

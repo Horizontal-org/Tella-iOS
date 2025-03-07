@@ -68,6 +68,13 @@ class LockViewModel: ObservableObject {
         setupSettingsObservations()
     }
     
+    func resetMaxAttempts() {
+        self.unlockAttempts = appModel.settings.unlockAttempts
+        self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
+    }
+    
+
+    
     private func setupSettingsObservations() {
         appModel.settings.$deleteAfterFail
             .map({ $0.numberOfAttempts })

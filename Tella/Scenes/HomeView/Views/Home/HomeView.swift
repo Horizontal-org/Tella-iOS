@@ -30,26 +30,27 @@ struct HomeView: View {
     
     var contentView: some View {
         VStack() {
-            
-            VStack {
-                Spacer()
-                    .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
-                ConnectionsView(homeViewModel: viewModel)
-                
-                Spacer()
-                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
-                
-                if appModel.settings.showRecentFiles {
+            ScrollView {
+                VStack {
                     Spacer()
-                        .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
-                    RecentFilesListView(recentFiles: $viewModel.recentFiles)
+                        .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
+                    ConnectionsView(homeViewModel: viewModel)
+                    
+                    Spacer()
+                        .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
+                    
+                    if appModel.settings.showRecentFiles {
+                        Spacer()
+                            .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
+                        RecentFilesListView(recentFiles: $viewModel.recentFiles)
+                    }
+                    
+                    Spacer()
+                        .frame(height: 30)
+                    
+                    FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
                 }
-                
-                Spacer()
-                    .frame(height: 30)
-                
-                FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
-            }.scrollOnOverflow()
+            }
             
             Spacer()
             

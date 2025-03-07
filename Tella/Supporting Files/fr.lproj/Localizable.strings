@@ -546,3 +546,5 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
 "Setting_Server_AdvancedSettings" = "Paramètres avancés";
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
+"Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
+"Settings_SettLang_Tsonga_Expl" = "Tsonga";
