@@ -8,20 +8,13 @@ import Combine
 import SwiftUI
 
 class DraftReportVM: DraftMainViewModel {
+    
     override init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         super.init(reportId: reportId, reportsMainViewModel: reportsMainViewModel)
     }
 
     override func getServers() {
         serverArray = mainAppModel.tellaData?.getTellaServers() ?? []
-    }
-    
-    override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
-            self.files.insert(value)
-            self.publishUpdates()
-        }).store(in: &subscribers)
     }
     
     override func publishUpdates() {
@@ -39,7 +32,7 @@ class DraftReportVM: DraftMainViewModel {
             
             if let  vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [] ) {
                 let vaultFileResult  = Set(vaultFileResult)
-                self.files = vaultFileResult
+                addFilesViewModel.files = vaultFileResult
             }
         }
         
@@ -53,7 +46,7 @@ class DraftReportVM: DraftMainViewModel {
                             description: description,
                             status: status,
                             server: server as? TellaServer,
-                            vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
+                            vaultFiles: addFilesViewModel.files.compactMap{ ReportFile(fileId: $0.id,
                                                                           status: .notSubmitted,
                                                                           bytesSent: 0,
                                                                           createdDate: Date())},
@@ -81,11 +74,6 @@ class DraftReportVM: DraftMainViewModel {
         default:
             self.failureSavingReport = true
         }
-    }
-    
-    override func deleteFile(fileId: String?) {
-        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
-        files.remove(at: index)
     }
     
     override func deleteReport() {

@@ -211,6 +211,8 @@
 		126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
+		126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */; };
+		126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
 		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
@@ -245,6 +247,10 @@
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
+		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
+		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
+		128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */; };
+		128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* QRCodeInfos.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -438,7 +444,6 @@
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
 		15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */; };
-		15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */; };
 		15E656AD2C2A14F500BDEC91 /* DraftMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
@@ -460,9 +465,12 @@
 		200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */; };
 		200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399022CE60B2B00DCFCF0 /* ResizableImage.swift */; };
 		200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */; };
+		200751D42D5B91F1000CC076 /* PeerToPeerParticipent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */; };
+		2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
+		203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */; };
 		203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */; };
 		20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */; };
 		20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */; };
@@ -472,6 +480,10 @@
 		204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
+		209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */; };
+		209107F52D5391B000808BCF /* RegularText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F42D5391B000808BCF /* RegularText.swift */; };
+		209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */; };
+		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
 		209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6772C2D5C9800492356 /* AddServerURLView.swift */; };
 		209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6792C2D5E3500492356 /* ServerViewModel.swift */; };
@@ -487,10 +499,24 @@
 		209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */; };
 		209AC6962C332F6000492356 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6922C332F6000492356 /* CLLocationExtension.swift */; };
 		209FFD182CED19B8009B7D51 /* EditMediaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */; };
+		20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */; };
+		20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A3BD482D5A495D009E5E12 /* CardItemView.swift */; };
+		20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */; };
+		20A8BBB42D6F2C70009D52AF /* AddFileGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */; };
+		20A8BBB62D6F4777009D52AF /* AddFileBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */; };
+		20A8BBB82D6F47CD009D52AF /* AddFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */; };
+		20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */; };
+		20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */; };
+		20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */; };
+		20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */; };
+		20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
+		20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */; };
+		20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FB02D522551006DD8B9 /* CardModifier.swift */; };
+		20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
 		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
 		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
@@ -515,7 +541,7 @@
 		CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */; };
 		CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5DF8772B02B06A0068F622 /* UwaziServer.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
-		CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */; };
+		CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
@@ -538,7 +564,6 @@
 		CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDC39892AF2BCE400674735 /* MultipartRequest.swift */; };
 		CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */; };
 		CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */; };
-		CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */; };
 		CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */; };
 		CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */; };
 		CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */; };
@@ -860,6 +885,8 @@
 		126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftViewModel.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
+		126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizablePeerToPeer.swift; sourceTree = "<group>"; };
+		126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerMainView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
 		127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDatabase.swift; sourceTree = "<group>"; };
@@ -897,6 +924,10 @@
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
+		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
+		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
+		128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
+		128247A32D5F935A00B7E63E /* QRCodeInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeInfos.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
 		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
@@ -1094,7 +1125,6 @@
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
 		15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableGDrive.swift; sourceTree = "<group>"; };
-		15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
 		15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftMainViewModel.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
@@ -1116,9 +1146,12 @@
 		200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoViewModel.swift; sourceTree = "<group>"; };
 		200399022CE60B2B00DCFCF0 /* ResizableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableImage.swift; sourceTree = "<group>"; };
 		200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaViewModel.swift; sourceTree = "<group>"; };
+		200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerParticipent.swift; sourceTree = "<group>"; };
+		2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceView.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
+		203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PSendFilesView.swift; sourceTree = "<group>"; };
 		203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomThumbnailSlider.swift; sourceTree = "<group>"; };
 		20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerReportsMainView.swift; sourceTree = "<group>"; };
 		20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerSubmittedDetailsView.swift; sourceTree = "<group>"; };
@@ -1128,6 +1161,10 @@
 		204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaControlButtonsView.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
+		209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceView.swift; sourceTree = "<group>"; };
+		209107F42D5391B000808BCF /* RegularText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularText.swift; sourceTree = "<group>"; };
+		209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
+		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyViewModel.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
 		209AC6772C2D5C9800492356 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		209AC6792C2D5E3500492356 /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
@@ -1143,10 +1180,24 @@
 		209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		209AC6922C332F6000492356 /* CLLocationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
 		209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaHeaderView.swift; sourceTree = "<group>"; };
+		20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
+		20A3BD482D5A495D009E5E12 /* CardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardItemView.swift; sourceTree = "<group>"; };
+		20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileGridView.swift; sourceTree = "<group>"; };
+		20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileGridItemView.swift; sourceTree = "<group>"; };
+		20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileBottomSheetView.swift; sourceTree = "<group>"; };
+		20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesViewModel.swift; sourceTree = "<group>"; };
+		20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileCameraView.swift; sourceTree = "<group>"; };
+		20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileRecordView.swift; sourceTree = "<group>"; };
+		20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilePhotoVideoPickerView.swift; sourceTree = "<group>"; };
+		20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientWaitingView.swift; sourceTree = "<group>"; };
+		20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFilesRequestView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
+		20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionViewModel.swift; sourceTree = "<group>"; };
+		20BA4FB02D522551006DD8B9 /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
+		20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
 		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
 		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
@@ -1177,7 +1228,7 @@
 		CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachment.swift; sourceTree = "<group>"; };
 		CC5DF8772B02B06A0068F622 /* UwaziServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServer.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
-		CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziFileSelector.swift; sourceTree = "<group>"; };
+		CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSelectFileComponent.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
@@ -1200,7 +1251,6 @@
 		CCDC39892AF2BCE400674735 /* MultipartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
 		CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableUwazi.swift; sourceTree = "<group>"; };
 		CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziFileUtility.swift; sourceTree = "<group>"; };
-		CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachmentsActionItems.swift; sourceTree = "<group>"; };
 		CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityCreationResponse.swift; sourceTree = "<group>"; };
 		CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSelectWidget.swift; sourceTree = "<group>"; };
 		CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateActionType.swift; sourceTree = "<group>"; };
@@ -1978,6 +2028,20 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
+			isa = PBXGroup;
+			children = (
+				128247A22D5F935100B7E63E /* Models */,
+				2012D5442D5697B9000E0443 /* Recipient */,
+				2012D5432D5697B0000E0443 /* Sender */,
+				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
+				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
+				200751D32D5B91F1000CC076 /* PeerToPeerParticipent.swift */,
+			);
+			path = PeerToPeer;
+			sourceTree = "<group>";
+		};
 		126FEE082AC4992800B99298 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -2148,6 +2212,14 @@
 			children = (
 				12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */,
 				127C155B27DA69FF009EC15B /* TransitionViewData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		128247A22D5F935100B7E63E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				128247A32D5F935A00B7E63E /* QRCodeInfos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2529,6 +2601,7 @@
 				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
 				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
+				126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2578,6 +2651,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				20A8BBB02D6F2BF0009D52AF /* AddFileGridViewComponent */,
 				20BF26712C9843C200E81535 /* Modifiers */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
@@ -2586,6 +2660,7 @@
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
 				1212677C2C0E77A2005F75A4 /* VaultFileItem */,
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
+				209107F42D5391B000808BCF /* RegularText.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
 				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
@@ -2612,6 +2687,7 @@
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */,
 				12A6B6642D132E290002F74B /* CardFrame.swift */,
+				20A3BD482D5A495D009E5E12 /* CardItemView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2824,7 +2900,6 @@
 			isa = PBXGroup;
 			children = (
 				152D38502C2C61DF00323CE7 /* DraftView.swift */,
-				15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */,
 				1220A72D292EB11B000BC24C /* ReportFileGridView.swift */,
 			);
 			path = Draft;
@@ -2909,6 +2984,30 @@
 			path = EditMedia;
 			sourceTree = "<group>";
 		};
+		2012D5432D5697B0000E0443 /* Sender */ = {
+			isa = PBXGroup;
+			children = (
+				209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */,
+				128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */,
+				1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */,
+				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
+				203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */,
+			);
+			path = Sender;
+			sourceTree = "<group>";
+		};
+		2012D5442D5697B9000E0443 /* Recipient */ = {
+			isa = PBXGroup;
+			children = (
+				2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */,
+				20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */,
+				1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */,
+				20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */,
+				20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */,
+			);
+			path = Recipient;
+			sourceTree = "<group>";
+		};
 		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2929,10 +3028,34 @@
 			path = Connections;
 			sourceTree = "<group>";
 		};
+		20A8BBB02D6F2BF0009D52AF /* AddFileGridViewComponent */ = {
+			isa = PBXGroup;
+			children = (
+				20A8BBB12D6F2C27009D52AF /* AddFileGridView.swift */,
+				20A8BBB32D6F2C70009D52AF /* AddFileGridItemView.swift */,
+				20A8BBB52D6F4777009D52AF /* AddFileBottomSheetView.swift */,
+				20A8BBB72D6F47CD009D52AF /* AddFilesViewModel.swift */,
+				20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */,
+				20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */,
+				20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */,
+			);
+			path = AddFileGridViewComponent;
+			sourceTree = "<group>";
+		};
+		20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */ = {
+			isa = PBXGroup;
+			children = (
+				20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */,
+				20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */,
+			);
+			path = WifiConnexion;
+			sourceTree = "<group>";
+		};
 		20BF26712C9843C200E81535 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
 				20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */,
+				20BA4FB02D522551006DD8B9 /* CardModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -3060,7 +3183,6 @@
 				0ECC781A267A542300A2ACF2 /* UwaziPages.swift */,
 				CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */,
 				CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */,
-				CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */,
 				153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */,
 			);
 			path = Models;
@@ -3093,6 +3215,7 @@
 				0DD99E0126910378009327B3 /* Camera */,
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
+				126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -3327,7 +3450,7 @@
 				CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */,
 				CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */,
 				CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */,
-				CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */,
+				CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */,
 				CC5CEB862AF037B600BF238B /* FileDropdown.swift */,
 				15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */,
 				15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */,
@@ -3761,7 +3884,7 @@
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
-				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
+				20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
@@ -3778,6 +3901,7 @@
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
 				123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */,
+				2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */,
 				20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
 				15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */,
@@ -3794,6 +3918,7 @@
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
 				12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */,
+				128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */,
 				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
 				1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */,
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
@@ -3803,6 +3928,7 @@
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
 				CCF8D5C22AE994BF000D27C5 /* SupportingFileWidget.swift in Sources */,
 				12AFF1B82D3FACBC00C2455C /* NavigationHeaderTypes.swift in Sources */,
+				1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
@@ -3817,6 +3943,7 @@
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
 				CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
+				200751D42D5B91F1000CC076 /* PeerToPeerParticipent.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
 				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
@@ -3840,15 +3967,18 @@
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
+				20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
+				126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
+				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
@@ -3878,6 +4008,8 @@
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
+				209107F52D5391B000808BCF /* RegularText.swift in Sources */,
+				128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
@@ -3894,6 +4026,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
@@ -3916,8 +4049,8 @@
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
-				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
+				20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
@@ -3942,6 +4075,7 @@
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
+				20A8BBB62D6F4777009D52AF /* AddFileBottomSheetView.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */,
@@ -3972,6 +4106,7 @@
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */,
 				153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */,
+				20A3BD492D5A495D009E5E12 /* CardItemView.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
@@ -3981,7 +4116,9 @@
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
+				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
+				20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
@@ -4062,8 +4199,9 @@
 				15DCD9402C9CB18F001339A7 /* DropboxSubmittedViewModel.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
-				CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */,
+				CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */,
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
+				126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
 				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
@@ -4072,6 +4210,7 @@
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
+				20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */,
 				15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */,
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
 				127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */,
@@ -4079,6 +4218,7 @@
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				20A8BBB82D6F47CD009D52AF /* AddFilesViewModel.swift in Sources */,
 				1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
@@ -4111,6 +4251,7 @@
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
+				20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
@@ -4129,6 +4270,7 @@
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
 				126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */,
 				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
+				20A8BBB42D6F2C70009D52AF /* AddFileGridItemView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
@@ -4179,6 +4321,7 @@
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
+				1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				20FA030D2CD282C3001121F1 /* TrimMediaSliderView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
@@ -4259,6 +4402,7 @@
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
 				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
+				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
@@ -4290,12 +4434,14 @@
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				1275A8492C5E6EFF0071A97D /* NextcloudConstants.swift in Sources */,
+				20A3BD472D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift in Sources */,
 				126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */,
 				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
+				20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
@@ -4319,6 +4465,7 @@
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */,
+				209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */,
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
@@ -4332,6 +4479,7 @@
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
+				20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */,
 				1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,
@@ -4631,7 +4779,7 @@
 			baseConfigurationReference = D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Tella/TellaRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -4686,8 +4834,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TellaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4697,6 +4845,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.TellaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
