@@ -16,7 +16,6 @@ class EditMediaViewModel: ObservableObject {
     @Published var endTime: Double = 0.0
     @Published var timeDuration: Double = 0.0
     @Published var currentTime : String  = "00:00:00"
-    @Published var playingOffset: CGFloat = 0.0
     @Published var isPlaying = false
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
     @Published var headerTitle = ""
@@ -25,7 +24,7 @@ class EditMediaViewModel: ObservableObject {
     @Published var leadingGestureValue: Double = 0.0
     @Published var shouldStopLeftScroll = false
     @Published var shouldStopRightScroll = false
-
+    @Published var currentPosition: Double = .zero
 
     //MARK: - View attributes
     let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
@@ -68,14 +67,6 @@ class EditMediaViewModel: ObservableObject {
         return self.endTime != self.timeDuration || self.startTime != 0.0
     }
     
-    func updateOffset(time: Double) {
-        let totalOffsetDistance: CGFloat = 340
-        let progress = time / timeDuration
-        if !progress.isNaN {
-            playingOffset = CGFloat(progress) * totalOffsetDistance
-        }
-    }
-    
     func onPlay() {}
     
     func onPause() {}
@@ -90,6 +81,9 @@ class EditMediaViewModel: ObservableObject {
                 self.trimState = .error(error.localizedDescription)
             }
         }
+    }
+    
+    func didReachSliderLimit() {
     }
     
     func handlePlayButton() {
