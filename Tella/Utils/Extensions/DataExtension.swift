@@ -8,6 +8,7 @@ import AVFoundation
 import AVKit
 import Combine
 import CoreLocation
+import CommonCrypto
 
 extension Data {
     
@@ -88,5 +89,33 @@ extension Data {
     func fileExtension(vaultManager:VaultManager) -> String? {
         let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
         return fileTypeHelper?.fileExtension
+    }
+    
+    // Function to compute SHA-256 hash
+    func sha256() -> String {
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        self.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &hash)
+        }
+        return Data(hash).base64EncodedString()
+    }
+    
+    func getPublicKeyHash() -> String? {
+        
+        // Create SecCertificate from data
+        guard let certificate = SecCertificateCreateWithData(nil, self as CFData) else {
+            debugLog("Failed to create SecCertificate")
+            return nil
+        }
+        
+        // Extract public key
+        guard let publicKey = SecCertificateCopyKey(certificate),
+              let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data? else {
+            debugLog("Failed to extract public key")
+            return nil
+        }
+        
+        // Compute SHA-256 hash of the public key
+        return publicKeyData.sha256()
     }
 }

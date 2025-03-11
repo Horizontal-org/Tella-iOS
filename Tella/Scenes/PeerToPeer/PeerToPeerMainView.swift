@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PeerToPeerMainView: View {
     
+    @StateObject var mainAppModel: MainAppModel
+    
     var body: some View {
         
         ContainerViewWithHeader {
@@ -36,20 +38,24 @@ struct PeerToPeerMainView: View {
             VStack(spacing: 12) {
                 TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
                                 nextButtonAction: .destination,
-                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .sender)),
+                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .sender,
+                                                                                                 mainAppModel: mainAppModel),
+                                                               mainAppModel: mainAppModel),
                                 isValid: .constant(true))
                 .frame(height: 54)
-                                
+                
                 TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
                                 nextButtonAction: .destination,
-                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient)),
+                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient,
+                                                                                                 mainAppModel: mainAppModel),
+                                                               mainAppModel: mainAppModel),
                                 isValid: .constant(true))
                 .frame(height: 54)
             }
             
-
+            
             learnMoreView.padding()
-
+            
             Spacer()
         }
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
@@ -74,9 +80,9 @@ struct PeerToPeerMainView: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
-
+    
 }
 
 #Preview {
-    PeerToPeerMainView()
+    PeerToPeerMainView(mainAppModel: MainAppModel.stub())
 }

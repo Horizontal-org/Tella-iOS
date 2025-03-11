@@ -11,33 +11,37 @@ import SwiftUI
 struct WifiConnetionView: View {
     
     @StateObject var viewModel: WifiConnetionViewModel
+    @StateObject var mainAppModel: MainAppModel
     
-    @State private var isExpanded = false
+    @State private var isExpanded = true
     @State var isCheckboxOn = false
     @EnvironmentObject private var sheetManager: SheetManager
-
+    
     var body: some View {
         ContainerViewWithHeader {
             navigationBarView
         } content: {
-            VStack {
-                getConnectedView
-                tipsView
-                DividerView()
-                currentWifiView
-                sameWifiNetworkView
-                Spacer()
-                bottomView
-            }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding([.leading, .trailing], 20)
-            
+            contentView
         }
         .onReceive(viewModel.$showPermissionAlert) { showPermissionAlert in
             if showPermissionAlert {
                 getSettingsAlertView()
             }
         }
+    }
+    
+    private var contentView: some View {
+        VStack {
+            getConnectedView
+            tipsView
+            DividerView()
+            currentWifiView
+            sameWifiNetworkView
+            Spacer()
+            bottomView
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding([.leading, .trailing], 20)
     }
     
     var navigationBarView: some View {
@@ -98,28 +102,32 @@ struct WifiConnetionView: View {
             if let ssid = viewModel.ssid {
                 RegularText("\(ssid)")
             } else {
-                Text(LocalizablePeerToPeer.notConnected.localized) 
+                Text(LocalizablePeerToPeer.notConnected.localized)
                     .foregroundColor(.gray)
             }
             
         }.cardModifier()
             .frame(height: 53)
             .padding(.top, 24)
-        
-        
     }
+    
     var sameWifiNetworkView: some View {
         HStack {
             RegularText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized)
             Spacer()
-            ResizableImage( isCheckboxOn ? "checkbox.on" : "checkbox.off" ).frame(width: 24, height: 24)
+            ResizableImage( isCheckboxOn ? "checkbox.on" : "checkbox.off" )
+                .frame(width: 24, height: 24)
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
+                .disabled(viewModel.ssid == nil)
+            
         }.cardModifier()
             .frame(height: 74)
             .padding(.top, 12)
+            .opacity(viewModel.ssid == nil ? 0.5 : 1.0)
     }
+    
     var bottomView: some View {
         BottomLockView<AnyView>(isValid: $isCheckboxOn,
                                 nextButtonAction: .action,
@@ -128,19 +136,19 @@ struct WifiConnetionView: View {
             case .sender:
                 navigateTo(destination: SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel()))
             case .recipient:
-                navigateTo(destination: RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel()))
+                navigateTo(destination: RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel(certificateManager: CertificateManager(), mainAppModel: mainAppModel)))
             }
         },  backAction: {
             self.dismiss()
         })
     }
+    
     private func getSettingsAlertView() {
-        
         sheetManager.showBottomSheet(modalHeight: 170) {
             ConfirmBottomSheet(titleText: LocalizablePeerToPeer.locationAccess.localized,
-                                               msgText: LocalizablePeerToPeer.detectWifiSettingsDesc.localized,
-                                               cancelText: LocalizablePeerToPeer.cancel.localized.uppercased(),
-                                               actionText: LocalizablePeerToPeer.settings.localized.uppercased(), didConfirmAction: {
+                               msgText: LocalizablePeerToPeer.detectWifiSettingsDesc.localized,
+                               cancelText: LocalizablePeerToPeer.cancel.localized.uppercased(),
+                               actionText: LocalizablePeerToPeer.settings.localized.uppercased(), didConfirmAction: {
                 UIApplication.shared.openSettings()
             }, didCancelAction: {
                 self.viewModel.showPermissionAlert = false
@@ -151,7 +159,9 @@ struct WifiConnetionView: View {
 }
 
 #Preview {
-    WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient))
+    WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient,
+                                                        mainAppModel: MainAppModel.stub()),
+                      mainAppModel: MainAppModel.stub())
 }
 
 
