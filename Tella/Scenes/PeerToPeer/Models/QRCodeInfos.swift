@@ -7,7 +7,8 @@
 //
 
 
-class QRCodeInfos : Codable {
+class QRCodeInfos : Codable, Equatable {
+    
     var ipAddress : String
     var pin : String
     var hash : String
@@ -17,4 +18,9 @@ class QRCodeInfos : Codable {
         self.pin = pin
         self.hash = hash
     }
+    
+    static func == (lhs: QRCodeInfos, rhs: QRCodeInfos) -> Bool {
+        lhs.ipAddress == rhs.ipAddress
+    }
+
 }

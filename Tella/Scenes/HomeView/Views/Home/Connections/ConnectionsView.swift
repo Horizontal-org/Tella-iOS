@@ -94,7 +94,7 @@ struct ConnectionsView: View {
     }
     
     var peerToPeerMainView: PeerToPeerMainView {
-        PeerToPeerMainView()
+        PeerToPeerMainView(mainAppModel: homeViewModel.appModel)
     }
 }
 
