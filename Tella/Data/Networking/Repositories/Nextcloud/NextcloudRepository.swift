@@ -351,7 +351,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                                                  requestBody: NextcloudConstants.filesRequestBody.data(using: .utf8), account: "",
                                                  options: option) {
                 account, files, _, error in
-                print(error.errorCode)
+                debugLog(error.errorCode)
                 if error == .success, let _ = files.first {
                     continuation.resume(returning: true)
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
