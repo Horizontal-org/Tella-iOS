@@ -93,6 +93,7 @@
 		122E0AEE2A33B788009B1E33 /* FileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E0AED2A33B788009B1E33 /* FileDetails.swift */; };
 		122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5229A3812A00BDACAD /* ReportViewModel.swift */; };
 		122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5429A396C400BDACAD /* ServerFileSize.swift */; };
+		123004CD2D8CB767006F3F2D /* RecipientConnectManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123004CC2D8CB752006F3F2D /* RecipientConnectManuallyViewModel.swift */; };
 		123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */; };
@@ -126,6 +127,9 @@
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
+		12505B1E2D899BD900483E34 /* PeerToPeerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */; };
+		12505B202D89A16300483E34 /* ResponseStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B1F2D89A14C00483E34 /* ResponseStringExtension.swift */; };
+		12505B222D89A2A700483E34 /* HTTPResponseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */; };
 		1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* UwaziListView.swift */; };
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
 		125299DF2AD02E9D00191CAB /* FilesActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DE2AD02E9D00191CAB /* FilesActor.swift */; };
@@ -133,6 +137,7 @@
 		1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */; };
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
 		125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125392012D7B12EC00F96BA2 /* WifiSSID.swift */; };
+		125392802D897A9100F96BA2 /* PeerToPeerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
 		1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */; };
@@ -258,6 +263,10 @@
 		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
 		128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */; };
 		128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* QRCodeInfos.swift */; };
+		1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */; };
+		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
+		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
+		1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -779,6 +788,7 @@
 		122E0AED2A33B788009B1E33 /* FileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetails.swift; sourceTree = "<group>"; };
 		122E6A5229A3812A00BDACAD /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		122E6A5429A396C400BDACAD /* ServerFileSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerFileSize.swift; sourceTree = "<group>"; };
+		123004CC2D8CB752006F3F2D /* RecipientConnectManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectManuallyViewModel.swift; sourceTree = "<group>"; };
 		123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressFileItemViewModel.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoViewModel.swift; sourceTree = "<group>"; };
@@ -812,6 +822,9 @@
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerServer.swift; sourceTree = "<group>"; };
+		12505B1F2D89A14C00483E34 /* ResponseStringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStringExtension.swift; sourceTree = "<group>"; };
+		12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResponseBuilder.swift; sourceTree = "<group>"; };
 		1251C38F2BB45616002E9898 /* UwaziListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziListView.swift; sourceTree = "<group>"; };
 		125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportVaultFileResult.swift; sourceTree = "<group>"; };
 		125299DE2AD02E9D00191CAB /* FilesActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesActor.swift; sourceTree = "<group>"; };
@@ -819,6 +832,7 @@
 		1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstanceToSend.swift; sourceTree = "<group>"; };
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
 		125392012D7B12EC00F96BA2 /* WifiSSID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiSSID.swift; sourceTree = "<group>"; };
+		1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerRepository.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
 		1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -936,6 +950,10 @@
 		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		128247A32D5F935A00B7E63E /* QRCodeInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeInfos.swift; sourceTree = "<group>"; };
+		1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareUpload.swift; sourceTree = "<group>"; };
+		1282C09F2D8AEA1A0033E4CA /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
+		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
+		1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseConnection.swift; sourceTree = "<group>"; };
 		1282DE472DDD0302004D2176 /* sn-ZW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sn-ZW"; path = "sn-ZW.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
@@ -1603,6 +1621,7 @@
 				1293F6762AD88A0400F6CFBD /* FeedbackDTO.swift */,
 				15FABA372B7405B800B2EFEE /* ResourceDTO.swift */,
 				15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */,
+				1282C09C2D8AD7890033E4CA /* PeerToPeer */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1774,6 +1793,17 @@
 				1261AC9B2AFEDDA1005A8325 /* Constants */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		12505B1C2D899B4500483E34 /* PeerToPeer */ = {
+			isa = PBXGroup;
+			children = (
+				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
+				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
+				12505B1F2D89A14C00483E34 /* ResponseStringExtension.swift */,
+				12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */,
+			);
+			path = PeerToPeer;
 			sourceTree = "<group>";
 		};
 		1251C38E2BB455E5002E9898 /* EntityInstances */ = {
@@ -2236,6 +2266,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		1282C09C2D8AD7890033E4CA /* PeerToPeer */ = {
+			isa = PBXGroup;
+			children = (
+				1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */,
+				1282C09F2D8AEA1A0033E4CA /* Register.swift */,
+				1282C0A12D8AEE110033E4CA /* FileUpload.swift */,
+				1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */,
+			);
+			path = PeerToPeer;
+			sourceTree = "<group>";
+		};
 		1283C258272AABC9009180CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2667,6 +2708,7 @@
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 				155541B12C0672C20031D3A5 /* GDriveRepository.swift */,
+				12505B1C2D899B4500483E34 /* PeerToPeer */,
 				1275A8472C5E6EDF0071A97D /* Nextcloud */,
 			);
 			path = Repositories;
@@ -3026,6 +3068,7 @@
 			children = (
 				2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */,
 				20A3BD462D5A0D8D009E5E12 /* RecipientConnectToDeviceManuallyView.swift */,
+				123004CC2D8CB752006F3F2D /* RecipientConnectManuallyViewModel.swift */,
 				1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */,
 				20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */,
 				20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */,
@@ -3939,6 +3982,7 @@
 				15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */,
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
+				12505B222D89A2A700483E34 /* HTTPResponseBuilder.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */,
@@ -4041,6 +4085,7 @@
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
 				209107F52D5391B000808BCF /* RegularText.swift in Sources */,
+				1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */,
 				128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
@@ -4113,6 +4158,7 @@
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */,
+				123004CD2D8CB767006F3F2D /* RecipientConnectManuallyViewModel.swift in Sources */,
 				1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */,
 				15DCD93C2C9C78B2001339A7 /* DropboxOutboxViewModel.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
@@ -4130,6 +4176,7 @@
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
+				1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */,
 				126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
 				157E4F532BA385B500147345 /* PDFKitView.swift in Sources */,
@@ -4186,6 +4233,7 @@
 				12F2C65C2B86567F008457EB /* FileDetailsViewModel.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
+				125392802D897A9100F96BA2 /* PeerToPeerRepository.swift in Sources */,
 				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,
 				1254E2722C6FDCFB004C6280 /* MoreButtonView.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
@@ -4302,6 +4350,7 @@
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */,
 				1275A8402C5A78FB0071A97D /* NextcloudMetadata.swift in Sources */,
+				1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */,
 				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
 				126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */,
@@ -4355,6 +4404,7 @@
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
 				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
+				12505B202D89A16300483E34 /* ResponseStringExtension.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
@@ -4366,6 +4416,7 @@
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */,
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
+				12505B1E2D899BD900483E34 /* PeerToPeerServer.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */,
 				12181ABD2D146F1500CDF0F4 /* AssetItem.swift in Sources */,
@@ -4375,6 +4426,7 @@
 				1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */,
 				12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
+				1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */,
 				15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */,
 				15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,

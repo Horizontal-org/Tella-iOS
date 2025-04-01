@@ -13,7 +13,8 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
     
     @Environment(\.presentationMode) var presentationMode
     @Binding var scannedCode: String?
-    
+    var captureSession = AVCaptureSession()
+
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: QRCodeScannerView
         
@@ -27,10 +28,8 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
             if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
                metadataObject.type == .qr,
                let scannedValue = metadataObject.stringValue {
-                DispatchQueue.main.async {
+                    self.parent.captureSession.stopRunning()
                     self.parent.scannedCode = scannedValue
-                    self.parent.presentationMode.wrappedValue.dismiss()
-                }
             }
         }
     }
@@ -40,7 +39,6 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: Context) -> UIViewController {
-        let captureSession = AVCaptureSession()
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
             return UIViewController()
         }
@@ -80,8 +78,7 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
         DispatchQueue.global(qos: .userInitiated).async {
             captureSession.startRunning()
         }
-        
-        return viewController
+         return viewController
     }
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}

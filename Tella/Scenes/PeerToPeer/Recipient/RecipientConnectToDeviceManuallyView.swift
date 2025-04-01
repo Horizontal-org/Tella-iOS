@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RecipientConnectToDeviceManuallyView: View {
     
-    @ObservedObject var viewModel: ConnectToDeviceManuallyViewModel
+    @StateObject var viewModel: RecipientConnectManuallyViewModel
     
     var body: some View {
         ContainerViewWithHeader {
@@ -28,7 +28,6 @@ struct RecipientConnectToDeviceManuallyView: View {
                     CardItemView(title: LocalizablePeerToPeer.ipAddress.localized, subtitle: viewModel.ipAddress)
                     CardItemView(title: LocalizablePeerToPeer.pin.localized, subtitle: viewModel.pin)
                     CardItemView(title: LocalizablePeerToPeer.port.localized, subtitle: viewModel.port)
-                    CardItemView(title: LocalizablePeerToPeer.publicKey.localized, subtitle: viewModel.publicKey)
                 }
             }
             Spacer()

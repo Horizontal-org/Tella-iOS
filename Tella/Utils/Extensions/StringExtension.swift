@@ -184,7 +184,7 @@ extension String {
 
     
     func decode<T: Codable>(_ type: T.Type) throws -> T {
-        let data = try JSONSerialization.data(withJSONObject: self)
+        let data = try? JSONSerialization.data(withJSONObject: self)
         return try JSONDecoder().decode (type, from: data)
     }
     
@@ -200,6 +200,12 @@ extension String {
             return nil
         }
     }
+    
+    func isLocalNetworkHost() -> Bool {
+        return self.hasPrefix("192.168.") || self.hasPrefix("10.") ||
+               (self.hasPrefix("172.") && (16...31).contains(Int(self.split(separator: ".")[1]) ?? -1))
+    }
+
 }
 extension String: @retroactive Identifiable {
     public var id: String { self }

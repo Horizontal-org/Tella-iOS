@@ -251,4 +251,31 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
+
+    func loadCertificate() -> SecIdentity? {
+        
+        if let P12Data = self.contents() {
+            
+            let importOptions: [String: Any] = [
+                kSecImportExportPassphrase as String: ""
+            ]
+            
+            var rawItems: CFArray?
+            
+            _ = SecPKCS12Import(P12Data as CFData, importOptions as CFDictionary, &rawItems)
+            
+            let items = rawItems as! Array<Dictionary<String, Any>>
+            guard let cfIdentity = items.first?[kSecImportItemIdentity as String] as? CFTypeRef,
+                  CFGetTypeID(cfIdentity) == SecIdentityGetTypeID() else {
+                return  nil
+            }
+            
+            let clientIdentity = cfIdentity as! SecIdentity
+            return (clientIdentity as! SecIdentity)
+            
+        } else {
+            debugLog("Failed to load TLS identity")
+            return nil
+        }
+    }
 }

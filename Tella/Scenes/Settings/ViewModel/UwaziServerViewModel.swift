@@ -212,7 +212,7 @@ class UwaziServerViewModel: ServerViewModel {
                 // if the status code is 409 then 2FA is needed
                 let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
                 switch httpError {
-                case .need2FA:
+                case .conflict:
                     self.showNext2FAView = true
                 default:
                     self.shouldShowLoginError = true
