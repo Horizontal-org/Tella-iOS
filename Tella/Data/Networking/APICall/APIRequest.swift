@@ -25,6 +25,7 @@ public protocol APIRequest {
     var apiSession: URLSession? { get }
     var multipartBody: Data? { get }
     var multipartHeader: String? {get}
+    var trustedPublicKeyHash: String? {get}
 }
 
 public extension APIRequest {
@@ -50,7 +51,7 @@ public extension APIRequest {
     var apiSession: URLSession? { return nil }
     var multipartBody: Data? { nil }
     var multipartHeader: String? { nil }
-
+    var trustedPublicKeyHash: String? { nil }
 }
 
 extension APIRequest {

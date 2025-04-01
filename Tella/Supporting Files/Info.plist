@@ -114,13 +114,17 @@
     </array>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Tella requires access to the location to capture photos with location information.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs location access to detect the Wi-Fi network.</string>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<string>YES</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app requires access to local devices on your network to communicate with nearby services.</string>
     
-    
-    <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
-    <string>YES</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs location access to detect the Wi-Fi network.</string>
     <key>NSLocalNetworkUsageDescription</key>
-    <string>This app needs network access to identify the Wi-Fi SSID.</string>
+    <string>We need access to your local network for peer-to-peer sharing.</string>
+
+    
+    
 </dict>
 </plist>

@@ -115,12 +115,12 @@ struct WifiConnetionView: View {
         HStack {
             RegularText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized)
             Spacer()
-            ResizableImage( isCheckboxOn ? "checkbox.on" : "checkbox.off" )
+            ResizableImage(isCheckboxOn ? "checkbox.on" : "checkbox.off")
                 .frame(width: 24, height: 24)
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
-                .disabled(viewModel.ssid == nil)
+//                .disabled(viewModel.ssid == nil)
             
         }.cardModifier()
             .frame(height: 74)
@@ -134,9 +134,13 @@ struct WifiConnetionView: View {
                                 nextAction: {
             switch viewModel.participent {
             case .sender:
-                navigateTo(destination: SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel()))
+                let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository())
+                navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
             case .recipient:
-                navigateTo(destination: RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel(certificateManager: CertificateManager(), mainAppModel: mainAppModel)))
+                let recipientConnectToDeviceViewModel = RecipientConnectToDeviceViewModel(certificateManager: CertificateManager(),
+                                                           mainAppModel: mainAppModel,
+                                                           server: PeerToPeerServer())
+                navigateTo(destination: RecipientConnectToDeviceView(viewModel: recipientConnectToDeviceViewModel))
             }
         },  backAction: {
             self.dismiss()
