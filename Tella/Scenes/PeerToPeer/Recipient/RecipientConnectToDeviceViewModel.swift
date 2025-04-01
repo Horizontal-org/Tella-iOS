@@ -13,29 +13,24 @@ import Combine
 class RecipientConnectToDeviceViewModel: ObservableObject {
     
     @Published var qrCodeState: ViewModelState<QRCodeInfos> = .loading
-    var mainAppModel: MainAppModel?
+    var mainAppModel: MainAppModel
     
     private var subscribers : Set<AnyCancellable> = []
-    private var certificateManager : CertificateManager
+    var certificateManager : CertificateManager
+    var server: PeerToPeerServer
     
-    init(certificateManager : CertificateManager, mainAppModel:MainAppModel) {
+    init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
         self.certificateManager = certificateManager
         self.mainAppModel = mainAppModel
+        self.server = server
+        
         generateQRCodeInfos()
-        listenToConnectionChanges()
-    }
-    
-    func listenToConnectionChanges() {
-        mainAppModel?.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
-            self.qrCodeState = .loading
-            self.generateQRCodeInfos()
-        }).store(in: &subscribers)
     }
     
     func generateQRCodeInfos() {
         
         DispatchQueue.main.async {
-            let interfaceType = self.mainAppModel?.networkMonitor.interfaceTypeValue
+            let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
             
             guard let ipAddress = UIDevice.current.getIPAddress(for:interfaceType ) else {
                 self.qrCodeState = .error("Try to connect to hotspot")
@@ -46,8 +41,11 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let publicKeyHash = self.certificateManager.getPublicKeyHash()
             
             if certificateIsGenerated, let publicKeyHash {
-                let qrCodeInfos = QRCodeInfos(ipAddress: ipAddress, pin: "1234", hash: publicKeyHash)
+                let pin = "123456"
+                let qrCodeInfos = QRCodeInfos(ipAddress: ipAddress, pin: pin, hash: publicKeyHash)
                 self.qrCodeState = .loaded(qrCodeInfos)
+                self.server.pin = pin
+                self.server.startListening()
             } else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
             }

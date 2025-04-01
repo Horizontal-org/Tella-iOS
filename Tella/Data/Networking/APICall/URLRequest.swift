@@ -22,6 +22,7 @@ extension WebRepository {
             }
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
+            return URLSession(configuration: configuration,delegate: AuthenticationChallengeDelegate(trustedPublicKeyHash:endpoint.trustedPublicKeyHash), delegateQueue: nil)
             return NetworkSessionProvider().apiSession
                 .dataTaskPublisher(for: request)
                 .mapError { $0 as Error }
@@ -38,7 +39,6 @@ extension WebRepository {
             .requestJSON()
             .eraseToAnyPublisher()
     }
-    
     
     func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
         fetchData(endpoint: endpoint)
@@ -81,6 +81,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 } else {
                     return APIError.unexpectedResponse
                 }
+                
             }
             .eraseToAnyPublisher()
     }
@@ -92,6 +93,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }
+            
             guard HTTPCodes.success.contains(code) else {
                 debugLog("Error code: \(code)")
                 throw APIError.httpCode(code)
@@ -115,5 +117,52 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             }
         }
         .eraseToAnyPublisher()
+    }
+}
+
+class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
+    
+    var trustedPublicKeyHash : String?
+    
+    init(trustedPublicKeyHash: String? = nil) {
+        self.trustedPublicKeyHash = trustedPublicKeyHash
+    }
+    
+    func urlSession(_ session: URLSession,
+                    didReceive challenge: URLAuthenticationChallenge,
+                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        
+        
+        let host = challenge.protectionSpace.host
+        
+        guard host.isLocalNetworkHost(), let serverTrust = challenge.protectionSpace.serverTrust else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            return
+        }
+        
+        guard let publicKeyData = extractPublicKey(from: serverTrust) else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            return
+        }
+        
+        let serverPublicKeyHash = publicKeyData.sha256()
+        debugLog("serverPublicKeyHash \(serverPublicKeyHash)")
+        
+        if let trustedHash = trustedPublicKeyHash, trustedHash == serverPublicKeyHash {
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
+        } else {
+            debugLog("Public key SHA-256 mismatch!")
+            completionHandler(.cancelAuthenticationChallenge, nil)
+        }
+    }
+    
+    func extractPublicKey(from trust: SecTrust) -> Data? {
+        guard let certificate = SecTrustGetCertificateAtIndex(trust, 0),
+              let publicKey = SecCertificateCopyKey(certificate),
+              let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data? else {
+            return nil
+        }
+        return publicKeyData
     }
 }
