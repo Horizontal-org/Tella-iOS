@@ -11,8 +11,10 @@ import Combine
 class ConnectToDeviceManuallyViewModel: ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
+    var peerToPeerRepository:PeerToPeerRepository?
 
-    init() {
+    init(peerToPeerRepository:PeerToPeerRepository) {
+        self.peerToPeerRepository = peerToPeerRepository
         validateFields()
     }
     @Published var ipAddress : String = ""
@@ -39,6 +41,17 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
             .assign(to: \.validFields, on: self)
             .store(in: &cancellables)
     }
-    
 
+    func register() {
+
+        let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
+        
+        self.peerToPeerRepository?.register(serverURL: ipAddress, registerRequest: registerRequest, trustedPublicKeyHash: "")
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                print(completion)
+            }, receiveValue: { response in
+                print(response)
+            }).store(in: &cancellables)
+    }
 }
