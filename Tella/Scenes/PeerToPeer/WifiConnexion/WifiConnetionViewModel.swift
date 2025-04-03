@@ -16,16 +16,16 @@ class WifiConnetionViewModel: NSObject, ObservableObject {
     @Published var ssid: String? = nil
     @Published var showPermissionAlert = false
     
-    var participent: PeerToPeerParticipent
+    var participant: PeerToPeerParticipant
     private var ssidSubscription = Set<AnyCancellable>()
     private var wifiSSID = WifiSSID()
     private var cancellables = Set<AnyCancellable>()
     private var mainAppModel:MainAppModel
     private var interfaceType : NWInterface.InterfaceType?
     
-    init(participent: PeerToPeerParticipent, mainAppModel:MainAppModel) {
+    init(participant: PeerToPeerParticipant, mainAppModel:MainAppModel) {
         
-        self.participent = participent
+        self.participant = participant
         self.mainAppModel = mainAppModel
         interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
         

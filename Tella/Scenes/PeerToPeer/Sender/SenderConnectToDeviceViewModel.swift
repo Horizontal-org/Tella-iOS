@@ -12,7 +12,17 @@ import UIKit
 
 class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     
+    enum SenderConnectToDeviceViewState {
+        case none
+        case showToast(message: String)
+        case showBottomSheetError
+        case showSendFiles
+    }
+    
     @Published var scannedCode: String? = nil
+    @Published var viewState: SenderConnectToDeviceViewState = .none
+    @Published var startScanning: Bool = true
+    
     var subscribers = Set<AnyCancellable>()
     var peerToPeerRepository:PeerToPeerRepository
     
@@ -46,9 +56,26 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
                                            trustedPublicKeyHash: hash)
         .receive(on: DispatchQueue.main)
         .sink(receiveCompletion: { completion in
+            
             debugLog(completion)
+            
+            switch completion {
+            case .finished:
+                self.viewState = .showSendFiles
+                self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
+                
+            case .failure(let error):
+                switch error {
+                case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
+                    self.viewState = .showBottomSheetError
+                default:
+                    debugLog(error)
+                    self.viewState = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
+                }
+            }
         }, receiveValue: { response in
             debugLog(response)
         }).store(in: &self.subscribers)
     }
 }
+
