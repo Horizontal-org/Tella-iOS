@@ -590,7 +590,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_WifiSettingsDesc"  = "To detect the Wi-Fi network, please enable location access in your device Settings.";
 "PeerToPeer_Cancel" = "Cancel";
 "PeerToPeer_Settings" = "Settings";
-"PeerToPeer_NotConnected" = "Not connected";
+"PeerToPeer_NoConnection" = "No connection";
 "PeerToPeer_WaitingForSenderDesc" = "Waiting for the sender to share files";
 "PeerToPeer_SenderRequest_NumberOfFiles_Desc" = "The sender is trying to send you %i files";
 "PeerToPeer_RequestQuestion" = "Would you like to accept them?";
