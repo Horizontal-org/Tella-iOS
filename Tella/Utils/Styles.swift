@@ -46,6 +46,19 @@ struct Styles {
         static var lightRobotoFontName = "Roboto-Light"
         static var italicRobotoFontName = "OpenSans-Italic"
     }
+    
+    struct Typography {
+        static let heading1Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 18)
+        static let heading2Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 16)
+        static let heading3Font: Font = .custom(Styles.Fonts.boldFontName, size: 16)
+
+        static let subheading1Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 14)
+        static let subheading2Font: Font = .custom(Styles.Fonts.boldFontName, size: 10)
+
+        static let body1Font: Font = .custom(Styles.Fonts.regularFontName, size: 14)
+        static let body2Font: Font = .custom(Styles.Fonts.regularFontName, size: 12)
+        static let body3Font: Font = .custom(Styles.Fonts.regularFontName, size: 10)
+    }
 }
 
 public extension UIColor {

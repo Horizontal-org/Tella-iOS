@@ -102,7 +102,7 @@ struct WifiConnetionView: View {
             if let ssid = viewModel.ssid {
                 RegularText("\(ssid)")
             } else {
-                Text(LocalizablePeerToPeer.notConnected.localized)
+                Text(LocalizablePeerToPeer.noConnection.localized)
                     .foregroundColor(.gray)
             }
             
@@ -138,8 +138,8 @@ struct WifiConnetionView: View {
                 navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
             case .recipient:
                 let recipientConnectToDeviceViewModel = RecipientConnectToDeviceViewModel(certificateManager: CertificateManager(),
-                                                           mainAppModel: mainAppModel,
-                                                           server: PeerToPeerServer())
+                                                                                          mainAppModel: mainAppModel,
+                                                                                          server: PeerToPeerServer())
                 navigateTo(destination: RecipientConnectToDeviceView(viewModel: recipientConnectToDeviceViewModel))
             }
         },  backAction: {
