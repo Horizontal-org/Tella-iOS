@@ -132,7 +132,7 @@ struct WifiConnetionView: View {
         BottomLockView<AnyView>(isValid: $isCheckboxOn,
                                 nextButtonAction: .action,
                                 nextAction: {
-            switch viewModel.participent {
+            switch viewModel.participant {
             case .sender:
                 let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository())
                 navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
@@ -163,7 +163,7 @@ struct WifiConnetionView: View {
 }
 
 #Preview {
-    WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient,
+    WifiConnetionView(viewModel: WifiConnetionViewModel(participant: .recipient,
                                                         mainAppModel: MainAppModel.stub()),
                       mainAppModel: MainAppModel.stub())
 }

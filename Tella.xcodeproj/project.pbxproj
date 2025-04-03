@@ -115,6 +115,7 @@
 		1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */; };
 		123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */; };
 		123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */; };
+		123B19832D9DD3D200BAD892 /* ConnectionFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123B19822D9DD3D200BAD892 /* ConnectionFailedView.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* TellaWebServerViewModel.swift */; };
 		124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */; };
@@ -810,6 +811,7 @@
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxReportVM.swift; sourceTree = "<group>"; };
 		123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportOperation.swift; sourceTree = "<group>"; };
+		123B19822D9DD3D200BAD892 /* ConnectionFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionFailedView.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* TellaWebServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerViewModel.swift; sourceTree = "<group>"; };
 		124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLStatementBuilder.swift; sourceTree = "<group>"; };
@@ -3055,6 +3057,7 @@
 			isa = PBXGroup;
 			children = (
 				209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */,
+				123B19822D9DD3D200BAD892 /* ConnectionFailedView.swift */,
 				128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */,
 				1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */,
 				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
@@ -3969,6 +3972,7 @@
 				CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */,
 				128A760A2CD23DDA0033F1C2 /* OutboxDetailsView.swift in Sources */,
 				128A760B2CD23DDA0033F1C2 /* SubmittedDetailsView.swift in Sources */,
+				123B19832D9DD3D200BAD892 /* ConnectionFailedView.swift in Sources */,
 				128A760C2CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift in Sources */,
 				128A760D2CD23DDA0033F1C2 /* OutboxDetailsItemView.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,

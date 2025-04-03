@@ -52,5 +52,12 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case invalidPin = "PeerToPeer_InvalidPin"
     case selectFilesToSend = "PeerToPeer_SelectFilesToSend"
     case title = "PeerToPeer_Title"
+    case successConnectToast = "PeerToPeer_SuccessConnect_Toast"
+    case serverErrorToast = "PeerToPeer_ServerError_Toast"
+    
+    case connectionFailedTitle = "PeerToPeer_ConnectionFailed_SheetTitle"
+    case connectionFailedExpl = "PeerToPeer_ConnectionFailed_SheetExpl"
+    case connectionFailedAction = "PeerToPeer_ConnectionFailed_SheetAction"
+    
 }
 

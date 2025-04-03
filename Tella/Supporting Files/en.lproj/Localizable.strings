@@ -600,3 +600,10 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_InvalidPin" = "Invalid PIN";
 "PeerToPeer_SelectFilesToSend" = "Select files to send";
 "PeerToPeer_Title" = "Title";
+
+"PeerToPeer_SuccessConnect_Toast" = "Success! Connected to device";
+"PeerToPeer_ServerError_Toast" = "Server error";
+
+"PeerToPeer_ConnectionFailed_SheetTitle" = "Connection failed";
+"PeerToPeer_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
+"PeerToPeer_ConnectionFailed_SheetAction" = "Try again";
