@@ -35,7 +35,7 @@ struct ConnectionsView: View {
         HStack(spacing: 7) {
             
             ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
-                                image: "share-icon",
+                                image: "p2p.home",
                                 destination: peerToPeerMainView)
             
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
