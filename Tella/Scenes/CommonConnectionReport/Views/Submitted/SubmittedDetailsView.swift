@@ -33,11 +33,6 @@ struct SubmittedDetailsView: View {
                 Toast.displayToast(message: submittedReportVM.toastMessage)
             }
         }
-        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
-            if value {
-                dismissViews()
-            }
-        })
     }
     
     var navigationBarView: some View {

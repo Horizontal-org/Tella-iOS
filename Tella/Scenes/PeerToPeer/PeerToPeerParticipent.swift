@@ -7,7 +7,7 @@
 //
 
 import Foundation
-enum PeerToPeerParticipent {
+enum PeerToPeerParticipant {
     case sender
     case recipient
 }
