@@ -7,10 +7,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SenderConnectToDeviceView: View {
     
     @StateObject var viewModel: SenderConnectToDeviceViewModel
+    @State var isBottomSheetShown : Bool = false
+    @State var startScanning = PassthroughSubject<Bool, Never>()
     
     var body: some View {
         ContainerViewWithHeader {
@@ -28,6 +31,20 @@ struct SenderConnectToDeviceView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
         }
+        
+        .onReceive(viewModel.$viewState) { state in
+            switch state {
+            case .showBottomSheetError:
+                showBottomSheetError()
+            case .showSendFiles:
+                break
+            case .showToast(let message):
+                Toast.displayToast(message: message)
+            default:
+                break
+            }
+        }
+        
     }
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
@@ -37,7 +54,7 @@ struct SenderConnectToDeviceView: View {
     }
     var qrCodeView: some View {
         ZStack{
-            QRCodeScannerView(scannedCode: $viewModel.scannedCode)
+            QRCodeScannerView(scannedCode: $viewModel.scannedCode,startScanning: startScanning)
                 .cornerRadius(12)
                 .padding(.all,4)
             ResizableImage("qrCode.icon")
@@ -54,7 +71,13 @@ struct SenderConnectToDeviceView: View {
         .padding([.leading, .trailing], 80)
     }
     
-
+    private func showBottomSheetError() {
+        isBottomSheetShown = true
+        let content = ConnectionFailedView( tryAction:  {
+            startScanning.send(true)  }
+        )
+        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
+    }
 }
 
 #Preview {

@@ -8,18 +8,30 @@
 
 import AVFoundation
 import SwiftUI
+import Combine
 
 struct QRCodeScannerView: UIViewControllerRepresentable {
     
     @Environment(\.presentationMode) var presentationMode
     @Binding var scannedCode: String?
     var captureSession = AVCaptureSession()
-
+    
+    var startScanning = PassthroughSubject<Bool, Never>()
+    
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: QRCodeScannerView
+        var subscribers = Set<AnyCancellable>()
         
         init(parent: QRCodeScannerView) {
             self.parent = parent
+            self.parent.startScanning.sink { value in
+                
+                
+                DispatchQueue.global(qos: .userInitiated).async {
+                    parent.captureSession.startRunning()
+                }
+                
+            }.store(in: &subscribers)
         }
         
         func metadataOutput(_ output: AVCaptureMetadataOutput,
@@ -28,8 +40,8 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
             if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
                metadataObject.type == .qr,
                let scannedValue = metadataObject.stringValue {
-                    self.parent.captureSession.stopRunning()
-                    self.parent.scannedCode = scannedValue
+                self.parent.captureSession.stopRunning()
+                self.parent.scannedCode = scannedValue
             }
         }
     }
@@ -78,10 +90,13 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
         DispatchQueue.global(qos: .userInitiated).async {
             captureSession.startRunning()
         }
-         return viewController
+        return viewController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+    }
+    
+    
 }
 
 class ScannerView: UIView {

@@ -11,6 +11,7 @@ import SwiftUI
 struct PeerToPeerMainView: View {
     
     @StateObject var mainAppModel: MainAppModel
+    @State var participant: PeerToPeerParticipant?
     
     var body: some View {
         
@@ -35,28 +36,12 @@ struct PeerToPeerMainView: View {
             Spacer()
                 .frame(height: 24)
             
-            VStack(spacing: 12) {
-                TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
-                                nextButtonAction: .destination,
-                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .sender,
-                                                                                                 mainAppModel: mainAppModel),
-                                                               mainAppModel: mainAppModel),
-                                isValid: .constant(true))
-                .frame(height: 54)
-                
-                TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
-                                nextButtonAction: .destination,
-                                destination: WifiConnetionView(viewModel: WifiConnetionViewModel(participent: .recipient,
-                                                                                                 mainAppModel: mainAppModel),
-                                                               mainAppModel: mainAppModel),
-                                isValid: .constant(true))
-                .frame(height: 54)
-            }
-            
+            peerToPeerParticipantButtons
             
             learnMoreView.padding()
             
             Spacer()
+            bottomView
         }
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
     }
@@ -65,8 +50,26 @@ struct PeerToPeerMainView: View {
         ServerConnectionHeaderView(
             title: LocalizablePeerToPeer.nearbySharingSubhead.localized,
             subtitle: LocalizablePeerToPeer.nearbySharingExpl.localized,
-            imageIconName: "p2p.main",
+            imageIconName: "p2p.share",
             subtitleTextAlignment: .leading)
+    }
+    
+    var peerToPeerParticipantButtons: some View {
+        VStack(spacing: 12) {
+            
+            TellaButtonView<AnyView>(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+                                     nextButtonAction: .action,
+                                     isOverlay: participant == .sender,
+                                     isValid: .constant(true),
+                                     action: { participant = .sender }
+            ).frame(height: 54)
+            TellaButtonView<AnyView>(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
+                                     nextButtonAction: .action,
+                                     isOverlay: participant == .recipient,
+                                     isValid: .constant(true),
+                                     action: {participant = .recipient}
+            ).frame(height: 54)
+        }
     }
     
     var learnMoreView: some View {
@@ -81,6 +84,18 @@ struct PeerToPeerMainView: View {
         }
     }
     
+    var bottomView: some View {
+        BottomLockView<AnyView>(isValid: Binding(get: { participant != nil },
+                                                 set: { _ in }),
+                                nextButtonAction: .action,
+                                shouldHideBack: true,
+                                nextAction: {
+            guard let participant  else { return }
+            let wifiConnetionViewModel = WifiConnetionViewModel(participant: participant, mainAppModel: mainAppModel)
+            navigateTo(destination: WifiConnetionView(viewModel:wifiConnetionViewModel,
+                                                      mainAppModel: mainAppModel))
+        })
+    }
 }
 
 #Preview {
