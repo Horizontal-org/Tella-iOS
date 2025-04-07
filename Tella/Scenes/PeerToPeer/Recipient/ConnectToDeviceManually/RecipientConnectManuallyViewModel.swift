@@ -33,16 +33,19 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         
         DispatchQueue.main.async {
             let interfaceType = self.mainAppModel?.networkMonitor.interfaceTypeValue
+            let port = 53317
+            let pin =  Int.random(in: 100000...999999)
+            let pinString = "\(pin)"
+            let portString = "\(port)"
             
             guard let ipAddress = UIDevice.current.getIPAddress(for:interfaceType ) else {
                 return
             }
             
-            let pin = "123456"
-            self.pin = pin
+            self.pin = pinString
             self.ipAddress = ipAddress
-            self.port = "53317"
-            self.server.pin = pin
+            self.port = portString
+            self.server.startListening(port: port, pin: pinString)
         }
     }
 }
