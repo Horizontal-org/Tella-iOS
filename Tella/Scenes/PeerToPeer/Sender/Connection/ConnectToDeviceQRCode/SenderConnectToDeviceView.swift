@@ -19,33 +19,26 @@ struct SenderConnectToDeviceView: View {
         ContainerViewWithHeader {
             navigationBarView
         } content: {
-            VStack {
-                RegularText(LocalizablePeerToPeer.scanCode.localized, size: 18)
-                    .padding(.top, 74)
-                
-                qrCodeView.padding(.bottom, 40)
-                RegularText(LocalizablePeerToPeer.havingTrouble.localized)
-                connectManuallyButton
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
+            contentView
         }
-        
         .onReceive(viewModel.$viewState) { state in
-            switch state {
-            case .showBottomSheetError:
-                showBottomSheetError()
-            case .showSendFiles:
-                break
-            case .showToast(let message):
-                Toast.displayToast(message: message)
-            default:
-                break
-            }
+            handleViewState(state: state)
         }
-        
     }
+    
+    var contentView: some View {
+        VStack {
+            RegularText(LocalizablePeerToPeer.scanCode.localized, size: 18)
+                .padding(.top, 74)
+            
+            qrCodeView.padding(.bottom, 40)
+            RegularText(LocalizablePeerToPeer.havingTrouble.localized)
+            connectManuallyButton
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
                              navigationBarType: .inline,
@@ -78,8 +71,23 @@ struct SenderConnectToDeviceView: View {
         )
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
+    
+    private func handleViewState(state: SenderConnectToDeviceViewState) {
+        switch state {
+        case .showBottomSheetError:
+            showBottomSheetError()
+        case .showSendFiles:
+            let viewModel = P2PSendFilesViewModel(mainAppModel: viewModel.mainAppModel)
+            self.navigateTo(destination: P2PSendFilesView(viewModel: viewModel ))
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
 }
 
 #Preview {
-    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository()))
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
+                                                                        mainAppModel: MainAppModel.stub()))
 }

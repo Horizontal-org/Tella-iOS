@@ -8,6 +8,7 @@
 
 import Network
 import SwiftUICore
+import Combine
 
 class PeerToPeerServer {
     
@@ -20,9 +21,16 @@ class PeerToPeerServer {
     var transmissionId : String?
     var requestsNumber : Int = 0
     
-    func startListening() {
-        
-        let port: NWEndpoint.Port = 53317
+    
+    var didRegisterPublisher = PassthroughSubject<Void, Never>()
+    //    var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
+    //    var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
+    //    var didTimeoutPublisher = PassthroughSubject<Void, Never>()
+    
+    
+    func startListening(port : Int, pin : String) {
+        self.pin = pin
+        let port: NWEndpoint.Port = .init(integerLiteral: UInt16(port))
         let tlsOptions = NWProtocolTLS.Options()
         let parameters = NWParameters(tls: tlsOptions)
         let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
@@ -79,7 +87,7 @@ class PeerToPeerServer {
                 
                 self.handleParsedHeaders(httpResponse)
                 
-                var dataResponse: Data?
+                var dataResponse: ServerResponse?
                 
                 switch PeerToPeerEndpoint(rawValue: endpoint ?? "") {
                 case .register:
@@ -96,7 +104,7 @@ class PeerToPeerServer {
                 }
                 
                 if let dataResponse = dataResponse {
-                    self.sendResponse(connection: nwConnection, dataResponse: dataResponse)
+                    self.sendResponse(connection: nwConnection, serverResponse: dataResponse)
                 }
             }
         }
@@ -108,7 +116,7 @@ class PeerToPeerServer {
         }
     }
     
-    private func handleRegisterRequest(body: String?) -> Data? {
+    private func handleRegisterRequest(body: String?) -> ServerResponse? {
         /*
          HTTP code     Message
          400           Invalid request format
@@ -123,41 +131,50 @@ class PeerToPeerServer {
             let body,
             let registerRequest = body.decodeJSON(RegisterRequest.self)
         else {
-            return HTTPResponseBuilder.buildErrorResponse(
+            let data = HTTPResponseBuilder.buildErrorResponse(
                 error: "Invalid request format",
                 statusCode: HTTPErrorCodes.badRequest.rawValue
             )
+            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if requestsNumber >= 3 {
-            return HTTPResponseBuilder.buildErrorResponse(
+            let data = HTTPResponseBuilder.buildErrorResponse(
                 error: "Too many requests",
                 statusCode: HTTPErrorCodes.tooManyRequests.rawValue
             )
+            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if sessionId != nil {
-            return HTTPResponseBuilder.buildErrorResponse(
+            let data = HTTPResponseBuilder.buildErrorResponse(
                 error: "Active session already exists",
                 statusCode: HTTPErrorCodes.conflict.rawValue
             )
+            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if pin != registerRequest.pin {
             requestsNumber += 1
-            return HTTPResponseBuilder.buildErrorResponse(
+            let data = HTTPResponseBuilder.buildErrorResponse(
                 error: "Invalid PIN",
                 statusCode: HTTPErrorCodes.unauthorized.rawValue
             )
+            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
         }
         
         let sessionId = UUID().uuidString
         self.sessionId = sessionId
         let response = RegisterResponse(sessionId: sessionId)
-        return HTTPResponseBuilder.buildResponse(body: response)
+        
+        guard let responseData = HTTPResponseBuilder.buildResponse(body: response) else {
+            return nil
+        }
+        
+        return ServerResponse(dataResponse: responseData, response: .success)
     }
     
-    private func handlePrepareUploadRequest() -> Data? {
+    private func handlePrepareUploadRequest() -> ServerResponse? {
         /*
          HTTP code    Message
          400    Invalid request format
@@ -167,10 +184,13 @@ class PeerToPeerServer {
          */
         
         let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
-        return HTTPResponseBuilder.buildResponse(body: response)
+        let responseData =  HTTPResponseBuilder.buildResponse(body: response)
+        
+        return ServerResponse(dataResponse: responseData, response: .success)
+        
     }
     
-    private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> Data? {
+    private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> ServerResponse? {
         /*
          HTTP code    Message
          400    Missing required parameters
@@ -199,7 +219,7 @@ class PeerToPeerServer {
         return nil
     }
     
-    private func handleCloseConnectionRequest() -> Data? {
+    private func handleCloseConnectionRequest() -> ServerResponse? {
         
         /*
          HTTP code    Message
@@ -211,7 +231,7 @@ class PeerToPeerServer {
         return nil
     }
     
-    private func finalizeUpload(connection: NWConnection) -> Data? {
+    private func finalizeUpload(connection: NWConnection) -> ServerResponse? {
         debugLog("File transfer completed")
         
         self.saveFile(data: self.fileData)
@@ -221,14 +241,20 @@ class PeerToPeerServer {
         self.contentLength = nil
         
         let response = BoolResponse(success:true)
-        return HTTPResponseBuilder.buildResponse(body: response)
+        let  responseData = HTTPResponseBuilder.buildResponse(body: response)
+        
+        return ServerResponse(dataResponse: responseData, response: .success)
+        
     }
     
-    private func sendResponse(connection: NWConnection, dataResponse: Data) {
-        connection.send(content: dataResponse, completion: .contentProcessed { error in
+    private func sendResponse(connection: NWConnection, serverResponse: ServerResponse) {
+        connection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
             if let error = error {
                 debugLog("Server send error: \(error)")
             } else {
+                if serverResponse.response == .success {
+                    self.didRegisterPublisher.send()
+                }
                 debugLog("Server sent response")
             }
         })
@@ -263,3 +289,12 @@ enum PeerToPeerEndpoint : String {
     case none = ""
 }
 
+struct ServerResponse {
+    var dataResponse : Data?
+    var response : ServerResponseStatus
+}
+
+enum ServerResponseStatus {
+    case success
+    case failure
+}
