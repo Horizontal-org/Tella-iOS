@@ -8,46 +8,30 @@
 
 import Foundation
 
-// MARK: - PrepareUploadRequest
+// MARK: - PrepareUpload
 struct PrepareUploadRequest: Codable {
-    let title, sessionID: String?
-    let metadata: Metadata?
-
+    let title, sessionID: String
+    let files: [P2PFile]
+    
     enum CodingKeys: String, CodingKey {
         case title
         case sessionID = "sessionId"
-        case metadata
+        case files
     }
 }
 
-// MARK: - Metadata
-struct Metadata: Codable {
-    let files: P2PFile?
-}
-
-// MARK: - Files
+// MARK: - P2PFile
 struct P2PFile: Codable {
-    let fileID: FileID?
-
-    enum CodingKeys: String, CodingKey {
-        case fileID = "fileId"
-    }
+    let id, fileName: String
+    let size: Int
+    let fileType, sha256: String
 }
-
-// MARK: - FileID
-struct FileID: Codable {
-    let id, fileName: String?
-    let size: Int?
-    let fileType, sha256: String?
-}
-
 
 // MARK: - PrepareUploadResponse
 struct PrepareUploadResponse: Codable {
     let transmissionID: String
-
+    
     enum CodingKeys: String, CodingKey {
         case transmissionID = "transmissionId"
     }
 }
-
