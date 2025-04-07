@@ -12,7 +12,7 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
     var peerToPeerRepository:PeerToPeerRepository?
-
+    
     init(peerToPeerRepository:PeerToPeerRepository) {
         self.peerToPeerRepository = peerToPeerRepository
         validateFields()
@@ -32,7 +32,7 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
     // Fields validation
     @Published var shouldShowIpAddressError: Bool = false
     @Published var shouldShowPinError: Bool = false
-
+    
     func validateFields() {
         Publishers.CombineLatest3($isValidIpAddress, $isValidPin, $isValidPort)
             .map { ip, pin, port in
@@ -41,12 +41,13 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
             .assign(to: \.validFields, on: self)
             .store(in: &cancellables)
     }
-
+    
     func register() {
-
-        let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
         
-        self.peerToPeerRepository?.register(serverURL: ipAddress, registerRequest: registerRequest, trustedPublicKeyHash: "")
+        let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
+        guard let port = Int(port) else { return }
+        let connectionInfo = ConnectionInfo(ipAddress: ipAddress, port: port, certificateHash: "", pin: pin)
+        self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 print(completion)

@@ -11,26 +11,26 @@ import Combine
 
 class PeerToPeerRepository: NSObject, WebRepository {
     
-    func register(serverURL :String, registerRequest:RegisterRequest, trustedPublicKeyHash: String) -> AnyPublisher<RegisterResponse, APIError> {
+    func register(connectionInfo:ConnectionInfo, registerRequest:RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
         
-        let apiResponse : APIResponse<RegisterResponse> = getAPIResponse(endpoint: API.register(serverURL:serverURL,
-                                                                                                registerRequest: registerRequest, trustedPublicKeyHash: trustedPublicKeyHash))
+        let apiResponse : APIResponse<RegisterResponse> = getAPIResponse(endpoint: API.register(connectionInfo:connectionInfo,
+                                                                                                registerRequest: registerRequest))
         return apiResponse
             .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
     
-    func prepareUpload(serverURL: String, prepareUpload: PrepareUploadRequest) -> AnyPublisher<PrepareUploadResponse, APIError> {
-        let apiResponse : APIResponse<PrepareUploadResponse> = getAPIResponse(endpoint: API.prepareUpload(serverURL: serverURL,
+    func prepareUpload(connectionInfo:ConnectionInfo, prepareUpload: PrepareUploadRequest) -> AnyPublisher<PrepareUploadResponse, APIError> {
+        let apiResponse : APIResponse<PrepareUploadResponse> = getAPIResponse(endpoint: API.prepareUpload(connectionInfo:connectionInfo,
                                                                                                           prepareUpload: prepareUpload))
         return apiResponse
             .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
     
-    func uploadFile(serverURL: String, fileUploadRequest:FileUploadRequest) -> AnyPublisher<BoolResponse, APIError> {
+    func uploadFile(connectionInfo:ConnectionInfo, fileUploadRequest:FileUploadRequest) -> AnyPublisher<BoolResponse, APIError> {
         do {
-            let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.uploadFile(serverURL: serverURL,
+            let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.uploadFile(connectionInfo:connectionInfo,
                                                                                                   fileUploadRequest: fileUploadRequest))
             return apiResponse
                 .compactMap{$0.0}
@@ -38,8 +38,8 @@ class PeerToPeerRepository: NSObject, WebRepository {
         }
     }
     
-    func closeConnection(serverURL: String, closeConnectionRequest: CloseConnectionRequest) -> AnyPublisher<BoolResponse, APIError> {
-        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.closeConnection(serverURL: serverURL,
+    func closeConnection(connectionInfo:ConnectionInfo, closeConnectionRequest: CloseConnectionRequest) -> AnyPublisher<BoolResponse, APIError> {
+        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.closeConnection(connectionInfo:connectionInfo,
                                                                                                    closeConnectionRequest: closeConnectionRequest))
         return apiResponse
             .compactMap{$0.0}
@@ -50,10 +50,10 @@ class PeerToPeerRepository: NSObject, WebRepository {
 extension PeerToPeerRepository {
     
     enum API {
-        case register(serverURL :String, registerRequest:RegisterRequest,trustedPublicKeyHash: String)
-        case prepareUpload(serverURL: String, prepareUpload: PrepareUploadRequest)
-        case uploadFile(serverURL: String, fileUploadRequest:FileUploadRequest)
-        case closeConnection(serverURL: String, closeConnectionRequest: CloseConnectionRequest)
+        case register(connectionInfo:ConnectionInfo, registerRequest:RegisterRequest)
+        case prepareUpload(connectionInfo:ConnectionInfo, prepareUpload: PrepareUploadRequest)
+        case uploadFile(connectionInfo:ConnectionInfo, fileUploadRequest:FileUploadRequest)
+        case closeConnection(connectionInfo:ConnectionInfo, closeConnectionRequest: CloseConnectionRequest)
     }
 }
 
@@ -64,7 +64,7 @@ extension PeerToPeerRepository.API: APIRequest {
     var keyValues: [Key : Value?]? {
         
         switch self {
-        case .register(_, let registerRequest,_):
+        case .register(_, let registerRequest):
             return registerRequest.dictionary
         case .prepareUpload(_, let prepareUpload):
             return prepareUpload.dictionary
@@ -87,30 +87,30 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var baseURL: String {
         switch self {
-        case .register(let serverURL, _, _):
-            return "https://" + serverURL
-        case .prepareUpload(let serverURL, _):
-            return "https://" + serverURL
-        case .uploadFile(let serverURL,_):
-            return "https://" + serverURL
-        case .closeConnection(let serverURL,_):
-            return "https://" + serverURL
+        case .register(let connectionInfos, _):
+            return "https://" + connectionInfos.ipAddress
+        case .prepareUpload(let connectionInfos, _):
+            return "https://" + connectionInfos.ipAddress
+        case .uploadFile(let connectionInfos, _):
+            return "https://" + connectionInfos.ipAddress
+        case .closeConnection(let connectionInfos, _):
+            return "https://" + connectionInfos.ipAddress
         }
     }
     
     var path: String {
         switch self {
-        case .register:
-            return ":53317/api/v1/register"
+        case .register(let connectionInfos, _):
+            return ":\(connectionInfos.port)/api/v1/register"
             
-        case .prepareUpload:
-            return ":53317/api/v1/prepare-upload"
+        case .prepareUpload(let connectionInfos, _):
+            return  ":\(connectionInfos.port)/api/v1/prepare-upload"
             
-        case .uploadFile:
-            return ":53317/api/v1/upload"
+        case .uploadFile(let connectionInfos, _):
+            return  ":\(connectionInfos.port)/api/v1/upload"
             
-        case .closeConnection:
-            return ":53317/api/v1/close-connection"
+        case .closeConnection(let connectionInfos, _):
+            return  ":\(connectionInfos.port)/api/v1/close-connection"
         }
     }
     
@@ -123,7 +123,7 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var multipartBody: Data? {
         switch self {
-        case .uploadFile (_,let fileUploadRequest):
+        case .uploadFile (_, let fileUploadRequest):
             return fileUploadRequest.data
             
         default:
@@ -139,14 +139,14 @@ extension PeerToPeerRepository.API: APIRequest {
             return .json
         }
     }
+    
     var trustedPublicKeyHash: String? {
         switch self {
-        case .register(_, _, let trustedPublicKeyHash):
-            return trustedPublicKeyHash
+        case .register( let connectionInfos, _):
+            return connectionInfos.certificateHash
             
         default:
             return nil
         }
-
     }
 }
