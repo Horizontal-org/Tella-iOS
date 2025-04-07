@@ -134,7 +134,8 @@ struct WifiConnetionView: View {
                                 nextAction: {
             switch viewModel.participant {
             case .sender:
-                let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository())
+                let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
+                                                                                    mainAppModel: mainAppModel)
                 navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
             case .recipient:
                 let recipientConnectToDeviceViewModel = RecipientConnectToDeviceViewModel(certificateManager: CertificateManager(),

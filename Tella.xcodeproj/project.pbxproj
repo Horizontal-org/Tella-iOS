@@ -263,7 +263,7 @@
 		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
 		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
 		128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */; };
-		128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* QRCodeInfos.swift */; };
+		128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* ConnectionInfo.swift */; };
 		1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */; };
 		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
 		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
@@ -352,6 +352,7 @@
 		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
 		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
+		12A9ECD72D9F3FC800711BA4 /* P2PSendFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
@@ -951,7 +952,7 @@
 		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
-		128247A32D5F935A00B7E63E /* QRCodeInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeInfos.swift; sourceTree = "<group>"; };
+		128247A32D5F935A00B7E63E /* ConnectionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionInfo.swift; sourceTree = "<group>"; };
 		1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareUpload.swift; sourceTree = "<group>"; };
 		1282C09F2D8AEA1A0033E4CA /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
@@ -1055,6 +1056,7 @@
 		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
 		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
+		12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PSendFilesViewModel.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
@@ -2262,7 +2264,7 @@
 			isa = PBXGroup;
 			children = (
 				200751D32D5B91F1000CC076 /* PeerToPeerParticipant.swift */,
-				128247A32D5F935A00B7E63E /* QRCodeInfos.swift */,
+				128247A32D5F935A00B7E63E /* ConnectionInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2567,6 +2569,7 @@
 			isa = PBXGroup;
 			children = (
 				203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */,
+				12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */,
 			);
 			path = SendFiles;
 			sourceTree = "<group>";
@@ -4154,7 +4157,7 @@
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
 				209107F52D5391B000808BCF /* RegularText.swift in Sources */,
 				1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */,
-				128247A42D5F935D00B7E63E /* QRCodeInfos.swift in Sources */,
+				128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
@@ -4387,6 +4390,7 @@
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
+				12A9ECD72D9F3FC800711BA4 /* P2PSendFilesViewModel.swift in Sources */,
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
 				12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */,

@@ -10,24 +10,33 @@ import Foundation
 import UIKit
 import Combine
 
+enum RecipientConnectToDeviceViewState {
+    case none
+    case showToast(message: String)
+    case showReceiveFiles
+}
+
 class RecipientConnectToDeviceViewModel: ObservableObject {
     
-    @Published var qrCodeState: ViewModelState<QRCodeInfos> = .loading
     var mainAppModel: MainAppModel
-    
-    private var subscribers : Set<AnyCancellable> = []
     var certificateManager : CertificateManager
     var server: PeerToPeerServer
+    
+    @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
+    @Published var viewState: RecipientConnectToDeviceViewState = .none
+    
+    private var subscribers : Set<AnyCancellable> = []
     
     init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
         self.certificateManager = certificateManager
         self.mainAppModel = mainAppModel
         self.server = server
         
-        generateQRCodeInfos()
+        listenToRegisterPublisher()
+        generateConnectionInfo()
     }
     
-    func generateQRCodeInfos() {
+    func generateConnectionInfo() {
         
         DispatchQueue.main.async {
             let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
@@ -41,16 +50,25 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let publicKeyHash = self.certificateManager.getPublicKeyHash()
             
             if certificateIsGenerated, let publicKeyHash {
-                let pin = "123456"
-                let qrCodeInfos = QRCodeInfos(ipAddress: ipAddress, pin: pin, hash: publicKeyHash)
-                self.qrCodeState = .loaded(qrCodeInfos)
-                self.server.pin = pin
-                self.server.startListening()
+                
+                let pin =  "\(Int.random(in: 100000...999999))"
+                let port = 53317
+                
+                let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
+                                                    port: port,
+                                                    certificateHash: publicKeyHash,
+                                                    pin: pin)
+                self.qrCodeState = .loaded(connectionInfo)
+                self.server.startListening(port: port, pin: pin)
             } else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
             }
         }
     }
     
-    
+    func listenToRegisterPublisher() {
+        self.server.didRegisterPublisher.sink { value in
+            self.viewState = .showReceiveFiles
+        }.store(in: &subscribers)
+    }
 }

@@ -18,6 +18,9 @@ struct RecipientConnectToDeviceView: View {
         } content: {
             contentView
         }
+        .onReceive(viewModel.$viewState) { state in
+            handleViewState(state: state)
+        }
     }
     
     private var contentView: some View {
@@ -45,16 +48,16 @@ struct RecipientConnectToDeviceView: View {
         case .loading:
             CircularActivityIndicatory(isTransparent:true)
                 .frame(width: 160, height: 160)
-        case .loaded(let qrCodeInfos):
-            qrCodeImageView(qrCodeInfos: qrCodeInfos)
+        case .loaded(let connectionInfo):
+            qrCodeImageView(connectionInfo: connectionInfo)
         case .error(let error):
             RegularText(error, size: 14)
                 .frame(width: 160, height: 160)
         }
     }
     
-    func qrCodeImageView(qrCodeInfos:QRCodeInfos) -> some View {
-        Image(uiImage: qrCodeInfos.generateQRCode())
+    func qrCodeImageView(connectionInfo:ConnectionInfo) -> some View {
+        Image(uiImage: connectionInfo.generateQRCode())
             .resizable()
             .scaledToFill()
             .frame(width: 160, height: 160)
@@ -76,8 +79,20 @@ struct RecipientConnectToDeviceView: View {
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
     }
+    
+    private func handleViewState(state: RecipientConnectToDeviceViewState) {
+        switch state {
+        case .showReceiveFiles:
+            self.navigateTo(destination: RecipientWaitingView())
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
 }
 
 #Preview {
-    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository()))
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
+                                                                        mainAppModel: MainAppModel.stub()))
 }

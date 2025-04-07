@@ -10,24 +10,27 @@ import Foundation
 import Combine
 import UIKit
 
+enum SenderConnectToDeviceViewState {
+    case none
+    case showToast(message: String)
+    case showBottomSheetError
+    case showSendFiles
+}
+
 class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
-    
-    enum SenderConnectToDeviceViewState {
-        case none
-        case showToast(message: String)
-        case showBottomSheetError
-        case showSendFiles
-    }
     
     @Published var scannedCode: String? = nil
     @Published var viewState: SenderConnectToDeviceViewState = .none
     @Published var startScanning: Bool = true
     
-    var subscribers = Set<AnyCancellable>()
-    var peerToPeerRepository:PeerToPeerRepository
+    private var subscribers = Set<AnyCancellable>()
+    var peerToPeerRepository: PeerToPeerRepository
+    var mainAppModel: MainAppModel
     
-    init(peerToPeerRepository:PeerToPeerRepository) {
+    init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
         self.peerToPeerRepository = peerToPeerRepository
+        self.mainAppModel = mainAppModel
+        
         super.init()
         
         self.$scannedCode
@@ -35,47 +38,38 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .compactMap { $0 } // Unwrap scannedCode
             .first() // Take only the first non-nil value
             .sink { scannedCode in
-                let qrCodeInfos = scannedCode.decodeJSON(QRCodeInfos.self)
-                self.register(qrCodeInfos: qrCodeInfos)
-            }.store(in: &subscribers)    }
+                let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
+                self.register(connectionInfo: connectionInfo)
+            }.store(in: &subscribers) }
     
-    func register(qrCodeInfos:QRCodeInfos?) {
+    func register(connectionInfo:ConnectionInfo?) {
         
-        guard
-            let ipAddress = qrCodeInfos?.ipAddress,
-            let hash = qrCodeInfos?.hash,
-            let pin = qrCodeInfos?.pin
-        else {
-            return
-        }
+        guard let connectionInfo  else { return }
+        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
         
-        let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
-        
-        self.peerToPeerRepository.register(serverURL: ipAddress,
-                                           registerRequest: registerRequest,
-                                           trustedPublicKeyHash: hash)
-        .receive(on: DispatchQueue.main)
-        .sink(receiveCompletion: { completion in
-            
-            debugLog(completion)
-            
-            switch completion {
-            case .finished:
-                self.viewState = .showSendFiles
-                self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
+        self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
                 
-            case .failure(let error):
-                switch error {
-                case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
-                    self.viewState = .showBottomSheetError
-                default:
-                    debugLog(error)
-                    self.viewState = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
+                debugLog(completion)
+                
+                switch completion {
+                case .finished:
+                    self.viewState = .showSendFiles
+                    self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
+                    
+                case .failure(let error):
+                    switch error {
+                    case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
+                        self.viewState = .showBottomSheetError
+                    default:
+                        debugLog(error)
+                        self.viewState = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
+                    }
                 }
-            }
-        }, receiveValue: { response in
-            debugLog(response)
-        }).store(in: &self.subscribers)
+            }, receiveValue: { response in
+                debugLog(response)
+            }).store(in: &self.subscribers)
     }
 }
 
