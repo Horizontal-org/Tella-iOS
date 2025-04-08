@@ -77,7 +77,10 @@ struct SenderConnectToDeviceView: View {
         case .showBottomSheetError:
             showBottomSheetError()
         case .showSendFiles:
-            let viewModel = P2PSendFilesViewModel(mainAppModel: viewModel.mainAppModel)
+            guard let sessionId = viewModel.sessionId else { return }
+            let viewModel = P2PSendFilesViewModel(mainAppModel: viewModel.mainAppModel,
+                                                  sessionId:sessionId,
+                                                  peerToPeerRepository:viewModel.peerToPeerRepository)
             self.navigateTo(destination: P2PSendFilesView(viewModel: viewModel ))
         case .showToast(let message):
             Toast.displayToast(message: message)
