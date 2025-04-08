@@ -38,16 +38,16 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         self.$scannedCode
             .receive(on: DispatchQueue.main)
             .compactMap { $0 } // Unwrap scannedCode
-            .first() // Take only the first non-nil value
-            .sink { scannedCode in
+            .prefix(1)
+            .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
-                self.register(connectionInfo: connectionInfo)
+                self?.register(connectionInfo: connectionInfo)
             }.store(in: &subscribers)}
     
     func register(connectionInfo:ConnectionInfo?) {
         
         guard let connectionInfo  else { return }
-
+        
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
         
         self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
