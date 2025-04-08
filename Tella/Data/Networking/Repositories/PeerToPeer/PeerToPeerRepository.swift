@@ -11,6 +11,8 @@ import Combine
 
 class PeerToPeerRepository: NSObject, WebRepository {
     
+    var connectionInfo:ConnectionInfo?
+    
     func register(connectionInfo:ConnectionInfo, registerRequest:RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
         
         let apiResponse : APIResponse<RegisterResponse> = getAPIResponse(endpoint: API.register(connectionInfo:connectionInfo,
@@ -20,7 +22,11 @@ class PeerToPeerRepository: NSObject, WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func prepareUpload(connectionInfo:ConnectionInfo, prepareUpload: PrepareUploadRequest) -> AnyPublisher<PrepareUploadResponse, APIError> {
+    func prepareUpload(prepareUpload: PrepareUploadRequest) -> AnyPublisher<PrepareUploadResponse, APIError> {
+        
+        guard let connectionInfo else {return Fail(error: APIError.badServer)
+            .eraseToAnyPublisher()}
+        
         let apiResponse : APIResponse<PrepareUploadResponse> = getAPIResponse(endpoint: API.prepareUpload(connectionInfo:connectionInfo,
                                                                                                           prepareUpload: prepareUpload))
         return apiResponse
@@ -28,7 +34,10 @@ class PeerToPeerRepository: NSObject, WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func uploadFile(connectionInfo:ConnectionInfo, fileUploadRequest:FileUploadRequest) -> AnyPublisher<BoolResponse, APIError> {
+    func uploadFile( fileUploadRequest:FileUploadRequest) -> AnyPublisher<BoolResponse, APIError> {
+        guard let connectionInfo else {return Fail(error: APIError.badServer)
+            .eraseToAnyPublisher()}
+        
         do {
             let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.uploadFile(connectionInfo:connectionInfo,
                                                                                                   fileUploadRequest: fileUploadRequest))
@@ -38,7 +47,10 @@ class PeerToPeerRepository: NSObject, WebRepository {
         }
     }
     
-    func closeConnection(connectionInfo:ConnectionInfo, closeConnectionRequest: CloseConnectionRequest) -> AnyPublisher<BoolResponse, APIError> {
+    func closeConnection(closeConnectionRequest: CloseConnectionRequest) -> AnyPublisher<BoolResponse, APIError> {
+        guard let connectionInfo else {return Fail(error: APIError.badServer)
+            .eraseToAnyPublisher()}
+        
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.closeConnection(connectionInfo:connectionInfo,
                                                                                                    closeConnectionRequest: closeConnectionRequest))
         return apiResponse
