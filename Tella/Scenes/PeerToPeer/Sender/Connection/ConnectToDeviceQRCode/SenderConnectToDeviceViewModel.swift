@@ -24,8 +24,10 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     @Published var startScanning: Bool = true
     
     private var subscribers = Set<AnyCancellable>()
-    var peerToPeerRepository: PeerToPeerRepository
+    
     var mainAppModel: MainAppModel
+    var peerToPeerRepository: PeerToPeerRepository
+    var sessionId : String?
     
     init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
         self.peerToPeerRepository = peerToPeerRepository
@@ -40,24 +42,22 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .sink { scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
                 self.register(connectionInfo: connectionInfo)
-            }.store(in: &subscribers) }
+            }.store(in: &subscribers)}
     
     func register(connectionInfo:ConnectionInfo?) {
         
         guard let connectionInfo  else { return }
+
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
         
         self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                
                 debugLog(completion)
-                
                 switch completion {
                 case .finished:
                     self.viewState = .showSendFiles
                     self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
-                    
                 case .failure(let error):
                     switch error {
                     case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
@@ -69,7 +69,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
                 }
             }, receiveValue: { response in
                 debugLog(response)
+                self.sessionId = response.sessionId
             }).store(in: &self.subscribers)
     }
 }
-

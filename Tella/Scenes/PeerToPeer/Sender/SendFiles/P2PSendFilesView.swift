@@ -31,34 +31,35 @@ struct P2PSendFilesView: View {
     fileprivate var contentView: some View {
         VStack(alignment: .leading, spacing: 8) {
             
-            RegularText(LocalizablePeerToPeer.title.localized, size: 12)
-            
-            RegularText("Police violence at protest") // should be dynamic
-            
-            Divider()
-                .frame(height: 1)
-                .background(Color.white.opacity(0.64))
-            
+            titleTextFieldView()
             
             AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizablePeerToPeer.selectFilesToSend.localized)
-                .padding(.top, 40)
+                .padding(.top, 24)
             
             Spacer()
+            
             TellaButtonView<AnyView> (title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {
-                print("saaaave files", viewModel.addFilesViewModel.files)
+                viewModel.prepareUpload()
             }.padding(.bottom, 20)
             
         }.padding(16)
+    }
+    
+    fileprivate func titleTextFieldView() -> some View {
+        return TextfieldView(fieldContent: $viewModel.title,
+                             isValid: $viewModel.validTitle,
+                             shouldShowError: .constant(false),
+                             fieldType: .text,
+                             placeholder: "Title",
+                             shouldShowTitle: true)
+        .frame(height: 78)
     }
     
     fileprivate var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.sendFiles.localized,
                              backButtonAction: { self.popToRoot() })
     }
-    
 }
-
-
