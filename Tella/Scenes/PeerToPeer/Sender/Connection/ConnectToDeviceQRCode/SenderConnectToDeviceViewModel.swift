@@ -36,8 +36,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         super.init()
         
         self.$scannedCode
-            .receive(on: DispatchQueue.main)
-            .compactMap { $0 } // Unwrap scannedCode
+            .compactMap { $0 }
             .prefix(1)
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
