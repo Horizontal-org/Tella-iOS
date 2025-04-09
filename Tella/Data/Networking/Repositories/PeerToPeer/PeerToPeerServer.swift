@@ -60,9 +60,9 @@ class PeerToPeerServer {
                     }
                 }
                 
-                listener.newConnectionHandler = { connection in
+                listener.newConnectionHandler = { [weak self] connection in
                     connection.start(queue: .main)
-                    self.receive(on: connection)
+                    self?.receive(on: connection)
                 }
                 
                 listener.start(queue: .main)
@@ -126,7 +126,7 @@ class PeerToPeerServer {
          429           Too many requests ✅
          500           Server error ✅
          */
-        
+
         guard
             let body,
             let registerRequest = body.decodeJSON(RegisterRequest.self)
