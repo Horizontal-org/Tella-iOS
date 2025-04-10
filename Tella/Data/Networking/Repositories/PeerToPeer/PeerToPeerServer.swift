@@ -28,7 +28,7 @@ class PeerToPeerServer {
     //    var didTimeoutPublisher = PassthroughSubject<Void, Never>()
     
     
-    func startListening(port : Int, pin : String) {
+    func startListening(port : Int, pin : String, clientIdentity:SecIdentity?) {
         self.pin = pin
         let port: NWEndpoint.Port = .init(integerLiteral: UInt16(port))
         let tlsOptions = NWProtocolTLS.Options()
@@ -37,17 +37,17 @@ class PeerToPeerServer {
         
         do {
             
-            if let clientIdentity = certificateFile?.loadCertificate() {
+            if let clientIdentity  {
                 
-                sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
+                sec_protocol_options_set_local_identity (tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
                 
                 sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
                     completionHandler(sec_identity_create(clientIdentity)!)
                 }, .main)
                 
-                let listener = try NWListener(using: parameters, on: port)
+                self.listener = try NWListener(using: parameters, on: port)
                 
-                listener.stateUpdateHandler = { state in
+                self.listener?.stateUpdateHandler = { state in
                     switch state {
                     case .ready:
                         debugLog("Listener is ready and waiting for connections.")
@@ -60,12 +60,12 @@ class PeerToPeerServer {
                     }
                 }
                 
-                listener.newConnectionHandler = { [weak self] connection in
+                self.listener?.newConnectionHandler = { [weak self] connection in
                     connection.start(queue: .main)
                     self?.receive(on: connection)
                 }
                 
-                listener.start(queue: .main)
+                self.listener?.start(queue: .main)
                 
             } else {
                 debugLog("Failed to load TLS identity")
@@ -78,10 +78,12 @@ class PeerToPeerServer {
     
     private func receive(on nwConnection: NWConnection, specifiedEndpoint: String? = nil) {
         
+
         nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 1024 * 1024) { receivedData, _, isComplete, error in
             if let receivedData, !receivedData.isEmpty {
-                
+
                 let responseString = receivedData.string()
+                debugLog(responseString)
                 let httpResponse = responseString.parseHTTPResponse()
                 let endpoint = specifiedEndpoint ?? httpResponse?.endpoint
                 
@@ -126,6 +128,8 @@ class PeerToPeerServer {
          429           Too many requests ✅
          500           Server error ✅
          */
+
+        debugLog(body)
 
         guard
             let body,
