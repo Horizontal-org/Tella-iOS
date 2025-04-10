@@ -26,6 +26,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     @Published var viewState: RecipientConnectToDeviceViewState = .none
     
     private var subscribers : Set<AnyCancellable> = []
+    let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
     
     init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
         self.certificateManager = certificateManager
@@ -49,7 +50,9 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let certificateIsGenerated = self.certificateManager.generateP12Certificate(ipAddress:ipAddress)
             let publicKeyHash = self.certificateManager.getPublicKeyHash()
             
-            if certificateIsGenerated, let publicKeyHash {
+            if certificateIsGenerated,
+               let publicKeyHash,
+               let clientIdentity = self.certificateFile?.loadCertificate()  {
                 
                 let pin =  "\(Int.random(in: 100000...999999))"
                 let port = 53317
@@ -59,7 +62,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                                                     certificateHash: publicKeyHash,
                                                     pin: pin)
                 self.qrCodeState = .loaded(connectionInfo)
-                self.server.startListening(port: port, pin: pin)
+                self.server.startListening(port: port, pin: pin, clientIdentity:clientIdentity)
             } else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
             }
