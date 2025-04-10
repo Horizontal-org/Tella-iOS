@@ -45,7 +45,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
             self.pin = pinString
             self.ipAddress = ipAddress
             self.port = portString
-            self.server.startListening(port: port, pin: pinString)
+//            self.server.startListening(port: port, pin: pinString)
         }
     }
 }
