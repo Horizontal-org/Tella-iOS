@@ -251,31 +251,46 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
-
+    
     func loadCertificate() -> SecIdentity? {
         
-        if let P12Data = self.contents() {
-            
-            let importOptions: [String: Any] = [
-                kSecImportExportPassphrase as String: ""
-            ]
-            
-            var rawItems: CFArray?
-            
-            _ = SecPKCS12Import(P12Data as CFData, importOptions as CFDictionary, &rawItems)
-            
-            let items = rawItems as! Array<Dictionary<String, Any>>
-            guard let cfIdentity = items.first?[kSecImportItemIdentity as String] as? CFTypeRef,
-                  CFGetTypeID(cfIdentity) == SecIdentityGetTypeID() else {
-                return  nil
-            }
-            
-            let clientIdentity = cfIdentity as! SecIdentity
-            return (clientIdentity as! SecIdentity)
-            
-        } else {
-            debugLog("Failed to load TLS identity")
+        guard let p12Data = self.contents() else {
+            debugLog("Failed to load certificate data")
             return nil
         }
+        
+        let importOptions: [String: Any] = [
+            kSecImportExportPassphrase as String: "",
+        ]
+        
+        var rawItems: CFArray?
+        let status = SecPKCS12Import(p12Data as CFData, importOptions as CFDictionary, &rawItems)
+        
+        guard status == errSecSuccess else {
+            debugLog("SecPKCS12Import failed with status: \(status)")
+            return nil
+        }
+        
+        guard let items = rawItems as? [[String: Any]],
+              let firstItem = items.first else {
+            debugLog("No items imported")
+            return nil
+        }
+        
+        // SAFE WAY: First verify we have a CFTypeRef
+        guard let identity = firstItem[kSecImportItemIdentity as String] else {
+            debugLog("Missing identity in imported items")
+            return nil
+        }
+        
+        // Convert to CFTypeRef safely
+        let identityCF = identity as CFTypeRef
+        
+        guard CFGetTypeID(identityCF) == SecIdentityGetTypeID() else {
+            debugLog("Imported item is not a SecIdentity")
+            return nil
+        }
+        
+        return (identityCF as! SecIdentity)
     }
 }
