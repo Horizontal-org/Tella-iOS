@@ -6,9 +6,10 @@
 //  Copyright © 2025 HORIZONTAL. All rights reserved.
 //
 
-class RegisterRequest:Codable {
+struct RegisterRequest:Codable {
     var pin : String?
     var nonce : String?  // "random-uuid-number"
+    
     init(pin: String? = nil, nonce: String? = nil) {
         self.pin = pin
         self.nonce = nonce
