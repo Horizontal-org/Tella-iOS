@@ -12,8 +12,11 @@ import Combine
 class PeerToPeerRepository: NSObject, WebRepository {
     
     var connectionInfo:ConnectionInfo?
-    
-    func register(connectionInfo:ConnectionInfo, registerRequest:RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
+
+    func register(connectionInfo:ConnectionInfo) -> AnyPublisher<RegisterResponse, APIError> {
+        
+        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
+        debugLog(registerRequest)
         
         let apiResponse : APIResponse<RegisterResponse> = getAPIResponse(endpoint: API.register(connectionInfo:connectionInfo,
                                                                                                 registerRequest: registerRequest))
@@ -77,7 +80,7 @@ extension PeerToPeerRepository.API: APIRequest {
         
         switch self {
         case .register(_, let registerRequest):
-            return registerRequest.dictionary
+            return registerRequest .dictionary
         case .prepareUpload(_, let prepareUpload):
             return prepareUpload.dictionary
         case .uploadFile:

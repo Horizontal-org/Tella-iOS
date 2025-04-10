@@ -28,16 +28,15 @@ class PeerToPeerServer {
     //    var didTimeoutPublisher = PassthroughSubject<Void, Never>()
     
     
-    func startListening(port : Int, pin : String, clientIdentity:SecIdentity?) {
+    func startListening(port : Int, pin : String, clientIdentity:SecIdentity) {
         self.pin = pin
         let port: NWEndpoint.Port = .init(integerLiteral: UInt16(port))
         let tlsOptions = NWProtocolTLS.Options()
         let parameters = NWParameters(tls: tlsOptions)
-        let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
         
         do {
             
-            if let clientIdentity  {
+ 
                 
                 sec_protocol_options_set_local_identity (tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
                 
@@ -67,9 +66,7 @@ class PeerToPeerServer {
                 
                 self.listener?.start(queue: .main)
                 
-            } else {
-                debugLog("Failed to load TLS identity")
-            }
+            
             
         } catch {
             debugLog("Failed to create listener: \(error.localizedDescription)")
