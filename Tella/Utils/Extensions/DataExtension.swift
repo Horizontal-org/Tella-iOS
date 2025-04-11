@@ -19,7 +19,12 @@ extension Data {
     func string() -> String {
         return String(decoding:  self , as: UTF8.self)
     }
-    
+
+    /// Strict UTF-8 decoding — returns nil if data is invalid
+    func utf8String() -> String? {
+        return String(data: self, encoding: .utf8)
+    }
+
     mutating func extract(size: Int?) -> Data? {
         
         guard let size,  self.count > size  else {
