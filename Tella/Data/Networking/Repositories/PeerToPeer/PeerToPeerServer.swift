@@ -70,7 +70,7 @@ class PeerToPeerServer {
             debugLog("Failed to create listener: \(error.localizedDescription)")
         }
     }
-
+    
     private func startReceive(on connection: NWConnection) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { data, _, _, error in
             if let error = error {
@@ -84,66 +84,57 @@ class PeerToPeerServer {
             }
             
             debugLog("Received HTTP Request:\n\(raw)")
-
-            let httpResponse = raw.parseHTTPResponse()
-
-        guard let expectedLength = httpResponse?.headers.contentLength,
-            let body = httpResponse?.body else {
-            debugLog("Content-Length header missing")
+            
+            guard let httpResponse = raw.parseHTTPResponse() else {
+                debugLog("Failed to parse the HTTPResponse ")
                 return
             }
             
+            guard let expectedLength = httpResponse.headers.contentLength else {
+                debugLog("Content-Length header missing")
+                return
+            }
+            let body = httpResponse.body
             // Check if full body is received
             if body.utf8.count < expectedLength {
                 debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
                 
                 // Store current partial body, read more
                 let remaining = expectedLength - body.utf8.count
-                self.receiveRemainingBody(on: connection, currentBody: body, expectedLength: expectedLength, remaining: remaining)
+                self.receiveRemainingBody(on: connection, httpResponse: httpResponse, expectedLength: expectedLength, remaining: remaining)
             } else {
                 debugLog("✅ Full JSON Body: \(body)")
             }
         }
     }
     
-    private func receiveRemainingBody(on connection: NWConnection, currentBody: String, expectedLength: Int, remaining: Int) {
+    private func receiveRemainingBody(on connection: NWConnection, httpResponse: HTTPResponse, expectedLength: Int, remaining: Int) {
         connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { data, _, _, error in
             if let error = error {
                 debugLog("Error receiving remaining body: \(error)")
                 return
             }
             
-            guard let data = data, let more = String(data: data, encoding: .utf8) else {
+            guard let data = data, let more = data.utf8String() else {
                 debugLog("Failed to decode remaining data")
                 return
             }
             
-            let fullBody = currentBody + more
+            let fullBody = httpResponse.body + more
             debugLog("✅ Full JSON Body after completion: \(fullBody)")
             
-            let dataResponse = self.handleRegisterRequest(body: fullBody)
-            
-            debugLog(dataResponse?.dataResponse?.string())
-            
-            if let dataResponse = dataResponse {
-                self.sendResponse(connection: connection, serverResponse: dataResponse)
-            }
+            self.processReceivedData(connection: connection, fullBody: fullBody, httpResponse: httpResponse)
         }
     }
     
-    private func processReceivedData(connection:NWConnection) {
-        // Handle data that is complete and can be processed
-        let responseString = self.buffer.string()
-        let httpResponse = responseString.parseHTTPResponse()
-        let endpoint = httpResponse?.endpoint
+    private func processReceivedData(connection:NWConnection, fullBody:String, httpResponse:HTTPResponse) {
         
-        self.handleParsedHeaders(httpResponse)
-        
+        let endpoint = httpResponse.endpoint
         var dataResponse: ServerResponse?
         
-        switch PeerToPeerEndpoint(rawValue: endpoint ?? "") {
+        switch PeerToPeerEndpoint(rawValue: endpoint ) {
         case .register:
-            dataResponse = self.handleRegisterRequest(body: httpResponse?.body)
+            dataResponse = self.handleRegisterRequest(body: fullBody)
         case .prepareUpload:
             dataResponse = self.handlePrepareUploadRequest()
         case .upload:
@@ -157,12 +148,6 @@ class PeerToPeerServer {
         if let dataResponse = dataResponse {
             self.sendResponse(connection: connection, serverResponse: dataResponse)
         }
-    }
-    
-    private func handleParsedHeaders(_ parsed: HTTPResponse?) {
-//        if let length = parsed?.headers.contentLength, let lengthInt = Int(length) {
-//            self.contentLength = lengthInt
-//        }
     }
     
     private func handleRegisterRequest(body: String?) -> ServerResponse? {
