@@ -21,7 +21,6 @@ class PeerToPeerServer {
     var transmissionId : String?
     var requestsNumber : Int = 0
     
-    
     var didRegisterPublisher = PassthroughSubject<Void, Never>()
     //    var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
     //    var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
@@ -36,83 +35,134 @@ class PeerToPeerServer {
         
         do {
             
- 
-                
-                sec_protocol_options_set_local_identity (tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
-                
-                sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
-                    completionHandler(sec_identity_create(clientIdentity)!)
-                }, .main)
-                
-                self.listener = try NWListener(using: parameters, on: port)
-                
-                self.listener?.stateUpdateHandler = { state in
-                    switch state {
-                    case .ready:
-                        debugLog("Listener is ready and waiting for connections.")
-                    case .failed(let error):
-                        debugLog("Listener failed: \(error.localizedDescription)")
-                    case .cancelled:
-                        debugLog("Listener cancelled.")
-                    default:
-                        break
-                    }
-                }
-                
-                self.listener?.newConnectionHandler = { [weak self] connection in
-                    connection.start(queue: .main)
-                    self?.receive(on: connection)
-                }
-                
-                self.listener?.start(queue: .main)
-                
+            sec_protocol_options_set_local_identity (tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
             
+            sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
+                completionHandler(sec_identity_create(clientIdentity)!)
+            }, .main)
+            
+            self.listener = try NWListener(using: parameters, on: port)
+            
+            self.listener?.stateUpdateHandler = { state in
+                switch state {
+                case .ready:
+                    debugLog("Listener is ready and waiting for connections.")
+                case .failed(let error):
+                    debugLog("Listener failed: \(error.localizedDescription)")
+                case .cancelled:
+                    debugLog("Listener cancelled.")
+                default:
+                    break
+                }
+            }
+            
+            self.listener?.newConnectionHandler = { [weak self] connection in
+                connection.start(queue: .main)
+                DispatchQueue.global(qos: .userInitiated).async {
+                    
+                    self?.startReceive(on: connection)
+                }
+            }
+            
+            self.listener?.start(queue: .main)
             
         } catch {
             debugLog("Failed to create listener: \(error.localizedDescription)")
         }
     }
-    
-    private func receive(on nwConnection: NWConnection, specifiedEndpoint: String? = nil) {
-        
 
-        nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 1024 * 1024) { receivedData, _, isComplete, error in
-            if let receivedData, !receivedData.isEmpty {
+    private func startReceive(on connection: NWConnection) {
+        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { data, _, _, error in
+            if let error = error {
+                debugLog("Error: \(error)")
+                return
+            }
+            
+            guard let data = data, let raw = data.utf8String()else {
+                debugLog("Failed to read HTTP data.")
+                return
+            }
+            
+            debugLog("Received HTTP Request:\n\(raw)")
 
-                let responseString = receivedData.string()
-                debugLog(responseString)
-                let httpResponse = responseString.parseHTTPResponse()
-                let endpoint = specifiedEndpoint ?? httpResponse?.endpoint
+            let httpResponse = raw.parseHTTPResponse()
+
+        guard let expectedLength = httpResponse?.headers.contentLength,
+            let body = httpResponse?.body else {
+            debugLog("Content-Length header missing")
+                return
+            }
+            
+            // Check if full body is received
+            if body.utf8.count < expectedLength {
+                debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
                 
-                self.handleParsedHeaders(httpResponse)
-                
-                var dataResponse: ServerResponse?
-                
-                switch PeerToPeerEndpoint(rawValue: endpoint ?? "") {
-                case .register:
-                    dataResponse = self.handleRegisterRequest(body: httpResponse?.body)
-                    
-                case .prepareUpload:
-                    dataResponse = self.handlePrepareUploadRequest()
-                    
-                case .upload:
-                    dataResponse = self.handleUploadRequest(data: receivedData, endpoint: endpoint, error: error, connection: nwConnection)
-                    
-                default:
-                    break
-                }
-                
-                if let dataResponse = dataResponse {
-                    self.sendResponse(connection: nwConnection, serverResponse: dataResponse)
-                }
+                // Store current partial body, read more
+                let remaining = expectedLength - body.utf8.count
+                self.receiveRemainingBody(on: connection, currentBody: body, expectedLength: expectedLength, remaining: remaining)
+            } else {
+                debugLog("✅ Full JSON Body: \(body)")
             }
         }
     }
     
-    private func handleParsedHeaders(_ parsed: HTTPResponse?) {
-        if let length = parsed?.headers.contentLength, let lengthInt = Int(length) {
-            self.contentLength = lengthInt
+    private func receiveRemainingBody(on connection: NWConnection, currentBody: String, expectedLength: Int, remaining: Int) {
+        connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { data, _, _, error in
+            if let error = error {
+                debugLog("Error receiving remaining body: \(error)")
+                return
+            }
+            
+            guard let data = data, let more = String(data: data, encoding: .utf8) else {
+                debugLog("Failed to decode remaining data")
+                return
+            }
+            
+            let fullBody = currentBody + more
+            debugLog("✅ Full JSON Body after completion: \(fullBody)")
+            
+            let dataResponse = self.handleRegisterRequest(body: fullBody)
+            
+            debugLog(dataResponse?.dataResponse?.string())
+            
+            if let dataResponse = dataResponse {
+                self.sendResponse(connection: connection, serverResponse: dataResponse)
+            }
         }
+    }
+    
+    private func processReceivedData(connection:NWConnection) {
+        // Handle data that is complete and can be processed
+        let responseString = self.buffer.string()
+        let httpResponse = responseString.parseHTTPResponse()
+        let endpoint = httpResponse?.endpoint
+        
+        self.handleParsedHeaders(httpResponse)
+        
+        var dataResponse: ServerResponse?
+        
+        switch PeerToPeerEndpoint(rawValue: endpoint ?? "") {
+        case .register:
+            dataResponse = self.handleRegisterRequest(body: httpResponse?.body)
+        case .prepareUpload:
+            dataResponse = self.handlePrepareUploadRequest()
+        case .upload:
+            break
+        default:
+            break
+        }
+        
+        debugLog(dataResponse?.dataResponse?.string())
+        
+        if let dataResponse = dataResponse {
+            self.sendResponse(connection: connection, serverResponse: dataResponse)
+        }
+    }
+    
+    private func handleParsedHeaders(_ parsed: HTTPResponse?) {
+//        if let length = parsed?.headers.contentLength, let lengthInt = Int(length) {
+//            self.contentLength = lengthInt
+//        }
     }
     
     private func handleRegisterRequest(body: String?) -> ServerResponse? {
@@ -125,9 +175,9 @@ class PeerToPeerServer {
          429           Too many requests ✅
          500           Server error ✅
          */
-
+        
         debugLog(body)
-
+        
         guard
             let body,
             let registerRequest = body.decodeJSON(RegisterRequest.self)
@@ -214,7 +264,7 @@ class PeerToPeerServer {
             debugLog("Error receiving data: \(error)")
         } else {
             debugLog("Continue receiving data")
-            self.receive(on: connection, specifiedEndpoint: "/api/localsend/v2/upload")
+            //            self.receive(on: connection, specifiedEndpoint: "/api/localsend/v2/upload")
         }
         
         return nil
