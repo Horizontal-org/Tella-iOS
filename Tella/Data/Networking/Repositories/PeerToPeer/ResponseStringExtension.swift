@@ -55,7 +55,7 @@ extension String {
                     //                    headers[key] = value
                     switch key {
                     case "Content-Length" :
-                        headers.contentLength = value
+                        headers.contentLength = Int(value)
                     case "Content-Type" :
                         headers.contentType = value
                     default:
@@ -77,7 +77,7 @@ extension String {
 }
 
 struct Headers {
-    var contentLength : String?
+    var contentLength : Int?
     var contentType : String?
 }
 

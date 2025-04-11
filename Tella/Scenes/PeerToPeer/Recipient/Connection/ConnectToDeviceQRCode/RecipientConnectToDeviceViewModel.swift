@@ -27,6 +27,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     private var subscribers : Set<AnyCancellable> = []
     let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
+    var connectionInfo : ConnectionInfo?
     
     init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
         self.certificateManager = certificateManager
@@ -62,6 +63,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                                                     certificateHash: publicKeyHash,
                                                     pin: pin)
                 self.qrCodeState = .loaded(connectionInfo)
+                self.connectionInfo = connectionInfo
                 self.server.startListening(port: port, pin: pin, clientIdentity:clientIdentity)
             } else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)

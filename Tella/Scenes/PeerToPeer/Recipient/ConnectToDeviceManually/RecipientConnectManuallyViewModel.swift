@@ -18,34 +18,30 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
     @Published var port: String = ""
+   
     private var mainAppModel: MainAppModel?
     private var certificateManager : CertificateManager
     private var server: PeerToPeerServer
+    let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
+    var connectionInfo: ConnectionInfo?
     
-    init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
+    init(certificateManager : CertificateManager,
+         mainAppModel:MainAppModel,
+         server: PeerToPeerServer,
+         connectionInfo:ConnectionInfo?) {
+        
         self.certificateManager = certificateManager
         self.mainAppModel = mainAppModel
         self.server = server
+        self.connectionInfo = connectionInfo
+        
         initParameters()
     }
     
     func initParameters() {
-        
-        DispatchQueue.main.async {
-            let interfaceType = self.mainAppModel?.networkMonitor.interfaceTypeValue
-            let port = 53317
-            let pin =  Int.random(in: 100000...999999)
-            let pinString = "\(pin)"
-            let portString = "\(port)"
-            
-            guard let ipAddress = UIDevice.current.getIPAddress(for:interfaceType ) else {
-                return
-            }
-            
-            self.pin = pinString
-            self.ipAddress = ipAddress
-            self.port = portString
-//            self.server.startListening(port: port, pin: pinString)
-        }
+        guard let connectionInfo else { return }
+        self.pin = connectionInfo.pin
+        self.ipAddress = connectionInfo.ipAddress
+        self.port = "\(connectionInfo.port)"
     }
 }

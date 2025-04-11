@@ -47,7 +47,9 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         
         guard let connectionInfo  else { return }
 
-        self.peerToPeerRepository.register(connectionInfo: connectionInfo)
+        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
+        
+        self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 debugLog(completion)
