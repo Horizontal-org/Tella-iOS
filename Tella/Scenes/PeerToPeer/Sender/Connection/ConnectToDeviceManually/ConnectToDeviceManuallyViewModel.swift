@@ -47,7 +47,7 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
         let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
         guard let port = Int(port) else { return }
         let connectionInfo = ConnectionInfo(ipAddress: ipAddress, port: port, certificateHash: "", pin: pin)
-        self.peerToPeerRepository?.register(connectionInfo: connectionInfo)
+        self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 print(completion)
