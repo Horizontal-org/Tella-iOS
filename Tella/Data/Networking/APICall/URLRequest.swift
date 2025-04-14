@@ -127,7 +127,8 @@ class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
         
         let serverPublicKeyHash = publicKeyData.sha256()
         debugLog("serverPublicKeyHash \(serverPublicKeyHash)")
-        
+        debugLog("trustedPublicKeyHash \(trustedPublicKeyHash)")
+
         if let trustedHash = trustedPublicKeyHash, trustedHash == serverPublicKeyHash {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)

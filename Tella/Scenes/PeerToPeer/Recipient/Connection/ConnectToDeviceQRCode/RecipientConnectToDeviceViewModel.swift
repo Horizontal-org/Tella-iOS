@@ -19,7 +19,7 @@ enum RecipientConnectToDeviceViewState {
 class RecipientConnectToDeviceViewModel: ObservableObject {
     
     var mainAppModel: MainAppModel
-    var certificateManager : CertificateManager
+    var certificateGenerator : CertificateGenerator
     var server: PeerToPeerServer
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
@@ -29,8 +29,8 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
     var connectionInfo : ConnectionInfo?
     
-    init(certificateManager : CertificateManager, mainAppModel:MainAppModel, server: PeerToPeerServer) {
-        self.certificateManager = certificateManager
+    init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel, server: PeerToPeerServer) {
+        self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
         self.server = server
         
@@ -41,33 +41,35 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     func generateConnectionInfo() {
         
         DispatchQueue.main.async {
+            
             let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
             
             guard let ipAddress = UIDevice.current.getIPAddress(for:interfaceType ) else {
-                self.qrCodeState = .error("Try to connect to hotspot")
+                self.qrCodeState = .error("Try to connect to wifi")
                 return
             }
             
-            let certificateIsGenerated = self.certificateManager.generateP12Certificate(ipAddress:ipAddress)
-            let publicKeyHash = self.certificateManager.getPublicKeyHash()
+            let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress)
+            let publicKeyHash = certificateData?.publicKeyData.sha256()
             
-            if certificateIsGenerated,
-               let publicKeyHash,
-               let clientIdentity = self.certificateFile?.loadCertificate()  {
-                
-                let pin =  "\(Int.random(in: 100000...999999))"
-                let port = 53317
-                
-                let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
-                                                    port: port,
-                                                    certificateHash: publicKeyHash,
-                                                    pin: pin)
-                self.qrCodeState = .loaded(connectionInfo)
-                self.connectionInfo = connectionInfo
-                self.server.startListening(port: port, pin: pin, clientIdentity:clientIdentity)
-            } else {
+            guard let certificateData, let publicKeyHash else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
+                return
             }
+            
+            let clientIdentity = certificateData.identity
+            let pin =  "\(Int.random(in: 100000...999999))"
+            let port = 53317
+            
+            let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
+                                                port: port,
+                                                certificateHash: publicKeyHash,
+                                                pin: pin)
+            
+            self.qrCodeState = .loaded(connectionInfo)
+            self.connectionInfo = connectionInfo
+            self.server.startListening(port: port, pin: pin, clientIdentity:clientIdentity)
+            
         }
     }
     

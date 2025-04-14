@@ -40,6 +40,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .prefix(1)
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
+                debugLog(connectionInfo?.certificateHash)
                 self?.register(connectionInfo: connectionInfo)
             }.store(in: &subscribers)}
     
