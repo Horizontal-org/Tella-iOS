@@ -231,7 +231,6 @@
 		127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D62C2DD1A1002030AA /* NextcloudServer.swift */; };
 		127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127138372C35EA34004D520B /* CommonCardViewModel.swift */; };
 		127296732D70A46500CB9FF0 /* CertificateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127296722D70A46100CB9FF0 /* CertificateGenerator.swift */; };
-		127296752D75FB1200CB9FF0 /* CertificateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127296742D75FB0C00CB9FF0 /* CertificateManager.swift */; };
 		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
 		1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */; };
 		1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */; };
@@ -240,7 +239,6 @@
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
 		12742C8F2BEB9FBC00919FAE /* EncodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */; };
-		12748A0D2D6F77C6001D52C6 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 12748A0C2D6F77C6001D52C6 /* OpenSSL */; };
 		12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EA92A13A22100FAD7C6 /* SettingsModel.swift */; };
 		1275A83E2C5A78C80071A97D /* NextcloudReportToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A83D2C5A78C80071A97D /* NextcloudReportToSend.swift */; };
 		1275A8402C5A78FB0071A97D /* NextcloudMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A83F2C5A78FB0071A97D /* NextcloudMetadata.swift */; };
@@ -396,6 +394,7 @@
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
+		12C454D82DAD24300085FCD6 /* X509 in Frameworks */ = {isa = PBXBuildFile; productRef = 12C454D72DAD24300085FCD6 /* X509 */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -949,7 +948,6 @@
 		127092D62C2DD1A1002030AA /* NextcloudServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServer.swift; sourceTree = "<group>"; };
 		127138372C35EA34004D520B /* CommonCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCardViewModel.swift; sourceTree = "<group>"; };
 		127296722D70A46100CB9FF0 /* CertificateGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateGenerator.swift; sourceTree = "<group>"; };
-		127296742D75FB0C00CB9FF0 /* CertificateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateManager.swift; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -1448,6 +1446,7 @@
 				129209032C9DB00500767760 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
 				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
+				12C454D82DAD24300085FCD6 /* X509 in Frameworks */,
 				12748A0D2D6F77C6001D52C6 /* OpenSSL in Frameworks */,
 				129771862F0FE89200828857 /* Mantis in Frameworks */,
 				BBA127E5791AFBEAC473625B /* libPods-Tella.a in Frameworks */,
@@ -3848,6 +3847,7 @@
 			name = Tella;
 			packageProductDependencies = (
 				129209022C9DB00500767760 /* NextcloudKit */,
+				12C454D72DAD24300085FCD6 /* X509 */,
 				12748A0C2D6F77C6001D52C6 /* OpenSSL */,
 				129771852F0FE89200828857 /* Mantis */,
 			);
@@ -3952,6 +3952,7 @@
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
 				129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */,
 				12748A0B2D6F77C6001D52C6 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */,
 			);
@@ -4684,7 +4685,6 @@
 				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* TellaServerDraftView.swift in Sources */,
-				127296752D75FB1200CB9FF0 /* CertificateManager.swift in Sources */,
 				15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */,
 				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
 				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
@@ -5252,20 +5252,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		12748A0B2D6F77C6001D52C6 /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.3.2000;
-			};
-		};
 		129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Nextcloud/NextcloudKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.0.8;
+			};
+		};
+		12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-certificates.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.1;
 			};
 		};
 		129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */ = {
@@ -5279,15 +5279,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		12748A0C2D6F77C6001D52C6 /* OpenSSL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 12748A0B2D6F77C6001D52C6 /* XCRemoteSwiftPackageReference "OpenSSL" */;
-			productName = OpenSSL;
-		};
 		129209022C9DB00500767760 /* NextcloudKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
+		};
+		12C454D72DAD24300085FCD6 /* X509 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */;
+			productName = X509;
 		};
 		129771852F0FE89200828857 /* Mantis */ = {
 			isa = XCSwiftPackageProductDependency;

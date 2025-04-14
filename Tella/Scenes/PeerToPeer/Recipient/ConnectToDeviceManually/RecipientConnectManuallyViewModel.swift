@@ -20,17 +20,17 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var port: String = ""
    
     private var mainAppModel: MainAppModel?
-    private var certificateManager : CertificateManager
+    private var certificateGenerator : CertificateGenerator
     private var server: PeerToPeerServer
     let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
     var connectionInfo: ConnectionInfo?
     
-    init(certificateManager : CertificateManager,
+    init(certificateGenerator : CertificateGenerator,
          mainAppModel:MainAppModel,
          server: PeerToPeerServer,
          connectionInfo:ConnectionInfo?) {
         
-        self.certificateManager = certificateManager
+        self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
         self.server = server
         self.connectionInfo = connectionInfo
