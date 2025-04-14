@@ -7,185 +7,217 @@
 //
 
 import Foundation
-import OpenSSL
-import CommonCrypto
+import X509
+import Crypto
+import Network
 
 class CertificateGenerator {
     
-    /// Generates a P12 certificate (.p12) and a certificate file (.cer).
-    ///
-    /// - Parameters:
-    ///   - commonName: The common name (CN) for the certificate.
-    ///   - organization: The organization (O) associated with the certificate.
-    ///   - validityDays: The number of days the certificate remains valid.
-    ///   - ipAddress: The IP address to be included in the Subject Alternative Name (SAN).
-    ///   - p12File: The output file path for the .p12 certificate.
-    ///   - cerFile: The output file path for the .cer certificate.
-    /// - Returns: `true` if the certificate is successfully generated, otherwise `false`.
-    static func generateP12Certificate(
-        commonName: String,
-        organization: String,
-        validityDays: Int,
-        ipAddress: String?,
-        p12File: String,
-        cerFile: String
-    ) -> Bool {
-        
-        // Initialize OpenSSL
-        OPENSSL_init_crypto(UInt64(OPENSSL_INIT_ADD_ALL_CIPHERS | OPENSSL_INIT_ADD_ALL_DIGESTS), nil)
-        
-        // Generate RSA Key Pair
-        guard let pkey = generateRSAKey() else {
-            debugLog("Error: Failed to generate RSA key.")
-            return false
-        }
-        defer { EVP_PKEY_free(pkey) }
-        
-        // Create an X.509 Certificate
-        guard let x509 = createX509Certificate(pkey: pkey, commonName: commonName, organization: organization, validityDays: validityDays, ipAddress: ipAddress) else {
-            debugLog("Error: Failed to create X.509 certificate.")
-            return false
-        }
-        defer { X509_free(x509) }
-        
-        // Write the certificate to a .cer file
-        if !writeCertificate(x509: x509, to: cerFile) {
-            debugLog("Error: Failed to write .cer file.")
-            return false
-        }
-        
-        // Write the private key and certificate to a .p12 file
-        if !writeP12Certificate(x509: x509, pkey: pkey, commonName: commonName, to: p12File) {
-            debugLog("Error: Failed to write .p12 file.")
-            return false
-        }
-        
-        debugLog("Successfully generated .cer and .p12 certificates with IP address \(ipAddress).")
-        return true
-    }
+    private let commonName = "Tella iOS"
+    private let organization = "Tella"
     
-    // MARK: - Helper Functions
+    // MARK: - Main Function
     
-    /// Generates a 2048-bit RSA key pair.
-    ///
-    /// - Returns: The generated EVP_PKEY structure containing the RSA key, or `nil` on failure.
-    private static func generateRSAKey() -> OpaquePointer? {
-        guard let ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nil) else { return nil }
-        defer { EVP_PKEY_CTX_free(ctx) }
+    func generateP12Certificate(ipAddress:String) -> (identity: SecIdentity, certificateData: Data, privateKeyData: Data, publicKeyData: Data)? {
+        // 1. Generate private key
+        let privateKey = P256.Signing.PrivateKey()
+        let publicKeyData = privateKey.publicKey.x963Representation
         
-        guard EVP_PKEY_keygen_init(ctx) == 1,
-              EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048) == 1 else { return nil }
-        
-        var pkey: OpaquePointer? = nil
-        guard EVP_PKEY_keygen(ctx, &pkey) == 1 else { return nil }
-        
-        return pkey
-    }
-    
-    /// Creates an X.509 certificate with the specified parameters.
-    ///
-    /// - Returns: The generated X.509 certificate, or `nil` on failure.
-    private static func createX509Certificate(
-        pkey: OpaquePointer,
-        commonName: String,
-        organization: String,
-        validityDays: Int,
-        ipAddress: String?
-    ) -> OpaquePointer? {
-        
-        guard let x509 = X509_new() else { return nil }
-        
-        // Set version to X.509 v3
-        X509_set_version(x509, 2)
-        
-        // Set random serial number
-        if !setSerialNumber(for: x509) {
-            debugLog("Error: Failed to set serial number.")
+        // 2. Generate certificate
+        guard let certificate = generateSelfSignedCertificate(ipAddress:ipAddress, privateKey: privateKey) else {
+            debugLog("Failed to create certificate")
             return nil
         }
         
-        // Set certificate validity period
-        let notBefore = X509_getm_notBefore(x509)
-        let notAfter = X509_getm_notAfter(x509)
-        X509_gmtime_adj(notBefore, 0) // Valid from now
-        X509_gmtime_adj(notAfter, Int(validityDays) * 86400) // Validity in seconds
-        
-        // Set subject name (CN & O)
-        X509_set_pubkey(x509, pkey)
-        let name = X509_get_subject_name(x509)
-        X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, commonName, -1, -1, 0)
-        X509_NAME_add_entry_by_txt(name, "O", MBSTRING_ASC, organization, -1, -1, 0)
-        X509_set_issuer_name(x509, name)
-        
-        // Add Subject Alternative Name (SAN) with IP address
-        if !addSubjectAlternativeName(x509: x509, ipAddress: ipAddress) {
-            debugLog("Error: Failed to add Subject Alternative Name.")
+        // 3. Convert private key to SecKey
+        guard let secKey = convertToSecKey(privateKey) else {
+            debugLog("Failed to convert private key to SecKey")
             return nil
         }
         
-        // Sign the certificate with SHA-256
-        guard X509_sign(x509, pkey, EVP_sha256()) > 0 else {
-            debugLog("Error: Failed to sign certificate.")
+        // 4. Store private key and certificate in the keychain
+        guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: secKey) else {
+            debugLog("Failed to store certificate and private key in Keychain")
             return nil
         }
-        debugLog("Certificate successfully created!")
         
-        return x509
+        // 5. Return certificate and private key data for possible use
+        let certificateData = SecCertificateCopyData(certificate) as Data
+        
+        guard let cfPrivateKeyData = SecKeyCopyExternalRepresentation(secKey, nil) else {
+            debugLog("Failed to extract private key data")
+            return nil
+        }
+        let privateKeyData = cfPrivateKeyData as Data
+        
+        return (identity, certificateData, privateKeyData, publicKeyData)
     }
     
-    /// Sets a random serial number for the certificate.
-    private static func setSerialNumber(for x509: OpaquePointer) -> Bool {
-        guard let serialNumberData = generateSerialNumber(),
-              let serialNumberBigInt = BN_bin2bn([UInt8](serialNumberData), Int32(serialNumberData.count), nil),
-              let asn1SerialNumber = BN_to_ASN1_INTEGER(serialNumberBigInt, nil) else {
-            return false
+    // MARK: - Certificate Generation
+    
+    private func generateSelfSignedCertificate(ipAddress: String, privateKey: P256.Signing.PrivateKey) -> SecCertificate? {
+        do {
+            let publicKey = privateKey.publicKey
+            
+            // Build Distinguished Name
+            let name = try DistinguishedName {
+                CommonName(commonName)
+                OrganizationName(organization)
+            }
+            
+            // Validity period (1 year)
+            let notBefore = Date()
+            let notAfter = Calendar.current.date(byAdding: .year, value: 1, to: notBefore)!
+            
+            // Convert IP address to bytes
+            let ipBytes: [UInt8] = try {
+                if let ipv4 = IPv4Address(ipAddress) {
+                    return [UInt8](ipv4.rawValue)
+                } else if let ipv6 = IPv6Address(ipAddress) {
+                    return [UInt8](ipv6.rawValue)
+                }
+                throw CertificateError.invalidIPAddress
+            }()
+            
+            // Create and convert extension value
+            let sanExtensionValue = createSANExtensionValue(ipBytes: ipBytes)
+            
+            let sanExtension = try Certificate.Extension(
+                oid: [2, 5, 29, 17],
+                critical: false,
+                value: sanExtensionValue[...]  // The critical conversion
+            )
+            
+            // Create extensions container
+            var extensions = Certificate.Extensions()
+            try extensions.append(sanExtension)
+            
+            // Create certificate
+            let cert = try Certificate(
+                version: .v3,
+                serialNumber: .init(),
+                publicKey: .init(publicKey),
+                notValidBefore: notBefore,
+                notValidAfter: notAfter,
+                issuer: name,
+                subject: name,
+                signatureAlgorithm: .ecdsaWithSHA256,
+                extensions: extensions,
+                issuerPrivateKey: .init(privateKey))
+            
+            // Serialize to DER
+            let derData = try cert.serializeAsPEM().derBytes
+            
+            // Create SecCertificate
+            guard let secCertificate = SecCertificateCreateWithData(nil, Data(derData) as CFData) else {
+                debugLog("Failed to create SecCertificate from DER data")
+                return nil
+            }
+            
+            return secCertificate
+        } catch {
+            debugLog("Certificate generation failed: \(error)")
+            return nil
+        }
+    }
+    // Helper to create the SAN extension value
+    private func createSANExtensionValue(ipBytes: [UInt8]) -> [UInt8] {
+        // This creates a minimal SubjectAlternativeName extension containing just the IP address
+        // Structure: SEQUENCE -> [7] IMPLICIT OCTET STRING (ipBytes)
+        var bytes = [UInt8]()
+        
+        // Add the IP address (tag 7, context-specific)
+        bytes.append(0x87)  // Context-specific tag 7 in constructed form
+        bytes.append(UInt8(ipBytes.count))
+        bytes.append(contentsOf: ipBytes)
+        
+        // Wrap in SEQUENCE
+        let sequenceLength = bytes.count
+        var result = [UInt8]()
+        result.append(0x30)  // SEQUENCE tag
+        result.append(UInt8(sequenceLength))
+        result.append(contentsOf: bytes)
+        
+        return result
+    }
+    
+    enum CertificateError: Error {
+        case invalidIPAddress
+    }
+    
+    
+    // MARK: - Key Conversion
+    
+    private func convertToSecKey(_ privateKey: P256.Signing.PrivateKey) -> SecKey? {
+        let attributes: [String: Any] = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
+            kSecAttrKeySizeInBits as String: 256
+        ]
+        
+        var error: Unmanaged<CFError>?
+        let x963Data = privateKey.x963Representation
+        
+        guard let secKey = SecKeyCreateWithData(x963Data as CFData,
+                                                attributes as CFDictionary,
+                                                &error) else {
+            debugLog("Error creating SecKey:")
+            return nil
         }
         
-        let success = X509_set_serialNumber(x509, asn1SerialNumber) == 1
-        ASN1_INTEGER_free(asn1SerialNumber)
-        BN_free(serialNumberBigInt)
-        return success
+        return secKey
     }
     
-    /// Adds a Subject Alternative Name (SAN) with an IP address.
-    private static func addSubjectAlternativeName(x509: OpaquePointer, ipAddress: String?) -> Bool {
-        var extCtx = X509V3_CTX()
-        X509V3_set_ctx(&extCtx, x509, x509, nil, nil, 0)
-        guard let ipAddress else {
-            debugLog("Error: Failed to add Subject Alternative Name")
-            return false
+    // MARK: - Keychain Storage
+    
+    private func storeCertificateAndPrivateKey(certificate: SecCertificate, privateKey: SecKey) -> SecIdentity? {
+        let tag = "org.wearehorizontal.tella.tempkey-\(UUID().uuidString)"
+        let tagData = tag.data(using: .utf8)!
+        
+        // Add private key to Keychain
+        let privateKeyAttrs: [String: Any] = [
+            kSecClass as String: kSecClassKey,
+            kSecAttrApplicationTag as String: tagData,
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
+            kSecValueRef as String: privateKey,
+            kSecReturnPersistentRef as String: false
+        ]
+        
+        SecItemDelete(privateKeyAttrs as CFDictionary)
+        guard SecItemAdd(privateKeyAttrs as CFDictionary, nil) == errSecSuccess else {
+            debugLog("Failed to add private key to Keychain")
+            return nil
         }
-        let sanStr = "IP:\(ipAddress)"
-        guard let ext = X509V3_EXT_conf_nid(nil, &extCtx, NID_subject_alt_name, sanStr) else { return false }
         
-        let success = X509_add_ext(x509, ext, -1) == 1
-        X509_EXTENSION_free(ext)
-        return success
-    }
-    
-    /// Writes the X.509 certificate to a `.cer` file.
-    private static func writeCertificate(x509: OpaquePointer, to filePath: String) -> Bool {
-        guard let file = fopen(filePath, "wb") else { return false }
-        defer { fclose(file) }
+        let certAttrs: [String: Any] = [
+            kSecClass as String: kSecClassCertificate,
+            kSecValueRef as String: certificate,
+            kSecReturnPersistentRef as String: true
+        ]
         
-        return i2d_X509_fp(file, x509) != 0
-    }
-    
-    /// Writes the private key and certificate into a `.p12` file.
-    private static func writeP12Certificate(x509: OpaquePointer, pkey: OpaquePointer, commonName: String, to filePath: String) -> Bool {
-        guard let p12 = PKCS12_create("", commonName, pkey, x509, nil, 0, 0, 0, 0, 0) else { return false }
-        defer { PKCS12_free(p12) }
+        SecItemDelete(certAttrs as CFDictionary)
+        guard SecItemAdd(certAttrs as CFDictionary, nil) == errSecSuccess else {
+            debugLog("Failed to add certificate to Keychain")
+            return nil
+        }
         
-        guard let file = fopen(filePath, "wb") else { return false }
-        defer { fclose(file) }
+        // Now retrieve the identity
+        let identityQuery: [String: Any] = [
+            kSecClass as String: kSecClassIdentity,
+            kSecAttrApplicationTag as String: tagData,
+            kSecReturnRef as String: true
+        ]
         
-        return i2d_PKCS12_fp(file, p12) != 0
-    }
-    
-    /// Generates a random 128-bit (16-byte) serial number.
-    private static func generateSerialNumber() -> Data? {
-        var serialNumber = Data(count: 16)
-        serialNumber.withUnsafeMutableBytes { arc4random_buf($0.baseAddress, $0.count) }
-        return serialNumber
+        var identityRef: CFTypeRef?
+        let status = SecItemCopyMatching(identityQuery as CFDictionary, &identityRef)
+        
+        
+        guard status == errSecSuccess else {
+            debugLog("Failed to retrieve identity from Keychain: \(status)")
+            return nil
+        }
+        
+        return identityRef as! SecIdentity
     }
 }

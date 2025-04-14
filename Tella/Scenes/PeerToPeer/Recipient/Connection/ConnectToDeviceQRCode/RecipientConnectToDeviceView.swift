@@ -74,7 +74,7 @@ struct RecipientConnectToDeviceView: View {
         
         TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
                         nextButtonAction: .destination,
-                        destination: RecipientConnectToDeviceManuallyView(viewModel: RecipientConnectManuallyViewModel(certificateManager: viewModel.certificateManager, mainAppModel: viewModel.mainAppModel, server: viewModel.server,connectionInfo: viewModel.connectionInfo)),
+                        destination: RecipientConnectToDeviceManuallyView(viewModel: RecipientConnectManuallyViewModel(certificateGenerator: viewModel.certificateGenerator, mainAppModel: viewModel.mainAppModel, server: viewModel.server,connectionInfo: viewModel.connectionInfo)),
                         isValid: .constant(true),
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
