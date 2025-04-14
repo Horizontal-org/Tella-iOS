@@ -104,6 +104,8 @@ class PeerToPeerServer {
                 self.receiveRemainingBody(on: connection, httpResponse: httpResponse, expectedLength: expectedLength, remaining: remaining)
             } else {
                 debugLog("✅ Full JSON Body: \(body)")
+                self.processReceivedData(connection: connection, fullBody: body, httpResponse: httpResponse)
+
             }
         }
     }
