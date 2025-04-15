@@ -210,12 +210,24 @@ class CertificateGenerator {
         var identityRef: CFTypeRef?
         let status = SecItemCopyMatching(identityQuery as CFDictionary, &identityRef)
         
-        
         guard status == errSecSuccess else {
             debugLog("Failed to retrieve identity from Keychain: \(status)")
             return nil
         }
         
-        return identityRef as! SecIdentity
+        guard let identityRef else {
+            debugLog("identityRef is nil")
+            return nil
+        }
+        
+        // Convert to CFTypeRef safely
+        let identityCF = identityRef as CFTypeRef
+        
+        guard CFGetTypeID(identityCF) == SecIdentityGetTypeID() else {
+            debugLog("Imported item is not a SecIdentity")
+            return nil
+        }
+        
+        return (identityCF as! SecIdentity)
     }
 }
