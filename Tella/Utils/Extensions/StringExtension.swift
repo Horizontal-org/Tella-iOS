@@ -8,6 +8,7 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
+import Network
 
 extension String {
     func getDate() -> Date? {
@@ -205,8 +206,18 @@ extension String {
         return self.hasPrefix("192.168.") || self.hasPrefix("10.") ||
                (self.hasPrefix("172.") && (16...31).contains(Int(self.split(separator: ".")[1]) ?? -1))
     }
-
+    
+     func convertIPAddressToBytes() throws -> [UInt8] {
+        if let ipv4 = IPv4Address(self) {
+            return Array(ipv4.rawValue)
+        } else if let ipv6 = IPv6Address(self) {
+            return Array(ipv6.rawValue)
+        } else {
+            throw CertificateError.invalidIPAddress
+        }
+    }
 }
+
 extension String: @retroactive Identifiable {
     public var id: String { self }
 }
@@ -215,4 +226,9 @@ extension String {
     func url() -> URL? {
         return URL(string: self)
     }
+}
+
+
+enum CertificateError: Error {
+    case invalidIPAddress
 }
