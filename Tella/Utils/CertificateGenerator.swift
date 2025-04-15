@@ -17,44 +17,37 @@ class CertificateGenerator {
     
     // MARK: - Main Function
     
-    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, certificateData: Data, privateKeyData: Data, publicKeyData: Data)? {
-        // 1. Generate RSA private key
+    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, publicKeyHash: String)? {
+        
+        // Generate RSA private key
         guard let privateKey = generateRSAKey() else {
             debugLog("RSA key generation failed")
             return nil
         }
         
-        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+        guard let publicKey = privateKey.getPublicKey() else {
             debugLog("Failed to extract public key from private key")
             return nil
         }
         
-        guard let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data? else {
-            debugLog("Failed to extract public key data")
-            return nil
-        }
-        
-        // 2. Generate certificate
+        // Generate certificate
         guard let certificate = generateSelfSignedCertificate(ipAddress: ipAddress, privateKey: privateKey, publicKey: publicKey) else {
             debugLog("Failed to create certificate")
             return nil
         }
         
-        let certificateData = SecCertificateCopyData(certificate) as Data
-        
-        // 3. Export private key data
-        guard let privateKeyData = SecKeyCopyExternalRepresentation(privateKey, nil) as Data? else {
-            debugLog("Failed to extract private key data")
-            return nil
-        }
-        
-        // 4. Store in keychain and return identity
+        // Store in keychain and return identity
         guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: privateKey) else {
             debugLog("Failed to store identity")
             return nil
         }
         
-        return (identity, certificateData, privateKeyData, publicKeyData)
+        guard let publicKeyData = publicKey.getData() else {
+            debugLog("Failed to extract public key data")
+            return nil
+        }
+        
+        return (identity, publicKeyData.sha256())
     }
     
     // MARK: - RSA Key Generation
