@@ -55,45 +55,25 @@ class CertificateGenerator {
     
     // MARK: - Certificate Generation
     
-    private func generateSelfSignedCertificate(ipAddress: String, privateKey: P256.Signing.PrivateKey) -> SecCertificate? {
+    private func generateSelfSignedCertificate(ipAddress: String,
+                                               privateKey: P256.Signing.PrivateKey
+    ) -> SecCertificate? {
         do {
-            let publicKey = privateKey.publicKey
-            
-            // Build Distinguished Name
-            let name = try DistinguishedName {
-                CommonName(commonName)
-                OrganizationName(organization)
-            }
-            
-            // Validity period (1 year)
             let notBefore = Date()
-            let notAfter = Calendar.current.date(byAdding: .year, value: 1, to: notBefore)!
+            let notAfter = notBefore.addYear()
             
-            // Convert IP address to bytes
-            let ipBytes: [UInt8] = try {
-                if let ipv4 = IPv4Address(ipAddress) {
-                    return [UInt8](ipv4.rawValue)
-                } else if let ipv6 = IPv6Address(ipAddress) {
-                    return [UInt8](ipv6.rawValue)
-                }
-                throw CertificateError.invalidIPAddress
-            }()
+            guard let notAfter
+            else { return nil }
             
-            // Create and convert extension value
-            let sanExtensionValue = createSANExtensionValue(ipBytes: ipBytes)
+            let publicKey = privateKey.publicKey
+            let name = try buildDistinguishedName()
             
-            let sanExtension = try Certificate.Extension(
-                oid: [2, 5, 29, 17],
-                critical: false,
-                value: sanExtensionValue[...]  // The critical conversion
-            )
+            let sanExtension = try createSANExtension(ipAddress: ipAddress)
             
-            // Create extensions container
             var extensions = Certificate.Extensions()
             try extensions.append(sanExtension)
             
-            // Create certificate
-            let cert = try Certificate(
+            let certificate = try Certificate(
                 version: .v3,
                 serialNumber: .init(),
                 publicKey: .init(publicKey),
@@ -103,23 +83,36 @@ class CertificateGenerator {
                 subject: name,
                 signatureAlgorithm: .ecdsaWithSHA256,
                 extensions: extensions,
-                issuerPrivateKey: .init(privateKey))
+                issuerPrivateKey: .init(privateKey)
+            )
             
-            // Serialize to DER
-            let derData = try cert.serializeAsPEM().derBytes
+            return createSecCertificate(from: certificate)
             
-            // Create SecCertificate
-            guard let secCertificate = SecCertificateCreateWithData(nil, Data(derData) as CFData) else {
-                debugLog("Failed to create SecCertificate from DER data")
-                return nil
-            }
-            
-            return secCertificate
         } catch {
             debugLog("Certificate generation failed: \(error)")
             return nil
         }
     }
+    
+    private func buildDistinguishedName() throws -> DistinguishedName {
+        try DistinguishedName {
+            CommonName(commonName)
+            OrganizationName(organization)
+        }
+    }
+    
+    private func createSANExtension(ipAddress: String) throws -> Certificate.Extension {
+        
+        let ipBytes = try ipAddress.convertIPAddressToBytes()
+        let sanValue = createSANExtensionValue(ipBytes: ipBytes)
+        
+        return Certificate.Extension(
+            oid: [2, 5, 29, 17], // Subject Alternative Name
+            critical: false,
+            value: sanValue[...]
+        )
+    }
+    
     // Helper to create the SAN extension value
     private func createSANExtensionValue(ipBytes: [UInt8]) -> [UInt8] {
         // This creates a minimal SubjectAlternativeName extension containing just the IP address
@@ -141,10 +134,15 @@ class CertificateGenerator {
         return result
     }
     
-    enum CertificateError: Error {
-        case invalidIPAddress
+    private func createSecCertificate(from certificate: Certificate) -> SecCertificate? {
+        do {
+            let derData = try certificate.serializeAsPEM().derBytes
+            return SecCertificateCreateWithData(nil, Data(derData) as CFData)
+        } catch {
+            debugLog("DER serialization failed: \(error)")
+            return nil
+        }
     }
-    
     
     // MARK: - Key Conversion
     
