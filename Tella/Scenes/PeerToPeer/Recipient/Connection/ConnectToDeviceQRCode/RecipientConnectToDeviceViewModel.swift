@@ -50,14 +50,15 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             }
             
             let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress)
-            let publicKeyHash = certificateData?.publicKeyData.sha256()
             
-            guard let certificateData, let publicKeyHash else {
+            guard let certificateData else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
                 return
             }
             
             let clientIdentity = certificateData.identity
+            let publicKeyHash = certificateData.publicKeyHash
+
             let pin =  "\(Int.random(in: 100000...999999))"
             let port = 53317
             
