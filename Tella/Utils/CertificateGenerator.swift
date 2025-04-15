@@ -8,7 +8,6 @@
 
 import Foundation
 import X509
-import Crypto
 import Network
 
 class CertificateGenerator {
@@ -18,72 +17,93 @@ class CertificateGenerator {
     
     // MARK: - Main Function
     
-    func generateP12Certificate(ipAddress:String) -> (identity: SecIdentity, certificateData: Data, privateKeyData: Data, publicKeyData: Data)? {
-        // 1. Generate private key
-        let privateKey = P256.Signing.PrivateKey()
-        let publicKeyData = privateKey.publicKey.x963Representation
+    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, certificateData: Data, privateKeyData: Data, publicKeyData: Data)? {
+        // 1. Generate RSA private key
+        guard let privateKey = generateRSAKey() else {
+            debugLog("RSA key generation failed")
+            return nil
+        }
+        
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+            debugLog("Failed to extract public key from private key")
+            return nil
+        }
+        
+        guard let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data? else {
+            debugLog("Failed to extract public key data")
+            return nil
+        }
         
         // 2. Generate certificate
-        guard let certificate = generateSelfSignedCertificate(ipAddress:ipAddress, privateKey: privateKey) else {
+        guard let certificate = generateSelfSignedCertificate(ipAddress: ipAddress, privateKey: privateKey, publicKey: publicKey) else {
             debugLog("Failed to create certificate")
             return nil
         }
         
-        // 3. Convert private key to SecKey
-        guard let secKey = convertToSecKey(privateKey) else {
-            debugLog("Failed to convert private key to SecKey")
-            return nil
-        }
-        
-        // 4. Store private key and certificate in the keychain
-        guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: secKey) else {
-            debugLog("Failed to store certificate and private key in Keychain")
-            return nil
-        }
-        
-        // 5. Return certificate and private key data for possible use
         let certificateData = SecCertificateCopyData(certificate) as Data
         
-        guard let cfPrivateKeyData = SecKeyCopyExternalRepresentation(secKey, nil) else {
+        // 3. Export private key data
+        guard let privateKeyData = SecKeyCopyExternalRepresentation(privateKey, nil) as Data? else {
             debugLog("Failed to extract private key data")
             return nil
         }
-        let privateKeyData = cfPrivateKeyData as Data
+        
+        // 4. Store in keychain and return identity
+        guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: privateKey) else {
+            debugLog("Failed to store identity")
+            return nil
+        }
         
         return (identity, certificateData, privateKeyData, publicKeyData)
+    }
+    
+    // MARK: - RSA Key Generation
+    
+    private func generateRSAKey() -> SecKey? {
+        let attributes: [String: Any] = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrKeySizeInBits as String: 2048,
+            kSecPrivateKeyAttrs as String: [
+                kSecAttrIsPermanent as String: false
+            ]
+        ]
+        
+        var error: Unmanaged<CFError>?
+        guard let key = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
+            debugLog("RSA key generation error: \(String(describing: error))")
+            return nil
+        }
+        return key
     }
     
     // MARK: - Certificate Generation
     
     private func generateSelfSignedCertificate(ipAddress: String,
-                                               privateKey: P256.Signing.PrivateKey
-    ) -> SecCertificate? {
+                                               privateKey: SecKey,
+                                               publicKey: SecKey) -> SecCertificate? {
         do {
             let notBefore = Date()
             let notAfter = notBefore.addYear()
             
-            guard let notAfter
-            else { return nil }
-            
-            let publicKey = privateKey.publicKey
             let name = try buildDistinguishedName()
-            
             let sanExtension = try createSANExtension(ipAddress: ipAddress)
             
             var extensions = Certificate.Extensions()
             try extensions.append(sanExtension)
             
+            let issuerPrivateKey = try Certificate.PrivateKey(privateKey)
+            
             let certificate = try Certificate(
                 version: .v3,
                 serialNumber: .init(),
-                publicKey: .init(publicKey),
+                publicKey: issuerPrivateKey.publicKey,
                 notValidBefore: notBefore,
-                notValidAfter: notAfter,
+                notValidAfter: notAfter!,
                 issuer: name,
                 subject: name,
-                signatureAlgorithm: .ecdsaWithSHA256,
+                signatureAlgorithm: .sha256WithRSAEncryption,
                 extensions: extensions,
-                issuerPrivateKey: .init(privateKey)
+                issuerPrivateKey: issuerPrivateKey
             )
             
             return createSecCertificate(from: certificate)
@@ -144,39 +164,16 @@ class CertificateGenerator {
         }
     }
     
-    // MARK: - Key Conversion
-    
-    private func convertToSecKey(_ privateKey: P256.Signing.PrivateKey) -> SecKey? {
-        let attributes: [String: Any] = [
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-            kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
-            kSecAttrKeySizeInBits as String: 256
-        ]
-        
-        var error: Unmanaged<CFError>?
-        let x963Data = privateKey.x963Representation
-        
-        guard let secKey = SecKeyCreateWithData(x963Data as CFData,
-                                                attributes as CFDictionary,
-                                                &error) else {
-            debugLog("Error creating SecKey:")
-            return nil
-        }
-        
-        return secKey
-    }
-    
     // MARK: - Keychain Storage
     
     private func storeCertificateAndPrivateKey(certificate: SecCertificate, privateKey: SecKey) -> SecIdentity? {
-        let tag = "org.wearehorizontal.tella.tempkey-\(UUID().uuidString)"
+        let tag = "tempkey-\(UUID().uuidString)"
         let tagData = tag.data(using: .utf8)!
         
-        // Add private key to Keychain
         let privateKeyAttrs: [String: Any] = [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: tagData,
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
             kSecValueRef as String: privateKey,
             kSecReturnPersistentRef as String: false
@@ -191,7 +188,7 @@ class CertificateGenerator {
         let certAttrs: [String: Any] = [
             kSecClass as String: kSecClassCertificate,
             kSecValueRef as String: certificate,
-            kSecReturnPersistentRef as String: true
+            kSecReturnPersistentRef as String: false
         ]
         
         SecItemDelete(certAttrs as CFDictionary)
@@ -200,7 +197,6 @@ class CertificateGenerator {
             return nil
         }
         
-        // Now retrieve the identity
         let identityQuery: [String: Any] = [
             kSecClass as String: kSecClassIdentity,
             kSecAttrApplicationTag as String: tagData,
