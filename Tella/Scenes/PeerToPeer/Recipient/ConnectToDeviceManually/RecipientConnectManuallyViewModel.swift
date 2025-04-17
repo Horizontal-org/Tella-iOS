@@ -11,6 +11,7 @@ import Foundation
 import Combine
 import UIKit
 
+
 class RecipientConnectManuallyViewModel: ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
@@ -18,11 +19,13 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
     @Published var port: String = ""
-   
-    private var mainAppModel: MainAppModel?
+    @Published var viewState: RecipientConnectToDeviceViewState = .none
+    
+     var mainAppModel: MainAppModel
     private var certificateGenerator : CertificateGenerator
     private var server: PeerToPeerServer
-    let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
+    private var subscribers : Set<AnyCancellable> = []
+    
     var connectionInfo: ConnectionInfo?
     
     init(certificateGenerator : CertificateGenerator,
@@ -36,6 +39,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         self.connectionInfo = connectionInfo
         
         initParameters()
+        listenToRegisterPublisher()
     }
     
     func initParameters() {
@@ -44,4 +48,11 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         self.ipAddress = connectionInfo.ipAddress
         self.port = "\(connectionInfo.port)"
     }
+    
+    func listenToRegisterPublisher() {
+        self.server.didCancelAuthenticationPublisher.sink { value in
+            self.viewState = .showVerificationHash
+        }.store(in: &subscribers)
+    }
+    
 }

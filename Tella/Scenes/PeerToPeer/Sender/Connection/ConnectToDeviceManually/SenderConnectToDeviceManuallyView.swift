@@ -11,6 +11,7 @@ import SwiftUI
 struct SenderConnectToDeviceManuallyView: View {
     
     @ObservedObject var viewModel: ConnectToDeviceManuallyViewModel
+    @State var isBottomSheetShown : Bool = false
     
     var body: some View {
         ContainerViewWithHeader {
@@ -18,6 +19,10 @@ struct SenderConnectToDeviceManuallyView: View {
         } content: {
             contentView
         }
+        .onReceive(viewModel.$viewState) { state in
+            handleViewState(state: state)
+        }
+        
     }
     
     var contentView: some View {
@@ -37,7 +42,7 @@ struct SenderConnectToDeviceManuallyView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
+        NavigationHeaderView(title: LocalizablePeerToPeer.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              backButtonAction: {self.popToRoot()}, //TO Check
@@ -47,7 +52,7 @@ struct SenderConnectToDeviceManuallyView: View {
     var topView: some View {
         VStack(alignment: .center) {
             ResizableImage("device").frame(width: 120, height: 120)
-            RegularText(LocalizablePeerToPeer.enterDeviceInformation.localized, size: 18).multilineTextAlignment(.center)
+            CustomText(LocalizablePeerToPeer.enterDeviceInformation.localized, style: .heading1Font)
                 .frame(height: 50)
         }
     }
@@ -88,7 +93,6 @@ struct SenderConnectToDeviceManuallyView: View {
                                 nextButtonAction: .action,
                                 nextAction: {
             viewModel.register()
-            
         },
                                 backAction: {
             /*
@@ -96,6 +100,31 @@ struct SenderConnectToDeviceManuallyView: View {
              */
         })
         
+    }
+    
+    private func handleViewState(state: SenderConnectToDeviceViewState) {
+        switch state {
+        case .showBottomSheetError:
+            showBottomSheetError()
+        case .showVerificationHash:
+            guard let connectionInfo = viewModel.connectionInfo else { return  }
+            let viewModel = ManuallyVerificationViewModel(participant: .sender,
+                                                          peerToPeerRepository:viewModel.peerToPeerRepository,
+                                                          connectionInfo: connectionInfo,
+                                                          mainAppModel: viewModel.mainAppModel)
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel ))
+            
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+    
+    private func showBottomSheetError() {
+        isBottomSheetShown = true
+        let content = ConnectionFailedView()
+        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
 }
 

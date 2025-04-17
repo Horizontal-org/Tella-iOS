@@ -17,7 +17,7 @@ struct ServerRepository: WebRepository {
         let apiResponse : APIResponse<LoginResult> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         
         return apiResponse
-            .map{$0.0}
+            .map{$0.response}
             .eraseToAnyPublisher()
     }
     
@@ -26,7 +26,7 @@ struct ServerRepository: WebRepository {
         let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
         
         return apiResponse
-            .compactMap{$0.0.toDomain() as? ProjectAPI}
+            .compactMap{$0.response.toDomain() as? ProjectAPI}
             .eraseToAnyPublisher()
     }
 }

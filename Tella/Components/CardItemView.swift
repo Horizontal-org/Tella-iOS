@@ -15,9 +15,11 @@ struct CardItemView: View {
     
     var body: some View {
         HStack {
-            RegularText(title)
+            CustomText(title,
+                           style: .body1Font)
             Spacer()
-            RegularText(subtitle)
+            CustomText(subtitle,
+                           style: .body1Font)
         }.cardModifier()
             .frame(height: 53)
     }

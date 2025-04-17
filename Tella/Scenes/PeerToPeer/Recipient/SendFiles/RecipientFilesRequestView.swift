@@ -21,9 +21,12 @@ struct RecipientFilesRequestView: View {
         VStack{
             Spacer().frame(height: 100)
             ResizableImage("folders.icon").frame(width: 109, height: 109)
-            RegularText(String(format: LocalizablePeerToPeer.senderRequestFilesNumberDesc.localized, 7), size: 18)
+            
+            CustomText(String(format: LocalizablePeerToPeer.senderRequestFilesNumberDesc.localized, 7), style: .heading1Font)
                 .padding(.bottom, 16)//Number should be dynamic
-            RegularText(LocalizablePeerToPeer.requestQuestion.localized)
+
+            CustomText(LocalizablePeerToPeer.requestQuestion.localized, style: .body1Font)
+
                 .padding(.bottom, 48)
             VStack(spacing: 16) {
                 TellaButtonView(title: LocalizablePeerToPeer.accept.localized.uppercased(),

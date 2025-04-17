@@ -35,9 +35,7 @@ struct AddFileGridView: View {
     
     
     var attachFilesTextView: some View {
-        RegularText(titleText)
-            .multilineTextAlignment(.leading)
-        
+        CustomText(titleText, style: .body1Font)
     }
     
     var itemsGridView: some View {
