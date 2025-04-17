@@ -59,6 +59,40 @@ struct Styles {
     }
 }
 
+enum TypographyStyle {
+
+    case heading1Font
+    case heading2Font
+    case heading3Font
+    case subheading1Font
+    case subheading2Font
+    case body1Font
+    case body2Font
+    case body3Font
+    
+    var font: Font {
+        switch self {
+            
+        case .heading1Font:
+            return .custom(Styles.Fonts.semiBoldFontName, size: 18)
+        case .heading2Font:
+            return .custom(Styles.Fonts.semiBoldFontName, size: 16)
+        case .heading3Font:
+            return .custom(Styles.Fonts.boldFontName, size: 16)
+        case .subheading1Font:
+            return .custom(Styles.Fonts.semiBoldFontName, size: 14)
+        case .subheading2Font:
+            return .custom(Styles.Fonts.boldFontName, size: 10)
+        case .body1Font:
+            return .custom(Styles.Fonts.regularFontName, size: 14)
+        case .body2Font:
+            return .custom(Styles.Fonts.regularFontName, size: 12)
+        case .body3Font:
+            return .custom(Styles.Fonts.regularFontName, size: 10)
+        }
+    }
+}
+
 public extension UIColor {
     
     convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat=1.0) {

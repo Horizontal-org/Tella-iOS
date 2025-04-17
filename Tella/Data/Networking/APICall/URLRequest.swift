@@ -8,26 +8,72 @@
 import Foundation
 import Combine
 
-typealias APIResponse<Value> = AnyPublisher<(Value,[AnyHashable:Any]?), APIError>
-typealias APIDataResponse = AnyPublisher<(Data,[AnyHashable:Any]?), APIError>
+typealias APIResponse<Value> = AnyPublisher<(APIResult<Value>), APIError>
+typealias APIDataResponse = AnyPublisher<(APIResult<Data>), APIError>
+
+class APIResult<Value> {
+    let response: Value
+    let headers: [AnyHashable: Any]?
+    
+    init(response: Value, headers: [AnyHashable : Any]?) {
+        self.response = response
+        self.headers = headers
+    }
+}
+
+struct ServerResponse {
+    let data: Data
+    let response: URLResponse
+}
 
 protocol WebRepository {}
 
 extension WebRepository {
-    private func fetchData(endpoint: any APIRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+    private func fetchData(endpoint: any APIRequest) -> AnyPublisher<ServerResponse, Error> {
+        guard NetworkMonitor.shared.isConnected else {
+            return Fail(error: APIError.noInternetConnection)
+                .eraseToAnyPublisher()
+        }
+        
         do {
-            guard NetworkMonitor.shared.isConnected else {
-                return Fail(error: APIError.noInternetConnection)
-                    .eraseToAnyPublisher()
-            }
             let request = try endpoint.urlRequest()
+            request.curlRepresentation()
+            
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
-            request.curlRepresentation()
-            return URLSession(configuration: configuration,delegate: AuthenticationChallengeDelegate(trustedPublicKeyHash:endpoint.trustedPublicKeyHash), delegateQueue: nil)
-                .dataTaskPublisher(for: request)
-                .mapError { $0 as Error }
-                .eraseToAnyPublisher()
+            
+            var capturedServerHash: String?
+            
+            let delegate = AuthenticationChallengeDelegate(
+                path:endpoint.path,
+                trustedPublicKeyHash: endpoint.trustedPublicKeyHash,
+                onReceiveServerPublicKeyHash: { hash in
+                    capturedServerHash = hash
+                }
+            )
+            
+            return Future<ServerResponse, Error> { promise in
+                let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+                let task = session.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        let nsError = error as NSError
+                        switch (nsError.code) {
+                        case (NSURLErrorCancelled):
+                            promise(.failure(APIError.cancelAuthenticationChallenge(capturedServerHash)))
+                        default:
+                            promise(.failure(error))
+                        }
+                    } else if let data = data, let response = response {
+                        let result = ServerResponse(data: data, response: response)
+                        promise(.success(result))
+                    } else {
+                        promise(.failure(APIError.unexpectedResponse))
+                    }
+                }
+                task.resume()
+            }
+            .eraseToAnyPublisher()
+            
         } catch {
             return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
@@ -48,12 +94,14 @@ extension WebRepository {
     }
 }
 // MARK: - Helpers
-extension Publisher where Output == URLSession.DataTaskPublisher.Output {
+extension Publisher where Output == ServerResponse {
     func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
-        return requestData()
-            .tryMap({ (data, allHeaderFields) in
-                let decodedData : Value = try data.decoded()
-                return (decodedData, allHeaderFields)
+        let apiDataResponse = requestData()
+        
+        return apiDataResponse
+            .tryMap({ response in
+                let decodedData : Value = try response.response.decoded()
+                return APIResult(response: decodedData, headers: response.headers)
             })
             .mapError{
                 if let error = $0 as? APIError {
@@ -67,10 +115,10 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     }
 }
 
-extension Publisher where Output == URLSession.DataTaskPublisher.Output {
+extension Publisher where Output == ServerResponse {
     func requestData() -> APIDataResponse {
         return tryMap {
-            guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
+            guard let code = ($0.response as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }
             
@@ -78,7 +126,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 debugLog("Error code: \(code)")
                 throw APIError.httpCode(code)
             }
-            return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
+            return APIResult(response: $0.data , headers:($0.response as? HTTPURLResponse)?.allHeaderFields)
         }
         .mapError{ error in
             if let error = error as? APIError {
@@ -103,9 +151,13 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
 class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
     
     var trustedPublicKeyHash : String?
+    var path: String
+    var onReceiveServerPublicKeyHash: ((String) -> Void)?
     
-    init(trustedPublicKeyHash: String? = nil) {
+    init(path: String, trustedPublicKeyHash: String? = nil, onReceiveServerPublicKeyHash: ((String) -> Void)? = nil) {
+        self.path = path
         self.trustedPublicKeyHash = trustedPublicKeyHash
+        self.onReceiveServerPublicKeyHash = onReceiveServerPublicKeyHash
     }
     
     func urlSession(_ session: URLSession,
@@ -126,10 +178,24 @@ class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
         }
         
         let serverPublicKeyHash = publicKeyData.sha256()
+        
         debugLog("serverPublicKeyHash \(serverPublicKeyHash)")
         debugLog("trustedPublicKeyHash \(trustedPublicKeyHash)")
-
-        if let trustedHash = trustedPublicKeyHash, trustedHash == serverPublicKeyHash {
+        
+        guard let trustedPublicKeyHash else {
+            
+            if self.path == PeerToPeerEndpoint.register.rawValue {
+                onReceiveServerPublicKeyHash?(serverPublicKeyHash)
+            }
+            
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            
+            return
+        }
+        
+        onReceiveServerPublicKeyHash?(serverPublicKeyHash)
+        
+        if trustedPublicKeyHash == serverPublicKeyHash {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {
@@ -147,3 +213,5 @@ class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
         return publicKeyData
     }
 }
+
+

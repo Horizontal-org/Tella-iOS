@@ -18,6 +18,12 @@ struct RecipientConnectToDeviceManuallyView: View {
         } content: {
             contentView
         }
+        
+        .onReceive(viewModel.$viewState) { state in
+            handleViewState(state: state)
+        }
+
+        
     }
     
     var contentView: some View {
@@ -47,9 +53,9 @@ struct RecipientConnectToDeviceManuallyView: View {
     var topView: some View {
         VStack(alignment: .center) {
             ResizableImage("device").frame(width: 120, height: 120)
-            RegularText(LocalizablePeerToPeer.showDeviceInformation.localized, size: 18).multilineTextAlignment(.center)
+            CustomText(LocalizablePeerToPeer.showDeviceInformation.localized, style: .heading1Font)
                 .frame(height: 50)
-            RegularText(LocalizablePeerToPeer.sendInputDesc.localized)
+            CustomText(LocalizablePeerToPeer.sendInputDesc.localized, style: .body1Font)
         }
     }
     
@@ -64,5 +70,25 @@ struct RecipientConnectToDeviceManuallyView: View {
             Spacer()
         }.padding(16)
     }
+
+    private func handleViewState(state: RecipientConnectToDeviceViewState) {
+        switch state {
+        case .showVerificationHash:
+ 
+            guard let connectionInfo = viewModel.connectionInfo else { return  }
+            let viewModel = ManuallyVerificationViewModel(participant:.recipient,
+                                                          connectionInfo: connectionInfo,
+                                                          mainAppModel: viewModel.mainAppModel)
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel ))
+
+            
+            
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+
 }
 

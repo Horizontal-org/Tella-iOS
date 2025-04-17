@@ -19,8 +19,8 @@ class UwaziServerRepository: WebRepository {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return apiResponse
-            .tryMap({ (response, allHeaderFields) in
-                let token = self.handleToken(response: response, allHeaderFields: allHeaderFields)
+            .tryMap({ apiResponse in
+                let token = self.handleToken(response: apiResponse.response, allHeaderFields: apiResponse.headers)
                 return token
             })
             .mapError {$0 as! APIError}
@@ -34,8 +34,8 @@ class UwaziServerRepository: WebRepository {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return apiResponse
-            .tryMap({ (response, allHeaderFields) in
-                return self.handleToken(response: response, allHeaderFields: allHeaderFields)
+            .tryMap({ apiResponse in
+                return self.handleToken(response: apiResponse.response, allHeaderFields: apiResponse.headers)
             })
             .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
@@ -61,14 +61,14 @@ class UwaziServerRepository: WebRepository {
     func checkServerURL(serverURL: String, cookie: String) -> AnyPublisher<UwaziCheckURL, APIError> {
         let apiResponse: APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL, cookie: cookie))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziCheckURL}
+            .compactMap{$0.response.toDomain() as? UwaziCheckURL}
             .eraseToAnyPublisher()
     }
 
     func getLanguage(serverURL: String, cookie: String) -> AnyPublisher<UwaziLanguage, APIError> {
         let apiResponse: APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL, cookie: cookie))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziLanguage}
+            .compactMap{$0.response.toDomain() as? UwaziLanguage}
             .eraseToAnyPublisher()
     }
 
@@ -80,7 +80,7 @@ class UwaziServerRepository: WebRepository {
     func getTemplate(serverURL: String, cookieList: String) -> AnyPublisher<UwaziTemplateDTO, APIError> {
         let apiResponse: APIResponse<UwaziTemplateDTO> = getAPIResponse(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0}
+            .compactMap{$0.response}
             .eraseToAnyPublisher()
     }
     ///  Get all the setting related to the Uwazi server to determine the whitelisted templates
@@ -91,7 +91,7 @@ class UwaziServerRepository: WebRepository {
     func getSettings(serverURL: String, cookieList: String) -> AnyPublisher<UwaziSettingDTO, APIError> {
         let apiResponse:  APIResponse<UwaziSettingDTO> = getAPIResponse(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0}
+            .compactMap{$0.response}
             .eraseToAnyPublisher()
     }
     ///  Get all the options that are related to properties of the template related to the selected Uwazi server
@@ -102,7 +102,7 @@ class UwaziServerRepository: WebRepository {
     func getDictionaries(serverURL: String, cookieList: String) -> AnyPublisher<UwaziDictionaryDTO, APIError> {
         let apiResponse: APIResponse<UwaziDictionaryDTO> = getAPIResponse(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0}
+            .compactMap{$0.response}
             .eraseToAnyPublisher()
     }
     ///  Get all the translation of the text related to the selected Uwazi server
@@ -113,14 +113,14 @@ class UwaziServerRepository: WebRepository {
     func getTranslations(serverURL: String, cookieList: String) -> AnyPublisher<UwaziTranslationDTO, APIError> {
         let apiResponse: APIResponse<UwaziTranslationDTO> = getAPIResponse(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0}
+            .compactMap{$0.response}
             .eraseToAnyPublisher()
     }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
         let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? ProjectAPI }
+            .compactMap{$0.response.toDomain() as? ProjectAPI }
             .eraseToAnyPublisher()
     }
     
@@ -129,7 +129,7 @@ class UwaziServerRepository: WebRepository {
                 let apiResponse: APIResponse<Entity> = getAPIResponse(endpoint: API.submitPublicEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
                     return apiResponse
                     .compactMap{ response in
-                        EntityResult.publicEntity(response.0)
+                        EntityResult.publicEntity(response.response)
                     }
                     .eraseToAnyPublisher()
             }
@@ -137,7 +137,7 @@ class UwaziServerRepository: WebRepository {
             let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
                 return apiResponse
             .compactMap{response in
-                EntityResult.authorizedEntity(response.0)
+                EntityResult.authorizedEntity(response.response)
             }
             .eraseToAnyPublisher()
         }
@@ -145,7 +145,7 @@ class UwaziServerRepository: WebRepository {
     func getRelationshipEntities(serverURL: String, cookie: String, relatedEntityIds: [String]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
         let apiResponse: APIResponse<UwaziRelationshipDTO> = getAPIResponse(endpoint: API.getRelationshipEntities(serverURL:serverURL, cookie:cookie))
         return apiResponse
-            .compactMap{ $0.0 }
+            .compactMap{ $0.response }
             .map { dto in
                 let shouldFetchAllTemplates = relatedEntityIds.contains { $0.isEmpty }
                 return dto.rows

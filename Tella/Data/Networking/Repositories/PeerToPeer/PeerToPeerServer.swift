@@ -22,6 +22,7 @@ class PeerToPeerServer {
     var requestsNumber : Int = 0
     
     var didRegisterPublisher = PassthroughSubject<Void, Never>()
+    var didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
     //    var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
     //    var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
     //    var didTimeoutPublisher = PassthroughSubject<Void, Never>()
@@ -74,6 +75,8 @@ class PeerToPeerServer {
     private func startReceive(on connection: NWConnection) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { data, _, _, error in
             if let error = error {
+                
+                self.didCancelAuthenticationPublisher.send()
                 debugLog("Error: \(error)")
                 return
             }
@@ -103,9 +106,9 @@ class PeerToPeerServer {
                 let remaining = expectedLength - body.utf8.count
                 self.receiveRemainingBody(on: connection, httpResponse: httpResponse, expectedLength: expectedLength, remaining: remaining)
             } else {
-                debugLog("✅ Full JSON Body: \(body)")
+                debugLog("Full JSON Body: \(body)")
                 self.processReceivedData(connection: connection, fullBody: body, httpResponse: httpResponse)
-
+                
             }
         }
     }
@@ -123,7 +126,7 @@ class PeerToPeerServer {
             }
             
             let fullBody = httpResponse.body + more
-            debugLog("✅ Full JSON Body after completion: \(fullBody)")
+            debugLog("Full JSON Body after completion: \(fullBody)")
             
             self.processReceivedData(connection: connection, fullBody: fullBody, httpResponse: httpResponse)
         }
@@ -132,7 +135,7 @@ class PeerToPeerServer {
     private func processReceivedData(connection:NWConnection, fullBody:String, httpResponse:HTTPResponse) {
         
         let endpoint = httpResponse.endpoint
-        var dataResponse: ServerResponse?
+        var dataResponse: P2PServerResponse?
         
         switch PeerToPeerEndpoint(rawValue: endpoint ) {
         case .register:
@@ -152,15 +155,15 @@ class PeerToPeerServer {
         }
     }
     
-    private func handleRegisterRequest(body: String?) -> ServerResponse? {
+    private func handleRegisterRequest(body: String?) -> P2PServerResponse? {
         /*
          HTTP code     Message
          400           Invalid request format
-         401           Invalid PIN ✅
-         403           Invalid encryption/decryption ? ❌
-         409           Active session already exists ✅
-         429           Too many requests ✅
-         500           Server error ✅
+         401           Invalid PIN
+         403           Invalid encryption/decryption ?
+         409           Active session already exists
+         429           Too many requests
+         500           Server error
          */
         
         debugLog(body)
@@ -173,7 +176,7 @@ class PeerToPeerServer {
                 error: "Invalid request format",
                 statusCode: HTTPErrorCodes.badRequest.rawValue
             )
-            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
+            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if requestsNumber >= 3 {
@@ -181,7 +184,7 @@ class PeerToPeerServer {
                 error: "Too many requests",
                 statusCode: HTTPErrorCodes.tooManyRequests.rawValue
             )
-            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
+            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if sessionId != nil {
@@ -189,7 +192,7 @@ class PeerToPeerServer {
                 error: "Active session already exists",
                 statusCode: HTTPErrorCodes.conflict.rawValue
             )
-            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
+            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
         }
         
         if pin != registerRequest.pin {
@@ -198,7 +201,7 @@ class PeerToPeerServer {
                 error: "Invalid PIN",
                 statusCode: HTTPErrorCodes.unauthorized.rawValue
             )
-            return data.map { ServerResponse(dataResponse: $0, response: .failure) }
+            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
         }
         
         let sessionId = UUID().uuidString
@@ -209,10 +212,10 @@ class PeerToPeerServer {
             return nil
         }
         
-        return ServerResponse(dataResponse: responseData, response: .success)
+        return P2PServerResponse(dataResponse: responseData, response: .success)
     }
     
-    private func handlePrepareUploadRequest() -> ServerResponse? {
+    private func handlePrepareUploadRequest() -> P2PServerResponse? {
         /*
          HTTP code    Message
          400    Invalid request format
@@ -224,11 +227,11 @@ class PeerToPeerServer {
         let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
         let responseData =  HTTPResponseBuilder.buildResponse(body: response)
         
-        return ServerResponse(dataResponse: responseData, response: .success)
+        return P2PServerResponse(dataResponse: responseData, response: .success)
         
     }
     
-    private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> ServerResponse? {
+    private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> P2PServerResponse? {
         /*
          HTTP code    Message
          400    Missing required parameters
@@ -257,7 +260,7 @@ class PeerToPeerServer {
         return nil
     }
     
-    private func handleCloseConnectionRequest() -> ServerResponse? {
+    private func handleCloseConnectionRequest() -> P2PServerResponse? {
         
         /*
          HTTP code    Message
@@ -269,7 +272,7 @@ class PeerToPeerServer {
         return nil
     }
     
-    private func finalizeUpload(connection: NWConnection) -> ServerResponse? {
+    private func finalizeUpload(connection: NWConnection) -> P2PServerResponse? {
         debugLog("File transfer completed")
         
         self.saveFile(data: self.fileData)
@@ -281,11 +284,11 @@ class PeerToPeerServer {
         let response = BoolResponse(success:true)
         let  responseData = HTTPResponseBuilder.buildResponse(body: response)
         
-        return ServerResponse(dataResponse: responseData, response: .success)
+        return P2PServerResponse(dataResponse: responseData, response: .success)
         
     }
     
-    private func sendResponse(connection: NWConnection, serverResponse: ServerResponse) {
+    private func sendResponse(connection: NWConnection, serverResponse: P2PServerResponse) {
         connection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
             if let error = error {
                 debugLog("Server send error: \(error)")
@@ -324,10 +327,11 @@ enum PeerToPeerEndpoint : String {
     case register = "/api/v1/register"
     case prepareUpload = "/api/v1/prepare-upload"
     case upload = "/api/v1/upload"
+    case closeConnection = "/api/v1/close-connection"
     case none = ""
 }
 
-struct ServerResponse {
+struct P2PServerResponse {
     var dataResponse : Data?
     var response : ServerResponseStatus
 }

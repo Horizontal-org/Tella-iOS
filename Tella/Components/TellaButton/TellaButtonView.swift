@@ -72,13 +72,18 @@ struct TellaButtonStyle : ButtonStyle {
                 configuration.isPressed && isValid ? RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(buttonStyle.overlayColor, lineWidth: 4) : RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
             )
-            .foregroundColor(isValid ? .white : .white.opacity(0.38))
+            .foregroundColor(getForegroundColor())
             .font(.custom(Styles.Fonts.boldFontName, size: 16))
     }
     
     func getBackgroundColor() -> Color {
         isValid ? buttonStyle.backgroundColor :  buttonStyle.disabledBackgroundColor
     }
+    
+    func getForegroundColor() -> Color {
+        isValid ? buttonStyle.foregroundColor :  buttonStyle.disabledForegroundColor
+    }
+
 }
 
 struct TellaButtonView_Previews: PreviewProvider {

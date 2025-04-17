@@ -118,6 +118,7 @@
 		123B19832D9DD3D200BAD892 /* ConnectionFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123B19822D9DD3D200BAD892 /* ConnectionFailedView.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* TellaWebServerViewModel.swift */; };
+		1240917B2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */; };
 		124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */; };
 		124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */; };
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
@@ -168,6 +169,7 @@
 		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
 		125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */; };
 		125C16022DAE762F0086D4F0 /* SecKeyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C16012DAE76260086D4F0 /* SecKeyExtension.swift */; };
+		125C16062DAEF5430086D4F0 /* ManuallyVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C16052DAEF5430086D4F0 /* ManuallyVerificationView.swift */; };
 		125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */; };
 		125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A12C38056300440014 /* EntityStatusExtension.swift */; };
 		125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A32C3805C600440014 /* ReportStatusExtension.swift */; };
@@ -209,6 +211,7 @@
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E52DBBA16900FD7762 /* RotateVideoView.swift */; };
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
+		126B70122DB1575D00742897 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B70112DB1575600742897 /* CustomText.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
@@ -502,7 +505,6 @@
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
 		209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */; };
-		209107F52D5391B000808BCF /* RegularText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F42D5391B000808BCF /* RegularText.swift */; };
 		209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */; };
 		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
@@ -815,6 +817,7 @@
 		123B19822D9DD3D200BAD892 /* ConnectionFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionFailedView.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* TellaWebServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerViewModel.swift; sourceTree = "<group>"; };
+		1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyVerificationViewModel.swift; sourceTree = "<group>"; };
 		124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLStatementBuilder.swift; sourceTree = "<group>"; };
 		124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStatementBuilderExtension.swift; sourceTree = "<group>"; };
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
@@ -865,6 +868,7 @@
 		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
 		125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDetailsToMerge.swift; sourceTree = "<group>"; };
 		125C16012DAE76260086D4F0 /* SecKeyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyExtension.swift; sourceTree = "<group>"; };
+		125C16052DAEF5430086D4F0 /* ManuallyVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyVerificationView.swift; sourceTree = "<group>"; };
 		125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteConnectionStrings.swift; sourceTree = "<group>"; };
 		125C78A12C38056300440014 /* EntityStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatusExtension.swift; sourceTree = "<group>"; };
 		125C78A32C3805C600440014 /* ReportStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportStatusExtension.swift; sourceTree = "<group>"; };
@@ -903,6 +907,7 @@
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126B20E52DBBA16900FD7762 /* RotateVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateVideoView.swift; sourceTree = "<group>"; };
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
+		126B70112DB1575600742897 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
@@ -1205,7 +1210,6 @@
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceView.swift; sourceTree = "<group>"; };
-		209107F42D5391B000808BCF /* RegularText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularText.swift; sourceTree = "<group>"; };
 		209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
 		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyViewModel.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
@@ -2093,6 +2097,8 @@
 				2012D5432D5697B0000E0443 /* Sender */,
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				128247A22D5F935100B7E63E /* Models */,
+				125C16052DAEF5430086D4F0 /* ManuallyVerificationView.swift */,
+				1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";
@@ -2802,7 +2808,6 @@
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
 				1212677C2C0E77A2005F75A4 /* VaultFileItem */,
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
-				209107F42D5391B000808BCF /* RegularText.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
 				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
@@ -2829,6 +2834,7 @@
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				12A6B6642D132E290002F74B /* CardFrame.swift */,
 				20A3BD482D5A495D009E5E12 /* CardItemView.swift */,
+				126B70112DB1575600742897 /* CustomText.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -4155,7 +4161,6 @@
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
-				209107F52D5391B000808BCF /* RegularText.swift in Sources */,
 				1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */,
 				128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */,
 				125C16022DAE762F0086D4F0 /* SecKeyExtension.swift in Sources */,
@@ -4281,6 +4286,7 @@
 				1205F9C22BA1DE52003DB9ED /* ImportedFile.swift in Sources */,
 				122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
+				1240917B2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift in Sources */,
 				209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */,
 				12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */,
 				12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */,
@@ -4436,6 +4442,7 @@
 				E1E7C57F2AAB5DB500DDB07E /* UwaziSetting.swift in Sources */,
 				E1E7C57B2AAB54BE00DDB07E /* UwaziCommonProperty.swift in Sources */,
 				1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */,
+				126B70122DB1575D00742897 /* CustomText.swift in Sources */,
 				127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */,
 				20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
@@ -4487,6 +4494,7 @@
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
 				15DCD93E2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
+				125C16062DAEF5430086D4F0 /* ManuallyVerificationView.swift in Sources */,
 				20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */,
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
 				12505B1E2D899BD900483E34 /* PeerToPeerServer.swift in Sources */,
