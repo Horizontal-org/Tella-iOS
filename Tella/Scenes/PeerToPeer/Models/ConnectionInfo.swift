@@ -34,3 +34,8 @@ class ConnectionInfo : Codable, Equatable {
     }
 }
 
+extension ConnectionInfo {
+    static func stub() -> ConnectionInfo {
+        return ConnectionInfo(ipAddress: "192.1.2.6", port: 53317, certificateHash: "764357", pin: "983426")
+    }
+}

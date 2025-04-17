@@ -14,6 +14,8 @@ enum RecipientConnectToDeviceViewState {
     case none
     case showToast(message: String)
     case showReceiveFiles
+    case showVerificationHash
+
 }
 
 class RecipientConnectToDeviceViewModel: ObservableObject {
