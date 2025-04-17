@@ -58,6 +58,14 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case connectionFailedTitle = "PeerToPeer_ConnectionFailed_SheetTitle"
     case connectionFailedExpl = "PeerToPeer_ConnectionFailed_SheetExpl"
     case connectionFailedAction = "PeerToPeer_ConnectionFailed_SheetAction"
-    
-}
 
+    case verificationSubhead = "PeerToPeer_Verification_Subhead"
+    
+    case verificationSenderPart1 = "PeerToPeer_Verification_Sender_Part1_Expl"
+    case verificationSenderPart2 = "PeerToPeer_Verification_Sender_Part2_Expl"
+    case verificationReceipientPart1 = "PeerToPeer_Verification_Receipient_Part1_Expl"
+    case verificationReceipientPart2 = "PeerToPeer_Verification_Receipient_Part2_Expl"
+
+    case verificationConfirm = "PeerToPeer_Verification_Action_Confirm"
+    case verificationDiscard = "PeerToPeer_Verification_Action_Discard"
+}

@@ -41,7 +41,8 @@ struct AddFileGridItemView: View {
         if self.file.tellaFileType != .image || self.file.tellaFileType != .video {
             VStack {
                 Spacer()
-                RegularText(self.file.name, size: 11)
+                CustomText(self.file.name,
+                               style: .body3Font)
                     .lineLimit(1)
                 Spacer()
                     .frame(height: 6)

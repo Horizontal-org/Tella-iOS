@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ConnectionFailedView: View {
     
-    var tryAction: ()->()
+    var tryAction: (()->())?
     
     var body: some View {
         ConfirmBottomSheet(titleText: LocalizablePeerToPeer.connectionFailedTitle.localized,
@@ -19,7 +19,7 @@ struct ConnectionFailedView: View {
                            shouldHideSheet: false,
                            didConfirmAction: {
             self.dismiss {
-                tryAction()
+                tryAction?()
             }
         })
     }

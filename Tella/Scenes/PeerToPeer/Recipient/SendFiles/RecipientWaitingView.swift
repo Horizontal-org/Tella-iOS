@@ -18,7 +18,8 @@ struct RecipientWaitingView: View {
     }
     var contentView: some View {
         VStack {
-            RegularText( LocalizablePeerToPeer.waitingForSenderDesc.localized, size: 18)
+            CustomText(LocalizablePeerToPeer.waitingForSenderDesc.localized, style: .heading1Font)
+
             ResizableImage("clock").frame(width: 48, height: 48)
             
         }

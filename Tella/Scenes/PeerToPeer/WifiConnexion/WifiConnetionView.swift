@@ -62,11 +62,10 @@ struct WifiConnetionView: View {
             Spacer().frame(height: 20)
             VStack {
                 ResizableImage("wifi.icon").frame(width: 43, height: 30)
-                RegularText(LocalizablePeerToPeer.getConnected.localized, size: 18)
+                CustomText(LocalizablePeerToPeer.getConnected.localized, style: .heading1Font)
             }
             
-            RegularText(LocalizablePeerToPeer.wifiConnectionDescription.localized)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            CustomText(LocalizablePeerToPeer.wifiConnectionDescription.localized, style: .body1Font)
             
         }.frame(maxWidth: .infinity)
     }
@@ -74,13 +73,10 @@ struct WifiConnetionView: View {
     var tipsView: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                RegularText(LocalizablePeerToPeer.wifiConnectionTipsToConnect.localized)
+                CustomText(LocalizablePeerToPeer.wifiConnectionTipsToConnect.localized, style: .body1Font)
                 Spacer()
                 if isExpanded {
-                    Text(LocalizablePeerToPeer.wifiConnectionTipsToConnectDescription.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(Color.white)
-                    
+                    CustomText(LocalizablePeerToPeer.wifiConnectionTipsToConnectDescription.localized, style: .body1Font)
                 }
             }
             Spacer()
@@ -96,14 +92,17 @@ struct WifiConnetionView: View {
     
     var currentWifiView: some View {
         HStack {
-            RegularText(LocalizablePeerToPeer.currentWifi.localized)
+            CustomText(LocalizablePeerToPeer.currentWifi.localized, style: .body1Font)
+            
             Spacer()
             
             if let ssid = viewModel.ssid {
-                RegularText("\(ssid)")
+                CustomText("\(ssid)",
+                           style: .body1Font)
             } else {
-                Text(LocalizablePeerToPeer.noConnection.localized)
-                    .foregroundColor(.gray)
+                CustomText(LocalizablePeerToPeer.noConnection.localized,
+                           style: .body1Font,
+                           color: .gray)
             }
             
         }.cardModifier()
@@ -113,14 +112,15 @@ struct WifiConnetionView: View {
     
     var sameWifiNetworkView: some View {
         HStack {
-            RegularText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized)
+            CustomText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized,
+                       style: .body1Font)
             Spacer()
             ResizableImage(isCheckboxOn ? "checkbox.on" : "checkbox.off")
                 .frame(width: 24, height: 24)
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
-//                .disabled(viewModel.ssid == nil)
+            //                .disabled(viewModel.ssid == nil)
             
         }.cardModifier()
             .frame(height: 74)

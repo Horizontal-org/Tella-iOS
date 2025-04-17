@@ -13,10 +13,12 @@ struct CardModifier: ViewModifier {
     var padding: CGFloat = 16
     var backgroundColor: Color = .white.opacity(0.08)
     func body(content: Content) -> some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(backgroundColor)
-            .overlay(
-                content.padding(padding))
+        content
+            .padding(padding)
+            .background(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(backgroundColor)
+            )
     }
 }
 
