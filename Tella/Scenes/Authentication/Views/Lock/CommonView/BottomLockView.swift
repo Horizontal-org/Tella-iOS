@@ -54,7 +54,7 @@ struct BottomLockView<Destination:View>:View {
         } label: {
             Text(title)
         }
-        .font(.custom(Styles.Fonts.lightFontName, size: 16))
+        .style(.link1Style)
         .foregroundColor(isValid ? Color.white : Color.gray)
         .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
         .disabled(!isValid)

@@ -48,13 +48,20 @@ struct TellaButtonView<Destination:View> : View {
                     .contentShape(Rectangle())
                 
             }
-            .cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
-            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid, cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2))
+            .cornerRadius(getCornerRadius(geometry: geometry))
+            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle,
+                                          isValid: isValid,
+                                          cornerRadius: getCornerRadius(geometry: geometry),
+                                          buttonRole: buttonRole))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
-                     RoundedRectangle(cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2)
+                     RoundedRectangle(cornerRadius: getCornerRadius(geometry: geometry))
                 .stroke(.white, lineWidth: 4) : nil)
         }.frame(height: 55)
+    }
+    
+    func getCornerRadius(geometry:GeometryProxy) -> CGFloat {
+        return buttonRole == .primary ? 20 : geometry.size.height / 2
     }
 }
 
@@ -63,8 +70,10 @@ struct TellaButtonStyle : ButtonStyle {
     var buttonStyle : TellaButtonStyleProtocol
     var isValid : Bool
     var cornerRadius: CGFloat = 20
+    var buttonRole: ButtonRole = .primary
     
     func makeBody(configuration: Configuration) -> some View {
+        
         configuration.label
             .background(configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor())
             .cornerRadius(cornerRadius)
@@ -73,7 +82,7 @@ struct TellaButtonStyle : ButtonStyle {
                     .stroke(buttonStyle.overlayColor, lineWidth: 4) : RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
             )
             .foregroundColor(getForegroundColor())
-            .font(.custom(Styles.Fonts.boldFontName, size: 16))
+            .style(buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
     }
     
     func getBackgroundColor() -> Color {
@@ -83,7 +92,7 @@ struct TellaButtonStyle : ButtonStyle {
     func getForegroundColor() -> Color {
         isValid ? buttonStyle.foregroundColor :  buttonStyle.disabledForegroundColor
     }
-
+    
 }
 
 struct TellaButtonView_Previews: PreviewProvider {

@@ -44,53 +44,6 @@ struct Styles {
         static var lightRobotoFontName = "Roboto-Light"
         static var italicRobotoFontName = "OpenSans-Italic"
     }
-    
-    struct Typography {
-        static let heading1Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 18)
-        static let heading2Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 16)
-        static let heading3Font: Font = .custom(Styles.Fonts.boldFontName, size: 16)
-
-        static let subheading1Font: Font = .custom(Styles.Fonts.semiBoldFontName, size: 14)
-        static let subheading2Font: Font = .custom(Styles.Fonts.boldFontName, size: 10)
-
-        static let body1Font: Font = .custom(Styles.Fonts.regularFontName, size: 14)
-        static let body2Font: Font = .custom(Styles.Fonts.regularFontName, size: 12)
-        static let body3Font: Font = .custom(Styles.Fonts.regularFontName, size: 10)
-    }
-}
-
-enum TypographyStyle {
-
-    case heading1Font
-    case heading2Font
-    case heading3Font
-    case subheading1Font
-    case subheading2Font
-    case body1Font
-    case body2Font
-    case body3Font
-    
-    var font: Font {
-        switch self {
-            
-        case .heading1Font:
-            return .custom(Styles.Fonts.semiBoldFontName, size: 18)
-        case .heading2Font:
-            return .custom(Styles.Fonts.semiBoldFontName, size: 16)
-        case .heading3Font:
-            return .custom(Styles.Fonts.boldFontName, size: 16)
-        case .subheading1Font:
-            return .custom(Styles.Fonts.semiBoldFontName, size: 14)
-        case .subheading2Font:
-            return .custom(Styles.Fonts.boldFontName, size: 10)
-        case .body1Font:
-            return .custom(Styles.Fonts.regularFontName, size: 14)
-        case .body2Font:
-            return .custom(Styles.Fonts.regularFontName, size: 12)
-        case .body3Font:
-            return .custom(Styles.Fonts.regularFontName, size: 10)
-        }
-    }
 }
 
 public extension UIColor {

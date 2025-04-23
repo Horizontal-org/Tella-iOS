@@ -22,10 +22,10 @@ struct RecipientFilesRequestView: View {
             Spacer().frame(height: 100)
             ResizableImage("folders.icon").frame(width: 109, height: 109)
             
-            CustomText(String(format: LocalizablePeerToPeer.senderRequestFilesNumberDesc.localized, 7), style: .heading1Font)
+            CustomText(String(format: LocalizablePeerToPeer.senderRequestFilesNumberDesc.localized, 7), style: .heading1Style)
                 .padding(.bottom, 16)//Number should be dynamic
 
-            CustomText(LocalizablePeerToPeer.requestQuestion.localized, style: .body1Font)
+            CustomText(LocalizablePeerToPeer.requestQuestion.localized, style: .body1Style)
 
                 .padding(.bottom, 48)
             VStack(spacing: 16) {
