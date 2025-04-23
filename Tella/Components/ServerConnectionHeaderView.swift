@@ -13,7 +13,7 @@ import SwiftUI
 struct ServerConnectionHeaderView: View {
     
     var title: String
-    var subtitle: String
+    var subtitle: String? = nil
     var imageIconName: String
     var subtitleTextAlignment: TextAlignment = .center
     
@@ -22,14 +22,15 @@ struct ServerConnectionHeaderView: View {
             
             Image(imageIconName)
                 .padding(.bottom, 16)
-            
             CustomText(title,style: .heading1Style,
                        alignment: .center)
             
-            CustomText(subtitle,
-                       style: .body1Style,
-                       alignment: subtitleTextAlignment)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            if let subtitle {
+                CustomText(subtitle,
+                           style: .body1Style,
+                           alignment: subtitleTextAlignment)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
     }
 }

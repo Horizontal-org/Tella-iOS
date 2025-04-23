@@ -66,15 +66,16 @@ struct WifiConnetionView: View {
     var topView: some View {
         VStack(alignment: .center, spacing: 12) {
             
-            ResizableImage("wifi.icon").frame(width: 43, height: 30)
-            CustomText(LocalizablePeerToPeer.getConnected.localized,
-                       style: .heading1Style)
-            CustomText(LocalizablePeerToPeer.wifiConnectionDescription.localized,
-                       style: .body1Style)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            ServerConnectionHeaderView(
+                title: LocalizablePeerToPeer.getConnected.localized,
+                subtitle: LocalizablePeerToPeer.wifiConnectionDescription.localized,
+                imageIconName: "wifi.icon",
+                subtitleTextAlignment: .leading)
             tipsView
         }
     }
+    
+    
     
     var tipsView: some View {
         HStack(alignment: .top) {
@@ -133,7 +134,7 @@ struct WifiConnetionView: View {
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
-                           .disabled(viewModel.ssid == nil)
+                .disabled(viewModel.ssid == nil)
             
         }.cardModifier()
             .opacity(viewModel.ssid == nil ? 0.5 : 1.0)
