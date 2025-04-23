@@ -25,10 +25,10 @@ struct RecipientConnectToDeviceView: View {
     
     private var contentView: some View {
         VStack {
-            CustomText(LocalizablePeerToPeer.showQrCode.localized, style: .heading1Font)
+            CustomText(LocalizablePeerToPeer.showQrCode.localized, style: .heading1Style)
                 .padding(.top, 74)
             qrCodeStateView.padding(.bottom, 40)
-            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Font)
+            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
         }
@@ -51,7 +51,7 @@ struct RecipientConnectToDeviceView: View {
         case .loaded(let connectionInfo):
             qrCodeImageView(connectionInfo: connectionInfo)
         case .error(let error):
-            CustomText(error, style: .body1Font)
+            CustomText(error, style: .body1Style)
                 .frame(width: 160, height: 160)
         }
     }

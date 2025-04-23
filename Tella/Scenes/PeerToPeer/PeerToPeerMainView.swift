@@ -27,19 +27,11 @@ struct PeerToPeerMainView: View {
     }
     
     var contentView: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 24) {
             Spacer()
-                .frame(height: 35)
-            
             headerView
-            
-            Spacer()
-                .frame(height: 24)
-            
             peerToPeerParticipantButtons
-            
-            learnMoreView.padding()
-            
+            learnMoreView
             Spacer()
             bottomView
         }
@@ -76,11 +68,10 @@ struct PeerToPeerMainView: View {
         Button {
             TellaUrls.connectionLearnMore.url()?.open()
         } label: {
-            Text(LocalizablePeerToPeer.learnMore.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Styles.Colors.yellow)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+            CustomText(LocalizablePeerToPeer.learnMore.localized,
+                       style: .buttonDetailRegularStyle,
+                       alignment: .center,
+                       color: Styles.Colors.yellow)
         }
     }
     

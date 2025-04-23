@@ -23,18 +23,13 @@ struct ServerConnectionHeaderView: View {
             Image(imageIconName)
                 .padding(.bottom, 16)
             
-            Text(title)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+            CustomText(title,style: .heading1Style,
+                       alignment: .center)
             
-            Text(subtitle)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(subtitleTextAlignment)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            CustomText(subtitle,
+                       style: .body1Style,
+                       alignment: subtitleTextAlignment)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

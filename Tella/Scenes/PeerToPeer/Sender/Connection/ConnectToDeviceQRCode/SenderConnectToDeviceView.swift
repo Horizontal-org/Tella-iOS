@@ -27,11 +27,12 @@ struct SenderConnectToDeviceView: View {
     }
     
     var contentView: some View {
-        VStack {
-            CustomText(LocalizablePeerToPeer.scanCode.localized, style: .heading1Font)
-                .padding(.top, 74)
-            qrCodeView.padding(.bottom, 40)
-            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Font)
+        VStack(alignment: .center, spacing: 12) {
+            Spacer()
+            CustomText(LocalizablePeerToPeer.scanCode.localized, style: .heading1Style)
+            qrCodeView
+                .padding(.bottom, 28)
+            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
         }
@@ -44,6 +45,7 @@ struct SenderConnectToDeviceView: View {
                              backButtonAction: {self.popToRoot()},
                              rightButtonType: .none)
     }
+    
     var qrCodeView: some View {
         ZStack{
             QRCodeScannerView(scannedCode: $viewModel.scannedCode,startScanning: startScanning)
@@ -62,7 +64,14 @@ struct SenderConnectToDeviceView: View {
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
     }
-    
+
+    var bottomView: some View {
+        BottomLockView<AnyView>(isValid: .constant(true),
+                                nextButtonAction: .action,
+                                shouldHideNext: true,
+                                shouldHideBack: false)
+    }
+
     private func showBottomSheetError() {
         isBottomSheetShown = true
         let content = ConnectionFailedView( tryAction:  {

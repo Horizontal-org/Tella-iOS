@@ -47,7 +47,7 @@ struct ManuallyVerificationView: View {
     var topView: some View {
         VStack(alignment: .center,spacing: 8) {
             ResizableImage("device").frame(width: 120, height: 120)
-            CustomText(LocalizablePeerToPeer.verificationSubhead.localized, style: .heading1Font)
+            CustomText(LocalizablePeerToPeer.verificationSubhead.localized, style: .heading1Style)
         }
     }
     
@@ -65,13 +65,13 @@ struct ManuallyVerificationView: View {
     
     private func participantInfoView(part1Text: String, part2Text: String) -> some View {
         VStack(alignment: .center, spacing: 24) {
-            CustomText(part1Text, style: .body1Font)
+            CustomText(part1Text, style: .body1Style)
             
-            CustomText(viewModel.connectionInfo.certificateHash ?? "", style: .body1Font)
+            CustomText(viewModel.connectionInfo.certificateHash ?? "", style: .body1Style)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .cardModifier()
             
-            CustomText(part2Text, style: .body1Font)
+            CustomText(part2Text, style: .body1Style)
         }
     }
     

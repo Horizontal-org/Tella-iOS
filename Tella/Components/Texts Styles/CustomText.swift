@@ -16,7 +16,7 @@ struct CustomText: View {
     let color: Color
     
     init(_ text: String,
-         style: TypographyStyle = .body1Font,
+         style: TypographyStyle,
          alignment: TextAlignment = .leading,
          color: Color = .white) {
         self.text = text
@@ -27,7 +27,7 @@ struct CustomText: View {
     
     var body: some View {
         Text(text)
-            .font(style.font)
+            .style(style)
             .foregroundColor(color)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(alignment)
