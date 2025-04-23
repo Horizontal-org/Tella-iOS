@@ -36,7 +36,7 @@ struct AddServerURLView: View {
                               fieldType: .url)
                 Spacer()
                 
-                BottomLockView<AnyView>(isValid: $viewModel.validURL,
+                NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validURL,
                                         nextButtonAction: .action,
                                         nextAction: {
                     self.viewModel.checkURL()

@@ -80,7 +80,7 @@ struct SelectDriveConnectionView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: .constant(true),
+        NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                 nextButtonAction: .action,
                                 shouldHideNext: selectedDriveConnectionType == .none,
                                 shouldHideBack: false,

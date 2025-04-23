@@ -48,7 +48,7 @@ struct UwaziTwoStepVerification: View {
                     }
                     .padding(.leading, 23)
                     .padding(.trailing,23)
-                    BottomLockView<AnyView>(isValid: .constant(true),
+                    NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }

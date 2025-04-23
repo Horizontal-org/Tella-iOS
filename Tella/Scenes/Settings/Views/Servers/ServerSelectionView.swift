@@ -78,8 +78,8 @@ struct ServerSelectionView: View {
         }
     }
     
-    fileprivate func bottomView() -> BottomLockView<AnyView> {
-        return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
+    fileprivate func bottomView() -> NavigationBottomView<AnyView> {
+        return NavigationBottomView<AnyView>(shouldActivateNext: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
                                        shouldHideBack: true,
                                        nextAction: {

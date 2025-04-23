@@ -76,7 +76,7 @@ struct PeerToPeerMainView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: Binding(get: { participant != nil },
+        NavigationBottomView<AnyView>(shouldActivateNext: Binding(get: { participant != nil },
                                                  set: { _ in }),
                                 nextButtonAction: .action,
                                 shouldHideBack: true,
