@@ -24,13 +24,22 @@ struct RecipientConnectToDeviceView: View {
     }
     
     private var contentView: some View {
-        VStack {
-            CustomText(LocalizablePeerToPeer.showQrCode.localized, style: .heading1Style)
-                .padding(.top, 74)
-            qrCodeStateView.padding(.bottom, 40)
-            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
-            connectManuallyButton
+        VStack  {
             Spacer()
+            VStack(spacing:12)  {
+                CustomText(LocalizablePeerToPeer.showQrCode.localized,
+                           style: .heading1Style,
+                           alignment: .center)
+                
+                qrCodeStateView
+                    .padding(.bottom, 28)
+                CustomText(LocalizablePeerToPeer.havingTrouble.localized,
+                           style: .body1Style,
+                           alignment: .center)
+                connectManuallyButton
+            }
+            Spacer()
+            BackBottomView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

@@ -69,7 +69,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 
                 VStack {
                     
-                    BottomLockView(isValid: $isValid,
+                    NavigationBottomView(shouldActivateNext: $isValid,
                                    shouldEnableBackButton: shouldEnableBackButton,
                                    nextButtonAction: nextButtonAction,
                                    destination:destination,

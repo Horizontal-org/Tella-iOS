@@ -69,7 +69,7 @@ struct ServerCreateFolderView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: $isValid,
+        NavigationBottomView<AnyView>(shouldActivateNext: $isValid,
                                 nextButtonAction: .action,
                                 shouldHideNext: createFolderViewModel.createFolderState == .loading,
                                 shouldHideBack: false,

@@ -35,6 +35,7 @@ struct SenderConnectToDeviceView: View {
             CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
+            BackBottomView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -63,13 +64,6 @@ struct SenderConnectToDeviceView: View {
                         isValid: .constant(true),
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
-    }
-
-    var bottomView: some View {
-        BottomLockView<AnyView>(isValid: .constant(true),
-                                nextButtonAction: .action,
-                                shouldHideNext: true,
-                                shouldHideBack: false)
     }
 
     private func showBottomSheetError() {

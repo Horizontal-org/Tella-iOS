@@ -42,7 +42,7 @@ struct AddServerAccessChoiceView: View {
                     
                 }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
                 
-                BottomLockView<AnyView>(isValid: .constant(true),
+                NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                         nextButtonAction: .action,
                                         shouldHideNext: true,
                                         backAction: {
