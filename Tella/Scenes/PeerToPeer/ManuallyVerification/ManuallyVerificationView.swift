@@ -43,13 +43,14 @@ struct ManuallyVerificationView: View {
                              backButtonAction: {self.popToRoot()}, //TO Check
                              rightButtonType: .none)
     }
-    
+
     var topView: some View {
-        VStack(alignment: .center,spacing: 8) {
-            ResizableImage("device").frame(width: 120, height: 120)
-            CustomText(LocalizablePeerToPeer.verificationSubhead.localized, style: .heading1Style)
-        }
+        ServerConnectionHeaderView(
+            title: LocalizablePeerToPeer.verificationSubhead.localized,
+            imageIconName: "device",
+            subtitleTextAlignment: .leading)
     }
+
     
     var infoView: some View {
         participantInfoView(
