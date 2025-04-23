@@ -1565,6 +1565,15 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		1202C8A02DB971BC0013E17D /* ManuallyVerification */ = {
+			isa = PBXGroup;
+			children = (
+				125C16052DAEF5430086D4F0 /* ManuallyVerificationView.swift */,
+				1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */,
+			);
+			path = ManuallyVerification;
+			sourceTree = "<group>";
+		};
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -2153,12 +2162,11 @@
 			isa = PBXGroup;
 			children = (
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
 				2012D5432D5697B0000E0443 /* Sender */,
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				128247A22D5F935100B7E63E /* Models */,
-				125C16052DAEF5430086D4F0 /* ManuallyVerificationView.swift */,
-				1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";

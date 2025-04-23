@@ -27,14 +27,15 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var contentView: some View {
         VStack {
+            Spacer()
+            
             VStack {
-                ScrollView {
-                    topView.padding(.bottom, 16)
-                    ipAddressTextFieldView
-                    pinTextFieldView
-                    portTextFieldView
-                }
+                topView
+                Spacer()
+                    .frame(height: 24)
+                textFieldsView
             }
+            
             Spacer()
             bottomView
         }
@@ -50,10 +51,19 @@ struct SenderConnectToDeviceManuallyView: View {
     }
     
     var topView: some View {
-        VStack(alignment: .center) {
-            ResizableImage("device").frame(width: 120, height: 120)
-            CustomText(LocalizablePeerToPeer.enterDeviceInformation.localized, style: .heading1Style)
-                .frame(height: 50)
+        ServerConnectionHeaderView(
+            title: LocalizablePeerToPeer.enterDeviceInformation.localized,
+            imageIconName: "device",
+            subtitleTextAlignment: .leading)
+    }
+    
+    var textFieldsView: some View {
+        VStack(spacing:8) {
+            ScrollView {
+                ipAddressTextFieldView
+                pinTextFieldView
+                portTextFieldView
+            }
         }
     }
     

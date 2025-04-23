@@ -75,7 +75,7 @@ struct TextfieldView : View {
             ZStack {
                 Text(placeholder)
                     .offset(y: fieldContent.isEmpty ? 0 : -22)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .style(.body1Style)
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
                 
@@ -166,7 +166,7 @@ struct TextfieldView : View {
     var errorMessageView : some View {
         if let formattedErrorMessage {
             Text(formattedErrorMessage)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                .style(.body3Style)
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -216,7 +216,7 @@ struct TextfieldStyle: TextFieldStyle {
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .style(.body1Style)
             .foregroundColor(Color.white)
             .accentColor(.white)
             .multilineTextAlignment(.leading)

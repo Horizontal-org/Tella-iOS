@@ -569,7 +569,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_HavingTrouble" = "Having trouble with the QR code?";
 "PeerToPeer_Wifi" = "Wi-Fi";
 "PeerToPeer_ConnectManually" = "Connect Manually";
-"PeerToPeer_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
+"PeerToPeer_EnterDevice_Information" = "Enter the recipient’s device\n information to find it on the network";
 "PeerToPeer_IpAddress" = "IP address";
 "PeerToPeer_Pin" = "PIN";
 "PeerToPeer_Port" = "Port";
