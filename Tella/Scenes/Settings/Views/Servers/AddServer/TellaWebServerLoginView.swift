@@ -66,7 +66,7 @@ struct TellaWebServerLoginView: View {
                         
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validPassword,
+                    NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validPassword,
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }

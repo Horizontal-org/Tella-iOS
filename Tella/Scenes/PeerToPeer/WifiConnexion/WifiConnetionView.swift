@@ -141,7 +141,7 @@ struct WifiConnetionView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: $isCheckboxOn,
+        NavigationBottomView<AnyView>(shouldActivateNext: $isCheckboxOn,
                                 nextButtonAction: .action,
                                 nextAction: {
             switch viewModel.participant {

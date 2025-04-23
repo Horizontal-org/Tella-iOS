@@ -99,7 +99,7 @@ struct SenderConnectToDeviceManuallyView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: $viewModel.validFields,
+        NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validFields,
                                 nextButtonAction: .action,
                                 nextAction: {
             viewModel.register()

@@ -32,7 +32,7 @@ struct UwaziServerAccessSelectionView: View {
                     buttonView()
                 }
                 Spacer()
-                BottomLockView<AnyView>(isValid: $isButtonValid,
+                NavigationBottomView<AnyView>(shouldActivateNext: $isButtonValid,
                                         nextButtonAction: .action,
                                         nextAction: {
                     handleNavigation()
