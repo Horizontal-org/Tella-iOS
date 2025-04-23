@@ -102,6 +102,6 @@ extension Data {
         self.withUnsafeBytes {
             _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &hash)
         }
-        return Data(hash).base64EncodedString()
+        return hash.map { String(format: "%04x", $0) }.joined(separator: " ")
     }
 }
