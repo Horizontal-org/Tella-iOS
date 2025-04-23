@@ -23,7 +23,7 @@ struct UwaziSuccessView: View {
                 Spacer().frame(height: 53)
                 Image("settings.checked-circle")
                 Spacer()
-                BottomLockView<AnyView>(isValid: .constant(true),
+                NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                         nextButtonAction: .action,
                                         shouldHideNext: false,
                                         shouldHideBack: true,
