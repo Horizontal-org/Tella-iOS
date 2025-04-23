@@ -52,7 +52,7 @@ struct SenderConnectToDeviceManuallyView: View {
     var topView: some View {
         VStack(alignment: .center) {
             ResizableImage("device").frame(width: 120, height: 120)
-            CustomText(LocalizablePeerToPeer.enterDeviceInformation.localized, style: .heading1Font)
+            CustomText(LocalizablePeerToPeer.enterDeviceInformation.localized, style: .heading1Style)
                 .frame(height: 50)
         }
     }

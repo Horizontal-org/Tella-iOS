@@ -35,7 +35,7 @@ struct AddFileGridView: View {
     
     
     var attachFilesTextView: some View {
-        CustomText(titleText, style: .body1Font)
+        CustomText(titleText, style: .body1Style)
     }
     
     var itemsGridView: some View {
