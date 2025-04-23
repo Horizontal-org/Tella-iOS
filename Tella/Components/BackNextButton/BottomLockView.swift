@@ -48,6 +48,19 @@ struct BottomLockView<Destination:View>:View {
             }
         }
     }
+    
+    func BottomButtonActionView(title:String,isValid:Bool, action: (() -> Void)?) -> some View {
+        Button {
+            UIApplication.shared.endEditing()
+            action?()
+        } label: {
+            Text(title)
+        }
+        .style(.link1Style)
+        .foregroundColor(isValid ? Color.white : Color.gray)
+        .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
+        .disabled(!isValid)
+    }
 }
 
 struct BottomLockView_Previews: PreviewProvider {

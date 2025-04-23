@@ -42,7 +42,7 @@ struct AddFileGridItemView: View {
             VStack {
                 Spacer()
                 CustomText(self.file.name,
-                               style: .body3Font)
+                               style: .body3Style)
                     .lineLimit(1)
                 Spacer()
                     .frame(height: 6)
