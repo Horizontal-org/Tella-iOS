@@ -1,5 +1,5 @@
 //
-//  Copyrighét © 2022 INTERNEWS. All rights reserved.
+//  Copyrighét © 2022 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI

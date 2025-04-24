@@ -2,7 +2,7 @@
 //  TextEditorView.swift
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
