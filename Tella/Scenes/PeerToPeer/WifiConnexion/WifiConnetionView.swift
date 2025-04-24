@@ -91,9 +91,9 @@ struct WifiConnetionView: View {
                 }
             }
             Spacer()
-            ResizableImage( isExpanded ? "arrow.up" : "arrow.down" )
+            ResizableImage("arrow.up")
                 .frame(width: 24, height: 24)
-                .rotationEffect(.degrees(isExpanded ? 180 : 0)) // optional: rotate icon
+                .rotationEffect(.degrees(isExpanded ? 0 : 180 )) // rotate icon
                 .animation(.easeInOut, value: isExpanded)
             
         }
