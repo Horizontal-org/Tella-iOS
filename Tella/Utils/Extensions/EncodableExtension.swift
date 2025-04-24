@@ -49,7 +49,7 @@ extension Encodable {
         }
     }
     
-    func generateQRCode(size: CGFloat = 160) -> UIImage {
+    func generateQRCode(size: CGFloat) -> UIImage {
         let data = self.jsonString?.data(using: .utf8)
         
         guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return UIImage() }

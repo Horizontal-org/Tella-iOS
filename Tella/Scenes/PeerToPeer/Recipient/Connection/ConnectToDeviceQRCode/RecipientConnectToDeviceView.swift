@@ -56,20 +56,20 @@ struct RecipientConnectToDeviceView: View {
         switch viewModel.qrCodeState {
         case .loading:
             CircularActivityIndicatory(isTransparent:true)
-                .frame(width: 160, height: 160)
+                .frame(width: 240, height: 240)
         case .loaded(let connectionInfo):
             qrCodeImageView(connectionInfo: connectionInfo)
         case .error(let error):
             CustomText(error, style: .body1Style)
-                .frame(width: 160, height: 160)
+                .frame(width: 240, height: 240)
         }
     }
     
     func qrCodeImageView(connectionInfo:ConnectionInfo) -> some View {
-        Image(uiImage: connectionInfo.generateQRCode())
+        Image(uiImage: connectionInfo.generateQRCode(size: CGFloat(215)))
             .resizable()
             .scaledToFill()
-            .frame(width: 160, height: 160)
+            .frame(width: 215, height: 215)
             .padding(.all, 16)
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 12))
