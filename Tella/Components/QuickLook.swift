@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Erin Simshauser on 3/7/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
+//  Copyright © 2020 Anessa Petteruti. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 /*
  This class is used to make the QLPreviewController compatabile with SwiftUI. The QL framework allows for easy in app viewing of any filetype. QuickLook just requires a url and then provides the appropriate view (PDF, doc, image, video, audio)

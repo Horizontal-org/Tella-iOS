@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 9/8/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 // TODO: Removed unwanted variables when done with entity flow no removed now due to confusion on what will be need in future implementation

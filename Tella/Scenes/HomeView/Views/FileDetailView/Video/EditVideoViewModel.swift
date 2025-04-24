@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Combine
 import Foundation

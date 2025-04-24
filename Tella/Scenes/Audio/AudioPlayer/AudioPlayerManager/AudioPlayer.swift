@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Erin Simshauser on 5/8/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
+//  Copyright © 2020 Anessa Petteruti. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 /*
  This class is used to play and pause audio files for previewing functionality. It uses the AVAudioPlayer framework and slightly adapts it so that we can pass in data from the Preview file to be played.
