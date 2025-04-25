@@ -20,8 +20,10 @@ struct EditVideoView: View {
         ZStack {
             VStack {
                 
-                EditMediaHeaderView(viewModel: viewModel)
-                CustomVideoPlayer(player: viewModel.player)
+                EditMediaHeaderView(viewModel: viewModel,
+                                    showRotate: {showRotateVideo()})
+                CustomVideoPlayer(player: viewModel.player,
+                                  rotationAngle: .constant(0))
                     .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
                 
                 EditMediaControlButtonsView(viewModel: viewModel)
@@ -127,6 +129,12 @@ struct EditVideoView: View {
             Toast.displayToast(message: message)
         default:
             break
+        }
+    }
+    
+    private func showRotateVideo() {
+        self.present(style: .fullScreen) {
+            RotateVideoView(viewModel: viewModel)
         }
     }
     

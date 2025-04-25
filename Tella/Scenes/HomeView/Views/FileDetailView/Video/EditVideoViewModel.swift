@@ -21,6 +21,7 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var currentPosition: Double = .zero
     @Published var shouldSeekVideo = false
     @Published var thumbnails: [UIImage] = []
+    @Published var rotationAngle: CGFloat = 0
     
     var isSeekInProgress = false {
         didSet {
@@ -90,4 +91,16 @@ class EditVideoViewModel: EditMediaViewModel {
         isPlaying = false
         player.pause()
     }
- }
+    
+    func rotate() {
+        Task { @MainActor in
+            do {
+                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                guard let rotatedVideoUrl = try await fileURL?.rotateVideo(by: -3 * .pi / 2 )   else { return }
+                self.addEditedFile(urlFile: rotatedVideoUrl)
+            } catch {
+                self.trimState = .error(error.localizedDescription)
+            }
+        }
+    }
+}

@@ -58,7 +58,8 @@ struct VideoViewer: View {
     
     var contentView: some View {
         VStack {
-            CustomVideoPlayer(player: playerVM.player)
+            CustomVideoPlayer(player: playerVM.player,
+                              rotationAngle: .constant(0))
                 .overlay(CustomVideoControlsView(playerVM: playerVM)
                          ,alignment: .bottom)
             Spacer()

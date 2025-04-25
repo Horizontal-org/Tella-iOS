@@ -11,6 +11,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import AVFoundation
 
 class EditMediaViewModel: ObservableObject {
     //MARK: - Published
@@ -70,6 +71,10 @@ class EditMediaViewModel: ObservableObject {
         return self.endTime != self.timeDuration || self.startTime != 0.0
     }
     
+    func isVideoRotated() -> Bool {
+        return true
+    }
+
     func updateOffset(time: Double) {
         let totalOffsetDistance: CGFloat = 340
         let progress = time / timeDuration

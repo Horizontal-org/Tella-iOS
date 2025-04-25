@@ -118,7 +118,7 @@ extension URL {
         }
         return images
     }
-
+    
     func getAVFileType() -> AVFileType {
         switch self.pathExtension.lowercased() {
         case "mp4", "m4a":
@@ -244,6 +244,122 @@ extension URL {
         }
     }
     
+    func rotateVideo(by angle: CGFloat) async throws -> URL {
+        let asset = AVAsset(url: self)
+        
+        guard let videoTrack = asset.tracks(withMediaType: .video).first else {
+            debugLog("No video track")
+            throw RuntimeError(LocalizableError.commonError.localized)
+        }
+        
+        let composition = AVMutableComposition()
+        guard let compositionVideoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
+            debugLog("Failed to create composition video track")
+            throw RuntimeError(LocalizableError.commonError.localized)
+        }
+        
+        try compositionVideoTrack.insertTimeRange(
+            CMTimeRange(start: .zero, duration: asset.duration),
+            of: videoTrack,
+            at: .zero
+        )
+        
+        // Add audio if available
+        if let audioTrack = asset.tracks(withMediaType: .audio).first,
+           let compositionAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+            try compositionAudioTrack.insertTimeRange(
+                CMTimeRange(start: .zero, duration: asset.duration),
+                of: audioTrack,
+                at: .zero
+            )
+        }
+        
+        // Calculate rotation transform
+        let originalTransform = videoTrack.preferredTransform
+        let videoSize = videoTrack.naturalSize.applying(originalTransform)
+        
+        let absWidth = abs(videoSize.width)
+        let absHeight = abs(videoSize.height)
+        
+        let videoComposition = AVMutableVideoComposition()
+        videoComposition.frameDuration = CMTime(value: 1, timescale: 30)
+        
+        var rotationTransform: CGAffineTransform
+        var renderSize: CGSize
+        
+        switch angle {
+        case 0:
+            rotationTransform = originalTransform
+            renderSize = CGSize(width: absWidth, height: absHeight)
+            
+        case .pi / 2, -3 * .pi / 2:
+            rotationTransform = originalTransform.concatenating(
+                CGAffineTransform(translationX: absHeight, y: 0).rotated(by: angle)
+            )
+            renderSize = CGSize(width: absHeight, height: absWidth)
+            
+        case .pi, -.pi:
+            rotationTransform = originalTransform.concatenating(
+                CGAffineTransform(translationX: absWidth, y: absHeight).rotated(by: angle)
+            )
+            renderSize = CGSize(width: absWidth, height: absHeight)
+            
+        case 3 * .pi / 2, -.pi / 2:
+            rotationTransform = originalTransform.concatenating(
+                CGAffineTransform(translationX: 0, y: absWidth).rotated(by: angle)
+            )
+            renderSize = CGSize(width: absHeight, height: absWidth)
+            
+        default:
+            
+            debugLog("Unsupported angle: \(angle)")
+            throw RuntimeError(LocalizableError.commonError.localized)
+            
+        }
+        
+        videoComposition.renderSize = renderSize
+        
+        let instruction = AVMutableVideoCompositionInstruction()
+        instruction.timeRange = CMTimeRange(start: .zero, duration: asset.duration)
+        
+        let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: compositionVideoTrack)
+        layerInstruction.setTransform(rotationTransform, at: .zero)
+        
+        instruction.layerInstructions = [layerInstruction]
+        videoComposition.instructions = [instruction]
+        
+        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("rotated_output.mov")
+        try? FileManager.default.removeItem(at: outputURL)
+        
+        guard let export = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
+            
+            debugLog("Failed to create export session")
+            throw RuntimeError(LocalizableError.commonError.localized)
+            
+        }
+        
+        export.videoComposition = videoComposition
+        export.outputURL = outputURL
+        export.outputFileType = .mov
+        export.shouldOptimizeForNetworkUse = true
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            export.exportAsynchronously {
+                switch export.status {
+                case .completed:
+                    continuation.resume(returning: outputURL)
+                case .failed:
+                    debugLog("Export failed")
+                    continuation.resume(throwing: RuntimeError(LocalizableError.commonError.localized))
+                    
+                default:
+                    debugLog("Export incomplete")
+                    continuation.resume(throwing: RuntimeError(LocalizableError.commonError.localized))
+                }
+            }
+        }
+    }
+    
     func createURL(name: String) -> URL {
         return self.deletingLastPathComponent().appendingPathComponent(name)
     }
@@ -251,7 +367,7 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
-
+    
 }
 
 
