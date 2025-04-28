@@ -30,8 +30,8 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel)
         setupListeners()
         initVideo()
     }

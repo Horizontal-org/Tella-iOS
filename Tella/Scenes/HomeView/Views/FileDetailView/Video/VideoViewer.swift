@@ -76,7 +76,7 @@ struct VideoViewer: View {
     }
     
     private func showEditVideoView() {
-        let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel, shouldReloadVaultFiles: .constant(true))
+        let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel)
         DispatchQueue.main.async {
             if playerVM.currentFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {

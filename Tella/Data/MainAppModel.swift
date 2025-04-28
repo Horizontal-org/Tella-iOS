@@ -211,20 +211,10 @@ extension MainAppModel {
 }
 
 extension MainAppModel {
-    
-//    func addVaultFile(importedFiles: [ImportedFile], 
-//                      shouldReloadVaultFiles:Binding<Bool>?,
-//                      autoUpload:Bool) {
-//        self.addVaultFile(importedFiles: importedFiles,
-//                          shouldReloadVaultFiles: shouldReloadVaultFiles,
-//                          autoUpload: autoUpload)
-//    }
-    
+
     func addVaultFile(importedFiles: [ImportedFile],
-                      shouldReloadVaultFiles:Binding<Bool>?,
                       autoUpload:Bool = false) {
         encryptionService?.addVaultFile(importedFiles: importedFiles,
-                                        shouldReloadVaultFiles: shouldReloadVaultFiles,
                                         autoUpload: autoUpload)
     }
 }

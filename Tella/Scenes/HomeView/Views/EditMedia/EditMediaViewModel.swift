@@ -42,18 +42,16 @@ class EditMediaViewModel: ObservableObject {
     
     //MARK: - cancellable
     var cancellables: Set<AnyCancellable> = []
-    var shouldReloadVaultFiles: Binding<Bool> // Should be changed soon
     
     //MARK: - Init attributes
     var file: VaultFileDB?
     var rootFile: VaultFileDB?
     var appModel: MainAppModel
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
         self.file = file
         self.rootFile = rootFile
         self.appModel  = appModel
-        self.shouldReloadVaultFiles  = shouldReloadVaultFiles
     }
     
     func onAppear() {
@@ -110,8 +108,7 @@ class EditMediaViewModel: ObservableObject {
         let importedFiles = ImportedFile(urlFile: urlFile,
                                          parentId: rootFile?.id ,
                                          fileSource: FileSource.files)
-        appModel.addVaultFile(importedFiles: [importedFiles],
-                              shouldReloadVaultFiles: shouldReloadVaultFiles)
+        appModel.addVaultFile(importedFiles: [importedFiles])
     }
     
     func undo() {

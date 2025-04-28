@@ -109,8 +109,7 @@ struct CreateEntityView: View {
         PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
                              showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
                              appModel: entityViewModel.mainAppModel,
-                             resultFile: $entityViewModel.resultFile,
-                             shouldReloadVaultFiles: .constant(false))
+                             resultFile: $entityViewModel.resultFile)
     }
     
     private func showSaveEntityConfirmationView() {

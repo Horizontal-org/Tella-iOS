@@ -30,16 +30,14 @@ struct CameraView: View {
          showingCameraView: Binding<Bool>,
          resultFile: Binding<[VaultFileDB]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFileDB? = nil,
-         shouldReloadVaultFiles: Binding<Bool>? = nil) {
+         rootFile:VaultFileDB? = nil) {
         
         self.showingCameraView = showingCameraView
         
         _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
                                                                      rootFile: rootFile,
                                                                      resultFile: resultFile,
-                                                                     sourceView: sourceView,
-                                                                     shouldReloadVaultFiles: shouldReloadVaultFiles))
+                                                                     sourceView: sourceView))
         
     }
     

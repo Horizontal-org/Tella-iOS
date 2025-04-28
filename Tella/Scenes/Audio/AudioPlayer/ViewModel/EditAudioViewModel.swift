@@ -20,8 +20,8 @@ class EditAudioViewModel: EditMediaViewModel {
     //MARK: - Private attributes
     private var currentData : Data?
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel)
         if let currentFile = file {
             self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
         }

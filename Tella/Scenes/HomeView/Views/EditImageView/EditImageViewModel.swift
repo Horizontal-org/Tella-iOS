@@ -56,8 +56,7 @@ class EditImageViewModel: ObservableObject {
         }
         self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url,
                                                                     parentId: fileListViewModel.rootFile?.id,
-                                                                    fileSource: .editFile)],
-                                       shouldReloadVaultFiles : $fileListViewModel.shouldReloadVaultFiles)
+                                                                    fileSource: .editFile)])
     }
     
 }
