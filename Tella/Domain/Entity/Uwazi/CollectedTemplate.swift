@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 9/8/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 // Made Codable to Parse this object to and from Database so not using DTO pattern here
