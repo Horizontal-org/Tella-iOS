@@ -11,7 +11,7 @@ import AVKit
 struct CustomVideoPlayer: UIViewRepresentable {
     
     var player: AVPlayer
-    @Binding var rotationAngle: CGFloat // Use this to bind rotation angle
+    @Binding var rotationAngle: Int // Use this to bind rotation angle
     
     func makeUIView(context: Context) -> VideoPlayerView {
         let view = VideoPlayerView()

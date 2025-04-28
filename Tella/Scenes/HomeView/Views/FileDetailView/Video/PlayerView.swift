@@ -25,8 +25,8 @@ final class VideoPlayerView: UIView {
     }
     
     // Function to apply rotation to the video layer
-    func rotateVideo(by angle: CGFloat) {
-        let radians = angle * (.pi / 180)
+    func rotateVideo(by angle: Int) {
+        let radians = angle.degreesToRadians
         playerLayer.setAffineTransform(CGAffineTransform(rotationAngle: radians))
     }
 }

@@ -90,10 +90,12 @@ class EditMediaViewModel: ObservableObject {
     func trim() {
         Task { @MainActor in
             do {
+                self.trimState = .loading
                 let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
                 guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedVideoUrl)
-            } catch {
+                self.trimState = .loaded(true)
+             } catch {
                 self.trimState = .error(error.localizedDescription)
             }
         }
@@ -110,9 +112,6 @@ class EditMediaViewModel: ObservableObject {
                                          fileSource: FileSource.files)
         appModel.addVaultFile(importedFiles: [importedFiles],
                               shouldReloadVaultFiles: shouldReloadVaultFiles)
-        DispatchQueue.main.async {
-            self.trimState = .loaded(true)
-        }
     }
     
     func undo() {

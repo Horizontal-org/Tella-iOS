@@ -244,8 +244,9 @@ extension URL {
         }
     }
     
-    func rotateVideo(by angle: CGFloat) async throws -> URL {
+    func rotateVideo(by angle: Int, newName: String) async throws -> URL {
         let asset = AVAsset(url: self)
+        let angle = angle.degreesToRadians
         
         guard let videoTrack = asset.tracks(withMediaType: .video).first else {
             debugLog("No video track")
@@ -311,7 +312,6 @@ extension URL {
             renderSize = CGSize(width: absHeight, height: absWidth)
             
         default:
-            
             debugLog("Unsupported angle: \(angle)")
             throw RuntimeError(LocalizableError.commonError.localized)
             
@@ -328,35 +328,31 @@ extension URL {
         instruction.layerInstructions = [layerInstruction]
         videoComposition.instructions = [instruction]
         
-        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("rotated_output.mov")
+        let outputURL = createURL(name: "\(newName).\(self.pathExtension.lowercased())")
         try? FileManager.default.removeItem(at: outputURL)
         
-        guard let export = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
-            
+        guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
             debugLog("Failed to create export session")
             throw RuntimeError(LocalizableError.commonError.localized)
-            
         }
         
-        export.videoComposition = videoComposition
-        export.outputURL = outputURL
-        export.outputFileType = .mov
-        export.shouldOptimizeForNetworkUse = true
+        exportSession.videoComposition = videoComposition
+        exportSession.outputURL = outputURL
+        exportSession.outputFileType = .mov
+        exportSession.shouldOptimizeForNetworkUse = true
         
-        return try await withCheckedThrowingContinuation { continuation in
-            export.exportAsynchronously {
-                switch export.status {
-                case .completed:
-                    continuation.resume(returning: outputURL)
-                case .failed:
-                    debugLog("Export failed")
-                    continuation.resume(throwing: RuntimeError(LocalizableError.commonError.localized))
-                    
-                default:
-                    debugLog("Export incomplete")
-                    continuation.resume(throwing: RuntimeError(LocalizableError.commonError.localized))
-                }
-            }
+        await exportSession.export()
+        
+        switch exportSession.status {
+        case .completed:
+            return outputURL
+        case .failed:
+            debugLog("Export failed")
+            throw RuntimeError(LocalizableError.commonError.localized)
+            
+        default:
+            debugLog("Export incomplete")
+            throw RuntimeError(LocalizableError.commonError.localized)
         }
     }
     
@@ -367,8 +363,4 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
-    
 }
-
-
-

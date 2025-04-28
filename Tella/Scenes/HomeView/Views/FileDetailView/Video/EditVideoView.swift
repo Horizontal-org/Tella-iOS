@@ -34,6 +34,9 @@ struct EditVideoView: View {
 
                 Spacer()
             }
+            if viewModel.trimState == .loading {
+                CircularActivityIndicatory()
+            }
         }
         .onAppear {
             viewModel.onAppear()

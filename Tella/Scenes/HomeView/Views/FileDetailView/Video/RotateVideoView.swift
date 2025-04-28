@@ -31,11 +31,20 @@ struct RotateVideoView: View {
                 
                 Spacer()
             }
+            
+            if viewModel.rotateState == .loading {
+                CircularActivityIndicatory()
+            }
+
         }
         .onAppear {
         }
         .onDisappear {
         }
+        .onReceive(viewModel.$rotateState) { value in
+            handleRotateState(value: value)
+        }
+
         .background(Color.black.ignoresSafeArea())
     }
     
@@ -59,4 +68,19 @@ struct RotateVideoView: View {
         }
     }
     
+    private func handleRotateState(value:ViewModelState<Bool>) {
+        switch value {
+        case .loaded(let isSaved):
+            if isSaved {
+                self.dismiss()
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+            }
+        case .error(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+    
+
 }
