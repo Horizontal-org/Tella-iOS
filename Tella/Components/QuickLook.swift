@@ -16,30 +16,26 @@ import SwiftUI
 import QuickLook
 
 struct QuickLookView: UIViewControllerRepresentable {
-//  Properties: the file name (without extension), and whether we'll let
-//  the user scale the preview content.
-    var allowScaling: Bool = true
+    
     var file: URL
-      
+    
     func makeCoordinator() -> QuickLookView.Coordinator {
-    //  The coordinator object implements the mechanics of dealing with
-    //  the live UIKit view controller.
         Coordinator(self, file: file)
     }
-      
-    func makeUIViewController(context: Context) -> QLPreviewController {
-    //  Create the preview controller, and assign our Coordinator class
-    //  as its data source.
-        let controller = QLPreviewController()
-        controller.dataSource = context.coordinator
-        return controller
+    
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let previewController = QLPreviewController()
+        previewController.dataSource = context.coordinator
+        
+        let navController = UINavigationController(rootViewController: previewController)
+        navController.navigationBar.isHidden = true // Hide the parent navigation bar
+        return navController
     }
-      
-    func updateUIViewController(_ controller: QLPreviewController,
+    
+    func updateUIViewController(_ controller: UINavigationController,
                                 context: Context) {
-        // nothing to do here
     }
-      
+    
     class Coordinator: NSObject, QLPreviewControllerDataSource {
         let parent: QuickLookView
         let file: URL
@@ -47,20 +43,16 @@ struct QuickLookView: UIViewControllerRepresentable {
         func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
             return file as QLPreviewItem
         }
-
-          
+        
         init(_ parent: QuickLookView, file: URL) {
             self.parent = parent
             self.file = file
             super.init()
         }
-          
-    //  The QLPreviewController asks its delegate how many items it has:
+        
+        //  The QLPreviewController asks its delegate how many items it has:
         func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
             return 1
         }
-          
     }
-    
 }
-  
