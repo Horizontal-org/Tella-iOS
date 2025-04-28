@@ -24,20 +24,20 @@ struct CustomNavigation<Content:View>: View {
                     self.content()
                     
                 } .navigationViewStyle(.stack)
+                    .navigationBarHidden(true)
             } else {
                 NavigationStack {
                     self.content()
-                }
+                }.navigationBarHidden(true)
             }
         } else {
             NavigationView {
                 self.content()
-                .navigationBarHidden(true)
-                .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarHidden(true)
+                    .navigationBarTitle("", displayMode: .inline)
             }
             .navigationViewStyle(StackNavigationViewStyle())
-
+            .navigationBarHidden(true)
         }
-        
     }
 }
