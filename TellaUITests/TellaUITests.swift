@@ -2,8 +2,8 @@
 //  TellaUITests.swift
 //  TellaUITests
 //
-//  Created by Anessa Petteruti on 1/30/20.
-//  Copyright © 2020 Anessa Petteruti. 
+//  Created by HORIZONTAL on 1/30/20.
+//  Copyright © 2020 HORIZONTAL. 
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 

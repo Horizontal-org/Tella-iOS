@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Bruno Pastre on 12/10/20.
-//  Copyright © 2020 Anessa Petteruti. 
+//  Copyright © 2020 HORIZONTAL. 
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
