@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 25/4/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 import SwiftUI
 
 struct RotateVideoView: View {
