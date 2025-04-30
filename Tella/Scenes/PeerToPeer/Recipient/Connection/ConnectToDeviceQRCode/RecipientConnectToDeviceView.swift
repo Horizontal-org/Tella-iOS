@@ -62,6 +62,8 @@ struct RecipientConnectToDeviceView: View {
         case .error(let error):
             CustomText(error, style: .body1Style)
                 .frame(width: 240, height: 240)
+        case .none:
+            EmptyView()
         }
     }
     
