@@ -24,6 +24,17 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var rotationAngle: Int = 0
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
     @Published var videoSize: CGSize = .zero
+
+    var videoPlayerSize : CGSize {
+        let angle = abs(Int(rotationAngle)) % 360
+        let isRotated = angle == 90 || angle == 270
+        let scaleFactor = videoSize.width / videoSize.height
+        
+        let frameWidth = isRotated ? videoSize.height * scaleFactor : videoSize.width
+        let frameHeight = isRotated ? videoSize.width * scaleFactor : videoSize.height
+
+        return CGSize(width: frameWidth, height: frameHeight)
+    }
     
     var isSeekInProgress = false {
         didSet {

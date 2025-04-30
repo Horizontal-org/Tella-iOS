@@ -43,16 +43,10 @@ struct RotateVideoView: View {
     
     // MARK: - Video Player View
     private var videoPlayerView: some View {
-        let angle = abs(Int(viewModel.rotationAngle)) % 360
-        let isRotated = angle == 90 || angle == 270
-        let scaleFactor = viewModel.videoSize.width / viewModel.videoSize.height
-        
-        let frameWidth = isRotated ? viewModel.videoSize.height * scaleFactor : viewModel.videoSize.width
-        let frameHeight = isRotated ? viewModel.videoSize.width * scaleFactor : viewModel.videoSize.height
-        
+        let videoPlayerSize = viewModel.videoPlayerSize
         return CustomVideoPlayer(player: viewModel.player,
                                  rotationAngle: $viewModel.rotationAngle)
-        .frame(width: frameWidth, height: frameHeight)
+        .frame(width: videoPlayerSize.width, height: videoPlayerSize.height)
         .clipped()
         .border(Color.white, width: 2)
     }
