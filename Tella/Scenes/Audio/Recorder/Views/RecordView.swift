@@ -28,15 +28,13 @@ struct RecordView: View {
          rootFile: VaultFileDB? = nil,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
-         resultFile : Binding<[VaultFileDB]?>? = nil,
-         shouldReloadVaultFiles : Binding<Bool>? = nil) {
+         resultFile : Binding<[VaultFileDB]?>? = nil) {
         
         _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
                                                                rootFile: rootFile,
                                                                resultFile: resultFile,
                                                                sourceView: sourceView,
-                                                               showingRecoredrView: showingRecoredrView,
-                                                               shouldReloadVaultFiles: shouldReloadVaultFiles))
+                                                               showingRecoredrView: showingRecoredrView))
     }
     
     func goBack() {

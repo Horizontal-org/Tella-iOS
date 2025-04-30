@@ -11,6 +11,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import AVFoundation
 
 class EditMediaViewModel: ObservableObject {
     //MARK: - Published
@@ -41,18 +42,16 @@ class EditMediaViewModel: ObservableObject {
     
     //MARK: - cancellable
     var cancellables: Set<AnyCancellable> = []
-    var shouldReloadVaultFiles: Binding<Bool> // Should be changed soon
     
     //MARK: - Init attributes
     var file: VaultFileDB?
     var rootFile: VaultFileDB?
     var appModel: MainAppModel
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
         self.file = file
         self.rootFile = rootFile
         self.appModel  = appModel
-        self.shouldReloadVaultFiles  = shouldReloadVaultFiles
     }
     
     func onAppear() {
@@ -70,6 +69,10 @@ class EditMediaViewModel: ObservableObject {
         return self.endTime != self.timeDuration || self.startTime != 0.0
     }
     
+    func isVideoRotated() -> Bool {
+        return true
+    }
+
     func updateOffset(time: Double) {
         let totalOffsetDistance: CGFloat = 340
         let progress = time / timeDuration
@@ -85,10 +88,12 @@ class EditMediaViewModel: ObservableObject {
     func trim() {
         Task { @MainActor in
             do {
+                self.trimState = .loading
                 let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
                 guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedVideoUrl)
-            } catch {
+                self.trimState = .loaded(true)
+             } catch {
                 self.trimState = .error(error.localizedDescription)
             }
         }
@@ -103,11 +108,7 @@ class EditMediaViewModel: ObservableObject {
         let importedFiles = ImportedFile(urlFile: urlFile,
                                          parentId: rootFile?.id ,
                                          fileSource: FileSource.files)
-        appModel.addVaultFile(importedFiles: [importedFiles],
-                              shouldReloadVaultFiles: shouldReloadVaultFiles)
-        DispatchQueue.main.async {
-            self.trimState = .loaded(true)
-        }
+        appModel.addVaultFile(importedFiles: [importedFiles])
     }
     
     func undo() {

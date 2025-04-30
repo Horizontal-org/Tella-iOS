@@ -38,12 +38,15 @@ enum MiddleButtonType  {
     
     case editFile
     case share
+    case rotate
     case none
     
     var imageName: String {
         switch self {
         case .editFile: return "file.edit"
         case .share: return "share-icon"
+        case .rotate: return "edit.rotate"
+
         case .none: return ""
         }
     }

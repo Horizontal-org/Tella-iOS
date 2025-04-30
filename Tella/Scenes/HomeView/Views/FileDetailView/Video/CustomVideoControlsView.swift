@@ -12,7 +12,6 @@ struct CustomVideoControlsView: View {
     
     var body: some View {
         VStack  {
-            Spacer()
             
             ZStack {
                 Color.black.opacity(0.8)
@@ -92,8 +91,9 @@ struct CustomVideoControlsView: View {
                 
             }
             .frame(height: 95)
+            Spacer()
 
-        }
+        }.frame(height: 115)
         .edgesIgnoringSafeArea(.all)
     }
 }

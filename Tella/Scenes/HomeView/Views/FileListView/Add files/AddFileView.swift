@@ -26,22 +26,19 @@ struct AddFileView: View {
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
                                  appModel: appModel,
-                                 rootFile: $fileListViewModel.rootFile, 
-                                 shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                 rootFile: $fileListViewModel.rootFile)
         }.ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
                             mainAppModel: appModel,
-                            rootFile: fileListViewModel.rootFile,
-                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles ) : nil)
+                            rootFile: fileListViewModel.rootFile) : nil)
 
         .overlay(fileListViewModel.showingMicrophone ?
                  RecordView(appModel: appModel,
                             rootFile: fileListViewModel.rootFile,
                             sourceView: .addFile,
-                            showingRecoredrView: $fileListViewModel.showingMicrophone, 
-                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles) : nil)
+                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
         
     }
     

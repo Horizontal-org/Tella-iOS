@@ -67,8 +67,7 @@ struct SaveAudioConfirmationView_Previews: PreviewProvider {
                                                              rootFile: VaultFileDB.stub(),
                                                              resultFile: .constant([VaultFileDB.stub()]),
                                                              sourceView: .tab,
-                                                             showingRecoredrView: .constant(true), 
-                                                             shouldReloadVaultFiles: .constant(true)),
+                                                             showingRecoredrView: .constant(true)),
                                   showingSaveSuccessView: .constant(true))
     }
 }

@@ -199,8 +199,7 @@ struct DraftView: View  {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
                              appModel: viewModel.mainAppModel,
-                             resultFile: $viewModel.resultFile,
-                             shouldReloadVaultFiles: .constant(false))
+                             resultFile: $viewModel.resultFile)
     }
     
     var recordView: some View {

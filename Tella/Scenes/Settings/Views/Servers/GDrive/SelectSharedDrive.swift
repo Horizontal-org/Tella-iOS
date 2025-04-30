@@ -43,6 +43,8 @@ struct SelectSharedDriveView: View {
                 sharedDriveList(drives: drives)
             case .error(let message):
                 ToastView(message: message)
+            case .none:
+                EmptyView()
             }
             
             Spacer()

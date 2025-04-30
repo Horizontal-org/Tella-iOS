@@ -27,7 +27,6 @@ enum FileListType {
 class FileListViewModel: ObservableObject {
     
     
-    @Published var shouldReloadVaultFiles = false
     @Published var viewType: FileViewType = FileViewType.list
     @Published var vaultFileStatusArray : [VaultFileStatus] = []
     @Published var folderPathArray: [VaultFileDB] = []
@@ -344,12 +343,15 @@ class FileListViewModel: ObservableObject {
     }
     
     func bindReloadVaultFiles() {
-        self.$shouldReloadVaultFiles.sink(receiveValue: { shouldReloadVaultFiles in
-            if shouldReloadVaultFiles {
-                self.getFiles()
-            }
-        }).store(in: &cancellable)
+        self.appModel.vaultFilesManager?.shouldReloadFiles
+            .sink(receiveValue: { shouldReloadVaultFiles in
+                DispatchQueue.main.async {
+                    self.getFiles()
+                }
+            }).store(in: &cancellable)
     }
+    
+
     
 }
 
