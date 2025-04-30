@@ -2,8 +2,10 @@
 //  AddServerURLView.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 struct AddServerURLView: View {
@@ -46,6 +48,7 @@ struct AddServerURLView: View {
             handleState
         }
         .containerStyle()
+        .navigationBarHidden(true)
         .onReceive(viewModel.$checkServerState) { value in
             if value == .loaded(true) {
                 successCheckServerAction?()

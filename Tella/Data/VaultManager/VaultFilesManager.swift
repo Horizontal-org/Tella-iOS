@@ -1,6 +1,8 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -249,7 +251,9 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>? {
         let file = VaultFileDB(type: .directory, name: name)
-        return self.vaultDataBase.addVaultFile(file: file, parentId: parentId)
+        let result = self.vaultDataBase.addVaultFile(file: file, parentId: parentId)
+        shouldReloadFiles.send(true)
+        return result
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
@@ -341,17 +345,23 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     }
     
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>? {
-        self.vaultDataBase.renameVaultFile(id: id, name: name)
+        let result = self.vaultDataBase.renameVaultFile(id: id, name: name)
+        shouldReloadFiles.send(true)
+        return result
     }
     
     func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error>? {
-        self.vaultDataBase.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
+        let result = self.vaultDataBase.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
+        shouldReloadFiles.send(true)
+        return result
     }
     
     @discardableResult
     func deleteVaultFile(fileIds ids: [String]) -> Result<Bool, Error>? {
         self.vaultManager?.deleteVaultFile(filesIds: ids)
-        return self.vaultDataBase.deleteVaultFile(ids: ids)
+        let result = self.vaultDataBase.deleteVaultFile(ids: ids)
+        shouldReloadFiles.send(true)
+        return result
     }
     
     func deleteVaultFile(vaultFiles : [VaultFileDB]) -> Result<Bool, Error>? {
@@ -368,13 +378,18 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         let fileIds = resultFiles.compactMap({$0.id})
         
         self.vaultManager?.deleteVaultFile(filesIds: fileIds)
-        return self.vaultDataBase.deleteVaultFile(ids: fileIds)
+        let result = self.vaultDataBase.deleteVaultFile(ids: fileIds)
+        shouldReloadFiles.send(true)
+        return result
+
     }
     
     @discardableResult
     func deleteAllVaultFiles() -> Result<Bool, Error>? {
         self.vaultManager?.deleteAllVaultFilesFromDevice()
-        return self.vaultDataBase.deleteAllVaultFiles()
+        let result = self.vaultDataBase.deleteAllVaultFiles()
+        shouldReloadFiles.send(true)
+        return result
     }
     
     func cancelImportAndEncryption() {

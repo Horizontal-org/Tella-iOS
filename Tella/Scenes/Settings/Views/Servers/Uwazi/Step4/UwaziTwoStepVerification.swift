@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/25/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -55,6 +57,7 @@ struct UwaziTwoStepVerification: View {
                 }
             }
         }
+        .navigationBarHidden(true)
         .onReceive(uwaziServerViewModel.$showLanguageSelectionView) { value in
             if value {
                 let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))

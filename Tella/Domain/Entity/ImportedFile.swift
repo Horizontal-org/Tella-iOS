@@ -2,8 +2,10 @@
 //  ImportedFile.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Photos
 
@@ -28,4 +30,6 @@ enum FileExtension : String {
     case heic = "HEIC"
     case mov = "mov"
     case mp4 = "mp4"
+    case png = "png"
+    case jpeg = "jpeg"
 }

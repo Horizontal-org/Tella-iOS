@@ -2,8 +2,10 @@
 //  EditAudioView.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -159,7 +161,6 @@ struct EditAudioView: View {
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
         EditAudioView(viewModel: EditAudioViewModel(file: nil, rootFile: nil,
-                                                             appModel: MainAppModel.stub(),
-                                                             shouldReloadVaultFiles: .constant(true)) )
+                                                             appModel: MainAppModel.stub()) )
     }
 }

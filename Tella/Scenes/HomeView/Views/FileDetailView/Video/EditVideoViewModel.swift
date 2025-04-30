@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Combine
 import Foundation
@@ -17,9 +19,29 @@ class EditVideoViewModel: EditMediaViewModel {
     let player = AVPlayer()
     
     @Published var thumbnails: [UIImage] = []
- 
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    @Published var rotationAngle: Int = 0
+    @Published var rotateState: ViewModelState<Bool> = .loaded(false)
+    @Published var videoSize: CGSize = .zero
+
+    var videoPlayerSize : CGSize {
+        let angle = abs(Int(rotationAngle)) % 360
+        let isRotated = angle == 90 || angle == 270
+        let scaleFactor = videoSize.width / videoSize.height
+        
+        let frameWidth = isRotated ? videoSize.height * scaleFactor : videoSize.width
+        let frameHeight = isRotated ? videoSize.width * scaleFactor : videoSize.height
+
+        return CGSize(width: frameWidth, height: frameHeight)
+    }
+    
+    var isSeekInProgress = false {
+        didSet {
+            self.onPause()
+        }
+    }
+    
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel)
         setupListeners()
         initVideo()
     }
@@ -69,5 +91,31 @@ class EditVideoViewModel: EditMediaViewModel {
     override func onPause() {
         isPlaying = false
         player.pause()
+    }
+    
+    // Rotates a video file asynchronously and updates UI state accordingly
+    func rotate() {
+        Task { @MainActor in
+            do {
+                rotateState = .loading
+                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                guard let rotatedVideoUrl = try await fileURL?.rotateVideo(by: rotationAngle, newName: copyName )   else { return }
+                self.addEditedFile(urlFile: rotatedVideoUrl)
+                self.rotateState = .loaded(true)
+                self.rotateState = .none
+            } catch {
+                self.rotateState = .error(error.localizedDescription)
+            }
+        }
+    }
+    
+    // Observes the size of the current video in the player and updates a stored value
+    func observeVideoSize() {
+        Task { @MainActor in
+            guard let currentItem = player.currentItem else { return }
+            let horizontalPadding : CGFloat = 50
+            let size =   await currentItem.scaledVideoSize(horizontalPadding: horizontalPadding)
+            self.videoSize = size ?? .zero
+        }
     }
 }

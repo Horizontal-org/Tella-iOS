@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import Combine
@@ -58,29 +60,37 @@ struct MainView: View  {
     var tabbarContentView: some View {
         
         TabView(selection: $appModel.selectedTab) {
-            HomeView(appModel: appModel)
-                .tabItem {
-                    Image("tab.home")
-                    Text(LocalizableHome.tabBar.localized)
-                }.tag(MainAppModel.Tabs.home)
+            CustomNavigation() {
+                HomeView(appModel: appModel)
+            }
+            .tabItem {
+                Image("tab.home")
+                Text(LocalizableHome.tabBar.localized)
+            }.tag(MainAppModel.Tabs.home)
             
-            ContainerView{}
-                .tabItem {
-                    Image("tab.camera")
-                    Text(LocalizableCamera.tabBar.localized)
-                }.tag(MainAppModel.Tabs.camera)
+            CustomNavigation() {
+                ContainerView{}
+            }
+            .tabItem {
+                Image("tab.camera")
+                Text(LocalizableCamera.tabBar.localized)
+            }.tag(MainAppModel.Tabs.camera)
             
-            ContainerView{}
-                .tabItem {
-                    Image("tab.mic")
-                    Text(LocalizableRecorder.tabBar.localized)
-                }.tag(MainAppModel.Tabs.mic)
+            CustomNavigation() {
+                ContainerView{}
+            }
+            .tabItem {
+                Image("tab.mic")
+                Text(LocalizableRecorder.tabBar.localized)
+            }.tag(MainAppModel.Tabs.mic)
             
-            SettingsMainView(appModel: appModel)
-                .tabItem {
-                    Image("tab.settings")
-                    Text(LocalizableSettings.settAppBar.localized)
-                }.tag(MainAppModel.Tabs.settings)
+            CustomNavigation() {
+                SettingsMainView(appModel: appModel)
+            }
+            .tabItem {
+                Image("tab.settings")
+                Text(LocalizableSettings.settAppBar.localized)
+            }.tag(MainAppModel.Tabs.settings)
         }
     }
     

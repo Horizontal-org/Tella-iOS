@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -10,7 +12,6 @@ struct CustomVideoControlsView: View {
     
     var body: some View {
         VStack  {
-            Spacer()
             
             ZStack {
                 Color.black.opacity(0.8)
@@ -90,8 +91,9 @@ struct CustomVideoControlsView: View {
                 
             }
             .frame(height: 95)
+            Spacer()
 
-        }
+        }.frame(height: 115)
         .edgesIgnoringSafeArea(.all)
     }
 }

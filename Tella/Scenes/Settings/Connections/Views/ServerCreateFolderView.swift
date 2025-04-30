@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 5/7/2024.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 struct ServerCreateFolderView: View {
@@ -18,6 +20,7 @@ struct ServerCreateFolderView: View {
         ZStack {
             VStack(spacing: 20) {
                 Spacer()
+                    .frame(height: 57)
                 headerView
                 textField
                 Spacer()
@@ -36,6 +39,7 @@ struct ServerCreateFolderView: View {
             }
         }
         .containerStyle()
+        .navigationBarHidden(true)
         .onReceive(createFolderViewModel.$createFolderState) { value in
             if value == .loaded(true) {
                 navigateToSuccessLogin?()

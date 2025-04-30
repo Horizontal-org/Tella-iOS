@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by gus valbuena on 6/10/24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 
@@ -12,7 +14,8 @@ enum ViewModelState<T: Equatable>: Equatable {
     case loading
     case loaded(T)
     case error(String)
-    
+    case none
+
     static func == (lhs: ViewModelState<T>, rhs: ViewModelState<T>) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):

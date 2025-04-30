@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import UIKit
@@ -15,18 +17,18 @@ extension UIImage {
             // This is default orientation, don't need to do anything
             return self.copy() as? UIImage
         }
-
+        
         guard let cgImage = self.cgImage else {
             // CGImage is not available
             return nil
         }
-
+        
         guard let colorSpace = cgImage.colorSpace, let ctx = CGContext(data: nil, width: Int(size.width), height: Int(size.height), bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
             return nil // Not able to create CGContext
         }
-
+        
         var transform: CGAffineTransform = CGAffineTransform.identity
-
+        
         switch imageOrientation {
         case .down, .downMirrored:
             transform = transform.translatedBy(x: size.width, y: size.height)
@@ -43,7 +45,7 @@ extension UIImage {
             fatalError("Missing...")
             break
         }
-
+        
         // Flip image one more time if needed to, this is to prevent flipped image
         switch imageOrientation {
         case .upMirrored, .downMirrored:
@@ -58,9 +60,9 @@ extension UIImage {
             fatalError("Missing...")
             break
         }
-
+        
         ctx.concatenate(transform)
-
+        
         switch imageOrientation {
         case .left, .leftMirrored, .right, .rightMirrored:
             ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.height, height: size.width))
@@ -68,8 +70,42 @@ extension UIImage {
             ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
             break
         }
-
+        
         guard let newCGImage = ctx.makeImage() else { return nil }
         return UIImage.init(cgImage: newCGImage, scale: 1, orientation: .up)
+    }
+}
+
+
+extension UIImage {
+    var heic: Data? { heic() }
+    var cgImageOrientation: CGImagePropertyOrientation { .init(imageOrientation) }
+
+    func heic(compressionQuality: CGFloat = 1) -> Data? {
+        guard
+            let mutableData = CFDataCreateMutable(nil, 0),
+            let destination = CGImageDestinationCreateWithData(mutableData, "public.heic" as CFString, 1, nil),
+            let cgImage = cgImage
+        else { return nil }
+        CGImageDestinationAddImage(destination, cgImage, [kCGImageDestinationLossyCompressionQuality: compressionQuality, kCGImagePropertyOrientation: cgImageOrientation.rawValue] as CFDictionary)
+        guard CGImageDestinationFinalize(destination) else { return nil }
+        return mutableData as Data
+    }
+}
+
+extension CGImagePropertyOrientation {
+    init(_ uiOrientation: UIImage.Orientation) {
+        switch uiOrientation {
+            case .up: self = .up
+            case .upMirrored: self = .upMirrored
+            case .down: self = .down
+            case .downMirrored: self = .downMirrored
+            case .left: self = .left
+            case .leftMirrored: self = .leftMirrored
+            case .right: self = .right
+            case .rightMirrored: self = .rightMirrored
+        @unknown default:
+            fatalError()
+        }
     }
 }

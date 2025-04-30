@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import AVFoundation
@@ -18,8 +20,10 @@ struct EditVideoView: View {
         ZStack {
             VStack {
                 
-                EditMediaHeaderView(viewModel: viewModel)
-                CustomVideoPlayer(player: viewModel.player)
+                EditMediaHeaderView(viewModel: viewModel,
+                                    showRotate: {showRotateVideo()})
+                CustomVideoPlayer(player: viewModel.player,
+                                  rotationAngle: .constant(0))
                     .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
                 
                 EditMediaControlButtonsView(viewModel: viewModel)
@@ -28,6 +32,9 @@ struct EditVideoView: View {
                     .padding(.bottom, 40)
                     .padding(.top, 16)
                 Spacer()
+            }
+            if viewModel.trimState == .loading {
+                CircularActivityIndicatory()
             }
         }
         .onAppear {
@@ -134,6 +141,12 @@ struct EditVideoView: View {
             Toast.displayToast(message: message)
         default:
             break
+        }
+    }
+    
+    private func showRotateVideo() {
+        self.present(style: .fullScreen) {
+            RotateVideoView(viewModel: viewModel)
         }
     }
     

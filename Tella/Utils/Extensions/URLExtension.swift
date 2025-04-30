@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 
 import AVFoundation
@@ -116,7 +118,7 @@ extension URL {
         }
         return images
     }
-
+    
     func getAVFileType() -> AVFileType {
         switch self.pathExtension.lowercased() {
         case "mp4", "m4a":
@@ -241,7 +243,7 @@ extension URL {
             throw RuntimeError(LocalizableError.commonError.localized)
         }
     }
-    
+
     func createURL(name: String) -> URL {
         return self.deletingLastPathComponent().appendingPathComponent(name)
     }
@@ -249,8 +251,4 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
-
 }
-
-
-

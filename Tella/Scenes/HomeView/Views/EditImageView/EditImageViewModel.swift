@@ -3,16 +3,17 @@
 //  Tella
 //
 //  Created by RIMA on 16/5/2024.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 import SwiftUI
 
 class EditImageViewModel: ObservableObject {
     
     lazy var imageToEdit: Binding<UIImage> = Binding(
         get: { return UIImage(data: self.data ?? Data(), scale: 1) ?? UIImage() },
-        set: {self.croppedImageData = $0.jpegData(compressionQuality: 0.5) }
-    )
+        set: { [self] in croppedImageData = getEditedImageData($0)})
     
     @ObservedObject private var fileListViewModel : FileListViewModel
     @Published var isDataLoaded = false
@@ -25,6 +26,17 @@ class EditImageViewModel: ObservableObject {
         self.fileListViewModel = fileListViewModel
         self.mainAppModel = fileListViewModel.appModel
         self.currenFile = fileListViewModel.currentSelectedVaultFile
+    }
+    
+    func getEditedImageData(_ image: UIImage) -> Data?{
+        switch self.currenFile?.fileExtension.uppercased() {
+        case FileExtension.heic.rawValue.uppercased():
+            return image.heic
+        case FileExtension.png.rawValue.uppercased():
+            return image.pngData()
+        default:
+            return image.jpegData(compressionQuality: 1)
+        }
     }
     
     func loadFile() {
@@ -44,8 +56,7 @@ class EditImageViewModel: ObservableObject {
         }
         self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url,
                                                                     parentId: fileListViewModel.rootFile?.id,
-                                                                    fileSource: .editFile)],
-                                       shouldReloadVaultFiles : $fileListViewModel.shouldReloadVaultFiles)
+                                                                    fileSource: .editFile)])
     }
     
 }

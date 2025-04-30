@@ -1,6 +1,8 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -26,14 +28,12 @@ class EncryptionService: ObservableObject {
     }
     
     func addVaultFile(importedFiles: [ImportedFile],
-                      shouldReloadVaultFiles:Binding<Bool>?,
                       autoUpload: Bool) {
         
         Task {
             let fileDetails = await getFileDetails(importedFiles: importedFiles)
             
             addEncryptionOperations(fileDetails: fileDetails,
-                                    shouldReloadVaultFiles: shouldReloadVaultFiles,
                                     autoUpload: autoUpload)
         }
     }
@@ -58,7 +58,6 @@ class EncryptionService: ObservableObject {
     }
     
     private func addEncryptionOperations(fileDetails:[VaultFileDetails],
-                                         shouldReloadVaultFiles:Binding<Bool>?,
                                          autoUpload: Bool) {
         
         for fileDetail in fileDetails {
@@ -74,7 +73,6 @@ class EncryptionService: ObservableObject {
                         case .failed, .completed:
                             self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
                             self.backgroundItems.removeAll(where: {$0.id == fileDetail.file.id})
-                            shouldReloadVaultFiles?.wrappedValue = true
                         default:
                             break
                         }

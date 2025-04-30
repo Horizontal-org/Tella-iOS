@@ -3,8 +3,10 @@
 //  Tella
 //
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import Combine
@@ -25,14 +27,12 @@ struct PhotoVideoPickerView: View {
          showingImportDocumentPicker: Binding<Bool>,
          appModel: MainAppModel,
          resultFile : Binding<[VaultFileDB]?>? = nil,
-         rootFile:Binding<VaultFileDB?>? = nil,
-         shouldReloadVaultFiles: Binding<Bool>) {
+         rootFile:Binding<VaultFileDB?>? = nil) {
         
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
                                                                    folderPathArray: [],
                                                                    resultFile: resultFile,
-                                                                   rootFile: rootFile,
-                                                                   shouldReloadVaultFiles: shouldReloadVaultFiles))
+                                                                   rootFile: rootFile))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
     }

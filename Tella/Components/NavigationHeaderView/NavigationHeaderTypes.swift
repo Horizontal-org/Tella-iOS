@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 21/1/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 
 enum RightButtonType {
@@ -36,12 +38,15 @@ enum MiddleButtonType  {
     
     case editFile
     case share
+    case rotate
     case none
     
     var imageName: String {
         switch self {
         case .editFile: return "file.edit"
         case .share: return "share-icon"
+        case .rotate: return "edit.rotate"
+
         case .none: return ""
         }
     }

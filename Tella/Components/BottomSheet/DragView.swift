@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import Combine
@@ -81,6 +83,7 @@ struct DragView<Content: View> : View {
                             TapGesture()
                                 .onEnded { _ in
                                     if shouldHideOnTap {
+                                        self.dismiss()
                                         self.isShown = false
                                         UIApplication.shared.endEditing()
                                     }

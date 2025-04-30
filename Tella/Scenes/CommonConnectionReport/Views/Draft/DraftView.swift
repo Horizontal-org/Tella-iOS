@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by gus valbuena on 6/26/24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -197,8 +199,7 @@ struct DraftView: View  {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
                              appModel: viewModel.mainAppModel,
-                             resultFile: $viewModel.resultFile,
-                             shouldReloadVaultFiles: .constant(false))
+                             resultFile: $viewModel.resultFile)
     }
     
     var recordView: some View {

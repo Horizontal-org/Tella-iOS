@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 1/7/2024.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 struct ServerLoginView: View {
@@ -39,8 +41,8 @@ struct ServerLoginView: View {
                 successLoginAction?()
             }
         }
-
         .containerStyle()
+        .navigationBarHidden(true)
     }
     
     fileprivate func usernameTextFieldView() -> some View {

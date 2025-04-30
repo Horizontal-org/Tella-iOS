@@ -2,8 +2,10 @@
 //  EditAudioViewModel.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Combine
 import Foundation
@@ -17,9 +19,9 @@ class EditAudioViewModel: EditMediaViewModel {
     
     //MARK: - Private attributes
     private var currentData : Data?
- 
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel)
         if let currentFile = file {
             self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
         }

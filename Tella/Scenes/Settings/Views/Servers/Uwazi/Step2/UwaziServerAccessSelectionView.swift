@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/18/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -40,7 +42,7 @@ struct UwaziServerAccessSelectionView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-        }
+        }.navigationBarHidden(true)
     }
     
     struct HeaderView: View {

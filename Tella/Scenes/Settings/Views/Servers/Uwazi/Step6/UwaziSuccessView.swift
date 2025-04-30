@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/27/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -32,7 +34,7 @@ struct UwaziSuccessView: View {
             }.padding(.leading, 23)
                 .padding(.trailing, 23)
 
-        }
+        }.navigationBarHidden(true)
     }
 }
 

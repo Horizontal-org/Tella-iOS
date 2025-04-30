@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import QuickLook
@@ -55,8 +57,7 @@ struct FileDetailsView: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           appModel: fileListViewModel.appModel)
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
@@ -117,7 +118,7 @@ struct FileDetailsView: View {
                 .if(file.tellaFileType != .video, transform: { view in
                     VStack {
                         NavigationHeaderView(title: file.name,
-                                             middleButtonType: .editFile,
+                                             middleButtonType: fileListViewModel.shouldAddEditView ? .editFile : .none,
                                              middleButtonAction: {showEditView()},
                                              rightButtonType: .custom,
                                              rightButtonView:moreFileActionButton )

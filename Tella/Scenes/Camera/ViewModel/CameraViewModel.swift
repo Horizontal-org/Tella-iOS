@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -22,7 +24,6 @@ class CameraViewModel: ObservableObject {
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
     @Published var progressFile:ProgressFile = ProgressFile()
-    @Published var shouldReloadVaultFiles : Binding<Bool>?
     @Published var shouldShowToast : Bool = false
 
     var capturePhoto:AVCapturePhoto?
@@ -53,8 +54,7 @@ class CameraViewModel: ObservableObject {
     init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB?,
          resultFile : Binding<[VaultFileDB]?>? = nil,
-         sourceView : SourceView,
-         shouldReloadVaultFiles : Binding<Bool>?) {
+         sourceView : SourceView) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
@@ -62,9 +62,7 @@ class CameraViewModel: ObservableObject {
         self.resultFile = resultFile
         
         self.sourceView = sourceView
-        
-        self.shouldReloadVaultFiles = shouldReloadVaultFiles
-        
+
         self.updateLastItem()
         
         self.listenToshouldReloadFiles()
@@ -146,7 +144,6 @@ class CameraViewModel: ObservableObject {
                                         fileSource: .camera)
         
         self.mainAppModel?.addVaultFile(importedFiles:[importedFile],
-                                        shouldReloadVaultFiles : self.shouldReloadVaultFiles,
                                         autoUpload: autoUpload)
     }
     
@@ -165,7 +162,6 @@ class CameraViewModel: ObservableObject {
     private func updateResultFile(vaultFiles:[VaultFileDB])  {
         DispatchQueue.main.async {
             self.resultFile?.wrappedValue = vaultFiles
-            self.shouldReloadVaultFiles?.wrappedValue = true
             self.lastImageOrVideoVaultFile = vaultFiles.first
         }
     }

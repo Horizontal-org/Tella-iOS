@@ -1,6 +1,8 @@
 //
-//  Copyrighét © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import Combine
@@ -28,16 +30,14 @@ struct CameraView: View {
          showingCameraView: Binding<Bool>,
          resultFile: Binding<[VaultFileDB]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFileDB? = nil,
-         shouldReloadVaultFiles: Binding<Bool>? = nil) {
+         rootFile:VaultFileDB? = nil) {
         
         self.showingCameraView = showingCameraView
         
         _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
                                                                      rootFile: rootFile,
                                                                      resultFile: resultFile,
-                                                                     sourceView: sourceView,
-                                                                     shouldReloadVaultFiles: shouldReloadVaultFiles))
+                                                                     sourceView: sourceView))
         
     }
     

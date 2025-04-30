@@ -1,7 +1,9 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -127,8 +129,7 @@ struct MoreFileActionButton: View {
     private func showEditVideoView() {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           appModel: fileListViewModel.appModel)
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
@@ -148,8 +149,7 @@ struct MoreFileActionButton: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           appModel: fileListViewModel.appModel)
         DispatchQueue.main.async {
             
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {

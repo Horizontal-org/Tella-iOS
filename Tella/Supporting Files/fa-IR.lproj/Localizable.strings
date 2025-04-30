@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "Unsaved changes";
 "Vault_EditFile_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
 "Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
-"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
@@ -546,3 +546,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
 "Setting_Server_AdvancedSettings" = "تنظیمات پیشرفته";
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
+"Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
+"Settings_SettLang_Tsonga_Expl" = "Tsonga";
+"Settings_SettLang_Ndau_Expl" = "Ndau";

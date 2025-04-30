@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import AVFoundation
@@ -56,11 +58,14 @@ struct VideoViewer: View {
     
     var contentView: some View {
         VStack {
-            CustomVideoPlayer(player: playerVM.player)
-                .overlay(CustomVideoControlsView(playerVM: playerVM)
-                         ,alignment: .bottom)
             Spacer()
-        } 
+            
+            CustomVideoPlayer(player: playerVM.player,
+                              rotationAngle: .constant(0))
+            Spacer()
+                .frame(height: 20)
+            CustomVideoControlsView(playerVM: playerVM)
+        }
     }
     
     func backAction() {
@@ -73,7 +78,7 @@ struct VideoViewer: View {
     }
     
     private func showEditVideoView() {
-        let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel, shouldReloadVaultFiles: .constant(true))
+        let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel)
         DispatchQueue.main.async {
             if playerVM.currentFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
