@@ -14,7 +14,8 @@ enum ViewModelState<T: Equatable>: Equatable {
     case loading
     case loaded(T)
     case error(String)
-    
+    case none
+
     static func == (lhs: ViewModelState<T>, rhs: ViewModelState<T>) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):

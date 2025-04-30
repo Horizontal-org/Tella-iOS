@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -23,6 +23,7 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var thumbnails: [UIImage] = []
     @Published var rotationAngle: Int = 0
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
+    @Published var videoSize: CGSize = .zero
     
     var isSeekInProgress = false {
         didSet {
@@ -93,6 +94,7 @@ class EditVideoViewModel: EditMediaViewModel {
         player.pause()
     }
     
+    // Rotates a video file asynchronously and updates UI state accordingly
     func rotate() {
         Task { @MainActor in
             do {
@@ -101,9 +103,20 @@ class EditVideoViewModel: EditMediaViewModel {
                 guard let rotatedVideoUrl = try await fileURL?.rotateVideo(by: rotationAngle, newName: copyName )   else { return }
                 self.addEditedFile(urlFile: rotatedVideoUrl)
                 self.rotateState = .loaded(true)
+                self.rotateState = .none
             } catch {
                 self.rotateState = .error(error.localizedDescription)
             }
+        }
+    }
+    
+    // Observes the size of the current video in the player and updates a stored value
+    func observeVideoSize() {
+        Task { @MainActor in
+            guard let currentItem = player.currentItem else { return }
+            let horizontalPadding : CGFloat = 50
+            let size =   await currentItem.scaledVideoSize(horizontalPadding: horizontalPadding)
+            self.videoSize = size ?? .zero
         }
     }
 }

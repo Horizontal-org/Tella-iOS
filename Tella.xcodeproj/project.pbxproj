@@ -290,6 +290,7 @@
 		129354772949F04700735ED0 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129354762949F04700735ED0 /* EmptyResult.swift */; };
 		12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12935478294A3BFC00735ED0 /* MIMEType.swift */; };
 		1293547B294A454900735ED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293547A294A454900735ED0 /* AppDelegate.swift */; };
+		12937FE22DC227B30019ECC4 /* AVPlayerItem+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */; };
 		1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293F6652AD7E52800F6CFBD /* FeedbackView.swift */; };
 		1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */; };
 		1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293F6692AD7F29B00F6CFBD /* FeedbackViewModel.swift */; };
@@ -942,6 +943,7 @@
 		129354762949F04700735ED0 /* EmptyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResult.swift; sourceTree = "<group>"; };
 		12935478294A3BFC00735ED0 /* MIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
 		1293547A294A454900735ED0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayerItem+VideoRotation.swift"; sourceTree = "<group>"; };
 		1293F6652AD7E52800F6CFBD /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseHeaderView.swift; sourceTree = "<group>"; };
 		1293F6692AD7F29B00F6CFBD /* FeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewModel.swift; sourceTree = "<group>"; };
@@ -1884,6 +1886,7 @@
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
 				120D86632CB56FC500C007B4 /* ResultExtension.swift */,
 				129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */,
+				12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4049,6 +4052,7 @@
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */,
+				12937FE22DC227B30019ECC4 /* AVPlayerItem+VideoRotation.swift in Sources */,
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				200398FF2CE3F1B800DCFCF0 /* EditVideoView.swift in Sources */,

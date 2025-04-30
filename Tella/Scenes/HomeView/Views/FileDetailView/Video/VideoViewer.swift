@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -58,13 +58,12 @@ struct VideoViewer: View {
     
     var contentView: some View {
         VStack {
-            VStack {
-                Spacer()
-                
-                CustomVideoPlayer(player: playerVM.player,
-                                  rotationAngle: .constant(0))
-                Spacer()
-            }
+            Spacer()
+            
+            CustomVideoPlayer(player: playerVM.player,
+                              rotationAngle: .constant(0))
+            Spacer()
+                .frame(height: 20)
             CustomVideoControlsView(playerVM: playerVM)
         }
     }

@@ -30,4 +30,3 @@ final class VideoPlayerView: UIView {
         playerLayer.setAffineTransform(CGAffineTransform(rotationAngle: radians))
     }
 }
-

@@ -17,39 +17,47 @@ struct RotateVideoView: View {
     var body: some View {
         ZStack {
             VStack {
-                
-                NavigationHeaderView(backButtonType: .close,
-                                     backButtonAction: {self.closeView()},
-                                     rightButtonType: viewModel.isVideoRotated() ? .validate : .none,
-                                     rightButtonAction: { viewModel.rotate() })
-                Spacer()
-                CustomVideoPlayer(player: viewModel.player,
-                                  rotationAngle: $viewModel.rotationAngle)
-                .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
+                NavigationHeaderView(
+                    backButtonType: .close,
+                    backButtonAction: closeView,
+                    rightButtonType: viewModel.isVideoRotated() ? .validate : .none,
+                    rightButtonAction: viewModel.rotate
+                )
                 
                 Spacer()
-                
+                videoPlayerView
+                Spacer()
                 rotateButton
-                
-                Spacer()
             }
             
             if viewModel.rotateState == .loading {
                 CircularActivityIndicatory()
             }
-
         }
         .onAppear {
+            viewModel.observeVideoSize()
         }
-        .onDisappear {
-        }
-        .onReceive(viewModel.$rotateState) { value in
-            handleRotateState(value: value)
-        }
-
+        .onReceive(viewModel.$rotateState, perform: handleRotateState)
         .background(Color.black.ignoresSafeArea())
     }
     
+    // MARK: - Video Player View
+    private var videoPlayerView: some View {
+        let angle = abs(Int(viewModel.rotationAngle)) % 360
+        let isRotated = angle == 90 || angle == 270
+        let scaleFactor = viewModel.videoSize.width / viewModel.videoSize.height
+        
+        let frameWidth = isRotated ? viewModel.videoSize.height * scaleFactor : viewModel.videoSize.width
+        let frameHeight = isRotated ? viewModel.videoSize.width * scaleFactor : viewModel.videoSize.height
+        
+        return CustomVideoPlayer(player: viewModel.player,
+                                 rotationAngle: $viewModel.rotationAngle)
+        .frame(width: frameWidth, height: frameHeight)
+        .clipped()
+        .border(Color.white, width: 2)
+    }
+    
+    // MARK: - Rotate Button
     private var rotateButton: some View {
         Button(action: {
             viewModel.rotationAngle -= 90
@@ -60,16 +68,12 @@ struct RotateVideoView: View {
         .padding(.bottom, 24)
     }
     
+    // MARK: - Close View
     private func closeView() {
         self.dismiss()
     }
     
-    private func showRotateVideo() {
-        self.present(style: .fullScreen) {
-            EditVideoView(viewModel: viewModel)
-        }
-    }
-    
+    // MARK: - Handle Rotate State Changes
     private func handleRotateState(value:ViewModelState<Bool>) {
         switch value {
         case .loaded(let isSaved):
@@ -83,6 +87,6 @@ struct RotateVideoView: View {
             break
         }
     }
-    
-
 }
+
+
