@@ -3,10 +3,9 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
-
 
 import SwiftUI
 import AVFoundation
@@ -24,13 +23,12 @@ struct EditVideoView: View {
                                     showRotate: {showRotateVideo()})
                 CustomVideoPlayer(player: viewModel.player,
                                   rotationAngle: .constant(0))
-                    .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
+                .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
                 
                 EditMediaControlButtonsView(viewModel: viewModel)
                     .padding(.top, 16)
                 trimView
-                    .padding(.bottom, 40)
-                    .padding(.top, 16)
+                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 40, trailing: 16))
                 Spacer()
             }
             if viewModel.trimState == .loading {
@@ -51,53 +49,67 @@ struct EditVideoView: View {
     }
     
     var thumbnailsView: some View {
-        HStack(spacing: 0) {
-            ForEach(viewModel.thumbnails, id: \.self) { image in
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 36)
-                    .clipped()
-                    .frame(maxWidth: .infinity)
+        GeometryReader { geometry in
+            HStack(alignment: .center, spacing: 0) {
+                ForEach(viewModel.thumbnails, id: \.self) { image in
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(
+                            width: geometry.size.width / CGFloat(viewModel.thumbnails.count),
+                            height: 36
+                        )
+                        .clipped()
+                }
             }
-        }.border(Color.white.opacity(0.8), width: 1)
-            .padding(0)
-            .padding(.bottom, 20)
+            .border(Color.white.opacity(0.8), width: 1)
+            //            .padding(EdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16))
+        }
+        .frame(height: 36)
     }
     
+    // The trim view with all sliders
     var trimView: some View {
-        VStack {
-            ZStack(alignment: .trailing) {
-                ZStack(alignment: .center) {
-                    HStack(spacing: 0) {
-                        Spacer()
-                            .frame(width: 18, height: 36)
- 
-                        thumbnailsView
-                        Spacer()
-                            .frame(width: 18, height: 36)
-                     }
-                     .frame(maxWidth: viewModel.kTrimViewWidth)
-                    // This image is for the playing view
-                    tapeLineSliderView
+        GeometryReader { geometry in
+            
+            ZStack(alignment: .center) {
+                
+                thumbnailsView
+                    .padding(EdgeInsets(top: 2, leading: 18, bottom: 2, trailing: 18))
+                
+                ZStack {
+                    
                     leadingSliderView()
-                }.frame(maxWidth: viewModel.kTrimViewWidth)
-                trailingSliderView()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    trailingSliderView()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                if !viewModel.isDraggingLeft && !viewModel.isDraggingRight {
+                    
+                    tapeLineSliderView
+                        .padding(EdgeInsets(top: 0,
+                                            leading: viewModel.leadingGestureValue + 18,
+                                            bottom: 0,
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - 18 - 16 + 4))
+                }
             }
-        }.frame(maxWidth: viewModel.kTrimViewWidth)
+        }
+        .frame(height: 40)
+        .background(Color.red)
     }
-    
     private var tapeLineSliderView: some View {
-        CustomThumbnailSlider(value: $viewModel.currentPosition,
-                              range: 0...viewModel.timeDuration,
-                              sliderHeight: 36,
-                              sliderWidth: 5.0,
-                              sliderImage: "edit.video.play.line") { isEditing in
+        CustomThumbnailSlider(
+            value: $viewModel.currentPosition,
+            range: viewModel.startTime...viewModel.endTime,
+            sliderHeight: 36,
+            sliderWidth: 5.0,
+            sliderImage: "edit.video.play.line"
+        ) { isEditing in
             viewModel.onPause()
-        }.frame(height: 40)
-            .offset(x: 18)
+        }
+        .frame(height: 40)
     }
-    
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
@@ -106,12 +118,15 @@ struct EditVideoView: View {
                             sliderHeight: 36,
                             isRightSlider: false,
                             sliderImage: "edit.video.left.icon",
-                            imageWidth: 18)
+                            isDragging: $viewModel.isDraggingLeft)
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
+        .onReceive(viewModel.$isDraggingLeft) { isDragging in
+            self.viewModel.currentPosition = viewModel.startTime
+        }
     }
     
     private func trailingSliderView() -> some View {
@@ -119,15 +134,18 @@ struct EditVideoView: View {
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            sliderHeight: 36, isRightSlider: true,
+                            sliderHeight: 36,
+                            isRightSlider: true,
                             sliderImage: "edit.video.right.icon",
-                            imageWidth: 18)
+                            isDragging: $viewModel.isDraggingRight)
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
-        .offset(x: -18)
+        .onReceive(viewModel.$isDraggingRight) { isDragging in
+            self.viewModel.currentPosition = viewModel.endTime
+        }
     }
     
     private func handleTrimState(value:ViewModelState<Bool>) {

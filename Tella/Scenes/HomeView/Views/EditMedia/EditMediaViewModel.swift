@@ -27,11 +27,14 @@ class EditMediaViewModel: ObservableObject {
     @Published var leadingGestureValue: Double = 0.0
     @Published var shouldStopLeftScroll = false
     @Published var shouldStopRightScroll = false
-    @Published var currentPosition: Double = .zero
+    @Published var currentPosition: CGFloat = .zero
+
+    @Published var isDraggingLeft = false
+    @Published var isDraggingRight = false
 
     //MARK: - View attributes
     let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
-    let kTrimViewWidth = UIScreen.screenWidth - 40
+    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
@@ -72,14 +75,6 @@ class EditMediaViewModel: ObservableObject {
         return true
     }
 
-    func updateOffset(time: Double) {
-        let totalOffsetDistance: CGFloat = 340
-        let progress = time / timeDuration
-        if !progress.isNaN {
-            playingOffset = CGFloat(progress) * totalOffsetDistance
-        }
-    }
-    
     func onPlay() {}
     
     func onPause() {}
