@@ -33,8 +33,8 @@ class EditMediaViewModel: ObservableObject {
     @Published var isDraggingRight = false
 
     //MARK: - View attributes
-    let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
-    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18
+    let minimumAudioDuration = 3.0 // this is the limit time of the audio duration
+    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18 
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"

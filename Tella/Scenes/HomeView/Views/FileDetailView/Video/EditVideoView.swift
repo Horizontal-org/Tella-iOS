@@ -63,7 +63,6 @@ struct EditVideoView: View {
                 }
             }
             .border(Color.white.opacity(0.8), width: 1)
-            //            .padding(EdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16))
         }
         .frame(height: 36)
     }
@@ -89,7 +88,7 @@ struct EditVideoView: View {
                     
                     tapeLineSliderView
                         .padding(EdgeInsets(top: 0,
-                                            leading: viewModel.leadingGestureValue + 18,
+                                            leading: viewModel.leadingGestureValue + 18 + 3,
                                             bottom: 0,
                                             trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - 18 - 16 + 4))
                 }
@@ -114,7 +113,6 @@ struct EditVideoView: View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
                             sliderImage: "edit.video.left.icon",
-//                            sliderHeight: 36,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             isRightSlider: false,
@@ -133,7 +131,6 @@ struct EditVideoView: View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
                             sliderImage: "edit.video.right.icon",
-//                            sliderHeight: 36,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             isRightSlider: true,
