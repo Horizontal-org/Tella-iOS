@@ -37,7 +37,8 @@ struct EditVideoView: View {
         }
         .onAppear {
             viewModel.onAppear()
-            viewModel.trailingGestureValue = viewModel.kTrimViewWidth
+            viewModel.trailingGestureValue = viewModel.editMedia.trailingPadding
+            
         }
         .onDisappear {
             viewModel.onDisappear()
@@ -88,15 +89,15 @@ struct EditVideoView: View {
                     
                     tapeLineSliderView
                         .padding(EdgeInsets(top: 0,
-                                            leading: viewModel.leadingGestureValue + 18 + 3,
+                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 3,
                                             bottom: 0,
-                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - 18 - 16 + 4))
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding + 4))
                 }
             }
         }
         .frame(height: 40)
-        .background(Color.red)
     }
+    
     private var tapeLineSliderView: some View {
         CustomThumbnailSlider(
             value: $viewModel.currentPosition,
@@ -112,10 +113,10 @@ struct EditVideoView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: viewModel.editMedia.leadingImageName,
+                            editMedia: viewModel.editMedia,
+                            sliderType: .leading,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
-                            isRightSlider: false,
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
@@ -130,10 +131,10 @@ struct EditVideoView: View {
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: viewModel.editMedia.trailingImageName,
+                            editMedia: viewModel.editMedia,
+                            sliderType: .trailing,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            isRightSlider: true,
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in

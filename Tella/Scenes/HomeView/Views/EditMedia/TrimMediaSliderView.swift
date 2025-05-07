@@ -13,15 +13,13 @@ import SwiftUI
 struct TrimMediaSliderView: View {
     @Binding var value: Double
     var range: ClosedRange<Double>
-    var sliderImage: String
+    var editMedia: EditMediaProtocol
+    var sliderType: SliderType //This variable to check if the slider starts from the left or the right side
     
     @Binding var gestureValue: Double
     @Binding var shouldLimitScrolling: Bool
-    @State var isRightSlider: Bool //This variable to check if the slider starts from the left or the right side
     @Binding var isDragging : Bool
-
-    private let kLabelOffset = 15.0 //This constant is added to center the value label in the trim line
-
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -33,7 +31,8 @@ struct TrimMediaSliderView: View {
     }
     
     private func sliderImage(in geometry: GeometryProxy) -> some View {
-        Image(sliderImage)
+        let imageName = sliderType == .leading ? editMedia.leadingImageName : editMedia.trailingImageName
+        return Image(imageName)
             .offset(x: calculateThumbOffset(in: geometry), y: 0)
     }
     
@@ -50,16 +49,18 @@ struct TrimMediaSliderView: View {
                 isDragging = true
                 let clampedX = min(max(0, dragValue.location.x), geometry.size.width)
                 let newValue = (clampedX / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
-
+                
                 if shouldLimitScrolling {
-                    if isRightSlider {
+                    
+                    if sliderType == .trailing {
                         guard newValue >= value else { return }
                     } else {
                         guard newValue <= value else { return }
                     }
                 }
-
+                
                 value = min(max(newValue, range.lowerBound), range.upperBound)
+                gestureValue = calculateThumbOffset(in: geometry)
             }
             .onEnded { _ in
                 gestureValue = calculateThumbOffset(in: geometry)
@@ -68,13 +69,14 @@ struct TrimMediaSliderView: View {
     }
     
     private func calculateThumbOffset(in geometry: GeometryProxy) -> CGFloat {
-        let additionalOffset = isRightSlider ? -18 : 0
+        
+        let additionalOffset = sliderType == .leading ? 0 : -editMedia.sliderWidth
         let offset = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
         return offset + CGFloat(additionalOffset)
     }
-
+    
     private func calculateLabelOffset(in geometry: GeometryProxy) -> CGFloat {
-        let additionalOffset = isRightSlider ? -36 : 3
+        let additionalOffset = sliderType == .leading ? editMedia.leadingLabelPadding : editMedia.trailingLabelPadding
         let offset = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
         return offset + CGFloat(additionalOffset)
     }

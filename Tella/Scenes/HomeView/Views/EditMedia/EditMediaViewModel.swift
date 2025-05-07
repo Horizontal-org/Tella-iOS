@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by RIMA on 14.11.24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -28,13 +28,13 @@ class EditMediaViewModel: ObservableObject {
     @Published var shouldStopLeftScroll = false
     @Published var shouldStopRightScroll = false
     @Published var currentPosition: CGFloat = .zero
-
+    
     @Published var isDraggingLeft = false
     @Published var isDraggingRight = false
-
+    
     //MARK: - View attributes
     let minimumAudioDuration = 3.0 // this is the limit time of the audio duration
-    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18
+//    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
@@ -76,7 +76,7 @@ class EditMediaViewModel: ObservableObject {
     func isVideoRotated() -> Bool {
         return true
     }
-
+    
     func onPlay() {}
     
     func onPause() {}
@@ -89,7 +89,7 @@ class EditMediaViewModel: ObservableObject {
                 guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedVideoUrl)
                 self.trimState = .loaded(true)
-             } catch {
+            } catch {
                 self.trimState = .error(error.localizedDescription)
             }
         }
@@ -111,13 +111,12 @@ class EditMediaViewModel: ObservableObject {
     }
     
     func undo() {
-       startTime = 0.0
-       endTime = timeDuration
-       leadingGestureValue = 0.0
-       trailingGestureValue = kTrimViewWidth
-   }
+        startTime = 0.0
+        endTime = timeDuration
+        leadingGestureValue = 0.0
+        trailingGestureValue = editMedia.trailingPadding
+    }
 }
-
 
 
 protocol EditMediaProtocol {
@@ -126,6 +125,10 @@ protocol EditMediaProtocol {
     var playImageName: String { get }
     var leadingPadding: CGFloat { get }
     var trailingPadding: CGFloat { get }
+    var sliderWidth: CGFloat { get }
+    var horizontalPadding: CGFloat { get }
+    var leadingLabelPadding: CGFloat { get }
+    var trailingLabelPadding: CGFloat { get }
 }
 
 struct EditVideoParameters : EditMediaProtocol {
@@ -133,13 +136,45 @@ struct EditVideoParameters : EditMediaProtocol {
     var trailingImageName: String = "edit.video.right.icon"
     var playImageName: String = "edit.video.play.line"
     var leadingPadding: CGFloat = 0.0
-    var trailingPadding: CGFloat = UIScreen.screenWidth - 32 - 18
+    var leadingLabelPadding: CGFloat = -8
+    var trailingLabelPadding: CGFloat = -18
+    
+    var trailingPadding: CGFloat {
+        UIScreen.screenWidth -  2 * horizontalPadding  - sliderWidth
+    }
+    
+    var horizontalPadding: CGFloat {
+        return 16
+    }
+    
+    var sliderWidth: CGFloat {
+        return 18
+    }
 }
 
 struct EditAudioParameters : EditMediaProtocol {
+
     var leadingImageName: String = "edit.audio.trim.line"
     var trailingImageName: String = "edit.audio.trim.line"
     var playImageName: String =  "edit.audio.play.line"
     var leadingPadding: CGFloat = 0.0
-    var trailingPadding: CGFloat = UIScreen.screenWidth - 32 - 18
+    var leadingLabelPadding: CGFloat = -20
+    var trailingLabelPadding: CGFloat = -10
+    
+    var horizontalPadding: CGFloat {
+        return 20
+    }
+    
+    var sliderWidth: CGFloat {
+        return 10
+    }
+    
+    var trailingPadding: CGFloat {
+        UIScreen.screenWidth -  2 * horizontalPadding  - sliderWidth
+    }
+}
+
+enum SliderType {
+    case leading
+    case trailing
 }

@@ -2,7 +2,7 @@
 //  EditAudioView.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -23,6 +23,8 @@ struct EditAudioView: View {
                 EditMediaHeaderView(viewModel: viewModel)
                 timeLabelsView
                 trimView
+                    .padding(EdgeInsets(top: 0, leading: viewModel.editMedia.horizontalPadding, bottom: 0, trailing:  viewModel.editMedia.horizontalPadding))
+                
                 displayTimeLabels
                 EditMediaControlButtonsView(viewModel: viewModel) .padding(.top, 64)
                 Spacer()
@@ -30,7 +32,7 @@ struct EditAudioView: View {
         }
         .onAppear {
             viewModel.onAppear()
-            viewModel.trailingGestureValue = viewModel.kTrimViewWidth
+            viewModel.trailingGestureValue = viewModel.editMedia.trailingPadding
         }
         .onDisappear {
             viewModel.onDisappear()
@@ -42,80 +44,88 @@ struct EditAudioView: View {
         .background(Color.black.ignoresSafeArea())
     }
     
-    
     var trimView: some View {
-        VStack {
-            ZStack(alignment: .trailing) {
-                ZStack(alignment: .leading) {
-                    // This image is for the playing view
-                    trimBackgroundView()
-                    tapeLineSliderView
-                    leadingSliderView()
-                }.frame(maxWidth: viewModel.kTrimViewWidth)
-                trailingSliderView()
-            }
+        GeometryReader { geometry in
             
-        }.frame(maxWidth: viewModel.kTrimViewWidth)
+            ZStack(alignment: .center) {
+                
+                trimBackgroundView()
+                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+                
+                Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
+                    .padding(EdgeInsets(top: 0,
+                                        leading: viewModel.leadingGestureValue,
+                                        bottom: 0,
+                                        trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - 16))
+                ZStack {
+                    leadingSliderView()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    trailingSliderView()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                
+                if !viewModel.isDraggingLeft && !viewModel.isDraggingRight {
+                    
+                    tapeLineSliderView
+                        .padding(EdgeInsets(top: 0,
+                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 3,
+                                            bottom: 0,
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding + 4))
+                }
+            }
+        }
+        .frame(height: 196)
     }
     
     private var tapeLineSliderView: some View {
         CustomThumbnailSlider(value: $viewModel.currentPosition,
-                              range: 0...viewModel.timeDuration,
+                              range: viewModel.startTime...viewModel.endTime,
                               sliderHeight: 210,
                               sliderWidth: 5.0,
-                              sliderImage: "edit.audio.play.line") { isEditing in
+                              sliderImage: viewModel.editMedia.playImageName) { isEditing in
             viewModel.onPause()
             if !isEditing {
                 viewModel.currentTime = viewModel.currentPosition.formattedAsHHMMSS()
             }
-        }.frame(height: 210)
-            .offset(x: 5, y: 10 )
+        }.frame(height: 196)
     }
     
     private func trimBackgroundView() -> some View {
-        Group {
-            // The image is for the soundwaves View
-            Image("edit.audio.soundwaves")
-                .resizable()
-                .frame(height: 180)
-                .background(Color.white.opacity(0.08))
-            // Adding a background yellow to indicate the trimmed part View
-            Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
-                .offset(x: viewModel.leadingGestureValue)
-                .frame(width: abs(viewModel.leadingGestureValue - viewModel.trailingGestureValue ), height: 180 )
-        }
+        Image("edit.audio.soundwaves")
+            .resizable()
+            .frame(height: 180)
+            .background(Color.white.opacity(0.08))
     }
     
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: "edit.audio.trim.line",
+                            editMedia: viewModel.editMedia,
+                            sliderType: .leading,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
-                            isRightSlider: false,
                             isDragging: $viewModel.isDraggingRight)
-        .frame(height: 220)
-        .offset(y: 20)
+        .frame(height: 196)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
-         })
+        })
     }
     
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: "edit.audio.trim.line",
+                            editMedia: viewModel.editMedia,
+                            sliderType: .trailing,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            isRightSlider: true,
                             isDragging: $viewModel.isDraggingLeft)
-        .frame(height: 220)
-        .offset(y:20)
+        .frame(height: 196)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
-         })
+        })
     }
     
     var timeLabelsView: some View {
@@ -128,7 +138,7 @@ struct EditAudioView: View {
                     Spacer()
                 }
             }
-        }.frame(width: viewModel.kTrimViewWidth, height: 40)
+        }.frame(width: viewModel.editMedia.trailingPadding, height: 40)
             .padding([.top], 70)
     }
     
