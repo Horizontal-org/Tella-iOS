@@ -25,8 +25,6 @@ class EditMediaViewModel: ObservableObject {
     
     @Published var trailingGestureValue: Double = 0.0
     @Published var leadingGestureValue: Double = 0.0
-    @Published var shouldStopLeftScroll = false
-    @Published var shouldStopRightScroll = false
     @Published var currentPosition: CGFloat = .zero
     
     @Published var isDraggingLeft = false

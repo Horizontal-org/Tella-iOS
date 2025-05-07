@@ -13,11 +13,11 @@ import SwiftUI
 struct TrimMediaSliderView: View {
     @Binding var value: Double
     var range: ClosedRange<Double>
+    var currentRange: ClosedRange<Double>
     var editMedia: EditMediaProtocol
-    var sliderType: SliderType //This variable to check if the slider starts from the left or the right side
+    var sliderType: SliderType 
     
     @Binding var gestureValue: Double
-    @Binding var shouldLimitScrolling: Bool
     @Binding var isDragging : Bool
     
     var body: some View {
@@ -50,15 +50,14 @@ struct TrimMediaSliderView: View {
                 let clampedX = min(max(0, dragValue.location.x), geometry.size.width)
                 let newValue = (clampedX / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
                 
-                if shouldLimitScrolling {
-                    
-                    if sliderType == .trailing {
-                        guard newValue >= value else { return }
-                    } else {
-                        guard newValue <= value else { return }
-                    }
-                }
                 
+                if sliderType == .trailing {
+                    guard newValue >= currentRange.lowerBound + 3.0 else { return }
+
+                } else {
+                  guard newValue + 3.0 <= currentRange.upperBound else { return }
+                }
+
                 value = min(max(newValue, range.lowerBound), range.upperBound)
                 gestureValue = calculateThumbOffset(in: geometry)
             }

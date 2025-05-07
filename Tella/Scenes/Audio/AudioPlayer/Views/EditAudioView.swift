@@ -50,13 +50,13 @@ struct EditAudioView: View {
             ZStack(alignment: .center) {
                 
                 trimBackgroundView()
-                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+                //                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 
                 Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
                     .padding(EdgeInsets(top: 0,
-                                        leading: viewModel.leadingGestureValue,
+                                        leading: viewModel.leadingGestureValue - 3,
                                         bottom: 0,
-                                        trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - 16))
+                                        trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - 23))
                 ZStack {
                     leadingSliderView()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,9 +69,9 @@ struct EditAudioView: View {
                     
                     tapeLineSliderView
                         .padding(EdgeInsets(top: 0,
-                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 3,
+                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 4,
                                             bottom: 0,
-                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding + 4))
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - 7))
                 }
             }
         }
@@ -101,31 +101,36 @@ struct EditAudioView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
+                            currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
                             sliderType: .leading,
                             gestureValue: $viewModel.leadingGestureValue,
-                            shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
-                            isDragging: $viewModel.isDraggingRight)
+                            isDragging: $viewModel.isDraggingLeft)
         .frame(height: 196)
         .onReceive(viewModel.$startTime, perform: { value in
-            viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
+        .onReceive(viewModel.$isDraggingLeft) { isDragging in
+            self.viewModel.currentPosition = viewModel.startTime
+        }
     }
     
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
+                            currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
                             sliderType: .trailing,
                             gestureValue: $viewModel.trailingGestureValue,
-                            shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            isDragging: $viewModel.isDraggingLeft)
+                            isDragging: $viewModel.isDraggingRight)
         .frame(height: 196)
         .onReceive(viewModel.$endTime, perform: { value in
-            viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
+        .onReceive(viewModel.$isDraggingRight) { isDragging in
+            self.viewModel.currentPosition = viewModel.endTime
+        }
+        
     }
     
     var timeLabelsView: some View {

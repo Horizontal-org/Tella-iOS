@@ -113,14 +113,13 @@ struct EditVideoView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
+                            currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
                             sliderType: .leading,
                             gestureValue: $viewModel.leadingGestureValue,
-                            shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
-            viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
@@ -131,14 +130,13 @@ struct EditVideoView: View {
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
+                            currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
                             sliderType: .trailing,
                             gestureValue: $viewModel.trailingGestureValue,
-                            shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
-            viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
             viewModel.didReachSliderLimit()
         })
         .onReceive(viewModel.$isDraggingRight) { isDragging in
