@@ -34,7 +34,7 @@ class EditMediaViewModel: ObservableObject {
 
     //MARK: - View attributes
     let minimumAudioDuration = 3.0 // this is the limit time of the audio duration
-    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18 
+    let kTrimViewWidth = UIScreen.screenWidth - 32 - 18
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
@@ -49,11 +49,13 @@ class EditMediaViewModel: ObservableObject {
     var file: VaultFileDB?
     var rootFile: VaultFileDB?
     var appModel: MainAppModel
+    var editMedia : EditMediaProtocol
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
         self.file = file
         self.rootFile = rootFile
         self.appModel  = appModel
+        self.editMedia  = editMedia
     }
     
     func onAppear() {
@@ -114,4 +116,30 @@ class EditMediaViewModel: ObservableObject {
        leadingGestureValue = 0.0
        trailingGestureValue = kTrimViewWidth
    }
+}
+
+
+
+protocol EditMediaProtocol {
+    var leadingImageName: String { get }
+    var trailingImageName: String { get }
+    var playImageName: String { get }
+    var leadingPadding: CGFloat { get }
+    var trailingPadding: CGFloat { get }
+}
+
+struct EditVideoParameters : EditMediaProtocol {
+    var leadingImageName: String = "edit.video.left.icon"
+    var trailingImageName: String = "edit.video.right.icon"
+    var playImageName: String = "edit.video.play.line"
+    var leadingPadding: CGFloat = 0.0
+    var trailingPadding: CGFloat = UIScreen.screenWidth - 32 - 18
+}
+
+struct EditAudioParameters : EditMediaProtocol {
+    var leadingImageName: String = "edit.audio.trim.line"
+    var trailingImageName: String = "edit.audio.trim.line"
+    var playImageName: String =  "edit.audio.play.line"
+    var leadingPadding: CGFloat = 0.0
+    var trailingPadding: CGFloat = UIScreen.screenWidth - 32 - 18
 }

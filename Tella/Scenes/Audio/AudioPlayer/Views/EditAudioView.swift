@@ -157,12 +157,10 @@ struct EditAudioView: View {
         }
     }
 }
-
-
-
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
         EditAudioView(viewModel: EditAudioViewModel(file: nil, rootFile: nil,
-                                                             appModel: MainAppModel.stub()) )
+                                                    appModel: MainAppModel.stub(),
+                                                    editMedia: EditAudioParameters()))
     }
 }

@@ -40,8 +40,8 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel)
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         setupListeners()
         initVideo()
     }

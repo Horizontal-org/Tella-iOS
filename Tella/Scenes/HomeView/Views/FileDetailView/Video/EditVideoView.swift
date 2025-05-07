@@ -103,7 +103,7 @@ struct EditVideoView: View {
             range: viewModel.startTime...viewModel.endTime,
             sliderHeight: 36,
             sliderWidth: 5.0,
-            sliderImage: "edit.video.play.line"
+            sliderImage: viewModel.editMedia.playImageName
         ) { isEditing in
             viewModel.onPause()
         }
@@ -112,7 +112,7 @@ struct EditVideoView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: "edit.video.left.icon",
+                            sliderImage: viewModel.editMedia.leadingImageName,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             isRightSlider: false,
@@ -130,7 +130,7 @@ struct EditVideoView: View {
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
-                            sliderImage: "edit.video.right.icon",
+                            sliderImage: viewModel.editMedia.trailingImageName,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             isRightSlider: true,
