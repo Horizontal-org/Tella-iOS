@@ -89,10 +89,10 @@ struct EditAudioView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
+                            sliderImage: "edit.audio.trim.line",
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             isRightSlider: false,
-                            sliderImage: "edit.audio.trim.line",
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 220)
         .offset(y: 20)
@@ -105,10 +105,10 @@ struct EditAudioView: View {
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
+                            sliderImage: "edit.audio.trim.line",
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             isRightSlider: true,
-                            sliderImage: "edit.audio.trim.line",
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 220)
         .offset(y:20)

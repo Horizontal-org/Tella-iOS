@@ -13,17 +13,14 @@ import SwiftUI
 struct TrimMediaSliderView: View {
     @Binding var value: Double
     var range: ClosedRange<Double>
+    var sliderImage: String
+    
     @Binding var gestureValue: Double
     @Binding var shouldLimitScrolling: Bool
-    var sliderHeight = 200.0
     @State var isRightSlider: Bool //This variable to check if the slider starts from the left or the right side
-    private let kOffset = 3.0 //This is added to adjust the difference of the elipse in the trim line image
-    private let kLabelOffset = 15.0 //This constant is added to center the value label in the trim line
-    
-    var sliderImage: String
-    var imageWidth = 18.0
-    
     @Binding var isDragging : Bool
+
+    private let kLabelOffset = 15.0 //This constant is added to center the value label in the trim line
 
     var body: some View {
         GeometryReader { geometry in
@@ -36,8 +33,7 @@ struct TrimMediaSliderView: View {
     }
     
     private func sliderImage(in geometry: GeometryProxy) -> some View {
-        ResizableImage(sliderImage)
-            .frame(width: imageWidth, height: sliderHeight)
+        Image(sliderImage)
             .offset(x: calculateThumbOffset(in: geometry), y: 0)
     }
     
@@ -45,7 +41,7 @@ struct TrimMediaSliderView: View {
         Text("\(TimeInterval(value).formattedAsMMSS())")
             .foregroundColor(Styles.Colors.yellow)
             .font(.custom(Styles.Fonts.regularFontName, size: 12))
-            .offset(x: calculateLabelOffset(in: geometry), y: (sliderHeight / 2) + 15)
+            .offset(x: calculateLabelOffset(in: geometry), y: (geometry.size.height / 2) + 15)
     }
     
     private func dragGesture(in geometry: GeometryProxy) -> some Gesture {
@@ -65,7 +61,7 @@ struct TrimMediaSliderView: View {
 
                 value = min(max(newValue, range.lowerBound), range.upperBound)
             }
-            .onEnded { dragValue in
+            .onEnded { _ in
                 gestureValue = calculateThumbOffset(in: geometry)
                 isDragging = false
             }
@@ -78,6 +74,8 @@ struct TrimMediaSliderView: View {
     }
 
     private func calculateLabelOffset(in geometry: GeometryProxy) -> CGFloat {
-        CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kLabelOffset
+        let additionalOffset = isRightSlider ? -36 : 3
+        let offset = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
+        return offset + CGFloat(additionalOffset)
     }
 }

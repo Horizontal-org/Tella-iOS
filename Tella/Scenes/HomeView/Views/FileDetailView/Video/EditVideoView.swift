@@ -113,11 +113,11 @@ struct EditVideoView: View {
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
+                            sliderImage: "edit.video.left.icon",
+//                            sliderHeight: 36,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
-                            sliderHeight: 36,
                             isRightSlider: false,
-                            sliderImage: "edit.video.left.icon",
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
@@ -132,11 +132,11 @@ struct EditVideoView: View {
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
+                            sliderImage: "edit.video.right.icon",
+//                            sliderHeight: 36,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            sliderHeight: 36,
                             isRightSlider: true,
-                            sliderImage: "edit.video.right.icon",
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
