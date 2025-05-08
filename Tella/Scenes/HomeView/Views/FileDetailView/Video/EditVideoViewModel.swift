@@ -22,7 +22,7 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var rotationAngle: Int = 0
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
     @Published var videoSize: CGSize = .zero
-
+    
     var videoPlayerSize : CGSize {
         let angle = abs(Int(rotationAngle)) % 360
         let isRotated = angle == 90 || angle == 270
@@ -30,7 +30,7 @@ class EditVideoViewModel: EditMediaViewModel {
         
         let frameWidth = isRotated ? videoSize.height * scaleFactor : videoSize.width
         let frameHeight = isRotated ? videoSize.width * scaleFactor : videoSize.height
-
+        
         return CGSize(width: frameWidth, height: frameHeight)
     }
     
@@ -52,38 +52,41 @@ class EditVideoViewModel: EditMediaViewModel {
         self.thumbnails = fileURL.generateThumbnails()
         let playerItem = AVPlayerItem(url:fileURL)
         self.player.replaceCurrentItem(with: playerItem)
-     }
+    }
+    
     override func handlePlayButton() {
-        isPlaying.toggle()
-        isPlaying ? seekVideo(to: currentPosition) : onPause()
+        isPlaying ? onPause() : onPlay()
     }
     
     private func setupListeners() {
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
-                  self.currentPosition = time.seconds
-             if self.currentPosition >= endTime {
-                     seekVideo(to: startTime, and: false)
-                }
-         }
-    }
-    private func seekVideo(to position: Double, and shouldPlay: Bool = true) {
-        
-         self.currentPosition = position
-        
-        let targetTime = CMTime(seconds: self.currentPosition ,
-                                preferredTimescale: 600)
-        self.player.seek(to: targetTime) { _ in
-             if shouldPlay {
-                self.onPlay()
+            self.currentPosition = time.seconds
+            
+            if self.currentPosition >= endTime {
+                self.onPause()
+                seekVideo(to: startTime)
             }
         }
     }
+    
+    private func seekVideo(to position: Double) {
+        self.currentPosition = position
+        let targetTime = CMTime(seconds: self.currentPosition,
+                                preferredTimescale: 600)
+        self.player.seek(to: targetTime)
+    }
+    
     override func didReachSliderLimit() {
         onPause()
         currentPosition = startTime
     }
+    
     override func onPlay() {
+        if self.currentPosition >= endTime {
+            currentPosition = startTime
+        }
+        seekVideo(to: currentPosition)
         isPlaying = true
         player.play()
     }
