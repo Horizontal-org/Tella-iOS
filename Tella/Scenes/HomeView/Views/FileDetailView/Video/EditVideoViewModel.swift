@@ -63,18 +63,25 @@ class EditVideoViewModel: EditMediaViewModel {
             guard let self = self else { return }
             self.currentPosition = time.seconds
             
-            if self.currentPosition >= endTime {
+            if self.currentPosition >= self.endTime {
                 self.onPause()
-                seekVideo(to: startTime)
+                self.seekVideo(to: self.startTime, shouldPlay: false)
             }
         }
     }
     
-    private func seekVideo(to position: Double) {
+    private func seekVideo(to position: Double, shouldPlay: Bool = false) {
         self.currentPosition = position
-        let targetTime = CMTime(seconds: self.currentPosition,
-                                preferredTimescale: 600)
-        self.player.seek(to: targetTime)
+        let targetTime = CMTime(seconds: self.currentPosition, preferredTimescale: 600)
+        
+        player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] completed in
+            guard let self = self else { return }
+            if completed {
+                if shouldPlay {
+                    self.player.play()
+                }
+            }
+        }
     }
     
     override func didReachSliderLimit() {
@@ -86,9 +93,9 @@ class EditVideoViewModel: EditMediaViewModel {
         if self.currentPosition >= endTime {
             currentPosition = startTime
         }
-        seekVideo(to: currentPosition)
+        
+        seekVideo(to: currentPosition, shouldPlay: true)
         isPlaying = true
-        player.play()
     }
     
     override func onPause() {
