@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by RIMA on 15.11.24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -16,14 +16,14 @@ struct CustomThumbnailSlider: View {
     @State private var isEditing = false
     private let kOffset = 3.0
     
-    @Binding var value: Double
+    @Binding var value: CGFloat
     var range: ClosedRange<Double>
     
     var sliderHeight = 200.0
     var sliderWidth = 10.0
     var sliderImage: String
     
-    var onEditingChanged: ((Bool) -> Void)?
+    var onEditingChanged: (() -> Void)?
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,33 +36,21 @@ struct CustomThumbnailSlider: View {
     private func sliderImage(in geometry: GeometryProxy) -> some View {
         ResizableImage(sliderImage)
             .frame(width: sliderWidth)
-            .offset(x: calculateThumbOffset(in: geometry), y: -10)
+            .offset(x: calculateThumbOffset(in: geometry), y: 0)
     }
+    
     // Drag gesture with adjusted conditions for limit scrolling
     private func dragGesture(in geometry: GeometryProxy) -> some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { dragValue in
                 let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
                 value = min(max(newValue, range.lowerBound), range.upperBound)
-            }
-            .onEnded { _ in
-                if isEditing {
-                    onEditingChanged?(false)  // Call closure when editing ends
-                    isEditing = false
-                }
-            }
-            .onChanged { _ in
-                if !isEditing {
-                    onEditingChanged?(true)   // Call closure when editing starts
-                    isEditing = true
-                }
+                
+                onEditingChanged?()
             }
     }
     // Calculate the offset for the thumb
     private func calculateThumbOffset(in geometry: GeometryProxy) -> CGFloat {
         CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kOffset
     }
-    
 }
-
-

@@ -42,6 +42,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             debugLog(error.localizedDescription)
         }
     }
+    func seekAudio(to position: TimeInterval ) {
+        audioPlayer?.currentTime = position
+    }
     
     func startPlaying () {
         

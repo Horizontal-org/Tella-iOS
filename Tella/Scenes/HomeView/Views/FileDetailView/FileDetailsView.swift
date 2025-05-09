@@ -57,7 +57,8 @@ struct FileDetailsView: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel)
+                                           appModel: fileListViewModel.appModel,
+                                           editMedia: EditAudioParameters())
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {

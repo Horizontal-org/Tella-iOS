@@ -129,7 +129,8 @@ struct MoreFileActionButton: View {
     private func showEditVideoView() {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel)
+                                           appModel: fileListViewModel.appModel,
+                                           editMedia: EditVideoParameters())
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
@@ -149,7 +150,8 @@ struct MoreFileActionButton: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel)
+                                           appModel: fileListViewModel.appModel,
+                                           editMedia: EditAudioParameters())
         DispatchQueue.main.async {
             
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {

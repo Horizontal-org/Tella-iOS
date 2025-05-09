@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by RIMA on 14.11.24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -19,20 +19,19 @@ class EditMediaViewModel: ObservableObject {
     @Published var endTime: Double = 0.0
     @Published var timeDuration: Double = 0.0
     @Published var currentTime : String  = "00:00:00"
-    @Published var playingOffset: CGFloat = 0.0
     @Published var isPlaying = false
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
     @Published var headerTitle = ""
     
     @Published var trailingGestureValue: Double = 0.0
     @Published var leadingGestureValue: Double = 0.0
-    @Published var shouldStopLeftScroll = false
-    @Published var shouldStopRightScroll = false
-
-
+    @Published var currentPosition: CGFloat = .zero
+    
+    @Published var isDraggingLeft = false
+    @Published var isDraggingRight = false
+    
     //MARK: - View attributes
-    let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
-    let kTrimViewWidth = UIScreen.screenWidth - 40
+    let minimumAudioDuration = 3.0 // this is the limit time of the audio duration
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
@@ -47,11 +46,13 @@ class EditMediaViewModel: ObservableObject {
     var file: VaultFileDB?
     var rootFile: VaultFileDB?
     var appModel: MainAppModel
+    var editMedia : EditMediaProtocol
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
         self.file = file
         self.rootFile = rootFile
         self.appModel  = appModel
+        self.editMedia  = editMedia
     }
     
     func onAppear() {
@@ -72,14 +73,6 @@ class EditMediaViewModel: ObservableObject {
     func isVideoRotated() -> Bool {
         return true
     }
-
-    func updateOffset(time: Double) {
-        let totalOffsetDistance: CGFloat = 340
-        let progress = time / timeDuration
-        if !progress.isNaN {
-            playingOffset = CGFloat(progress) * totalOffsetDistance
-        }
-    }
     
     func onPlay() {}
     
@@ -93,11 +86,20 @@ class EditMediaViewModel: ObservableObject {
                 guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedVideoUrl)
                 self.trimState = .loaded(true)
-             } catch {
+            } catch {
                 self.trimState = .error(error.localizedDescription)
             }
         }
     }
+    
+    func resetSliderToStart() {
+        currentPosition = startTime
+        updateCurrentPosition()
+    }
+    
+    func updateCurrentPosition()  {
+    }
+    
     
     func handlePlayButton() {
         isPlaying.toggle()
@@ -112,9 +114,9 @@ class EditMediaViewModel: ObservableObject {
     }
     
     func undo() {
-       startTime = 0.0
-       endTime = timeDuration
-       leadingGestureValue = 0.0
-       trailingGestureValue = kTrimViewWidth
-   }
+        startTime = 0.0
+        endTime = timeDuration
+        leadingGestureValue = 0.0
+        trailingGestureValue = editMedia.trailingPadding
+    }
 }

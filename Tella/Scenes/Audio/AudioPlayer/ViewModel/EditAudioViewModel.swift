@@ -2,7 +2,7 @@
 //  EditAudioViewModel.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -20,8 +20,8 @@ class EditAudioViewModel: EditMediaViewModel {
     //MARK: - Private attributes
     private var currentData : Data?
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel)
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel,editMedia:EditMediaProtocol) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         if let currentFile = file {
             self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
         }
@@ -41,25 +41,26 @@ class EditAudioViewModel: EditMediaViewModel {
         }
     }
     
-    private func listenToAudioPlayerUpdates() {
-        self.audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.formattedAsHHMMSS()
-            self.updateOffset(time: Double(value) )
-        }.store(in: &self.cancellables)
-        
-        self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            isPlaying = false
-        }.store(in: &self.cancellables)
+    override func handlePlayButton() {
+        isPlaying.toggle()
+        isPlaying ? seekAudio(to: self.currentPosition) : onPause()
     }
     
     override func onPlay() {
+        isPlaying = true
         audioPlayerManager.playRecord()
     }
     
     override func onPause() {
+        isPlaying = false
         audioPlayerManager.pauseRecord()
     }
-        
+    
+    override func updateCurrentPosition() {
+        onPause()
+        currentTime = currentPosition.formattedAsHHMMSS()
+    }
+    
     private func generateTimeLabels() {
         if timeDuration != 0.0 {
             let kNumberOfLabels = 5 // This is for the sub-times labels
@@ -73,4 +74,24 @@ class EditAudioViewModel: EditMediaViewModel {
         }
     }
     
+    private func listenToAudioPlayerUpdates() {
+        self.audioPlayerManager.audioPlayer.currentTime.sink { [self] value in
+            self.currentTime = value.formattedAsHHMMSS()
+            self.currentPosition  = Double(value)
+            
+            if Double(value) >= self.endTime {
+                seekAudio(to: startTime, shouldPlay: false )
+            }
+            
+        }.store(in: &self.cancellables)
+        
+        self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
+            isPlaying = false
+        }.store(in: &self.cancellables)
+    }
+    
+    private func seekAudio(to position: Double, shouldPlay: Bool = true) {
+        audioPlayerManager.audioPlayer.seekAudio(to: position)
+        shouldPlay ? onPlay() : onPause()
+    }
 }

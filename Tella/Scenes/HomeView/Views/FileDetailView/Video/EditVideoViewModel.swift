@@ -14,17 +14,15 @@ import SwiftUI
 import AVFoundation
 
 class EditVideoViewModel: EditMediaViewModel {
-    
     private var timeObserver: Any?
+    
     let player = AVPlayer()
     
-    @Published var currentPosition: Double = .zero
-    @Published var shouldSeekVideo = false
     @Published var thumbnails: [UIImage] = []
     @Published var rotationAngle: Int = 0
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
     @Published var videoSize: CGSize = .zero
-
+    
     var videoPlayerSize : CGSize {
         let angle = abs(Int(rotationAngle)) % 360
         let isRotated = angle == 90 || angle == 270
@@ -32,7 +30,7 @@ class EditVideoViewModel: EditMediaViewModel {
         
         let frameWidth = isRotated ? videoSize.height * scaleFactor : videoSize.width
         let frameHeight = isRotated ? videoSize.width * scaleFactor : videoSize.height
-
+        
         return CGSize(width: frameWidth, height: frameHeight)
     }
     
@@ -42,10 +40,33 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel)
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+        super.init(file: file, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         setupListeners()
         initVideo()
+    }
+    
+    override func handlePlayButton() {
+        isPlaying ? onPause() : onPlay()
+    }
+    
+    override func onPlay() {
+        if self.currentPosition >= endTime {
+            currentPosition = startTime
+        }
+        
+        seekVideo(to: currentPosition, shouldPlay: true)
+        isPlaying = true
+    }
+    
+    override func onPause() {
+        isPlaying = false
+        player.pause()
+    }
+    
+    override func updateCurrentPosition()  {
+        onPause()
+        self.seekVideo(to: currentPosition)
     }
     
     private func initVideo() {
@@ -54,55 +75,33 @@ class EditVideoViewModel: EditMediaViewModel {
         self.thumbnails = fileURL.generateThumbnails()
         let playerItem = AVPlayerItem(url:fileURL)
         self.player.replaceCurrentItem(with: playerItem)
-        self.onPlay()
     }
     
+    
     private func setupListeners() {
-        $shouldSeekVideo
-            .dropFirst()
-            .filter({ $0 == false })
-            .sink(receiveValue: { [weak self] _ in
-                guard let self = self else { return }
-                seekVideo(to: self.currentPosition)
-            })
-            .store(in: &cancellables)
-        
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: nil) { [weak self] time in
             guard let self = self else { return }
-            if self.isSeekInProgress == false {
-                
-                self.currentPosition = time.seconds
-                self.updateOffset(time: currentPosition)
-                
-                if time.seconds == self.file?.duration {
-                    seekVideo(to: 0.0, and: false)
+            self.currentPosition = time.seconds
+            
+            if self.currentPosition >= self.endTime {
+                self.onPause()
+                self.seekVideo(to: self.startTime, shouldPlay: false)
+            }
+        }
+    }
+    
+    private func seekVideo(to position: Double, shouldPlay: Bool = false) {
+        self.currentPosition = position
+        let targetTime = CMTime(seconds: self.currentPosition, preferredTimescale: 600)
+        
+        player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] completed in
+            guard let self = self else { return }
+            if completed {
+                if shouldPlay {
+                    self.player.play()
                 }
             }
         }
-    }
-    private func seekVideo(to position: Double, and shouldPlay: Bool = true) {
-        
-        self.isSeekInProgress = true
-        self.currentPosition = position
-        
-        let targetTime = CMTime(seconds: self.currentPosition ,
-                                preferredTimescale: 600)
-        self.player.seek(to: targetTime) { _ in
-            self.isSeekInProgress = false
-            if shouldPlay {
-                self.onPlay()
-            }
-        }
-    }
-    
-    override func onPlay() {
-        isPlaying = true
-        player.play()
-    }
-    
-    override func onPause() {
-        isPlaying = false
-        player.pause()
     }
     
     // Rotates a video file asynchronously and updates UI state accordingly
@@ -130,4 +129,5 @@ class EditVideoViewModel: EditMediaViewModel {
             self.videoSize = size ?? .zero
         }
     }
+    
 }
