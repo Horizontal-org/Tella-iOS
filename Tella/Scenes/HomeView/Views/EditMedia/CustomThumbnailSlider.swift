@@ -23,7 +23,7 @@ struct CustomThumbnailSlider: View {
     var sliderWidth = 10.0
     var sliderImage: String
     
-    var onEditingChanged: ((Bool) -> Void)?
+    var onEditingChanged: (() -> Void)?
     
     var body: some View {
         GeometryReader { geometry in
@@ -38,24 +38,15 @@ struct CustomThumbnailSlider: View {
             .frame(width: sliderWidth)
             .offset(x: calculateThumbOffset(in: geometry), y: 0)
     }
+    
     // Drag gesture with adjusted conditions for limit scrolling
     private func dragGesture(in geometry: GeometryProxy) -> some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { dragValue in
                 let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
                 value = min(max(newValue, range.lowerBound), range.upperBound)
-            }
-            .onEnded { _ in
-                if isEditing {
-                    onEditingChanged?(false)  // Call closure when editing ends
-                    isEditing = false
-                }
-            }
-            .onChanged { _ in
-                if !isEditing {
-                    onEditingChanged?(true)   // Call closure when editing starts
-                    isEditing = true
-                }
+                
+                onEditingChanged?()
             }
     }
     // Calculate the offset for the thumb

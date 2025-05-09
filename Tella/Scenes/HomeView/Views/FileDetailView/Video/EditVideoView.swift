@@ -89,9 +89,9 @@ struct EditVideoView: View {
                     
                     tapeLineSliderView
                         .padding(EdgeInsets(top: 0,
-                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 3,
+                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + viewModel.editMedia.extraLeadingSpace,
                                             bottom: 0,
-                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding + 4))
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding + viewModel.editMedia.extraTrailingSpace))
                 }
             }
         }
@@ -104,12 +104,12 @@ struct EditVideoView: View {
             range: viewModel.startTime...viewModel.endTime,
             sliderHeight: 36,
             sliderWidth: 5.0,
-            sliderImage: viewModel.editMedia.playImageName
-        ) { isEditing in
-            viewModel.onPause()
-        }
-        .frame(height: 40)
+            sliderImage: viewModel.editMedia.playImageName ) {
+                viewModel.updateCurrentPosition()
+            }
+            .frame(height: 40)
     }
+    
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
@@ -119,11 +119,8 @@ struct EditVideoView: View {
                             gestureValue: $viewModel.leadingGestureValue,
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 36)
-        .onReceive(viewModel.$startTime, perform: { value in
-            viewModel.didReachSliderLimit()
-        })
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
-            self.viewModel.currentPosition = viewModel.startTime
+            viewModel.resetSliderToStart()
         }
     }
     
@@ -136,11 +133,8 @@ struct EditVideoView: View {
                             gestureValue: $viewModel.trailingGestureValue,
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 36)
-        .onReceive(viewModel.$endTime, perform: { value in
-            viewModel.didReachSliderLimit()
-        })
         .onReceive(viewModel.$isDraggingRight) { isDragging in
-            self.viewModel.currentPosition = viewModel.endTime
+            viewModel.resetSliderToStart()
         }
     }
     
@@ -163,5 +157,4 @@ struct EditVideoView: View {
             RotateVideoView(viewModel: viewModel)
         }
     }
-    
 }

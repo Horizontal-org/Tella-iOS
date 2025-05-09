@@ -20,6 +20,8 @@ struct TrimMediaSliderView: View {
     @Binding var gestureValue: Double
     @Binding var isDragging : Bool
     
+    private let minimumAudioDuration = 3.0
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -52,10 +54,10 @@ struct TrimMediaSliderView: View {
                 
                 
                 if sliderType == .trailing {
-                    guard newValue >= currentRange.lowerBound + 3.0 else { return }
+                    guard newValue >= currentRange.lowerBound + minimumAudioDuration else { return }
 
                 } else {
-                  guard newValue + 3.0 <= currentRange.upperBound else { return }
+                  guard newValue + minimumAudioDuration <= currentRange.upperBound else { return }
                 }
 
                 value = min(max(newValue, range.lowerBound), range.upperBound)

@@ -2,7 +2,7 @@
 //  EditAudioViewModel.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -41,36 +41,11 @@ class EditAudioViewModel: EditMediaViewModel {
         }
     }
     
-    override func didReachSliderLimit() {
-        onPause()
-        currentPosition = startTime
-        currentTime =  startTime.formattedAsHHMMSS()
-    }
     override func handlePlayButton() {
         isPlaying.toggle()
         isPlaying ? seekAudio(to: self.currentPosition) : onPause()
     }
-
-    private func listenToAudioPlayerUpdates() { 
-        self.audioPlayerManager.audioPlayer.currentTime.sink { [self] value in
-            self.currentTime = value.formattedAsHHMMSS()
-            self.currentPosition  = Double(value)
-            
-            if Double(value) >= self.endTime {
-                seekAudio(to: startTime, shouldPlay: false )
-               }
-
-        }.store(in: &self.cancellables)
-        
-        self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            isPlaying = false
-        }.store(in: &self.cancellables)
-    }
     
-    func seekAudio(to position: Double, shouldPlay: Bool = true ) {
-        audioPlayerManager.audioPlayer.seekAudio(to: position)
-        shouldPlay ? onPlay() : onPause()
-    }
     override func onPlay() {
         isPlaying = true
         audioPlayerManager.playRecord()
@@ -80,7 +55,12 @@ class EditAudioViewModel: EditMediaViewModel {
         isPlaying = false
         audioPlayerManager.pauseRecord()
     }
-        
+    
+    override func updateCurrentPosition() {
+        onPause()
+        currentTime = currentPosition.formattedAsHHMMSS()
+    }
+    
     private func generateTimeLabels() {
         if timeDuration != 0.0 {
             let kNumberOfLabels = 5 // This is for the sub-times labels
@@ -94,4 +74,24 @@ class EditAudioViewModel: EditMediaViewModel {
         }
     }
     
+    private func listenToAudioPlayerUpdates() {
+        self.audioPlayerManager.audioPlayer.currentTime.sink { [self] value in
+            self.currentTime = value.formattedAsHHMMSS()
+            self.currentPosition  = Double(value)
+            
+            if Double(value) >= self.endTime {
+                seekAudio(to: startTime, shouldPlay: false )
+            }
+            
+        }.store(in: &self.cancellables)
+        
+        self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
+            isPlaying = false
+        }.store(in: &self.cancellables)
+    }
+    
+    private func seekAudio(to position: Double, shouldPlay: Bool = true) {
+        audioPlayerManager.audioPlayer.seekAudio(to: position)
+        shouldPlay ? onPlay() : onPause()
+    }
 }

@@ -46,6 +46,29 @@ class EditVideoViewModel: EditMediaViewModel {
         initVideo()
     }
     
+    override func handlePlayButton() {
+        isPlaying ? onPause() : onPlay()
+    }
+    
+    override func onPlay() {
+        if self.currentPosition >= endTime {
+            currentPosition = startTime
+        }
+        
+        seekVideo(to: currentPosition, shouldPlay: true)
+        isPlaying = true
+    }
+    
+    override func onPause() {
+        isPlaying = false
+        player.pause()
+    }
+    
+    override func updateCurrentPosition()  {
+        onPause()
+        self.seekVideo(to: currentPosition)
+    }
+    
     private func initVideo() {
         guard let file else { return }
         guard let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
@@ -54,9 +77,6 @@ class EditVideoViewModel: EditMediaViewModel {
         self.player.replaceCurrentItem(with: playerItem)
     }
     
-    override func handlePlayButton() {
-        isPlaying ? onPause() : onPlay()
-    }
     
     private func setupListeners() {
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: nil) { [weak self] time in
@@ -84,25 +104,6 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override func didReachSliderLimit() {
-        onPause()
-        currentPosition = startTime
-    }
-    
-    override func onPlay() {
-        if self.currentPosition >= endTime {
-            currentPosition = startTime
-        }
-        
-        seekVideo(to: currentPosition, shouldPlay: true)
-        isPlaying = true
-    }
-    
-    override func onPause() {
-        isPlaying = false
-        player.pause()
-    }
-    
     // Rotates a video file asynchronously and updates UI state accordingly
     func rotate() {
         Task { @MainActor in
@@ -128,4 +129,5 @@ class EditVideoViewModel: EditMediaViewModel {
             self.videoSize = size ?? .zero
         }
     }
+    
 }

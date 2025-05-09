@@ -69,9 +69,9 @@ struct EditAudioView: View {
                     
                     tapeLineSliderView
                         .padding(EdgeInsets(top: 0,
-                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + 4,
+                                            leading: viewModel.leadingGestureValue + viewModel.editMedia.sliderWidth + viewModel.editMedia.extraLeadingSpace,
                                             bottom: 0,
-                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - 7))
+                                            trailing: UIScreen.screenWidth - viewModel.trailingGestureValue - viewModel.editMedia.sliderWidth - viewModel.editMedia.horizontalPadding - viewModel.editMedia.extraTrailingSpace))
                 }
             }
         }
@@ -83,11 +83,8 @@ struct EditAudioView: View {
                               range: viewModel.startTime...viewModel.endTime,
                               sliderHeight: 210,
                               sliderWidth: 5.0,
-                              sliderImage: viewModel.editMedia.playImageName) { isEditing in
-            viewModel.onPause()
-            if !isEditing {
-                viewModel.currentTime = viewModel.currentPosition.formattedAsHHMMSS()
-            }
+                              sliderImage: viewModel.editMedia.playImageName) {
+            viewModel.updateCurrentPosition()
         }.frame(height: 196)
     }
     
@@ -107,11 +104,8 @@ struct EditAudioView: View {
                             gestureValue: $viewModel.leadingGestureValue,
                             isDragging: $viewModel.isDraggingLeft)
         .frame(height: 196)
-        .onReceive(viewModel.$startTime, perform: { value in
-            viewModel.didReachSliderLimit()
-        })
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
-            self.viewModel.currentPosition = viewModel.startTime
+            viewModel.resetSliderToStart()
         }
     }
     
@@ -125,11 +119,8 @@ struct EditAudioView: View {
                             isDragging: $viewModel.isDraggingRight)
         .frame(height: 196)
         .onReceive(viewModel.$endTime, perform: { value in
-            viewModel.didReachSliderLimit()
+            viewModel.resetSliderToStart()
         })
-        .onReceive(viewModel.$isDraggingRight) { isDragging in
-            self.viewModel.currentPosition = viewModel.endTime
-        }
         
     }
     
