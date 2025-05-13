@@ -12,26 +12,37 @@ import Combine
 class ManuallyVerificationViewModel: ObservableObject {
     
     @Published var viewState: SenderConnectToDeviceViewState = .none
+    @Published var shouldShowConfirmButton: Bool = false
+    
     var participant : PeerToPeerParticipant
     var peerToPeerRepository: PeerToPeerRepository?
     var sessionId : String?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
-
+    var server:PeerToPeerServer?
+    
     private var subscribers = Set<AnyCancellable>()
-
+    
     init(participant:PeerToPeerParticipant,
          peerToPeerRepository:PeerToPeerRepository? = nil,
          connectionInfo:ConnectionInfo,
-         mainAppModel:MainAppModel) {
+         mainAppModel:MainAppModel,
+         server:PeerToPeerServer? = nil) {
         self.participant = participant
         self.peerToPeerRepository = peerToPeerRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
-     }
-
-    func register() {
-
+        self.server = server
+        shouldShowConfirmButton = participant == .sender
+        listenToRequestRegisterPublisher()
+    }
+    
+    func confirmAction() {
+        participant == .recipient ? acceptRegisterRequest() : register()
+    }
+    
+    private func register() {
+        
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
         
         self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
@@ -55,5 +66,15 @@ class ManuallyVerificationViewModel: ObservableObject {
                 debugLog(response)
                 self.sessionId = response.sessionId
             }).store(in: &self.subscribers)
+    }
+    
+    private func acceptRegisterRequest() {
+        self.server?.acceptRegisterRequest()
+    }
+    
+    private func listenToRequestRegisterPublisher() {
+        self.server?.didRequestRegisterPublisher.sink { value in
+            self.shouldShowConfirmButton = true
+        }.store(in: &subscribers)
     }
 }

@@ -22,11 +22,15 @@ class PeerToPeerServer {
     var requestsNumber : Int = 0
     
     var didRegisterPublisher = PassthroughSubject<Void, Never>()
+    var didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
     var didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
-    //    var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
-    //    var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
-    //    var didTimeoutPublisher = PassthroughSubject<Void, Never>()
+    // var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
+    // var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
+    // var didTimeoutPublisher = PassthroughSubject<Void, Never>()
     
+    private var registerBody : String?
+    private var manually : Bool = false
+    private var currentConnection: NWConnection?
     
     func startListening(port : Int, pin : String, clientIdentity:SecIdentity) {
         self.pin = pin
@@ -60,7 +64,7 @@ class PeerToPeerServer {
             self.listener?.newConnectionHandler = { [weak self] connection in
                 connection.start(queue: .main)
                 DispatchQueue.global(qos: .userInitiated).async {
-                    
+                    self?.currentConnection = connection
                     self?.startReceive(on: connection)
                 }
             }
@@ -75,9 +79,12 @@ class PeerToPeerServer {
     private func startReceive(on connection: NWConnection) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { data, _, _, error in
             if let error = error {
-                
-                self.didCancelAuthenticationPublisher.send()
                 debugLog("Error: \(error)")
+                if case .tls(let tlsErrorCode) = error {
+                    debugLog("TLS Error: \(tlsErrorCode)")
+                    self.didCancelAuthenticationPublisher.send()
+                    self.manually = true
+                }
                 return
             }
             
@@ -108,7 +115,6 @@ class PeerToPeerServer {
             } else {
                 debugLog("Full JSON Body: \(body)")
                 self.processReceivedData(connection: connection, fullBody: body, httpResponse: httpResponse)
-                
             }
         }
     }
@@ -135,23 +141,41 @@ class PeerToPeerServer {
     private func processReceivedData(connection:NWConnection, fullBody:String, httpResponse:HTTPResponse) {
         
         let endpoint = httpResponse.endpoint
-        var dataResponse: P2PServerResponse?
+        var serverResponse: P2PServerResponse?
         
         switch PeerToPeerEndpoint(rawValue: endpoint ) {
         case .register:
-            dataResponse = self.handleRegisterRequest(body: fullBody)
+            if manually {
+                registerBody = fullBody
+                didRequestRegisterPublisher.send()
+                return
+            } else {
+                serverResponse = self.handleRegisterRequest(body: fullBody)
+            }
         case .prepareUpload:
-            dataResponse = self.handlePrepareUploadRequest()
+            serverResponse = self.handlePrepareUploadRequest()
         case .upload:
             break
         default:
             break
         }
         
-        debugLog(dataResponse?.dataResponse?.string())
-        
-        if let dataResponse = dataResponse {
-            self.sendResponse(connection: connection, serverResponse: dataResponse)
+        debugLog(serverResponse?.dataResponse?.string() ?? "")
+        sendFinalResponse(serverResponse: serverResponse)
+    }
+    
+    private func sendFinalResponse(serverResponse:P2PServerResponse?)  {
+        if let serverResponse {
+            debugLog(serverResponse.dataResponse?.string() ?? "")
+            self.sendResponse(serverResponse: serverResponse)
+        } else {
+            
+            let data = HTTPResponseBuilder.buildErrorResponse(
+                error: "Server error",
+                statusCode: HTTPErrorCodes.internalServerError.rawValue
+            )
+            let dataResponse = data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            self.sendResponse(serverResponse: dataResponse)
         }
     }
     
@@ -166,7 +190,6 @@ class PeerToPeerServer {
          500           Server error
          */
         
-        debugLog(body)
         
         guard
             let body,
@@ -178,6 +201,8 @@ class PeerToPeerServer {
             )
             return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
         }
+        
+        debugLog(body)
         
         if requestsNumber >= 3 {
             let data = HTTPResponseBuilder.buildErrorResponse(
@@ -213,6 +238,11 @@ class PeerToPeerServer {
         }
         
         return P2PServerResponse(dataResponse: responseData, response: .success)
+    }
+    
+    func acceptRegisterRequest() {
+        let serverResponse = self.handleRegisterRequest(body: registerBody)
+        sendFinalResponse(serverResponse: serverResponse)
     }
     
     private func handlePrepareUploadRequest() -> P2PServerResponse? {
@@ -256,7 +286,6 @@ class PeerToPeerServer {
             debugLog("Continue receiving data")
             //            self.receive(on: connection, specifiedEndpoint: "/api/localsend/v2/upload")
         }
-        
         return nil
     }
     
@@ -288,8 +317,9 @@ class PeerToPeerServer {
         
     }
     
-    private func sendResponse(connection: NWConnection, serverResponse: P2PServerResponse) {
-        connection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
+    private func sendResponse( serverResponse: P2PServerResponse?) {
+        guard let currentConnection, let serverResponse else { return  }
+        currentConnection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
             if let error = error {
                 debugLog("Server send error: \(error)")
             } else {
