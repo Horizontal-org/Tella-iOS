@@ -43,14 +43,14 @@ struct ManuallyVerificationView: View {
                              backButtonAction: {self.popToRoot()}, //TO Check
                              rightButtonType: .none)
     }
-
+    
     var topView: some View {
         ServerConnectionHeaderView(
             title: LocalizablePeerToPeer.verificationSubhead.localized,
             imageIconName: "device",
             subtitleTextAlignment: .leading)
     }
-
+    
     
     var infoView: some View {
         participantInfoView(
@@ -78,9 +78,10 @@ struct ManuallyVerificationView: View {
     
     var buttonsView: some View {
         VStack(spacing: 17) {
-            if viewModel.participant == .sender {
+            if viewModel.shouldShowConfirmButton {
                 confirmButton
             }
+            
             discardButton
         }.padding([.top,.bottom],16)
     }
@@ -90,7 +91,7 @@ struct ManuallyVerificationView: View {
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
                                   isValid: .constant(true)) {
-            viewModel.register()
+            viewModel.confirmAction()
         }
     }
     
@@ -133,5 +134,6 @@ struct ManuallyVerificationView: View {
 #Preview {
     ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(participant: .recipient,
                                                                       connectionInfo: ConnectionInfo.stub(),
-                                                                      mainAppModel: MainAppModel.stub()))
+                                                                      mainAppModel: MainAppModel.stub(),
+                                                                      server: PeerToPeerServer()))
 }

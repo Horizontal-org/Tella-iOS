@@ -21,13 +21,13 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var port: String = ""
     @Published var viewState: RecipientConnectToDeviceViewState = .none
     
-     var mainAppModel: MainAppModel
     private var certificateGenerator : CertificateGenerator
-    private var server: PeerToPeerServer
     private var subscribers : Set<AnyCancellable> = []
-    
+   
+    var mainAppModel: MainAppModel
+    var server: PeerToPeerServer
     var connectionInfo: ConnectionInfo?
-    
+
     init(certificateGenerator : CertificateGenerator,
          mainAppModel:MainAppModel,
          server: PeerToPeerServer,

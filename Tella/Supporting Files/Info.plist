@@ -113,9 +113,7 @@
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Tella requires access to the location to capture photos with location information.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs location access to detect the Wi-Fi network.</string>
+    <string>Tella requires access to the location to capture photos with location information and to detect the Wi-Fi network.</string>
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<string>YES</string>
 	<key>NSLocalNetworkUsageDescription</key>
