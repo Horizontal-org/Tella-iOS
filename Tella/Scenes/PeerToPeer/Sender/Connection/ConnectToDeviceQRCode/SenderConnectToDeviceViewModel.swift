@@ -3,14 +3,15 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 14/2/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
 import Combine
 import UIKit
 
-enum SenderConnectToDeviceViewState {
+enum SenderConnectToDeviceViewAction {
     case none
     case showToast(message: String)
     case showBottomSheetError
@@ -21,7 +22,7 @@ enum SenderConnectToDeviceViewState {
 class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     
     @Published var scannedCode: String? = nil
-    @Published var viewState: SenderConnectToDeviceViewState = .none
+    @Published var viewState: SenderConnectToDeviceViewAction = .none
     @Published var startScanning: Bool = true
     
     private var subscribers = Set<AnyCancellable>()

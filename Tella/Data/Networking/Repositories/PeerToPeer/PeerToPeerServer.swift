@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 18/3/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Network
@@ -24,13 +25,16 @@ class PeerToPeerServer {
     var didRegisterPublisher = PassthroughSubject<Void, Never>()
     var didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
     var didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
-    // var didPrepareUploadPublisher = PassthroughSubject<Data, Never>()
+    var didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
+    var didSendPrepareUploadResponsePublisher = PassthroughSubject<Void, Never>()
+    var didReceiveErrorPublisher = PassthroughSubject<Void, Never>()
     // var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
     // var didTimeoutPublisher = PassthroughSubject<Void, Never>()
     
-    private var registerBody : String?
-    private var manually : Bool = false
+    private var registerBody: String?
+    private var manually: Bool = false
     private var currentConnection: NWConnection?
+    private var currentHTTPResponse: HTTPResponse?
     
     func startListening(port : Int, pin : String, clientIdentity:SecIdentity) {
         self.pin = pin
@@ -100,6 +104,7 @@ class PeerToPeerServer {
                 return
             }
             
+            self.currentHTTPResponse = httpResponse
             guard let expectedLength = httpResponse.headers.contentLength else {
                 debugLog("Content-Length header missing")
                 return
@@ -133,6 +138,7 @@ class PeerToPeerServer {
             
             let fullBody = httpResponse.body + more
             debugLog("Full JSON Body after completion: \(fullBody)")
+            self.currentHTTPResponse?.body = fullBody
             
             self.processReceivedData(connection: connection, fullBody: fullBody, httpResponse: httpResponse)
         }
@@ -146,26 +152,28 @@ class PeerToPeerServer {
         switch PeerToPeerEndpoint(rawValue: endpoint ) {
         case .register:
             if manually {
-                registerBody = fullBody
+                //                registerBody = fullBody
                 didRequestRegisterPublisher.send()
                 return
             } else {
                 serverResponse = self.handleRegisterRequest(body: fullBody)
+                debugLog(serverResponse?.dataResponse?.string() ?? "")
+                sendFinalResponse(serverResponse: serverResponse)
             }
         case .prepareUpload:
-            serverResponse = self.handlePrepareUploadRequest()
+            self.handlePrepareUploadRequest(body: fullBody)
+            return
         case .upload:
             break
         default:
             break
         }
         
-        debugLog(serverResponse?.dataResponse?.string() ?? "")
-        sendFinalResponse(serverResponse: serverResponse)
     }
     
-    private func sendFinalResponse(serverResponse:P2PServerResponse?)  {
+    private func sendFinalResponse(serverResponse:P2PServerResponse?) {
         if let serverResponse {
+            //            test here
             debugLog(serverResponse.dataResponse?.string() ?? "")
             self.sendResponse(serverResponse: serverResponse)
         } else {
@@ -184,7 +192,7 @@ class PeerToPeerServer {
          HTTP code     Message
          400           Invalid request format
          401           Invalid PIN
-         403           Invalid encryption/decryption ?
+         403           Invalid encryption/decryption ❌
          409           Active session already exists
          429           Too many requests
          500           Server error
@@ -245,20 +253,60 @@ class PeerToPeerServer {
         sendFinalResponse(serverResponse: serverResponse)
     }
     
-    private func handlePrepareUploadRequest() -> P2PServerResponse? {
+    private func handlePrepareUploadRequest(body: String?) {
         /*
          HTTP code    Message
-         400    Invalid request format
-         401    Invalid session ID
-         403    Session expired
-         500    Server error
+         400    Invalid request format ✅
+         401    Invalid session ID ✅
+         403    Rejected ✅
+         500    Server error ✅
          */
+        //409    Blocked by another session? ❌
         
-        let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
-        let responseData =  HTTPResponseBuilder.buildResponse(body: response)
+        guard
+            let body,
+            let prepareUploadRequest = body.decodeJSON(PrepareUploadRequest.self)
+        else {
+            let data = HTTPResponseBuilder.buildErrorResponse(
+                error: "Invalid request format",
+                statusCode: HTTPErrorCodes.badRequest.rawValue
+            )
+            let error =  data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            self.sendResponse(serverResponse: error)
+            didReceiveErrorPublisher.send()
+            return
+        }
         
-        return P2PServerResponse(dataResponse: responseData, response: .success)
+        if prepareUploadRequest.sessionID != sessionId {
+            let data = HTTPResponseBuilder.buildErrorResponse(
+                error: "Invalid session ID",
+                statusCode: HTTPErrorCodes.unauthorized.rawValue
+            )
+            let error = data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            self.sendResponse(serverResponse: error)
+            didReceiveErrorPublisher.send()
+            return
+        }
         
+        didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
+    }
+    
+    func sendPrepareUploadFiles(filesAccepted:Bool) {
+        
+        var serverResponse : P2PServerResponse?
+        if filesAccepted {
+            let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
+            let responseData = HTTPResponseBuilder.buildResponse(body: response)
+            serverResponse = P2PServerResponse(dataResponse: responseData, response: .success)
+        } else {
+            
+            let data = HTTPResponseBuilder.buildErrorResponse(
+                error: "Rejected",
+                statusCode: HTTPErrorCodes.forbidden.rawValue
+            )
+            serverResponse =  data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+        }
+        self.sendResponse(serverResponse: serverResponse)
     }
     
     private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> P2PServerResponse? {
@@ -317,14 +365,22 @@ class PeerToPeerServer {
         
     }
     
-    private func sendResponse( serverResponse: P2PServerResponse?) {
-        guard let currentConnection, let serverResponse else { return  }
+    private func sendResponse(serverResponse: P2PServerResponse?) { // Keep it 👩‍💻 ✅
+        guard let currentConnection,
+              let serverResponse else { return }
         currentConnection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
             if let error = error {
                 debugLog("Server send error: \(error)")
-            } else {
-                if serverResponse.response == .success {
+            } else if serverResponse.response == .success {
+                guard let endpoint = self.currentHTTPResponse?.endpoint else { return }
+                switch PeerToPeerEndpoint(rawValue: endpoint) {
+                case .register:
                     self.didRegisterPublisher.send()
+                case .prepareUpload:
+                    self.didSendPrepareUploadResponsePublisher.send()
+                    break
+                default:
+                    break
                 }
                 debugLog("Server sent response")
             }
@@ -369,4 +425,11 @@ struct P2PServerResponse {
 enum ServerResponseStatus {
     case success
     case failure
+}
+
+extension PeerToPeerServer {
+    
+    static func stub() -> PeerToPeerServer {
+        return PeerToPeerServer()
+    }
 }

@@ -617,3 +617,11 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "PeerToPeer_Verification_Action_Confirm" = "Confirm and connect";
 "PeerToPeer_Verification_Action_Discard" = "Discard and start over";
+
+
+
+"PeerToPeer_Sender_FilesRejected_Toast" = "Files rejected by recipient.";
+
+"PeerToPeer_Receipient_FilesRejected_Toast" = "Sender's files rejected.";
+
+"PeerToPeer_Sender_WaitingReceipient_Toast" = "Waiting for the recipient to accept files";

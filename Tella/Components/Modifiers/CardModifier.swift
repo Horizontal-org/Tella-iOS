@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by RIMA on 04.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI

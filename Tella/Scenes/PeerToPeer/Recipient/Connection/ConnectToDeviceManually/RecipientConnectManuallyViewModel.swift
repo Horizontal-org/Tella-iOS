@@ -3,9 +3,9 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 20/3/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
-
 
 import Foundation
 import Combine
@@ -19,7 +19,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
     @Published var port: String = ""
-    @Published var viewState: RecipientConnectToDeviceViewState = .none
+    @Published var viewState: RecipientConnectToDeviceViewAction = .none
     
     private var certificateGenerator : CertificateGenerator
     private var subscribers : Set<AnyCancellable> = []
@@ -50,7 +50,9 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     }
     
     func listenToRegisterPublisher() {
-        self.server.didCancelAuthenticationPublisher.sink { value in
+        self.server.didCancelAuthenticationPublisher
+            .first()
+            .sink { value in
             self.viewState = .showVerificationHash
         }.store(in: &subscribers)
     }

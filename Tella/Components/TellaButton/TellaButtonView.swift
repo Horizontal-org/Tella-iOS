@@ -38,7 +38,7 @@ struct TellaButtonView<Destination:View> : View {
                 if nextButtonAction == .action  {
                     action?()
                 }
-                if (destination != nil) {
+                if (destination != nil) && nextButtonAction == .destination {
                     navigateTo(destination: destination)
                 }
             } label: {
@@ -95,6 +95,25 @@ struct TellaButtonStyle : ButtonStyle {
     
 }
 
+// Convenience initializer for when Destination == EmptyView (no navigation)
+extension TellaButtonView where Destination == EmptyView {
+    init(
+        title: String,
+        nextButtonAction: NextButtonAction,
+        buttonType: ButtonType = .clear,
+        isOverlay: Bool = false,
+        isValid: Binding<Bool>,
+        action: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.nextButtonAction = nextButtonAction
+        self.buttonType = buttonType
+        self.isOverlay = isOverlay
+        self.destination = nil
+        self._isValid = isValid
+        self.action = action
+    }
+}
 struct TellaButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
