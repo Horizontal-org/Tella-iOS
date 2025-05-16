@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 30/1/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 
@@ -44,6 +45,9 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case settings = "PeerToPeer_Settings"
     case noConnection = "PeerToPeer_NoConnection"
     case waitingForSenderDesc = "PeerToPeer_WaitingForSenderDesc"
+    
+    
+    
     case senderRequestFilesNumberDesc = "PeerToPeer_SenderRequest_NumberOfFiles_Desc"
     case requestQuestion = "PeerToPeer_RequestQuestion"
     case accept = "PeerToPeer_Accept"
@@ -68,4 +72,11 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
 
     case verificationConfirm = "PeerToPeer_Verification_Action_Confirm"
     case verificationDiscard = "PeerToPeer_Verification_Action_Discard"
+    
+    case senderFilesRejected = "PeerToPeer_Sender_FilesRejected_Toast"
+    
+    case receipientFilesRejected = "PeerToPeer_Receipient_FilesRejected_Toast"
+    case senderWaitingReceipient = "PeerToPeer_Sender_WaitingReceipient_Toast"
+
+    
 }

@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by RIMA on 05.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
@@ -60,7 +61,7 @@ struct SenderConnectToDeviceView: View {
     var connectManuallyButton: some View {
         TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
                         nextButtonAction: .destination,
-                        destination: SenderConnectToDeviceManuallyView(viewModel: ConnectToDeviceManuallyViewModel(peerToPeerRepository: viewModel.peerToPeerRepository, mainAppModel: viewModel.mainAppModel)),
+                        destination: SenderConnectToDeviceManuallyView(viewModel: ConnectToDeviceManuallyVM(peerToPeerRepository: viewModel.peerToPeerRepository, mainAppModel: viewModel.mainAppModel)),
                         isValid: .constant(true),
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
@@ -74,16 +75,16 @@ struct SenderConnectToDeviceView: View {
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
     
-    private func handleViewState(state: SenderConnectToDeviceViewState) {
+    private func handleViewState(state: SenderConnectToDeviceViewAction) {
         switch state {
         case .showBottomSheetError:
             showBottomSheetError()
         case .showSendFiles:
             guard let sessionId = viewModel.sessionId else { return }
-            let viewModel = P2PSendFilesViewModel(mainAppModel: viewModel.mainAppModel,
+            let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
                                                   sessionId:sessionId,
                                                   peerToPeerRepository:viewModel.peerToPeerRepository)
-            self.navigateTo(destination: P2PSendFilesView(viewModel: viewModel ))
+            self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel ))
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:

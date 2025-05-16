@@ -3,13 +3,25 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 3/4/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Combine
 import Foundation
 
-class P2PSendFilesViewModel: ObservableObject {
+enum SenderPrepareFileTransferAction {
+    case showToast(message: String)
+    case displaySendingFiles
+    case none
+}
+
+enum SenderPrepareFileTransferState {
+    case waiting
+    case prepareFiles
+}
+
+class SenderPrepareFileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
     var sessionId : String?
@@ -19,6 +31,11 @@ class P2PSendFilesViewModel: ObservableObject {
     @Published var addFilesViewModel: AddFilesViewModel
     @Published var title: String = ""
     @Published var validTitle: Bool = false
+    
+    @Published var viewAction: SenderPrepareFileTransferAction = .none
+    @Published var viewState: SenderPrepareFileTransferState = .prepareFiles
+    
+    
     private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel, sessionId : String, peerToPeerRepository: PeerToPeerRepository) {
@@ -29,6 +46,7 @@ class P2PSendFilesViewModel: ObservableObject {
     }
     
     func prepareUpload() {
+        self.viewState = .waiting
         
         guard let sessionId else { return }
         
@@ -41,22 +59,25 @@ class P2PSendFilesViewModel: ObservableObject {
         }
         
         let prepareUploadRequest = PrepareUploadRequest(title: title, sessionID: sessionId, files: files)
-
+        
         self.peerToPeerRepository.prepareUpload(prepareUpload: prepareUploadRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                
-                debugLog(completion)
-                
-                switch completion {
-                case .finished:
-                    debugLog("finished")
-                case .failure(let error):
-                    debugLog(error)
-                }
+                self.handlePrepareUpload(completion:completion)
             }, receiveValue: { response in
                 debugLog(response)
             }).store(in: &self.subscribers)
+    }
+    
+    private func handlePrepareUpload(completion:Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            self.viewAction = .displaySendingFiles
+        case .failure(let error):
+            debugLog(error)
+            self.viewState = .prepareFiles
+            self.viewAction = .showToast(message:LocalizablePeerToPeer.senderFilesRejected.localized)
+        }
     }
 }
 
