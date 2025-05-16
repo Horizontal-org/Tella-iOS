@@ -47,6 +47,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     private func setupListeners() {
         listenToPrepareUploadPublisher()
         listenToSendPrepareUploadResponsePublisher()
+        listenToPrepareUploadErrors()
     }
     
     // MARK: - Private Methods
@@ -70,7 +71,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 guard let acceptance else { return }
-
+                
                 if acceptance {
                     viewAction = .displayFileTransferView(files: self.files)
                 } else {
@@ -80,7 +81,18 @@ class RecipientPrepareFileTransferVM: ObservableObject {
             }
             .store(in: &subscribers)
     }
-
+    
+    private func listenToPrepareUploadErrors() {
+        server.didReceiveErrorPublisher
+            .receive(on: DispatchQueue.main)
+            .first()
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                viewAction = .showToast(message: LocalizableCommon.commonError.localized)
+                self.viewState = .waitingRequest
+            }
+            .store(in: &subscribers)
+    }
     
     // MARK: - Public Methods
     

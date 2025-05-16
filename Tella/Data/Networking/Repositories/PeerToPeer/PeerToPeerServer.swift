@@ -32,7 +32,7 @@ class PeerToPeerServer {
     // var didTimeoutPublisher = PassthroughSubject<Void, Never>()
     
     private var registerBody: String?
-    private var manually: Bool = false
+    private var hasTLSError: Bool = false
     private var currentConnection: NWConnection?
     private var currentHTTPResponse: HTTPResponse?
     
@@ -87,7 +87,7 @@ class PeerToPeerServer {
                 if case .tls(let tlsErrorCode) = error {
                     debugLog("TLS Error: \(tlsErrorCode)")
                     self.didCancelAuthenticationPublisher.send()
-                    self.manually = true
+                    self.hasTLSError = true
                 }
                 return
             }
@@ -147,47 +147,27 @@ class PeerToPeerServer {
     private func processReceivedData(connection:NWConnection, fullBody:String, httpResponse:HTTPResponse) {
         
         let endpoint = httpResponse.endpoint
-        var serverResponse: P2PServerResponse?
         
         switch PeerToPeerEndpoint(rawValue: endpoint ) {
-        case .register:
-            if manually {
-                //                registerBody = fullBody
-                didRequestRegisterPublisher.send()
-                return
-            } else {
-                serverResponse = self.handleRegisterRequest(body: fullBody)
-                debugLog(serverResponse?.dataResponse?.string() ?? "")
-                sendFinalResponse(serverResponse: serverResponse)
-            }
-        case .prepareUpload:
-            self.handlePrepareUploadRequest(body: fullBody)
-            return
+        case .register: handleRegisterRequest()
+        case .prepareUpload: handlePrepareUploadRequest(body: fullBody)
         case .upload:
             break
         default:
             break
         }
-        
     }
     
-    private func sendFinalResponse(serverResponse:P2PServerResponse?) {
-        if let serverResponse {
-            //            test here
-            debugLog(serverResponse.dataResponse?.string() ?? "")
-            self.sendResponse(serverResponse: serverResponse)
+    private func handleRegisterRequest() {
+        if hasTLSError {
+            didRequestRegisterPublisher.send()
         } else {
-            
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Server error",
-                statusCode: HTTPErrorCodes.internalServerError.rawValue
-            )
-            let dataResponse = data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
-            self.sendResponse(serverResponse: dataResponse)
+            let serverResponse = self.generateRegisterServerResponse()
+            handleServerResponse(serverResponse)
         }
     }
     
-    private func handleRegisterRequest(body: String?) -> P2PServerResponse? {
+    private func generateRegisterServerResponse() -> P2PServerResponse? {
         /*
          HTTP code     Message
          400           Invalid request format
@@ -198,50 +178,37 @@ class PeerToPeerServer {
          500           Server error
          */
         
-        
         guard
-            let body,
+            let body = currentHTTPResponse?.body,
             let registerRequest = body.decodeJSON(RegisterRequest.self)
         else {
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Invalid request format",
-                statusCode: HTTPErrorCodes.badRequest.rawValue
-            )
-            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            let data = HTTPError.badRequest.buildErrorResponse()
+            return P2PServerResponse(dataResponse: data, response: .failure)
         }
         
         debugLog(body)
         
         if requestsNumber >= 3 {
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Too many requests",
-                statusCode: HTTPErrorCodes.tooManyRequests.rawValue
-            )
-            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            let data = HTTPError.tooManyRequests.buildErrorResponse()
+            return P2PServerResponse(dataResponse: data, response: .failure)
         }
         
         if sessionId != nil {
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Active session already exists",
-                statusCode: HTTPErrorCodes.conflict.rawValue
-            )
-            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            let data = HTTPError.conflict.buildErrorResponse()
+            return P2PServerResponse(dataResponse: data, response: .failure)
         }
         
         if pin != registerRequest.pin {
             requestsNumber += 1
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Invalid PIN",
-                statusCode: HTTPErrorCodes.unauthorized.rawValue
-            )
-            return data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            let data = HTTPError.unauthorized.buildErrorResponse()
+            return P2PServerResponse(dataResponse: data, response: .failure)
         }
         
         let sessionId = UUID().uuidString
         self.sessionId = sessionId
         let response = RegisterResponse(sessionId: sessionId)
         
-        guard let responseData = HTTPResponseBuilder.buildResponse(body: response) else {
+        guard let responseData = response.buildResponse() else {
             return nil
         }
         
@@ -249,8 +216,8 @@ class PeerToPeerServer {
     }
     
     func acceptRegisterRequest() {
-        let serverResponse = self.handleRegisterRequest(body: registerBody)
-        sendFinalResponse(serverResponse: serverResponse)
+        let serverResponse = self.generateRegisterServerResponse()
+        handleServerResponse(serverResponse)
     }
     
     private func handlePrepareUploadRequest(body: String?) {
@@ -267,23 +234,17 @@ class PeerToPeerServer {
             let body,
             let prepareUploadRequest = body.decodeJSON(PrepareUploadRequest.self)
         else {
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Invalid request format",
-                statusCode: HTTPErrorCodes.badRequest.rawValue
-            )
-            let error =  data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
-            self.sendResponse(serverResponse: error)
+            let errorData = HTTPError.badRequest.buildErrorResponse()
+            let error = P2PServerResponse(dataResponse: errorData, response: .failure)
+            self.handleServerResponse(error)
             didReceiveErrorPublisher.send()
             return
         }
         
         if prepareUploadRequest.sessionID != sessionId {
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Invalid session ID",
-                statusCode: HTTPErrorCodes.unauthorized.rawValue
-            )
-            let error = data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
-            self.sendResponse(serverResponse: error)
+            let errorData = HTTPError.unauthorized.buildErrorResponse()
+            let error = P2PServerResponse(dataResponse: errorData, response: .failure)
+            self.handleServerResponse(error)
             didReceiveErrorPublisher.send()
             return
         }
@@ -296,17 +257,13 @@ class PeerToPeerServer {
         var serverResponse : P2PServerResponse?
         if filesAccepted {
             let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
-            let responseData = HTTPResponseBuilder.buildResponse(body: response)
+            let responseData = response.buildResponse()
             serverResponse = P2PServerResponse(dataResponse: responseData, response: .success)
         } else {
-            
-            let data = HTTPResponseBuilder.buildErrorResponse(
-                error: "Rejected",
-                statusCode: HTTPErrorCodes.forbidden.rawValue
-            )
-            serverResponse =  data.map { P2PServerResponse(dataResponse: $0, response: .failure) }
+            let data = HTTPError.forbidden.buildErrorResponse()
+            serverResponse = P2PServerResponse(dataResponse: data, response: .failure)
         }
-        self.sendResponse(serverResponse: serverResponse)
+        self.handleServerResponse(serverResponse)
     }
     
     private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> P2PServerResponse? {
@@ -359,32 +316,65 @@ class PeerToPeerServer {
         self.contentLength = nil
         
         let response = BoolResponse(success:true)
-        let  responseData = HTTPResponseBuilder.buildResponse(body: response)
+        let  responseData = response.buildResponse()
         
         return P2PServerResponse(dataResponse: responseData, response: .success)
-        
     }
     
-    private func sendResponse(serverResponse: P2PServerResponse?) { // Keep it 👩‍💻 ✅
-        guard let currentConnection,
-              let serverResponse else { return }
-        currentConnection.send(content: serverResponse.dataResponse, completion: .contentProcessed { error in
+    private func handleServerResponse(_ serverResponse: P2PServerResponse?) {
+        guard let serverResponse = serverResponse else {
+            sendInternalServerError()
+            return
+        }
+        sendDataToConnection(serverResponse: serverResponse)
+    }
+    
+    private func sendInternalServerError() {
+        guard let data = HTTPError.internalServerError.buildErrorResponse() else {
+            debugLog("Failed to build error response.")
+            return
+        }
+        
+        let dataResponse = P2PServerResponse(dataResponse: data, response: .failure)
+        sendDataToConnection(serverResponse: dataResponse)
+    }
+    
+    private func sendDataToConnection(serverResponse: P2PServerResponse) {
+        guard let currentConnection else {
+            debugLog("No active connection to send data.")
+            return
+        }
+        
+        currentConnection.send(content: serverResponse.dataResponse, completion: .contentProcessed { [weak self] error in
+            guard let self = self else { return }
+            
             if let error = error {
                 debugLog("Server send error: \(error)")
-            } else if serverResponse.response == .success {
-                guard let endpoint = self.currentHTTPResponse?.endpoint else { return }
-                switch PeerToPeerEndpoint(rawValue: endpoint) {
-                case .register:
-                    self.didRegisterPublisher.send()
-                case .prepareUpload:
-                    self.didSendPrepareUploadResponsePublisher.send()
-                    break
-                default:
-                    break
-                }
-                debugLog("Server sent response")
+                return
             }
+            self.handleSuccessResponse(for: serverResponse)
         })
+    }
+    
+    private func handleSuccessResponse(for serverResponse: P2PServerResponse) {
+        guard serverResponse.response == .success else {
+            debugLog("Response not marked as success.")
+            return
+        }
+        
+        guard let endpoint = self.currentHTTPResponse?.endpoint else {
+            debugLog("No endpoint found in current HTTP response.")
+            return
+        }
+        
+        switch PeerToPeerEndpoint(rawValue: endpoint) {
+        case .register: self.didRegisterPublisher.send()
+        case .prepareUpload: self.didSendPrepareUploadResponsePublisher.send()
+        default:
+            debugLog("Unhandled endpoint: \(endpoint)")
+        }
+        
+        debugLog("Server successfully sent response for endpoint: \(endpoint)")
     }
     
     func stopListening() {
@@ -431,5 +421,28 @@ extension PeerToPeerServer {
     
     static func stub() -> PeerToPeerServer {
         return PeerToPeerServer()
+    }
+}
+
+enum HTTPError: Int {
+    
+    case internalServerError = 500
+    case notFound = 404
+    case unauthorized = 401
+    case badRequest = 400
+    case forbidden = 403
+    case conflict = 409
+    case tooManyRequests = 429
+    
+    var message: String {
+        switch self {
+        case .internalServerError: return "Internal Server Error"
+        case .notFound: return "Not Found"
+        case .unauthorized: return "Unauthorized"
+        case .badRequest: return "Invalid request format"
+        case .forbidden: return "Forbidden"
+        case .conflict: return "Active session already exists"
+        case .tooManyRequests: return "Too many requests"
+        }
     }
 }
