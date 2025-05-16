@@ -68,6 +68,7 @@
 		1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220A72D292EB11B000BC24C /* ReportFileGridView.swift */; };
 		1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB7028DB1B5A0042F15F /* KeyValue.swift */; };
 		1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */; };
+		1222363F2DD3DDC4006A9F01 /* RecipientPrepareFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */; };
 		12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */; };
 		122389B3293630DA0058593B /* SaveSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122389B2293630DA0058593B /* SaveSuccessView.swift */; };
 		122389B7293635790058593B /* SetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122389B6293635790058593B /* SetExtension.swift */; };
@@ -123,6 +124,8 @@
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
+		1244945E2DD61256002B4A9B /* SenderFileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */; };
+		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
@@ -267,9 +270,9 @@
 		127BCA2C2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */; };
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
+		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
-		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
 		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
 		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
@@ -372,7 +375,7 @@
 		12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */; };
 		12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
-		12A9ECD72D9F3FC800711BA4 /* P2PSendFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */; };
+		12A9ECD72D9F3FC800711BA4 /* SenderPrepareFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
@@ -520,7 +523,7 @@
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
-		203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */; };
+		203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203DCBAD2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift */; };
 		203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */; };
 		20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */; };
 		20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */; };
@@ -532,7 +535,7 @@
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
 		209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */; };
 		209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */; };
-		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */; };
+		209107F92D53BD0300808BCF /* ConnectToDeviceManuallyVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209107F82D53BD0200808BCF /* ConnectToDeviceManuallyVM.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
 		209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6772C2D5C9800492356 /* AddServerURLView.swift */; };
 		209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6792C2D5E3500492356 /* ServerViewModel.swift */; };
@@ -557,8 +560,7 @@
 		20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */; };
 		20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */; };
 		20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */; };
-		20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */; };
-		20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */; };
+		20AA1F9C2D5F38A20092810B /* RecipientFileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA1F9B2D5F38A20092810B /* RecipientFileTransferView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
@@ -795,6 +797,8 @@
 		1220A72D292EB11B000BC24C /* ReportFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFileGridView.swift; sourceTree = "<group>"; };
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
+		1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientPrepareFileTransferVM.swift; sourceTree = "<group>"; };
+		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigation.swift; sourceTree = "<group>"; };
 		122389B2293630DA0058593B /* SaveSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSuccessView.swift; sourceTree = "<group>"; };
 		122389B6293635790058593B /* SetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
@@ -850,6 +854,8 @@
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
+		1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferView.swift; sourceTree = "<group>"; };
+		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
@@ -987,9 +993,9 @@
 		127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageTitleDescriptionView.swift; sourceTree = "<group>"; };
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
+		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
-		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
 		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
@@ -1109,7 +1115,7 @@
 		12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceOnboardingView.swift; sourceTree = "<group>"; };
 		12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
-		12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PSendFilesViewModel.swift; sourceTree = "<group>"; };
+		12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderPrepareFileTransferVM.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
@@ -1255,7 +1261,7 @@
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
-		203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PSendFilesView.swift; sourceTree = "<group>"; };
+		203DCBAD2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderPrepareFileTransferView.swift; sourceTree = "<group>"; };
 		203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomThumbnailSlider.swift; sourceTree = "<group>"; };
 		20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerReportsMainView.swift; sourceTree = "<group>"; };
 		20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerSubmittedDetailsView.swift; sourceTree = "<group>"; };
@@ -1267,7 +1273,7 @@
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		209107F22D538CF200808BCF /* SenderConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceView.swift; sourceTree = "<group>"; };
 		209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceManuallyView.swift; sourceTree = "<group>"; };
-		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyViewModel.swift; sourceTree = "<group>"; };
+		209107F82D53BD0200808BCF /* ConnectToDeviceManuallyVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToDeviceManuallyVM.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
 		209AC6772C2D5C9800492356 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		209AC6792C2D5E3500492356 /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
@@ -1292,8 +1298,7 @@
 		20A8BBB92D6F4830009D52AF /* AddFileCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileCameraView.swift; sourceTree = "<group>"; };
 		20A8BBBB2D6F4843009D52AF /* AddFileRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileRecordView.swift; sourceTree = "<group>"; };
 		20A8BBBD2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilePhotoVideoPickerView.swift; sourceTree = "<group>"; };
-		20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientWaitingView.swift; sourceTree = "<group>"; };
-		20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFilesRequestView.swift; sourceTree = "<group>"; };
+		20AA1F9B2D5F38A20092810B /* RecipientFileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFileTransferView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
@@ -1870,6 +1875,24 @@
 				1261AC9B2AFEDDA1005A8325 /* Constants */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		1244945B2DD60FB0002B4A9B /* Sending */ = {
+			isa = PBXGroup;
+			children = (
+				1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */,
+				1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */,
+			);
+			path = Sending;
+			sourceTree = "<group>";
+		};
+		1244945C2DD60FD9002B4A9B /* Preparing */ = {
+			isa = PBXGroup;
+			children = (
+				203DCBAD2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift */,
+				12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */,
+			);
+			path = Preparing;
 			sourceTree = "<group>";
 		};
 		12505B1C2D899B4500483E34 /* PeerToPeer */ = {
@@ -2687,7 +2710,7 @@
 			isa = PBXGroup;
 			children = (
 				209107F62D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift */,
-				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyViewModel.swift */,
+				209107F82D53BD0200808BCF /* ConnectToDeviceManuallyVM.swift */,
 			);
 			path = ConnectToDeviceManually;
 			sourceTree = "<group>";
@@ -2705,8 +2728,8 @@
 		12A9ECD02D9F2E3400711BA4 /* SendFiles */ = {
 			isa = PBXGroup;
 			children = (
-				203DCBAD2D6DBE4B00B7BEED /* P2PSendFilesView.swift */,
-				12A9ECD62D9F3FC300711BA4 /* P2PSendFilesViewModel.swift */,
+				1244945C2DD60FD9002B4A9B /* Preparing */,
+				1244945B2DD60FB0002B4A9B /* Sending */,
 			);
 			path = SendFiles;
 			sourceTree = "<group>";
@@ -2751,8 +2774,8 @@
 		12A9ECD52D9F3B2400711BA4 /* SendFiles */ = {
 			isa = PBXGroup;
 			children = (
-				20AA1F9D2D5F55AC0092810B /* RecipientFilesRequestView.swift */,
-				20AA1F9B2D5F38A20092810B /* RecipientWaitingView.swift */,
+				20AA1F9B2D5F38A20092810B /* RecipientFileTransferView.swift */,
+				1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */,
 			);
 			path = SendFiles;
 			sourceTree = "<group>";
@@ -4267,17 +4290,18 @@
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
-				20AA1F9E2D5F55AC0092810B /* RecipientFilesRequestView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
 				126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */,
+				1244945E2DD61256002B4A9B /* SenderFileTransferView.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
+				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
 				12D39B512F1977720065EACD /* Device.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
@@ -4356,7 +4380,6 @@
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
 				126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */,
-				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
 				127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */,
 				20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */,
@@ -4560,9 +4583,11 @@
 				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
+				1222363F2DD3DDC4006A9F01 /* RecipientPrepareFileTransferVM.swift in Sources */,
+				124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
-				12A9ECD72D9F3FC800711BA4 /* P2PSendFilesViewModel.swift in Sources */,
+				12A9ECD72D9F3FC800711BA4 /* SenderPrepareFileTransferVM.swift in Sources */,
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
 				12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */,
@@ -4742,7 +4767,7 @@
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
 				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
-				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyViewModel.swift in Sources */,
+				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyVM.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
@@ -4823,7 +4848,7 @@
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
-				20AA1F9C2D5F38A20092810B /* RecipientWaitingView.swift in Sources */,
+				20AA1F9C2D5F38A20092810B /* RecipientFileTransferView.swift in Sources */,
 				1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,

@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 16/4/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
@@ -11,7 +12,7 @@ import Combine
 
 class ManuallyVerificationViewModel: ObservableObject {
     
-    @Published var viewState: SenderConnectToDeviceViewState = .none
+    @Published var viewState: SenderConnectToDeviceViewAction = .none
     @Published var shouldShowConfirmButton: Bool = false
     
     var participant : PeerToPeerParticipant

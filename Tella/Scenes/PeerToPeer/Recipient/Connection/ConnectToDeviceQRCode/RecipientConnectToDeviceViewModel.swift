@@ -3,19 +3,19 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 13/2/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
 import UIKit
 import Combine
 
-enum RecipientConnectToDeviceViewState {
+enum RecipientConnectToDeviceViewAction {
     case none
     case showToast(message: String)
     case showReceiveFiles
     case showVerificationHash
-
 }
 
 class RecipientConnectToDeviceViewModel: ObservableObject {
@@ -23,13 +23,12 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     var mainAppModel: MainAppModel
     var certificateGenerator : CertificateGenerator
     var server: PeerToPeerServer
+    var connectionInfo : ConnectionInfo?
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
-    @Published var viewState: RecipientConnectToDeviceViewState = .none
+    @Published var viewState: RecipientConnectToDeviceViewAction = .none
     
     private var subscribers : Set<AnyCancellable> = []
-    let certificateFile = FileManager.tempDirectory(withFileName: "certificate.p12")
-    var connectionInfo : ConnectionInfo?
     
     init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel, server: PeerToPeerServer) {
         self.certificateGenerator = certificateGenerator
@@ -60,7 +59,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             
             let clientIdentity = certificateData.identity
             let publicKeyHash = certificateData.publicKeyHash
-
+            
             let pin =  "\(Int.random(in: 100000...999999))"
             let port = 53317
             
@@ -77,7 +76,9 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func listenToRegisterPublisher() {
-        self.server.didRegisterPublisher.sink { value in
+        self.server.didRegisterPublisher
+            .first()
+            .sink { value in
             self.viewState = .showReceiveFiles
         }.store(in: &subscribers)
     }

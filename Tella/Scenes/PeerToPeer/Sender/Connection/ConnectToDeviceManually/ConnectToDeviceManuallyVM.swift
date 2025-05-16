@@ -3,12 +3,14 @@
 //  Tella
 //
 //  Created by RIMA on 05.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
 import Combine
-class ConnectToDeviceManuallyViewModel: ObservableObject {
+
+class ConnectToDeviceManuallyVM: ObservableObject {
     
     var peerToPeerRepository:PeerToPeerRepository
     var sessionId : String?
@@ -30,7 +32,7 @@ class ConnectToDeviceManuallyViewModel: ObservableObject {
     @Published var shouldShowIpAddressError: Bool = false
     @Published var shouldShowPinError: Bool = false
     
-    @Published var viewState: SenderConnectToDeviceViewState = .none
+    @Published var viewState: SenderConnectToDeviceViewAction = .none
     
     private var subscribers = Set<AnyCancellable>()
     var connectionInfo : ConnectionInfo?

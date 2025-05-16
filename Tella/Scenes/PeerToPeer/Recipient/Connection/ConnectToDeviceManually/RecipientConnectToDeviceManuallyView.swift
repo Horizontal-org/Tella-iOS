@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by RIMA on 10.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
@@ -61,7 +62,7 @@ struct RecipientConnectToDeviceManuallyView: View {
         }
     }
     
-    private func handleViewState(state: RecipientConnectToDeviceViewState) {
+    private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
         case .showVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return  }
