@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 15/4/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
@@ -109,7 +110,7 @@ struct ManuallyVerificationView: View {
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
     
-    private func handleViewState(state: SenderConnectToDeviceViewState) {
+    private func handleViewState(state: SenderConnectToDeviceViewAction) {
         switch state {
         case .showBottomSheetError:
             showBottomSheetError()
@@ -119,10 +120,10 @@ struct ManuallyVerificationView: View {
             else {
                 return
             }
-            let viewModel = P2PSendFilesViewModel(mainAppModel: viewModel.mainAppModel,
+            let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
                                                   sessionId:sessionId,
                                                   peerToPeerRepository:peerToPeerRepository)
-            self.navigateTo(destination: P2PSendFilesView(viewModel: viewModel))
+            self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:

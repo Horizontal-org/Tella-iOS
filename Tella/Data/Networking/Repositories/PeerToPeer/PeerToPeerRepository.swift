@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 18/3/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
@@ -19,6 +20,9 @@ class PeerToPeerRepository: NSObject, WebRepository {
                                                                                                 registerRequest: registerRequest))
         return apiResponse
             .compactMap{$0.response}
+            .handleEvents(receiveOutput: { [weak self] result in
+                self?.connectionInfo = connectionInfo
+            })
             .eraseToAnyPublisher()
     }
     
@@ -154,8 +158,11 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var trustedPublicKeyHash: String? {
         switch self {
-        case .register( let connectionInfos, _):
-            return connectionInfos.certificateHash
+        case .register( let connectionInfo, _),
+                .prepareUpload(let connectionInfo, _),
+                .uploadFile(let connectionInfo, _),
+                .closeConnection(let connectionInfo, _):
+            return connectionInfo.certificateHash
             
         default:
             return nil

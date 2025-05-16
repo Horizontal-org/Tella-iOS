@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by RIMA on 07.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
@@ -91,10 +92,10 @@ struct RecipientConnectToDeviceView: View {
         .padding([.leading, .trailing], 80)
     }
     
-    private func handleViewState(state: RecipientConnectToDeviceViewState) {
+    private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
         case .showReceiveFiles:
-            self.navigateTo(destination: RecipientWaitingView())
+            self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: viewModel.server)))
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:

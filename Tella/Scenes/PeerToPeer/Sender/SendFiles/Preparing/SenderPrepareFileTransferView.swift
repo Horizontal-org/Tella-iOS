@@ -3,16 +3,17 @@
 //  Tella
 //
 //  Created by RIMA on 25.02.25.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
 import Combine
 
 
-struct P2PSendFilesView: View {
+struct SenderPrepareFileTransferView: View {
     
-    @ObservedObject var viewModel: P2PSendFilesViewModel
+    @ObservedObject var viewModel: SenderPrepareFileTransferVM
     
     var body: some View {
         ZStack {
@@ -26,9 +27,29 @@ struct P2PSendFilesView: View {
         }
         .overlay(AddFileCameraView(viewModel: viewModel.addFilesViewModel))
         .overlay(AddFileRecordView(viewModel: viewModel.addFilesViewModel))
+        .onReceive(viewModel.$viewAction) { state in
+            self.handleViewState(state: state)
+        }
     }
     
     fileprivate var contentView: some View {
+        switch viewModel.viewState {
+        case .waiting:
+            return waitingView
+        case .prepareFiles:
+            return prepareFiles
+        }
+    }
+    
+    fileprivate var waitingView: some View {
+        VStack {
+            CustomText(LocalizablePeerToPeer.senderWaitingReceipient.localized, style: .heading1Style)
+            ResizableImage("clock").frame(width: 48, height: 48)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    fileprivate var prepareFiles: some View {
         VStack(alignment: .leading, spacing: 8) {
             
             titleTextFieldView()
@@ -62,4 +83,17 @@ struct P2PSendFilesView: View {
         NavigationHeaderView(title: LocalizablePeerToPeer.sendFiles.localized,
                              backButtonAction: { self.popToRoot() })
     }
+    
+    private func handleViewState(state: SenderPrepareFileTransferAction) {
+        switch state {
+        case .displaySendingFiles:
+            self.navigateTo(destination: SenderFileTransferView(viewModel: SenderFileTransferVM()))
+            break
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+    
 }
