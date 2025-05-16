@@ -11,121 +11,170 @@ import Network
 import SwiftUICore
 import Combine
 
+import Network
+import SwiftUICore
+import Combine
+import os.log
+
 class PeerToPeerServer {
     
+    // MARK: - Properties
+    
     private var listener: NWListener?
-    
-    var fileData = Data()
-    var contentLength : Int?
-    var pin : String?
-    var sessionId : String?
-    var transmissionId : String?
-    var requestsNumber : Int = 0
-    
-    var didRegisterPublisher = PassthroughSubject<Void, Never>()
-    var didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
-    var didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
-    var didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
-    var didSendPrepareUploadResponsePublisher = PassthroughSubject<Void, Never>()
-    var didReceiveErrorPublisher = PassthroughSubject<Void, Never>()
-    // var didReceiveFilesPublisher = PassthroughSubject<Data, Never>()
-    // var didTimeoutPublisher = PassthroughSubject<Void, Never>()
-    
-    private var registerBody: String?
-    private var hasTLSError: Bool = false
     private var currentConnection: NWConnection?
     private var currentHTTPResponse: HTTPResponse?
+    private var hasTLSError = false
+    private var requestsNumber = 0
+
+    // Server state
+    var fileData = Data()
+    var contentLength: Int?
+    var pin: String?
+    var sessionId: String?
+    var transmissionId: String?
     
-    func startListening(port : Int, pin : String, clientIdentity:SecIdentity) {
+    // Publishers
+    let didRegisterPublisher = PassthroughSubject<Void, Never>()
+    let didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
+    let didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
+    let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
+    let didSendPrepareUploadResponsePublisher = PassthroughSubject<Void, Never>()
+    let didReceiveErrorPublisher = PassthroughSubject<Void, Never>()
+    
+    // MARK: - Server Lifecycle
+    
+    func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
         self.pin = pin
-        let port: NWEndpoint.Port = .init(integerLiteral: UInt16(port))
+        
+        do {
+            let parameters = try createNetworkParameters(port: port, clientIdentity: clientIdentity)
+            self.listener = try NWListener(using: parameters, on: NWEndpoint.Port(integerLiteral: UInt16(port)))
+            
+            setupListenerHandlers()
+            self.listener?.start(queue: .main)
+        } catch {
+            debugLog("Failed to start listener: \(error.localizedDescription)")
+        }
+    }
+    
+    func stopListening() {
+        listener?.cancel()
+        currentConnection?.cancel()
+        resetConnectionState()
+    }
+    
+    // MARK: - Request Handling
+    
+    func acceptRegisterRequest() {
+        let serverResponse = generateRegisterServerResponse()
+        handleServerResponse(serverResponse)
+    }
+    
+    func sendPrepareUploadFiles(filesAccepted: Bool) {
+        let serverResponse = filesAccepted ? createAcceptUploadResponse() : createRejectUploadResponse()
+        handleServerResponse(serverResponse)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func createNetworkParameters(port: Int, clientIdentity: SecIdentity) throws -> NWParameters {
         let tlsOptions = NWProtocolTLS.Options()
         let parameters = NWParameters(tls: tlsOptions)
         
-        do {
+        sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
+        
+        sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
+            completionHandler(sec_identity_create(clientIdentity)!)
+        }, .main)
+        
+        return parameters
+    }
+    
+    private func setupListenerHandlers() {
+        listener?.stateUpdateHandler = { [weak self] state in
+            guard let self = self else { return }
             
-            sec_protocol_options_set_local_identity (tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
-            
-            sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
-                completionHandler(sec_identity_create(clientIdentity)!)
-            }, .main)
-            
-            self.listener = try NWListener(using: parameters, on: port)
-            
-            self.listener?.stateUpdateHandler = { state in
-                switch state {
-                case .ready:
-                    debugLog("Listener is ready and waiting for connections.")
-                case .failed(let error):
-                    debugLog("Listener failed: \(error.localizedDescription)")
-                case .cancelled:
-                    debugLog("Listener cancelled.")
-                default:
-                    break
-                }
+            switch state {
+            case .ready:
+                debugLog("Listener is ready and waiting for connections")
+            case .failed(let error):
+                debugLog("Listener failed: \(error.localizedDescription)")
+                self.stopListening()
+            case .cancelled:
+                debugLog("Listener cancelled")
+            default:
+                break
             }
-            
-            self.listener?.newConnectionHandler = { [weak self] connection in
-                connection.start(queue: .main)
-                DispatchQueue.global(qos: .userInitiated).async {
-                    self?.currentConnection = connection
-                    self?.startReceive(on: connection)
-                }
+        }
+        
+        listener?.newConnectionHandler = { [weak self] connection in
+            connection.start(queue: .main)
+            DispatchQueue.global(qos: .userInitiated).async {
+                self?.currentConnection = connection
+                self?.startReceive(on: connection)
             }
-            
-            self.listener?.start(queue: .main)
-            
-        } catch {
-            debugLog("Failed to create listener: \(error.localizedDescription)")
         }
     }
     
     private func startReceive(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { data, _, _, error in
+        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, _, error in
+            guard let self = self else { return }
+            
             if let error = error {
-                debugLog("Error: \(error)")
-                if case .tls(let tlsErrorCode) = error {
-                    debugLog("TLS Error: \(tlsErrorCode)")
-                    self.didCancelAuthenticationPublisher.send()
-                    self.hasTLSError = true
-                }
+                self.handleReceiveError(error)
                 return
             }
             
             guard let data = data, let raw = data.utf8String()else {
-                debugLog("Failed to read HTTP data.")
+                debugLog("Failed to read HTTP data")
                 return
             }
             
             debugLog("Received HTTP Request:\n\(raw)")
             
             guard let httpResponse = raw.parseHTTPResponse() else {
-                debugLog("Failed to parse the HTTPResponse ")
+                debugLog("Failed to parse the HTTPResponse")
                 return
             }
             
-            self.currentHTTPResponse = httpResponse
-            guard let expectedLength = httpResponse.headers.contentLength else {
-                debugLog("Content-Length header missing")
-                return
-            }
-            let body = httpResponse.body
-            // Check if full body is received
-            if body.utf8.count < expectedLength {
-                debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
-                
-                // Store current partial body, read more
-                let remaining = expectedLength - body.utf8.count
-                self.receiveRemainingBody(on: connection, httpResponse: httpResponse, expectedLength: expectedLength, remaining: remaining)
-            } else {
-                debugLog("Full JSON Body: \(body)")
-                self.processReceivedData(connection: connection, fullBody: body, httpResponse: httpResponse)
-            }
+            self.processHTTPResponse(httpResponse, on: connection)
         }
     }
     
-    private func receiveRemainingBody(on connection: NWConnection, httpResponse: HTTPResponse, expectedLength: Int, remaining: Int) {
-        connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { data, _, _, error in
+    private func handleReceiveError(_ error: NWError) {
+        debugLog("Connection error: \(error.localizedDescription)")
+        
+        if case .tls(let tlsErrorCode) = error {
+            debugLog("TLS Error: \(tlsErrorCode)")
+            didCancelAuthenticationPublisher.send()
+            hasTLSError = true
+        }
+    }
+    
+    private func processHTTPResponse(_ httpResponse: HTTPResponse, on connection: NWConnection) {
+        currentHTTPResponse = httpResponse
+        
+        guard let expectedLength = httpResponse.headers.contentLength else {
+            debugLog("Content-Length header missing")
+            return
+        }
+        
+        let body = httpResponse.body
+        if body.utf8.count < expectedLength {
+            debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
+            receiveRemainingBody(on: connection, httpResponse: httpResponse,
+                                 expectedLength: expectedLength, remaining: expectedLength - body.utf8.count)
+        } else {
+            debugLog("Full JSON Body: \(body)")
+            processCompleteBody(body, httpResponse: httpResponse, connection: connection)
+        }
+    }
+    
+    private func receiveRemainingBody(on connection: NWConnection, httpResponse: HTTPResponse,
+                                     expectedLength: Int, remaining: Int) {
+        connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { [weak self] data, _, _, error in
+            guard let self = self else { return }
+            
             if let error = error {
                 debugLog("Error receiving remaining body: \(error)")
                 return
@@ -140,68 +189,60 @@ class PeerToPeerServer {
             debugLog("Full JSON Body after completion: \(fullBody)")
             self.currentHTTPResponse?.body = fullBody
             
-            self.processReceivedData(connection: connection, fullBody: fullBody, httpResponse: httpResponse)
+            self.processCompleteBody(fullBody, httpResponse: httpResponse, connection: connection)
         }
     }
     
-    private func processReceivedData(connection:NWConnection, fullBody:String, httpResponse:HTTPResponse) {
+    private func processCompleteBody(_ body: String, httpResponse: HTTPResponse, connection: NWConnection) {
+        guard let endpoint = PeerToPeerEndpoint(rawValue: httpResponse.endpoint) else {
+            debugLog("Unknown endpoint: \(httpResponse.endpoint)")
+            return
+        }
         
-        let endpoint = httpResponse.endpoint
-        
-        switch PeerToPeerEndpoint(rawValue: endpoint ) {
-        case .register: handleRegisterRequest()
-        case .prepareUpload: handlePrepareUploadRequest(body: fullBody)
+        switch endpoint {
+        case .register:
+            handleRegisterRequest()
+        case .prepareUpload:
+            handlePrepareUploadRequest(body: body)
         case .upload:
-            break
-        default:
-            break
+            break // Implement upload handling as needed
+        case .closeConnection:
+            break // Implement close connection handling as needed
+        case .none:
+            debugLog("Empty endpoint received")
         }
     }
+    
+    // MARK: - Request Processing
     
     private func handleRegisterRequest() {
         if hasTLSError {
             didRequestRegisterPublisher.send()
         } else {
-            let serverResponse = self.generateRegisterServerResponse()
+            let serverResponse = generateRegisterServerResponse()
             handleServerResponse(serverResponse)
         }
     }
     
     private func generateRegisterServerResponse() -> P2PServerResponse? {
-        /*
-         HTTP code     Message
-         400           Invalid request format
-         401           Invalid PIN
-         403           Invalid encryption/decryption ❌
-         409           Active session already exists
-         429           Too many requests
-         500           Server error
-         */
-        
-        guard
-            let body = currentHTTPResponse?.body,
-            let registerRequest = body.decodeJSON(RegisterRequest.self)
-        else {
-            let data = HTTPError.badRequest.buildErrorResponse()
-            return P2PServerResponse(dataResponse: data, response: .failure)
+        guard let body = currentHTTPResponse?.body,
+              let registerRequest = body.decodeJSON(RegisterRequest.self) else {
+            return createErrorResponse(.badRequest)
         }
         
-        debugLog(body)
+        debugLog("Register request body: \(body)")
         
         if requestsNumber >= 3 {
-            let data = HTTPError.tooManyRequests.buildErrorResponse()
-            return P2PServerResponse(dataResponse: data, response: .failure)
+            return createErrorResponse(.tooManyRequests)
         }
         
         if sessionId != nil {
-            let data = HTTPError.conflict.buildErrorResponse()
-            return P2PServerResponse(dataResponse: data, response: .failure)
+            return createErrorResponse(.conflict)
         }
         
-        if pin != registerRequest.pin {
+        guard pin == registerRequest.pin else {
             requestsNumber += 1
-            let data = HTTPError.unauthorized.buildErrorResponse()
-            return P2PServerResponse(dataResponse: data, response: .failure)
+            return createErrorResponse(.unauthorized)
         }
         
         let sessionId = UUID().uuidString
@@ -215,36 +256,16 @@ class PeerToPeerServer {
         return P2PServerResponse(dataResponse: responseData, response: .success)
     }
     
-    func acceptRegisterRequest() {
-        let serverResponse = self.generateRegisterServerResponse()
-        handleServerResponse(serverResponse)
-    }
-    
     private func handlePrepareUploadRequest(body: String?) {
-        /*
-         HTTP code    Message
-         400    Invalid request format ✅
-         401    Invalid session ID ✅
-         403    Rejected ✅
-         500    Server error ✅
-         */
-        //409    Blocked by another session? ❌
-        
-        guard
-            let body,
-            let prepareUploadRequest = body.decodeJSON(PrepareUploadRequest.self)
-        else {
-            let errorData = HTTPError.badRequest.buildErrorResponse()
-            let error = P2PServerResponse(dataResponse: errorData, response: .failure)
-            self.handleServerResponse(error)
+        guard let body,
+              let prepareUploadRequest = body.decodeJSON(PrepareUploadRequest.self) else {
+            handleServerResponse(createErrorResponse(.badRequest))
             didReceiveErrorPublisher.send()
             return
         }
         
-        if prepareUploadRequest.sessionID != sessionId {
-            let errorData = HTTPError.unauthorized.buildErrorResponse()
-            let error = P2PServerResponse(dataResponse: errorData, response: .failure)
-            self.handleServerResponse(error)
+        guard prepareUploadRequest.sessionID == sessionId else {
+            handleServerResponse(createErrorResponse(.unauthorized))
             didReceiveErrorPublisher.send()
             return
         }
@@ -252,74 +273,22 @@ class PeerToPeerServer {
         didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
     }
     
-    func sendPrepareUploadFiles(filesAccepted:Bool) {
-        
-        var serverResponse : P2PServerResponse?
-        if filesAccepted {
-            let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
-            let responseData = response.buildResponse()
-            serverResponse = P2PServerResponse(dataResponse: responseData, response: .success)
-        } else {
-            let data = HTTPError.forbidden.buildErrorResponse()
-            serverResponse = P2PServerResponse(dataResponse: data, response: .failure)
-        }
-        self.handleServerResponse(serverResponse)
-    }
-    
-    private func handleUploadRequest(data: Data, endpoint: String?, error: Error?, connection: NWConnection) -> P2PServerResponse? {
-        /*
-         HTTP code    Message
-         400    Missing required parameters
-         401    Invalid session ID
-         403    Invalid transmission ID
-         409    Transfer already completed
-         413    File too large
-         415    Unsupported file type
-         507    Insufficient storage space
-         500    Server error
-         */
-        
-        if !data.isEmpty && endpoint != nil {
-            self.fileData.append(data)
-        }
-        
-        if let contentLength = self.contentLength, contentLength <= self.fileData.count {
-            return self.finalizeUpload(connection: connection)
-        } else if let error = error {
-            debugLog("Error receiving data: \(error)")
-        } else {
-            debugLog("Continue receiving data")
-            //            self.receive(on: connection, specifiedEndpoint: "/api/localsend/v2/upload")
-        }
-        return nil
-    }
-    
-    private func handleCloseConnectionRequest() -> P2PServerResponse? {
-        
-        /*
-         HTTP code    Message
-         400    Missing session ID
-         401    Invalid session ID
-         403    Session already closed
-         500    Server error
-         */
-        return nil
-    }
-    
-    private func finalizeUpload(connection: NWConnection) -> P2PServerResponse? {
-        debugLog("File transfer completed")
-        
-        self.saveFile(data: self.fileData)
-        
-        self.fileData = Data()
-        self.stopListening()
-        self.contentLength = nil
-        
-        let response = BoolResponse(success:true)
-        let  responseData = response.buildResponse()
-        
+    private func createAcceptUploadResponse() -> P2PServerResponse? {
+        let response = PrepareUploadResponse(transmissionID: UUID().uuidString)
+        guard let responseData = response.buildResponse() else { return nil }
         return P2PServerResponse(dataResponse: responseData, response: .success)
     }
+    
+    private func createRejectUploadResponse() -> P2PServerResponse {
+        let data = HTTPError.forbidden.buildErrorResponse()
+        return P2PServerResponse(dataResponse: data, response: .failure)
+    }
+    
+    private func createErrorResponse(_ error: HTTPError) -> P2PServerResponse {
+        P2PServerResponse(dataResponse: error.buildErrorResponse(), response: .failure)
+    }
+    
+    // MARK: - Response Handling
     
     private func handleServerResponse(_ serverResponse: P2PServerResponse?) {
         guard let serverResponse = serverResponse else {
@@ -334,29 +303,33 @@ class PeerToPeerServer {
             debugLog("Failed to build error response.")
             return
         }
-        
-        let dataResponse = P2PServerResponse(dataResponse: data, response: .failure)
-        sendDataToConnection(serverResponse: dataResponse)
+        sendDataToConnection(serverResponse: P2PServerResponse(dataResponse: data, response: .failure))
     }
     
     private func sendDataToConnection(serverResponse: P2PServerResponse) {
         guard let currentConnection else {
-            debugLog("No active connection to send data.")
+            debugLog("No active connection to send data")
             return
         }
         
-        currentConnection.send(content: serverResponse.dataResponse, completion: .contentProcessed { [weak self] error in
+        guard let data = serverResponse.dataResponse else {
+            debugLog("No data to send in server response")
+            return
+        }
+        
+        currentConnection.send(content: data, completion: .contentProcessed { [weak self] error in
             guard let self = self else { return }
             
             if let error = error {
                 debugLog("Server send error: \(error)")
                 return
             }
-            self.handleSuccessResponse(for: serverResponse)
+            
+            self.handleSuccessfulResponse(serverResponse)
         })
     }
     
-    private func handleSuccessResponse(for serverResponse: P2PServerResponse) {
+    private func handleSuccessfulResponse(_ serverResponse: P2PServerResponse) {
         guard serverResponse.response == .success else {
             debugLog("Response not marked as success.")
             return
@@ -368,8 +341,10 @@ class PeerToPeerServer {
         }
         
         switch PeerToPeerEndpoint(rawValue: endpoint) {
-        case .register: self.didRegisterPublisher.send()
-        case .prepareUpload: self.didSendPrepareUploadResponsePublisher.send()
+        case .register:
+            didRegisterPublisher.send()
+        case .prepareUpload:
+            didSendPrepareUploadResponsePublisher.send()
         default:
             debugLog("Unhandled endpoint: \(endpoint)")
         }
@@ -377,29 +352,36 @@ class PeerToPeerServer {
         debugLog("Server successfully sent response for endpoint: \(endpoint)")
     }
     
-    func stopListening() {
-        listener?.cancel()
-    }
+    // MARK: - File Handling
     
-    func saveFile(data: Data) {
-        // Define the file path (e.g., in the Documents directory)
+    private func saveFile(data: Data) {
         let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            debugLog("Could not access documents directory")
+            return
+        }
+        
         let fileURL = documentsURL.appendingPathComponent("downloadedFile.png")
         
         do {
-            // Write the received data to the file
             try data.write(to: fileURL)
             debugLog("File saved to: \(fileURL.path)")
-            debugLog("File data received completed completed completed completed: \(self.fileData.count) bytes  \n\n\n\n\n\n\n\n \(fileURL)")
-            
         } catch {
             debugLog("Failed to save file: \(error)")
         }
     }
+    
+    private func resetConnectionState() {
+        currentConnection = nil
+        currentHTTPResponse = nil
+        fileData = Data()
+        contentLength = nil
+    }
 }
 
-enum PeerToPeerEndpoint : String {
+// MARK: - Supporting Types
+
+enum PeerToPeerEndpoint: String {
     case register = "/api/v1/register"
     case prepareUpload = "/api/v1/prepare-upload"
     case upload = "/api/v1/upload"
@@ -408,8 +390,8 @@ enum PeerToPeerEndpoint : String {
 }
 
 struct P2PServerResponse {
-    var dataResponse : Data?
-    var response : ServerResponseStatus
+    let dataResponse: Data?
+    let response: ServerResponseStatus
 }
 
 enum ServerResponseStatus {
@@ -417,15 +399,7 @@ enum ServerResponseStatus {
     case failure
 }
 
-extension PeerToPeerServer {
-    
-    static func stub() -> PeerToPeerServer {
-        return PeerToPeerServer()
-    }
-}
-
 enum HTTPError: Int {
-    
     case internalServerError = 500
     case notFound = 404
     case unauthorized = 401
@@ -444,5 +418,11 @@ enum HTTPError: Int {
         case .conflict: return "Active session already exists"
         case .tooManyRequests: return "Too many requests"
         }
+    }
+}
+
+extension PeerToPeerServer {
+    static func stub() -> PeerToPeerServer {
+        return PeerToPeerServer()
     }
 }
