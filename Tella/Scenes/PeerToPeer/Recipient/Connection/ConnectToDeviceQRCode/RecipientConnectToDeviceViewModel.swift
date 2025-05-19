@@ -16,6 +16,7 @@ enum RecipientConnectToDeviceViewAction {
     case showToast(message: String)
     case showReceiveFiles
     case showVerificationHash
+    case errorOccured // TODO: Update name
 }
 
 class RecipientConnectToDeviceViewModel: ObservableObject {
@@ -26,7 +27,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     var connectionInfo : ConnectionInfo?
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
-    @Published var viewState: RecipientConnectToDeviceViewAction = .none
+    @Published var viewAction: RecipientConnectToDeviceViewAction = .none
     
     private var subscribers : Set<AnyCancellable> = []
     
@@ -78,8 +79,8 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     func listenToRegisterPublisher() {
         self.server.didRegisterPublisher
             .first()
-            .sink { value in
-            self.viewState = .showReceiveFiles
+            .sink { result in
+                self.viewAction = result == true ? .showReceiveFiles : .errorOccured
         }.store(in: &subscribers)
     }
 }
