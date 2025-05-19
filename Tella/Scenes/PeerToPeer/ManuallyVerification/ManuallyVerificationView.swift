@@ -21,8 +21,11 @@ struct ManuallyVerificationView: View {
         } content: {
             contentView
         }
-        .onReceive(viewModel.$viewState) { state in
-            handleViewState(state: state)
+        .onReceive(viewModel.$senderViewAction) { action in
+            handleSenderViewAction(action: action)
+        }
+        .onReceive(viewModel.$recipientViewAction) { action in
+            handleRecipientViewAction(action: action)
         }
     }
     
@@ -79,10 +82,7 @@ struct ManuallyVerificationView: View {
     
     var buttonsView: some View {
         VStack(spacing: 17) {
-            if viewModel.shouldShowConfirmButton {
-                confirmButton
-            }
-            
+            confirmButton
             discardButton
         }.padding([.top,.bottom],16)
     }
@@ -91,7 +91,7 @@ struct ManuallyVerificationView: View {
         TellaButtonView<AnyView> (title: LocalizablePeerToPeer.verificationConfirm.localized.uppercased(),
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
-                                  isValid: .constant(true)) {
+                                  isValid: $viewModel.shouldShowConfirmButton) {
             viewModel.confirmAction()
         }
     }
@@ -110,8 +110,8 @@ struct ManuallyVerificationView: View {
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
     
-    private func handleViewState(state: SenderConnectToDeviceViewAction) {
-        switch state {
+    private func handleSenderViewAction(action: SenderConnectToDeviceViewAction) {
+        switch action {
         case .showBottomSheetError:
             showBottomSheetError()
         case .showSendFiles:
@@ -121,9 +121,24 @@ struct ManuallyVerificationView: View {
                 return
             }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
-                                                  sessionId:sessionId,
-                                                  peerToPeerRepository:peerToPeerRepository)
+                                                        sessionId:sessionId,
+                                                        peerToPeerRepository:peerToPeerRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel))
+        case .showToast(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+
+    private func handleRecipientViewAction(action: RecipientConnectToDeviceViewAction) {
+        switch action {
+        case .showReceiveFiles:
+            guard let server = viewModel.server else { return }
+            self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: server)))
+        case .errorOccured:
+            self.popToRoot()
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:

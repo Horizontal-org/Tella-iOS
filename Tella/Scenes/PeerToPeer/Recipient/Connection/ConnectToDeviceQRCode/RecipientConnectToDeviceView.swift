@@ -19,7 +19,7 @@ struct RecipientConnectToDeviceView: View {
         } content: {
             contentView
         }
-        .onReceive(viewModel.$viewState) { state in
+        .onReceive(viewModel.$viewAction) { state in
             handleViewState(state: state)
         }
     }
@@ -96,6 +96,9 @@ struct RecipientConnectToDeviceView: View {
         switch state {
         case .showReceiveFiles:
             self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: viewModel.server)))
+        case .errorOccured:
+            self.popToRoot()
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:

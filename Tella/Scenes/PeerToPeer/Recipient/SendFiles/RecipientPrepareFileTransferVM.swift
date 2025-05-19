@@ -47,7 +47,6 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     private func setupListeners() {
         listenToPrepareUploadPublisher()
         listenToSendPrepareUploadResponsePublisher()
-        listenToPrepareUploadErrors()
     }
     
     // MARK: - Private Methods
@@ -55,7 +54,6 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     private func listenToPrepareUploadPublisher() {
         server.didReceivePrepareUploadPublisher
             .receive(on: DispatchQueue.main)
-            .first()
             .sink { [weak self] files in
                 guard let self = self else { return }
                 self.files = files
@@ -67,7 +65,6 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     private func listenToSendPrepareUploadResponsePublisher() {
         server.didSendPrepareUploadResponsePublisher
             .receive(on: DispatchQueue.main)
-            .first()
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 guard let acceptance else { return }
@@ -75,21 +72,9 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                 if acceptance {
                     viewAction = .displayFileTransferView(files: self.files)
                 } else {
-                    viewAction = .showToast(message: LocalizablePeerToPeer.receipientFilesRejected.localized)
                     self.viewState = .waitingRequest
+                    viewAction = .showToast(message: LocalizablePeerToPeer.receipientFilesRejected.localized)
                 }
-            }
-            .store(in: &subscribers)
-    }
-    
-    private func listenToPrepareUploadErrors() {
-        server.didReceiveErrorPublisher
-            .receive(on: DispatchQueue.main)
-            .first()
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                viewAction = .showToast(message: LocalizableCommon.commonError.localized)
-                self.viewState = .waitingRequest
             }
             .store(in: &subscribers)
     }
