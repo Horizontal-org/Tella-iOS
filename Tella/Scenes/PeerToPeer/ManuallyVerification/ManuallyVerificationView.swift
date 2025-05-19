@@ -14,6 +14,7 @@ struct ManuallyVerificationView: View {
     @ObservedObject var viewModel: ManuallyVerificationViewModel
     
     @State var isBottomSheetShown : Bool = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         ContainerViewWithHeader {
@@ -100,13 +101,16 @@ struct ManuallyVerificationView: View {
         TellaButtonView<AnyView>(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
                                  nextButtonAction: .action,
                                  isValid: .constant(true)) {
-            // TODO: Handle this button action : pop view and close server ?
+            viewModel.discardRegisterRequest()
         }
     }
     
     private func showBottomSheetError() {
         isBottomSheetShown = true
-        let content = ConnectionFailedView()
+        let content = ConnectionFailedView {
+            isBottomSheetShown = false
+            popTo(ViewClassType.peerToPeerMainView)
+        }
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
     
@@ -130,7 +134,7 @@ struct ManuallyVerificationView: View {
             break
         }
     }
-
+    
     private func handleRecipientViewAction(action: RecipientConnectToDeviceViewAction) {
         switch action {
         case .showReceiveFiles:

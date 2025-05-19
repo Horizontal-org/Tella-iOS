@@ -45,9 +45,16 @@ class ManuallyVerificationViewModel: ObservableObject {
         participant == .recipient ? acceptRegisterRequest() : register()
     }
     
+    func discardAction() {
+        participant == .recipient ? acceptRegisterRequest() : register()
+    }
+    
+    
     private func register() {
         
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
+        
+        shouldShowConfirmButton = false
         
         self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
@@ -76,6 +83,10 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     private func acceptRegisterRequest() {
         self.server?.acceptRegisterRequest()
+    }
+    
+    func discardRegisterRequest() {
+        self.server?.discardRegisterRequest()
     }
     
     func listenToRegisterPublisher() {
