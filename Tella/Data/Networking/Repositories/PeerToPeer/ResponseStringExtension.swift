@@ -8,7 +8,7 @@
 //
 
 extension String {
-    func parseHTTPResponse() -> HTTPResponse? { 
+    func parseHTTPRequest() -> HTTPRequest? {
         let lines = self.components(separatedBy: "\r\n")
         guard let requestLine = lines.first, !requestLine.isEmpty else { return nil }
         
@@ -69,7 +69,7 @@ extension String {
             }
         }
         
-        return HTTPResponse(method: method,
+        return HTTPRequest(method: method,
                             endpoint: endpoint,
                             queryParameters: queryParameters,
                             headers: headers,
@@ -82,7 +82,7 @@ struct Headers {
     var contentType : String?
 }
 
-struct HTTPResponse {
+struct HTTPRequest {
     var method : String
     var endpoint : String
     var queryParameters : [String:String]
