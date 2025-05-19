@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "التغييرات غير المحفوظة";
 "Vault_EditFile_Exit_SheetExpl" = "لم يتم حفظ تغييراتك. هل ترغب في الحفظ قبل الخروج؟";
 "Vault_EditFile_Exit_SheetAction" = "الخروج بدون حفظ";
-"Vault_EditFile_FileSaved_Toast" = "تم حفظ التغييرات.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
