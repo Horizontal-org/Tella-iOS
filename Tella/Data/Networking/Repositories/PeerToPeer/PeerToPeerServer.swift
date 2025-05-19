@@ -25,7 +25,7 @@ class PeerToPeerServer {
     private var currentHTTPResponse: HTTPResponse?
     private var hasTLSError = false
     private var requestsNumber = 0
-
+    
     // Server state
     var fileData = Data()
     var contentLength: Int?
@@ -34,12 +34,11 @@ class PeerToPeerServer {
     var transmissionId: String?
     
     // Publishers
-    let didRegisterPublisher = PassthroughSubject<Void, Never>()
+    let didRegisterPublisher = PassthroughSubject<Bool, Never>()
     let didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
     let didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
     let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
-    let didSendPrepareUploadResponsePublisher = PassthroughSubject<Void, Never>()
-    let didReceiveErrorPublisher = PassthroughSubject<Void, Never>()
+    let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
     
     // MARK: - Server Lifecycle
     
@@ -171,7 +170,7 @@ class PeerToPeerServer {
     }
     
     private func receiveRemainingBody(on connection: NWConnection, httpResponse: HTTPResponse,
-                                     expectedLength: Int, remaining: Int) {
+                                      expectedLength: Int, remaining: Int) {
         connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { [weak self] data, _, _, error in
             guard let self = self else { return }
             
@@ -260,13 +259,11 @@ class PeerToPeerServer {
         guard let body,
               let prepareUploadRequest = body.decodeJSON(PrepareUploadRequest.self) else {
             handleServerResponse(createErrorResponse(.badRequest))
-            didReceiveErrorPublisher.send()
             return
         }
         
         guard prepareUploadRequest.sessionID == sessionId else {
             handleServerResponse(createErrorResponse(.unauthorized))
-            didReceiveErrorPublisher.send()
             return
         }
         
@@ -330,10 +327,8 @@ class PeerToPeerServer {
     }
     
     private func handleSuccessfulResponse(_ serverResponse: P2PServerResponse) {
-        guard serverResponse.response == .success else {
-            debugLog("Response not marked as success.")
-            return
-        }
+        
+        let isSuccess = serverResponse.response == .success
         
         guard let endpoint = self.currentHTTPResponse?.endpoint else {
             debugLog("No endpoint found in current HTTP response.")
@@ -341,10 +336,8 @@ class PeerToPeerServer {
         }
         
         switch PeerToPeerEndpoint(rawValue: endpoint) {
-        case .register:
-            didRegisterPublisher.send()
-        case .prepareUpload:
-            didSendPrepareUploadResponsePublisher.send()
+        case .register: self.didRegisterPublisher.send(isSuccess)
+        case .prepareUpload: self.didSendPrepareUploadResponsePublisher.send(isSuccess)
         default:
             debugLog("Unhandled endpoint: \(endpoint)")
         }
