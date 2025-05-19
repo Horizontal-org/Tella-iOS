@@ -407,7 +407,7 @@ enum HTTPError: Int {
         case .notFound: return "Not Found"
         case .unauthorized: return "Unauthorized"
         case .badRequest: return "Invalid request format"
-        case .forbidden: return "Forbidden"
+        case .forbidden: return "Rejected"
         case .conflict: return "Active session already exists"
         case .tooManyRequests: return "Too many requests"
         }
