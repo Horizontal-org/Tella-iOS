@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "Kucinca a ku gravhariwanga";
 "Vault_EditFile_Exit_SheetExpl" = "Kucinca ka wena a ku gravhariwanga. Xana u lava ku hlayisa emahlweni ko huma?";
 "Vault_EditFile_Exit_SheetAction" = "HUMA U NGA GRAVHARI";
-"Vault_EditFile_FileSaved_Toast" = "Kucinca ka wena ku gravhariwile.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
