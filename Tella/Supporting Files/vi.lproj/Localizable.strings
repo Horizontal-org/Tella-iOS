@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "Các thay đổi chưa được lưu";
 "Vault_EditFile_Exit_SheetExpl" = "Các thay đổi của bạn chưa được lưu. Bạn có muốn lưu trước khi thoát không?";
 "Vault_EditFile_Exit_SheetAction" = "Thoát mà không lưu ";
-"Vault_EditFile_FileSaved_Toast" = "Những thay đổi của bạn đã được lưu lại";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
