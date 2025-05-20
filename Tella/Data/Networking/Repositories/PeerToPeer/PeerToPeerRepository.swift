@@ -50,7 +50,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
                 .eraseToAnyPublisher()
         }
     }
-    
+    @discardableResult
     func closeConnection(closeConnectionRequest: CloseConnectionRequest) -> AnyPublisher<BoolResponse, APIError> {
         guard let connectionInfo else {return Fail(error: APIError.badServer)
             .eraseToAnyPublisher()}
