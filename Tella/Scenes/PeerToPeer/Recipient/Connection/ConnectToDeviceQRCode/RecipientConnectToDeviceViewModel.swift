@@ -78,10 +78,15 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func listenToRegisterPublisher() {
-        self.server.didRegisterPublisher
+        server.didRegisterPublisher
             .first()
             .sink { result in
                 self.viewAction = result == true ? .showReceiveFiles : .errorOccured
-        }.store(in: &subscribers)
+            }.store(in: &subscribers)
     }
+    
+    func stopServerListening() {
+        server.stopListening()
+    }
+    
 }

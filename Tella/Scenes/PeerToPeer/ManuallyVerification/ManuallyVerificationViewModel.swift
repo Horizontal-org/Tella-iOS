@@ -37,9 +37,17 @@ class ManuallyVerificationViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.server = server
         shouldShowConfirmButton = participant == .sender
+        setupListeners()
+    }
+    
+    // MARK: - Setup Methods
+    
+    private func setupListeners() {
         listenToRequestRegisterPublisher()
         listenToRegisterPublisher()
+        listenToCloseConnectionPublisher()
     }
+
     
     func confirmAction() {
         participant == .recipient ? acceptRegisterRequest() : register()
@@ -76,7 +84,7 @@ class ManuallyVerificationViewModel: ObservableObject {
                 case .finished:
                     self.senderViewAction = .showSendFiles
                     self.senderViewAction = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
-                case .failure(let error):
+                case .failure:
                     self.senderViewAction = .showBottomSheetError
                     /* //TODO: Check scenario
                      switch error {
@@ -115,6 +123,13 @@ class ManuallyVerificationViewModel: ObservableObject {
         }.store(in: &subscribers)
     }
     
+    private func listenToCloseConnectionPublisher() {
+        self.server?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
+            guard let self = self else { return }
+            self.recipientViewAction = .errorOccured
+        }.store(in: &subscribers)
+    }
+
     deinit {
         print("Cancelled automatically when ViewModel deallocated.")
     }

@@ -146,7 +146,7 @@ struct ManuallyVerificationView: View {
             guard let server = viewModel.server else { return }
             self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: server)))
         case .errorOccured:
-            self.popToRoot()
+            self.popTo(ViewClassType.peerToPeerMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
