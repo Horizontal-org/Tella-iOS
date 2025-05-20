@@ -33,6 +33,7 @@ final class PeerToPeerServer {
     let didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
     let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
     let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
+    let didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
     
     // MARK: - Server Lifecycle
     
@@ -210,7 +211,7 @@ final class PeerToPeerServer {
         case .upload:
             handleFileUpload(body: body)
         case .closeConnection:
-            stopListening()
+            handleCloseConnectionRequest(body: body)
         }
     }
     
@@ -279,6 +280,37 @@ final class PeerToPeerServer {
     
     private func handleFileUpload(body: String) {
         // Implement file upload handling
+    }
+    
+    func handleCloseConnectionRequest(body: String) {
+        do {
+            let serverResponse = try generateCloseConnectionResponse(body: body)
+            handleServerResponse(serverResponse)
+        } catch let error as HTTPError {
+            handleServerResponse(createErrorResponse(error))
+        } catch {
+            sendInternalServerError()
+        }
+    }
+    
+    private func generateCloseConnectionResponse(body: String) throws -> P2PServerResponse {
+        guard let closeConnectionRequest = body.decodeJSON(CloseConnectionRequest.self) else {
+            throw HTTPError.badRequest
+        }
+        
+        guard closeConnectionRequest.sessionID == sessionId else {
+            throw HTTPError.unauthorized
+        }
+        
+        stopListening()
+        
+        let response = BoolResponse(success: true)
+        
+        guard let responseData = response.buildResponse() else {
+            throw HTTPError.internalServerError
+        }
+        
+        return P2PServerResponse(dataResponse: responseData, response: .success)
     }
     
     private func createAcceptUploadResponse() -> P2PServerResponse {
@@ -351,6 +383,8 @@ final class PeerToPeerServer {
             didRegisterPublisher.send(isSuccess)
         case .prepareUpload:
             didSendPrepareUploadResponsePublisher.send(isSuccess)
+        case .closeConnection:
+            didReceiveCloseConnectionPublisher.send()
         default:
             debugLog("Unhandled endpoint: \(endpoint)")
         }
