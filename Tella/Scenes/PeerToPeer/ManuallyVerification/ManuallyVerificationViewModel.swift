@@ -46,9 +46,19 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     func discardAction() {
-        participant == .recipient ? acceptRegisterRequest() : register()
+        participant == .recipient ? discardSenderRegisterRequest() : discardRegisterRequest()
     }
     
+    private func discardSenderRegisterRequest() {
+        self.server?.discardRegisterRequest()
+        self.server?.stopListening()
+        recipientViewAction = .discardAndStartOver
+    }
+    
+    private func discardRegisterRequest() {
+        self.peerToPeerRepository?.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
+        senderViewAction = .discardAndStartOver
+    }
     
     private func register() {
         
@@ -67,13 +77,16 @@ class ManuallyVerificationViewModel: ObservableObject {
                     self.senderViewAction = .showSendFiles
                     self.senderViewAction = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
                 case .failure(let error):
-                    switch error {
-                    case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
-                        self.senderViewAction = .showBottomSheetError
-                    default:
-                        debugLog(error)
-                        self.senderViewAction = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
-                    }
+                    self.senderViewAction = .showBottomSheetError
+                    /* //TODO: Check scenario
+                     switch error {
+                     case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
+                     self.senderViewAction = .showBottomSheetError
+                     default:
+                     debugLog(error)
+                     self.senderViewAction = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
+                     }
+                     */
                 }
             }, receiveValue: { response in
                 debugLog(response)
@@ -83,10 +96,6 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     private func acceptRegisterRequest() {
         self.server?.acceptRegisterRequest()
-    }
-    
-    func discardRegisterRequest() {
-        self.server?.discardRegisterRequest()
     }
     
     func listenToRegisterPublisher() {
@@ -104,5 +113,9 @@ class ManuallyVerificationViewModel: ObservableObject {
             guard let self = self else { return }
             self.shouldShowConfirmButton = true
         }.store(in: &subscribers)
+    }
+    
+    deinit {
+        print("Cancelled automatically when ViewModel deallocated.")
     }
 }

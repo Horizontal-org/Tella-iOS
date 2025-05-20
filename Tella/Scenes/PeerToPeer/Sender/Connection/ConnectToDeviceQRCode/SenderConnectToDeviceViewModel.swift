@@ -17,6 +17,7 @@ enum SenderConnectToDeviceViewAction {
     case showBottomSheetError
     case showSendFiles
     case showVerificationHash
+    case discardAndStartOver
 }
 
 class SenderConnectToDeviceViewModel: NSObject, ObservableObject {

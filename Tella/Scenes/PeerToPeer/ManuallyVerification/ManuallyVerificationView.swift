@@ -101,7 +101,7 @@ struct ManuallyVerificationView: View {
         TellaButtonView<AnyView>(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
                                  nextButtonAction: .action,
                                  isValid: .constant(true)) {
-            viewModel.discardRegisterRequest()
+            viewModel.discardAction()
         }
     }
     
@@ -111,7 +111,10 @@ struct ManuallyVerificationView: View {
             isBottomSheetShown = false
             popTo(ViewClassType.peerToPeerMainView)
         }
-        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content,
+                                 modalHeight: 192,
+                                 isShown: $isBottomSheetShown,
+                                 shouldHideOnTap:false)
     }
     
     private func handleSenderViewAction(action: SenderConnectToDeviceViewAction) {
@@ -130,6 +133,8 @@ struct ManuallyVerificationView: View {
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
+        case .discardAndStartOver:
+            self.popTo(ViewClassType.peerToPeerMainView)
         default:
             break
         }
@@ -145,6 +150,8 @@ struct ManuallyVerificationView: View {
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
+        case .discardAndStartOver:
+            self.popTo(ViewClassType.peerToPeerMainView)
         default:
             break
         }
