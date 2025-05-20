@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "မသိမ်းဆည်းရသေးသော ပြောင်းလဲချက်များ";
 "Vault_EditFile_Exit_SheetExpl" = "သင်၏ ပြောင်းလဲချက်များကို မသိမ်းဆည်းရသေးပါ။ အကောင့်မှ မထွက်မီ သိမ်းဆည်းလိုပါသလား။";
 "Vault_EditFile_Exit_SheetAction" = "မသိမ်းဘဲ ထွက်မည်";
-"Vault_EditFile_FileSaved_Toast" = "သင့်ပြောင်းလဲချက်များကို သိမ်းဆည်းပြီးပါပြီ။";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
