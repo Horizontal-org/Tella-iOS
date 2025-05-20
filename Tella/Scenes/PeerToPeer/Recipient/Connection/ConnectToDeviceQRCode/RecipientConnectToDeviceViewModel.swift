@@ -17,6 +17,7 @@ enum RecipientConnectToDeviceViewAction {
     case showReceiveFiles
     case showVerificationHash
     case errorOccured // TODO: Update name
+    case discardAndStartOver
 }
 
 class RecipientConnectToDeviceViewModel: ObservableObject {

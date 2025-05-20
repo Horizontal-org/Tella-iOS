@@ -14,7 +14,6 @@ struct ConfirmBottomSheet : View {
     var discardText : String?
     var actionText = ""
     var destructive : Bool = false
-    var withDrag : Bool = true
     var shouldHideSheet : Bool = true
     
     var didConfirmAction : () -> ()

@@ -129,6 +129,8 @@ extension View {
                                   backgroundColor: Styles.Colors.backgroundTab,
                                   tapToDismiss: tapToDismiss,
                                   content: {content})
+                                           shouldHideOnTap:Bool = true) {
+                                  shouldHideOnTap: shouldHideOnTap,
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
 }
