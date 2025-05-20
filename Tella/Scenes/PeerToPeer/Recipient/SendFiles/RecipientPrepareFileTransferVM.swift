@@ -13,6 +13,7 @@ import Foundation
 enum RecipientPrepareFileTransferAction {
     case showToast(message: String)
     case displayFileTransferView(files: [P2PFile])
+    case errorOccured
     case none
 }
 
@@ -47,6 +48,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     private func setupListeners() {
         listenToPrepareUploadPublisher()
         listenToSendPrepareUploadResponsePublisher()
+        listenToCloseConnectionPublisher()
     }
     
     // MARK: - Private Methods
@@ -79,12 +81,25 @@ class RecipientPrepareFileTransferVM: ObservableObject {
             .store(in: &subscribers)
     }
     
+    private func listenToCloseConnectionPublisher() {
+         server.didReceiveCloseConnectionPublisher.sink { [weak self] value in
+            guard let self = self else { return }
+            self.viewAction = .errorOccured
+        }.store(in: &subscribers)
+    }
+
+    
     // MARK: - Public Methods
     
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
         server.sendPrepareUploadFiles(filesAccepted: acceptance)
     }
+    
+     func stopServerListening() {
+         server.stopListening()
+    }
+
 }
 
 // MARK: - Preview / Stub

@@ -44,7 +44,10 @@ struct RecipientFileTransferView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.receiveFiles.localized,
                              navigationBarType: .inline,
-                             backButtonAction: {self.popToRoot()},
+                             backButtonAction: {
+            self.popTo(ViewClassType.peerToPeerMainView)
+            viewModel.stopServerListening()
+        },
                              rightButtonType: .none)
     }
     
@@ -85,6 +88,9 @@ struct RecipientFileTransferView: View {
             self.navigateTo(destination: SenderFileTransferView(viewModel: SenderFileTransferVM()))
         case .showToast(let message):
             Toast.displayToast(message: message)
+        case .errorOccured:
+            self.popTo(ViewClassType.peerToPeerMainView)
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
         default:
             break
         }
