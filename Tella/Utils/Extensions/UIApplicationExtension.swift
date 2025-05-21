@@ -68,24 +68,28 @@ extension UIApplication {
         return false
     }
 
-    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-            
-        } 
-        
-        else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-            
-        } 
-        
-        else if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
+         class func getTopViewController(base: UIViewController? = topRootViewController()) -> UIViewController? {
+            if let nav = base as? UINavigationController {
+                return getTopViewController(base: nav.visibleViewController)
+            } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+                return getTopViewController(base: selected)
+            } else if let presented = base?.presentedViewController {
+                return getTopViewController(base: presented)
+            }
+            return base
         }
-        return base
-    }
-    
+
+        private class func topRootViewController() -> UIViewController? {
+            // For multi-scene apps
+            guard let scene = UIApplication.shared.connectedScenes
+                    .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
+                return nil
+            }
+
+            return scene.windows
+                .first(where: { $0.isKeyWindow })?.rootViewController
+        }
+
     func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)

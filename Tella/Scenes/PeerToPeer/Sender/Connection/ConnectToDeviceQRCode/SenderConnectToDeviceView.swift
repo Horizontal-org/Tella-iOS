@@ -44,7 +44,6 @@ struct SenderConnectToDeviceView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
                              navigationBarType: .inline,
-                             backButtonAction: {self.popToRoot()},
                              rightButtonType: .none)
     }
     
@@ -66,7 +65,7 @@ struct SenderConnectToDeviceView: View {
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
     }
-
+    
     private func showBottomSheetError() {
         isBottomSheetShown = true
         let content = ConnectionFailedView( tryAction:  {
@@ -82,8 +81,8 @@ struct SenderConnectToDeviceView: View {
         case .showSendFiles:
             guard let sessionId = viewModel.sessionId else { return }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
-                                                  sessionId:sessionId,
-                                                  peerToPeerRepository:viewModel.peerToPeerRepository)
+                                                        sessionId:sessionId,
+                                                        peerToPeerRepository:viewModel.peerToPeerRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel ))
         case .showToast(let message):
             Toast.displayToast(message: message)
