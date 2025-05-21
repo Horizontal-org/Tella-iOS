@@ -87,7 +87,6 @@ class RecipientPrepareFileTransferVM: ObservableObject {
             self.viewAction = .errorOccured
         }.store(in: &subscribers)
     }
-
     
     // MARK: - Public Methods
     

@@ -42,7 +42,6 @@ struct RecipientConnectToDeviceManuallyView: View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
-                             backButtonAction: {self.popToRoot()}, //TO Check
                              rightButtonType: .none)
     }
     

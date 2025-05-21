@@ -13,6 +13,7 @@ import Foundation
 enum SenderPrepareFileTransferAction {
     case showToast(message: String)
     case displaySendingFiles
+    case errorOccured
     case none
 }
 
@@ -75,9 +76,18 @@ class SenderPrepareFileTransferVM: ObservableObject {
             self.viewAction = .displaySendingFiles
         case .failure(let error):
             debugLog(error)
-            self.viewState = .prepareFiles
-            self.viewAction = .showToast(message:LocalizablePeerToPeer.senderFilesRejected.localized)
+            switch error {
+            case .httpCode(HTTPErrorCodes.forbidden.rawValue):
+                self.viewState = .prepareFiles
+                self.viewAction = .showToast(message:LocalizablePeerToPeer.senderFilesRejected.localized)
+            default:
+                self.viewAction = .errorOccured
+            }
         }
+    }
+    
+    func closeConnection() {
+        self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
     }
 }
 
