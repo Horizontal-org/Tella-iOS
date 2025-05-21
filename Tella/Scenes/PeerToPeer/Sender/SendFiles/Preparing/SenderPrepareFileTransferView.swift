@@ -81,7 +81,10 @@ struct SenderPrepareFileTransferView: View {
     
     fileprivate var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.sendFiles.localized,
-                             backButtonAction: { self.popToRoot() })
+                             backButtonAction: {
+            self.popTo(ViewClassType.peerToPeerMainView)
+            self.viewModel.closeConnection()
+        })
     }
     
     private func handleViewState(state: SenderPrepareFileTransferAction) {
@@ -91,6 +94,9 @@ struct SenderPrepareFileTransferView: View {
             break
         case .showToast(let message):
             Toast.displayToast(message: message)
+        case .errorOccured:
+            self.popTo(ViewClassType.peerToPeerMainView)
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
         default:
             break
         }

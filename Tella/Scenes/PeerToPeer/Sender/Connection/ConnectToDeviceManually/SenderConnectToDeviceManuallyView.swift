@@ -47,7 +47,6 @@ struct SenderConnectToDeviceManuallyView: View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
-                             backButtonAction: {self.popToRoot()}, //TO Check
                              rightButtonType: .none)
     }
     
@@ -101,14 +100,11 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var bottomView: some View {
         NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validFields,
-                                nextButtonAction: .action,
-                                nextAction: {
+                                      nextButtonAction: .action,
+                                      nextAction: {
             viewModel.register()
         },
-                                backAction: {
-            /*
-             TODO:
-             */
+                                      backAction: {
         })
         
     }

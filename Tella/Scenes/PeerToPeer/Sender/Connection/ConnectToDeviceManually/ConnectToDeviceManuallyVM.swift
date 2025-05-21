@@ -15,7 +15,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     var peerToPeerRepository:PeerToPeerRepository
     var sessionId : String?
     var mainAppModel: MainAppModel
-
+    
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
     @Published var port: String = ""
@@ -40,7 +40,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
         self.peerToPeerRepository = peerToPeerRepository
         self.mainAppModel = mainAppModel
-
+        
         validateFields()
     }
     
