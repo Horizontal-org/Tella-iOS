@@ -301,9 +301,7 @@ final class PeerToPeerServer {
         guard closeConnectionRequest.sessionID == sessionId else {
             throw HTTPError.unauthorized
         }
-        
-        stopListening()
-        
+
         let response = BoolResponse(success: true)
         
         guard let responseData = response.buildResponse() else {
@@ -385,6 +383,7 @@ final class PeerToPeerServer {
             didSendPrepareUploadResponsePublisher.send(isSuccess)
         case .closeConnection:
             didReceiveCloseConnectionPublisher.send()
+            stopListening()
         default:
             debugLog("Unhandled endpoint: \(endpoint)")
         }
