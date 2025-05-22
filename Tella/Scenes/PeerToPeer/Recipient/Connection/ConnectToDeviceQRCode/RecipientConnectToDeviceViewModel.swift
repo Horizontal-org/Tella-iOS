@@ -79,7 +79,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     func listenToRegisterPublisher() {
         server.didRegisterPublisher
-            .first()
+        // .first()
             .sink { result in
                 self.viewAction = result == true ? .showReceiveFiles : .errorOccured
             }.store(in: &subscribers)

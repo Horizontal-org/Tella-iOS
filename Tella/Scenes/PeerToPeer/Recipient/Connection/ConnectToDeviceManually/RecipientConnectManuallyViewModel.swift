@@ -51,7 +51,6 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     
     func listenToRegisterPublisher() {
         self.server.didCancelAuthenticationPublisher
-            .first()
             .sink { value in
             self.viewState = .showVerificationHash
         }.store(in: &subscribers)
