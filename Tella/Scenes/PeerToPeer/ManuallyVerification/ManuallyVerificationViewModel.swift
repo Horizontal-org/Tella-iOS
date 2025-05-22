@@ -47,7 +47,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         listenToRegisterPublisher()
         listenToCloseConnectionPublisher()
     }
-
+    
     
     func confirmAction() {
         participant == .recipient ? acceptRegisterRequest() : register()
@@ -107,8 +107,8 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     func listenToRegisterPublisher() {
-        self.server?.didRegisterPublisher
-            .first()
+        self.server?.didRegisterManuallyPublisher
+        // .first()
             .sink { [weak self] result in
                 guard let self = self else { return }
                 self.recipientViewAction = result == true ? .showReceiveFiles : .errorOccured
@@ -128,9 +128,5 @@ class ManuallyVerificationViewModel: ObservableObject {
             guard let self = self else { return }
             self.recipientViewAction = .errorOccured
         }.store(in: &subscribers)
-    }
-
-    deinit {
-        print("Cancelled automatically when ViewModel deallocated.")
     }
 }

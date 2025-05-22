@@ -282,6 +282,7 @@
 		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
 		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
 		1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */; };
+		1282DE512DDE1021004D2176 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282DE502DDE101E004D2176 /* NetworkManager.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -1005,6 +1006,7 @@
 		1282C09F2D8AEA1A0033E4CA /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
 		1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseConnection.swift; sourceTree = "<group>"; };
+		1282DE502DDE101E004D2176 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		1282DE472DDD0302004D2176 /* sn-ZW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sn-ZW"; path = "sn-ZW.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
@@ -1900,6 +1902,7 @@
 			children = (
 				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
 				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
+				1282DE502DDE101E004D2176 /* NetworkManager.swift */,
 				12505B1F2D89A14C00483E34 /* ResponseStringExtension.swift */,
 				12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */,
 			);
@@ -4582,6 +4585,7 @@
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
 				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */,
+				1282DE512DDE1021004D2176 /* NetworkManager.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1222363F2DD3DDC4006A9F01 /* RecipientPrepareFileTransferVM.swift in Sources */,
 				124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */,
