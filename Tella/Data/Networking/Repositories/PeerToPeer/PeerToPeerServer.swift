@@ -14,8 +14,7 @@ import Foundation
 final class PeerToPeerServer {
     
     // MARK: - Properties
-    private var listener: NWListener?
-    private var currentConnection: NWConnection?
+    private let networkManager = NetworkManager()
     private var currentHTTPRequest: HTTPRequest?
     private var hasTLSError = false
     private var failedAttempts = 0
@@ -29,39 +28,29 @@ final class PeerToPeerServer {
     
     // Publishers
     let didRegisterPublisher = PassthroughSubject<Bool, Never>()
+    let didRegisterManuallyPublisher = PassthroughSubject<Bool, Never>()
     let didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
     let didCancelAuthenticationPublisher = PassthroughSubject<Void, Never>()
     let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
     let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
     let didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
     
-    // MARK: - Server Lifecycle
+    init() {
+        networkManager.delegate = self
+    }
     
+    // MARK: - Server Lifecycle
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
-        
-        resetConnectionState()
-        
         self.pin = pin
-        
-        do {
-            let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
-            self.listener = try NWListener(using: parameters, on: NWEndpoint.Port(integerLiteral: UInt16(port)))
-            
-            setupListenerHandlers()
-            self.listener?.start(queue: .main)
-        } catch {
-            debugLog("Failed to start listener: \(error.localizedDescription)")
-        }
+        networkManager.startListening(port: port, pin: pin, clientIdentity: clientIdentity)
     }
     
     func stopListening() {
-        listener?.cancel()
-        currentConnection?.cancel()
+        networkManager.stopListening()
         resetConnectionState()
     }
     
     // MARK: - Request Handling
-    
     func acceptRegisterRequest() {
         do {
             let serverResponse = try generateRegisterServerResponse()
@@ -82,121 +71,7 @@ final class PeerToPeerServer {
         handleServerResponse(serverResponse)
     }
     
-    // MARK: - Private Methods
-    
-    private func createNetworkParameters(clientIdentity: SecIdentity) throws -> NWParameters {
-        let tlsOptions = NWProtocolTLS.Options()
-        let parameters = NWParameters(tls: tlsOptions)
-        
-        sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
-        
-        sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
-            completionHandler(sec_identity_create(clientIdentity)!)
-        }, .main)
-        
-        return parameters
-    }
-    
-    private func setupListenerHandlers() {
-        listener?.stateUpdateHandler = { [weak self] state in
-            guard let self = self else { return }
-            
-            switch state {
-            case .ready:
-                debugLog("Listener is ready and waiting for connections")
-            case .failed(let error):
-                debugLog("Listener failed: \(error.localizedDescription)")
-                self.stopListening()
-            case .cancelled:
-                debugLog("Listener cancelled")
-            default:
-                break
-            }
-        }
-        
-        listener?.newConnectionHandler = { [weak self] connection in
-            self?.handleNewConnection(connection)
-        }
-    }
-    
-    private func handleNewConnection(_ connection: NWConnection) {
-        currentConnection = connection
-        connection.start(queue: .main)
-        startReceive(on: connection)
-    }
-    
-    private func startReceive(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, _, error in
-            if let error = error {
-                self?.handleReceiveError(error)
-                return
-            }
-            
-            guard let data = data, let rawString = data.utf8String() else {
-                debugLog("Failed to read HTTP data")
-                return
-            }
-            
-            debugLog("Received HTTP Request:\n\(rawString)")
-            
-            guard let httpRequest = rawString.parseHTTPRequest() else {
-                debugLog("Failed to parse the HTTPRequest")
-                return
-            }
-            
-            self?.currentHTTPRequest = httpRequest
-            self?.processHTTPRequest(httpRequest, on: connection)
-        }
-    }
-    
-    private func handleReceiveError(_ error: NWError) {
-        debugLog("Connection error: \(error.localizedDescription)")
-        
-        if case .tls(let tlsErrorCode) = error {
-            debugLog("TLS Error: \(tlsErrorCode)")
-            didCancelAuthenticationPublisher.send()
-            hasTLSError = true
-        }
-    }
-    
-    private func processHTTPRequest(_ httpRequest: HTTPRequest, on connection: NWConnection) {
-        guard let expectedLength = httpRequest.headers.contentLength else {
-            debugLog("Content-Length header missing")
-            return
-        }
-        
-        let body = httpRequest.body
-        if body.utf8.count < expectedLength {
-            debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
-            receiveRemainingBody(on: connection, httpRequest: httpRequest,
-                                 expectedLength: expectedLength, remaining: expectedLength - body.utf8.count)
-        } else {
-            debugLog("Full JSON Body: \(body)")
-            processCompleteBody(body, httpRequest: httpRequest)
-        }
-    }
-    
-    private func receiveRemainingBody(on connection: NWConnection, httpRequest: HTTPRequest,
-                                      expectedLength: Int, remaining: Int) {
-        connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { [weak self] data, _, _, error in
-            if let error = error {
-                debugLog("Error receiving remaining body: \(error)")
-                return
-            }
-            
-            guard let data = data, let more = data.utf8String() else {
-                debugLog("Failed to decode remaining data")
-                return
-            }
-            
-            let fullBody = httpRequest.body + more
-            debugLog("Full JSON Body after completion: \(fullBody)")
-            self?.currentHTTPRequest?.body = fullBody
-            
-            self?.processCompleteBody(fullBody, httpRequest: httpRequest)
-        }
-    }
-    
+    // MARK: - Request Processing
     private func processCompleteBody(_ body: String, httpRequest: HTTPRequest) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Unknown endpoint: \(httpRequest.endpoint)")
@@ -214,8 +89,6 @@ final class PeerToPeerServer {
             handleCloseConnectionRequest(body: body)
         }
     }
-    
-    // MARK: - Request Processing
     
     private func handleRegisterRequest() {
         if hasTLSError {
@@ -301,7 +174,7 @@ final class PeerToPeerServer {
         guard closeConnectionRequest.sessionID == sessionId else {
             throw HTTPError.unauthorized
         }
-
+        
         let response = BoolResponse(success: true)
         
         guard let responseData = response.buildResponse() else {
@@ -332,7 +205,6 @@ final class PeerToPeerServer {
     }
     
     // MARK: - Response Handling
-    
     private func handleServerResponse(_ serverResponse: P2PServerResponse?) {
         guard let serverResponse = serverResponse else {
             sendInternalServerError()
@@ -348,24 +220,16 @@ final class PeerToPeerServer {
     }
     
     private func sendDataToConnection(serverResponse: P2PServerResponse) {
-        guard let connection = currentConnection else {
-            debugLog("No active connection to send data")
-            return
-        }
-        
         guard let data = serverResponse.dataResponse else {
             debugLog("No data to send in server response")
             return
         }
         
-        connection.send(content: data, completion: .contentProcessed { [weak self] error in
-            if let error = error {
-                debugLog("Server send error: \(error)")
-                return
+        networkManager.sendData(data) { [weak self] error in
+            if error == nil {
+                self?.handleSuccessfulResponse(serverResponse)
             }
-            
-            self?.handleSuccessfulResponse(serverResponse)
-        })
+        }
     }
     
     private func handleSuccessfulResponse(_ serverResponse: P2PServerResponse) {
@@ -378,7 +242,7 @@ final class PeerToPeerServer {
         
         switch PeerToPeerEndpoint(rawValue: endpoint) {
         case .register:
-            didRegisterPublisher.send(isSuccess)
+            hasTLSError ? didRegisterManuallyPublisher.send(isSuccess) : didRegisterPublisher.send(isSuccess)
         case .prepareUpload:
             didSendPrepareUploadResponsePublisher.send(isSuccess)
         case .closeConnection:
@@ -392,7 +256,6 @@ final class PeerToPeerServer {
     }
     
     // MARK: - File Handling
-    
     private func saveFile(data: Data, fileName: String) throws {
         let fileManager = FileManager.default
         guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
@@ -406,13 +269,37 @@ final class PeerToPeerServer {
     }
     
     private func resetConnectionState() {
-        currentConnection = nil
         currentHTTPRequest = nil
         fileData = Data()
         contentLength = nil
         failedAttempts = 0
         hasTLSError = false
     }
+}
+
+extension PeerToPeerServer: NetworkManagerDelegate {
+    func networkManagerDidStopListening(_ manager: NetworkManager) {
+        
+    }
+    
+    func networkManager(_ manager: NetworkManager, didFailWith error: any Error) {
+        
+    }
+    
+    func networkManagerDidEncounterTLSError(_ manager: NetworkManager) {
+        didCancelAuthenticationPublisher.send()
+        hasTLSError = true
+    }
+    
+    func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest) {
+        currentHTTPRequest = request
+        processCompleteBody(request.body, httpRequest: request)
+    }
+    
+    func networkManagerDidStartListening(_ manager: NetworkManager) {
+        debugLog("Network manager started listening")
+    }
+    
 }
 
 // MARK: - Supporting Types
