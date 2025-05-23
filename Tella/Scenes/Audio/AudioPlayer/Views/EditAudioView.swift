@@ -154,7 +154,7 @@ struct EditAudioView: View {
         case .loaded(let isSaved):
             if isSaved {
                 self.dismiss()
-                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized, delay: 5.0)
             }
         case .error(let message):
             Toast.displayToast(message: message)

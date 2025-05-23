@@ -83,13 +83,9 @@ struct VideoViewer: View {
                                             appModel: playerVM.appModel,
                                             editMedia: EditVideoParameters())
         DispatchQueue.main.async {
-            if playerVM.currentFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
                     EditVideoView(viewModel: viewModel)
                 }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
-            }
         }
     }
 }

@@ -60,12 +60,8 @@ struct FileDetailsView: View {
                                            appModel: fileListViewModel.appModel,
                                            editMedia: EditAudioParameters())
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditAudioView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditAudioView(viewModel: viewModel)
             }
         }
     }
