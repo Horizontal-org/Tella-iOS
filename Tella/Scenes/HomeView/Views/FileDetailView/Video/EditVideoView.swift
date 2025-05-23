@@ -112,12 +112,12 @@ struct EditVideoView: View {
     
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(currentValue: $viewModel.startTime,
+                            gestureValue: $viewModel.leadingGestureValue,
+                            isDragging: $viewModel.isDraggingLeft,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .leading,
-                            gestureValue: $viewModel.leadingGestureValue,
-                            isDragging: $viewModel.isDraggingLeft)
+                            sliderType: .leading)
         .frame(height: 36)
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
             viewModel.resetSliderToStart()
@@ -126,12 +126,12 @@ struct EditVideoView: View {
     
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(currentValue: $viewModel.endTime,
+                            gestureValue: $viewModel.trailingGestureValue,
+                            isDragging: $viewModel.isDraggingRight,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .trailing,
-                            gestureValue: $viewModel.trailingGestureValue,
-                            isDragging: $viewModel.isDraggingRight)
+                            sliderType: .trailing)
         .frame(height: 36)
         .onReceive(viewModel.$isDraggingRight) { isDragging in
             viewModel.resetSliderToStart()
