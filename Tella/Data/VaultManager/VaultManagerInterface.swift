@@ -32,7 +32,8 @@ protocol VaultManagerInterface {
     func loadFileDataOld(fileName: String?) -> Data?
     func getDescriptionFileUrl(content:String,fileName:String) -> URL?
     func loadVaultFileToURLAsync(file: ReportVaultFile, withSubFolder: Bool) async -> URL?
-        
+    func loadVaultFileToURLAsync(file: VaultFileDB, withSubFolder: Bool) async -> URL?
+
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL?

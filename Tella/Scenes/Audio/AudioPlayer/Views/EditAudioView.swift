@@ -20,7 +20,7 @@ struct EditAudioView: View {
     var body: some View {
         ZStack {
             VStack {
-                EditMediaHeaderView(viewModel: viewModel)
+                EditMediaHeaderView(viewModel: viewModel, isMiddleButtonEnabled: .constant(true))
                 timeLabelsView
                 trimView
                     .padding(EdgeInsets(top: 0, leading: viewModel.editMedia.horizontalPadding, bottom: 0, trailing:  viewModel.editMedia.horizontalPadding))

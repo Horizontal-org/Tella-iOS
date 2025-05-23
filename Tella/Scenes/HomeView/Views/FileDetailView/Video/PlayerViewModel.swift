@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -21,7 +21,7 @@ final class PlayerViewModel: ObservableObject {
     @Published var videoSize: CGSize?
     @Published var currentFile: VaultFileDB?
     @Published var videoIsReady = false
-
+    
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
     
@@ -49,6 +49,8 @@ final class PlayerViewModel: ObservableObject {
     var formattedVideoDuration : String {
         return self.videoDuration?.timeString() ?? ""
     }
+    var currentVideoURL : URL?
+    
     
     deinit {
         if let timeObserver = timeObserver {
@@ -63,15 +65,16 @@ final class PlayerViewModel: ObservableObject {
         self.rootFile = rootFile
         
         if let index = playList.firstIndex(of: currentFile) {
-             currentItemIndex = index
+            currentItemIndex = index
         }
-
+        
         if playList.count >= currentItemIndex + 1, let item = playList[currentItemIndex]   {
             self.setCurrentItem(item)
         }
-
+        
         
         $shouldSeekVideo
+            .receive(on: DispatchQueue.main)
             .dropFirst()
             .filter({ $0 == false })
             .sink(receiveValue: { [weak self] _ in
@@ -88,6 +91,7 @@ final class PlayerViewModel: ObservableObject {
             .store(in: &cancellable)
         
         player.publisher(for: \.timeControlStatus)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 switch status {
                 case .playing:
@@ -127,21 +131,22 @@ final class PlayerViewModel: ObservableObject {
         self.player.replaceCurrentItem(with: nil)
         
         guard let file = file else { return }
-        
-        DispatchQueue.main.async {
-            guard let videoURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
+       
+        Task {
+            guard let videoURL = await self.appModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)  else {return}
+            self.currentVideoURL = videoURL
             let playerItem = AVPlayerItem(url:videoURL)
             self.player.replaceCurrentItem(with: playerItem)
-            self.player.play()
-
+            await self.player.play()
+            
             playerItem.publisher(for: \.status)
+                .receive(on: DispatchQueue.main)
                 .filter({ $0 == .readyToPlay })
                 .sink(receiveValue: { [weak self] _ in
                     self?.videoIsReady = true
                     self?.videoDuration = playerItem.asset.duration.seconds
                 })
                 .store(in: &self.cancellable)
-
         }
     }
     
@@ -153,7 +158,7 @@ final class PlayerViewModel: ObservableObject {
             self.player.play()
         }
     }
-
+    
     func showNextVideo() {
         if playList.count - 1 > currentItemIndex {
             deleteTmpFile()

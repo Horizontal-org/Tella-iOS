@@ -20,18 +20,20 @@ struct EditVideoView: View {
             VStack {
                 
                 EditMediaHeaderView(viewModel: viewModel,
-                                    showRotate: {showRotateVideo()})
+                                    showRotate: {showRotateVideo()},
+                                    isMiddleButtonEnabled: $viewModel.videoIsReady)
                 CustomVideoPlayer(player: viewModel.player,
                                   rotationAngle: .constant(0))
                 .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
-                
-                EditMediaControlButtonsView(viewModel: viewModel)
-                    .padding(.top, 16)
-                trimView
-                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 40, trailing: 16))
+                if viewModel.videoIsReady {
+                    EditMediaControlButtonsView(viewModel: viewModel)
+                        .padding(.top, 16)
+                    trimView
+                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 40, trailing: 16))
+                }
                 Spacer()
             }
-            if viewModel.trimState == .loading {
+            if viewModel.trimState == .loading || !viewModel.videoIsReady { // Improve it
                 CircularActivityIndicatory()
             }
         }

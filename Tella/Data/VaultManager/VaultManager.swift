@@ -92,6 +92,16 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             }
         }
     }
+    
+    func loadVaultFileToURLAsync(file: VaultFileDB,withSubFolder: Bool = false) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.loadVaultFileToURL(file: file, withSubFolder: withSubFolder)
+                continuation.resume(returning: result)
+            }
+        }
+    }
+
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool = false) -> URL? {
         
