@@ -111,7 +111,7 @@ struct EditVideoView: View {
     }
     
     private func leadingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.startTime,
+        TrimMediaSliderView(currentValue: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
@@ -125,7 +125,7 @@ struct EditVideoView: View {
     }
     
     private func trailingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.endTime,
+        TrimMediaSliderView(currentValue: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
