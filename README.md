@@ -25,7 +25,7 @@ In challenging environments, with limited or no internet connectivity or in the 
 More information about how to get Tella --including user guides-- can be found on our [documentation platform](https://docs.tella-app.org/).
 
 | [![Encrypting](docs/encrypting.gif)](https://tella-app.org/features#encryption/) | [![Server Connections](docs/connections.gif)](https://tella-app.org/for-organizations) |
-|:---:|:---:|:---:|
+|:---:|:---:|
 | Taking and encrypting a photo | Collecting data |
 
 
@@ -98,7 +98,7 @@ A get started guide for Tella iOS is available [here](https://tella-app.org/get-
 
 ## Translating the app <a id="translating"></a>
 
-Tella is currently available in [17 languages](https://tella-app.org/translating-tella). We are always looking to translate Tella into more languages.
+Tella is currently available in [more than 20 languages](https://tella-app.org/translating-tella). We are always looking to translate Tella into more languages.
 
 If you are interested in adding a new language, or if you noticed a mistake or a missing translation, you can join [follow our contributing guidelines](https://tella-app.org/translating-tella/#how-do-i-become-a-translator).
 
