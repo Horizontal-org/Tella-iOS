@@ -56,7 +56,7 @@ extension ResourceRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
         case .getResourcesByProject(_, let projectId, _):
             return "/resource/projects?projectId[]=\(projectId)"
