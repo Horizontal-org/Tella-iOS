@@ -48,7 +48,7 @@ extension FeedbackRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
         case .submitFeedback:
             return FeedbackConstants.opinionsPath
