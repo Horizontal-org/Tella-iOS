@@ -30,9 +30,9 @@ struct RenderPropertyComponentView: View {
                 
                 switch prompt.type {
                 case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown:
-                    UwaziTextWidget(prompt: prompt as! UwaziTextEntryPrompt)
+                    UwaziTextWidget(prompt: prompt as! UwaziTextEntryPrompt, entityViewModel: entityViewModel)
                 case .dataTypeSelect:
-                    UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt)
+                    UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt, entityViewModel: entityViewModel)
                 case .dataTypeMultiFiles:
                     SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt, entityViewModel: entityViewModel)
                 case .dataTypeMultiPDFFiles:

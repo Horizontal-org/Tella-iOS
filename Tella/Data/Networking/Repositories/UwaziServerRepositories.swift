@@ -404,7 +404,7 @@ extension UwaziServerRepository.API: APIRequest {
         }
     }
 
-    var path: String {
+    var path: String? {
         switch self {
         case .login, .twoFactorAuthentication:
             return "/api/login"

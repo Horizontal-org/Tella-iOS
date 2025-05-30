@@ -73,12 +73,12 @@ extension ServerRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
         case .login:
             return "/login"
         case .getProjetDetails(_):
-            return ""
+            return nil
         }
     }
     

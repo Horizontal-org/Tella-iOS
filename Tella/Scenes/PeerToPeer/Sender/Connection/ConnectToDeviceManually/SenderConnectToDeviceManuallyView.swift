@@ -102,11 +102,8 @@ struct SenderConnectToDeviceManuallyView: View {
         NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validFields,
                                       nextButtonAction: .action,
                                       nextAction: {
-            viewModel.register()
-        },
-                                      backAction: {
+            viewModel.getHash()
         })
-        
     }
     
     private func handleViewState(state: SenderConnectToDeviceViewAction) {
