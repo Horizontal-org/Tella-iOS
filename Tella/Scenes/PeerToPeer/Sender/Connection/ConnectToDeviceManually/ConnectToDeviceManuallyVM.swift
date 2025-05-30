@@ -53,39 +53,23 @@ class ConnectToDeviceManuallyVM: ObservableObject {
             .store(in: &subscribers)
     }
     
-    func register() {
+    func getHash() {
         
-        let registerRequest = RegisterRequest(pin:pin, nonce: UUID().uuidString )
         guard let port = Int(port) else { return }
         let connectionInfo = ConnectionInfo(ipAddress: ipAddress, port: port, certificateHash: nil, pin: pin)
         self.connectionInfo = connectionInfo
         
-        self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
+        self.peerToPeerRepository.getHash(connectionInfo: connectionInfo)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 debugLog(completion)
-                
-                
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    switch error {
-                    case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
-                        self.viewState = .showBottomSheetError
-                        
-                    case .cancelAuthenticationChallenge(let certificateHash):
-                        connectionInfo.certificateHash = certificateHash
-                        self.viewState = .showVerificationHash
-                    default:
-                        debugLog(error)
-                        self.viewState = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
-                    }
+                if case .failure = completion {
+                    self?.viewState = .showBottomSheetError
                 }
-                
-            }, receiveValue: { response in
-                debugLog(response)
-                self.sessionId = response.sessionId
+            }, receiveValue: { certificateHash in
+                debugLog(certificateHash)
+                self.connectionInfo?.certificateHash = certificateHash
+                self.viewState = .showVerificationHash
             }).store(in: &self.subscribers)
     }
 }
