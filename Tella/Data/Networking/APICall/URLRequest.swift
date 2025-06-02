@@ -216,12 +216,7 @@ class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
         
         let protectionSpace = challenge.protectionSpace
         let host = protectionSpace.host
-        
-        guard host.isLocalNetworkHost() else {
-            completionHandler(.cancelAuthenticationChallenge, nil)
-            return
-        }
-        
+
         guard let serverTrust = protectionSpace.serverTrust else {
             debugLog("Missing serverTrust for host: \(host)")
             completionHandler(.cancelAuthenticationChallenge, nil)
