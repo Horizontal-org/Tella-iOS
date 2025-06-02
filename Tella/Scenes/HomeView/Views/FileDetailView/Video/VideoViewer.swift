@@ -33,7 +33,7 @@ struct VideoViewer: View {
             }
             
             if !playerVM.videoIsReady {
-                ProgressView()
+                CircularActivityIndicatory()
             }
         }
         .onDisappear {
@@ -46,6 +46,7 @@ struct VideoViewer: View {
                              backButtonAction: { backAction() },
                              middleButtonType: .editFile,
                              middleButtonAction: {showEditVideoView()},
+                             isMiddleButtonEnabled: playerVM.videoIsReady,
                              rightButtonType: .custom,
                              rightButtonView:moreFileActionButton)
     }
@@ -53,7 +54,9 @@ struct VideoViewer: View {
     var moreFileActionButton : AnyView {
         AnyView(MoreFileActionButton(fileListViewModel: fileListViewModel,
                                      file: playerVM.currentFile,
-                                     moreButtonType: .navigationBar))
+                                     moreButtonType: .navigationBar)
+            .opacity(playerVM.videoIsReady ? 1 : 0.4)
+            .disabled(!playerVM.videoIsReady))
     }
     
     var contentView: some View {
@@ -79,16 +82,13 @@ struct VideoViewer: View {
     
     private func showEditVideoView() {
         let viewModel =  EditVideoViewModel(file: playerVM.currentFile,
+                                            fileURL: playerVM.currentVideoURL,
                                             rootFile: playerVM.rootFile,
                                             appModel: playerVM.appModel,
                                             editMedia: EditVideoParameters())
         DispatchQueue.main.async {
-            if playerVM.currentFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditVideoView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditVideoView(viewModel: viewModel)
             }
         }
     }

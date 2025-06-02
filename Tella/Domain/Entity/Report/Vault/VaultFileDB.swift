@@ -300,12 +300,7 @@ extension Array where Element == Dictionary<String,Any>{
         return self.compactMap{VaultFileDB.init(dictionnary: $0)}
     }
 }
-extension VaultFileDB {
-    var mediaCanBeEdited: Bool {
-        let minimumAudioDuration = 3.9
-        return duration ?? 0.0 >= minimumAudioDuration
-    }
-}
+
 extension VaultFileDB {
     func getCopyName(from vaultFilesManager: VaultFilesManager?) -> String {
 

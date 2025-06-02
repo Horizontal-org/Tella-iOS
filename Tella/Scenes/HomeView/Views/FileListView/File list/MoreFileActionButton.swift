@@ -132,12 +132,8 @@ struct MoreFileActionButton: View {
                                            appModel: fileListViewModel.appModel,
                                            editMedia: EditVideoParameters())
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditVideoView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditVideoView(viewModel: viewModel)
             }
         }
     }
@@ -153,13 +149,8 @@ struct MoreFileActionButton: View {
                                            appModel: fileListViewModel.appModel,
                                            editMedia: EditAudioParameters())
         DispatchQueue.main.async {
-            
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditAudioView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditAudioView(viewModel: viewModel)
             }
         }
     }

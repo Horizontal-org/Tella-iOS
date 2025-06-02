@@ -11,56 +11,61 @@
 import SwiftUI
 
 struct TrimMediaSliderView: View {
-    @Binding var value: Double
+    @Binding var currentValue: Double
+    @Binding var gestureValue: Double
+    @Binding var isDragging: Bool
+    
     var range: ClosedRange<Double>
     var currentRange: ClosedRange<Double>
     var editMedia: EditMediaProtocol
-    var sliderType: SliderType 
+    var sliderType: SliderType
     
-    @Binding var gestureValue: Double
-    @Binding var isDragging : Bool
-    
-    private let minimumAudioDuration = 3.0
+    private let minimumSliderDistance: CGFloat = 45.0
     
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 sliderImage(in: geometry)
                     .gesture(dragGesture(in: geometry))
+                
                 valueLabel(in: geometry)
             }
         }
     }
     
+    // MARK: - Slider Image
     private func sliderImage(in geometry: GeometryProxy) -> some View {
-        let imageName = sliderType == .leading ? editMedia.leadingImageName : editMedia.trailingImageName
+        let imageName = (sliderType == .leading)
+        ? editMedia.leadingImageName
+        : editMedia.trailingImageName
+        
         return Image(imageName)
-            .offset(x: calculateThumbOffset(in: geometry), y: 0)
+            .offset(x: calculateThumbOffset(in: geometry))
     }
     
+    // MARK: - Value Label
     private func valueLabel(in geometry: GeometryProxy) -> some View {
-        Text("\(TimeInterval(value).formattedAsMMSS())")
+        Text(TimeInterval(currentValue).formattedAsMMSS())
             .foregroundColor(Styles.Colors.yellow)
             .font(.custom(Styles.Fonts.regularFontName, size: 12))
-            .offset(x: calculateLabelOffset(in: geometry), y: (geometry.size.height / 2) + 15)
+            .offset(
+                x: calculateLabelOffset(in: geometry),
+                y: (geometry.size.height / 2) + 15
+            )
     }
     
+    // MARK: - Drag Gesture
     private func dragGesture(in geometry: GeometryProxy) -> some Gesture {
         DragGesture(minimumDistance: 0)
-            .onChanged { dragValue in
+            .onChanged { drag in
                 isDragging = true
-                let clampedX = min(max(0, dragValue.location.x), geometry.size.width)
-                let newValue = (clampedX / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
+                let limitedX = drag.location.x.clamped(to: 0...geometry.size.width)
+                let newValue = offsetToValue(limitedX, in: geometry)
+                let clampedValue = newValue.clamped(to: range)
                 
+                guard isDragAllowed(newValue: clampedValue, in: geometry) else { return }
                 
-                if sliderType == .trailing {
-                    guard newValue >= currentRange.lowerBound + minimumAudioDuration else { return }
-
-                } else {
-                  guard newValue + minimumAudioDuration <= currentRange.upperBound else { return }
-                }
-
-                value = min(max(newValue, range.lowerBound), range.upperBound)
+                currentValue = clampedValue
                 gestureValue = calculateThumbOffset(in: geometry)
             }
             .onEnded { _ in
@@ -69,16 +74,47 @@ struct TrimMediaSliderView: View {
             }
     }
     
+    // MARK: - Coordinate Conversion
+    private func offsetToValue(_ offset: CGFloat, in geometry: GeometryProxy) -> Double {
+        let percentage = offset / geometry.size.width
+        return range.lowerBound + percentage * (range.upperBound - range.lowerBound)
+    }
+    
+    private func valueToOffset(_ value: Double, in geometry: GeometryProxy) -> CGFloat {
+        CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
+    }
+    
     private func calculateThumbOffset(in geometry: GeometryProxy) -> CGFloat {
-        
-        let additionalOffset = sliderType == .leading ? 0 : -editMedia.sliderWidth
-        let offset = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
-        return offset + CGFloat(additionalOffset)
+        let offset = valueToOffset(currentValue, in: geometry)
+        let thumbAdjustment = (sliderType == .leading) ? 0 : -editMedia.sliderWidth
+        return offset + CGFloat(thumbAdjustment)
     }
     
     private func calculateLabelOffset(in geometry: GeometryProxy) -> CGFloat {
-        let additionalOffset = sliderType == .leading ? editMedia.leadingLabelPadding : editMedia.trailingLabelPadding
-        let offset = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
-        return offset + CGFloat(additionalOffset)
+        let labelPadding = (sliderType == .leading)
+        ? editMedia.leadingLabelPadding
+        : editMedia.trailingLabelPadding
+        
+        return valueToOffset(currentValue, in: geometry) + CGFloat(labelPadding)
+    }
+    
+    // MARK: - Drag Validation
+    private func isDragAllowed(newValue: Double, in geometry: GeometryProxy) -> Bool {
+        let currentOffset = valueToOffset(newValue, in: geometry)
+        
+        let referenceValue = (sliderType == .leading)
+        ? currentRange.upperBound
+        : currentRange.lowerBound
+        
+        let referenceOffset = valueToOffset(referenceValue, in: geometry)
+        
+        return abs(currentOffset - referenceOffset) >= minimumSliderDistance
+    }
+}
+
+// MARK: - Utility Extensions
+private extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
     }
 }

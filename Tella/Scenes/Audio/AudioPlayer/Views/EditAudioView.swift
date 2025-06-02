@@ -20,7 +20,7 @@ struct EditAudioView: View {
     var body: some View {
         ZStack {
             VStack {
-                EditMediaHeaderView(viewModel: viewModel)
+                EditMediaHeaderView(viewModel: viewModel, isMiddleButtonEnabled: .constant(true))
                 timeLabelsView
                 trimView
                     .padding(EdgeInsets(top: 0, leading: viewModel.editMedia.horizontalPadding, bottom: 0, trailing:  viewModel.editMedia.horizontalPadding))
@@ -96,13 +96,13 @@ struct EditAudioView: View {
     }
     
     private func leadingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.startTime,
+        TrimMediaSliderView(currentValue: $viewModel.startTime,
+                            gestureValue: $viewModel.leadingGestureValue,
+                            isDragging: $viewModel.isDraggingLeft,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .leading,
-                            gestureValue: $viewModel.leadingGestureValue,
-                            isDragging: $viewModel.isDraggingLeft)
+                            sliderType: .leading)
         .frame(height: 196)
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
             viewModel.resetSliderToStart()
@@ -110,13 +110,13 @@ struct EditAudioView: View {
     }
     
     private func trailingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.endTime,
+        TrimMediaSliderView(currentValue: $viewModel.endTime,
+                            gestureValue: $viewModel.trailingGestureValue,
+                            isDragging: $viewModel.isDraggingRight,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .trailing,
-                            gestureValue: $viewModel.trailingGestureValue,
-                            isDragging: $viewModel.isDraggingRight)
+                            sliderType: .trailing)
         .frame(height: 196)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.resetSliderToStart()
@@ -154,7 +154,7 @@ struct EditAudioView: View {
         case .loaded(let isSaved):
             if isSaved {
                 self.dismiss()
-                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized, delay: 5.0)
             }
         case .error(let message):
             Toast.displayToast(message: message)

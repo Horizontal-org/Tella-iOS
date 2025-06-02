@@ -20,18 +20,20 @@ struct EditVideoView: View {
             VStack {
                 
                 EditMediaHeaderView(viewModel: viewModel,
-                                    showRotate: {showRotateVideo()})
+                                    showRotate: {showRotateVideo()},
+                                    isMiddleButtonEnabled: $viewModel.videoIsReady)
                 CustomVideoPlayer(player: viewModel.player,
                                   rotationAngle: .constant(0))
                 .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
-                
-                EditMediaControlButtonsView(viewModel: viewModel)
-                    .padding(.top, 16)
-                trimView
-                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 40, trailing: 16))
+                if viewModel.videoIsReady {
+                    EditMediaControlButtonsView(viewModel: viewModel)
+                        .padding(.top, 16)
+                    trimView
+                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 40, trailing: 16))
+                }
                 Spacer()
             }
-            if viewModel.trimState == .loading {
+            if viewModel.trimState == .loading || !viewModel.videoIsReady { // Improve it
                 CircularActivityIndicatory()
             }
         }
@@ -111,13 +113,13 @@ struct EditVideoView: View {
     }
     
     private func leadingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.startTime,
+        TrimMediaSliderView(currentValue: $viewModel.startTime,
+                            gestureValue: $viewModel.leadingGestureValue,
+                            isDragging: $viewModel.isDraggingLeft,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .leading,
-                            gestureValue: $viewModel.leadingGestureValue,
-                            isDragging: $viewModel.isDraggingLeft)
+                            sliderType: .leading)
         .frame(height: 36)
         .onReceive(viewModel.$isDraggingLeft) { isDragging in
             viewModel.resetSliderToStart()
@@ -125,13 +127,13 @@ struct EditVideoView: View {
     }
     
     private func trailingSliderView() -> some View {
-        TrimMediaSliderView(value: $viewModel.endTime,
+        TrimMediaSliderView(currentValue: $viewModel.endTime,
+                            gestureValue: $viewModel.trailingGestureValue,
+                            isDragging: $viewModel.isDraggingRight,
                             range: 0...viewModel.timeDuration,
                             currentRange: viewModel.startTime...viewModel.endTime,
                             editMedia: viewModel.editMedia,
-                            sliderType: .trailing,
-                            gestureValue: $viewModel.trailingGestureValue,
-                            isDragging: $viewModel.isDraggingRight)
+                            sliderType: .trailing)
         .frame(height: 36)
         .onReceive(viewModel.$isDraggingRight) { isDragging in
             viewModel.resetSliderToStart()
@@ -143,7 +145,7 @@ struct EditVideoView: View {
         case .loaded(let isSaved):
             if isSaved {
                 self.dismiss()
-                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized, delay: 5.0)
             }
         case .error(let message):
             Toast.displayToast(message: message)

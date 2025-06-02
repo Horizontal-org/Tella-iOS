@@ -22,7 +22,8 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var rotationAngle: Int = 0
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
     @Published var videoSize: CGSize = .zero
-    
+    @Published var videoIsReady = false
+
     var videoPlayerSize : CGSize {
         let angle = abs(Int(rotationAngle)) % 360
         let isRotated = angle == 90 || angle == 270
@@ -40,8 +41,8 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
+    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+        super.init(file: file, fileURL: fileURL, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         setupListeners()
         initVideo()
     }
@@ -69,14 +70,21 @@ class EditVideoViewModel: EditMediaViewModel {
         self.seekVideo(to: currentPosition)
     }
     
-    private func initVideo() {
-        guard let file else { return }
-        guard let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
-        self.thumbnails = fileURL.generateThumbnails()
-        let playerItem = AVPlayerItem(url:fileURL)
-        self.player.replaceCurrentItem(with: playerItem)
+    private func initVideo()   {
+        Task {
+            guard let file else { return }
+            if fileURL == nil {
+                fileURL =  await self.appModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
+            }
+            guard let fileURL else { return }
+            DispatchQueue.main.async {
+                self.videoIsReady = true
+                self.thumbnails = fileURL.generateThumbnails()
+                let playerItem = AVPlayerItem(url:fileURL)
+                self.player.replaceCurrentItem(with: playerItem)
+            }
+        }
     }
-    
     
     private func setupListeners() {
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: nil) { [weak self] time in

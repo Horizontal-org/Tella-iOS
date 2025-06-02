@@ -47,7 +47,7 @@ struct EditImageView: View {
     private func handleSaveAction() {
         self.viewModel.saveChanges()
         self.dismiss()
-        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized, delay: 5.0)
     }
 }
 

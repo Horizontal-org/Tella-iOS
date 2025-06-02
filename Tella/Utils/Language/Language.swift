@@ -30,7 +30,7 @@ enum Language: String, CaseIterable {
     case indonesian = "id"
     case portugueseMozambique = "pt_MZ"
     case tsonga = "ts"
-    case ndau = "ndc"
+    case ndau = "sn-ZW"
 
     var code : String {
         switch self {
@@ -69,7 +69,7 @@ enum Language: String, CaseIterable {
         case .tsonga:
             return "ts"
         case .ndau:
-            return "ndc"
+            return "sn-ZW"
         }
     }
     

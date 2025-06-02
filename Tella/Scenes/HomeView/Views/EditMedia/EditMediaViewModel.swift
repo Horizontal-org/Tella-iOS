@@ -31,7 +31,6 @@ class EditMediaViewModel: ObservableObject {
     @Published var isDraggingRight = false
     
     //MARK: - View attributes
-    let minimumAudioDuration = 3.0 // this is the limit time of the audio duration
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
@@ -48,17 +47,16 @@ class EditMediaViewModel: ObservableObject {
     var appModel: MainAppModel
     var editMedia : EditMediaProtocol
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+    init(file: VaultFileDB?, fileURL: URL?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
         self.file = file
+        self.fileURL = fileURL
         self.rootFile = rootFile
         self.appModel  = appModel
         self.editMedia  = editMedia
     }
     
     func onAppear() {
-        guard let file, let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
-        self.fileURL = fileURL
-        self.timeDuration = file.duration ?? 0.0
+        self.timeDuration = file?.duration ?? 0.0
         self.endTime = self.timeDuration
     }
     
