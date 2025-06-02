@@ -1,7 +1,9 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import SwiftUI
@@ -28,6 +30,7 @@ enum Language: String, CaseIterable {
     case indonesian = "id"
     case portugueseMozambique = "pt_MZ"
     case tsonga = "ts"
+    case ndau = "sn-ZW"
 
     var code : String {
         switch self {
@@ -65,6 +68,8 @@ enum Language: String, CaseIterable {
             return "pt-MZ"
         case .tsonga:
             return "ts"
+        case .ndau:
+            return "sn-ZW"
         }
     }
     
@@ -104,6 +109,8 @@ enum Language: String, CaseIterable {
             return "Moçambique Portuguesa"
         case .tsonga:
             return "Xitsonga"
+        case .ndau:
+            return "Ndau"
          }
     }
     
@@ -143,6 +150,8 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangPortugueseMozambique.localized
         case .tsonga:
             return LocalizableSettings.settLangTsonga.localized
+        case .ndau:
+            return LocalizableSettings.settLangNdau.localized
         }
     }
     

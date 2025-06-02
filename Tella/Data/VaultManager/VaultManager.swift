@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import UIKit
 import SwiftUI
@@ -90,6 +92,16 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             }
         }
     }
+    
+    func loadVaultFileToURLAsync(file: VaultFileDB,withSubFolder: Bool = false) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.loadVaultFileToURL(file: file, withSubFolder: withSubFolder)
+                continuation.resume(returning: result)
+            }
+        }
+    }
+
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool = false) -> URL? {
         

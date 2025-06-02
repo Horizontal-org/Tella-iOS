@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by gus valbuena on 6/24/24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine

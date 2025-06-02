@@ -1,6 +1,8 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -22,20 +24,20 @@ struct CustomNavigation<Content:View>: View {
                     self.content()
                     
                 } .navigationViewStyle(.stack)
+                    .navigationBarHidden(true)
             } else {
                 NavigationStack {
                     self.content()
-                }
+                }.navigationBarHidden(true)
             }
         } else {
             NavigationView {
                 self.content()
-                .navigationBarHidden(true)
-                .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarHidden(true)
+                    .navigationBarTitle("", displayMode: .inline)
             }
             .navigationViewStyle(StackNavigationViewStyle())
-
+            .navigationBarHidden(true)
         }
-        
     }
 }

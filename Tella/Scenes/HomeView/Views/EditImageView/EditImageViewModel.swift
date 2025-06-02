@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 16/5/2024.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 import SwiftUI
 
 class EditImageViewModel: ObservableObject {
@@ -54,8 +56,7 @@ class EditImageViewModel: ObservableObject {
         }
         self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url,
                                                                     parentId: fileListViewModel.rootFile?.id,
-                                                                    fileSource: .editFile)],
-                                       shouldReloadVaultFiles : $fileListViewModel.shouldReloadVaultFiles)
+                                                                    fileSource: .editFile)])
     }
     
 }

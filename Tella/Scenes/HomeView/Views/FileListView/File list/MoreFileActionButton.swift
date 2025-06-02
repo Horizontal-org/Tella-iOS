@@ -1,7 +1,9 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -128,14 +130,10 @@ struct MoreFileActionButton: View {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
                                            appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           editMedia: EditVideoParameters())
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditVideoView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditVideoView(viewModel: viewModel)
             }
         }
     }
@@ -149,15 +147,10 @@ struct MoreFileActionButton: View {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
                                            appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           editMedia: EditAudioParameters())
         DispatchQueue.main.async {
-            
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditAudioView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditAudioView(viewModel: viewModel)
             }
         }
     }

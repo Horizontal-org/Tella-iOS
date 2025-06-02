@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -24,7 +26,6 @@ class RecordViewModel: ObservableObject {
     private var rootFile: VaultFileDB?
     private var resultFile: Binding<[VaultFileDB]?>?
     
-    private var shouldReloadVaultFiles : Binding<Bool>?
     private var shouldShowProgressView : Bool {
         return resultFile != nil
     }
@@ -36,13 +37,11 @@ class RecordViewModel: ObservableObject {
          rootFile: VaultFileDB?,
          resultFile : Binding<[VaultFileDB]?>?,
          sourceView : SourceView,
-         showingRecoredrView: Binding<Bool>,
-         shouldReloadVaultFiles : Binding<Bool>?) {
+         showingRecoredrView: Binding<Bool>) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         self.resultFile = resultFile
-        self.shouldReloadVaultFiles = shouldReloadVaultFiles
         
         audioBackend = RecordingAudioManager()
         
@@ -107,7 +106,6 @@ class RecordViewModel: ObservableObject {
                                         fileSource: .files)
 
         self.mainAppModel.addVaultFile(importedFiles: [importedFile],
-                                       shouldReloadVaultFiles : self.shouldReloadVaultFiles,
                                        autoUpload: autoUpload)
     }
     
@@ -118,7 +116,6 @@ class RecordViewModel: ObservableObject {
     private func updateResultFile(vaultFile:VaultFileDB)  {
         DispatchQueue.main.async {
             self.resultFile?.wrappedValue = [vaultFile]
-            self.shouldReloadVaultFiles?.wrappedValue = true
         }
     }
     

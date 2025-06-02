@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Gustavo on 29/09/2023.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 
@@ -107,8 +109,7 @@ struct CreateEntityView: View {
         PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
                              showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
                              appModel: entityViewModel.mainAppModel,
-                             resultFile: $entityViewModel.resultFile,
-                             shouldReloadVaultFiles: .constant(false))
+                             resultFile: $entityViewModel.resultFile)
     }
     
     private func showSaveEntityConfirmationView() {

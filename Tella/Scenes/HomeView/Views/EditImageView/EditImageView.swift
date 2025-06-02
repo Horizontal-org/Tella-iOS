@@ -2,8 +2,10 @@
 //  EditImageView.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import Mantis
@@ -45,7 +47,7 @@ struct EditImageView: View {
     private func handleSaveAction() {
         self.viewModel.saveChanges()
         self.dismiss()
-        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized, delay: 5.0)
     }
 }
 

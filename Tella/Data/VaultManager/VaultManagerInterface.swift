@@ -1,6 +1,8 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import Combine
@@ -30,7 +32,8 @@ protocol VaultManagerInterface {
     func loadFileDataOld(fileName: String?) -> Data?
     func getDescriptionFileUrl(content:String,fileName:String) -> URL?
     func loadVaultFileToURLAsync(file: ReportVaultFile, withSubFolder: Bool) async -> URL?
-        
+    func loadVaultFileToURLAsync(file: VaultFileDB, withSubFolder: Bool) async -> URL?
+
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL?

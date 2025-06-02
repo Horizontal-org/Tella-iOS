@@ -12,7 +12,7 @@
 "LockUnlock_LockSelect_ActionExpl_Pin" = "Ndlela ya kusirheleleka ka kukarhi";
 "LockUnlock_LockSelect_Title" = "Khiya";
 "LockUnlock_Action_Back" = "Tlhelela ndzhaku";
-"LockUnlock_Action_Next" = "Mahlweni";
+"LockUnlock_Action_Next" = "Yana mahlweni";
 "LockUnlock_LockPasswordSet_Subhead" = "Nghenisa kodiko la wena";
 "LockUnlock_LockPasswordSet_Expl" = "• Use at least 6 characters.\
 • Avoid using passwords that can be guessed easily, such as “password.” \
@@ -40,8 +40,8 @@
 "Home_TellaFiles_Action_AllFiles" = "Maarkivho hinkwawu";
 "Home_TellaFiles_Action_Images" = "Svifaniso";
 "Home_TellaFiles_Action_Videos" = "Mavhidiyo";
-"Home_TellaFiles_Action_Audio" = "Audiyo";
-"Home_TellaFiles_Action_Documents" = "Madocumento";
+"Home_TellaFiles_Action_Audio" = "Awudiyo";
+"Home_TellaFiles_Action_Documents" = "Madokumento";
 "Home_TellaFiles_Action_Others" = "Svin'wana";
 "Home_QuickDelete_Action_Title" = "DELETE";
 "Home_QuickDelete_Action_QuickDelete" = "Quick Delete Activated";
@@ -57,8 +57,8 @@
 "Vault_Items_AppBar" = "%i items";
 "Vault_Item_AppBar" = "%i item";
 "Vault_ManageFiles_SheetTitle" = "Fambisa maarkivho";
-"Vault_ManageFiles_TakePhotoVideo_SheetSelect" = "Endla mufoto/vidiyo";
-"Vault_ManageFiles_RecordAudio_SheetSelect" = "Gravhara audiyo";
+"Vault_ManageFiles_TakePhotoVideo_SheetSelect" = "Endla mufoto/vhidiyo";
+"Vault_ManageFiles_RecordAudio_SheetSelect" = "Gravhara awudiyo";
 "Vault_ManageFiles_ImportFromDevice_SheetSelect" = "Tisa ku suka ka xitirhisiwa";
 "Vault_ImportDelete_Title" = "Import and delete original file?";
 "Vault_ImportDelete_Content" = "After importing the file into Tella, do you want to keep the original file on your device or delete it?";
@@ -111,7 +111,7 @@
 Tap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
 "Vault_EmptyFolder_Expl" = "This folder is empty! Tap the + button below to import a file or create a folder.";
 "Vault_FileAudio_UpdateSecondTime" = "%@s";
-"Recorder_TabBar" = "Gravh";
+"Recorder_TabBar" = "Gravhara";
 "Recorder_AppBar" = "Gravhador";
 "Recorder_SuffixRecording" = "Gravhasawu";
 "Recorder_DeviceTimeLeft" = "left";
@@ -139,7 +139,7 @@ If you want to record a voice, proceed in the following way:\
 ";
 "Recorder_DeniedAudioPermission_Action_Settings" = "Kulunghisa";
 "Recorder_DeniedAudioPermission_Action_Cancel" = "CANCEL";
-"Camera_TabBar" = "Khamera";
+"Camera_TabBar" = "Kamera";
 "Camera_AppBar" = "Images and Videos";
 "Camera_TabTitle_Photo" = "Foto";
 "Camera_TabTitle_Video" = "Vhidiyo";
@@ -186,9 +186,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
 "Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
 "Settings_SettLockTimeout_Immediately_SheetSelect" = "Hi kuhatlisa";
-"Settings_SettLockTimeout_Oneminute_SheetSelect" = "1 mineti";
-"Settings_SettLockTimeout_FiveMinutes_SheetSelect" = "5 watiminete";
-"Settings_SettLockTimeout_ThirtyMinutes_SheetSelect" = "30 watiminete";
+"Settings_SettLockTimeout_Oneminute_SheetSelect" = "1 minuto";
+"Settings_SettLockTimeout_FiveMinutes_SheetSelect" = "5 wa maminuto";
+"Settings_SettLockTimeout_ThirtyMinutes_SheetSelect" = "30 wa maminuto";
 "Settings_SettLockTimeout_OneHour_SheetSelect" = "1 wora";
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCEL";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
@@ -203,9 +203,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_EmptyAllFiles_Expl" = "Maraxkunyo ya wena a ma na nchumu svosvi. Marelatoriyo lawa unga siki marhumela mata humelela laha.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Kaxa de Sayida la wena a li na nchumu svosvi. Marelatoriyo lawa malunghekele ku rhumeliwa mata humelela laha.";
 "Reports_Submitted_EmptyAllFiles_Expl" = "A wu na marelatoriyo lawa marhumeliweke.";
-"Reports_Action_NewReport" = "RELATORIYO LANYIWANA";
+"Reports_Action_NewReport" = "RELATORIYO LA NYIWANA";
 "Reports_Draft_Select_Title" = "Nhlokomhaka";
-"Reports_Draft_Select_Description" = "Thlamuselo";
+"Reports_Draft_Select_Description" = "Tlhamuselo";
 "Reports_Draft_Select_Message" = "Message";
 "Reports_Draft_SendTo" = "Rhumela relatoriyo";
 "Reports_Draft_SuccessMessage" = "The audio recording was saved to your Tella files.";
@@ -227,9 +227,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_ManageReport_View_SheetAction" = "Vona";
 "Reports_ManageReport_Edit_SheetAction" = "Editara";
 "Reports_ManageReport_Open_SheetAction" = "Open";
-"Reports_Draft_Select_SelectProject" = "Hlawula proxjecto ya wena";
+"Reports_Draft_Select_SelectProject" = "Hlawula proxjeto ya wena";
 "Reports_Draft_SelectFiles_TakePhotoVideo_SheetSelect" = "Take photo or video with camera";
-"Reports_Draft_Record_SheetSelect" = "Gravhara audiyo";
+"Reports_Draft_Record_SheetSelect" = "Gravhara awudiyo";
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Khetha ka maarkivho ya Tella";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Khetha ka xitirhisiwa xa wena";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Kurindzela konekinsawu";
@@ -288,7 +288,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
 "Settings_SettFeedback_SuccessSent_Toast" = "Khanimambu kuhinyika mavonelo ya wena!";
 "Settings_SettFeedback_BackgroundSuccessSent_Toast" = "Mavonelo ya wena ma rhumeliwile";
-"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Grvahara raxkunyo?";
+"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Gravhara raxkunyu?";
 "Settings_SettFeedback_ExitFeedback_SheetExpl" = "U nga vuya nkarhi wun'wana ni wun'wana ku humesa mavonelo ya wena.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Grvahara raxkunyo";
@@ -334,7 +334,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Entity_ExitEntity_SheetTitle" = "Huma ka xirho";
 "Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
-"Uwazi_Entity_Action_Next" = "Mahlweni";
+"Uwazi_Entity_Action_Next" = "Yana mahlweni";
 "Uwazi_Entity_Mandatory_Expl" = "Ndhawu leyi yilava uyitsala.";
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
 "Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
@@ -380,7 +380,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
 "Resources_Downloaded_View_SheetSelect" = "Vona";
 "Resource_Downloaded_Remove_SheetSelect" = "Susa lesvi ungabaxara";
-"Resource_Exit_SheetTitle" = "Tshika ku dawuniloda u tlhela u huma?";
+"Resource_Exit_SheetTitle" = "Tshika kubaxara utlhela uhuma?";
 "Resource_Exit_SheetExpl" = "Mfambu wa wena wa kubaxara uta lahleka. U nga ha tlhela u vuya ndzhaku kuva uta baxara svilo.";
 "Resource_Exit_Confirm_SheetSelect" = "HUMA";
 "Resource_Exit_Cancel_SheetSelect" = "YANA MAHLWENI U BAXARA";
@@ -500,7 +500,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "Kucinca a ku gravhariwanga";
 "Vault_EditFile_Exit_SheetExpl" = "Kucinca ka wena a ku gravhariwanga. Xana u lava ku hlayisa emahlweni ko huma?";
 "Vault_EditFile_Exit_SheetAction" = "HUMA U NGA GRAVHARI";
-"Vault_EditFile_FileSaved_Toast" = "Kucinca ka wena ku gravhariwile.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
@@ -548,3 +548,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
+"Settings_SettLang_Ndau_Expl" = "Ndau";

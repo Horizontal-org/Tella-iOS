@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 
@@ -43,6 +45,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangIndonesian = "Settings_SettLang_Indonesian_Expl"
     case settLangPortugueseMozambique = "Settings_SettLang_PortugueseMozambique_Expl"
     case settLangTsonga = "Settings_SettLang_Tsonga_Expl"
+    case settLangNdau = "Settings_SettLang_Ndau_Expl"
 
     // Security
     

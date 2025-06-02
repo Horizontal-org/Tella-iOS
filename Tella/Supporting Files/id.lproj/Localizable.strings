@@ -65,7 +65,7 @@
 "Vault_ImportDelete_SubContent" = "If you delete it, the file imported into Tella will be the only copy left.";
 "Vault_ImportDelete_KeepOriginal" = "SIMPAN YANG ASLI";
 "Vault_ImportDelete_DeleteOriginal" = "HAPUS YANG ASLI";
-"Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Create new folder";
+"Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Buat folder baru";
 "Vault_ManageFiles_PhotoLibrary_SheetSelect" = "Photo Library";
 "Vault_ManageFiles_Document_SheetSelect" = "Document";
 "Vault_MoreActions_Share_SheetSelect" = "Bagikan";
@@ -77,7 +77,7 @@
 "Vault_RenameFile_SheetTitle" = "Ubah nama berkas";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
-"Vault_CreateNewFolder_SheetTitle" = "Create new folder";
+"Vault_CreateNewFolder_SheetTitle" = "Buat folder baru";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
 "Vault_DeleteFile_SheetTitle" = "Hapus berkas?";
@@ -104,7 +104,7 @@
 "Vault_ImportProgress_Cancel_SheetAction" = "CANCEL";
 "Vault_CancelImportFile_SheetTitle" = "Are you sure you want to cancel?";
 "Vault_CancelImportFile_SheetExpl" = "Your file will not be imported.";
-"Vault_CancelImportFile_Back_SheetAction" = "BACK";
+"Vault_CancelImportFile_Back_SheetAction" = "KEMBALI";
 "Vault_CancelImportFile_CancelImport_SheetAction" = "CANCEL IMPORT";
 "Vault_EmptyAllFiles_Expl" = "You don’t have any files in Tella yet.\
 \
@@ -149,7 +149,7 @@ If you want to record a voice, proceed in the following way:\
 "Camera_CancelEncrypting_SheetTitle" = "Batalkan enkripsi dan hapus berkas?";
 "Camera_CancelEncrypting_SheetExpl" = "If you cancel, your file will be lost.";
 "Camera_CancelEncrypting_Delete_SheetAction" = "HAPUS BERKAS";
-"Camera_CancelEncrypting_Back_SheetAction" = "BACK";
+"Camera_CancelEncrypting_Back_SheetAction" = "KEMBALI";
 "Camera_DeniedCameraPermission_Expl" = "The Tella app does not have permission to access the Camera and the Microphone.\
 \
 If you want to take a picture or a video, proceed in the following way:\
@@ -292,7 +292,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_ExitFeedback_SheetExpl" = "Anda bisa kembali lagi kapan saja untuk mengirimkan umpan balik.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Simpan draf";
-"Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
+"Setting_SettServer_Selection_Title" = "Peladen tipe apa yang ingin Anda sambungkan?";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
@@ -368,22 +368,22 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resources_Home_Serve_title" = "Resources";
 "Resources_Downloaded_Title" = "Downloaded";
 "Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
-"Resources_Downloaded_Empty_SecondMsg" = "You have not downloaded any resources.";
-"Resources_Available_Title" = "Available for download";
+"Resources_Downloaded_Empty_SecondMsg" = "Anda tidak ";
+"Resources_Available_Title" = "Tersedia untuk diunduh";
 "Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
-"Resources_Available_Empty" = "There are no resources available for download from your Tella Web project(s).";
+"Resources_Available_Empty" = "Tidak ada sumber daya yang tersedia untuk diunduh dari proyek Tella Web Anda.";
 "Resources_Available_ErrorMsg" = "There was an error fetching resources";
-"Resources_Downloaded_Remove_SheetTitle" = "Remove from downloads";
+"Resources_Downloaded_Remove_SheetTitle" = "Hapus dari unduhan";
 "Resources_Downloaded_Remove_SheetExpl" = "Are you sure you want to remove this resource? You can always download it again";
 "Resources_Downloaded_Remove_Cancel_SheetAction" = "CANCEL";
 "Resources_Downloaded_Remove_Confirm_SheetAction" = "REMOVE";
 "Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
 "Resources_Downloaded_View_SheetSelect" = "Lihat";
-"Resource_Downloaded_Remove_SheetSelect" = "Remove from downloads";
-"Resource_Exit_SheetTitle" = "Stop download and exit?";
-"Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
-"Resource_Exit_Confirm_SheetSelect" = "EXIT";
-"Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";
+"Resource_Downloaded_Remove_SheetSelect" = "Hapus dari unduhan";
+"Resource_Exit_SheetTitle" = "Berhenti mengunduh dan keluar?";
+"Resource_Exit_SheetExpl" = "Progres unduhan Anda akan hilang. Anda selalu dapat kembali nanti untuk melanjutkan mengunduh sumber dayanya lagi.";
+"Resource_Exit_Confirm_SheetSelect" = "KELUAR";
+"Resource_Exit_Cancel_SheetSelect" = "TETAP MENGUNDUH";
 "Vault_MoreActions_Edit_SheetSelect" = "Sunting";
 "Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
 "Vault_DeleteFile_Warning_SheetTitle" = "Peringatan";
@@ -418,12 +418,12 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
 "Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
 "Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
-"Uwazi_Entity_Relationship_Expl" = "Select the entities you want to connect to this property.";
-"Uwazi_Entity_Relationship_Select_title" = "Select entities";
-"Uwazi_Entity_Relationship_AddMore_title" = "Add more entities";
+"Uwazi_Entity_Relationship_Expl" = "Pilih entitas yang Anda ingin sambungkan ke properti ini.";
+"Uwazi_Entity_Relationship_Select_title" = "Pilih entitas";
+"Uwazi_Entity_Relationship_AddMore_title" = "Tambahkan lebih banyak entitas";
 "Uwazi_Entity_Relationship_SingleConnection" = "entity connected";
 "Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
-"Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
+"Uwazi_Relationship_List_Expl" = "Cari atau pilih entitas yang ingin Anda sambungkan ke properti ini.";
 "Uwazi_Relationship_SearchBar_Title" = "Cari";
 "Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\
 \
@@ -435,7 +435,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Setelan";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
-"Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
+"Setting_SettServer_UnavailableConnections_Subhead" = "Koneksi tidak tersedia";
 "Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
@@ -444,19 +444,19 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettServer_DeleteUwaziConnection_SheetExpl" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
 "Settings_SettServer_Cancel_SheetAction" = "CANCEL";
 "Settings_SettServer_Delete_SheetAction" = "DELETE";
-"Setting_Server_GDrive_SelectType_AppBar" = "Select Google drive";
-"Setting_Server_GDrive_SelectType_Subhead" = "Select a Drive to connect to";
-"Setting_Server_GDrive_SelectType_Expl" = "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.";
-"Setting_Server_GDrive_SelectType_Shared" = "USE SHARED DRIVE";
+"Setting_Server_GDrive_SelectType_AppBar" = "Pilih Google drive";
+"Setting_Server_GDrive_SelectType_Subhead" = "Pilih sebuah Drive untuk disambungkan";
+"Setting_Server_GDrive_SelectType_Expl" = "Anda bisa menyambungkan ke Drive Bersama atau membuat sebuah folder baru di Drive personal Anda.";
+"Setting_Server_GDrive_SelectType_Shared" = "GUNAKAN DRIVE BERSAMA";
 "Setting_Server_GDrive_SelectType_Personal" = "USE PERSONAL DRIVE";
 "Setting_Server_GDrive_SelectType_MoreInfo" = "Learn more about the types of drives";
 "Setting_Server_GDrive_SelectShared_Appbar" = "Select shared drive";
-"Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
-"Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
+"Setting_Server_GDrive_CreatePersonal_Desc" = "Laporan Anda akan diunggah ke folder baru di dalam Google Drive Anda. Pilih sebuah nama untuk folder ini di sini.";
+"Setting_Server_GDrive_Success_Message" = "BUKA GOOGLE DRIVE";
 "Setting_Server_Reports_Success_Message" = "KE LAPORAN";
-"Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
-"Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
-"Reports_Submitted_SubmittedList_Expl" = "These are reports that you have successfully submitted.";
+"Reports_Draft_DraftList_Expl" = "Berikut adalah laporan yang sedang Anda kerjakan.";
+"Reports_Outbox_OutboxList_Expl" = "Laporan berikut siap untuk dikirim";
+"Reports_Submitted_SubmittedList_Expl" = "Berikut adalah laporan yang telah berhasil Anda kirimkan.";
 "Reports_DeleteReport_Draft_SheetTitle" = "Delete report";
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
@@ -467,7 +467,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Reports_Outbox_Uploaded_Title" = "diunggah";
 "Nextcloud_AppBar" = "Nextcloud";
 "GDrive_AppBar" = "Google Drive";
-"Error_InvalidURL_Expl" = "Invalid URL";
+"Error_InvalidURL_Expl" = "URL tidak valid";
 "Error_Unexpected_Response_Expl" = "Unexpected response from the server";
 "Error_Unauthorized_Expl" = "Invalid username or password";
 "Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts.";
@@ -476,8 +476,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_Server_URL" = "Masukkan URL peladen";
 "Setting_Server_Password" = "Kata sandi";
-"Setting_Server_Foldername_Placeholder" = "Folder name";
-"Setting_Server_Create_Folder_Title" = "Create new folder";
+"Setting_Server_Foldername_Placeholder" = "Nama folder";
+"Setting_Server_Create_Folder_Title" = "Buat folder baru";
 "Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
 "Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
 "Reports_Outbox_ExitReport_SheetTitle" = "Keluar dari laporan?";
@@ -500,13 +500,13 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditFile_Exit_SheetTitle" = "Perubahan yang belum disimpan";
 "Vault_EditFile_Exit_SheetExpl" = "Perubahan yang Anda buat belum disimpan. Apakah Anda ingin menyimpannya sebelum keluar?";
 "Vault_EditFile_Exit_SheetAction" = "KELUAR TANPA MENYIMPAN";
-"Vault_EditFile_FileSaved_Toast" = "Perubahan yang kamu lakukan telah disimpan.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
 "Setting_SettServer_Dropbox" = "DROPBOX";
 "Setting_Server_Create_Folder_Error" = "This field should not include only spaces, /, and \\ characters.";
-"Settings_Server_Dropbox_Success_Message" = "GO TO DROPBOX";
+"Settings_Server_Dropbox_Success_Message" = "KE DROPBOX";
 "Dropbox_AppBar" = "Dropbox";
 "Dropbox_ConnectionExpired_SheetTitle" = "Your connection to Dropbox expired";
 "Dropbox_ConnectionExpired_SheetExpl" = "You are currently not connected to Dropbox. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
@@ -521,7 +521,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Error_Dropbox_TooManyWriteOperations" = "Too many write operations. Please try again later.";
 "Error_Dropbox_Other" = "An unknown path error occurred.";
 "Error_Dropbox_StartSession" = "Error while starting Dropbox session";
-"Setting_SettServer_Selection_Part1_Message" = "Learn more about connections here.";
+"Setting_SettServer_Selection_Part1_Message" = "Pelajari lebih lanjut tentang sambungan di sini.";
 "Setting_SettServer_Selection_Part2_Message" = "If you work with an organization, you can ask them about which connection to use.";
 "Settings_SettAbout_FAQ" = "Tanya Jawab";
 "Settings_SettAbout_Tutorial" = "Tutorial";
@@ -548,3 +548,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
+"Settings_SettLang_Ndau_Expl" = "Ndau";

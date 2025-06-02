@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by RIMA on 11.11.24.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Combine
 import Foundation
@@ -12,13 +14,26 @@ import SwiftUI
 import AVFoundation
 
 class EditVideoViewModel: EditMediaViewModel {
-    
     private var timeObserver: Any?
+    
     let player = AVPlayer()
     
-    @Published var currentPosition: Double = .zero
-    @Published var shouldSeekVideo = false
     @Published var thumbnails: [UIImage] = []
+    @Published var rotationAngle: Int = 0
+    @Published var rotateState: ViewModelState<Bool> = .loaded(false)
+    @Published var videoSize: CGSize = .zero
+    @Published var videoIsReady = false
+
+    var videoPlayerSize : CGSize {
+        let angle = abs(Int(rotationAngle)) % 360
+        let isRotated = angle == 90 || angle == 270
+        let scaleFactor = videoSize.width / videoSize.height
+        
+        let frameWidth = isRotated ? videoSize.height * scaleFactor : videoSize.width
+        let frameHeight = isRotated ? videoSize.width * scaleFactor : videoSize.height
+        
+        return CGSize(width: frameWidth, height: frameHeight)
+    }
     
     var isSeekInProgress = false {
         didSet {
@@ -26,66 +41,101 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
-        super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+        super.init(file: file, fileURL: fileURL, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         setupListeners()
         initVideo()
     }
     
-    private func initVideo() {
-        guard let file else { return }
-        guard let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
-        self.thumbnails = fileURL.generateThumbnails()
-        let playerItem = AVPlayerItem(url:fileURL)
-        self.player.replaceCurrentItem(with: playerItem)
-        self.onPlay()
-    }
-    
-    private func setupListeners() {
-        $shouldSeekVideo
-            .dropFirst()
-            .filter({ $0 == false })
-            .sink(receiveValue: { [weak self] _ in
-                guard let self = self else { return }
-                seekVideo(to: self.currentPosition)
-            })
-            .store(in: &cancellables)
-        
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600), queue: nil) { [weak self] time in
-            guard let self = self else { return }
-            if self.isSeekInProgress == false {
-                
-                self.currentPosition = time.seconds
-                self.updateOffset(time: currentPosition)
-                
-                if time.seconds == self.file?.duration {
-                    seekVideo(to: 0.0, and: false)
-                }
-            }
-        }
-    }
-    private func seekVideo(to position: Double, and shouldPlay: Bool = true) {
-        
-        self.isSeekInProgress = true
-        self.currentPosition = position
-        
-        let targetTime = CMTime(seconds: self.currentPosition ,
-                                preferredTimescale: 600)
-        self.player.seek(to: targetTime) { _ in
-            self.isSeekInProgress = false
-            if shouldPlay {
-                self.onPlay()
-            }
-        }
+    override func handlePlayButton() {
+        isPlaying ? onPause() : onPlay()
     }
     
     override func onPlay() {
+        if self.currentPosition >= endTime {
+            currentPosition = startTime
+        }
+        
+        seekVideo(to: currentPosition, shouldPlay: true)
         isPlaying = true
-        player.play()
     }
     
     override func onPause() {
         isPlaying = false
         player.pause()
     }
- }
+    
+    override func updateCurrentPosition()  {
+        onPause()
+        self.seekVideo(to: currentPosition)
+    }
+    
+    private func initVideo()   {
+        Task {
+            guard let file else { return }
+            if fileURL == nil {
+                fileURL =  await self.appModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
+            }
+            guard let fileURL else { return }
+            DispatchQueue.main.async {
+                self.videoIsReady = true
+                self.thumbnails = fileURL.generateThumbnails()
+                let playerItem = AVPlayerItem(url:fileURL)
+                self.player.replaceCurrentItem(with: playerItem)
+            }
+        }
+    }
+    
+    private func setupListeners() {
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: nil) { [weak self] time in
+            guard let self = self else { return }
+            self.currentPosition = time.seconds
+            
+            if self.currentPosition >= self.endTime {
+                self.onPause()
+                self.seekVideo(to: self.startTime, shouldPlay: false)
+            }
+        }
+    }
+    
+    private func seekVideo(to position: Double, shouldPlay: Bool = false) {
+        self.currentPosition = position
+        let targetTime = CMTime(seconds: self.currentPosition, preferredTimescale: 600)
+        
+        player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] completed in
+            guard let self = self else { return }
+            if completed {
+                if shouldPlay {
+                    self.player.play()
+                }
+            }
+        }
+    }
+    
+    // Rotates a video file asynchronously and updates UI state accordingly
+    func rotate() {
+        Task { @MainActor in
+            do {
+                rotateState = .loading
+                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                guard let rotatedVideoUrl = try await fileURL?.rotateVideo(by: rotationAngle, newName: copyName )   else { return }
+                self.addEditedFile(urlFile: rotatedVideoUrl)
+                self.rotateState = .loaded(true)
+                self.rotateState = .none
+            } catch {
+                self.rotateState = .error(error.localizedDescription)
+            }
+        }
+    }
+    
+    // Observes the size of the current video in the player and updates a stored value
+    func observeVideoSize() {
+        Task { @MainActor in
+            guard let currentItem = player.currentItem else { return }
+            let horizontalPadding : CGFloat = 50
+            let size =   await currentItem.scaledVideoSize(horizontalPadding: horizontalPadding)
+            self.videoSize = size ?? .zero
+        }
+    }
+    
+}

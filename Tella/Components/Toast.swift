@@ -1,13 +1,15 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import SwiftUI
 
 struct Toast {
     
-    static func displayToast(message : String) {
+    static func displayToast(message: String, delay: TimeInterval = 3.0 ) {
         
         DispatchQueue.main.async {
             
@@ -26,7 +28,7 @@ struct Toast {
                     hostingController.view.bottomAnchor.constraint(equalTo: window.safeAreaLayoutGuide.bottomAnchor),
                 ])
                 
-                UIView.animate(withDuration: 0.5, delay: 3.0, options: UIView.AnimationOptions.curveLinear, animations: {
+                UIView.animate(withDuration: 0.5, delay: delay, options: UIView.AnimationOptions.curveLinear, animations: {
                     hostingController.view.alpha = 0.0
                 }) { _ in
                     hostingController.view.removeFromSuperview()

@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 /*
  This class will handle the recording functionality of the app. Functionality should allow users to record audio which will automatically be saved and encrypted in the Tella app but not on the users phone
@@ -26,15 +28,13 @@ struct RecordView: View {
          rootFile: VaultFileDB? = nil,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
-         resultFile : Binding<[VaultFileDB]?>? = nil,
-         shouldReloadVaultFiles : Binding<Bool>? = nil) {
+         resultFile : Binding<[VaultFileDB]?>? = nil) {
         
         _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
                                                                rootFile: rootFile,
                                                                resultFile: resultFile,
                                                                sourceView: sourceView,
-                                                               showingRecoredrView: showingRecoredrView,
-                                                               shouldReloadVaultFiles: shouldReloadVaultFiles))
+                                                               showingRecoredrView: showingRecoredrView))
     }
     
     func goBack() {

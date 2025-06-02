@@ -3,8 +3,10 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 13/8/2024.
-//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//  Copyright © 2024 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 

@@ -500,7 +500,7 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Vault_EditFile_Exit_SheetTitle" = "Modifications non enregistrées";
 "Vault_EditFile_Exit_SheetExpl" = "Vos modifications n'ont pas été enregistrées. Souhaitez-vous sauvegarder avant de quitter ?";
 "Vault_EditFile_Exit_SheetAction" = "QUITTER SANS ENREGISTRER";
-"Vault_EditFile_FileSaved_Toast" = "Vos modifications ont été enregistrées.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_Copy_Text" = "-copy";
@@ -548,3 +548,4 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
+"Settings_SettLang_Ndau_Expl" = "Ndau";

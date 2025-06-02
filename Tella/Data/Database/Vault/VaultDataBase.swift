@@ -1,8 +1,11 @@
 //
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
+
 import Foundation
+import UIKit
 
 
 protocol VaultDataBaseProtocol {
@@ -101,19 +104,19 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         
         do {
             let parentId = parentId ?? VaultD.rootId
-            let defaultThumbnail = "".data(using: .utf8)
-            
+            let defaultThumbnail = UIImage().jpegData(compressionQuality: 1)
+
             var valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                                KeyValue(key: VaultD.cParentId, value: parentId),
                                KeyValue(key: VaultD.cType, value: file.type.rawValue),
-                               KeyValue(key: VaultD.cMimeType, value: file.mimeType),
+                               KeyValue(key: VaultD.cMimeType, value: file.mimeType ?? ""),
                                KeyValue(key: VaultD.cThumbnail, value: file.thumbnail ?? defaultThumbnail),
                                KeyValue(key: VaultD.cName, value:file.name),
                                KeyValue(key: VaultD.cCreated, value:Date().getDateDouble()),
-                               KeyValue(key: VaultD.cDuration, value:file.duration),
+                               KeyValue(key: VaultD.cDuration, value:file.duration ?? 0.0),
                                KeyValue(key: VaultD.cSize, value:file.size),
-                               KeyValue(key: VaultD.cWidth, value:file.width),
-                               KeyValue(key: VaultD.cHeight, value:file.height)
+                               KeyValue(key: VaultD.cWidth, value:file.width ?? 0.0),
+                               KeyValue(key: VaultD.cHeight, value:file.height ?? 0.0)
             ]
             // Set the encryptionUpdated field to true only if we have it in the database
             // this value is true because the new file to add is already encrypted with the new encryption

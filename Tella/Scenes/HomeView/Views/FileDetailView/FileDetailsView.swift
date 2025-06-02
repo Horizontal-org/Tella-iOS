@@ -1,6 +1,8 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2021 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import SwiftUI
 import QuickLook
@@ -56,14 +58,10 @@ struct FileDetailsView: View {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
                                            appModel: fileListViewModel.appModel,
-                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           editMedia: EditAudioParameters())
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
-                self.present(style: .fullScreen) {
-                    EditAudioView(viewModel: viewModel)
-                }
-            }else {
-                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
+            self.present(style: .fullScreen) {
+                EditAudioView(viewModel: viewModel)
             }
         }
     }

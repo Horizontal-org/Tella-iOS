@@ -1,7 +1,9 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import Foundation
 import UIKit
@@ -27,7 +29,6 @@ class PhotoVideoViewModel : ObservableObject {
     
     var  resultFile : Binding<[VaultFileDB]?>?
     var  rootFile : Binding<VaultFileDB?>?
-    var  shouldReloadVaultFiles : Binding<Bool>?
     var shouldShowProgressView : Bool {
         return resultFile != nil
     }
@@ -42,13 +43,11 @@ class PhotoVideoViewModel : ObservableObject {
     init(mainAppModel: MainAppModel,
          folderPathArray: [VaultFileDB],
          resultFile : Binding<[VaultFileDB]?>?,
-         rootFile : Binding<VaultFileDB?>?,
-         shouldReloadVaultFiles : Binding<Bool>?) {
+         rootFile : Binding<VaultFileDB?>?) {
         self.mainAppModel = mainAppModel
         self.folderPathArray = folderPathArray
         self.resultFile = resultFile
         self.rootFile = rootFile
-        self.shouldReloadVaultFiles = shouldReloadVaultFiles
     }
     
     /// To handle adding the image based on either the user want to preserve the metadata or not
@@ -114,7 +113,7 @@ class PhotoVideoViewModel : ObservableObject {
     }
     
     private func addVaultFileInBackground(importedFiles: [ImportedFile]) {
-        self.mainAppModel.addVaultFile(importedFiles: importedFiles, shouldReloadVaultFiles : self.shouldReloadVaultFiles)
+        self.mainAppModel.addVaultFile(importedFiles: importedFiles)
     }
     
     private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB] ) {
@@ -132,7 +131,6 @@ class PhotoVideoViewModel : ObservableObject {
     private func updateResultFile(vaultFiles:[VaultFileDB])  {
         DispatchQueue.main.async {
             self.resultFile?.wrappedValue = vaultFiles
-            self.shouldReloadVaultFiles?.wrappedValue = true
         }
     }
 }

@@ -1,6 +1,8 @@
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. 
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 
 import AVFoundation
 import UIKit
@@ -20,5 +22,11 @@ final class VideoPlayerView: UIView {
             playerLayer.videoGravity = .resizeAspect
             playerLayer.player = newValue
         }
+    }
+    
+    // Function to apply rotation to the video layer
+    func rotateVideo(by angle: Int) {
+        let radians = angle.degreesToRadians
+        playerLayer.setAffineTransform(CGAffineTransform(rotationAngle: radians))
     }
 }
