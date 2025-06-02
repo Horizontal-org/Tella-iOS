@@ -201,13 +201,8 @@ extension String {
             return nil
         }
     }
-    
-    func isLocalNetworkHost() -> Bool {
-        return self.hasPrefix("192.168.") || self.hasPrefix("10.") ||
-               (self.hasPrefix("172.") && (16...31).contains(Int(self.split(separator: ".")[1]) ?? -1))
-    }
-    
-     func convertIPAddressToBytes() throws -> [UInt8] {
+
+    func convertIPAddressToBytes() throws -> [UInt8] {
         if let ipv4 = IPv4Address(self) {
             return Array(ipv4.rawValue)
         } else if let ipv6 = IPv6Address(self) {
