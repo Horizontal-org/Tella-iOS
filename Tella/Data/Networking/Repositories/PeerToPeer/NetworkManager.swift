@@ -10,6 +10,14 @@
 import Network
 import Foundation
 
+protocol NetworkManagerDelegate: AnyObject {
+    func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest)
+    func networkManagerDidStartListening(_ manager: NetworkManager)
+    func networkManagerDidStopListening(_ manager: NetworkManager)
+    func networkManager(_ manager: NetworkManager, didFailWith error: Error)
+    func networkManagerDidEncounterTLSError(_ manager: NetworkManager)
+}
+
 final class NetworkManager {
     // MARK: - Properties
     private var listener: NWListener?
@@ -100,24 +108,27 @@ final class NetworkManager {
     
     private func startReceive(on connection: NWConnection) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, _, error in
-            if let error = error {
-                self?.handleReceiveError(error)
+            
+            guard let self = self else { return}
+            
+            if let error {
+                self.handleReceiveError(error)
                 return
             }
             
-            guard let data = data, let rawString = data.utf8String() else {
+            guard let data else {
                 debugLog("Failed to read HTTP data")
                 return
             }
             
-            debugLog("Received HTTP Request:\n\(rawString)")
-            
-            guard let httpRequest = rawString.parseHTTPRequest() else {
-                debugLog("Failed to parse the HTTPRequest")
-                return
+            do {
+                let parser = HTTPParser()
+                let request = try parser.parse(data: data)
+                self.processHTTPRequest(request, on: connection,parser: parser)
+            } catch {
+                debugLog("Failed to parse HTTP request: \(error)")
+                self.delegate?.networkManager(self, didFailWith: error)
             }
-            
-            self?.processHTTPRequest(httpRequest, on: connection)
         }
     }
     
@@ -131,17 +142,20 @@ final class NetworkManager {
         }
     }
     
-    private func processHTTPRequest(_ httpRequest: HTTPRequest, on connection: NWConnection) {
+    private func processHTTPRequest(_ httpRequest: HTTPRequest, on connection: NWConnection, parser:HTTPParser) {
         guard let expectedLength = httpRequest.headers.contentLength else {
             debugLog("Content-Length header missing")
             return
         }
         
         let body = httpRequest.body
+        
         if body.utf8.count < expectedLength {
-            debugLog("Body incomplete, waiting for more (\(body.utf8.count)/\(expectedLength))")
+            debugLog("Body incomplete, waiting for more (\(body.count)/\(expectedLength))")
             receiveRemainingBody(on: connection, httpRequest: httpRequest,
-                                 expectedLength: expectedLength, remaining: expectedLength - body.utf8.count)
+                                 expectedLength: expectedLength,
+                                 remaining: expectedLength - body.count,
+                                 parser: parser)
         } else {
             debugLog("Full JSON Body: \(body)")
             delegate?.networkManager(self, didReceiveCompleteRequest: httpRequest)
@@ -149,7 +163,9 @@ final class NetworkManager {
     }
     
     private func receiveRemainingBody(on connection: NWConnection, httpRequest: HTTPRequest,
-                                      expectedLength: Int, remaining: Int) {
+                                      expectedLength: Int,
+                                      remaining: Int,
+                                      parser:HTTPParser) {
         connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { [weak self] data, _, _, error in
             guard let self = self else { return}
             if let error = error {
@@ -158,29 +174,29 @@ final class NetworkManager {
                 return
             }
             
-            guard let data = data, let more = data.utf8String() else {
+            guard let data else {
                 debugLog("Failed to decode remaining data")
                 return
             }
             
-            let fullBody = httpRequest.body + more
-            debugLog("Full JSON Body after completion: \(fullBody)")
-            
-            var completedRequest = httpRequest
-            completedRequest.body = fullBody
-            self.delegate?.networkManager(self, didReceiveCompleteRequest: completedRequest)
+            do {
+                let request = try parser.parse(data: data)
+                
+                let fullBody = httpRequest.body + request.body
+                debugLog("Full JSON Body after completion: \(fullBody)")
+                
+                var completedRequest = httpRequest
+                completedRequest.body = fullBody
+                self.delegate?.networkManager(self, didReceiveCompleteRequest: completedRequest)
+                
+            } catch {
+                debugLog("Failed to parse HTTP request: \(error)")
+                self.delegate?.networkManager(self, didFailWith: error)
+            }
         }
     }
     
     private func resetConnectionState() {
         currentConnection = nil
     }
-}
-
-protocol NetworkManagerDelegate: AnyObject {
-    func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest)
-    func networkManagerDidStartListening(_ manager: NetworkManager)
-    func networkManagerDidStopListening(_ manager: NetworkManager)
-    func networkManager(_ manager: NetworkManager, didFailWith error: Error)
-    func networkManagerDidEncounterTLSError(_ manager: NetworkManager)
 }
