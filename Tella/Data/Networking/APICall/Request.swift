@@ -21,6 +21,7 @@ public enum HTTPHeaderField: String {
     case xRequestedWith = "X-Requested-With"
     case tellaPlatform = "X-Tella-Platform"
     case ByPassCaptchaHeader = "Bypass-Captcha"
+    case connection = "Connection"
 }
 
 public enum XRequestedWithValue: String {

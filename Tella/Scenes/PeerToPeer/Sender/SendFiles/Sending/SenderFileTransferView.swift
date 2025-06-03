@@ -14,7 +14,11 @@ struct SenderFileTransferView: View {
     @ObservedObject var viewModel: SenderFileTransferVM
 
     var body: some View {
-        Text("")
+        ContainerViewWithHeader {
+             
+        } content: {
+            Text("")
+        }
     }
 }
 

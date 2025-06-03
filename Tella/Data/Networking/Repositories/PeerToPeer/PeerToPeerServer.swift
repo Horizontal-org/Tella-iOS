@@ -55,7 +55,7 @@ final class PeerToPeerServer {
         do {
             let serverResponse = try generateRegisterServerResponse()
             handleServerResponse(serverResponse)
-        } catch let error as HTTPError {
+        } catch let error as HTTPStatusCode {
             handleServerResponse(createErrorResponse(error))
         } catch {
             sendInternalServerError()
@@ -97,7 +97,7 @@ final class PeerToPeerServer {
             do {
                 let serverResponse = try generateRegisterServerResponse()
                 handleServerResponse(serverResponse)
-            } catch let error as HTTPError {
+            } catch let error as HTTPStatusCode {
                 handleServerResponse(createErrorResponse(error))
             } catch {
                 sendInternalServerError()
@@ -108,30 +108,36 @@ final class PeerToPeerServer {
     private func generateRegisterServerResponse() throws -> P2PServerResponse {
         guard let body = currentHTTPRequest?.body,
               let registerRequest = body.decodeJSON(RegisterRequest.self) else {
-            throw HTTPError.badRequest
+            throw HTTPStatusCode.badRequest
         }
         
         debugLog("Register request body: \(body)")
         
         if failedAttempts >= 3 {
-            throw HTTPError.tooManyRequests
+            throw HTTPStatusCode.tooManyRequests
         }
         
         if sessionId != nil {
-            throw HTTPError.conflict
+            throw HTTPStatusCode.conflict
         }
         
         guard pin == registerRequest.pin else {
             failedAttempts += 1
-            throw HTTPError.unauthorized
+            throw HTTPStatusCode.unauthorized
         }
         
         let sessionId = UUID().uuidString
         self.sessionId = sessionId
         let response = RegisterResponse(sessionId: sessionId)
         
-        guard let responseData = response.buildResponse() else {
-            throw HTTPError.internalServerError
+        let responseData = HTTPResponseBuilder()
+            .setContentType(.json)
+            .setBody(response)
+            .closeConnection()
+            .build()
+        
+        guard let responseData else {
+            throw HTTPStatusCode.internalServerError
         }
         
         return P2PServerResponse(dataResponse: responseData, response: .success)
@@ -159,7 +165,7 @@ final class PeerToPeerServer {
         do {
             let serverResponse = try generateCloseConnectionResponse(body: body)
             handleServerResponse(serverResponse)
-        } catch let error as HTTPError {
+        } catch let error as HTTPStatusCode {
             handleServerResponse(createErrorResponse(error))
         } catch {
             sendInternalServerError()
@@ -168,17 +174,23 @@ final class PeerToPeerServer {
     
     private func generateCloseConnectionResponse(body: String) throws -> P2PServerResponse {
         guard let closeConnectionRequest = body.decodeJSON(CloseConnectionRequest.self) else {
-            throw HTTPError.badRequest
+            throw HTTPStatusCode.badRequest
         }
         
         guard closeConnectionRequest.sessionID == sessionId else {
-            throw HTTPError.unauthorized
+            throw HTTPStatusCode.unauthorized
         }
         
         let response = BoolResponse(success: true)
         
-        guard let responseData = response.buildResponse() else {
-            throw HTTPError.internalServerError
+        let responseData = HTTPResponseBuilder()
+            .setContentType(.json)
+            .setBody(response)
+            .closeConnection()
+            .build()
+        
+        guard let responseData else {
+            return createErrorResponse(.internalServerError)
         }
         
         return P2PServerResponse(dataResponse: responseData, response: .success)
@@ -189,7 +201,13 @@ final class PeerToPeerServer {
         self.transmissionId = transmissionId
         let response = PrepareUploadResponse(transmissionID: transmissionId)
         
-        guard let responseData = response.buildResponse() else {
+        let responseData = HTTPResponseBuilder()
+            .setContentType(.json)
+            .setBody(response)
+            .closeConnection()
+            .build()
+        
+        guard let responseData else {
             return createErrorResponse(.internalServerError)
         }
         
@@ -200,8 +218,17 @@ final class PeerToPeerServer {
         createErrorResponse(.forbidden)
     }
     
-    private func createErrorResponse(_ error: HTTPError) -> P2PServerResponse {
-        P2PServerResponse(dataResponse: error.buildErrorResponse(), response: .failure)
+    private func createErrorResponse(_ error: HTTPStatusCode) -> P2PServerResponse {
+        
+        let response = ErrorMessage(error: error.reasonPhrase)
+        
+        let responseData = HTTPResponseBuilder(status: error)
+            .setContentType(.json)
+            .setBody(response)
+            .closeConnection()
+            .build()
+        
+        return P2PServerResponse(dataResponse: responseData, response: .failure)
     }
     
     // MARK: - Response Handling
@@ -259,7 +286,7 @@ final class PeerToPeerServer {
     private func saveFile(data: Data, fileName: String) throws {
         let fileManager = FileManager.default
         guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            throw NSError(domain: "PeerToPeerServer", code: HTTPError.internalServerError.rawValue,
+            throw NSError(domain: "PeerToPeerServer", code: HTTPStatusCode.internalServerError.rawValue,
                           userInfo: [NSLocalizedDescriptionKey: "Documents directory not found"])
         }
         
@@ -300,47 +327,6 @@ extension PeerToPeerServer: NetworkManagerDelegate {
         debugLog("Network manager started listening")
     }
     
-}
-
-// MARK: - Supporting Types
-
-enum PeerToPeerEndpoint: String {
-    case register = "/api/v1/register"
-    case prepareUpload = "/api/v1/prepare-upload"
-    case upload = "/api/v1/upload"
-    case closeConnection = "/api/v1/close-connection"
-}
-
-struct P2PServerResponse {
-    let dataResponse: Data?
-    let response: ServerResponseStatus
-}
-
-enum ServerResponseStatus {
-    case success
-    case failure
-}
-
-enum HTTPError: Int, Error {
-    case internalServerError = 500
-    case notFound = 404
-    case unauthorized = 401
-    case badRequest = 400
-    case forbidden = 403
-    case conflict = 409
-    case tooManyRequests = 429
-    
-    var message: String {
-        switch self {
-        case .internalServerError: return "Internal Server Error"
-        case .notFound: return "Not Found"
-        case .unauthorized: return "Unauthorized"
-        case .badRequest: return "Invalid request format"
-        case .forbidden: return "Rejected"
-        case .conflict: return "Active session already exists"
-        case .tooManyRequests: return "Too many requests"
-        }
-    }
 }
 
 extension PeerToPeerServer {
