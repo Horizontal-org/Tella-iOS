@@ -49,6 +49,14 @@ extension Encodable {
         }
     }
     
+    var jsonData: Data? {
+        if let jsonData = try? JSONEncoder().encode(self){
+            return jsonData
+        } else {
+            return nil
+        }
+    }
+
     func generateQRCode(size: CGFloat) -> UIImage {
         let data = self.jsonString?.data(using: .utf8)
         
