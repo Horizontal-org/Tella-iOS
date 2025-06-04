@@ -27,9 +27,9 @@ struct RecipientFileTransferView: View {
     var contentView: some View {
         switch  viewModel.viewState {
         case .waitingRequest:
-            return waitingView
+            return AnyView(waitingView)
         case .awaitingAcceptance:
-            return awaitingAcceptanceView
+            return AnyView(awaitingAcceptanceView)
         }
     }
     
