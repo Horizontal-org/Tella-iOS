@@ -79,4 +79,8 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case senderWaitingReceipient = "PeerToPeer_Sender_WaitingReceipient_Toast"
 
     
+    case stopSharingTitle = "PeerToPeer_StopSharing_SheetTitle"
+    case stopSharingSheetExpl = "PeerToPeer_StopSharing_SheetExpl"
+    case stopSharingContinue = "PeerToPeer_StopSharing_Continue_SheetAction"
+    case stopSharingStop = "PeerToPeer_StopSharing_Stop_SheetAction"
 }

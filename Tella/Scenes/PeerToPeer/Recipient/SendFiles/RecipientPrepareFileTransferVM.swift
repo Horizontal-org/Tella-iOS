@@ -26,7 +26,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     // MARK: - Properties
     
-    private var mainAppModel: MainAppModel
+     var mainAppModel: MainAppModel
     private var server: PeerToPeerServer
     private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?

@@ -65,8 +65,8 @@ struct ServerLoginView: View {
         .frame(height: 57)
     }
     
-    fileprivate func loginButtonView() -> TellaButtonView<AnyView> {
-        return TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
+    fileprivate func loginButtonView() -> TellaButtonView<EmptyView> {
+        return TellaButtonView(title: LocalizableSettings.UwaziLogin.localized,
                                         nextButtonAction: .action,
                                         isValid: $viewModel.validCredentials) {
             UIApplication.shared.endEditing()
