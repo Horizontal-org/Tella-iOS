@@ -21,7 +21,7 @@ struct SuccessAdvancedSettingsView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: LocalizableCommon.commonActionOk.localized,
+                TellaButtonView(title: LocalizableCommon.commonActionOk.localized,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {

@@ -50,13 +50,13 @@ struct PeerToPeerMainView: View {
     var peerToPeerParticipantButtons: some View {
         VStack(spacing: 12) {
             
-            TellaButtonView<AnyView>(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
                                      nextButtonAction: .action,
                                      isOverlay: participant == .sender,
                                      isValid: .constant(true),
                                      action: { participant = .sender }
             ).frame(height: 54)
-            TellaButtonView<AnyView>(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
                                      nextButtonAction: .action,
                                      isOverlay: participant == .recipient,
                                      isValid: .constant(true),
