@@ -89,7 +89,7 @@ struct ManuallyVerificationView: View {
     }
     
     var confirmButton: some View {
-        TellaButtonView<AnyView> (title: LocalizablePeerToPeer.verificationConfirm.localized.uppercased(),
+        TellaButtonView(title: LocalizablePeerToPeer.verificationConfirm.localized.uppercased(),
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
                                   isValid: $viewModel.shouldShowConfirmButton) {
@@ -98,7 +98,7 @@ struct ManuallyVerificationView: View {
     }
     
     var discardButton: some View {
-        TellaButtonView<AnyView>(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
+        TellaButtonView(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
                                  nextButtonAction: .action,
                                  isValid: .constant(true)) {
             viewModel.discardAction()

@@ -74,7 +74,7 @@ struct ServerSelectionView: View {
     fileprivate func buttonViews() -> some View {
         return Group {
             ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
-                TellaButtonView<AnyView>(
+                TellaButtonView(
                     title: connection.title,
                     nextButtonAction: .action,
                     isOverlay: serversViewModel.selectedServerType == connection.type,
@@ -149,7 +149,7 @@ struct ServerSelectionView: View {
             SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
             SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
             ForEach(serversViewModel.unavailableServers, id: \.serverType) { server in
-                TellaButtonView<AnyView>(
+                TellaButtonView(
                     title: server.serverType?.serverTitle ?? "",
                     nextButtonAction: .action,
                     isValid: .constant(false)

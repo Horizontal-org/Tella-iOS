@@ -108,7 +108,6 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     func listenToRegisterPublisher() {
         self.server?.didRegisterManuallyPublisher
-        // .first()
             .sink { [weak self] result in
                 guard let self = self else { return }
                 self.recipientViewAction = result == true ? .showReceiveFiles : .errorOccured

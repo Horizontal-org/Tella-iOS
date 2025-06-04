@@ -35,7 +35,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     @Published var viewAction: SenderPrepareFileTransferAction = .none
     @Published var viewState: SenderPrepareFileTransferState = .prepareFiles
-    
+    @Published var reportIsValid : Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     
@@ -44,6 +44,16 @@ class SenderPrepareFileTransferVM: ObservableObject {
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
         self.sessionId = sessionId
         self.peerToPeerRepository = peerToPeerRepository
+        validateReport()
+    }
+    
+    func validateReport() {
+        Publishers.CombineLatest($validTitle, addFilesViewModel.$files)
+            .map { validTitle, files in
+                (validTitle && !files.isEmpty)
+            }
+            .assign(to: \.reportIsValid, on: self)
+            .store(in: &subscribers)
     }
     
     func prepareUpload() {

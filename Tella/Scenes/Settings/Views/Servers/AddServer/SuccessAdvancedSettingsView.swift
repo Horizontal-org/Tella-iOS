@@ -21,7 +21,7 @@ struct SuccessAdvancedSettingsView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: "OK",
+                TellaButtonView(title: "OK",
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
