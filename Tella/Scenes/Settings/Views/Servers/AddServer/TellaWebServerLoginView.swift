@@ -57,7 +57,7 @@ struct TellaWebServerLoginView: View {
                         Spacer()
                             .frame(height: 32)
 
-                        TellaButtonView<AnyView>(title: "LOG IN",
+                        TellaButtonView(title: "LOG IN",
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()

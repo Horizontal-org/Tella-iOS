@@ -33,7 +33,7 @@ struct AddServerAccessChoiceView: View {
                     Spacer()
                         .frame(height: 12)
                     
-                    TellaButtonView (title: "NO",
+                    TellaButtonView(title: "NO",
                                      nextButtonAction: .destination,
                                      destination: TellaWebServerLoginView().environmentObject(serversViewModel),
                                      isValid: .constant(true))

@@ -59,10 +59,10 @@ struct SenderPrepareFileTransferView: View {
             
             Spacer()
             
-            TellaButtonView<AnyView> (title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
-                                      isValid: .constant(true)) {
+                             isValid: $viewModel.reportIsValid) {
                 viewModel.prepareUpload()
             }.padding(.bottom, 20)
             
@@ -90,7 +90,7 @@ struct SenderPrepareFileTransferView: View {
     private func handleViewState(state: SenderPrepareFileTransferAction) {
         switch state {
         case .displaySendingFiles:
-            self.navigateTo(destination: SenderFileTransferView(viewModel: SenderFileTransferVM()))
+            self.navigateTo(destination: SenderFileTransferView(viewModel: SenderFileTransferVM(mainAppModel: viewModel.mainAppModel, repository: viewModel.peerToPeerRepository)))
             break
         case .showToast(let message):
             Toast.displayToast(message: message)

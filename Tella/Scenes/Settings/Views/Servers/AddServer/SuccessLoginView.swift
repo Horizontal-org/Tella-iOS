@@ -29,7 +29,7 @@ struct SuccessLoginView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: type.successConnectionButtonContent,
+                TellaButtonView(title: type.successConnectionButtonContent,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
@@ -40,7 +40,7 @@ struct SuccessLoginView: View {
                     .frame(height: 12)
                 
                 if type == .tella {
-                    TellaButtonView (title: LocalizableSettings.advancedSettings.localized,
+                    TellaButtonView(title: LocalizableSettings.advancedSettings.localized,
                                      nextButtonAction: .destination,
                                      destination: AdvancedServerSettingsView()
                         .environmentObject(serverViewModel),

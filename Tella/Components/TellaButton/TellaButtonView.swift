@@ -29,6 +29,46 @@ struct TellaButtonView<Destination:View> : View {
         }
     }
     var buttonRole: ButtonRole = .primary
+    init(
+        title: String,
+        nextButtonAction: NextButtonAction,
+        buttonType: ButtonType = .clear,
+        isOverlay: Bool = false,
+        destination: Destination,
+        isValid: Binding<Bool>,
+        buttonRole: ButtonRole = .primary,
+        action: (() -> ())? = nil
+    ) {
+        self.title = title
+        self.nextButtonAction = nextButtonAction
+        self.buttonType = buttonType
+        self.isOverlay = isOverlay
+        self.destination = destination
+        self._isValid = isValid
+        self.buttonRole = buttonRole
+        self.action = action
+    }
+    
+    // MARK: - Initializer without Destination
+    init(
+        title: String,
+        nextButtonAction: NextButtonAction,
+        buttonType: ButtonType = .clear,
+        isOverlay: Bool = false,
+        isValid: Binding<Bool>,
+        buttonRole: ButtonRole = .primary,
+        action: (() -> ())? = nil
+    ) where Destination == EmptyView {
+        self.title = title
+        self.nextButtonAction = nextButtonAction
+        self.buttonType = buttonType
+        self.isOverlay = isOverlay
+        self.destination = nil
+        self._isValid = isValid
+        self.buttonRole = buttonRole
+        self.action = action
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             Button {
@@ -95,32 +135,13 @@ struct TellaButtonStyle : ButtonStyle {
     
 }
 
-// Convenience initializer for when Destination == EmptyView (no navigation)
-extension TellaButtonView where Destination == EmptyView {
-    init(
-        title: String,
-        nextButtonAction: NextButtonAction,
-        buttonType: ButtonType = .clear,
-        isOverlay: Bool = false,
-        isValid: Binding<Bool>,
-        action: (() -> Void)? = nil
-    ) {
-        self.title = title
-        self.nextButtonAction = nextButtonAction
-        self.buttonType = buttonType
-        self.isOverlay = isOverlay
-        self.destination = nil
-        self._isValid = isValid
-        self.action = action
-    }
-}
 struct TellaButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
-            TellaButtonView<AnyView>(title: "Ok",
-                                     nextButtonAction: .action,
-                                     buttonType: .yellow,
-                                     isValid: .constant(false))
+            TellaButtonView(title: "Ok",
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            isValid: .constant(false))
         }
     }
 }

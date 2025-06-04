@@ -58,13 +58,13 @@ struct UwaziServerAccessSelectionView: View {
     }
     fileprivate func buttonView() -> some View {
         return VStack(spacing: 12) {
-            TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
+            TellaButtonView(title: LocalizableSettings.UwaziLogin.localized,
                                      nextButtonAction: .action,
                                      isOverlay: accessServerType == .privateServer,
                                      isValid: .constant(true),action: {
                 accessServerType = .privateServer
             })
-            TellaButtonView<AnyView>(title: LocalizableSettings.UwaziPublicInstance.localized,
+            TellaButtonView(title: LocalizableSettings.UwaziPublicInstance.localized,
                                      nextButtonAction: .action,
                                      isOverlay: accessServerType == .publicServer,
                                      isValid: .constant(true),action: {

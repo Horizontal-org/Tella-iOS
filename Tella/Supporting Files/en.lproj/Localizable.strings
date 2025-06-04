@@ -625,3 +625,13 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_Receipient_FilesRejected_Toast" = "Sender's files rejected.";
 
 "PeerToPeer_Sender_WaitingReceipient_Toast" = "Waiting for the recipient to accept files";
+
+
+
+
+
+"PeerToPeer_StopSharing_SheetTitle" = "Stop sharing files?";
+"PeerToPeer_StopSharing_SheetExpl" = "Nearby sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
+"PeerToPeer_StopSharing_Continue_SheetAction" = "Continue";
+"PeerToPeer_StopSharing_Stop_SheetAction" = "Stop";
+

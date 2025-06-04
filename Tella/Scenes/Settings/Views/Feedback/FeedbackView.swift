@@ -148,7 +148,7 @@ struct FeedbackView: View {
     
     var submitButton : some View {
         
-        TellaButtonView<AnyView> (title:  LocalizableSettings.submit.localized ,
+        TellaButtonView(title:  LocalizableSettings.submit.localized ,
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
                                   isValid: $feedbackViewModel.feedbackIsValid) {

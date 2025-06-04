@@ -51,14 +51,14 @@ struct SelectDriveConnectionView: View {
     
     var connectionsButtons: some View {
         VStack(spacing: 14) {
-            TellaButtonView<AnyView>(
+            TellaButtonView(
                 title: LocalizableSettings.gDriveSelectTypeShared.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
                 isValid: $gDriveServerViewModel.isSharedDriveButtonValid,
                 action: { selectedDriveConnectionType = .shared }
             )
-            TellaButtonView<AnyView>(
+            TellaButtonView(
                 title: LocalizableSettings.gDriveSelectTypePersonal.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .personal,

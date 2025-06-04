@@ -185,7 +185,7 @@ struct DraftView: View  {
     }
     
     var submitButton: some View {
-        TellaButtonView<AnyView>(
+        TellaButtonView(
             title: LocalizableReport.reportsSubmit.localized,
             nextButtonAction: .action,
             buttonType: .yellow,
