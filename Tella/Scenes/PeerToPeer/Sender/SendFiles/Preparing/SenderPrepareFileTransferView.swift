@@ -35,9 +35,9 @@ struct SenderPrepareFileTransferView: View {
     fileprivate var contentView: some View {
         switch viewModel.viewState {
         case .waiting:
-            return waitingView
+            return AnyView(waitingView)
         case .prepareFiles:
-            return prepareFiles
+            return AnyView(prepareFiles)
         }
     }
     
