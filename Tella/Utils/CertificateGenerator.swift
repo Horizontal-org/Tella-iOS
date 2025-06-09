@@ -64,7 +64,7 @@ class CertificateGenerator {
         
         var error: Unmanaged<CFError>?
         guard let key = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            debugLog("RSA key generation error: \(String(describing: error))")
+            debugLog("RSA key generation error)")
             return nil
         }
         return key
@@ -103,7 +103,7 @@ class CertificateGenerator {
             return createSecCertificate(from: certificate)
             
         } catch {
-            debugLog("Certificate generation failed: \(error)")
+            debugLog("Certificate generation failed")
             return nil
         }
     }
@@ -153,7 +153,7 @@ class CertificateGenerator {
             let derData = try certificate.serializeAsPEM().derBytes
             return SecCertificateCreateWithData(nil, Data(derData) as CFData)
         } catch {
-            debugLog("DER serialization failed: \(error)")
+            debugLog("DER serialization failed")
             return nil
         }
     }
@@ -201,7 +201,7 @@ class CertificateGenerator {
         let status = SecItemCopyMatching(identityQuery as CFDictionary, &identityRef)
         
         guard status == errSecSuccess else {
-            debugLog("Failed to retrieve identity from Keychain: \(status)")
+            debugLog("Failed to retrieve identity from Keychain")
             return nil
         }
         

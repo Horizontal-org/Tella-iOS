@@ -76,7 +76,7 @@ final class PeerToPeerServer {
     // MARK: - Request Processing
     private func processCompleteBody(_ body: String, httpRequest: HTTPRequest) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
-            debugLog("Unknown endpoint: \(httpRequest.endpoint)")
+            debugLog("Unknown endpoint")
             return
         }
         
@@ -125,9 +125,7 @@ final class PeerToPeerServer {
               let registerRequest = body.decodeJSON(RegisterRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
-        
-        debugLog("Register request body: \(body)")
-        
+                
         if failedAttempts >= kMaxFailedAttempts {
             throw HTTPStatusCode.tooManyRequests
         }
@@ -291,10 +289,8 @@ final class PeerToPeerServer {
             didReceiveCloseConnectionPublisher.send()
             stopListening()
         default:
-            debugLog("Unhandled endpoint: \(endpoint)")
+            debugLog("Unhandled endpoint")
         }
-        
-        debugLog("Server successfully sent response for endpoint: \(endpoint)")
     }
     
     // MARK: - File Handling
@@ -307,7 +303,6 @@ final class PeerToPeerServer {
         
         let fileURL = documentsURL.appendingPathComponent(fileName)
         try data.write(to: fileURL)
-        debugLog("File saved to: \(fileURL.path)")
     }
     
     private func resetConnectionState() {
