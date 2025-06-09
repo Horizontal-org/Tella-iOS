@@ -16,7 +16,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
     
     func getHash(connectionInfo:ConnectionInfo) -> AnyPublisher<String, Error> {
         
-        let apiResponse = fetchServerPublicKeyHash(endpoint: API.getHash(connectionInfo: connectionInfo))
+        let apiResponse = fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: connectionInfo))
         return apiResponse
             .eraseToAnyPublisher()
     }
@@ -75,7 +75,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
 extension PeerToPeerRepository {
     
     enum API {
-        case getHash(connectionInfo:ConnectionInfo)
+        case ping(connectionInfo:ConnectionInfo)
         case register(connectionInfo:ConnectionInfo, registerRequest:RegisterRequest)
         case prepareUpload(connectionInfo:ConnectionInfo, prepareUpload: PrepareUploadRequest)
         case uploadFile(connectionInfo:ConnectionInfo, fileUploadRequest:FileUploadRequest)
@@ -90,7 +90,7 @@ extension PeerToPeerRepository.API: APIRequest {
     var keyValues: [Key : Value?]? {
         
         switch self {
-        case .getHash:
+        case .ping:
             return nil
         case .register(_, let registerRequest):
             return registerRequest .dictionary
@@ -105,7 +105,7 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var headers: [String: String]? {
         switch self {
-        case .getHash:
+        case .ping:
             return nil
         case .uploadFile:
             return [HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue]
@@ -116,7 +116,7 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var baseURL: String {
         switch self {
-        case .getHash(let connectionInfos),
+        case .ping(let connectionInfos),
                 .register(let connectionInfos, _),
                 .prepareUpload(let connectionInfos, _),
                 .uploadFile(let connectionInfos, _),
@@ -127,6 +127,10 @@ extension PeerToPeerRepository.API: APIRequest {
     
     var path: String? {
         switch self {
+            
+        case .ping:
+            return PeerToPeerEndpoint.ping.rawValue
+
         case .register:
             return PeerToPeerEndpoint.register.rawValue
             
@@ -139,14 +143,12 @@ extension PeerToPeerRepository.API: APIRequest {
         case .closeConnection:
             return PeerToPeerEndpoint.closeConnection.rawValue
             
-        case .getHash:
-            return nil
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .register, .prepareUpload, .uploadFile, .closeConnection, .getHash:
+        case .register, .prepareUpload, .uploadFile, .closeConnection, .ping:
             return HTTPMethod.post
         }
     }

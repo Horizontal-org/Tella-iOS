@@ -8,6 +8,7 @@
 //
 
 enum PeerToPeerEndpoint: String {
+    case ping = "/api/v1/ping"
     case register = "/api/v1/register"
     case prepareUpload = "/api/v1/prepare-upload"
     case upload = "/api/v1/upload"
