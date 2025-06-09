@@ -68,10 +68,13 @@ final class NetworkManager {
         let tlsOptions = NWProtocolTLS.Options()
         let parameters = NWParameters(tls: tlsOptions)
         
-        sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, sec_identity_create(clientIdentity)!)
+        guard let identity = sec_identity_create(clientIdentity) else {
+            throw RuntimeError("Invalid Certificate")
+        }
+        sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, identity)
         
         sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { (_, completionHandler) in
-            completionHandler(sec_identity_create(clientIdentity)!)
+            completionHandler(identity)
         }, .main)
         
         return parameters
