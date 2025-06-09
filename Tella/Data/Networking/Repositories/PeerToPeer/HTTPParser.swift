@@ -72,9 +72,13 @@ final class HTTPParser {
         guard data.count <= UInt32.max else {
             throw RuntimeError("Request too large")
         }
+
+        let result = data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
+            return llhttp_execute(&parser, ptr.bindMemory(to: Int8.self).baseAddress, data.count)
+        }
         
-        _ = data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
-            llhttp_execute(&parser, ptr.bindMemory(to: Int8.self).baseAddress, data.count)
+        if result != HPE_OK  {
+            throw RuntimeError("Parse error")
         }
         
         guard let methodCString = llhttp_method_name(llhttp_method(rawValue: UInt32(parser.method))),
