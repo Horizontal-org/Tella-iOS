@@ -24,6 +24,8 @@ final class NetworkManager {
     private var currentConnection: NWConnection?
     weak var delegate: NetworkManagerDelegate?
     
+    private let kMinimumIncompleteLength = 1
+    private let kMaximumLength = 64 * 1024
     
     // MARK: - Server Lifecycle
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
@@ -107,7 +109,7 @@ final class NetworkManager {
     }
     
     private func startReceive(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, _, error in
+        connection.receive(minimumIncompleteLength: kMinimumIncompleteLength, maximumLength: kMaximumLength) { [weak self] data, _, _, error in
             
             guard let self = self else { return}
             
