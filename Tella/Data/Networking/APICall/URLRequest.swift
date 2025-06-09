@@ -235,7 +235,7 @@ class AuthenticationChallengeDelegate: NSObject, URLSessionDelegate {
         
         // No trusted public key hash: potentially first connection
         guard let trustedHash = trustedPublicKeyHash else {
-            if path == nil {
+            if path == PeerToPeerEndpoint.ping.rawValue  {
                 onReceiveServerPublicKeyHash?(serverPublicKeyHash)
                 completionHandler(.useCredential, nil)
             } else {
