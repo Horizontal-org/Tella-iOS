@@ -79,6 +79,8 @@ final class PeerToPeerServer {
         }
         
         switch endpoint {
+        case .ping:
+            generatePingResponse()
         case .register:
             handleRegisterRequest()
         case .prepareUpload:
@@ -87,6 +89,17 @@ final class PeerToPeerServer {
             handleFileUpload(body: body)
         case .closeConnection:
             handleCloseConnectionRequest(body: body)
+        }
+    }
+    
+    private func generatePingResponse() {
+        let responseData = HTTPResponseBuilder()
+            .closeConnection()
+            .build()
+        
+        if let responseData {
+            let response = P2PServerResponse(dataResponse: responseData, response: .success)
+            sendDataToConnection(serverResponse: response)
         }
     }
     
