@@ -19,6 +19,8 @@ final class PeerToPeerServer {
     private var hasTLSError = false
     private var failedAttempts = 0
     
+    private let kMaxFailedAttempts = 3
+
     // Server state
     private var fileData = Data()
     private var contentLength: Int?
@@ -126,7 +128,7 @@ final class PeerToPeerServer {
         
         debugLog("Register request body: \(body)")
         
-        if failedAttempts >= 3 {
+        if failedAttempts >= kMaxFailedAttempts {
             throw HTTPStatusCode.tooManyRequests
         }
         
