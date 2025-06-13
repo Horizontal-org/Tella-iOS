@@ -8,6 +8,7 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
+import Network
 
 extension String {
     func getDate() -> Date? {
@@ -184,7 +185,7 @@ extension String {
 
     
     func decode<T: Codable>(_ type: T.Type) throws -> T {
-        let data = try JSONSerialization.data(withJSONObject: self)
+        let data = try? JSONSerialization.data(withJSONObject: self)
         return try JSONDecoder().decode (type, from: data)
     }
     
@@ -200,7 +201,18 @@ extension String {
             return nil
         }
     }
+
+    func convertIPAddressToBytes() throws -> [UInt8] {
+        if let ipv4 = IPv4Address(self) {
+            return Array(ipv4.rawValue)
+        } else if let ipv6 = IPv6Address(self) {
+            return Array(ipv6.rawValue)
+        } else {
+            throw CertificateError.invalidIPAddress
+        }
+    }
 }
+
 extension String: @retroactive Identifiable {
     public var id: String { self }
 }
@@ -209,4 +221,9 @@ extension String {
     func url() -> URL? {
         return URL(string: self)
     }
+}
+
+
+enum CertificateError: Error {
+    case invalidIPAddress
 }

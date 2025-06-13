@@ -50,7 +50,7 @@ struct TellaWebAddServerURLView: View {
                                   fieldType: .url)
                     Spacer()
                     
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
+                    NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
                         // serverViewModel.checkURL()

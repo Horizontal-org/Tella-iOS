@@ -8,6 +8,7 @@ import AVFoundation
 import AVKit
 import Combine
 import CoreLocation
+import CommonCrypto
 
 extension Data {
     
@@ -18,7 +19,12 @@ extension Data {
     func string() -> String {
         return String(decoding:  self , as: UTF8.self)
     }
-    
+
+    /// Strict UTF-8 decoding — returns nil if data is invalid
+    func utf8String() -> String? {
+        return String(data: self, encoding: .utf8)
+    }
+
     mutating func extract(size: Int?) -> Data? {
         
         guard let size,  self.count > size  else {
@@ -88,5 +94,14 @@ extension Data {
     func fileExtension(vaultManager:VaultManager) -> String? {
         let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
         return fileTypeHelper?.fileExtension
+    }
+    
+    // Function to compute SHA-256 hash
+    func sha256() -> String {
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        self.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &hash)
+        }
+        return hash.map { String(format: "%04x", $0) }.joined(separator: " ")
     }
 }

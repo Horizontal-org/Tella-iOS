@@ -20,19 +20,15 @@ class UwaziEntityViewModel: ObservableObject {
     var templateName: String = ""
     
     @Published var entryPrompts: [any UwaziEntryPrompt] = []
-    @Published var resultFile : [VaultFileDB]?
-    
+ 
     @Published var showingSuccessMessage : Bool = false
-    @Published var showingImagePicker : Bool = false
-    @Published var showingImportDocumentPicker : Bool = false
-    @Published var showingFileList : Bool = false
-    @Published var showingRecordView : Bool = false
-    @Published var showingCamera : Bool = false
-    
+ 
     @Published var uwaziEntityParser : UwaziEntityParser?
     @Published var shouldHideView : Bool = false
     @Published var entityFetcher: UwaziEntityFetcher? = nil
     
+    //MARK: -AddFilesViewModel
+    @Published var addFilesViewModel: AddFilesViewModel
     var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel : MainAppModel,
@@ -40,7 +36,8 @@ class UwaziEntityViewModel: ObservableObject {
          entityInstanceId:Int?) {
         
         self.mainAppModel = mainAppModel
-        
+        self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
+
         let entityInstance = getInstanceById(entityId: entityInstanceId)
         let templateId  = templateId ?? entityInstance?.templateId
         
@@ -102,7 +99,7 @@ class UwaziEntityViewModel: ObservableObject {
     }
     
     private func bindVaultFileTaken() {
-        $resultFile
+        addFilesViewModel.$resultFile
             .sink(receiveValue: { [weak self] files in
                 
                 guard let self = self, let files = files else { return }

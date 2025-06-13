@@ -122,8 +122,14 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
     
-    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool> = .constant(true)) {
-        let viewToShow = DragView(modalHeight: modalHeight, isShown: isShown, content: {content})
+    func showBottomSheetView<Content:View>(content : Content,
+                                           modalHeight:CGFloat,
+                                           isShown: Binding<Bool> = .constant(true),
+                                           shouldHideOnTap:Bool = true) {
+        let viewToShow = DragView(modalHeight: modalHeight,
+                                  shouldHideOnTap: shouldHideOnTap,
+                                  isShown: isShown,
+                                  content: {content})
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
 }

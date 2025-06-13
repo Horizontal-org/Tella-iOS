@@ -14,6 +14,8 @@ enum FieldType {
     case password
     case code
     case folderName
+    case ipAddress
+    case pin
 }
 
 struct TextfieldView : View {
@@ -41,8 +43,10 @@ struct TextfieldView : View {
             return .URL
         case .text:
             return .alphabet
-        case .code:
+        case .code, .pin:
             return .numberPad
+        case .ipAddress:
+            return .numbersAndPunctuation
         default:
             return . default
         }
@@ -71,7 +75,7 @@ struct TextfieldView : View {
             ZStack {
                 Text(placeholder)
                     .offset(y: fieldContent.isEmpty ? 0 : -22)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .style(.body1Style)
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
                 
@@ -162,7 +166,7 @@ struct TextfieldView : View {
     var errorMessageView : some View {
         if let formattedErrorMessage {
             Text(formattedErrorMessage)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                .style(.body3Style)
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -188,9 +192,15 @@ struct TextfieldView : View {
             
         case .folderName:
             self.isValid = value.folderNameValidator()
+        case .ipAddress:
+            self.isValid = value.ipAddressValidator()
+        case .pin:
+            self.isValid = value.pinValidator()
         }
         
+        
         if shouldValidateOnChange {
+            self.shouldShowError = !self.isValid
             shouldShowErrorOnChange = !self.isValid
         } else {
             self.shouldShowError = false
@@ -206,7 +216,7 @@ struct TextfieldStyle: TextFieldStyle {
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .style(.body1Style)
             .foregroundColor(Color.white)
             .accentColor(.white)
             .multilineTextAlignment(.leading)

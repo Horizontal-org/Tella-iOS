@@ -13,24 +13,24 @@ import SwiftUI
 struct ServerConnectionHeaderView: View {
     
     var title: String
-    var subtitle: String
+    var subtitle: String? = nil
     var imageIconName: String
     var subtitleTextAlignment: TextAlignment = .center
     
     var body: some View {
         VStack(spacing: 8) {
+            
             Image(imageIconName)
                 .padding(.bottom, 16)
-            Text(title)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(subtitleTextAlignment)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(subtitle)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(subtitleTextAlignment)
-                .fixedSize(horizontal: false, vertical: true)
+            CustomText(title,style: .heading1Style,
+                       alignment: .center)
+            
+            if let subtitle {
+                CustomText(subtitle,
+                           style: .body1Style,
+                           alignment: subtitleTextAlignment)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
     }
 }
