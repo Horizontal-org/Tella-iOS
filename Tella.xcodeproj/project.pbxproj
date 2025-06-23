@@ -136,6 +136,7 @@
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
+		124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
@@ -150,6 +151,7 @@
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
 		1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */; };
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
+		1252FDE02E006E13002AF5E8 /* PeerToPeerURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */; };
 		125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125392012D7B12EC00F96BA2 /* WifiSSID.swift */; };
 		125392802D897A9100F96BA2 /* PeerToPeerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
@@ -878,6 +880,7 @@
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
+		124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalURLRequest.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
@@ -892,6 +895,7 @@
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
 		1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstanceToSend.swift; sourceTree = "<group>"; };
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
+		1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerURLSessionDelegate.swift; sourceTree = "<group>"; };
 		125392012D7B12EC00F96BA2 /* WifiSSID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiSSID.swift; sourceTree = "<group>"; };
 		1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerRepository.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
@@ -1668,6 +1672,8 @@
 				CCDC39882AF2BCC600674735 /* Utils */,
 				1233007728E30C7900B8F7BA /* APIRequest.swift */,
 				12D7D11B28E3581E008121C8 /* URLRequest.swift */,
+				124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */,
+				1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */,
 				1203CDE82992C19D00D09073 /* JSONStringEncoder.swift */,
 				1203CDEA2992C1CB00D09073 /* HTTPCodes.swift */,
 				1233007928E3115500B8F7BA /* Request.swift */,
@@ -4343,6 +4349,7 @@
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
+				1252FDE02E006E13002AF5E8 /* PeerToPeerURLSessionDelegate.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
 				123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
@@ -4759,6 +4766,8 @@
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
+				15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */,
+				124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
 				12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,

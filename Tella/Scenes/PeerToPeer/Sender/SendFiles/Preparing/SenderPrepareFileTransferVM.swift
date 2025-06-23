@@ -12,7 +12,7 @@ import Foundation
 
 enum SenderPrepareFileTransferAction {
     case showToast(message: String)
-    case displaySendingFiles
+    case displaySendingFiles(peerToPeerReport:PeerToPeerReport)
     case errorOccured
     case none
 }
@@ -39,6 +39,9 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     
+    var report : PeerToPeerReport?
+    
+    
     init(mainAppModel: MainAppModel, sessionId : String, peerToPeerRepository: PeerToPeerRepository) {
         self.mainAppModel = mainAppModel
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
@@ -58,16 +61,22 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     func prepareUpload() {
         self.viewState = .waiting
-        
+        var peerToPeerFileArray: [PeerToPeerFile] = []
         guard let sessionId else { return }
         
-        let files = addFilesViewModel.files.compactMap { file in
-            return P2PFile(id: UUID().uuidString,
+        let files : [P2PFile] = addFilesViewModel.files.compactMap { file in
+            
+            let id = UUID().uuidString
+            peerToPeerFileArray.append(PeerToPeerFile(fileId: id, transmissionId: "", vaultFile: file))
+            
+            return P2PFile(id: id,
                            fileName: file.name,
                            size: file.size,
                            fileType: file.fileExtension,
                            sha256: "")
+            
         }
+        
         
         let prepareUploadRequest = PrepareUploadRequest(title: title, sessionID: sessionId, files: files)
         
@@ -77,13 +86,18 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 self.handlePrepareUpload(completion:completion)
             }, receiveValue: { response in
                 debugLog(response)
+                _ = peerToPeerFileArray.compactMap({$0.transmissionId = response.transmissionID})
+                let report = PeerToPeerReport(title: self.title, sessionId: sessionId, vaultfiles: peerToPeerFileArray)
+                self.report = report
+                self.viewAction = .displaySendingFiles(peerToPeerReport: report)
+                
             }).store(in: &self.subscribers)
     }
     
     private func handlePrepareUpload(completion:Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:
-            self.viewAction = .displaySendingFiles
+            break
         case .failure(let error):
             debugLog(error)
             switch error {
@@ -101,6 +115,10 @@ class SenderPrepareFileTransferVM: ObservableObject {
     }
 }
 
+
+
+// TODO: To be moved
+
 struct SessionInfo {
     var sessionId : String?
     var transmissionId : String?
@@ -110,3 +128,25 @@ struct SessionInfo {
         self.transmissionId = transmissionId
     }
 }
+
+struct PeerToPeerReport {
+    var title : String
+    var sessionId : String
+    var vaultfiles : [PeerToPeerFile]
+}
+
+class PeerToPeerFile {
+    var fileId : String
+    var transmissionId : String
+    var vaultFile : VaultFileDB
+    var url : URL?
+
+    init(fileId: String, transmissionId: String, vaultFile: VaultFileDB) {
+        self.fileId = fileId
+        self.transmissionId = transmissionId
+        self.vaultFile = vaultFile
+    }
+}
+
+
+

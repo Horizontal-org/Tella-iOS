@@ -8,14 +8,16 @@
 //
 
 struct HTTPRequest {
-    var method : String
-    var endpoint : String
-    var queryParameters : [String:String]
-    var headers : Headers
-    var body : String
+    var method: String
+    var endpoint: String
+    var queryParameters: [String:String]
+    var headers: Headers
+    var body: String
+    var remainingBodyData: Int
+    var bodyFullyReceived: Bool
 }
 
 struct Headers {
-    var contentLength : Int?
-    var contentType : String?
+    var contentLength: Int?
+    var contentType: String?
 }
