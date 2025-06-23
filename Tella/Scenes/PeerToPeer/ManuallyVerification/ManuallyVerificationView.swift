@@ -73,9 +73,11 @@ struct ManuallyVerificationView: View {
         VStack(alignment: .center, spacing: 24) {
             CustomText(part1Text, style: .body1Style)
             
-            CustomText(viewModel.connectionInfo.certificateHash ?? "", style: .body1Style)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .cardModifier()
+            CustomText(viewModel.connectionInfo.certificateHash ?? "",
+                       style: .body1Style,
+                       alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .cardModifier()
             
             CustomText(part2Text, style: .body1Style)
         }
