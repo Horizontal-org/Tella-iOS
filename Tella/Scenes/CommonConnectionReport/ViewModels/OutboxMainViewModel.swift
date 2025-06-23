@@ -36,7 +36,6 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     @Published var shouldShowLoginView : Bool = false
     
     var subscribers = Set<AnyCancellable>()
-    var filesToUpload : [FileToUpload] = []
 
     var uploadButtonTitle: String {
         
