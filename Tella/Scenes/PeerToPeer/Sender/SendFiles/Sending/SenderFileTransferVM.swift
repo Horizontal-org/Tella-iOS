@@ -12,44 +12,62 @@ import Combine
 
 class SenderFileTransferVM: ObservableObject {
     
-    var mainAppModel : MainAppModel
+    var mainAppModel: MainAppModel
+    var repository: PeerToPeerRepository?
+    var report: PeerToPeerReport?
     
-    @Published var progressFileItems : [ProgressFileItemViewModel] = []
-    @Published var percentUploaded : Float = 0.0
-    @Published var percentUploadedInfo : String = ""
-    @Published var uploadedFiles : String = ""
-    
-    @Published var isLoading : Bool = false
+    @Published var progressFileItems: [ProgressFileItemViewModel] = []
+    @Published var percentUploaded: Float = 0.0
+    @Published var percentUploadedInfo: String = ""
+    @Published var uploadedFiles: String = ""
+    @Published var isLoading: Bool = false
+    @Published var shouldShowToast: Bool = false
+    @Published var toastMessage: String = ""
     
     var isSubmissionInProgress: Bool {
         return false
     }
-    
-    @Published var shouldShowToast : Bool = false
-    @Published var toastMessage : String = ""
-    var repository : PeerToPeerRepository?
-    
-    var subscribers = Set<AnyCancellable>()
-    var filesToUpload : [FileToUpload] = []
+    private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel,
-         repository : PeerToPeerRepository?) {
+         repository: PeerToPeerRepository?,
+         report: PeerToPeerReport?) {
         
         self.mainAppModel = mainAppModel
         self.repository = repository
+        self.report = report
         
         initVaultFile()
         
         initializeProgressionInfos()
         
-        initSubmission()
-        
+        submitReport()
     }
     
     func initVaultFile() {}
     
-    func initSubmission() {
+    func submitReport() {
         
+        Task {
+            
+            guard let vaultfiles = report?.vaultfiles else { return }
+            
+            for file in vaultfiles {
+                file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file.vaultFile, withSubFolder: true)
+            }
+            
+            vaultfiles.forEach({ file in
+                guard let url = file.url else { return }
+                repository?.uploadFile(fileUploadRequest: FileUploadRequest(sessionID: report?.sessionId, transmissionID: file.transmissionId, fileID: file.fileId), fileURL: url)
+                    .receive(on: DispatchQueue.main)
+                
+                    .sink { completion in
+                        debugLog("Completion: \(completion)")
+                    } receiveValue: { response in
+                        debugLog("Response: \(response)")
+                    }.store(in: &subscribers)
+            })
+        }
     }
     
     func initializeProgressionInfos() {

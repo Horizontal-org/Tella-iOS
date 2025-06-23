@@ -1,5 +1,5 @@
 //
-//  WifiConnexionView.swift
+//  WifiConnetionView.swift
 //  Tella
 //
 //  Created by RIMA on 31.01.25.

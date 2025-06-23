@@ -15,7 +15,6 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManagerDidStartListening(_ manager: NetworkManager)
     func networkManagerDidStopListening(_ manager: NetworkManager)
     func networkManager(_ manager: NetworkManager, didFailWith error: Error)
-    func networkManagerDidEncounterTLSError(_ manager: NetworkManager)
 }
 
 final class NetworkManager {
@@ -38,7 +37,7 @@ final class NetworkManager {
             setupListenerHandlers()
             self.listener?.start(queue: .main)
         } catch {
-            debugLog("Failed to start listener: \(error.localizedDescription)")
+            debugLog("Failed to start listener")
             delegate?.networkManager(self, didFailWith: error)
         }
     }
@@ -57,7 +56,7 @@ final class NetworkManager {
         
         connection.send(content: data, completion: .contentProcessed { error in
             if let error = error {
-                debugLog("Server send error: \(error)")
+                debugLog("Server send error")
             }
             completion?(error)
         })
@@ -89,7 +88,7 @@ final class NetworkManager {
                 debugLog("Listener is ready and waiting for connections")
                 delegate?.networkManagerDidStartListening(self)
             case .failed(let error):
-                debugLog("Listener failed: \(error.localizedDescription)")
+                debugLog("Listener failed")
                 delegate?.networkManager(self, didFailWith: error)
                 self.stopListening()
             case .cancelled:
@@ -108,11 +107,20 @@ final class NetworkManager {
     private func handleNewConnection(_ connection: NWConnection) {
         currentConnection = connection
         connection.start(queue: .main)
-        startReceive(on: connection)
+        let parser = HTTPParser()
+        
+        receive(connection,
+                minimumIncompleteLength: kMinimumIncompleteLength,
+                maximumLength: kMaximumLength,
+                parser: parser)
     }
     
-    private func startReceive(on connection: NWConnection) {
-        connection.receive(minimumIncompleteLength: kMinimumIncompleteLength, maximumLength: kMaximumLength) { [weak self] data, _, _, error in
+    private func receive(_ connection: NWConnection,
+                         minimumIncompleteLength:Int,
+                         maximumLength:Int,
+                         parser:HTTPParser) {
+        
+        connection.receive(minimumIncompleteLength: minimumIncompleteLength, maximumLength: maximumLength) { [weak self] data, _, _, error in
             
             guard let self = self else { return}
             
@@ -126,78 +134,34 @@ final class NetworkManager {
                 return
             }
             
-            do {
-                let parser = HTTPParser()
-                let request = try parser.parse(data: data)
-                self.processHTTPRequest(request, on: connection,parser: parser)
-            } catch {
-                debugLog("Failed to parse HTTP request: \(error)")
-                self.delegate?.networkManager(self, didFailWith: error)
-            }
+            processHTTPRequest(on: connection, data: data, parser: parser)
         }
+        
     }
     
     private func handleReceiveError(_ error: NWError) {
-        debugLog("Connection error: \(error.localizedDescription)")
+        debugLog("Connection error")
         delegate?.networkManager(self, didFailWith: error)
-        
-        if case .tls(let tlsErrorCode) = error {
-            debugLog("TLS Error: \(tlsErrorCode)")
-            delegate?.networkManagerDidEncounterTLSError(self)
-        }
     }
     
-    private func processHTTPRequest(_ httpRequest: HTTPRequest, on connection: NWConnection, parser:HTTPParser) {
-        guard let expectedLength = httpRequest.headers.contentLength else {
-            debugLog("Content-Length header missing")
-            return
-        }
-        
-        let body = httpRequest.body
-        
-        if body.utf8.count < expectedLength {
-            debugLog("Body incomplete, waiting for more (\(body.count)/\(expectedLength))")
-            receiveRemainingBody(on: connection, httpRequest: httpRequest,
-                                 expectedLength: expectedLength,
-                                 remaining: expectedLength - body.count,
-                                 parser: parser)
-        } else {
-            debugLog("Full JSON Body: \(body)")
-            delegate?.networkManager(self, didReceiveCompleteRequest: httpRequest)
-        }
-    }
-    
-    private func receiveRemainingBody(on connection: NWConnection, httpRequest: HTTPRequest,
-                                      expectedLength: Int,
-                                      remaining: Int,
-                                      parser:HTTPParser) {
-        connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { [weak self] data, _, _, error in
-            guard let self = self else { return}
-            if let error = error {
-                debugLog("Error receiving remaining body: \(error)")
-                self.delegate?.networkManager(self, didFailWith: error)
-                return
+    func processHTTPRequest(on connection: NWConnection,
+                            data:Data,
+                            parser:HTTPParser) {
+        do {
+            
+            let request = try parser.parse(data: data)
+            if request.bodyFullyReceived {
+                delegate?.networkManager(self, didReceiveCompleteRequest: request)
+            } else {
+                receive(connection,
+                        minimumIncompleteLength: request.remainingBodyData,
+                        maximumLength: request.remainingBodyData,
+                        parser: parser)
             }
             
-            guard let data else {
-                debugLog("Failed to decode remaining data")
-                return
-            }
-            
-            do {
-                let request = try parser.parse(data: data)
-                
-                let fullBody = httpRequest.body + request.body
-                debugLog("Full JSON Body after completion: \(fullBody)")
-                
-                var completedRequest = httpRequest
-                completedRequest.body = fullBody
-                self.delegate?.networkManager(self, didReceiveCompleteRequest: completedRequest)
-                
-            } catch {
-                debugLog("Failed to parse HTTP request: \(error)")
-                self.delegate?.networkManager(self, didFailWith: error)
-            }
+        } catch {
+            debugLog("Failed to parse HTTP request")
+            self.delegate?.networkManager(self, didFailWith: error)
         }
     }
     
