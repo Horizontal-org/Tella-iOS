@@ -98,10 +98,30 @@ extension Data {
     
     // Function to compute SHA-256 hash
     func sha256() -> String {
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        
+        // Compute SHA-256 hash
+        var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
         self.withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &hash)
+            _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &digest)
         }
-        return hash.map { String(format: "%04x", $0) }.joined(separator: " ")
+        
+        // Format into 16-bit (2-byte) hex words
+        let words = stride(from: 0, to: digest.count, by: 2).map {
+            (UInt16(digest[$0]) << 8) | UInt16(digest[$0 + 1])
+        }
+        
+        // Group into lines of 4 words
+        return words.chunked(into: 4)
+            .map { $0.map { String(format: "%04x", $0) }.joined(separator: " ") }
+            .joined(separator: "\n")
+    }
+}
+
+// Helper to chunk an array into subarrays of fixed size
+private extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
     }
 }
