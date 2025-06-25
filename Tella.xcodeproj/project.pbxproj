@@ -132,6 +132,7 @@
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
+		12444EFA2E09D6F6006CB86A /* P2PServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12444EF92E09D6F3006CB86A /* P2PServerState.swift */; };
 		1244945E2DD61256002B4A9B /* SenderFileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */; };
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
@@ -876,6 +877,7 @@
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
+		12444EF92E09D6F3006CB86A /* P2PServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PServerState.swift; sourceTree = "<group>"; };
 		1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferView.swift; sourceTree = "<group>"; };
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
@@ -1940,6 +1942,7 @@
 			children = (
 				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
 				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
+				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
 				1282DE502DDE101E004D2176 /* NetworkManager.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
@@ -4629,6 +4632,7 @@
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				209AC6932C332F6000492356 /* PHAssetExtension.swift in Sources */,
+				12444EFA2E09D6F6006CB86A /* P2PServerState.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,

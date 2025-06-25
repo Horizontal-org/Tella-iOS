@@ -85,8 +85,13 @@ class SenderPrepareFileTransferVM: ObservableObject {
             .sink(receiveCompletion: { completion in
                 self.handlePrepareUpload(completion:completion)
             }, receiveValue: { response in
-                debugLog(response)
-                _ = peerToPeerFileArray.compactMap({$0.transmissionId = response.transmissionID})
+                
+                _ = peerToPeerFileArray.compactMap  { file in
+                    
+                    let transmissionId = response.files?.filter({$0.id == file.fileId }).first?.transmissionID
+                    return  file.transmissionId = transmissionId
+                }
+                
                 let report = PeerToPeerReport(title: self.title, sessionId: sessionId, vaultfiles: peerToPeerFileArray)
                 self.report = report
                 self.viewAction = .displaySendingFiles(peerToPeerReport: report)
@@ -137,11 +142,11 @@ struct PeerToPeerReport {
 
 class PeerToPeerFile {
     var fileId : String
-    var transmissionId : String
+    var transmissionId : String?
     var vaultFile : VaultFileDB
     var url : URL?
-
-    init(fileId: String, transmissionId: String, vaultFile: VaultFileDB) {
+    
+    init(fileId: String, transmissionId: String? = nil, vaultFile: VaultFileDB) {
         self.fileId = fileId
         self.transmissionId = transmissionId
         self.vaultFile = vaultFile

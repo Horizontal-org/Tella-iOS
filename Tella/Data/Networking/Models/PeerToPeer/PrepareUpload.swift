@@ -11,8 +11,8 @@ import Foundation
 
 // MARK: - PrepareUpload
 struct PrepareUploadRequest: Codable {
-    let title, sessionID: String
-    let files: [P2PFile]
+    let title, sessionID: String?
+    let files: [P2PFile]?
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -22,17 +22,32 @@ struct PrepareUploadRequest: Codable {
 }
 
 // MARK: - P2PFile
-struct P2PFile: Codable {
-    let id, fileName: String
-    let size: Int
-    let fileType, sha256: String
+class P2PFile: Codable {
+    var id, fileName: String?
+    var size: Int?
+    var fileType, sha256: String?
+    init(id: String?, fileName: String?, size: Int?, fileType: String?, sha256: String) {
+        self.id = id
+        self.fileName = fileName
+        self.size = size
+        self.fileType = fileType
+        self.sha256 = sha256
+    }
 }
 
 // MARK: - PrepareUploadResponse
 struct PrepareUploadResponse: Codable {
-    let transmissionID: String
+    var files: [P2PFileResponse]?
     
+}
+
+
+struct P2PFileResponse: Codable {
+    let id: String?
+    let transmissionID: String?
+
     enum CodingKeys: String, CodingKey {
+        case id
         case transmissionID = "transmissionId"
     }
 }
