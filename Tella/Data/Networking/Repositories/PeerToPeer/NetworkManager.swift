@@ -27,7 +27,7 @@ final class NetworkManager {
     private let kMaximumLength = 64 * 1024
     
     // MARK: - Server Lifecycle
-    func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
+    func startListening(port: Int, clientIdentity: SecIdentity) {
         resetConnectionState()
         
         do {

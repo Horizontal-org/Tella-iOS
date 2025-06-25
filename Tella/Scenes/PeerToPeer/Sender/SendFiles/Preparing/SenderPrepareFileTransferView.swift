@@ -92,7 +92,6 @@ struct SenderPrepareFileTransferView: View {
         case .displaySendingFiles:
             let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel, repository: self.viewModel.peerToPeerRepository, report: self.viewModel.report)
             self.navigateTo(destination: SenderFileTransferView(viewModel: viewModel))
-            break
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:
