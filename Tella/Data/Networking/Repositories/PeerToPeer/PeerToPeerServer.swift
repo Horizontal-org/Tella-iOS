@@ -16,24 +16,14 @@ final class PeerToPeerServer {
     // MARK: - Properties
     private let networkManager = NetworkManager()
     private var currentHTTPRequest: HTTPRequest?
-    private var isUsingManualConnection = false
-    private var failedAttempts = 0
-    
-    private let kMaxFailedAttempts = 3
-    
-    // Server state
-    private var fileData = Data()
-    private var contentLength: Int?
-    private var pin: String?
-    private var sessionId: String?
-    private var transmissionId: String?
+    private var server = P2PServerState()
     
     // Publishers
     let didRegisterPublisher = PassthroughSubject<Bool, Never>()
     let didRegisterManuallyPublisher = PassthroughSubject<Bool, Never>()
     let didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
     let showVerificationHashPublisher = PassthroughSubject<Void, Never>()
-    let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile], Never>()
+    let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile]?, Never>()
     let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
     let didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
     
@@ -43,8 +33,8 @@ final class PeerToPeerServer {
     
     // MARK: - Server Lifecycle
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
-        self.pin = pin
-        networkManager.startListening(port: port, pin: pin, clientIdentity: clientIdentity)
+        server.pin = pin
+        networkManager.startListening(port: port, clientIdentity: clientIdentity)
     }
     
     func stopListening() {
@@ -96,7 +86,7 @@ final class PeerToPeerServer {
     
     private func handlePingRequest() {
         showVerificationHashPublisher.send()
-        isUsingManualConnection = true
+        server.isUsingManualConnection = true
         sendSuccessResponse()
     }
     
@@ -117,7 +107,7 @@ final class PeerToPeerServer {
     }
     
     private func handleRegisterRequest() {
-        if isUsingManualConnection {
+        if server.isUsingManualConnection {
             didRequestRegisterPublisher.send()
         } else {
             do {
@@ -132,26 +122,32 @@ final class PeerToPeerServer {
     }
     
     private func generateRegisterServerResponse() throws -> P2PServerResponse {
+        
+        if server.session != nil {
+            throw HTTPStatusCode.conflict
+        }
+        
+        if server.hasReachedMaxAttempts {
+            throw HTTPStatusCode.tooManyRequests
+        }
+        
         guard let body = currentHTTPRequest?.body,
               let registerRequest = body.decodeJSON(RegisterRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
         
-        if failedAttempts >= kMaxFailedAttempts {
-            throw HTTPStatusCode.tooManyRequests
-        }
-        
-        if sessionId != nil {
-            throw HTTPStatusCode.conflict
-        }
-        
-        guard pin == registerRequest.pin else {
-            failedAttempts += 1
+        guard server.pin == registerRequest.pin else {
+            server.incrementFailedAttempts()
+            if server.hasReachedMaxAttempts {
+                throw HTTPStatusCode.tooManyRequests
+            }
             throw HTTPStatusCode.unauthorized
         }
         
         let sessionId = UUID().uuidString
-        self.sessionId = sessionId
+        let session = P2PSession(sessionId: sessionId)
+        server.session = session
+        
         let response = RegisterResponse(sessionId: sessionId)
         
         let responseData = HTTPResponseBuilder()
@@ -173,10 +169,15 @@ final class PeerToPeerServer {
             return
         }
         
-        guard prepareUploadRequest.sessionID == sessionId else {
+        guard prepareUploadRequest.sessionID == server.session?.sessionId else {
             handleServerResponse(createErrorResponse(.unauthorized))
             return
         }
+        
+        prepareUploadRequest.files?.forEach({ file in
+            guard let id = file.id else { return }
+            server.session?.files[id] = ReceivingFile(file: file)
+        })
         
         didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
     }
@@ -185,7 +186,7 @@ final class PeerToPeerServer {
         do {
             let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
             
-            guard fileUploadRequest.sessionID == sessionId else {
+            guard fileUploadRequest.sessionID == server.session?.sessionId else {
                 handleServerResponse(createErrorResponse(.unauthorized))
                 return
             }
@@ -215,7 +216,7 @@ final class PeerToPeerServer {
             throw HTTPStatusCode.badRequest
         }
         
-        guard closeConnectionRequest.sessionID == sessionId else {
+        guard closeConnectionRequest.sessionID == server.session?.sessionId else {
             throw HTTPStatusCode.unauthorized
         }
         
@@ -235,9 +236,17 @@ final class PeerToPeerServer {
     }
     
     private func createAcceptUploadResponse() -> P2PServerResponse {
-        let transmissionId = UUID().uuidString
-        self.transmissionId = transmissionId
-        let response = PrepareUploadResponse(transmissionID: transmissionId)
+        
+        var files : [P2PFileResponse] = []
+        
+        server.session?.files.forEach({ (key, value) in
+            let transmeissionId = UUID().uuidString
+            value.transmissionId = transmeissionId
+            let fileResponse = P2PFileResponse(id: value.file.id, transmissionID: transmeissionId)
+            files.append(fileResponse)
+        })
+        
+        let response = PrepareUploadResponse(files: files)
         
         let responseData = HTTPResponseBuilder()
             .setContentType(.json)
@@ -275,7 +284,6 @@ final class PeerToPeerServer {
             sendInternalServerError()
             return
         }
-        
         sendDataToConnection(serverResponse: serverResponse)
     }
     
@@ -307,7 +315,7 @@ final class PeerToPeerServer {
         
         switch PeerToPeerEndpoint(rawValue: endpoint) {
         case .register:
-            isUsingManualConnection ? didRegisterManuallyPublisher.send(isSuccess) : didRegisterPublisher.send(isSuccess)
+            server.isUsingManualConnection ? didRegisterManuallyPublisher.send(isSuccess) : didRegisterPublisher.send(isSuccess)
         case .prepareUpload:
             didSendPrepareUploadResponsePublisher.send(isSuccess)
         case .closeConnection:
@@ -332,14 +340,12 @@ final class PeerToPeerServer {
     
     private func resetConnectionState() {
         currentHTTPRequest = nil
-        fileData = Data()
-        contentLength = nil
-        failedAttempts = 0
-        isUsingManualConnection = false
+        server.reset()
     }
 }
 
 extension PeerToPeerServer: NetworkManagerDelegate {
+    
     func networkManagerDidStopListening(_ manager: NetworkManager) {
     }
     
@@ -354,7 +360,6 @@ extension PeerToPeerServer: NetworkManagerDelegate {
     func networkManagerDidStartListening(_ manager: NetworkManager) {
         debugLog("Network manager started listening")
     }
-    
 }
 
 extension PeerToPeerServer {

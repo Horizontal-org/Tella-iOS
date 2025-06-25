@@ -58,7 +58,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] files in
                 guard let self = self else { return }
-                self.files = files
+                self.files = files ?? []
                 self.viewState = .awaitingAcceptance
             }
             .store(in: &subscribers)
