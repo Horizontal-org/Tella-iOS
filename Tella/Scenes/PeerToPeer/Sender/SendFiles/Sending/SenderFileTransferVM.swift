@@ -30,8 +30,8 @@ class SenderFileTransferVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel,
-         repository: PeerToPeerRepository?,
-         report: PeerToPeerReport?) {
+         repository: PeerToPeerRepository? = nil,
+         report: PeerToPeerReport? = nil) {
         
         self.mainAppModel = mainAppModel
         self.repository = repository
