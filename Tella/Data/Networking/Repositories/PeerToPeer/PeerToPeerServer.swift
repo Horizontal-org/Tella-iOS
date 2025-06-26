@@ -64,7 +64,7 @@ final class PeerToPeerServer {
     }
     
     // MARK: - Request Processing
-    private func processCompleteBody(_ body: String, httpRequest: HTTPRequest) {
+    private func processCompleteBody(httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Unknown endpoint")
             return
@@ -78,7 +78,7 @@ final class PeerToPeerServer {
         case .prepareUpload:
             handlePrepareUploadRequest(httpRequest: httpRequest)
         case .upload:
-            handleFileUpload(httpRequest: httpRequest)
+            handleFileUpload(httpRequest: httpRequest, completion: completion)
         case .closeConnection:
             handleCloseConnectionRequest(httpRequest: httpRequest)
         }
@@ -182,18 +182,37 @@ final class PeerToPeerServer {
         didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
     }
     
-    private func handleFileUpload(httpRequest: HTTPRequest) {
+    private func handleFileUpload(httpRequest: HTTPRequest, completion:((URL)-> Void)? = nil) {
         do {
             let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
             
-            guard fileUploadRequest.sessionID == server.session?.sessionId else {
+            guard let fileID = fileUploadRequest.fileID,
+                  let transmissionID = fileUploadRequest.transmissionID,
+                  let sessionID = fileUploadRequest.sessionID else {
+                handleServerResponse(createErrorResponse(.badRequest))
+                return
+            }
+            
+            guard sessionID == server.session?.sessionId else {
                 handleServerResponse(createErrorResponse(.unauthorized))
                 return
             }
             
-            // TODO: Test fileUploadRequest.transmissionID
+            guard let receivedFile = server.session?.files[fileID],
+                  receivedFile.transmissionId != transmissionID,
+                  let fileName = receivedFile.file.fileName
+            else {
+                handleServerResponse(createErrorResponse(.forbidden))
+                return
+            }
             
-            sendSuccessResponse()
+            if httpRequest.bodyFullyReceived {
+                sendSuccessResponse()
+            } else {
+                let url = FileManager.tempDirectory(withFileName: fileName)
+                completion?(url)
+                return
+            }
             
         } catch {
             
@@ -326,18 +345,6 @@ final class PeerToPeerServer {
         }
     }
     
-    // MARK: - File Handling
-    private func saveFile(data: Data, fileName: String) throws {
-        let fileManager = FileManager.default
-        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            throw NSError(domain: "PeerToPeerServer", code: HTTPStatusCode.internalServerError.rawValue,
-                          userInfo: [NSLocalizedDescriptionKey: "Documents directory not found"])
-        }
-        
-        let fileURL = documentsURL.appendingPathComponent(fileName)
-        try data.write(to: fileURL)
-    }
-    
     private func resetConnectionState() {
         currentHTTPRequest = nil
         server.reset()
@@ -354,8 +361,19 @@ extension PeerToPeerServer: NetworkManagerDelegate {
     
     func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest) {
         currentHTTPRequest = request
-        processCompleteBody(request.body, httpRequest: request)
+        processCompleteBody(httpRequest: request)
     }
+    
+    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
+        currentHTTPRequest = request
+        processCompleteBody(httpRequest: request, completion:completion)
+    }
+    
+    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
+        currentHTTPRequest = request
+        processCompleteBody(httpRequest: request, completion:completion)
+    }
+    
     
     func networkManagerDidStartListening(_ manager: NetworkManager) {
         debugLog("Network manager started listening")
