@@ -18,14 +18,21 @@ final class HTTPParser {
     private var url = ""
     private var endpoint = ""
     private var contentLength: Int?
-    private var contentType: String?
+    private var contentTypeString: String?
     private var currentHeaderField: String?
     private var remainingBodyData: Int = 0
     private var body = ""
     private var bodyFullyReceived: Bool = false
     
+    
+    var queryParametersAreVerified : Bool = false
+    
     var fileHandle: FileHandle?
     var fileURL: URL?
+    
+    var contentType: ContentType? {
+        return ContentType(rawValue:  contentTypeString ?? "")
+    }
     
     init() {
         
@@ -55,7 +62,7 @@ final class HTTPParser {
                 if key == HTTPHeaderField.contentLength.rawValue {
                     instance.contentLength = Int(value)
                 } else if key == HTTPHeaderField.contentType.rawValue {
-                    instance.contentType = value
+                    instance.contentTypeString = value
                 }
                 instance.currentHeaderField = nil
             }
@@ -71,7 +78,7 @@ final class HTTPParser {
                 count: length
             )
             
-            let contentType = ContentType(rawValue: instance.contentType ?? "")
+            let contentType = ContentType(rawValue: instance.contentTypeString ?? "")
             switch contentType {
             case .json:
                 let value = String(decoding: buffer, as: UTF8.self)
@@ -140,7 +147,7 @@ final class HTTPParser {
             method: String(cString: methodCString),
             endpoint: urlComponents.path,
             queryParameters: queryParams,
-            headers: Headers(contentLength: contentLength, contentType: contentType),
+            headers: Headers(contentLength: contentLength, contentType: contentTypeString),
             body: body,
             remainingBodyData: remainingBodyData,
             bodyFullyReceived: bodyFullyReceived
