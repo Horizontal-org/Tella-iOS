@@ -12,6 +12,9 @@ import Foundation
 
 protocol NetworkManagerDelegate: AnyObject {
     func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest)
+    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?)
+    func networkManager(_ manager: NetworkManager, didReceiveProgress request: HTTPRequest)
+
     func networkManagerDidStartListening(_ manager: NetworkManager)
     func networkManagerDidStopListening(_ manager: NetworkManager)
     func networkManager(_ manager: NetworkManager, didFailWith error: Error)
@@ -150,9 +153,24 @@ final class NetworkManager {
         do {
             
             let request = try parser.parse(data: data)
+            
             if request.bodyFullyReceived {
                 delegate?.networkManager(self, didReceiveCompleteRequest: request)
+            } else if !(request.queryParameters.isEmpty) && !parser.queryParametersAreVerified && parser.contentType == .data {
+                
+                delegate?.networkManager(self, verifyParametersForDataRequest: request, completion: { fileURL in
+                    parser.queryParametersAreVerified = true
+                    parser.fileURL = fileURL
+                    
+                    self.receive(connection,
+                                 minimumIncompleteLength: request.remainingBodyData,
+                                 maximumLength: request.remainingBodyData,
+                                 parser: parser)
+                })
+                
             } else {
+                parser.contentType == .data
+                
                 receive(connection,
                         minimumIncompleteLength: request.remainingBodyData,
                         maximumLength: request.remainingBodyData,
