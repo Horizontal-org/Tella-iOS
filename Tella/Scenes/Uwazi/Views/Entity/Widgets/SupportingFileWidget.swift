@@ -12,73 +12,32 @@ import SwiftUI
 
 struct SupportingFileWidget: View {
     @ObservedObject var prompt: UwaziFilesEntryPrompt
-    @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
+    
+    init(prompt: UwaziFilesEntryPrompt, entityViewModel: UwaziEntityViewModel) {
+        self.prompt = prompt
+        self.entityViewModel = entityViewModel
+    }
     
     var body: some View {
-        UwaziFileSelector(prompt: prompt, addFiles: {
-            UIApplication.shared.endEditing()
-            showAddFileSheet()
-        }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
-            .environmentObject(prompt)
+        VStack {
+            Spacer()
+            Text(prompt.helpText!)
+                .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                .foregroundColor(Color.white.opacity(0.87))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            AddFileBottomSheetView(viewModel: entityViewModel.addFilesViewModel, content: {
+                UwaziSelectFileComponent(title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
+            }, moreAction: {
+                entityViewModel.addFilesViewModel.shouldShowDocumentsOnly = false
+            })
+            .background(Color.white.opacity(0.08))
+            .cornerRadius(15)
+        }
+        
         if(prompt.value.count > 0) {
             FileDropdown(files: $prompt.value)
         }
     }
-    
-    func showAddFileSheet() {
-            
-            sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
-                ActionListBottomSheet(items: addFileToDraftItems,
-                                      headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
-                                      action:  {item in
-                    self.handleActions(item : item)
-                })
-            })
-        }
-    
-    func showAddPhotoVideoSheet() {
-        
-            entityViewModel.showingImagePicker = true
-        }
-    
-    var fileListView : some View {
-        FileListView(appModel: entityViewModel.mainAppModel,
-                     filterType: .audioPhotoVideo,
-                         title: LocalizableReport.selectFiles.localized,
-                         fileListType: .selectFiles,
-                         resultFile: $entityViewModel.resultFile)
-        }
-    
-    private func handleActions(item: ListActionSheetItem) {
-            
-            guard let type = item.type as? ManageFileType else { return }
-            
-            switch type {
-                
-            case .camera:
-                sheetManager.hide()
-                entityViewModel.showingCamera = true
-                
-            case .recorder:
-                sheetManager.hide()
-                entityViewModel.showingRecordView = true
-                
-            case .fromDevice:
-                showAddPhotoVideoSheet()
-                
-            case .tellaFile:
-                sheetManager.hide()
-                navigateTo(destination: fileListView)
-                
-            default:
-                break
-            }
-        }
 }
 
-//struct SupportingFileWidget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SupportingFileWidget()
-//    }
-//}

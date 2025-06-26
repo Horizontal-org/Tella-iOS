@@ -57,7 +57,7 @@ struct TellaWebServerLoginView: View {
                         Spacer()
                             .frame(height: 32)
 
-                        TellaButtonView<AnyView>(title: "LOG IN",
+                        TellaButtonView(title: "LOG IN",
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
@@ -69,7 +69,7 @@ struct TellaWebServerLoginView: View {
                         
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validPassword,
+                    NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validPassword,
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }

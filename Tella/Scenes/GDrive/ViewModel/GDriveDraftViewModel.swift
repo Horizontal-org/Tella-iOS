@@ -28,7 +28,7 @@ class GDriveDraftViewModel: DraftMainViewModel {
             self.description = report.description ?? ""
             
             if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
-                self.files = Set(vaultFileResult)
+                addFilesViewModel.files = Set(vaultFileResult)
             }
         }
         
@@ -43,7 +43,7 @@ class GDriveDraftViewModel: DraftMainViewModel {
             status: status ?? .unknown,
             server: server as? GDriveServer,
             folderId: nil,
-            vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
+            vaultFiles: addFilesViewModel.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,
                                                             bytesSent: 0,
                                                             createdDate: Date(),
@@ -77,17 +77,5 @@ class GDriveDraftViewModel: DraftMainViewModel {
     }
     private func getServer() {
         self.server = mainAppModel.tellaData?.getDriveServers().first
-    }
-    
-    override func deleteFile(fileId: String?) {
-        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
-        files.remove(at: index)
-    }
-    
-    override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
-            self.files.insert(value)
-        }).store(in: &subscribers)
     }
 }

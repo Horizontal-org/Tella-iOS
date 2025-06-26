@@ -13,7 +13,7 @@ import SwiftUI
 struct UwaziTextWidget: View {
     
     @ObservedObject var prompt: UwaziTextEntryPrompt
-    @EnvironmentObject var uwaziEntityViewModel : UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         VStack(alignment: .leading) {
             TextField("", text: $prompt.value)
@@ -22,7 +22,7 @@ struct UwaziTextWidget: View {
             .frame( height: 22)
             .onChange(of: prompt.value, perform: { value in
                 prompt.showClear = !value.isEmpty
-                uwaziEntityViewModel.publishUpdates()
+                entityViewModel.publishUpdates()
             })
 
             Divider()
