@@ -13,23 +13,37 @@ final class HTTPParser {
     
     private var parser = llhttp_t()
     private var settings = llhttp_settings_t()
-    
-    private var method = ""
     private var url = ""
     private var endpoint = ""
     private var contentLength: Int?
     private var contentTypeString: String?
     private var currentHeaderField: String?
-    private var remainingBodyData: Int = 0
     private var body = ""
-    private var bodyFullyReceived: Bool = false
     
+    var bodyFullyReceived: Bool = false
+    var parserIsPaused: Bool = false
     
     var queryParametersAreVerified : Bool = false
     
     var fileHandle: FileHandle?
     var fileURL: URL?
+    var pausedData: Data?
     
+    var method: String?
+    var queryParameters: [String:String] = [:]
+    var headers: Headers?
+    
+    var onReceiveBody: (() -> Void)?
+    
+    var request: HTTPRequest {
+        return HTTPRequest(
+            endpoint: endpoint,
+            queryParameters: queryParameters,
+            headers: Headers(contentLength: contentLength, contentType: contentTypeString),
+            body: body,
+            bodyFullyReceived: bodyFullyReceived
+        )
+    }
     var contentType: ContentType? {
         return ContentType(rawValue:  contentTypeString ?? "")
     }
@@ -43,7 +57,25 @@ final class HTTPParser {
             let instance = Unmanaged<HTTPParser>.fromOpaque(parser!.pointee.data).takeUnretainedValue()
             let value = String(decoding: UnsafeBufferPointer(start: UnsafeRawPointer(at).assumingMemoryBound(to: UInt8.self), count: length), as: UTF8.self)
             instance.url += value
-            return 0
+            
+            if let urlComponents = URLComponents(string: instance.url) {
+                
+                instance.endpoint = urlComponents.path
+                var queryParams: [String: String] = [:]
+                if let items = urlComponents.queryItems {
+                    for item in items {
+                        queryParams[item.name] = item.value ?? ""
+                    }
+                }
+                instance.queryParameters = queryParams
+            }
+            
+            if instance.queryParameters.isEmpty {
+                return 0
+            } else {
+                instance.parserIsPaused = true
+                return Int32(HPE_PAUSED.rawValue)
+            }
         }
         
         settings.on_header_field = { parser, at, length in
@@ -61,15 +93,20 @@ final class HTTPParser {
             if let key = instance.currentHeaderField {
                 if key == HTTPHeaderField.contentLength.rawValue {
                     instance.contentLength = Int(value)
+                    
+                    
                 } else if key == HTTPHeaderField.contentType.rawValue {
                     instance.contentTypeString = value
                 }
                 instance.currentHeaderField = nil
             }
+            
+            
             return 0
         }
         
         settings.on_body = { parser, at, length in
+            
             guard let parser = parser, let at = at else { return 0 }
             let instance = Unmanaged<HTTPParser>.fromOpaque(parser.pointee.data).takeUnretainedValue()
             
@@ -85,7 +122,7 @@ final class HTTPParser {
                 instance.body += value
             case .data:
                 if instance.fileHandle == nil {
-                    instance.createTempFile()
+                    instance.createFileHandle()
                 }
                 do {
                     try instance.fileHandle?.seekToEnd()
@@ -97,6 +134,7 @@ final class HTTPParser {
             default:
                 break
             }
+            instance.onReceiveBody?()
             
             return 0
         }
@@ -104,9 +142,9 @@ final class HTTPParser {
         settings.on_message_complete = { parser in
             
             let instance = Unmanaged<HTTPParser>.fromOpaque(parser!.pointee.data).takeUnretainedValue()
-            debugLog("on_message_complete")
             instance.bodyFullyReceived = true
-            instance.remainingBodyData = 0
+            instance.onComplete?()
+            debugLog("on_message_complete")
             return 0
         }
         
@@ -114,7 +152,7 @@ final class HTTPParser {
         parser.data = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
     }
     
-    func parse(data: Data) throws -> HTTPRequest {
+    func parse(data: Data) throws {
         guard data.count <= UInt32.max else {
             throw RuntimeError("Request too large")
         }
@@ -123,46 +161,48 @@ final class HTTPParser {
             return llhttp_execute(&parser, ptr.bindMemory(to: Int8.self).baseAddress, data.count)
         }
         
+        if result ==  HPE_PAUSED  {
+            let errorPos = llhttp_get_error_pos(&parser)
+            
+            // Calculate offset using pointer arithmetic
+            let dataStart = data.withUnsafeBytes { $0.baseAddress!.assumingMemoryBound(to: Int8.self) }
+            let consumed = dataStart.distance(to: errorPos!)
+            
+            if consumed < data.count {
+                pausedData = data.subdata(in: consumed..<data.count)
+            } else {
+                pausedData = nil
+            }
+            return
+        }
+        
         if result != HPE_OK  {
             throw RuntimeError("Parse error")
         }
-        
-        guard let methodCString = llhttp_method_name(llhttp_method(rawValue: UInt32(parser.method))),
-              let urlComponents = URLComponents(string: url) else {
-            throw RuntimeError("Invalid request")
-        }
-        
-        var queryParams: [String: String] = [:]
-        if let items = urlComponents.queryItems {
-            for item in items {
-                queryParams[item.name] = item.value ?? ""
-            }
-        }
-        
-        if let expected = contentLength {
-            remainingBodyData = abs(expected - body.count)
-        }
-        
-        return HTTPRequest(
-            method: String(cString: methodCString),
-            endpoint: urlComponents.path,
-            queryParameters: queryParams,
-            headers: Headers(contentLength: contentLength, contentType: contentTypeString),
-            body: body,
-            remainingBodyData: remainingBodyData,
-            bodyFullyReceived: bodyFullyReceived
-        )
     }
     
-    private func createTempFile() {
-        let tempDir = FileManager.default.temporaryDirectory
-        let uniqueFileName = UUID().uuidString
-        let url = tempDir.appendingPathComponent(uniqueFileName).appendingPathExtension("heic")
+    func resumeParsing() throws {
+        parserIsPaused = false
         
+        guard let data = pausedData else { return }
+        
+        let result = data.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) in
+            llhttp_resume(&parser)
+            return llhttp_execute(&parser, ptr.bindMemory(to: Int8.self).baseAddress, data.count)
+        }
+        
+        pausedData = nil
+        
+        if result != HPE_OK {
+            throw RuntimeError("Resume parse error")
+        }
+    }
+    
+    private func createFileHandle() {
         do {
-            try Data().write(to: url, options: .atomic)
-            self.fileHandle = try FileHandle(forUpdating: url)
-            self.fileURL = url
+            guard let fileURL  else { return  }
+            try Data().write(to: fileURL, options: .atomic)
+            self.fileHandle = try FileHandle(forUpdating: fileURL)
         } catch {
             debugLog("Failed to create temp file: \(error)")
         }
