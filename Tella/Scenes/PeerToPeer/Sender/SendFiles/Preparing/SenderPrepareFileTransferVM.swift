@@ -70,13 +70,12 @@ class SenderPrepareFileTransferVM: ObservableObject {
             peerToPeerFileArray.append(PeerToPeerFile(fileId: id, transmissionId: "", vaultFile: file))
             
             return P2PFile(id: id,
-                           fileName: file.name,
+                           fileName: file.name.appending(".\(file.fileExtension)"),
                            size: file.size,
                            fileType: file.fileExtension,
                            sha256: "")
             
         }
-        
         
         let prepareUploadRequest = PrepareUploadRequest(title: title, sessionID: sessionId, files: files)
         

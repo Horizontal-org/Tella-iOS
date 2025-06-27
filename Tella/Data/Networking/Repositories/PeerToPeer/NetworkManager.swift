@@ -14,7 +14,7 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest)
     func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?)
     func networkManager(_ manager: NetworkManager, didReceiveProgress request: HTTPRequest)
-
+    
     func networkManagerDidStartListening(_ manager: NetworkManager)
     func networkManagerDidStopListening(_ manager: NetworkManager)
     func networkManager(_ manager: NetworkManager, didFailWith error: Error)
@@ -113,17 +113,17 @@ final class NetworkManager {
         let parser = HTTPParser()
         
         receive(connection,
-                minimumIncompleteLength: kMinimumIncompleteLength,
                 maximumLength: kMaximumLength,
                 parser: parser)
     }
     
     private func receive(_ connection: NWConnection,
-                         minimumIncompleteLength:Int,
-                         maximumLength:Int,
+                         maximumLength:Int?,
                          parser:HTTPParser) {
+        var maximumLength = (maximumLength ?? kMaximumLength)
+        maximumLength = maximumLength == 0 ? 1 : maximumLength
         
-        connection.receive(minimumIncompleteLength: minimumIncompleteLength, maximumLength: maximumLength) { [weak self] data, _, _, error in
+        connection.receive(minimumIncompleteLength: 1, maximumLength: maximumLength) { [weak self] data, _, isComplete, error in
             
             guard let self = self else { return}
             
@@ -135,6 +135,9 @@ final class NetworkManager {
             guard let data else {
                 debugLog("Failed to read HTTP data")
                 return
+            }
+            
+            if isComplete {
             }
             
             processHTTPRequest(on: connection, data: data, parser: parser)
@@ -152,35 +155,48 @@ final class NetworkManager {
                             parser:HTTPParser) {
         do {
             
-            let request = try parser.parse(data: data)
-            
-            if request.bodyFullyReceived {
-                delegate?.networkManager(self, didReceiveCompleteRequest: request)
-            } else if !(request.queryParameters.isEmpty) && !parser.queryParametersAreVerified && parser.contentType == .data {
+            parser.onReceiveBody = {
                 
-                delegate?.networkManager(self, verifyParametersForDataRequest: request, completion: { fileURL in
-                    parser.queryParametersAreVerified = true
-                    parser.fileURL = fileURL
-                    
-                    self.receive(connection,
-                                 minimumIncompleteLength: request.remainingBodyData,
-                                 maximumLength: request.remainingBodyData,
-                                 parser: parser)
+            }
+            
+            try parser.parse(data: data)
+            
+            if parser.parserIsPaused {
+                
+                self.delegate?.networkManager(self, verifyParametersForDataRequest: parser.request, completion: { url in
+                    do {
+                        parser.fileURL = url
+                        try parser.resumeParsing()
+                        self.check(on: connection, parser: parser)
+                    } catch {
+                        debugLog("Failed to parse HTTP request")
+                        self.delegate?.networkManager(self, didFailWith: error)
+                    }
                 })
                 
             } else {
-                parser.contentType == .data
-                
-                receive(connection,
-                        minimumIncompleteLength: request.remainingBodyData,
-                        maximumLength: request.remainingBodyData,
-                        parser: parser)
+                check(on: connection, parser: parser)
             }
-            
         } catch {
             debugLog("Failed to parse HTTP request")
             self.delegate?.networkManager(self, didFailWith: error)
         }
+    }
+    
+    func check(on connection: NWConnection, parser:HTTPParser)  {
+        if parser.request.bodyFullyReceived {
+            delegate?.networkManager(self, didReceiveCompleteRequest: parser.request)
+        } else {
+            receive(connection,
+                    maximumLength: parser.request.headers.contentLength,
+                    parser: parser)
+        }
+        
+    }
+    
+    
+    func continueParsing() {
+        
     }
     
     private func resetConnectionState() {

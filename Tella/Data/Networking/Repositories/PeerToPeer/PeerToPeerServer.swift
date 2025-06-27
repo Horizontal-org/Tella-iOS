@@ -199,7 +199,7 @@ final class PeerToPeerServer {
             }
             
             guard let receivedFile = server.session?.files[fileID],
-                  receivedFile.transmissionId != transmissionID,
+                  receivedFile.transmissionId == transmissionID,
                   let fileName = receivedFile.file.fileName
             else {
                 handleServerResponse(createErrorResponse(.forbidden))
@@ -369,11 +369,8 @@ extension PeerToPeerServer: NetworkManagerDelegate {
         processCompleteBody(httpRequest: request, completion:completion)
     }
     
-    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
-        currentHTTPRequest = request
-        processCompleteBody(httpRequest: request, completion:completion)
+    func networkManager(_ manager: NetworkManager, didReceiveProgress request: HTTPRequest){
     }
-    
     
     func networkManagerDidStartListening(_ manager: NetworkManager) {
         debugLog("Network manager started listening")
