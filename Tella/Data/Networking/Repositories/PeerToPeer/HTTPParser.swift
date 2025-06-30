@@ -33,7 +33,8 @@ final class HTTPParser {
     var queryParameters: [String:String] = [:]
     var headers: Headers?
     
-    var onReceiveBody: (() -> Void)?
+    var onReceiveBody: ((Int) -> Void)?
+    var onReceiveQueryParameters: (() -> Void)?
     
     var request: HTTPRequest {
         return HTTPRequest(
@@ -73,6 +74,7 @@ final class HTTPParser {
             if instance.queryParameters.isEmpty {
                 return 0
             } else {
+                instance.onReceiveQueryParameters?()
                 instance.parserIsPaused = true
                 return Int32(HPE_PAUSED.rawValue)
             }
@@ -127,6 +129,7 @@ final class HTTPParser {
                 do {
                     try instance.fileHandle?.seekToEnd()
                     try instance.fileHandle?.write(contentsOf: buffer)
+                    instance.onReceiveBody?(buffer.count)
                     debugLog("Wrote data chunk to file")
                 } catch {
                     debugLog("Write error: \(error)")
@@ -134,7 +137,6 @@ final class HTTPParser {
             default:
                 break
             }
-            instance.onReceiveBody?()
             
             return 0
         }
@@ -160,7 +162,7 @@ final class HTTPParser {
             return llhttp_execute(&parser, ptr.bindMemory(to: Int8.self).baseAddress, data.count)
         }
         
-        if result ==  HPE_PAUSED  {
+        if result ==  HPE_PAUSED {
             let errorPos = llhttp_get_error_pos(&parser)
             
             // Calculate offset using pointer arithmetic

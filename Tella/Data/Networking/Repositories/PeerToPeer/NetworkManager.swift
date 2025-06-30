@@ -131,7 +131,6 @@ final class NetworkManager {
                 self.handleReceiveError(error)
                 return
             }
-            
             guard let data else {
                 debugLog("Failed to read HTTP data")
                 return
@@ -155,35 +154,32 @@ final class NetworkManager {
                             parser:HTTPParser) {
         do {
             
-            parser.onReceiveBody = {
-                
+            parser.onReceiveBody = { [weak self] length in
+                debugLog(length)
+            }
+            
+            parser.onReceiveQueryParameters = {
+                self.delegate?.networkManager(self, verifyParametersForDataRequest: parser.request, completion: { url in
+                    parser.fileURL = url
+                })
             }
             
             try parser.parse(data: data)
             
             if parser.parserIsPaused {
-                
-                self.delegate?.networkManager(self, verifyParametersForDataRequest: parser.request, completion: { url in
-                    do {
-                        parser.fileURL = url
-                        try parser.resumeParsing()
-                        self.check(on: connection, parser: parser)
-                    } catch {
-                        debugLog("Failed to parse HTTP request")
-                        self.delegate?.networkManager(self, didFailWith: error)
-                    }
-                })
-                
+                try parser.resumeParsing()
+                check(on: connection, parser: parser)
             } else {
                 check(on: connection, parser: parser)
             }
+            
         } catch {
             debugLog("Failed to parse HTTP request")
             self.delegate?.networkManager(self, didFailWith: error)
         }
     }
     
-    func check(on connection: NWConnection, parser:HTTPParser)  {
+    func check(on connection: NWConnection, parser:HTTPParser) {
         if parser.request.bodyFullyReceived {
             delegate?.networkManager(self, didReceiveCompleteRequest: parser.request)
         } else {
@@ -191,9 +187,7 @@ final class NetworkManager {
                     maximumLength: parser.request.headers.contentLength,
                     parser: parser)
         }
-        
     }
-    
     
     func continueParsing() {
         

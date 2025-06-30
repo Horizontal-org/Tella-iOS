@@ -9,6 +9,7 @@ import AVKit
 import Combine
 import CoreLocation
 import CommonCrypto
+import Crypto
 
 extension Data {
     
@@ -19,12 +20,12 @@ extension Data {
     func string() -> String {
         return String(decoding:  self , as: UTF8.self)
     }
-
+    
     /// Strict UTF-8 decoding — returns nil if data is invalid
     func utf8String() -> String? {
         return String(data: self, encoding: .utf8)
     }
-
+    
     mutating func extract(size: Int?) -> Data? {
         
         guard let size,  self.count > size  else {
@@ -44,7 +45,7 @@ extension Data {
         // Return the new copy of data
         return self
     }
-
+    
     /// This function takes the image data and metadata as parameter and returns the image data with metadata
     /// - Parameters:
     ///   - data: The original image data
@@ -55,7 +56,7 @@ extension Data {
         let uti: CFString = CGImageSourceGetType(imageRef)!
         let dataWithEXIF: NSMutableData = NSMutableData(data: self)
         let destination: CGImageDestination = CGImageDestinationCreateWithData((dataWithEXIF as CFMutableData), uti, 1, nil)!
-
+        
         CGImageDestinationAddImageFromSource(destination, imageRef, 0, (properties as CFDictionary))
         CGImageDestinationFinalize(destination)
         return dataWithEXIF
@@ -67,29 +68,29 @@ extension Data {
         {
             return nil
         }
-
+        
         let count = CGImageSourceGetCount(source)
         let mutableData = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(mutableData, type, count, nil) else {
             return nil
         }
-
+        
         let exifToRemove: CFDictionary = [
             kCGImagePropertyExifDictionary: kCFNull,
             kCGImagePropertyGPSDictionary: kCFNull,
             kCGImagePropertyTIFFDictionary : kCFNull
         ] as CFDictionary
-
+        
         for index in 0 ..< count {
             CGImageDestinationAddImageFromSource(destination, source, index, exifToRemove)
             if !CGImageDestinationFinalize(destination) {
                 debugLog("Failed to finalize")
             }
         }
-
+        
         return mutableData as Data
     }
-
+    
     
     func fileExtension(vaultManager:VaultManager) -> String? {
         let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
@@ -99,29 +100,23 @@ extension Data {
     // Function to compute SHA-256 hash
     func sha256() -> String {
         
-        // Compute SHA-256 hash
-        var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        self.withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(self.count), &digest)
-        }
-        
-        // Format into 16-bit (2-byte) hex words
-        let words = stride(from: 0, to: digest.count, by: 2).map {
-            (UInt16(digest[$0]) << 8) | UInt16(digest[$0 + 1])
-        }
-        
-        // Group into lines of 4 words
-        return words.chunked(into: 4)
-            .map { $0.map { String(format: "%04x", $0) }.joined(separator: " ") }
-            .joined(separator: "\n")
-    }
-}
+        let hashBytes = SHA256.hash(data: self)
 
-// Helper to chunk an array into subarrays of fixed size
-private extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0..<Swift.min($0 + size, count)])
+        // Convert to hex string array: each element is "%02x"
+        let hexPairs = hashBytes.map { String(format: "%02x", $0) }
+
+        // Group into 4-digit blocks (2 hex pairs per block)
+        let fourDigitBlocks = stride(from: 0, to: hexPairs.count, by: 2).map { i -> String in
+            let first = hexPairs[i]
+            let second = i + 1 < hexPairs.count ? hexPairs[i + 1] : "00"
+            return first + second
         }
+
+        // Group 4 blocks per line and join with spaces and newlines
+        let formatted = stride(from: 0, to: fourDigitBlocks.count, by: 4).map { i in
+            fourDigitBlocks[i..<Swift.min(i + 4, fourDigitBlocks.count)].joined(separator: " ")
+        }.joined(separator: "\n")
+
+        return formatted
     }
 }
