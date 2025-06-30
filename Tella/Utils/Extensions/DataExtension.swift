@@ -101,18 +101,22 @@ extension Data {
     func sha256() -> String {
         
         let hashBytes = SHA256.hash(data: self)
-        
-        let first16 = hashBytes.prefix(16)
 
-        // Format each byte as "%04x"
-        let hexParts = first16.map { String(format: "%04x", $0) }
+        // Convert to hex string array: each element is "%02x"
+        let hexPairs = hashBytes.map { String(format: "%02x", $0) }
 
-        // Group into 4 parts per line (total 4 lines)
-        let lines = stride(from: 0, to: hexParts.count, by: 4).map {
-            let end = Swift.min($0 + 4, hexParts.count)
-            return hexParts[$0..<end].joined(separator: " ")
+        // Group into 4-digit blocks (2 hex pairs per block)
+        let fourDigitBlocks = stride(from: 0, to: hexPairs.count, by: 2).map { i -> String in
+            let first = hexPairs[i]
+            let second = i + 1 < hexPairs.count ? hexPairs[i + 1] : "00"
+            return first + second
         }
 
-        return lines.joined(separator: "\n")
+        // Group 4 blocks per line and join with spaces and newlines
+        let formatted = stride(from: 0, to: fourDigitBlocks.count, by: 4).map { i in
+            fourDigitBlocks[i..<Swift.min(i + 4, fourDigitBlocks.count)].joined(separator: " ")
+        }.joined(separator: "\n")
+
+        return formatted
     }
 }
