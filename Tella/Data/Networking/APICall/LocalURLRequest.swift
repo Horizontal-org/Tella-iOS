@@ -28,7 +28,7 @@ extension WebRepository {
             
             let delegate = PeerToPeerURLSessionDelegate(
                 path:endpoint.path,
-                trustedPublicKeyHash: endpoint.trustedPublicKeyHash
+                trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
             guard let fileURL = endpoint.fileToUpload?.url else {   return Fail<P2PUploadResponse, APIError>(error: APIError.errorOccured)
                     .eraseToAnyPublisher()
@@ -61,7 +61,7 @@ extension WebRepository {
             request.curlRepresentation()
             let delegate = PeerToPeerURLSessionDelegate(
                 path:endpoint.path,
-                trustedPublicKeyHash: endpoint.trustedPublicKeyHash
+                trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
             
             return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -87,8 +87,8 @@ extension WebRepository {
             
             let delegate = PeerToPeerURLSessionDelegate(
                 path: endpoint.path,
-                trustedPublicKeyHash: endpoint.trustedPublicKeyHash,
-                onReceiveServerPublicKeyHash: { hash in
+                trustedCertificateHash: endpoint.trustedPublicKeyHash,
+                onReceiveServerCertificateHash: { hash in
                     capturedServerHash = hash
                 }
             )
