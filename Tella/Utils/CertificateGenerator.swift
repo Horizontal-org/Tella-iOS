@@ -18,7 +18,7 @@ class CertificateGenerator {
     
     // MARK: - Main Function
     
-    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, publicKeyHash: String)? {
+    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, certificateHash: String)? {
         
         // Generate RSA private key
         guard let privateKey = generateRSAKey() else {
@@ -37,18 +37,17 @@ class CertificateGenerator {
             return nil
         }
         
+        let certificateData = SecCertificateCopyData(certificate)
+        let certificateHash = Data(certificateData as Data).sha256()
+
+        
         // Store in keychain and return identity
         guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: privateKey) else {
             debugLog("Failed to store identity")
             return nil
         }
         
-        guard let publicKeyData = publicKey.getData() else {
-            debugLog("Failed to extract public key data")
-            return nil
-        }
-        
-        return (identity, publicKeyData.sha256())
+        return (identity, certificateHash)
     }
     
     // MARK: - RSA Key Generation

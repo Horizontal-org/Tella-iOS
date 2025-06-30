@@ -11,15 +11,15 @@ import Combine
 
 class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     
-    var trustedPublicKeyHash : String?
+    var trustedCertificateHash : String?
     var path: String?
-    var onReceiveServerPublicKeyHash: ((String) -> Void)?
+    var onReceiveServerCertificateHash: ((String) -> Void)?
     var response = CurrentValueSubject<P2PUploadResponse, APIError>(.initial)
     
-    init(path: String?, trustedPublicKeyHash: String? = nil, onReceiveServerPublicKeyHash: ((String) -> Void)? = nil) {
+    init(path: String?, trustedCertificateHash: String? = nil, onReceiveServerCertificateHash: ((String) -> Void)? = nil) {
         self.path = path
-        self.trustedPublicKeyHash = trustedPublicKeyHash
-        self.onReceiveServerPublicKeyHash = onReceiveServerPublicKeyHash
+        self.trustedCertificateHash = trustedCertificateHash
+        self.onReceiveServerCertificateHash = onReceiveServerCertificateHash
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
@@ -59,22 +59,22 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
             return
         }
         
-        guard let publicKeyData = extractPublicKey(from: serverTrust) else {
-            debugLog("Failed to extract public key from serverTrust for host: \(host)")
+        guard let certificateData = extractCertificateData(from: serverTrust) else {
+            debugLog("Failed to extract certificate data from serverTrust for host: \(host)")
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }
         
-        let serverPublicKeyHash = publicKeyData.sha256()
-        debugLog("Received server public key hash: \(serverPublicKeyHash)")
-        debugLog("Expected trusted public key hash: \(trustedPublicKeyHash ?? "nil")")
+        let serverCertificateHash = certificateData.sha256()
+        debugLog("Received server certificate hash: \(serverCertificateHash)")
+        debugLog("Expected trusted certificate hash: \(trustedCertificateHash ?? "nil")")
         
         // No trusted public key hash: potentially first connection
-        guard let trustedHash = trustedPublicKeyHash else {
+        guard let trustedHash = trustedCertificateHash else {
             if path == PeerToPeerEndpoint.ping.rawValue {
                 let credential = URLCredential(trust: serverTrust)
                 completionHandler(.useCredential, credential)
-                onReceiveServerPublicKeyHash?(serverPublicKeyHash)
+                onReceiveServerCertificateHash?(serverCertificateHash)
             } else {
                 debugLog("No trusted hash and path is non-nil; canceling authentication.")
                 completionHandler(.cancelAuthenticationChallenge, nil)
@@ -83,8 +83,8 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         }
         
         // Compare hashes
-        guard trustedHash == serverPublicKeyHash else {
-            debugLog("Public key hash mismatch! Expected \(trustedHash), got \(serverPublicKeyHash)")
+        guard trustedHash == serverCertificateHash else {
+            debugLog("Public key hash mismatch! Expected \(trustedHash), got \(serverCertificateHash)")
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }
@@ -93,12 +93,11 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         completionHandler(.useCredential, credential)
     }
     
-    func extractPublicKey(from trust: SecTrust) -> Data? {
-        guard let certificate = SecTrustGetCertificateAtIndex(trust, 0),
-              let publicKey = SecCertificateCopyKey(certificate),
-              let publicKeyData = SecKeyCopyExternalRepresentation(publicKey, nil) as Data? else {
+    func extractCertificateData(from trust: SecTrust) -> Data? {
+        guard let certificate = SecTrustGetCertificateAtIndex(trust, 0) else {
             return nil
         }
-        return publicKeyData
+        let certificateData = SecCertificateCopyData(certificate)
+        return Data(certificateData as Data)
     }
 }

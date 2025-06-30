@@ -60,14 +60,14 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             }
             
             let clientIdentity = certificateData.identity
-            let publicKeyHash = certificateData.publicKeyHash
+            let certificateHash = certificateData.certificateHash
             
             let pin =  "\(Int.random(in: 100000...999999))" //TODO:  to move to extension
             let port = 53317 //TODO:  to move it to var
             
             let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
                                                 port: port,
-                                                certificateHash: publicKeyHash,
+                                                certificateHash: certificateHash,
                                                 pin: pin)
             
             self.qrCodeState = .loaded(connectionInfo)
