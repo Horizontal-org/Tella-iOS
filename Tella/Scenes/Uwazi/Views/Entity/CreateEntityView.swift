@@ -30,10 +30,10 @@ struct CreateEntityView: View {
                 contentView
             }
             
-            photoVideoPickerView
+            AddFilePhotoVideoPickerView(viewModel: entityViewModel.addFilesViewModel)
         }
-        .overlay(cameraView)
-        .overlay(recordView)
+        .overlay(AddFileCameraView(viewModel: entityViewModel.addFilesViewModel))
+        .overlay(AddFileRecordView(viewModel: entityViewModel.addFilesViewModel))
         .onReceive(entityViewModel.$shouldHideView, perform: { shouldHideView in
             if shouldHideView {
                 dismissViews()
@@ -62,9 +62,7 @@ struct CreateEntityView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
-                        RenderPropertyComponentView(prompt: prompt)
-                            .environmentObject(sheetManager)
-                            .environmentObject(entityViewModel)
+                        RenderPropertyComponentView(prompt: prompt, entityViewModel: entityViewModel)
                     }
                 }.padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 16))
             }
@@ -88,30 +86,7 @@ struct CreateEntityView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-    
-    var cameraView : some View {
-        entityViewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addReportFile,
-                   showingCameraView: $entityViewModel.showingCamera,
-                   resultFile: $entityViewModel.resultFile,
-                   mainAppModel: entityViewModel.mainAppModel) : nil
-    }
-    
-    var recordView : some View {
-        entityViewModel.showingRecordView ?
-        RecordView(appModel: entityViewModel.mainAppModel,
-                   sourceView: .addReportFile,
-                   showingRecoredrView: $entityViewModel.showingRecordView,
-                   resultFile: $entityViewModel.resultFile) : nil
-    }
-    
-    var photoVideoPickerView : some View {
-        PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
-                             showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
-                             appModel: entityViewModel.mainAppModel,
-                             resultFile: $entityViewModel.resultFile)
-    }
-    
+        
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,

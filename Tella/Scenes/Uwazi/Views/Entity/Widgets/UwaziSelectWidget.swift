@@ -14,7 +14,8 @@ struct UwaziSelectWidget: View {
     
     @State private var shouldShowMenu : Bool = false
     @ObservedObject var prompt: UwaziSelectEntryPrompt
-    
+    @ObservedObject  var entityViewModel: UwaziEntityViewModel
+
     var body: some View {
         Button {
             DispatchQueue.main.async {
@@ -27,7 +28,7 @@ struct UwaziSelectWidget: View {
             .cornerRadius(12)
         
         if shouldShowMenu {
-            SelectListOptions(shouldShowMenu: $shouldShowMenu, prompt: prompt)
+            SelectListOptions(shouldShowMenu: $shouldShowMenu, prompt: prompt, entityViewModel: entityViewModel)
         }
     }
     
@@ -63,7 +64,8 @@ struct SelectWidgetButton: View {
 struct SelectListOptions: View {
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
-    
+    @ObservedObject  var entityViewModel: UwaziEntityViewModel
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -72,7 +74,7 @@ struct SelectListOptions: View {
                         SelectOptionButton(
                             selectedOption: selectedOptions,
                             shouldShowMenu: $shouldShowMenu,
-                            prompt: prompt
+                            prompt: prompt, entityViewModel: entityViewModel
                         )
                     }
                 }
@@ -91,13 +93,13 @@ struct SelectOptionButton: View {
     let selectedOption: SelectValues
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
-    @EnvironmentObject  var uwaziEntityViewModel : UwaziEntityViewModel
+    @ObservedObject  var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         Button(action: {
             shouldShowMenu = false
             prompt.value = [selectedOption.id]
-            uwaziEntityViewModel.publishUpdates()
+            entityViewModel.publishUpdates()
         }) {
             Text(selectedOption.label )
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))

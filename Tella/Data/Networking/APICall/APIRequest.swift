@@ -13,7 +13,7 @@ public protocol APIRequest {
     var urlQueryParameters : [String : String?]? { get }
     
     var baseURL: String { get }
-    var path: String { get }
+    var path: String? { get }
     var httpMethod: HTTPMethod { get }
     var encoding: Encoding { get }
     var decoder: JSONDecoder { get }
@@ -25,6 +25,7 @@ public protocol APIRequest {
     var apiSession: URLSession? { get }
     var multipartBody: Data? { get }
     var multipartHeader: String? {get}
+    var trustedPublicKeyHash: String? {get}
 }
 
 public extension APIRequest {
@@ -45,12 +46,12 @@ public extension APIRequest {
     
     var decoder: JSONDecoder { JSONDecoder() }
     var fileToUpload: FileInfo? { nil }
-    var url: URL? { return  URL(string: baseURL + path) }
+    var url: URL? { return  URL(string: baseURL + (path ?? "")) }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
     var multipartBody: Data? { nil }
     var multipartHeader: String? { nil }
-
+    var trustedPublicKeyHash: String? { nil }
 }
 
 extension APIRequest {

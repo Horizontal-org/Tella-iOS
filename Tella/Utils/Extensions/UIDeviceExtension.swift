@@ -5,9 +5,11 @@
 
 
 import UIKit
+import SystemConfiguration.CaptiveNetwork
+import Network
 
 class DiskStatus: NSObject {
-
+    
     func MBFormatter(_ bytes: Int64) -> String {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits =  [.useBytes,.useKB, .useMB, .useGB]
@@ -56,5 +58,45 @@ class DiskStatus: NSObject {
         }
         return freeSize.int64Value
     }
+}
+
+extension UIDevice {
     
+    func getIPAddress(for type: NWInterface.InterfaceType?) -> String? {
+        
+        var ifaddr: UnsafeMutablePointer<ifaddrs>?
+        
+        guard getifaddrs(&ifaddr) == 0 else { return nil }
+        defer { freeifaddrs(ifaddr) }
+        
+        var ptr = ifaddr
+        while ptr != nil {
+            defer { ptr = ptr?.pointee.ifa_next }
+            
+            let interface = ptr?.pointee
+            let addrFamily = interface?.ifa_addr.pointee.sa_family
+            
+            if addrFamily == UInt8(AF_INET), let name = interface?.ifa_name {
+                let interfaceName = String(cString: name)
+                
+                if (type == .wifi && interfaceName == "en0") || (type == .cellular && interfaceName == "bridge100") {
+                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    
+                    getnameinfo(
+                        interface?.ifa_addr,
+                        socklen_t((interface?.ifa_addr.pointee.sa_len)!),
+                        &hostname,
+                        socklen_t(hostname.count),
+                        nil,
+                        0,
+                        NI_NUMERICHOST
+                    )
+                    
+                    return String(cString: hostname)
+                }
+            }
+        }
+        
+        return nil
+    }
 }

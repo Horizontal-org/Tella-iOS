@@ -549,3 +549,89 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
+
+
+"PeerToPeer_AppBar" = "Nearby sharing";
+
+
+"PeerToPeer_AppBar" = "Nearby sharing";
+"PeerToPeer_NearbySharing_Subhead" = "How it works";
+"PeerToPeer_NearbySharing_Expl" = "Share files with nearby devices without an Internet connection \
+  1. Both devices must be connected to the same Wifi network \
+  2. Make sure you trust the person you are sharing files with";
+
+"PeerToPeer_NearbySharing_SendFiles" = "Send files";
+"PeerToPeer_NearbySharing_ReceiveFiles" = "Receive files";
+
+
+"PeerToPeer_NearbySharing_LearnMore" = "Learn more about nearby sharing";
+"PeerToPeer_Getconnected" = "Get Connected";
+"PeerToPeer_WifiConnection_Desc" = "Make sure both devices are connected to the same Wi-Fi network";
+"PeerToPeer_WifiConnection_TipsToConnect_Txt" = "Tips to connect";
+"PeerToPeer_WifiConnection_TipsToConnect_Desc" = " 1. The Wi-Fi network does not need to be connected to the internet.
+ 2. You can create your own Wi-Fi network using your phone’s hotspot feature.
+ 3. Disable any VPN connections.";
+"PeerToPeer_CurrentWifi" = "Current Wifi Network";
+"PeerToPeer_SameNetworkDescription" = "Yes, we are on the same Wi-Fi network";
+"PeerToPeer_ConnectToDevice" = "Connect to device";
+"PeerToPeer_ScanCode" = "Scan the recipient’s QR code";
+"PeerToPeer_ShowQrCode" = "Show this QR code for the\nsender to scan";
+"PeerToPeer_HavingTrouble" = "Having trouble with the QR code?";
+"PeerToPeer_Wifi" = "Wi-Fi";
+"PeerToPeer_ConnectManually" = "Connect Manually";
+"PeerToPeer_EnterDevice_Information" = "Enter the recipient’s device\n information to find it on the network";
+"PeerToPeer_IpAddress" = "IP address";
+"PeerToPeer_Pin" = "PIN";
+"PeerToPeer_Port" = "Port";
+ "PeerToPeer_PublicKey" = "Public key";
+"PeerToPeer_ShowDeviceInformation" = "Show your device information";
+"PeerToPeer_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to\nconnect to your device.";
+"PeerToPeer_LocationAccess" = "Location access";
+"PeerToPeer_WifiSettingsDesc"  = "To detect the Wi-Fi network, please enable location access in your device Settings.";
+"PeerToPeer_Cancel" = "Cancel";
+"PeerToPeer_Settings" = "Settings";
+"PeerToPeer_NoConnection" = "No connection";
+"PeerToPeer_WaitingForSenderDesc" = "Waiting for the sender to share files";
+"PeerToPeer_SenderRequest_NumberOfFiles_Desc" = "The sender is trying to send you %i files";
+"PeerToPeer_RequestQuestion" = "Would you like to accept them?";
+"PeerToPeer_Accept" = "Accept";
+"PeerToPeer_Reject" = "Reject";
+"PeerToPeer_InvalidIpAddress" = "Invalid IP address";
+"PeerToPeer_InvalidPin" = "Invalid PIN";
+"PeerToPeer_SelectFilesToSend" = "Select files to send";
+"PeerToPeer_Title" = "Title";
+
+"PeerToPeer_SuccessConnect_Toast" = "Success! Connected to device";
+"PeerToPeer_ServerError_Toast" = "Server error";
+
+"PeerToPeer_ConnectionFailed_SheetTitle" = "Connection failed";
+"PeerToPeer_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
+"PeerToPeer_ConnectionFailed_SheetAction" = "Try again";
+
+"PeerToPeer_Verification_Subhead" = "Verification";
+"PeerToPeer_Verification_Sender_Part1_Expl" = "Make sure that this sequence matches what is shown on the recipient’s device.";
+"PeerToPeer_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the recipient’s device, the connection may not be secure and should be discarded.";
+
+"PeerToPeer_Verification_Receipient_Part1_Expl" = "Make sure that this sequence matches what is shown on the sender’s device.";
+"PeerToPeer_Verification_Receipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
+
+"PeerToPeer_Verification_Action_Confirm" = "Confirm and connect";
+"PeerToPeer_Verification_Action_Discard" = "Discard and start over";
+
+
+
+"PeerToPeer_Sender_FilesRejected_Toast" = "Files rejected by recipient.";
+
+"PeerToPeer_Receipient_FilesRejected_Toast" = "Sender's files rejected.";
+
+"PeerToPeer_Sender_WaitingReceipient_Toast" = "Waiting for the recipient to accept files";
+
+
+
+
+
+"PeerToPeer_StopSharing_SheetTitle" = "Stop sharing files?";
+"PeerToPeer_StopSharing_SheetExpl" = "Nearby sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
+"PeerToPeer_StopSharing_Continue_SheetAction" = "Continue";
+"PeerToPeer_StopSharing_Stop_SheetAction" = "Stop";
+
