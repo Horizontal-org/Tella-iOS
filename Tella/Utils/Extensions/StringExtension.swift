@@ -236,3 +236,24 @@ extension String {
 enum CertificateError: Error {
     case invalidIPAddress
 }
+
+extension String {
+    func formatHash() -> String {
+        let trimmed = String(self.prefix(64))
+        let chunks = self.chunked(into: 4)
+        let lines = chunks.chunked(into: 4)
+        return lines.map { $0.joined(separator: " ") }.joined(separator: "\n")
+    }
+    
+    // Chunk String into substrings of fixed size
+    func chunked(into size: Int) -> [String] {
+        var result: [String] = []
+        var start = startIndex
+        while start < endIndex {
+            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            result.append(String(self[start..<end]))
+            start = end
+        }
+        return result
+    }
+}

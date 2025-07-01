@@ -73,7 +73,7 @@ struct ManuallyVerificationView: View {
         VStack(alignment: .center, spacing: 24) {
             CustomText(part1Text, style: .body1Style)
             
-            CustomText(viewModel.connectionInfo.certificateHash ?? "",
+            CustomText(viewModel.connectionInfo.certificateHash?.formatHash() ?? "",
                        style: .body1Style,
                        alignment: .center)
             .frame(maxWidth: .infinity, alignment: .center)

@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -99,24 +99,8 @@ extension Data {
     
     // Function to compute SHA-256 hash
     func sha256() -> String {
-        
         let hashBytes = SHA256.hash(data: self)
-
         // Convert to hex string array: each element is "%02x"
-        let hexPairs = hashBytes.map { String(format: "%02x", $0) }
-
-        // Group into 4-digit blocks (2 hex pairs per block)
-        let fourDigitBlocks = stride(from: 0, to: hexPairs.count, by: 2).map { i -> String in
-            let first = hexPairs[i]
-            let second = i + 1 < hexPairs.count ? hexPairs[i + 1] : "00"
-            return first + second
-        }
-
-        // Group 4 blocks per line and join with spaces and newlines
-        let formatted = stride(from: 0, to: fourDigitBlocks.count, by: 4).map { i in
-            fourDigitBlocks[i..<Swift.min(i + 4, fourDigitBlocks.count)].joined(separator: " ")
-        }.joined(separator: "\n")
-
-        return formatted
+        return hashBytes.map { String(format: "%02x", $0) }.joined()
     }
 }
