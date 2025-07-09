@@ -135,7 +135,7 @@
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
 		12444EFA2E09D6F6006CB86A /* P2PServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12444EF92E09D6F3006CB86A /* P2PServerState.swift */; };
-		1244945E2DD61256002B4A9B /* SenderFileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */; };
+		1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* FileTransferView.swift */; };
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
 		124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */; };
@@ -194,6 +194,9 @@
 		125D2326271F896400250FBB /* CustomPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2325271F896400250FBB /* CustomPinView.swift */; };
 		125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2327271F8B6600250FBB /* LockConfirmPinView.swift */; };
 		125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D233B2B17344D001EFB8B /* BackgroundActivitiesView.swift */; };
+		125D58AB2E1811AB00365C40 /* TransferProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D58AA2E1811AB00365C40 /* TransferProgressView.swift */; };
+		125D58AD2E1BE9A500365C40 /* ReceiverFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D58AC2E1BE9A000365C40 /* ReceiverFileTransferVM.swift */; };
+		125D58AF2E1BE9D900365C40 /* FileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D58AE2E1BE9D700365C40 /* FileTransferVM.swift */; };
 		125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DD9C82796CB090053619D /* ImportFilesProgressView.swift */; };
 		125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
 		125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDDB0271E40CA00E2789A /* LockViewModel.swift */; };
@@ -211,7 +214,6 @@
 		12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D592790457600E2B8CC /* VideoViewer.swift */; };
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
-		1261DF402DF0A43C00EDD97A /* P2PReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261DF3F2DF0A43900EDD97A /* P2PReportViewModel.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
@@ -262,6 +264,7 @@
 		1275A8442C5AA4460071A97D /* NextcloudUploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */; };
 		1275A8492C5E6EFF0071A97D /* NextcloudConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A8482C5E6EFF0071A97D /* NextcloudConstants.swift */; };
 		1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */; };
+		1276B7392E1E56F10024C38A /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B7382E1E56F00024C38A /* ProgressViewModel.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -287,7 +290,7 @@
 		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
 		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
 		1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */; };
-		1282DE512DDE1021004D2176 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282DE502DDE101E004D2176 /* NetworkManager.swift */; };
+		1282DE512DDE1021004D2176 /* NWConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282DE502DDE101E004D2176 /* NWConnection.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -853,7 +856,7 @@
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
 		12444EF92E09D6F3006CB86A /* P2PServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PServerState.swift; sourceTree = "<group>"; };
-		1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferView.swift; sourceTree = "<group>"; };
+		1244945D2DD61256002B4A9B /* FileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferView.swift; sourceTree = "<group>"; };
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
 		124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalURLRequest.swift; sourceTree = "<group>"; };
@@ -912,6 +915,9 @@
 		125D2325271F896400250FBB /* CustomPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPinView.swift; sourceTree = "<group>"; };
 		125D2327271F8B6600250FBB /* LockConfirmPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockConfirmPinView.swift; sourceTree = "<group>"; };
 		125D233B2B17344D001EFB8B /* BackgroundActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesView.swift; sourceTree = "<group>"; };
+		125D58AA2E1811AB00365C40 /* TransferProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferProgressView.swift; sourceTree = "<group>"; };
+		125D58AC2E1BE9A000365C40 /* ReceiverFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiverFileTransferVM.swift; sourceTree = "<group>"; };
+		125D58AE2E1BE9D700365C40 /* FileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferVM.swift; sourceTree = "<group>"; };
 		125DD9C82796CB090053619D /* ImportFilesProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressView.swift; sourceTree = "<group>"; };
 		125EDDB0271E40CA00E2789A /* LockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewModel.swift; sourceTree = "<group>"; };
 		125EFACC274A447000D93DF6 /* FileSortMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortMenu.swift; sourceTree = "<group>"; };
@@ -928,7 +934,6 @@
 		12607D592790457600E2B8CC /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
-		1261DF3F2DF0A43900EDD97A /* P2PReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PReportViewModel.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
@@ -976,6 +981,7 @@
 		1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudUploadProgressInfo.swift; sourceTree = "<group>"; };
 		1275A8482C5E6EFF0071A97D /* NextcloudConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudConstants.swift; sourceTree = "<group>"; };
 		1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportFile.swift; sourceTree = "<group>"; };
+		1276B7382E1E56F00024C38A /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -999,7 +1005,7 @@
 		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
 		1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseConnection.swift; sourceTree = "<group>"; };
 		1282DE472DDD0302004D2176 /* sn-ZW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sn-ZW"; path = "sn-ZW.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		1282DE502DDE101E004D2176 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		1282DE502DDE101E004D2176 /* NWConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnection.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
 		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
@@ -1864,9 +1870,7 @@
 		1244945B2DD60FB0002B4A9B /* Sending */ = {
 			isa = PBXGroup;
 			children = (
-				1244945D2DD61256002B4A9B /* SenderFileTransferView.swift */,
 				1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */,
-				1261DF3F2DF0A43900EDD97A /* P2PReportViewModel.swift */,
 			);
 			path = Sending;
 			sourceTree = "<group>";
@@ -1886,7 +1890,7 @@
 				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
 				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
 				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
-				1282DE502DDE101E004D2176 /* NetworkManager.swift */,
+				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
 				12505B212D89A2A500483E34 /* HTTPResponse.swift */,
@@ -2176,6 +2180,7 @@
 			isa = PBXGroup;
 			children = (
 				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+				1276B7372E1E56840024C38A /* FileTransfer */,
 				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
 				2012D5432D5697B0000E0443 /* Sender */,
@@ -2257,6 +2262,34 @@
 				1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */,
 			);
 			path = Nextcloud;
+			sourceTree = "<group>";
+		};
+		1276B7372E1E56840024C38A /* FileTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				1244945D2DD61256002B4A9B /* FileTransferView.swift */,
+				125D58AA2E1811AB00365C40 /* TransferProgressView.swift */,
+				125D58AE2E1BE9D700365C40 /* FileTransferVM.swift */,
+				1276B7382E1E56F00024C38A /* ProgressViewModel.swift */,
+			);
+			path = FileTransfer;
+			sourceTree = "<group>";
+		};
+		1276B73A2E1E68970024C38A /* Preparing */ = {
+			isa = PBXGroup;
+			children = (
+				20AA1F9B2D5F38A20092810B /* RecipientFileTransferView.swift */,
+				1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */,
+			);
+			path = Preparing;
+			sourceTree = "<group>";
+		};
+		1276B73B2E1E68A10024C38A /* Receiving */ = {
+			isa = PBXGroup;
+			children = (
+				125D58AC2E1BE9A000365C40 /* ReceiverFileTransferVM.swift */,
+			);
+			path = Receiving;
 			sourceTree = "<group>";
 		};
 		12776A9627BAC86200CDC5DC /* ViewModel */ = {
@@ -2709,13 +2742,13 @@
 			path = ConnectToDeviceQRCode;
 			sourceTree = "<group>";
 		};
-		12A9ECD52D9F3B2400711BA4 /* SendFiles */ = {
+		12A9ECD52D9F3B2400711BA4 /* ReceiveFiles */ = {
 			isa = PBXGroup;
 			children = (
-				20AA1F9B2D5F38A20092810B /* RecipientFileTransferView.swift */,
-				1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */,
+				1276B73B2E1E68A10024C38A /* Receiving */,
+				1276B73A2E1E68970024C38A /* Preparing */,
 			);
-			path = SendFiles;
+			path = ReceiveFiles;
 			sourceTree = "<group>";
 		};
 		12AB30D1272C33D90020FFBF /* Home */ = {
@@ -3241,7 +3274,7 @@
 			isa = PBXGroup;
 			children = (
 				12A9ECD22D9F3AC600711BA4 /* Connection */,
-				12A9ECD52D9F3B2400711BA4 /* SendFiles */,
+				12A9ECD52D9F3B2400711BA4 /* ReceiveFiles */,
 			);
 			path = Recipient;
 			sourceTree = "<group>";
@@ -4219,7 +4252,7 @@
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
 				126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */,
-				1244945E2DD61256002B4A9B /* SenderFileTransferView.swift in Sources */,
+				1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
@@ -4495,7 +4528,7 @@
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
 				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */,
-				1282DE512DDE1021004D2176 /* NetworkManager.swift in Sources */,
+				1282DE512DDE1021004D2176 /* NWConnection.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1222363F2DD3DDC4006A9F01 /* RecipientPrepareFileTransferVM.swift in Sources */,
 				124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */,
@@ -4531,6 +4564,7 @@
 				1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */,
 				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
+				125D58AF2E1BE9D900365C40 /* FileTransferVM.swift in Sources */,
 				15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */,
 				1275A8402C5A78FB0071A97D /* NextcloudMetadata.swift in Sources */,
 				1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */,
@@ -4591,6 +4625,7 @@
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
 				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
+				125D58AD2E1BE9A500365C40 /* ReceiverFileTransferVM.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
@@ -4640,6 +4675,7 @@
 				1275A8442C5AA4460071A97D /* NextcloudUploadProgressInfo.swift in Sources */,
 				12742C8F2BEB9FBC00919FAE /* EncodableExtension.swift in Sources */,
 				125F9B952AD933AB0073748C /* FeedbackStatus.swift in Sources */,
+				125D58AB2E1811AB00365C40 /* TransferProgressView.swift in Sources */,
 				122389B929367ABA0058593B /* ServerType.swift in Sources */,
 				CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */,
 				CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */,
@@ -4673,7 +4709,6 @@
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */,
-				1261DF402DF0A43C00EDD97A /* P2PReportViewModel.swift in Sources */,
 				125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				128C23732BEE1A8300539A65 /* SubmittedEntityViewModel.swift in Sources */,
@@ -4741,6 +4776,7 @@
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */,
 				15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */,
+				1276B7392E1E56F10024C38A /* ProgressViewModel.swift in Sources */,
 				127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,

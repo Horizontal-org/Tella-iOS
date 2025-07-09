@@ -61,11 +61,11 @@ struct ManuallyVerificationView: View {
         participantInfoView(
             part1Text: viewModel.participant == .sender
             ? LocalizablePeerToPeer.verificationSenderPart1.localized
-            : LocalizablePeerToPeer.verificationReceipientPart1.localized,
+            : LocalizablePeerToPeer.verificationRecipientPart1.localized,
             
             part2Text: viewModel.participant == .sender
             ? LocalizablePeerToPeer.verificationSenderPart2.localized
-            : LocalizablePeerToPeer.verificationReceipientPart2.localized
+            : LocalizablePeerToPeer.verificationRecipientPart2.localized
         )
     }
     

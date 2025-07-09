@@ -123,7 +123,6 @@ class UwaziServerViewModel: ServerViewModel {
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer {
             let locale = server.locale
-            dump(locale)
             self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale})
         }
         self.showNextSuccessLoginView = true

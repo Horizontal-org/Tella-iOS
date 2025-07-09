@@ -43,7 +43,7 @@ struct SenderPrepareFileTransferView: View {
     
     fileprivate var waitingView: some View {
         VStack {
-            CustomText(LocalizablePeerToPeer.senderWaitingReceipient.localized, style: .heading1Style)
+            CustomText(LocalizablePeerToPeer.senderWaitingRecipient.localized, style: .heading1Style)
             ResizableImage("clock").frame(width: 48, height: 48)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -90,8 +90,11 @@ struct SenderPrepareFileTransferView: View {
     private func handleViewState(state: SenderPrepareFileTransferAction) {
         switch state {
         case .displaySendingFiles:
-            let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel, repository: self.viewModel.peerToPeerRepository, report: self.viewModel.report)
-            self.navigateTo(destination: SenderFileTransferView(viewModel: viewModel))
+            guard let report = self.viewModel.report else { return }
+            let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel,
+                                                 repository: self.viewModel.peerToPeerRepository,
+                                                 report: report)
+            self.navigateTo(destination: FileTransferView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:
@@ -101,5 +104,4 @@ struct SenderPrepareFileTransferView: View {
             break
         }
     }
-    
 }

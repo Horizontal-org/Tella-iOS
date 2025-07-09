@@ -58,7 +58,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardSenderRegisterRequest() {
-        self.server?.discardRegisterRequest()
+        self.server?.discardRegisterPublisher.send(completion: .finished)
         self.server?.stopListening()
         recipientViewAction = .discardAndStartOver
     }
@@ -103,7 +103,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func acceptRegisterRequest() {
-        self.server?.acceptRegisterRequest()
+        self.server?.acceptRegisterPublisher.send(completion: .finished)
     }
     
     func listenToRegisterPublisher() {

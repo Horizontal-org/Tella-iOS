@@ -19,19 +19,17 @@ final class HTTPParser {
     private var contentTypeString: String?
     private var currentHeaderField: String?
     private var body = ""
-    
+    private var pausedData: Data?
+    private var queryParameters: [String:String] = [:]
+    private var headers: Headers?
+
     var bodyFullyReceived: Bool = false
     var parserIsPaused: Bool = false
     
     var queryParametersAreVerified : Bool = false
     
-    var fileHandle: FileHandle?
+    private var fileHandle: FileHandle?
     var fileURL: URL?
-    var pausedData: Data?
-    
-    var method: String?
-    var queryParameters: [String:String] = [:]
-    var headers: Headers?
     
     var onReceiveBody: ((Int) -> Void)?
     var onReceiveQueryParameters: (() -> Void)?

@@ -117,7 +117,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             
             self.uploadedFiles = "\(filesCount), \(fileUploaded)"
             
-            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
+            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, transferSummary: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
             
             self.objectWillChange.send()
         }
@@ -239,7 +239,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
                 let size = currentItem.file.size.getFormattedFileSize()
                 let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                 
-                currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
+                currentItem.transferSummary = "\(currentFileTotalBytesSent)/\(size )"
             }
             publishUpdates()
         }

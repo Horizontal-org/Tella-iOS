@@ -12,6 +12,7 @@ struct HTTPRequest {
     var queryParameters: [String:String]
     var headers: Headers
     var body: String
+    var bytesReceived: Int32 = 0
     var bodyFullyReceived: Bool
 }
 

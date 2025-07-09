@@ -612,8 +612,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_Verification_Sender_Part1_Expl" = "Make sure that this sequence matches what is shown on the recipient’s device.";
 "PeerToPeer_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the recipient’s device, the connection may not be secure and should be discarded.";
 
-"PeerToPeer_Verification_Receipient_Part1_Expl" = "Make sure that this sequence matches what is shown on the sender’s device.";
-"PeerToPeer_Verification_Receipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
+"PeerToPeer_Verification_Recipient_Part1_Expl" = "Make sure that this sequence matches what is shown on the sender’s device.";
+"PeerToPeer_Verification_Recipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
 
 "PeerToPeer_Verification_Action_Confirm" = "Confirm and connect";
 "PeerToPeer_Verification_Action_Discard" = "Discard and start over";
@@ -622,9 +622,9 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "PeerToPeer_Sender_FilesRejected_Toast" = "Files rejected by recipient.";
 
-"PeerToPeer_Receipient_FilesRejected_Toast" = "Sender's files rejected.";
+"PeerToPeer_Recipient_FilesRejected_Toast" = "Sender's files rejected.";
 
-"PeerToPeer_Sender_WaitingReceipient_Toast" = "Waiting for the recipient to accept files";
+"PeerToPeer_Sender_WaitingRecipient_Toast" = "Waiting for the recipient to accept files";
 
 
 
@@ -634,4 +634,24 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_StopSharing_SheetExpl" = "Nearby sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
 "PeerToPeer_StopSharing_Continue_SheetAction" = "Continue";
 "PeerToPeer_StopSharing_Stop_SheetAction" = "Stop";
+
+
+
+
+"PeerToPeer_Sender_PercentageSent" = "%i%% sent";
+"PeerToPeer_Sender_FilesSent" = "%i files, %@/%@ sent";
+"PeerToPeer_Sender_FileSent" = "%i file, %@/%@ sent";
+
+
+"PeerToPeer_Recipient_PercentageReceived" = "%i%% received";
+"PeerToPeer_Recipient_FilesReceived" = "%i files, %@/%@ received";
+"PeerToPeer_Recipient_FileReceived" = "%i file, %@/%@ Received";
+
+
+"PeerToPeer_Recipient_Receiving_AppBar" = "Receiving and encrypting files";
+"PeerToPeer_StopReceiving_SheetTitle" = "Stop receiving files?";
+"PeerToPeer_StopReceiving_SheetExpl" = "Nearby sharing will be stopped. You will not have access to files that were not fully transferred.";
+
+
+"PeerToPeer_Sender_Sending_AppBar" = "Sending files";
 

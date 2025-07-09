@@ -77,6 +77,16 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
     }
     
+    init(p2pFile: P2PFile) {
+        self.id = p2pFile.id
+        self.type = .file
+        self.name = p2pFile.fileName ?? ""
+        self.thumbnail = p2pFile.thumbnail
+        self.size = p2pFile.size ?? 0
+        self.mimeType = p2pFile.fileType
+        self.created = Date()
+    }
+
     init(vaultFile :VaultFile) {
         self.id = vaultFile.containerName
         self.type = vaultFile.type == .folder ? .directory : .file
