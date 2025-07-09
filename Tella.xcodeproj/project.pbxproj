@@ -2856,8 +2856,8 @@
 		12A9ECD52D9F3B2400711BA4 /* ReceiveFiles */ = {
 			isa = PBXGroup;
 			children = (
-				1276B73B2E1E68A10024C38A /* Receiving */,
 				1276B73A2E1E68970024C38A /* Preparing */,
+				1276B73B2E1E68A10024C38A /* Receiving */,
 			);
 			path = ReceiveFiles;
 			sourceTree = "<group>";
