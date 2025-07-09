@@ -23,9 +23,7 @@ class FileTransferVM: ObservableObject {
     var bottomSheetTitle: String
     
     var bottomSheetMessage: String
-    
-    var receivingFiles: [ReceivingFile] = []
-    
+
     init(mainAppModel: MainAppModel,
          title: String,
          bottomSheetTitle: String,
