@@ -9,6 +9,12 @@
 
 import Combine
 
+enum TransferViewAction {
+    case none
+    case transferIsFinished
+    case filesAreSaved
+}
+
 class FileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
@@ -16,7 +22,8 @@ class FileTransferVM: ObservableObject {
     @Published var progressViewModel : ProgressViewModel?
     
     @Published var isLoading: Bool = false
-    
+    @Published var viewAction: TransferViewAction = .none
+
     
     var title: String
     
@@ -41,4 +48,9 @@ class FileTransferVM: ObservableObject {
     }
 }
 
+extension FileTransferVM {
+    static func stub() -> FileTransferVM {
+        return FileTransferVM(mainAppModel: MainAppModel.stub(), title: "Title", bottomSheetTitle: "Title", bottomSheetMessage: "Message")
+    }
+}
 

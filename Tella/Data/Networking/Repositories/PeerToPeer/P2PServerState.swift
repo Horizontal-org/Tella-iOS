@@ -7,6 +7,8 @@
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
+import Foundation
+
 final class P2PServerState {
     
     var pin: String?
@@ -72,13 +74,13 @@ final class ReceivingFile: Codable {
     var file: P2PFile
     var status: P2PFileStatus
     var transmissionId: String?
-    var path: String?
+    var path: URL?
     var bytesReceived: Int = 0
     
     init(file: P2PFile,
          status: P2PFileStatus = .queue,
          transmissionId: String? = nil,
-         path: String? = nil,
+         path: URL? = nil,
          bytesReceived: Int = 0) {
         self.file = file
         self.status = status

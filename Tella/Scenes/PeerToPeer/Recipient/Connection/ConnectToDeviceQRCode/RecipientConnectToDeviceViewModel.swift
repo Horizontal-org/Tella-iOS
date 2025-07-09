@@ -85,7 +85,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func stopServerListening() {
-        server.stopListening()
+        server.stopServer()
     }
     
 }

@@ -37,7 +37,10 @@ struct FileTransferView: View {
             if let progressViewModel = viewModel.progressViewModel  {
                 TransferProgressView(viewModel: progressViewModel)
             }
-            buttonView
+            
+            if viewModel.viewAction == .none {
+                buttonView
+            }
         }
     }
     
@@ -78,13 +81,15 @@ struct FileTransferView: View {
         let content = ConfirmBottomSheet(titleText: viewModel.bottomSheetTitle,
                                          msgText: viewModel.bottomSheetMessage,
                                          cancelText: LocalizablePeerToPeer.continueSharing.localized.uppercased(),
-                                         actionText:LocalizablePeerToPeer.stopSharing.localized.uppercased(), didConfirmAction: {
+                                         actionText:LocalizablePeerToPeer.stopSharing.localized.uppercased(),
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss()
             viewModel.stopTask()
             dismissView()
         }, didCancelAction: {
-            self.dismissView()
+            self.dismiss()
         })
-        
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
 }

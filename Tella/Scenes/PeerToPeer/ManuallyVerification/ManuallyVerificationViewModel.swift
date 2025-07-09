@@ -59,7 +59,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     private func discardSenderRegisterRequest() {
         self.server?.discardRegisterPublisher.send(completion: .finished)
-        self.server?.stopListening()
+        self.server?.stopServer()
         recipientViewAction = .discardAndStartOver
     }
     
