@@ -221,6 +221,12 @@ extension String {
     func url() -> URL? {
         return URL(string: self)
     }
+
+    func asFileURL() -> URL? {
+        guard !self.isEmpty else { return nil }
+        return URL(fileURLWithPath: self)
+    }
+
     
     var addline: String {
         return self + "\n"
