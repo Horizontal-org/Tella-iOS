@@ -19,7 +19,7 @@ class ProgressViewModel: ObservableObject {
     @Published var transferredFilesSummary: String
     @Published var percentTransferred: Double
     @Published var progressFileItems: [ProgressFileItemViewModel]
-    
+
     // MARK: - Initializer
     init(
         title: String = "",

@@ -251,4 +251,23 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
+    
+    
+    func remove() {
+
+        let fileManager = FileManager.default
+        let accessed = self.startAccessingSecurityScopedResource()
+        defer {
+            if accessed {
+                self.stopAccessingSecurityScopedResource()
+            }
+        }
+        do {
+            try fileManager.removeItem(at: self)
+        } catch {
+            debugLog("Error removing item")
+        }
+    }
+
+    
 }

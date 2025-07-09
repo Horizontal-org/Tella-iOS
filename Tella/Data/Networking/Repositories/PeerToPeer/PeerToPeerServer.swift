@@ -43,9 +43,22 @@ final class PeerToPeerServer {
         networkManager.startListening(port: port, clientIdentity: clientIdentity)
     }
     
-    func stopListening() {
+    func stopServer() {
         networkManager.stopListening()
         resetConnectionState()
+    }
+    
+    func cleanServer() {
+        stopServer()
+        cleanTempFiles()
+    }
+
+    func cleanTempFiles() {
+        // Clean temp files
+        guard let paths = server.session?.files.values.compactMap({$0.path}) else {
+            return
+        }
+        paths.forEach({$0.remove()})
     }
     
     // MARK: - Request Handling
@@ -100,10 +113,6 @@ final class PeerToPeerServer {
                 return
             }
             receivedFile.bytesReceived += progress
-            
-            if httpRequest.bodyFullyReceived {
-                receivedFile.status = .finished
-            }
             
             server.session?.files[fileID] = receivedFile
             
@@ -259,15 +268,15 @@ final class PeerToPeerServer {
             
             if httpRequest.bodyFullyReceived {
                 sendSuccessResponse(connection: connection)
-            } else {
+                receivedFile.status = .finished
                 
-                receivedFile.status = .sending
+                checkAllFilesAreReceived()
+            } else {
                 let url = FileManager.tempDirectory(withFileName: fileName)
+                receivedFile.status = .sending
+                receivedFile.path = url
                 completion?(url)
             }
-            
-            checkAllFilesAreReceived()
-            
         } catch {
             
         }
@@ -393,7 +402,7 @@ final class PeerToPeerServer {
             didSendPrepareUploadResponsePublisher.send(isSuccess)
         case .closeConnection:
             didReceiveCloseConnectionPublisher.send()
-            stopListening()
+            stopServer()
         default:
             debugLog("Unhandled endpoint")
         }
@@ -433,6 +442,7 @@ final class PeerToPeerServer {
         let filesAreNotfinishReceiving = files.filter({$0.value.status == .sending || $0.value.status == .queue})
         if (filesAreNotfinishReceiving.isEmpty) {
             self.didSendProgress.send(completion: .finished)
+            networkManager.stopListening()
         }
     }
     
@@ -443,11 +453,11 @@ final class PeerToPeerServer {
 }
 
 extension PeerToPeerServer: NetworkManagerDelegate {
-   
+    
     func networkManager(didFailWith error: any Error) {
         debugLog("Server error")
     }
-
+    
     func networkManager(_ connection: NWConnection, didFailWith error: any Error, request: HTTPRequest?) {
         guard let request else { return  }
         handleErrors(httpRequest: request, connection: connection)

@@ -18,6 +18,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
     private var subscribers = Set<AnyCancellable>()
     private var receivingFiles: [ReceivingFile] = []
     
+    @Published var progressFile: ProgressFile = ProgressFile()
+    @Published var should: Bool = false
+    
     // MARK: - Initializer
     
     init?(mainAppModel: MainAppModel, server: PeerToPeerServer) {
@@ -46,6 +49,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 switch completion {
                 case .finished:
                     isLoading = true
+                    viewAction = .transferIsFinished
                     saveFiles()
                 case .failure:
                     break
@@ -91,18 +95,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     }
     
     override func stopTask() {
-        server.stopListening()
-    }
-    
-    private func saveFiles() {
-        guard let title = progressViewModel?.title else { return }
-        
-        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title, parentId: nil)
-        if case .success = result {
-            // Optional: show user confirmation or state change
-        }
-        
-        isLoading = false
+        server.cleanServer()
     }
     
     // MARK: - Helpers
@@ -130,5 +123,55 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     private func formatPercentage(_ percent: Int) -> String {
         return String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, percent)
+    }
+    
+    private func saveFiles() {
+        
+        
+        guard let title = progressViewModel?.title else { return }
+        
+        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title)
+        if case .success(let id) = result  {
+            guard let id  else { return  }
+            let urls: [URL] = receivingFiles.compactMap({$0.path})
+            addFiles(urls: urls, parentId: id)
+        }
+        
+        isLoading = false
+    }
+    
+    func addFiles(urls:[URL], parentId: String) {
+        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
+        
+        let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,
+                                                          parentId: parentId,
+                                                          shouldPreserveMetadata:isPreserveMetadataOn,
+                                                          deleteOriginal: false,
+                                                          fileSource: .files)})
+        addVaultFileWithProgressView(importedFiles: importedFiles)
+    }
+
+    private func addVaultFileWithProgressView(importedFiles: [ImportedFile]) {
+        
+        self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles)
+            .sink { importVaultFileResult in
+                
+                switch importVaultFileResult {
+                case .fileAdded:
+                    self.server.stopServer()
+                    self.viewAction = .filesAreSaved
+                case .importProgress(let importProgress):
+                    self.updateProgress(importProgress:importProgress)
+                }
+                
+            }.store(in: &subscribers)
+    }
+    
+    private func updateProgress(importProgress:ImportProgress) {
+        DispatchQueue.main.async {
+            self.progressFile.progress = importProgress.progress.value
+            self.progressFile.progressFile = importProgress.progressFile.value
+            self.progressFile.isFinishing = importProgress.isFinishing.value
+        }
     }
 }

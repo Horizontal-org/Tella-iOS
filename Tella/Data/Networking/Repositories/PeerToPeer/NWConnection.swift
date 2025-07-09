@@ -31,7 +31,6 @@ final class NetworkManager {
     
     // MARK: - Server Lifecycle
     func startListening(port: Int, clientIdentity: SecIdentity) {
-        resetConnectionState()
         
         do {
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
@@ -47,7 +46,6 @@ final class NetworkManager {
     
     func stopListening() {
         listener?.cancel()
-        resetConnectionState()
     }
     
     func sendData(connection: NWConnection, _ data: Data, completion: ((NWError?) -> Void)? = nil) {
@@ -177,8 +175,5 @@ final class NetworkManager {
     
     func continueParsing() {
         
-    }
-    
-    private func resetConnectionState() {
     }
 }

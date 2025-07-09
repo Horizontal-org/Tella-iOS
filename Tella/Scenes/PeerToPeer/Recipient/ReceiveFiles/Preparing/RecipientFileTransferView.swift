@@ -87,7 +87,7 @@ struct RecipientFileTransferView: View {
         case .displayFileTransferView:
             guard let viewModel = ReceiverFileTransferVM(mainAppModel: self.viewModel.mainAppModel,
                                                          server: viewModel.server) else { return }
-            self.navigateTo(destination: FileTransferView(viewModel: viewModel))
+            self.navigateTo(destination: FileReceivingView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:

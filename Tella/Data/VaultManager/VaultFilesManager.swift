@@ -256,6 +256,18 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return result
     }
     
+    func addFolderFile(name: String) -> Result<String?,Error>? {
+        let file = VaultFileDB(type: .directory, name: name)
+        let result = self.vaultDataBase.addVaultFile(file: file,parentId: nil)
+        switch result {
+        case .success:
+               return .success(file.id)
+        case .failure(let error):
+            return .failure(error)
+        }
+
+     }
+    
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }

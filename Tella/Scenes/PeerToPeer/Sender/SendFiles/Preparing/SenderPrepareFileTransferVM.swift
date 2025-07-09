@@ -120,37 +120,3 @@ class SenderPrepareFileTransferVM: ObservableObject {
         self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
     }
 }
-
-// TODO: To be moved
-
-struct SessionInfo {
-    var sessionId : String?
-    var transmissionId : String?
-    
-    init(sessionId: String? = nil, transmissionId: String? = nil) {
-        self.sessionId = sessionId
-        self.transmissionId = transmissionId
-    }
-}
-
-struct PeerToPeerReport {
-    var title : String
-    var sessionId : String
-    var vaultfiles : [PeerToPeerFile]
-}
-
-class PeerToPeerFile {
-    var fileId : String
-    var transmissionId : String?
-    var vaultFile : VaultFileDB
-    var url : URL?
-    
-    init(fileId: String, transmissionId: String? = nil, vaultFile: VaultFileDB) {
-        self.fileId = fileId
-        self.transmissionId = transmissionId
-        self.vaultFile = vaultFile
-    }
-}
-
-
-
