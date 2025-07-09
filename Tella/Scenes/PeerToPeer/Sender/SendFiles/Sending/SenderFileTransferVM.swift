@@ -10,36 +10,23 @@
 import Foundation
 import Combine
 
-class SenderFileTransferVM: ObservableObject {
+class SenderFileTransferVM: FileTransferVM {
     
-    var mainAppModel: MainAppModel
     var repository: PeerToPeerRepository?
     var report: PeerToPeerReport?
-    
-    @Published var progressFileItems: [ProgressFileItemViewModel] = []
-    @Published var percentUploaded: Float = 0.0
-    @Published var percentUploadedInfo: String = ""
-    @Published var uploadedFiles: String = ""
-    @Published var isLoading: Bool = false
-    @Published var shouldShowToast: Bool = false
-    @Published var toastMessage: String = ""
-    
-    var isSubmissionInProgress: Bool {
-        return false
-    }
     private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel,
-         repository: PeerToPeerRepository? = nil,
-         report: PeerToPeerReport? = nil) {
+         repository: PeerToPeerRepository,
+         report: PeerToPeerReport) {
         
-        self.mainAppModel = mainAppModel
         self.repository = repository
         self.report = report
         
-        initVaultFile()
-        
-        initializeProgressionInfos()
+        super.init(mainAppModel: mainAppModel,
+                   title: LocalizablePeerToPeer.senderSendingAppBar.localized,
+                   bottomSheetTitle: LocalizablePeerToPeer.stopSharingTitle.localized,
+                   bottomSheetMessage: LocalizablePeerToPeer.stopSharingSheetExpl.localized)
         
         submitReport()
     }
@@ -99,8 +86,6 @@ class SenderFileTransferVM: ObservableObject {
     func deleteFilesAfterSubmission() {
     }
     
-    
-    func stopServerListening() {
-        // server.stopListening()
+    override func stopTask() {
     }
 }

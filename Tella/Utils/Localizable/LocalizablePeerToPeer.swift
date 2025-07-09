@@ -67,20 +67,36 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     
     case verificationSenderPart1 = "PeerToPeer_Verification_Sender_Part1_Expl"
     case verificationSenderPart2 = "PeerToPeer_Verification_Sender_Part2_Expl"
-    case verificationReceipientPart1 = "PeerToPeer_Verification_Receipient_Part1_Expl"
-    case verificationReceipientPart2 = "PeerToPeer_Verification_Receipient_Part2_Expl"
+    case verificationRecipientPart1 = "PeerToPeer_Verification_Recipient_Part1_Expl"
+    case verificationRecipientPart2 = "PeerToPeer_Verification_Recipient_Part2_Expl"
 
     case verificationConfirm = "PeerToPeer_Verification_Action_Confirm"
     case verificationDiscard = "PeerToPeer_Verification_Action_Discard"
     
     case senderFilesRejected = "PeerToPeer_Sender_FilesRejected_Toast"
     
-    case receipientFilesRejected = "PeerToPeer_Receipient_FilesRejected_Toast"
-    case senderWaitingReceipient = "PeerToPeer_Sender_WaitingReceipient_Toast"
+    case recipientFilesRejected = "PeerToPeer_Recipient_FilesRejected_Toast"
+    case senderWaitingRecipient = "PeerToPeer_Sender_WaitingRecipient_Toast"
 
     
     case stopSharingTitle = "PeerToPeer_StopSharing_SheetTitle"
     case stopSharingSheetExpl = "PeerToPeer_StopSharing_SheetExpl"
-    case stopSharingContinue = "PeerToPeer_StopSharing_Continue_SheetAction"
-    case stopSharingStop = "PeerToPeer_StopSharing_Stop_SheetAction"
+    case continueSharing = "PeerToPeer_StopSharing_Continue_SheetAction"
+    case stopSharing = "PeerToPeer_StopSharing_Stop_SheetAction"
+
+    case senderPercentageSent = "PeerToPeer_Sender_PercentageSent"
+    case senderFilesSent = "PeerToPeer_Sender_FilesSent"
+    case senderFileSent = "PeerToPeer_Sender_FileSent"
+    
+    case recipientPercentageReceived = "PeerToPeer_Recipient_PercentageReceived"
+    case recipientFilesReceived = "PeerToPeer_Recipient_FilesReceived"
+    case recipientFileReceived = "PeerToPeer_Recipient_FileReceived"
+
+    
+    case receivingAppBar = "PeerToPeer_Recipient_Receiving_AppBar"
+    case stopReceivingSheetTitle = "PeerToPeer_StopReceiving_SheetTitle"
+    case stopReceivingSheetExpl = "PeerToPeer_StopReceiving_SheetExpl"
+    
+    case senderSendingAppBar = "PeerToPeer_Sender_Sending_AppBar"
+
 }

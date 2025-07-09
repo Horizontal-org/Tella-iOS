@@ -11,23 +11,23 @@ import Network
 import Foundation
 
 protocol NetworkManagerDelegate: AnyObject {
-    func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest)
-    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?)
-    func networkManager(_ manager: NetworkManager, didReceiveProgress request: HTTPRequest)
-    
-    func networkManagerDidStartListening(_ manager: NetworkManager)
-    func networkManagerDidStopListening(_ manager: NetworkManager)
-    func networkManager(_ manager: NetworkManager, didFailWith error: Error)
+    func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest)
+    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?)
+    func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest)
+    func networkManagerDidStartListening()
+    func networkManagerDidStopListening()
+    func networkManager(_ connection: NWConnection, didFailWith error: Error, request: HTTPRequest?)
+    func networkManager(didFailWith error: Error )
+
 }
 
 final class NetworkManager {
     // MARK: - Properties
     private var listener: NWListener?
-    private var currentConnection: NWConnection?
     weak var delegate: NetworkManagerDelegate?
     
     private let kMinimumIncompleteLength = 1
-    private let kMaximumLength = 64 * 1024
+    private let kMaximumLength = 1024 * 1024
     
     // MARK: - Server Lifecycle
     func startListening(port: Int, clientIdentity: SecIdentity) {
@@ -41,22 +41,16 @@ final class NetworkManager {
             self.listener?.start(queue: .main)
         } catch {
             debugLog("Failed to start listener")
-            delegate?.networkManager(self, didFailWith: error)
+            delegate?.networkManager(didFailWith: error)
         }
     }
     
     func stopListening() {
         listener?.cancel()
-        currentConnection?.cancel()
         resetConnectionState()
     }
     
-    func sendData(_ data: Data, completion: ((NWError?) -> Void)? = nil) {
-        guard let connection = currentConnection else {
-            debugLog("No active connection to send data")
-            return
-        }
-        
+    func sendData(connection: NWConnection, _ data: Data, completion: ((NWError?) -> Void)? = nil) {
         connection.send(content: data, completion: .contentProcessed { error in
             if let error = error {
                 debugLog("Server send error")
@@ -89,14 +83,14 @@ final class NetworkManager {
             switch state {
             case .ready:
                 debugLog("Listener is ready and waiting for connections")
-                delegate?.networkManagerDidStartListening(self)
+                delegate?.networkManagerDidStartListening()
             case .failed(let error):
                 debugLog("Listener failed")
-                delegate?.networkManager(self, didFailWith: error)
+                delegate?.networkManager(didFailWith: error)
                 self.stopListening()
             case .cancelled:
                 debugLog("Listener cancelled")
-                delegate?.networkManagerDidStopListening(self)
+                delegate?.networkManagerDidStopListening()
             default:
                 break
             }
@@ -108,45 +102,36 @@ final class NetworkManager {
     }
     
     private func handleNewConnection(_ connection: NWConnection) {
-        currentConnection = connection
         connection.start(queue: .main)
         let parser = HTTPParser()
         
         receive(connection,
-                maximumLength: kMaximumLength,
                 parser: parser)
     }
     
     private func receive(_ connection: NWConnection,
-                         maximumLength:Int?,
                          parser:HTTPParser) {
-        var maximumLength = (maximumLength ?? kMaximumLength)
-        maximumLength = maximumLength == 0 ? 1 : maximumLength
-        
-        connection.receive(minimumIncompleteLength: 1, maximumLength: maximumLength) { [weak self] data, _, isComplete, error in
+        connection.receive(minimumIncompleteLength: 1, maximumLength: kMaximumLength) { [weak self] data, _, isComplete, error in
             
             guard let self = self else { return}
             
             if let error {
-                self.handleReceiveError(error)
+                self.handleReceiveError(connection:connection, error)
                 return
             }
             guard let data else {
                 debugLog("Failed to read HTTP data")
                 return
             }
-            
-            if isComplete {
-            }
-            
+
             processHTTPRequest(on: connection, data: data, parser: parser)
         }
         
     }
     
-    private func handleReceiveError(_ error: NWError) {
+    private func handleReceiveError(connection:NWConnection , _ error: NWError) {
         debugLog("Connection error")
-        delegate?.networkManager(self, didFailWith: error)
+        delegate?.networkManager(connection, didFailWith: error, request:nil)
     }
     
     func processHTTPRequest(on connection: NWConnection,
@@ -156,10 +141,12 @@ final class NetworkManager {
             
             parser.onReceiveBody = { [weak self] length in
                 debugLog(length)
+                guard let self else { return }
+                self.delegate?.networkManager(connection, didReceive: length, for: parser.request)
             }
             
             parser.onReceiveQueryParameters = {
-                self.delegate?.networkManager(self, verifyParametersForDataRequest: parser.request, completion: { url in
+                self.delegate?.networkManager(connection, verifyParametersForDataRequest: parser.request, completion: { url in
                     parser.fileURL = url
                 })
             }
@@ -172,19 +159,18 @@ final class NetworkManager {
             } else {
                 check(on: connection, parser: parser)
             }
-            
+
         } catch {
             debugLog("Failed to parse HTTP request")
-            self.delegate?.networkManager(self, didFailWith: error)
+            self.delegate?.networkManager(connection, didFailWith: error, request: parser.request)
         }
     }
     
     func check(on connection: NWConnection, parser:HTTPParser) {
         if parser.request.bodyFullyReceived {
-            delegate?.networkManager(self, didReceiveCompleteRequest: parser.request)
+            delegate?.networkManager(connection, didReceiveCompleteRequest: parser.request)
         } else {
             receive(connection,
-                    maximumLength: parser.request.headers.contentLength,
                     parser: parser)
         }
     }
@@ -194,6 +180,5 @@ final class NetworkManager {
     }
     
     private func resetConnectionState() {
-        currentConnection = nil
     }
 }
