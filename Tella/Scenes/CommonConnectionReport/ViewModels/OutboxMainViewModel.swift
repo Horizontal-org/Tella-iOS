@@ -252,7 +252,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
                 let size = currentItem.file.size.getFormattedFileSize()
                 let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                 
-                currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
+                currentItem.transferSummary = "\(currentFileTotalBytesSent)/\(size )"
             }
             publishUpdates()
         }

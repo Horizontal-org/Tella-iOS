@@ -23,7 +23,6 @@ extension WebRepository {
             
             let request = try endpoint.urlRequest()
             let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
             request.curlRepresentation()
             
             let delegate = PeerToPeerURLSessionDelegate(

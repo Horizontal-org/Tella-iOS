@@ -66,15 +66,17 @@ class SenderPrepareFileTransferVM: ObservableObject {
         
         let files : [P2PFile] = addFilesViewModel.files.compactMap { file in
             
-            let id = UUID().uuidString
+            guard let id = file.id else {
+                return nil
+            }
             peerToPeerFileArray.append(PeerToPeerFile(fileId: id, transmissionId: "", vaultFile: file))
             
             return P2PFile(id: id,
                            fileName: file.name.appending(".\(file.fileExtension)"),
                            size: file.size,
-                           fileType: file.fileExtension,
+                           fileType: file.mimeType,
+                           thumbnail: file.thumbnail,
                            sha256: "")
-            
         }
         
         let prepareUploadRequest = PrepareUploadRequest(title: title, sessionID: sessionId, files: files)
@@ -118,8 +120,6 @@ class SenderPrepareFileTransferVM: ObservableObject {
         self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
     }
 }
-
-
 
 // TODO: To be moved
 

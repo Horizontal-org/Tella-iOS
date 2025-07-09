@@ -31,7 +31,7 @@ struct OutboxDetailsItemView: View {
                 Spacer()
                     .frame(height: 2)
                 
-                Text(item.progression)
+                Text(item.transferSummary)
                     .font(.custom(Styles.Fonts.regularFontName, size: 10))
                     .foregroundColor(Color.white)
                 
@@ -47,6 +47,6 @@ struct OutboxDetailsItemView: View {
 
 struct ReportDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), progression: "0/4.5 MB") ))
+        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), transferSummary: "0/4.5 MB") ))
     }
 }

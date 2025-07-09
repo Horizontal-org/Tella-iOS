@@ -16,7 +16,7 @@ final class PeerToPeerServer {
     // MARK: - Properties
     private let networkManager = NetworkManager()
     private var currentHTTPRequest: HTTPRequest?
-    private var server = P2PServerState()
+    var server = P2PServerState()
     
     // Publishers
     let didRegisterPublisher = PassthroughSubject<Bool, Never>()
@@ -26,6 +26,12 @@ final class PeerToPeerServer {
     let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile]?, Never>()
     let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
     let didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
+    let didSendProgress = PassthroughSubject<ReceivingFile, Never>()
+    let acceptRegisterPublisher = PassthroughSubject<Void, Never>()
+    let discardRegisterPublisher = PassthroughSubject<Void, Never>()
+    let prepareUploadPublisher = PassthroughSubject<Bool, Never>()
+    
+    var subscribers = Set<AnyCancellable>()
     
     init() {
         networkManager.delegate = self
@@ -43,28 +49,28 @@ final class PeerToPeerServer {
     }
     
     // MARK: - Request Handling
-    func acceptRegisterRequest() {
+    func acceptRegisterRequest(connection: NWConnection) {
         do {
             let serverResponse = try generateRegisterServerResponse()
-            handleServerResponse(serverResponse)
+            handleServerResponse(connection: connection, serverResponse)
         } catch let error as HTTPStatusCode {
-            handleServerResponse(createErrorResponse(error))
+            handleServerResponse(connection: connection, createErrorResponse(error))
         } catch {
-            sendInternalServerError()
+            sendInternalServerError(connection: connection)
         }
     }
     
-    func discardRegisterRequest() {
-        handleServerResponse(createErrorResponse(.unauthorized))
+    func discardRegisterRequest(connection: NWConnection) {
+        handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
     }
     
-    func sendPrepareUploadFiles(filesAccepted: Bool) {
+    func sendPrepareUploadFiles(connection: NWConnection, filesAccepted: Bool) {
         let serverResponse = filesAccepted ? createAcceptUploadResponse() : createRejectUploadResponse()
-        handleServerResponse(serverResponse)
+        handleServerResponse(connection: connection, serverResponse)
     }
     
     // MARK: - Request Processing
-    private func processCompleteBody(httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
+    private func processCompleteBody(connection: NWConnection, httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Unknown endpoint")
             return
@@ -72,25 +78,50 @@ final class PeerToPeerServer {
         
         switch endpoint {
         case .ping:
-            handlePingRequest()
+            handlePingRequest(connection: connection)
         case .register:
-            handleRegisterRequest()
+            handleRegisterRequest(connection: connection)
         case .prepareUpload:
-            handlePrepareUploadRequest(httpRequest: httpRequest)
+            handlePrepareUploadRequest(httpRequest: httpRequest, connection: connection)
         case .upload:
-            handleFileUpload(httpRequest: httpRequest, completion: completion)
+            handleFileUpload(connection: connection, httpRequest: httpRequest, completion: completion)
         case .closeConnection:
-            handleCloseConnectionRequest(httpRequest: httpRequest)
+            handleCloseConnectionRequest(connection: connection, httpRequest: httpRequest)
         }
     }
     
-    private func handlePingRequest() {
-        showVerificationHashPublisher.send()
-        server.isUsingManualConnection = true
-        sendSuccessResponse()
+    private func processProgress(connection: NWConnection, progress : Int, httpRequest: HTTPRequest) {
+        do {
+            let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
+            
+            guard let fileID = fileUploadRequest.fileID,
+                  let receivedFile = server.session?.files[fileID] else {
+                handleServerResponse(connection: connection, createErrorResponse(.badRequest))
+                return
+            }
+            receivedFile.bytesReceived += progress
+            
+            if httpRequest.bodyFullyReceived {
+                receivedFile.status = .finished
+            }
+            
+            server.session?.files[fileID] = receivedFile
+            
+            didSendProgress.send(receivedFile)
+            
+            
+        } catch {
+            
+        }
     }
     
-    private func sendSuccessResponse() {
+    private func handlePingRequest(connection: NWConnection) {
+        showVerificationHashPublisher.send()
+        server.isUsingManualConnection = true
+        sendSuccessResponse(connection: connection)
+    }
+    
+    private func sendSuccessResponse(connection: NWConnection) {
         
         let response = BoolResponse(success: true)
         
@@ -102,21 +133,33 @@ final class PeerToPeerServer {
         
         if let responseData {
             let response = P2PServerResponse(dataResponse: responseData, response: .success)
-            sendDataToConnection(serverResponse: response)
+            sendDataToConnection(connection: connection, serverResponse: response)
         }
     }
     
-    private func handleRegisterRequest() {
+    private func handleRegisterRequest(connection: NWConnection) {
+        
         if server.isUsingManualConnection {
             didRequestRegisterPublisher.send()
+            
+            acceptRegisterPublisher.sink { result in
+            } receiveValue: { _ in
+                self.acceptRegisterRequest(connection: connection)
+            }.store(in: &subscribers)
+            
+            discardRegisterPublisher.sink { result in
+            } receiveValue: { _ in
+                self.discardRegisterRequest(connection: connection)
+            }.store(in: &subscribers)
+            
         } else {
             do {
                 let serverResponse = try generateRegisterServerResponse()
-                handleServerResponse(serverResponse)
+                handleServerResponse(connection: connection, serverResponse)
             } catch let error as HTTPStatusCode {
-                handleServerResponse(createErrorResponse(error))
+                handleServerResponse(connection: connection, createErrorResponse(error))
             } catch {
-                sendInternalServerError()
+                sendInternalServerError(connection: connection)
             }
         }
     }
@@ -163,38 +206,46 @@ final class PeerToPeerServer {
         return P2PServerResponse(dataResponse: responseData, response: .success)
     }
     
-    private func handlePrepareUploadRequest(httpRequest: HTTPRequest) {
+    private func handlePrepareUploadRequest(httpRequest: HTTPRequest, connection: NWConnection) {
         guard let prepareUploadRequest = httpRequest.body.decodeJSON(PrepareUploadRequest.self) else {
-            handleServerResponse(createErrorResponse(.badRequest))
+            handleServerResponse(connection: connection, createErrorResponse(.badRequest))
             return
         }
         
         guard prepareUploadRequest.sessionID == server.session?.sessionId else {
-            handleServerResponse(createErrorResponse(.unauthorized))
+            handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
             return
         }
+        
+        server.session?.title = prepareUploadRequest.title
         
         prepareUploadRequest.files?.forEach({ file in
             guard let id = file.id else { return }
             server.session?.files[id] = ReceivingFile(file: file)
         })
         
+        prepareUploadPublisher.sink { result in
+        } receiveValue: { filesAccepted in
+            self.sendPrepareUploadFiles(connection: connection, filesAccepted: filesAccepted)
+        }.store(in: &subscribers)
+        
         didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
+        
     }
     
-    private func handleFileUpload(httpRequest: HTTPRequest, completion:((URL)-> Void)? = nil) {
+    private func handleFileUpload(connection: NWConnection,httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
         do {
             let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
             
             guard let fileID = fileUploadRequest.fileID,
                   let transmissionID = fileUploadRequest.transmissionID,
                   let sessionID = fileUploadRequest.sessionID else {
-                handleServerResponse(createErrorResponse(.badRequest))
+                handleServerResponse(connection: connection, createErrorResponse(.badRequest))
                 return
             }
             
             guard sessionID == server.session?.sessionId else {
-                handleServerResponse(createErrorResponse(.unauthorized))
+                handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
                 return
             }
             
@@ -202,31 +253,34 @@ final class PeerToPeerServer {
                   receivedFile.transmissionId == transmissionID,
                   let fileName = receivedFile.file.fileName
             else {
-                handleServerResponse(createErrorResponse(.forbidden))
+                handleServerResponse(connection: connection, createErrorResponse(.forbidden))
                 return
             }
             
             if httpRequest.bodyFullyReceived {
-                sendSuccessResponse()
+                sendSuccessResponse(connection: connection)
             } else {
+                
+                receivedFile.status = .sending
                 let url = FileManager.tempDirectory(withFileName: fileName)
                 completion?(url)
-                return
             }
+            
+            checkAllFilesAreReceived()
             
         } catch {
             
         }
     }
     
-    func handleCloseConnectionRequest(httpRequest: HTTPRequest) {
+    func handleCloseConnectionRequest(connection: NWConnection, httpRequest: HTTPRequest) {
         do {
             let serverResponse = try generateCloseConnectionResponse(body: httpRequest.body)
-            handleServerResponse(serverResponse)
+            handleServerResponse(connection: connection, serverResponse)
         } catch let error as HTTPStatusCode {
-            handleServerResponse(createErrorResponse(error))
+            handleServerResponse(connection: connection, createErrorResponse(error))
         } catch {
-            sendInternalServerError()
+            sendInternalServerError(connection: connection)
         }
     }
     
@@ -298,26 +352,26 @@ final class PeerToPeerServer {
     }
     
     // MARK: - Response Handling
-    private func handleServerResponse(_ serverResponse: P2PServerResponse?) {
+    private func handleServerResponse(connection: NWConnection, _ serverResponse: P2PServerResponse?) {
         guard let serverResponse = serverResponse else {
-            sendInternalServerError()
+            sendInternalServerError(connection: connection)
             return
         }
-        sendDataToConnection(serverResponse: serverResponse)
+        sendDataToConnection(connection: connection, serverResponse: serverResponse)
     }
     
-    private func sendInternalServerError() {
+    private func sendInternalServerError(connection: NWConnection) {
         let response = createErrorResponse(.internalServerError)
-        sendDataToConnection(serverResponse: response)
+        sendDataToConnection(connection: connection, serverResponse: response)
     }
     
-    private func sendDataToConnection(serverResponse: P2PServerResponse) {
+    private func sendDataToConnection(connection: NWConnection, serverResponse: P2PServerResponse) {
         guard let data = serverResponse.dataResponse else {
             debugLog("No data to send in server response")
             return
         }
         
-        networkManager.sendData(data) { [weak self] error in
+        networkManager.sendData(connection: connection, data) { [weak self] error in
             if error == nil {
                 self?.handleSuccessfulResponse(serverResponse)
             }
@@ -345,6 +399,43 @@ final class PeerToPeerServer {
         }
     }
     
+    private func handleErrors(httpRequest:HTTPRequest?, connection: NWConnection) {
+        
+        guard let httpRequest else {
+            sendInternalServerError(connection: connection)
+            return
+        }
+        
+        switch PeerToPeerEndpoint(rawValue: httpRequest.endpoint ) {
+        case .upload:
+            do {
+                let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
+                
+                guard let fileID = fileUploadRequest.fileID else {
+                    sendInternalServerError(connection: connection)
+                    return
+                }
+                let receivedFile = server.session?.files[fileID]
+                receivedFile?.status = .failed
+                sendInternalServerError(connection: connection)
+                
+            } catch {
+                sendInternalServerError(connection: connection)
+            }
+            
+        default:
+            sendInternalServerError(connection: connection)
+        }
+    }
+    
+    func checkAllFilesAreReceived()  {
+        guard let files = server.session?.files else { return  }
+        let filesAreNotfinishReceiving = files.filter({$0.value.status == .sending || $0.value.status == .queue})
+        if (filesAreNotfinishReceiving.isEmpty) {
+            self.didSendProgress.send(completion: .finished)
+        }
+    }
+    
     private func resetConnectionState() {
         currentHTTPRequest = nil
         server.reset()
@@ -352,33 +443,47 @@ final class PeerToPeerServer {
 }
 
 extension PeerToPeerServer: NetworkManagerDelegate {
-    
-    func networkManagerDidStopListening(_ manager: NetworkManager) {
+   
+    func networkManager(didFailWith error: any Error) {
+        debugLog("Server error")
+    }
+
+    func networkManager(_ connection: NWConnection, didFailWith error: any Error, request: HTTPRequest?) {
+        guard let request else { return  }
+        handleErrors(httpRequest: request, connection: connection)
     }
     
-    func networkManager(_ manager: NetworkManager, didFailWith error: any Error) {
-    }
-    
-    func networkManager(_ manager: NetworkManager, didReceiveCompleteRequest request: HTTPRequest) {
+    func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest) {
         currentHTTPRequest = request
-        processCompleteBody(httpRequest: request)
+        processCompleteBody(connection: connection, httpRequest: request)
     }
     
-    func networkManager(_ manager: NetworkManager, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
+    
+    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
         currentHTTPRequest = request
-        processCompleteBody(httpRequest: request, completion:completion)
+        processCompleteBody(connection: connection, httpRequest: request, completion:completion)
     }
     
-    func networkManager(_ manager: NetworkManager, didReceiveProgress request: HTTPRequest){
+    func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest) {
+        processProgress(connection: connection, progress: progress, httpRequest: request)
     }
     
-    func networkManagerDidStartListening(_ manager: NetworkManager) {
+    func networkManagerDidStartListening() {
         debugLog("Network manager started listening")
     }
+    
+    func networkManagerDidStopListening() {
+    }
+    
 }
 
 extension PeerToPeerServer {
     static func stub() -> PeerToPeerServer {
         return PeerToPeerServer()
     }
+}
+
+struct CurrentFileUploadInfo {
+    var url: URL
+    var fileID: String
 }

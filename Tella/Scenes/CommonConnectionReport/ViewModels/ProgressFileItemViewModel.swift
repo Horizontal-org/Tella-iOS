@@ -18,5 +18,3 @@ class ProgressFileItemViewModel: ObservableObject {
         self.fileStatus = fileStatus
     }
 }
-
-

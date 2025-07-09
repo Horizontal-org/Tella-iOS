@@ -10,6 +10,7 @@
 
 import Foundation
 
+
 class SubmittedMainViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
