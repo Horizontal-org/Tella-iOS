@@ -26,11 +26,18 @@ class P2PFile: Codable {
     var id, fileName: String?
     var size: Int?
     var fileType, sha256: String?
-    init(id: String?, fileName: String?, size: Int?, fileType: String?, sha256: String) {
+    var thumbnail: Data?
+    init(id: String?,
+         fileName: String?,
+         size: Int?,
+         fileType: String?,
+         thumbnail: Data?,
+         sha256: String) {
         self.id = id
         self.fileName = fileName
         self.size = size
         self.fileType = fileType
+        self.thumbnail = thumbnail
         self.sha256 = sha256
     }
 }
@@ -45,7 +52,7 @@ struct PrepareUploadResponse: Codable {
 struct P2PFileResponse: Codable {
     let id: String?
     let transmissionID: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case transmissionID = "transmissionId"

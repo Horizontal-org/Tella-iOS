@@ -27,7 +27,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     // MARK: - Properties
     
      var mainAppModel: MainAppModel
-    private var server: PeerToPeerServer
+     var server: PeerToPeerServer
     private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?
     // MARK: - Published Properties
@@ -75,7 +75,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                     viewAction = .displayFileTransferView(files: self.files)
                 } else {
                     self.viewState = .waitingRequest
-                    viewAction = .showToast(message: LocalizablePeerToPeer.receipientFilesRejected.localized)
+                    viewAction = .showToast(message: LocalizablePeerToPeer.recipientFilesRejected.localized)
                 }
             }
             .store(in: &subscribers)
@@ -92,7 +92,8 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
-        server.sendPrepareUploadFiles(filesAccepted: acceptance)
+        server.prepareUploadPublisher.send(acceptance)
+        server.prepareUploadPublisher.send(completion: .finished)
     }
     
      func stopServerListening() {
@@ -111,3 +112,5 @@ extension RecipientPrepareFileTransferVM {
         )
     }
 }
+
+
