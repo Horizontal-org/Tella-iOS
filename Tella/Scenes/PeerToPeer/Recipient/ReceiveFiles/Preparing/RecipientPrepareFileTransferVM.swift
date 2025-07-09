@@ -97,7 +97,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     }
     
      func stopServerListening() {
-         server.stopListening()
+         server.stopServer()
     }
 
 }

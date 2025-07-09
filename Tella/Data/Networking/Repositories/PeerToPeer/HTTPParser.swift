@@ -144,6 +144,7 @@ final class HTTPParser {
             let instance = Unmanaged<HTTPParser>.fromOpaque(parser!.pointee.data).takeUnretainedValue()
             instance.bodyFullyReceived = true
             debugLog("on_message_complete")
+            instance.closeFile()
             return 0
         }
         
