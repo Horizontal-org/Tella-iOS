@@ -12,12 +12,10 @@ import Foundation
 
 class ReceiverFileTransferVM: FileTransferVM {
     
-    var server: PeerToPeerServer
+    private var server: PeerToPeerServer
     private var subscribers = Set<AnyCancellable>()
     
-    init?(mainAppModel: MainAppModel,
-          server: PeerToPeerServer) {
-        
+    init?(mainAppModel: MainAppModel, server: PeerToPeerServer) {
         self.server = server
         
         super.init(mainAppModel: mainAppModel,
@@ -25,93 +23,95 @@ class ReceiverFileTransferVM: FileTransferVM {
                    bottomSheetTitle: LocalizablePeerToPeer.stopReceivingSheetTitle.localized,
                    bottomSheetMessage: LocalizablePeerToPeer.stopReceivingSheetExpl.localized)
         
+        guard let session = server.server.session else {
+            return nil
+        }
         
+        receivingFiles = Array(session.files.values)
+        initProgress(session: session)
         listenToServer()
-        
-        self.initProgress()
     }
     
-    func listenToServer() {
-        
+    private func listenToServer() {
         server.didSendProgress
             .receive(on: DispatchQueue.main)
-        
-            .sink { completion in
-                
+            .sink { [weak self] completion in
                 switch completion {
                 case .finished:
-                    self.isLoading = true
-                    self.saveFiles()
+                    self?.isLoading = true
+                    self?.saveFiles()
                 case .failure:
                     break
                 }
                 debugLog("Completion: \(completion)")
-            } receiveValue: { file in
-                self.update(file: file)
-            }.store(in: &subscribers)
+            } receiveValue: { [weak self] file in
+                self?.update(file: file)
+            }
+            .store(in: &subscribers)
     }
     
-    func initProgress() {
+    private func initProgress(session: P2PSession) {
+        let title = session.title ?? ""
         
-        // Title
-        let title = self.server.server.session?.title ?? ""
-        guard let session = server.server.session else {
-            return
-        }
+        // Percent Transferred
+        let percentText = String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, 0)
         
-        receivingFiles = Array(session.files.values)
+        // Uploaded Files Summary
+        let totalSize = receivingFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
         
-        // PercentUploadedInfo
-        let percentTransferredText = String.init(format: LocalizablePeerToPeer.recipientPercentageReceived.localized,0)
+        let fileTemplate = receivingFiles.count > 1
+        ? LocalizablePeerToPeer.recipientFilesReceived.localized
+        : LocalizablePeerToPeer.recipientFileReceived.localized
         
-        // UploadedFiles
-        let totalSize = receivingFiles.reduce(into: 0) { $0 += $1.file.size ?? 0 }
-        let fileString = receivingFiles.count > 1 ? LocalizablePeerToPeer.recipientFilesReceived.localized : LocalizablePeerToPeer.recipientFileReceived.localized
-        let transferredFilesSummary = String(format: fileString,  receivingFiles.count, "0", totalSize.getFormattedFileSize() )
+        let transferredFilesSummary = String(format: fileTemplate, receivingFiles.count, "0", totalSize.getFormattedFileSize())
         
-        // ProgressFileItems
-        
-        let progressFileItems = receivingFiles.compactMap { receivingFile in
-            let progression = "0/\((receivingFile.file.size ?? 0).getFormattedFileSize())"
-            let vaultFileDB = VaultFileDB.init(p2pFile: receivingFile.file)
-            return ProgressFileItemViewModel(file: vaultFileDB, transferSummary: progression, transferProgress: 0)
+        // Progress File Items: Transfer Summary
+        let progressItems = receivingFiles.map {
+            let progression = "0/\(($0.file.size ?? 0).getFormattedFileSize())"
+            let fileVM = VaultFileDB(p2pFile: $0.file)
+            return ProgressFileItemViewModel(file: fileVM, transferSummary: progression, transferProgress: 0)
         }
         
         self.progressViewModel = ProgressViewModel(title: title,
-                                                   percentTransferredText: percentTransferredText,
+                                                   percentTransferredText: percentText,
                                                    transferredFilesSummary: transferredFilesSummary,
                                                    percentTransferred: 0,
-                                                   progressFileItems: progressFileItems)
+                                                   progressFileItems: progressItems)
     }
     
-    func update(file : ReceivingFile) {
+    private func update(file: ReceivingFile) {
+        let totalBytes = receivingFiles.reduce(0) { $0 + $1.bytesReceived }
+        let totalSize = receivingFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
         
-        let totalBytesSent = receivingFiles.reduce(into: 0) { $0 += $1.bytesReceived }
-        let totalSize = receivingFiles.reduce(into: 0) { $0 += $1.file.size ?? 0 }
-        let recipientPercentage = Float(totalBytesSent) / Float(totalSize)
-        let formattedRecipientPercentage = Int(recipientPercentage * 100)
+        guard totalSize > 0 else { return }
         
+        // Percent Transferred
+        let progressRatio = Double(totalBytes) / Double(totalSize)
+        progressViewModel?.percentTransferred = progressRatio
         
-        let percentUploadedInfo = String.init(format: LocalizablePeerToPeer.recipientPercentageReceived.localized,formattedRecipientPercentage )
+        // Percent Text
+        let percent = Int(progressRatio * 100)
+        let percentText = String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, percent)
+        progressViewModel?.percentTransferredText = percentText
         
-        let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-        let formattedTotalSize = totalSize.getFormattedFileSize()
+        // Uploaded Files Summary
+        let totalUploaded = totalBytes.getFormattedFileSize().getFileSizeWithoutUnit()
+        let totalFormattedSize = totalSize.getFormattedFileSize()
         
-        // UploadedFiles
-        let fileString = receivingFiles.count > 1 ? LocalizablePeerToPeer.recipientFilesReceived.localized : LocalizablePeerToPeer.recipientFileReceived.localized
-        let uploadedFilesString = String(format: fileString,  receivingFiles.count,formattedTotalUploaded, formattedTotalSize )
+        let fileTemplate = receivingFiles.count > 1
+        ? LocalizablePeerToPeer.recipientFilesReceived.localized
+        : LocalizablePeerToPeer.recipientFileReceived.localized
         
-        self.progressViewModel?.percentTransferredText = percentUploadedInfo
-        self.progressViewModel?.transferredFilesSummary = uploadedFilesString
-        self.progressViewModel?.percentTransferred = Double(recipientPercentage)
+        let uploadedFilesSummary = String(format: fileTemplate, receivingFiles.count, totalUploaded, totalFormattedSize)
         
-        let progressFileItemVM = progressViewModel?.progressFileItems.first(where: {$0.file.id == file.file.id})
+        progressViewModel?.transferredFilesSummary = uploadedFilesSummary
         
-        let formattedFileUploaded = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
-        let formattedFileTotalSize = (file.file.size ?? 0).getFormattedFileSize()
-        let progression = "\(formattedFileUploaded)/\(formattedFileTotalSize)"
-        
-        progressFileItemVM?.transferSummary = progression
+        // Progress File Items: Transfer Summary
+        if let item = progressViewModel?.progressFileItems.first(where: { $0.file.id == file.file.id }) {
+            let uploaded = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
+            let size = (file.file.size ?? 0).getFormattedFileSize()
+            item.transferSummary = "\(uploaded)/\(size)"
+        }
     }
     
     override func stopTask() {
@@ -119,14 +119,14 @@ class ReceiverFileTransferVM: FileTransferVM {
     }
     
     private func saveFiles() {
+        guard let progressViewModel else { return }
         
-        guard let progressViewModel else {
-            return
+        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: progressViewModel.title, parentId: nil)
+        
+        if case .success = result {
+            // Handle success if needed
         }
-        let addFolderFileResult = mainAppModel.vaultFilesManager?.addFolderFile(name: progressViewModel.title, parentId: nil)
-        if case .success(let id) = addFolderFileResult {
-
-        }
-        self.isLoading = false
+        
+        isLoading = false
     }
 }
