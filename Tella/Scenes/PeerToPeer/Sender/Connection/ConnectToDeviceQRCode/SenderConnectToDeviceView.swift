@@ -36,7 +36,6 @@ struct SenderConnectToDeviceView: View {
             CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
-            BackBottomView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

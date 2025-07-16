@@ -101,6 +101,7 @@ struct SenderConnectToDeviceManuallyView: View {
     var bottomView: some View {
         NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validFields,
                                       nextButtonAction: .action,
+                                      shouldHideBack: true,
                                       nextAction: {
             viewModel.getHash()
         })
