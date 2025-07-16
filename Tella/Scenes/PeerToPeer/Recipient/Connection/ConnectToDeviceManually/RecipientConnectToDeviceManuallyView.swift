@@ -33,7 +33,6 @@ struct RecipientConnectToDeviceManuallyView: View {
                 cardsView
             }
             Spacer()
-            BackBottomView()
         }
         .padding([.leading, .trailing], 16)
     }

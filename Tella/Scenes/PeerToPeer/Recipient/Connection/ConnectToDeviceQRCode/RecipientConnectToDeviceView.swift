@@ -40,7 +40,6 @@ struct RecipientConnectToDeviceView: View {
                 connectManuallyButton
             }
             Spacer()
-            BackBottomView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
