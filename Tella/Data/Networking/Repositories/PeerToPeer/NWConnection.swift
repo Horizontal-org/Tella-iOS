@@ -17,7 +17,7 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManagerDidStartListening()
     func networkManagerDidStopListening()
     func networkManager(_ connection: NWConnection, didFailWith error: Error, request: HTTPRequest?)
-    func networkManager(didFailWith error: Error )
+    func networkManager(didFailWith error: Error? )
 
 }
 
@@ -119,6 +119,7 @@ final class NetworkManager {
             }
             guard let data else {
                 debugLog("Failed to read HTTP data")
+                delegate?.networkManager(didFailWith: nil)
                 return
             }
 

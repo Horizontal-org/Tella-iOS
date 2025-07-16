@@ -16,10 +16,8 @@ struct FileReceivingView: View {
     var body: some View {
         ZStack {
             FileTransferView(viewModel: viewModel)
-        }        .onReceive(viewModel.$viewAction) { action in
-           
+        }.onReceive(viewModel.$viewAction) { action in
             handleViewAction(action:action)
-            
         }
     }
     
@@ -37,16 +35,20 @@ struct FileReceivingView: View {
     
     func handleViewAction(action: TransferViewAction)  {
         switch action {
-
+            
         case .transferIsFinished:
             showProgressView()
- 
-        case .filesAreSaved:
-            self.popToRoot()
+        case .shouldShowResults:
+            let resultVM = P2PResultVM(transferredFiles: viewModel.transferredFiles,
+                                       participant: .recipient)
+            
+            let resultView = P2PResultView(viewModel: resultVM, buttonAction: {
+                self.popToRoot()
+            })
+            navigateTo(destination: resultView)
         default:
             break
         }
-        
     }
 }
 //

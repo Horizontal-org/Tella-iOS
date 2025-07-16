@@ -12,8 +12,9 @@ import Combine
 
 class PeerToPeerRepository: NSObject, WebRepository {
     
-    var connectionInfo:ConnectionInfo?
-    
+    private var connectionInfo:ConnectionInfo?
+    private var uploadTasks : [URLSessionTask] = []
+
     func getHash(connectionInfo:ConnectionInfo) -> AnyPublisher<String, Error> {
         
         let apiResponse = fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: connectionInfo))
@@ -46,7 +47,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func uploadFile(fileUploadRequest:FileUploadRequest, fileURL: URL) -> AnyPublisher<P2PUploadResponse, APIError> {
+    func uploadFile(fileUploadRequest:FileUploadRequest, fileURL: URL) -> AnyPublisher<Int, APIError> {
         guard let connectionInfo else {
             return Fail(error: APIError.badServer)
                 .eraseToAnyPublisher()
@@ -58,6 +59,17 @@ class PeerToPeerRepository: NSObject, WebRepository {
                                          fileUploadRequest: fileUploadRequest,
                                          fileURL: fileURL))
             return apiResponse
+                .compactMap { output in
+                    switch output {
+                    case .progress(let progress):
+                        return progress
+                    case .didCreateTask(let task):
+                        self.uploadTasks.append(task)
+                        return nil
+                    default:
+                        return nil
+                    }
+                }
                 .eraseToAnyPublisher()
         }
     }
@@ -71,6 +83,10 @@ class PeerToPeerRepository: NSObject, WebRepository {
         return apiResponse
             .compactMap{$0.response}
             .eraseToAnyPublisher()
+    }
+    
+    func cancelUpload() {
+        uploadTasks.compactMap({$0.cancel()})
     }
 }
 

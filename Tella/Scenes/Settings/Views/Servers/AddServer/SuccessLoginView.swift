@@ -51,7 +51,7 @@ struct SuccessLoginView: View {
     var topview: some View {
         
         VStack {
-            Image("settings.checked-circle")
+            Image("checked-circle")
             
             Spacer()
                 .frame(height: 16)

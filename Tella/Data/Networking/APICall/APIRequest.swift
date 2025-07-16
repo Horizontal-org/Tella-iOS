@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -75,16 +75,16 @@ extension APIRequest {
         request.httpMethod = httpMethod.rawValue
         if encoding == .form {
             request.setValue(multipartHeader, forHTTPHeaderField: "Content-Type")
-                
+            
             request.httpBody = multipartBody
         } else {
             request.httpBody = try body()
         }
-
+        
         request.timeoutInterval = TimeInterval(30)
         return request
     }
-} 
+}
 
 extension APIRequest {
     
@@ -100,9 +100,6 @@ extension APIRequest {
                                               options: .prettyPrinted
             )
         }
-//        if let fileToUpload {
-//            return getHttpBody(fieldInfo: fileToUpload)
-//        }
         return nil
     }
     
@@ -127,14 +124,6 @@ extension APIRequest {
         
         return url
     }
-    
-//    func getHttpBody(fieldInfo:FileInfo) -> Data? {
-//        let data = NSMutableData()
-//        if let fieldInfoData = fieldInfo.data {
-//            data.append(fieldInfoData)
-//        }
-//        return data as Data
-//    }
 }
 
 extension NSMutableData {
