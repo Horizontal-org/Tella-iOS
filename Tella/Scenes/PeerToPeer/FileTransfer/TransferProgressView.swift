@@ -32,10 +32,9 @@ struct TransferProgressView: View {
     
     private var reportInformations: some View {
         Group {
-            Text(viewModel.title)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.white)
             
+            CustomText(viewModel.title, style: .subheading1Style)
+
             uploadProgressView
             
             Spacer()
@@ -52,7 +51,7 @@ struct TransferProgressView: View {
             
             Spacer()
                 .frame(height: 8)
-            
+
             Text(viewModel.percentTransferredText)
                 .font(.custom(Styles.Fonts.italicRobotoFontName, size: 13))
                 .foregroundColor(.white)
