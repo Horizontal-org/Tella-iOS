@@ -71,6 +71,9 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case verificationRecipientPart2 = "PeerToPeer_Verification_Recipient_Part2_Expl"
 
     case verificationConfirm = "PeerToPeer_Verification_Action_Confirm"
+    case verificationWaitingSender = "PeerToPeer_Verification_Action_WaitingSender"
+    case verificationWaitingRecipient = "PeerToPeer_Verification_Action_WaitingRecipient"
+
     case verificationDiscard = "PeerToPeer_Verification_Action_Discard"
     
     case senderFilesRejected = "PeerToPeer_Sender_FilesRejected_Toast"

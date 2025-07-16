@@ -59,7 +59,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 guard let self else { return }
                 switch completion {
                 case .finished:
-                    if transferredFiles.compactMap({$0.status == .finished}).isEmpty {
+                    let finishedFiles = transferredFiles.filter({$0.status == .finished})
+                    if finishedFiles.isEmpty {
                         viewAction = .shouldShowResults
                     } else {
                         viewAction = .transferIsFinished

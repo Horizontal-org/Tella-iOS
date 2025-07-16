@@ -16,7 +16,8 @@ struct ServerConnectionHeaderView: View {
     var subtitle: String? = nil
     var imageIconName: String
     var subtitleTextAlignment: TextAlignment = .center
-    
+    var alignment: Alignment = .center
+
     var body: some View {
         VStack(spacing: 8) {
             
@@ -29,7 +30,7 @@ struct ServerConnectionHeaderView: View {
                 CustomText(subtitle,
                            style: .body1Style,
                            alignment: subtitleTextAlignment)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: alignment)
             }
         }
     }

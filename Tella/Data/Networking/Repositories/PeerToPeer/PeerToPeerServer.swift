@@ -149,16 +149,17 @@ final class PeerToPeerServer {
         if server.isUsingManualConnection {
             didRequestRegisterPublisher.send()
             
-            acceptRegisterPublisher.sink { result in
-            } receiveValue: { _ in
-                self.acceptRegisterRequest(connection: connection)
-            }.store(in: &subscribers)
+            acceptRegisterPublisher
+                .sink(receiveCompletion: { _ in
+                    self.acceptRegisterRequest(connection: connection)
+                }, receiveValue: { _ in
+                }).store(in: &subscribers)
             
-            discardRegisterPublisher.sink { result in
-            } receiveValue: { _ in
-                self.discardRegisterRequest(connection: connection)
-            }.store(in: &subscribers)
-            
+            discardRegisterPublisher
+                .sink(receiveCompletion: { _ in
+                    self.discardRegisterRequest(connection: connection)
+                }, receiveValue: { _ in
+                }).store(in: &subscribers)
         } else {
             do {
                 let serverResponse = try generateRegisterServerResponse()
