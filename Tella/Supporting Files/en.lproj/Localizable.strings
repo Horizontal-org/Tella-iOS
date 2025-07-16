@@ -606,6 +606,9 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_Verification_Recipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
 
 "PeerToPeer_Verification_Action_Confirm" = "Confirm and connect";
+"PeerToPeer_Verification_Action_WaitingSender" = "Waiting for sender ...";
+"PeerToPeer_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";
+
 "PeerToPeer_Verification_Action_Discard" = "Discard and start over";
 
 
