@@ -50,18 +50,14 @@ struct ResultView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text(title)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            
+            CustomText(title,
+                       style: .heading1Style,
+                       alignment: .center)
             Spacer()
                 .frame(height: 16)
-            
-            Text(subTitle)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
+            CustomText(subTitle,
+                       style: .body1Style,
+                       alignment: .center)
         }
     }
 }
