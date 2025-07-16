@@ -13,31 +13,31 @@ import Combine
 class SenderFileTransferVM: FileTransferVM {
     
     var repository: PeerToPeerRepository?
-    var report: PeerToPeerReport?
+    var session: P2PSession?
     private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel,
          repository: PeerToPeerRepository,
-         report: PeerToPeerReport) {
+         session: P2PSession) {
         
         self.repository = repository
-        self.report = report
+        self.session = session
         
         super.init(mainAppModel: mainAppModel,
                    title: LocalizablePeerToPeer.senderSendingAppBar.localized,
                    bottomSheetTitle: LocalizablePeerToPeer.stopSharingTitle.localized,
                    bottomSheetMessage: LocalizablePeerToPeer.stopSharingSheetExpl.localized)
-        
+        transferredFiles = Array(session.files.values)
+        initProgress(session: session)
         submitReport()
     }
-    
-    func initVaultFile() {}
+    // MARK: - Public Methods
     
     func submitReport() {
         
         Task {
             
-            guard let vaultfiles = report?.vaultfiles else { return }
+            guard let vaultfiles = session?.files.values else { return }
             
             for file in vaultfiles {
                 file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file.vaultFile, withSubFolder: true)
@@ -45,47 +45,65 @@ class SenderFileTransferVM: FileTransferVM {
             
             vaultfiles.forEach({ file in
                 guard let url = file.url else { return }
-                repository?.uploadFile(fileUploadRequest: FileUploadRequest(sessionID: report?.sessionId, transmissionID: file.transmissionId, fileID: file.fileId), fileURL: url)
-                    .receive(on: DispatchQueue.main)
-                
-                    .sink { completion in
-                        debugLog("Completion: \(completion)")
-                    } receiveValue: { response in
-                        debugLog("Response: \(response)")
-                    }.store(in: &subscribers)
+                let fileID = file.file.id
+                repository?.uploadFile(fileUploadRequest: FileUploadRequest(sessionID: session?.sessionId,
+                                                                            transmissionID: file.transmissionId,
+                                                                            fileID: fileID),
+                                       fileURL: url)
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    
+                    guard let fileID,  let progressFile = self.session?.files[fileID] else {return}
+
+                    switch completion {
+                    case .finished:
+                         progressFile.status = .finished
+                    case .failure:
+                        progressFile.status = .failed
+                    }
+
+                    self.session?.files[fileID] = progressFile
+
+                    self.checkAllFilesAreReceived()
+
+                } receiveValue: { progress in
+                    guard let fileID,  let progressFile = self.session?.files[fileID] else {return}
+                    progressFile.bytesReceived += progress
+                    self.session?.files[fileID] = progressFile
+                    self.updateProgress(with: progressFile)
+                }.store(in: &subscribers)
             })
         }
     }
     
-    func initializeProgressionInfos() {
-        
-    }
-    
-    func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        
-    }
-    
-    func checkAllFilesAreUploaded() {
-        
-    }
-    
-    func markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: [ReportVaultFile] = []) {
-        
-    }
-    
-    func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
-        
-    }
-    
-    func publishUpdates() {
-        DispatchQueue.main.async {
-            self.objectWillChange.send()
+    private func checkAllFilesAreReceived()  {
+        guard let files = session?.files else { return  }
+        let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
+        if (filesAreNotfinishReceiving.isEmpty) {
+            self.viewAction = .transferIsFinished
         }
     }
     
-    func deleteFilesAfterSubmission() {
-    }
+    // MARK: - Overrides
     
     override func stopTask() {
+        repository?.cancelUpload()
+    }
+    
+    // MARK: - Helpers
+    
+    override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
+        let template = transferredFiles.count > 1
+        ? LocalizablePeerToPeer.recipientFilesReceived.localized
+        : LocalizablePeerToPeer.recipientFileReceived.localized
+        
+        let receivedFormatted = receivedBytes.getFormattedFileSize().getFileSizeWithoutUnit()
+        let totalFormatted = totalBytes.getFormattedFileSize()
+        
+        return String(format: template, transferredFiles.count, receivedFormatted, totalFormatted)
+    }
+    
+    override func formatPercentage(_ percent: Int) -> String {
+        return String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, percent)
     }
 }

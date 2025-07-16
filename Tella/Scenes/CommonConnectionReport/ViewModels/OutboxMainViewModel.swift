@@ -247,9 +247,9 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
                 self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
             }
             //Progress File Item
-            if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
+            if let currentItem = self.progressFileItems.first(where: {$0.vaultFile.id == uploadProgressInfo.fileId}) {
                 
-                let size = currentItem.file.size.getFormattedFileSize()
+                let size = currentItem.vaultFile.size.getFormattedFileSize()
                 let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                 
                 currentItem.transferSummary = "\(currentFileTotalBytesSent)/\(size )"

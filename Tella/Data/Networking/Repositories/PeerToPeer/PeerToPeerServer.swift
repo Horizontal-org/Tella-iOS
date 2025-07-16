@@ -26,7 +26,7 @@ final class PeerToPeerServer {
     let didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile]?, Never>()
     let didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
     let didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
-    let didSendProgress = PassthroughSubject<ReceivingFile, Never>()
+    let didSendProgress = PassthroughSubject<P2PTransferredFile, Never>()
     let acceptRegisterPublisher = PassthroughSubject<Void, Never>()
     let discardRegisterPublisher = PassthroughSubject<Void, Never>()
     let prepareUploadPublisher = PassthroughSubject<Bool, Never>()
@@ -52,10 +52,10 @@ final class PeerToPeerServer {
         stopServer()
         cleanTempFiles()
     }
-
+    
     func cleanTempFiles() {
         // Clean temp files
-        guard let paths = server.session?.files.values.compactMap({$0.path}) else {
+        guard let paths = server.session?.files.values.compactMap({$0.url}) else {
             return
         }
         paths.forEach({$0.remove()})
@@ -108,17 +108,15 @@ final class PeerToPeerServer {
             let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
             
             guard let fileID = fileUploadRequest.fileID,
-                  let receivedFile = server.session?.files[fileID] else {
+                  let progressFile = server.session?.files[fileID] else {
                 handleServerResponse(connection: connection, createErrorResponse(.badRequest))
                 return
             }
-            receivedFile.bytesReceived += progress
+            progressFile.bytesReceived += progress
             
-            server.session?.files[fileID] = receivedFile
+            server.session?.files[fileID] = progressFile
             
-            didSendProgress.send(receivedFile)
-            
-            
+            didSendProgress.send(progressFile)
         } catch {
             
         }
@@ -230,7 +228,7 @@ final class PeerToPeerServer {
         
         prepareUploadRequest.files?.forEach({ file in
             guard let id = file.id else { return }
-            server.session?.files[id] = ReceivingFile(file: file)
+            server.session?.files[id] = P2PTransferredFile(file: file)
         })
         
         prepareUploadPublisher.sink { result in
@@ -258,9 +256,9 @@ final class PeerToPeerServer {
                 return
             }
             
-            guard let receivedFile = server.session?.files[fileID],
-                  receivedFile.transmissionId == transmissionID,
-                  let fileName = receivedFile.file.fileName
+            guard let progressFile = server.session?.files[fileID],
+                  progressFile.transmissionId == transmissionID,
+                  let fileName = progressFile.file.fileName
             else {
                 handleServerResponse(connection: connection, createErrorResponse(.forbidden))
                 return
@@ -268,13 +266,13 @@ final class PeerToPeerServer {
             
             if httpRequest.bodyFullyReceived {
                 sendSuccessResponse(connection: connection)
-                receivedFile.status = .finished
+                progressFile.status = .finished
                 
                 checkAllFilesAreReceived()
             } else {
                 let url = FileManager.tempDirectory(withFileName: fileName)
-                receivedFile.status = .sending
-                receivedFile.path = url
+                progressFile.status = .transferring
+                progressFile.url = url
                 completion?(url)
             }
         } catch {
@@ -424,8 +422,8 @@ final class PeerToPeerServer {
                     sendInternalServerError(connection: connection)
                     return
                 }
-                let receivedFile = server.session?.files[fileID]
-                receivedFile?.status = .failed
+                let progressFile = server.session?.files[fileID]
+                progressFile?.status = .failed
                 sendInternalServerError(connection: connection)
                 
             } catch {
@@ -439,10 +437,9 @@ final class PeerToPeerServer {
     
     func checkAllFilesAreReceived()  {
         guard let files = server.session?.files else { return  }
-        let filesAreNotfinishReceiving = files.filter({$0.value.status == .sending || $0.value.status == .queue})
+        let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
         if (filesAreNotfinishReceiving.isEmpty) {
             self.didSendProgress.send(completion: .finished)
-            networkManager.stopListening()
         }
     }
     
@@ -454,8 +451,9 @@ final class PeerToPeerServer {
 
 extension PeerToPeerServer: NetworkManagerDelegate {
     
-    func networkManager(didFailWith error: any Error) {
+    func networkManager(didFailWith error: Error?) {
         debugLog("Server error")
+        self.didSendProgress.send(completion: .finished)
     }
     
     func networkManager(_ connection: NWConnection, didFailWith error: any Error, request: HTTPRequest?) {
@@ -483,8 +481,9 @@ extension PeerToPeerServer: NetworkManagerDelegate {
     }
     
     func networkManagerDidStopListening() {
+        debugLog("Network manager did stop listening")
+        self.didSendProgress.send(completion: .finished)
     }
-    
 }
 
 extension PeerToPeerServer {

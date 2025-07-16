@@ -12,7 +12,7 @@ import Foundation
 
 enum SenderPrepareFileTransferAction {
     case showToast(message: String)
-    case displaySendingFiles(peerToPeerReport:PeerToPeerReport)
+    case displaySendingFiles
     case errorOccured
     case none
 }
@@ -25,7 +25,7 @@ enum SenderPrepareFileTransferState {
 class SenderPrepareFileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
-    var sessionId : String?
+    var session : P2PSession
     var peerToPeerRepository: PeerToPeerRepository
     
     //MARK: -AddFilesViewModel
@@ -39,13 +39,10 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     
-    var report : PeerToPeerReport?
-    
-    
-    init(mainAppModel: MainAppModel, sessionId : String, peerToPeerRepository: PeerToPeerRepository) {
+    init(mainAppModel: MainAppModel, session : P2PSession, peerToPeerRepository: PeerToPeerRepository) {
         self.mainAppModel = mainAppModel
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
-        self.sessionId = sessionId
+        self.session = session
         self.peerToPeerRepository = peerToPeerRepository
         validateReport()
     }
@@ -61,43 +58,50 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     func prepareUpload() {
         self.viewState = .waiting
-        var peerToPeerFileArray: [PeerToPeerFile] = []
-        guard let sessionId else { return }
+        var peerToPeerFileArray: [String: P2PTransferredFile] = [:]
+        let sessionId = session.sessionId
         
-        let files : [P2PFile] = addFilesViewModel.files.compactMap { file in
-            
+        let files: [P2PFile] = addFilesViewModel.files.compactMap { file in
             guard let id = file.id else {
                 return nil
             }
-            peerToPeerFileArray.append(PeerToPeerFile(fileId: id, transmissionId: "", vaultFile: file))
             
-            return P2PFile(id: id,
-                           fileName: file.name.appending(".\(file.fileExtension)"),
-                           size: file.size,
-                           fileType: file.mimeType,
-                           thumbnail: file.thumbnail,
-                           sha256: "")
+            let p2pFile = P2PFile(
+                id: id,
+                fileName: file.name.appending(".\(file.fileExtension)"),
+                size: file.size,
+                fileType: file.mimeType,
+                thumbnail: file.thumbnail,
+                sha256: ""
+            )
+            
+            peerToPeerFileArray[id] = P2PTransferredFile(vaultFile: file)
+            return p2pFile
         }
         
-        let prepareUploadRequest = PrepareUploadRequest(title: title, sessionID: sessionId, files: files)
+        let prepareUploadRequest = PrepareUploadRequest(
+            title: title,
+            sessionID: sessionId,
+            files: files
+        )
         
         self.peerToPeerRepository.prepareUpload(prepareUpload: prepareUploadRequest)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                self.handlePrepareUpload(completion:completion)
-            }, receiveValue: { response in
-                
-                _ = peerToPeerFileArray.compactMap  { file in
+            .sink(
+                receiveCompletion: { completion in
+                    self.handlePrepareUpload(completion: completion)
+                }, receiveValue: { response in
                     
-                    let transmissionId = response.files?.filter({$0.id == file.fileId }).first?.transmissionID
-                    return  file.transmissionId = transmissionId
+                    peerToPeerFileArray.values.forEach { file in
+                        if let transmissionId = response.files?.first(where: { $0.id == file.file.id })?.transmissionID {
+                            file.transmissionId = transmissionId
+                        }
+                    }
+                    self.session.files = peerToPeerFileArray
+                    self.viewAction = .displaySendingFiles
                 }
-                
-                let report = PeerToPeerReport(title: self.title, sessionId: sessionId, vaultfiles: peerToPeerFileArray)
-                self.report = report
-                self.viewAction = .displaySendingFiles(peerToPeerReport: report)
-                
-            }).store(in: &self.subscribers)
+            )
+            .store(in: &subscribers)
     }
     
     private func handlePrepareUpload(completion:Subscribers.Completion<APIError>) {
@@ -117,6 +121,6 @@ class SenderPrepareFileTransferVM: ObservableObject {
     }
     
     func closeConnection() {
-        self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
+        self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.session.sessionId))
     }
 }
