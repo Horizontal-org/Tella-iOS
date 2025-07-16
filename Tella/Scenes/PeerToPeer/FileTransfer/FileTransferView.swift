@@ -86,7 +86,6 @@ struct FileTransferView: View {
                                          didConfirmAction: {
             self.dismiss()
             viewModel.stopTask()
-            dismissView()
         }, didCancelAction: {
             self.dismiss()
         })
