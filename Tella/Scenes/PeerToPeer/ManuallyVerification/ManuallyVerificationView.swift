@@ -124,13 +124,13 @@ struct ManuallyVerificationView: View {
         case .showBottomSheetError:
             showBottomSheetError()
         case .showSendFiles:
-            guard let sessionId = viewModel.sessionId,
+            guard let session = viewModel.session,
                   let peerToPeerRepository = viewModel.peerToPeerRepository
             else {
                 return
             }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
-                                                        sessionId:sessionId,
+                                                        session: session,
                                                         peerToPeerRepository:peerToPeerRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel))
         case .showToast(let message):

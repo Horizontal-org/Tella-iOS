@@ -1,16 +1,21 @@
+//
+//  ResultView.swift
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
-//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
+//  Created by Dhekra Rouatbi on 14/7/2025.
+//  Copyright © 2025 HORIZONTAL. All rights reserved.
 //
-
 
 import SwiftUI
 
-struct SuccessAdvancedSettingsView: View {
+struct ResultView: View {
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    
+    var imageName: String
+    var title: String
+    var subTitle: String
+    var buttonTitle: String?
+    var buttonAction: (()->()) = { }
+
     var body: some View {
         ContainerView {
             
@@ -22,12 +27,13 @@ struct SuccessAdvancedSettingsView: View {
                 
                 Spacer()
                     .frame(height: 48)
-                
-                TellaButtonView(title: "OK",
-                                          nextButtonAction: .action,
-                                          buttonType: .yellow,
-                                          isValid: .constant(true)) {
-                    self.popTo(ViewClassType.serversListView)
+                if let buttonTitle {
+                    TellaButtonView(title: buttonTitle,
+                                    nextButtonAction: .action,
+                                    buttonType: .yellow,
+                                    isValid: .constant(true)) {
+                        buttonAction()
+                    }
                 }
                 
                 Spacer()
@@ -39,12 +45,12 @@ struct SuccessAdvancedSettingsView: View {
     var topview: some View {
         
         VStack {
-            Image("checked-circle")
+            Image(imageName)
             
             Spacer()
                 .frame(height: 16)
             
-            Text("Advanced settings complete")
+            Text(title)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
@@ -52,15 +58,14 @@ struct SuccessAdvancedSettingsView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text("You can always change your Reports preferences in the Tella Settings. ")
+            Text(subTitle)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
         }
     }
 }
-struct SuccessAdvancedSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SuccessAdvancedSettingsView()
-    }
-}
+
+//#Preview {
+//    ResultView()
+//}

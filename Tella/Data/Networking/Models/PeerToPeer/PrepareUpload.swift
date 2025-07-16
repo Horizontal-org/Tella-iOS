@@ -42,12 +42,22 @@ class P2PFile: Codable {
     }
 }
 
+extension P2PFile {
+    convenience init(vaultFile: VaultFileDB) {
+        self.init(id: vaultFile.id,
+                  fileName: vaultFile.name,
+                  size: vaultFile.size,
+                  fileType: vaultFile.mimeType,
+                  thumbnail: vaultFile.thumbnail,
+                  sha256: "")
+    }
+}
+
 // MARK: - PrepareUploadResponse
 struct PrepareUploadResponse: Codable {
     var files: [P2PFileResponse]?
     
 }
-
 
 struct P2PFileResponse: Codable {
     let id: String?

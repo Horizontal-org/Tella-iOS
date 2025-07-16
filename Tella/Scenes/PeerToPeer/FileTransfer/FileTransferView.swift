@@ -34,7 +34,7 @@ struct FileTransferView: View {
     
     var contentView : some View {
         ZStack {
-            if let progressViewModel = viewModel.progressViewModel  {
+            if let progressViewModel = viewModel.progressViewModel {
                 TransferProgressView(viewModel: progressViewModel)
             }
             

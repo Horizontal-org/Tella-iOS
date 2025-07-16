@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 16/6/2025.
-//  Copyright © 2025 HORIZONTAL. 
+//  Copyright © 2025 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 import Foundation
@@ -21,23 +21,22 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         self.trustedCertificateHash = trustedCertificateHash
         self.onReceiveServerCertificateHash = onReceiveServerCertificateHash
     }
+
+    func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
+        response.send(P2PUploadResponse.didCreateTask(task: task))
+    }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        let progressInfo = P2PUploadProgressInfo(bytesSent: totalBytesSent,
-                                                 current:totalBytesExpectedToSend)
-        response.send(P2PUploadResponse.progress(progressInfo:progressInfo))
+        response.send(P2PUploadResponse.progress(progress:Int(bytesSent)))
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        debugLog("didReceive data \(data.string())")
-
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        debugLog("didCompleteWithError error \(String(describing: error))")
         if let error {
             let nsError = error as NSError
             response.send(completion: .failure(APIError.httpCode(nsError.code)))
@@ -54,20 +53,18 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         let host = protectionSpace.host
         
         guard let serverTrust = protectionSpace.serverTrust else {
-            debugLog("Missing serverTrust for host: \(host)")
+            debugLog("Missing serverTrust for host")
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }
         
         guard let certificateData = extractCertificateData(from: serverTrust) else {
-            debugLog("Failed to extract certificate data from serverTrust for host: \(host)")
+            debugLog("Failed to extract certificate data from serverTrust for host")
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }
         
         let serverCertificateHash = certificateData.sha256()
-        debugLog("Received server certificate hash: \(serverCertificateHash)")
-        debugLog("Expected trusted certificate hash: \(trustedCertificateHash ?? "nil")")
         
         // No trusted public key hash: potentially first connection
         guard let trustedHash = trustedCertificateHash else {
@@ -84,7 +81,7 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         
         // Compare hashes
         guard trustedHash == serverCertificateHash else {
-            debugLog("Public key hash mismatch! Expected \(trustedHash), got \(serverCertificateHash)")
+            debugLog("Public key hash mismatch")
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }

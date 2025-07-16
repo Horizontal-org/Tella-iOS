@@ -78,7 +78,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     }
     
     init(p2pFile: P2PFile) {
-        self.id = p2pFile.id
+        self.id = UUID().uuidString
         self.type = .file
         self.name = p2pFile.fileName ?? ""
         self.thumbnail = p2pFile.thumbnail

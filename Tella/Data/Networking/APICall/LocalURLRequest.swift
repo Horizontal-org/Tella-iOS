@@ -6,8 +6,15 @@
 //  Copyright © 2025 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
+
 import Foundation
 import Combine
+
+enum P2PUploadResponse {
+    case initial
+    case didCreateTask(task: URLSessionTask)
+    case progress(progress: Int)
+}
 
 extension WebRepository {
     
@@ -119,25 +126,4 @@ extension WebRepository {
                 .eraseToAnyPublisher()
         }
     }
-}
-
-
-enum P2PUploadResponse {
-    case initial
-    case progress(progressInfo: P2PUploadProgressInfo)
-    case finish
-}
-
-
-struct P2PUploadProgressInfo {
-    
-    //
-    // MARK: - Variables And Properties
-    //
-    
-    var bytesSent : Int64?
-    var current : Int64?
-    // var status : FileStatus = .unknown
-    // var error: APIError?
-    // var finishUploading : Bool = false
 }

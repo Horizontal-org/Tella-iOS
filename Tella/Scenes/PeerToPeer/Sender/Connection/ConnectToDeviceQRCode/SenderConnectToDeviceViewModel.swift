@@ -30,7 +30,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     
     var mainAppModel: MainAppModel
     var peerToPeerRepository: PeerToPeerRepository
-    var sessionId : String?
+    var session: P2PSession?
     
     init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
         self.peerToPeerRepository = peerToPeerRepository
@@ -43,7 +43,6 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .prefix(1)
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
-                debugLog(connectionInfo?.certificateHash)
                 self?.register(connectionInfo: connectionInfo)
             }.store(in: &subscribers)
     }
@@ -51,29 +50,23 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     func register(connectionInfo:ConnectionInfo?) {
         
         guard let connectionInfo  else { return }
-
-        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
+        
+        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString)
         
         self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                debugLog(completion)
                 switch completion {
                 case .finished:
                     self.viewState = .showSendFiles
                     self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
-                case .failure(let error):
-                    switch error {
-                    case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
-                        self.viewState = .showBottomSheetError
-                    default:
-                        debugLog(error)
-                        self.viewState = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
-                    }
+                case .failure:
+                    self.viewState = .showBottomSheetError
                 }
             }, receiveValue: { response in
-                debugLog(response)
-                self.sessionId = response.sessionId
+                if let sessionId = response.sessionId {
+                    self.session = P2PSession(sessionId: sessionId)
+                }
             }).store(in: &self.subscribers)
     }
 }

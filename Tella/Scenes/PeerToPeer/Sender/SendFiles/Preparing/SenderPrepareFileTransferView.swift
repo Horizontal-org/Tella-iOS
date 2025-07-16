@@ -90,11 +90,11 @@ struct SenderPrepareFileTransferView: View {
     private func handleViewState(state: SenderPrepareFileTransferAction) {
         switch state {
         case .displaySendingFiles:
-            guard let report = self.viewModel.report else { return }
+              let session = self.viewModel.session 
             let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel,
                                                  repository: self.viewModel.peerToPeerRepository,
-                                                 report: report)
-            self.navigateTo(destination: FileTransferView(viewModel: viewModel))
+                                                 session: session)
+            self.navigateTo(destination: FileSendingView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:

@@ -655,3 +655,27 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "PeerToPeer_Sender_Sending_AppBar" = "Sending files";
 
+"PeerToPeer_Results_AppBar" = "Results";
+
+"PeerToPeer_Results_Success_Title" = "Success";
+
+"PeerToPeer_Results_SuccessFilesReceived_Expl" = "You have successfully received %i files from the sender.";
+"PeerToPeer_Results_SuccessFileReceived_Expl" = "You have successfully received %i file from the sender.";
+
+"PeerToPeer_Results_SuccessFilesSent_Expl" = "You have successfully sent %i files to the recipient.";
+"PeerToPeer_Results_SuccessFileSent_Expl" = "You have successfully sent %i file to the recipient.";
+
+"PeerToPeer_Results_Failure_Title" = "Transfer interrupted";
+
+"PeerToPeer_Results_PartialFailureFilesReceived_Expl" = "Only %i files were received. %i files were not received.";
+
+"PeerToPeer_Results_FilesReceived_FilesNotReceived_Expl" = "Only %i files were received. %i files were not received.";
+"PeerToPeer_Results_FileReceived_FilesNotReceived_Expl" = "Only %i file was received. %i files were not received.";
+"PeerToPeer_Results_FilesReceived_FileNotReceived_Expl" = "Only %i files were received. %i file was not received.";
+"PeerToPeer_Results_FileReceived_FileNotReceived_Expl" = "Only %i file was received. %i file was not received.";
+
+"PeerToPeer_Results_FailureFilesReceived_Expl" = "0 files were received. %i files were not received.";
+"PeerToPeer_Results_FailureFileReceived_Expl" = "0 files were received. %i file were not received.";
+
+"PeerToPeer_Results_ViewFiles_Action" = "View files";
+

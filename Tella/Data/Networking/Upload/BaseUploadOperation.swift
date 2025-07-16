@@ -307,7 +307,7 @@ class BaseUploadOperation : Operation {
                     
                     guard let fileURL else { return}
 
-                    guard let task = self.urlSession?.uploadTask (with: request, fromFile: fileURL) else { return}
+                    guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL) else { return}
                     task.resume()
                     taskType = .uploadTask
                     

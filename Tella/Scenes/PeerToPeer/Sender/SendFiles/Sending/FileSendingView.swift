@@ -1,0 +1,42 @@
+//
+//  FileSendingView.swift
+//  Tella
+//
+//  Created by Dhekra Rouatbi on 14/7/2025.
+//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//
+
+import SwiftUI
+
+struct FileSendingView: View {
+    
+    @ObservedObject var viewModel: SenderFileTransferVM
+ 
+    var body: some View {
+        ZStack {
+            FileTransferView(viewModel: viewModel)
+        }.onReceive(viewModel.$viewAction) { newAction in
+            handleViewAction(action: newAction)
+        }
+
+    }
+
+    func handleViewAction(action: TransferViewAction)  {
+        switch action {
+            
+        case .transferIsFinished:
+            
+            let resultVM = P2PResultVM(transferredFiles: viewModel.transferredFiles,
+                                       participant: .sender)
+ 
+            let resultView = P2PResultView(viewModel: resultVM)
+            navigateTo(destination: resultView)
+         default:
+            break
+        }
+    }
+}
+
+//#Preview {
+//    FileSendingView(viewModel: SenderFileTransferVM.stub())
+//}
