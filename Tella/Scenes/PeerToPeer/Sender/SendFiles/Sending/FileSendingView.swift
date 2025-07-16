@@ -18,7 +18,6 @@ struct FileSendingView: View {
         }.onReceive(viewModel.$viewAction) { newAction in
             handleViewAction(action: newAction)
         }
-
     }
 
     func handleViewAction(action: TransferViewAction)  {

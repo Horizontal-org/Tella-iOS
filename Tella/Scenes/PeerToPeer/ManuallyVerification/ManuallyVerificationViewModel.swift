@@ -9,14 +9,19 @@
 
 import Foundation
 import Combine
-
+enum ManuallyVerificationState {
+    case waitingForSenderResponse
+    case waitingForRecipientResponse
+}
+                                    
 class ManuallyVerificationViewModel: ObservableObject {
     
     @Published var senderViewAction: SenderConnectToDeviceViewAction = .none
     @Published var recipientViewAction: RecipientConnectToDeviceViewAction = .none
     
-    @Published var shouldShowConfirmButton: Bool = false
-    
+    @Published var shouldEnableConfirmButton: Bool = false
+    @Published var confirmButtonTitle: String = ""
+
     var participant : PeerToPeerParticipant
     var peerToPeerRepository: PeerToPeerRepository?
     var session : P2PSession?
@@ -36,8 +41,24 @@ class ManuallyVerificationViewModel: ObservableObject {
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
         self.server = server
-        shouldShowConfirmButton = participant == .sender
+        
+        updateButtonsState(state: .waitingForSenderResponse)
+        
         setupListeners()
+    }
+    
+    func updateButtonsState(state: ManuallyVerificationState) {
+        
+        let result = state == .waitingForSenderResponse
+
+        switch participant {
+        case .sender:
+             shouldEnableConfirmButton = result
+            confirmButtonTitle = result ? LocalizablePeerToPeer.verificationConfirm.localized : LocalizablePeerToPeer.verificationWaitingRecipient.localized
+        case .recipient:
+            shouldEnableConfirmButton = !result
+            confirmButtonTitle = result ? LocalizablePeerToPeer.verificationWaitingSender.localized : LocalizablePeerToPeer.verificationConfirm.localized
+        }
     }
     
     // MARK: - Setup Methods
@@ -70,14 +91,13 @@ class ManuallyVerificationViewModel: ObservableObject {
     private func register() {
         
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
-        
-        shouldShowConfirmButton = false
-        
+        self.updateButtonsState(state: .waitingForRecipientResponse)
+
         self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                self.shouldShowConfirmButton = true
+                updateButtonsState(state: ManuallyVerificationState.waitingForSenderResponse)
                 switch completion {
                 case .finished:
                     self.senderViewAction = .showSendFiles
@@ -107,7 +127,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     private func listenToRequestRegisterPublisher() {
         self.server?.didRequestRegisterPublisher.sink { [weak self] value in
             guard let self = self else { return }
-            self.shouldShowConfirmButton = true
+            self.updateButtonsState(state: .waitingForRecipientResponse)
         }.store(in: &subscribers)
     }
     

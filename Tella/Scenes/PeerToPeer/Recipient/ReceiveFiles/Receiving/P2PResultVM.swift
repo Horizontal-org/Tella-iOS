@@ -88,6 +88,6 @@ final class P2PResultVM: ObservableObject {
     }
     
     var buttonTitle: String? {
-        noFilesTransferred ? nil : LocalizablePeerToPeer.viewFilesAction.localized
+        (noFilesTransferred || participant == .sender) ? nil : LocalizablePeerToPeer.viewFilesAction.localized
     }
 }

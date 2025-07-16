@@ -53,7 +53,7 @@ struct ManuallyVerificationView: View {
         ServerConnectionHeaderView(
             title: LocalizablePeerToPeer.verificationSubhead.localized,
             imageIconName: "device",
-            subtitleTextAlignment: .leading)
+            subtitleTextAlignment: .center)
     }
     
     
@@ -91,18 +91,18 @@ struct ManuallyVerificationView: View {
     }
     
     var confirmButton: some View {
-        TellaButtonView(title: LocalizablePeerToPeer.verificationConfirm.localized.uppercased(),
-                                  nextButtonAction: .action,
-                                  buttonType: .yellow,
-                                  isValid: $viewModel.shouldShowConfirmButton) {
+        TellaButtonView(title: viewModel.confirmButtonTitle.uppercased(),
+                        nextButtonAction: .action,
+                        buttonType: .yellow,
+                        isValid: .constant(true)) {
             viewModel.confirmAction()
-        }
+        }.disabled(!viewModel.shouldEnableConfirmButton)
     }
     
     var discardButton: some View {
         TellaButtonView(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
-                                 nextButtonAction: .action,
-                                 isValid: .constant(true)) {
+                        nextButtonAction: .action,
+                        isValid: .constant(true)) {
             viewModel.discardAction()
         }
     }
