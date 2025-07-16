@@ -92,11 +92,30 @@ enum LocalizablePeerToPeer: String, LocalizableDelegate {
     case recipientFilesReceived = "PeerToPeer_Recipient_FilesReceived"
     case recipientFileReceived = "PeerToPeer_Recipient_FileReceived"
 
-    
     case receivingAppBar = "PeerToPeer_Recipient_Receiving_AppBar"
     case stopReceivingSheetTitle = "PeerToPeer_StopReceiving_SheetTitle"
     case stopReceivingSheetExpl = "PeerToPeer_StopReceiving_SheetExpl"
     
     case senderSendingAppBar = "PeerToPeer_Sender_Sending_AppBar"
 
+    case resultsAppBar = "PeerToPeer_Results_AppBar"
+    case successTitle = "PeerToPeer_Results_Success_Title"
+    
+    case successFilesReceivedExpl = "PeerToPeer_Results_SuccessFilesReceived_Expl"
+    case successFileReceivedExpl = "PeerToPeer_Results_SuccessFileReceived_Expl"
+
+    case successFilesSentExpl = "PeerToPeer_Results_SuccessFilesSent_Expl"
+    case successFileSentExpl = "PeerToPeer_Results_SuccessFileSent_Expl"
+
+    case failureTitle = "PeerToPeer_Results_Failure_Title"
+    
+    case filesReceivedFilesNotReceivedExpl = "PeerToPeer_Results_FilesReceived_FilesNotReceived_Expl"
+    case fileReceivedFilesNotReceivedExpl = "PeerToPeer_Results_FileReceived_FilesNotReceived_Expl"
+    case filesReceivedFileNotReceivedExpl = "PeerToPeer_Results_FilesReceived_FileNotReceived_Expl"
+    case fileReceivedFileNotReceivedExpl = "PeerToPeer_Results_FileReceived_FileNotReceived_Expl"
+
+    case failureFilesReceivedExpl = "PeerToPeer_Results_FailureFilesReceived_Expl"
+    case failureFileReceivedExpl = "PeerToPeer_Results_FailureFileReceived_Expl"
+
+    case viewFilesAction = "PeerToPeer_Results_ViewFiles_Action"
 }

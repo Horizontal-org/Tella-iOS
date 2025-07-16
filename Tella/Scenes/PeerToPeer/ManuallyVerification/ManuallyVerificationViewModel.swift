@@ -19,7 +19,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     var participant : PeerToPeerParticipant
     var peerToPeerRepository: PeerToPeerRepository?
-    var sessionId : String?
+    var session : P2PSession?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
     var server:PeerToPeerServer?
@@ -48,7 +48,6 @@ class ManuallyVerificationViewModel: ObservableObject {
         listenToCloseConnectionPublisher()
     }
     
-    
     func confirmAction() {
         participant == .recipient ? acceptRegisterRequest() : register()
     }
@@ -64,7 +63,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardRegisterRequest() {
-        self.peerToPeerRepository?.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.sessionId))
+        self.peerToPeerRepository?.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.session?.sessionId))
         senderViewAction = .discardAndStartOver
     }
     
@@ -78,7 +77,6 @@ class ManuallyVerificationViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                debugLog(completion)
                 self.shouldShowConfirmButton = true
                 switch completion {
                 case .finished:
@@ -86,19 +84,11 @@ class ManuallyVerificationViewModel: ObservableObject {
                     self.senderViewAction = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
                 case .failure:
                     self.senderViewAction = .showBottomSheetError
-                    /* //TODO: Check scenario
-                     switch error {
-                     case .httpCode(HTTPErrorCodes.unauthorized.rawValue), .badServer:
-                     self.senderViewAction = .showBottomSheetError
-                     default:
-                     debugLog(error)
-                     self.senderViewAction = .showToast(message: LocalizablePeerToPeer.serverErrorToast.localized)
-                     }
-                     */
                 }
             }, receiveValue: { response in
-                debugLog(response)
-                self.sessionId = response.sessionId
+                if let sessionId = response.sessionId {
+                    self.session = P2PSession(sessionId: sessionId)
+                }
             }).store(in: &self.subscribers)
     }
     
@@ -113,8 +103,7 @@ class ManuallyVerificationViewModel: ObservableObject {
                 self.recipientViewAction = result == true ? .showReceiveFiles : .errorOccured
             }.store(in: &subscribers)
     }
-    
-    
+
     private func listenToRequestRegisterPublisher() {
         self.server?.didRequestRegisterPublisher.sink { [weak self] value in
             guard let self = self else { return }

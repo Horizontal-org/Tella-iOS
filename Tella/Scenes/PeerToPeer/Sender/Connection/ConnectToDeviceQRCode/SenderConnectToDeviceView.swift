@@ -79,9 +79,9 @@ struct SenderConnectToDeviceView: View {
         case .showBottomSheetError:
             showBottomSheetError()
         case .showSendFiles:
-            guard let sessionId = viewModel.sessionId else { return }
+            guard let session = viewModel.session else { return }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
-                                                        sessionId:sessionId,
+                                                        session:session,
                                                         peerToPeerRepository:viewModel.peerToPeerRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel ))
         case .showToast(let message):

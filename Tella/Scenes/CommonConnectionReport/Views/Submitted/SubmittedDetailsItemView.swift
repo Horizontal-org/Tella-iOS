@@ -18,13 +18,13 @@ struct SubmittedDetailsItemView: View {
                 .fill(Color.white.opacity(0.2))
                 .frame(width: 35, height: 35, alignment: .center)
                 .overlay(
-                    item.file.listImage
+                    item.vaultFile.listImage
                         .frame(width: 35, height: 35)
                         .cornerRadius(5)
                 )
             VStack(alignment: .leading, spacing: 0){
                 Spacer()
-                Text(item.file.name)
+                Text(item.vaultFile.name)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(Color.white)
                     .lineLimit(1)
@@ -51,6 +51,6 @@ struct SubmittedDetailsItemView: View {
 
 struct SubmittedDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), transferSummary: "4.5/4.5 MB") ))
+        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "4.5/4.5 MB") ))
     }
 }
