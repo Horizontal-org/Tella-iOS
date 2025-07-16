@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct BackBottomView: View {
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var backAction : (() -> Void)?

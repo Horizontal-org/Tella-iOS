@@ -135,7 +135,7 @@ struct WifiConnetionView: View {
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
-//                .disabled(viewModel.ssid == nil)
+            //                .disabled(viewModel.ssid == nil)
             
         }.cardModifier()
             .opacity(viewModel.ssid == nil ? 0.5 : 1.0)
@@ -143,8 +143,9 @@ struct WifiConnetionView: View {
     
     var bottomView: some View {
         NavigationBottomView<AnyView>(shouldActivateNext: $isCheckboxOn,
-                                nextButtonAction: .action,
-                                nextAction: {
+                                      nextButtonAction: .action,
+                                      shouldHideBack: true,
+                                      nextAction: {
             switch viewModel.participant {
             case .sender:
                 let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
@@ -156,8 +157,6 @@ struct WifiConnetionView: View {
                                                                                           server: PeerToPeerServer())
                 navigateTo(destination: RecipientConnectToDeviceView(viewModel: recipientConnectToDeviceViewModel))
             }
-        },  backAction: {
-            self.dismiss()
         })
     }
     
