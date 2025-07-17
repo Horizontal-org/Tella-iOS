@@ -23,18 +23,17 @@ struct OutboxDetailsItemView: View {
                 )
             VStack(alignment: .leading, spacing: 0){
                 Spacer()
-                Text(item.vaultFile.name)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(Color.white)
-                    .lineLimit(1)
                 
+                CustomText(item.vaultFile.name,
+                           style: .subheading1Style)
+                .lineLimit(1)
+
                 Spacer()
                     .frame(height: 2)
                 
-                Text(item.transferSummary)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 10))
-                    .foregroundColor(Color.white)
-                
+                CustomText(item.transferSummary,
+                           style: .body3Style)
+
                 Spacer()
                 
             }

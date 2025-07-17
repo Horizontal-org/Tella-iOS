@@ -34,7 +34,7 @@ struct TransferProgressView: View {
         Group {
             
             CustomText(viewModel.title, style: .subheading1Style)
-
+            
             uploadProgressView
             
             Spacer()
@@ -51,16 +51,15 @@ struct TransferProgressView: View {
             
             Spacer()
                 .frame(height: 8)
-
-            Text(viewModel.percentTransferredText)
-                .font(.custom(Styles.Fonts.italicRobotoFontName, size: 13))
-                .foregroundColor(.white)
+            
+            CustomText(viewModel.percentTransferredText,
+                       style: .body2ItalicStyle)
+            
             Spacer()
                 .frame(height: 4)
             
-            Text(viewModel.transferredFilesSummary)
-                .font(.custom(Styles.Fonts.regularFontName, size: 13))
-                .foregroundColor(.white)
+            CustomText(viewModel.transferredFilesSummary,
+                       style: .body2Style)
             
             if viewModel.percentTransferred > 0.0 {
                 ProgressView("", value: viewModel.percentTransferred, total: 1)
