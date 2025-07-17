@@ -54,7 +54,7 @@ struct WifiConnetionView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.wifi.localized ,
                              navigationBarType: .inline,
-                             backButtonAction: {self.popToRoot()},
+                             backButtonAction: {self.popTo(ViewClassType.peerToPeerMainView)},
                              rightButtonType: .none)
     }
     
@@ -135,7 +135,7 @@ struct WifiConnetionView: View {
                 .onTapGesture {
                     isCheckboxOn.toggle()
                 }
-            //                .disabled(viewModel.ssid == nil)
+            // .disabled(viewModel.ssid == nil)
             
         }.cardModifier()
             .opacity(viewModel.ssid == nil ? 0.5 : 1.0)
