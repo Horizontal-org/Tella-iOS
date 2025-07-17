@@ -58,6 +58,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     func prepareUpload() {
         self.viewState = .waiting
+        session.title = title
         var peerToPeerFileArray: [String: P2PTransferredFile] = [:]
         let sessionId = session.sessionId
         
