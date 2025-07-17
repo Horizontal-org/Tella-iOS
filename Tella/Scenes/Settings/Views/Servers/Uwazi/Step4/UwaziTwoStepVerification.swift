@@ -38,7 +38,7 @@ struct UwaziTwoStepVerification: View {
                         .frame(height: 57)
                         Spacer()
                             .frame(height: 19)
-                        TellaButtonView<AnyView>(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
+                        TellaButtonView(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
                                                  nextButtonAction: .action,
                                                  isValid: $uwaziServerViewModel.validAuthenticationCode) {
                             UIApplication.shared.endEditing()
@@ -48,7 +48,7 @@ struct UwaziTwoStepVerification: View {
                     }
                     .padding(.leading, 23)
                     .padding(.trailing,23)
-                    BottomLockView<AnyView>(isValid: .constant(true),
+                    NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }

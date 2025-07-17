@@ -123,7 +123,6 @@ class UwaziServerViewModel: ServerViewModel {
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer {
             let locale = server.locale
-            dump(locale)
             self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale})
         }
         self.showNextSuccessLoginView = true
@@ -212,7 +211,7 @@ class UwaziServerViewModel: ServerViewModel {
                 // if the status code is 409 then 2FA is needed
                 let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
                 switch httpError {
-                case .need2FA:
+                case .conflict:
                     self.showNext2FAView = true
                 default:
                     self.shouldShowLoginError = true

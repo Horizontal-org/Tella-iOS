@@ -29,7 +29,7 @@ struct ServerLoginView: View {
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 
-                BottomLockView<AnyView>(isValid: $viewModel.validPassword,
+                NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validPassword,
                                         nextButtonAction: .action,
                                         shouldHideNext: true)
             }
@@ -66,8 +66,8 @@ struct ServerLoginView: View {
         .frame(height: 57)
     }
     
-    fileprivate func loginButtonView() -> TellaButtonView<AnyView> {
-        return TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
+    fileprivate func loginButtonView() -> TellaButtonView<EmptyView> {
+        return TellaButtonView(title: LocalizableSettings.UwaziLogin.localized,
                                         nextButtonAction: .action,
                                         isValid: $viewModel.validCredentials) {
             UIApplication.shared.endEditing()

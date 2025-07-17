@@ -80,7 +80,7 @@ struct ReportMainView: View {
                 Spacer()
             }
             
-            TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
+            TellaButtonView(title: LocalizableReport.reportsCreateNew.localized,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {

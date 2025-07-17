@@ -6,14 +6,16 @@
 
 import Foundation
 
-class ProgressFileItemViewModel {
-    var file : VaultFileDB
-    @Published var progression : String
+class ProgressFileItemViewModel: ObservableObject {
     
-    init(file: VaultFileDB, progression: String) {
-        self.file = file
-        self.progression = progression
+    let vaultFile: VaultFileDB
+    
+    @Published var transferSummary: String
+    @Published var transferProgress: Double?
+
+    init(vaultFile: VaultFileDB, transferSummary: String, transferProgress: Double? = nil) {
+        self.vaultFile = vaultFile
+        self.transferSummary = transferSummary
+        self.transferProgress = transferProgress
     }
 }
-
-

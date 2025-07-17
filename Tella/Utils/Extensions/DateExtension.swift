@@ -100,6 +100,9 @@ extension Date{
     private func getDateComponent(component :  Calendar.Component) -> DateComponents {
         return Calendar.current.dateComponents([component], from: self, to: Date())
     }
-    
+
+    func addYear() -> Date? {
+        return  Calendar.current.date(byAdding: .year, value: 1, to: self)
+    }
 }
 
