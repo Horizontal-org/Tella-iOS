@@ -45,7 +45,7 @@ struct ManuallyVerificationView: View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
-                             backButtonAction: {self.popToRoot()}, //TODO: TO Check
+                             backButtonAction: {self.popTo(ViewClassType.peerToPeerMainView)},
                              rightButtonType: .none)
     }
     

@@ -71,9 +71,7 @@ struct FileTransferView: View {
     }
     
     private func dismissView() {
-        DispatchQueue.main.asyncAfter(deadline:.now() + delayTimeInSecond, execute: {
-            self.popTo(ViewClassType.peerToPeerMainView)
-        })
+        self.popTo(ViewClassType.peerToPeerMainView)
     }
     
     private func showCancelUploadConfirmationView() {
