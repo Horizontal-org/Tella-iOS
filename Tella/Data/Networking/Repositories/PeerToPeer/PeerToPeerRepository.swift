@@ -135,7 +135,7 @@ extension PeerToPeerRepository.API: APIRequest {
         case .ping:
             return nil
         case .uploadFile:
-            return [HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue]
+            return [HTTPHeaderField.contentType.rawValue : ContentType.octetStream.rawValue]
         default:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
