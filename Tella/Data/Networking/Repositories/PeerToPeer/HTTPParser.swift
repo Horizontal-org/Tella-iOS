@@ -119,7 +119,7 @@ final class HTTPParser {
             case .json:
                 let value = String(decoding: buffer, as: UTF8.self)
                 instance.body += value
-            case .data:
+            case .data, .octetStream:
                 if instance.fileHandle == nil {
                     instance.createFileHandle()
                 }
@@ -229,7 +229,9 @@ extension ContentType {
             return .json
         } else if raw.starts(with: ContentType.data.rawValue) {
             return .data
-        } else {
+        } else if raw.starts(with: ContentType.octetStream.rawValue) {
+            return .octetStream
+        }  else {
             return nil
         }
     }

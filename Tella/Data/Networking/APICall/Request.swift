@@ -10,6 +10,7 @@ import Foundation
 public enum ContentType: String {
     case json = "application/json"
     case data = "multipart/form-data"
+    case octetStream = "application/octet-stream"
 }
 
 public enum HTTPHeaderField: String {
