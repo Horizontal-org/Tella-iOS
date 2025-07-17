@@ -19,6 +19,7 @@ enum TypographyStyle {
     case subheading2Style
     case body1Style
     case body2Style
+    case body2ItalicStyle
     case body3Style
     
     case buttonLStyle
@@ -44,6 +45,8 @@ enum TypographyStyle {
         case .body1Style:
             return 14
         case .body2Style:
+            return 12
+        case .body2ItalicStyle:
             return 12
         case .body3Style:
             return 10
@@ -76,6 +79,8 @@ enum TypographyStyle {
             return Styles.Fonts.regularFontName
         case .body2Style:
             return Styles.Fonts.regularFontName
+        case .body2ItalicStyle:
+            return Styles.Fonts.italicRobotoFontName
         case .body3Style:
             return Styles.Fonts.regularFontName
         case .buttonLStyle:
