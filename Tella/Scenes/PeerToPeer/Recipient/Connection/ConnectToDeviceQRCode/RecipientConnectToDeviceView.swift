@@ -12,6 +12,7 @@ import SwiftUI
 struct RecipientConnectToDeviceView: View {
     
     @StateObject var viewModel: RecipientConnectToDeviceViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         ContainerViewWithHeader {
@@ -48,7 +49,7 @@ struct RecipientConnectToDeviceView: View {
         NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
                              navigationBarType: .inline,
                              backButtonAction: {
-            self.popTo(ViewClassType.peerToPeerMainView)
+            presentationMode.wrappedValue.dismiss()
             viewModel.stopServerListening()
         },
                              rightButtonType: .none)
