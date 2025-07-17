@@ -54,7 +54,6 @@ struct WifiConnetionView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizablePeerToPeer.wifi.localized ,
                              navigationBarType: .inline,
-                             backButtonAction: {self.popTo(ViewClassType.peerToPeerMainView)},
                              rightButtonType: .none)
     }
     
