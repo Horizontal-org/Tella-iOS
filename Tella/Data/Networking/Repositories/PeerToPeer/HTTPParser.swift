@@ -115,8 +115,7 @@ final class HTTPParser {
                 count: length
             )
             
-            let contentType = ContentType(rawValue: instance.contentTypeString ?? "")
-            switch contentType {
+            switch ContentType.detect(from: instance.contentTypeString) {
             case .json:
                 let value = String(decoding: buffer, as: UTF8.self)
                 instance.body += value
@@ -219,5 +218,19 @@ final class HTTPParser {
     
     deinit {
         closeFile()
+    }
+}
+
+
+extension ContentType {
+    static func detect(from raw: String?) -> ContentType? {
+        guard let raw = raw?.lowercased() else { return nil }
+        if raw.starts(with: ContentType.json.rawValue) {
+            return .json
+        } else if raw.starts(with: ContentType.data.rawValue) {
+            return .data
+        } else {
+            return nil
+        }
     }
 }
