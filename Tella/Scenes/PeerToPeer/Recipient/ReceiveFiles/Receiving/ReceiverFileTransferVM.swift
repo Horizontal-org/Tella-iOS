@@ -59,6 +59,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 guard let self else { return }
                 switch completion {
                 case .finished:
+                    
+                    self.server.stopServer()
+
                     let finishedFiles = transferredFiles.filter({$0.status == .finished})
                     if finishedFiles.isEmpty {
                         viewAction = .shouldShowResults
@@ -94,9 +97,6 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 
                 switch importVaultFileResult {
                 case .fileAdded(let files):
-                    
-                    self.server.stopServer()
-                    
                     let fileIDs = Set(files.map(\.id))
                     
                     self.transferredFiles.forEach { file in
