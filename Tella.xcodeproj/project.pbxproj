@@ -352,6 +352,7 @@
 		12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */; };
 		12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */; };
 		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
+		129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129919BD2E31143400A4417D /* NWConnectionExtension.swift */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
@@ -1088,6 +1089,7 @@
 		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
 		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
 		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
+		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
@@ -2087,6 +2089,7 @@
 				129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */,
 				12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */,
 				125C16012DAE76260086D4F0 /* SecKeyExtension.swift */,
+				129919BD2E31143400A4417D /* NWConnectionExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4673,6 +4676,7 @@
 				15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
+				129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,

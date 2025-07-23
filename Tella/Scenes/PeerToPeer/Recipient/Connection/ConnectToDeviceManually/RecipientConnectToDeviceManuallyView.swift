@@ -63,11 +63,10 @@ struct RecipientConnectToDeviceManuallyView: View {
     private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
         case .showVerificationHash:
-            guard let connectionInfo = viewModel.connectionInfo else { return  }
+            guard let connectionInfo = viewModel.connectionInfo else { return }
             let viewModel = ManuallyVerificationViewModel(participant:.recipient,
                                                           connectionInfo: connectionInfo,
-                                                          mainAppModel: viewModel.mainAppModel,
-                                                          server: viewModel.server)
+                                                          mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)

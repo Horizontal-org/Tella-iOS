@@ -24,18 +24,19 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     var mainAppModel: MainAppModel
     var certificateGenerator : CertificateGenerator
-    var server: PeerToPeerServer
+    var peerToPeerServer: PeerToPeerServer?
     var connectionInfo : ConnectionInfo?
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
     @Published var viewAction: RecipientConnectToDeviceViewAction = .none
     
     private var subscribers : Set<AnyCancellable> = []
-    
-    init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel, server: PeerToPeerServer) {
+    private let port: Int = 53317
+
+    init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel) {
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
-        self.server = server
+        self.peerToPeerServer = mainAppModel.peerToPeerServer
         
         listenToRegisterPublisher()
         generateConnectionInfo()
@@ -62,30 +63,32 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let clientIdentity = certificateData.identity
             let certificateHash = certificateData.certificateHash
             
-            let pin =  "\(Int.random(in: 100000...999999))" //TODO:  to move to extension
-            let port = 53317 //TODO:  to move it to var
+            let pin =  "\(Int.randomSixDigitPIN)"
             
             let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
-                                                port: port,
+                                                port: self.port,
                                                 certificateHash: certificateHash,
                                                 pin: pin)
             
             self.qrCodeState = .loaded(connectionInfo)
             self.connectionInfo = connectionInfo
-            self.server.startListening(port: port, pin: pin, clientIdentity:clientIdentity)
+            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity:clientIdentity)
             
+            self.peerToPeerServer?.didFailStartServerPublisher.sink { result in
+                self.viewAction = .errorOccured
+            }.store(in: &self.subscribers)
         }
     }
     
     func listenToRegisterPublisher() {
-        server.didRegisterPublisher
+        peerToPeerServer?.didRegisterPublisher
             .sink { result in
                 self.viewAction = result == true ? .showReceiveFiles : .errorOccured
             }.store(in: &subscribers)
     }
     
     func stopServerListening() {
-        server.stopServer()
+        peerToPeerServer?.stopServer()
     }
     
 }

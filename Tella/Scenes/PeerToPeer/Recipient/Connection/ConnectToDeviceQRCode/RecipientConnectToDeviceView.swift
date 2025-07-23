@@ -87,18 +87,23 @@ struct RecipientConnectToDeviceView: View {
     
     var connectManuallyButton: some View {
         
-        TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
-                        nextButtonAction: .destination,
-                        destination: RecipientConnectToDeviceManuallyView(viewModel: RecipientConnectManuallyViewModel(certificateGenerator: viewModel.certificateGenerator, mainAppModel: viewModel.mainAppModel, server: viewModel.server,connectionInfo: viewModel.connectionInfo)),
-                        isValid: .constant(true),
-                        buttonRole: .secondary)
+        let viewModel = RecipientConnectManuallyViewModel(certificateGenerator: viewModel.certificateGenerator,
+                                                          mainAppModel: viewModel.mainAppModel,
+                                                          connectionInfo: viewModel.connectionInfo)
+        
+        return TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
+                               nextButtonAction: .destination,
+                               destination: RecipientConnectToDeviceManuallyView(viewModel:viewModel),
+                               isValid: .constant(true),
+                               buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
     }
     
     private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
         case .showReceiveFiles:
-            self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: viewModel.server)))
+            let fileTransferVM = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
+            self.navigateTo(destination: RecipientFileTransferView(viewModel:fileTransferVM))
         case .errorOccured:
             self.popTo(ViewClassType.peerToPeerMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)

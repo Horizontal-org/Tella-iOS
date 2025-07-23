@@ -42,3 +42,9 @@ extension Int {
     var degreesToRadians: CGFloat { return CGFloat(self) * .pi / 180 }
 }
 
+
+extension Int {
+    static var randomSixDigitPIN: String {
+        return String(Int.random(in: 100_000...999_999))
+    }
+}
