@@ -27,7 +27,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     // MARK: - Properties
     
      var mainAppModel: MainAppModel
-     var server: PeerToPeerServer
+     var peerToPeerServer: PeerToPeerServer?
     private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?
     // MARK: - Published Properties
@@ -37,9 +37,9 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     // MARK: - Initializer
     
-    init(mainAppModel: MainAppModel, server: PeerToPeerServer) {
+    init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
-        self.server = server
+        self.peerToPeerServer = mainAppModel.peerToPeerServer
         setupListeners()
     }
     
@@ -54,7 +54,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     // MARK: - Private Methods
     
     private func listenToPrepareUploadPublisher() {
-        server.didReceivePrepareUploadPublisher
+        peerToPeerServer?.didReceivePrepareUploadPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] files in
                 guard let self = self else { return }
@@ -65,7 +65,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     }
     
     private func listenToSendPrepareUploadResponsePublisher() {
-        server.didSendPrepareUploadResponsePublisher
+        peerToPeerServer?.didSendPrepareUploadResponsePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -82,7 +82,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     }
     
     private func listenToCloseConnectionPublisher() {
-         server.didReceiveCloseConnectionPublisher.sink { [weak self] value in
+         peerToPeerServer?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
             guard let self = self else { return }
             self.viewAction = .errorOccured
         }.store(in: &subscribers)
@@ -92,12 +92,12 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
-        server.prepareUploadPublisher.send(acceptance)
-        server.prepareUploadPublisher.send(completion: .finished)
+        peerToPeerServer?.prepareUploadPublisher.send(acceptance)
+        peerToPeerServer?.prepareUploadPublisher.send(completion: .finished)
     }
     
      func stopServerListening() {
-         server.stopServer()
+         peerToPeerServer?.stopServer()
     }
 
 }
@@ -107,8 +107,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
 extension RecipientPrepareFileTransferVM {
     static func stub() -> RecipientPrepareFileTransferVM {
         return RecipientPrepareFileTransferVM(
-            mainAppModel: MainAppModel.stub(),
-            server: PeerToPeerServer.stub()
+            mainAppModel: MainAppModel.stub()
         )
     }
 }

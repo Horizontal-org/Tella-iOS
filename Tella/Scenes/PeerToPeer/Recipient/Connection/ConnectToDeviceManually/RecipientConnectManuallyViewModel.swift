@@ -25,17 +25,16 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     private var subscribers : Set<AnyCancellable> = []
     
     var mainAppModel: MainAppModel
-    var server: PeerToPeerServer
+    var peerToPeerServer: PeerToPeerServer?
     var connectionInfo: ConnectionInfo?
     
     init(certificateGenerator : CertificateGenerator,
          mainAppModel:MainAppModel,
-         server: PeerToPeerServer,
          connectionInfo:ConnectionInfo?) {
         
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
-        self.server = server
+        self.peerToPeerServer = mainAppModel.peerToPeerServer
         self.connectionInfo = connectionInfo
         
         initParameters()
@@ -50,7 +49,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     }
     
     func listenToRegisterPublisher() {
-        self.server.showVerificationHashPublisher
+        self.peerToPeerServer?.showVerificationHashPublisher
             .sink { value in
                 self.viewState = .showVerificationHash
             }.store(in: &subscribers)

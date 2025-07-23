@@ -19,6 +19,7 @@ final class PeerToPeerServer {
     var server = P2PServerState()
     
     // Publishers
+    let didFailStartServerPublisher = PassthroughSubject<Void, Never>()
     let didRegisterPublisher = PassthroughSubject<Bool, Never>()
     let didRegisterManuallyPublisher = PassthroughSubject<Bool, Never>()
     let didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
@@ -426,10 +427,10 @@ final class PeerToPeerServer {
                 let progressFile = server.session?.files[fileID]
                 progressFile?.status = .failed
                 sendInternalServerError(connection: connection)
-                
             } catch {
                 sendInternalServerError(connection: connection)
             }
+            checkAllFilesAreReceived()
             
         default:
             sendInternalServerError(connection: connection)
@@ -452,12 +453,12 @@ final class PeerToPeerServer {
 
 extension PeerToPeerServer: NetworkManagerDelegate {
     
-    func networkManager(didFailWith error: Error?) {
+    func networkManager(didFailWithListener error: Error?) {
         debugLog("Server error")
-        self.didSendProgress.send(completion: .finished)
+        self.didFailStartServerPublisher.send()
     }
     
-    func networkManager(_ connection: NWConnection, didFailWith error: any Error, request: HTTPRequest?) {
+    func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?) {
         guard let request else { return  }
         handleErrors(httpRequest: request, connection: connection)
     }

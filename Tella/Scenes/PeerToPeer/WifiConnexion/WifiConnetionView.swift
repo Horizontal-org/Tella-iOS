@@ -152,8 +152,7 @@ struct WifiConnetionView: View {
                 navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
             case .recipient:
                 let recipientConnectToDeviceViewModel = RecipientConnectToDeviceViewModel(certificateGenerator: CertificateGenerator(),
-                                                                                          mainAppModel: mainAppModel,
-                                                                                          server: PeerToPeerServer())
+                                                                                          mainAppModel: mainAppModel)
                 navigateTo(destination: RecipientConnectToDeviceView(viewModel: recipientConnectToDeviceViewModel))
             }
         })
