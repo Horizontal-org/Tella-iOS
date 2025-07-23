@@ -16,14 +16,16 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest)
     func networkManagerDidStartListening()
     func networkManagerDidStopListening()
-    func networkManager(_ connection: NWConnection, didFailWith error: Error, request: HTTPRequest?)
-    func networkManager(didFailWith error: Error? )
+    func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?)
+    func networkManager(didFailWithListener error: Error? )
 
 }
 
 final class NetworkManager {
     // MARK: - Properties
     private var listener: NWListener?
+    private var requestsDictionary: [ObjectIdentifier:HTTPRequest] = [:]
+
     weak var delegate: NetworkManagerDelegate?
     
     private let kMinimumIncompleteLength = 1
@@ -33,14 +35,18 @@ final class NetworkManager {
     func startListening(port: Int, clientIdentity: SecIdentity) {
         
         do {
+            if listener != nil {
+                listener?.cancel()
+            }
+
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
-            self.listener = try NWListener(using: parameters, on: NWEndpoint.Port(integerLiteral: UInt16(port)))
+            listener = try NWListener(using: parameters, on: NWEndpoint.Port(integerLiteral: UInt16(port)))
             
             setupListenerHandlers()
             self.listener?.start(queue: .main)
         } catch {
             debugLog("Failed to start listener")
-            delegate?.networkManager(didFailWith: error)
+            delegate?.networkManager(didFailWithListener: error)
         }
     }
     
@@ -84,7 +90,7 @@ final class NetworkManager {
                 delegate?.networkManagerDidStartListening()
             case .failed(let error):
                 debugLog("Listener failed")
-                delegate?.networkManager(didFailWith: error)
+                delegate?.networkManager(didFailWithListener: error)
                 self.stopListening()
             case .cancelled:
                 debugLog("Listener cancelled")
@@ -114,12 +120,12 @@ final class NetworkManager {
             guard let self = self else { return}
             
             if let error {
-                self.handleReceiveError(connection:connection, error)
+                delegate?.networkManager(connection, didFailWith: error, request:nil)
                 return
             }
             guard let data else {
                 debugLog("Failed to read HTTP data")
-                delegate?.networkManager(didFailWith: nil)
+                delegate?.networkManager(connection, didFailWith: nil, request: requestsDictionary[connection.id])
                 return
             }
 
@@ -127,12 +133,7 @@ final class NetworkManager {
         }
         
     }
-    
-    private func handleReceiveError(connection:NWConnection , _ error: NWError) {
-        debugLog("Connection error")
-        delegate?.networkManager(connection, didFailWith: error, request:nil)
-    }
-    
+
     func processHTTPRequest(on connection: NWConnection,
                             data:Data,
                             parser:HTTPParser) {
@@ -152,6 +153,8 @@ final class NetworkManager {
             
             try parser.parse(data: data)
             
+            requestsDictionary[connection.id] = parser.request
+
             if parser.parserIsPaused {
                 try parser.resumeParsing()
                 check(on: connection, parser: parser)

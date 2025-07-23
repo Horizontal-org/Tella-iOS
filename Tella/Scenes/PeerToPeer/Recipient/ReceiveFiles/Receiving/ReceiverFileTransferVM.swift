@@ -14,7 +14,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     // MARK: - Properties
     
-    private let server: PeerToPeerServer
+    private let peerToPeerServer: PeerToPeerServer?
     private var subscribers = Set<AnyCancellable>()
     
     @Published var progressFile: ProgressFile = ProgressFile()
@@ -22,9 +22,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     // MARK: - Initializer
     
-    init?(mainAppModel: MainAppModel, server: PeerToPeerServer) {
-        self.server = server
-        guard let session = server.server.session else { return nil }
+    init?(mainAppModel: MainAppModel) {
+        self.peerToPeerServer = mainAppModel.peerToPeerServer
+        guard let session = peerToPeerServer?.server.session else { return nil }
         
         super.init(mainAppModel: mainAppModel,
                    title: LocalizablePeerToPeer.receivingAppBar.localized,
@@ -53,14 +53,14 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Private Methods
     
     private func listenToServer() {
-        server.didSendProgress
+        peerToPeerServer?.didSendProgress
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 guard let self else { return }
                 switch completion {
                 case .finished:
                     
-                    self.server.stopServer()
+                    self.peerToPeerServer?.stopServer()
 
                     let finishedFiles = transferredFiles.filter({$0.status == .finished})
                     if finishedFiles.isEmpty {
@@ -125,7 +125,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
-        server.cleanServer()
+        peerToPeerServer?.cleanServer()
     }
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {

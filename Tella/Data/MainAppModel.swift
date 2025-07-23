@@ -47,7 +47,8 @@ class MainAppModel: ObservableObject {
     @Published var importOption: ImportOption?
     @Published var shouldUpdateLanguage = true
     
-    var networkMonitor : NetworkMonitor
+    var networkMonitor: NetworkMonitor
+    var peerToPeerServer: PeerToPeerServer?
     
     private var cancellable: Set<AnyCancellable> = []
     
@@ -96,7 +97,9 @@ class MainAppModel: ObservableObject {
 
             self.vaultFilesManager = try VaultFilesManager(vaultDataBase: vaultDatabase, vaultManager: self.vaultManager)
             encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
-             self.tellaData = try TellaData(database: tellaDataBase, vaultManager: self.vaultManager)
+            self.tellaData = try TellaData(database: tellaDataBase, vaultManager: self.vaultManager)
+            
+            self.peerToPeerServer = PeerToPeerServer()
         } catch {
             Toast.displayToast(message: "Error opening the app")
         }
