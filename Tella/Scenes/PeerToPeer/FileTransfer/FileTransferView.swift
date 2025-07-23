@@ -69,11 +69,7 @@ struct FileTransferView: View {
     private func handleBackAction() {
         self.showCancelUploadConfirmationView()
     }
-    
-    private func dismissView() {
-        self.popTo(ViewClassType.peerToPeerMainView)
-    }
-    
+
     private func showCancelUploadConfirmationView() {
         isBottomSheetShown = true
         let content = ConfirmBottomSheet(titleText: viewModel.bottomSheetTitle,
