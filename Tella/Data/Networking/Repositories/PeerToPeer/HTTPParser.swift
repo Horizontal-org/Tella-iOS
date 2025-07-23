@@ -100,8 +100,6 @@ final class HTTPParser {
                 }
                 instance.currentHeaderField = nil
             }
-            
-            
             return 0
         }
         
@@ -119,7 +117,7 @@ final class HTTPParser {
             case .json:
                 let value = String(decoding: buffer, as: UTF8.self)
                 instance.body += value
-            case .data, .octetStream:
+            case .octetStream:
                 if instance.fileHandle == nil {
                     instance.createFileHandle()
                 }

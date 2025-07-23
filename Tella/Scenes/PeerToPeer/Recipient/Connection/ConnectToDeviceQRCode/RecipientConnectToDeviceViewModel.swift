@@ -16,7 +16,7 @@ enum RecipientConnectToDeviceViewAction {
     case showToast(message: String)
     case showReceiveFiles
     case showVerificationHash
-    case errorOccured // TODO: Update name
+    case errorOccured
     case discardAndStartOver
 }
 
@@ -63,7 +63,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let clientIdentity = certificateData.identity
             let certificateHash = certificateData.certificateHash
             
-            let pin =  "\(Int.randomSixDigitPIN)"
+            let pin = "\(Int.randomSixDigitPIN)"
             
             let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
                                                 port: self.port,
