@@ -36,7 +36,7 @@ final class NetworkManager {
         
         do {
             if listener != nil {
-                listener?.cancel()
+                stopListening()
             }
 
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
@@ -56,7 +56,7 @@ final class NetworkManager {
     
     func sendData(connection: NWConnection, _ data: Data, completion: ((NWError?) -> Void)? = nil) {
         connection.send(content: data, completion: .contentProcessed { error in
-            if let error = error {
+            if let _ = error {
                 debugLog("Server send error")
             }
             completion?(error)
