@@ -145,8 +145,8 @@ struct ManuallyVerificationView: View {
     private func handleRecipientViewAction(action: RecipientConnectToDeviceViewAction) {
         switch action {
         case .showReceiveFiles:
-            guard let server = viewModel.server else { return }
-            self.navigateTo(destination: RecipientFileTransferView(viewModel: RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel, server: server)))
+            let viewModel = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
+            self.navigateTo(destination: RecipientFileTransferView(viewModel: viewModel))
         case .errorOccured:
             self.popTo(ViewClassType.peerToPeerMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
@@ -163,6 +163,5 @@ struct ManuallyVerificationView: View {
 #Preview {
     ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(participant: .recipient,
                                                                       connectionInfo: ConnectionInfo.stub(),
-                                                                      mainAppModel: MainAppModel.stub(),
-                                                                      server: PeerToPeerServer()))
+                                                                      mainAppModel: MainAppModel.stub()))
 }

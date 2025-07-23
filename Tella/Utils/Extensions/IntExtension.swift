@@ -47,3 +47,9 @@ extension Int {
         return CGFloat(self) * Device.ratio
     }
 }
+
+extension Int {
+    static var randomSixDigitPIN: String {
+        return String(Int.random(in: 100_000...999_999))
+    }
+}

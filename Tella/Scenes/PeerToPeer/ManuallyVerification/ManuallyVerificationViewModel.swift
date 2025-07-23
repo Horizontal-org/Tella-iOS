@@ -27,20 +27,19 @@ class ManuallyVerificationViewModel: ObservableObject {
     var session : P2PSession?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
-    var server:PeerToPeerServer?
+    var peerToPeerServer:PeerToPeerServer?
     
     private var subscribers = Set<AnyCancellable>()
     
     init(participant:PeerToPeerParticipant,
          peerToPeerRepository:PeerToPeerRepository? = nil,
          connectionInfo:ConnectionInfo,
-         mainAppModel:MainAppModel,
-         server:PeerToPeerServer? = nil) {
+         mainAppModel:MainAppModel) {
         self.participant = participant
         self.peerToPeerRepository = peerToPeerRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
-        self.server = server
+        self.peerToPeerServer = mainAppModel.peerToPeerServer
         
         updateButtonsState(state: .waitingForSenderResponse)
         
@@ -78,8 +77,8 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardSenderRegisterRequest() {
-        self.server?.discardRegisterPublisher.send(completion: .finished)
-        self.server?.stopServer()
+        self.peerToPeerServer?.discardRegisterPublisher.send(completion: .finished)
+        self.peerToPeerServer?.stopServer()
         recipientViewAction = .discardAndStartOver
     }
     
@@ -113,11 +112,11 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func acceptRegisterRequest() {
-        self.server?.acceptRegisterPublisher.send(completion: .finished)
+        self.peerToPeerServer?.acceptRegisterPublisher.send(completion: .finished)
     }
     
     func listenToRegisterPublisher() {
-        self.server?.didRegisterManuallyPublisher
+        self.peerToPeerServer?.didRegisterManuallyPublisher
             .sink { [weak self] result in
                 guard let self = self else { return }
                 self.recipientViewAction = result == true ? .showReceiveFiles : .errorOccured
@@ -125,14 +124,14 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
 
     private func listenToRequestRegisterPublisher() {
-        self.server?.didRequestRegisterPublisher.sink { [weak self] value in
+        self.peerToPeerServer?.didRequestRegisterPublisher.sink { [weak self] value in
             guard let self = self else { return }
             self.updateButtonsState(state: .waitingForRecipientResponse)
         }.store(in: &subscribers)
     }
     
     private func listenToCloseConnectionPublisher() {
-        self.server?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
+        self.peerToPeerServer?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
             guard let self = self else { return }
             self.recipientViewAction = .errorOccured
         }.store(in: &subscribers)
