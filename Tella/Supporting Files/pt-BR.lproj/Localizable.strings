@@ -10,22 +10,22 @@
 "LockUnlock_LockSelect_ActionExpl_Password" = "The most secure option";
 "LockUnlock_LockSelect_Action_Pin" = "PIN";
 "LockUnlock_LockSelect_ActionExpl_Pin" = "Moderately secure";
-"LockUnlock_LockSelect_Title" = "Lock";
-"LockUnlock_Action_Back" = "Cancelar";
+"LockUnlock_LockSelect_Title" = "Bloqueio";
+"LockUnlock_Action_Back" = "Voltar";
 "LockUnlock_Action_Next" = "Próximo";
-"LockUnlock_LockPasswordSet_Subhead" = "Enter your password";
+"LockUnlock_LockPasswordSet_Subhead" = "Digite sua senha";
 "LockUnlock_LockPasswordSet_Expl" = "• Use at least 6 characters.\
 • Avoid using passwords that can be guessed easily, such as “password.” \
 • The longer your password, the more secure it is.";
-"LockUnlock_LockPasswordConfirm_Subhead" = "Confirm your password";
+"LockUnlock_LockPasswordConfirm_Subhead" = "Confirme sua senha";
 "LockUnlock_LockPasswordConfirm_Expl" = "Please enter your password one more time, just to be sure.";
-"LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch" = "Please try again. Your passwords do not match.";
-"LockUnlock_LockPinSet_Subhead" = "Enter your PIN";
+"LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch" = "Tente novamente. Suas senhas não correspondem.";
+"LockUnlock_LockPinSet_Subhead" = "Digite seu PIN";
 "LockUnlock_LockPinSet_Expl" = "• Use at least 6 digits\
 • Avoid using numbers that can be guessed easily, such as your birthday.";
-"LockUnlock_LockPinConfirm_Subhead" = "Confirm your PIN";
+"LockUnlock_LockPinConfirm_Subhead" = "Confirme seu PIN";
 "LockUnlock_LockPinConfirm_Expl" = "Please enter your PIN one more time, just to be sure.";
-"LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Please try again. Your PINs do not match.";
+"LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Tente novamente. Seus PINs não correspondem.";
 "LockUnlock_UnlockPassword_Subhead" = "Enter your password to unlock";
 "LockUnlock_UnlockUpdatePassword_Subhead" = "Enter your password to change your lock method";
 "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword" = "Incorrect password, please try again";
@@ -175,7 +175,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_French_Expl" = "Francês";
 "Settings_SettLang_Spanish_Expl" = "Spanish";
 "Settings_SettSec_AppBar" = "Security";
-"Settings_SettSec_Lock" = "Lock";
+"Settings_SettSec_Lock" = "Bloqueio";
 "Settings_SettSec_LockTimeout" = "Lock timeout";
 "Settings_SettSec_ScreenSecurity" = "Segurança da tela";
 "Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
@@ -269,7 +269,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Submitted_ClearAll_SheetExpl" = "Are you sure you want to delete all reports from your Submitted tab?";
 "Reports_Submitted_ClearAll_Cancel_SheetAction" = "CANCEL";
 "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" = "CLEAR SUBMITTED";
-"Reports_Submitted_Clear_AppBar" = "Redesenhar";
+"Reports_Submitted_Clear_AppBar" = "Apagar";
 "Reports_DraftSaved_Toast" = "O relatório foi salvo como rascunho";
 "Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";
@@ -533,7 +533,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 2. Find the Tella app\
 3. Enable photo permissions";
 "Vault_DeniedPhotosPermission_Settings_SheetSelect" = "Phone Settings";
-"Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancel";
+"Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancelar";
 "Vault_LimitedPhotoLibrary_AppBar" = "Import files";
 "Vault_LimitedPhotoLibrary_Title" = "Limited access";
 "Vault_LimitedPhotoLibrary_Expl" = "Tella only has access to limited photos and videos from your device library. Add more files or change device access here.";
@@ -549,3 +549,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
+"Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
