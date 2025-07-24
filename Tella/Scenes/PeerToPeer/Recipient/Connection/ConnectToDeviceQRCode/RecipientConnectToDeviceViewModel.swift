@@ -37,58 +37,65 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
         self.peerToPeerServer = mainAppModel.peerToPeerServer
-        
-        listenToRegisterPublisher()
+
         generateConnectionInfo()
     }
     
     func generateConnectionInfo() {
-        
         DispatchQueue.main.async {
-            
             let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
-            
-            guard let ipAddress = UIDevice.current.getIPAddress(for:interfaceType ) else {
+
+            guard let ipAddress = UIDevice.current.getIPAddress(for: interfaceType) else {
                 self.qrCodeState = .error("Try to connect to wifi")
                 return
             }
-            
-            let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress)
-            
-            guard let certificateData else {
+
+            guard let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress) else {
                 self.qrCodeState = .error(LocalizableCommon.commonError.localized)
                 return
             }
-            
+
             let clientIdentity = certificateData.identity
             let certificateHash = certificateData.certificateHash
-            
             let pin = "\(Int.randomSixDigitPIN)"
-            
+
             let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
                                                 port: self.port,
                                                 certificateHash: certificateHash,
                                                 pin: pin)
-            
+
             self.qrCodeState = .loaded(connectionInfo)
             self.connectionInfo = connectionInfo
-            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity:clientIdentity)
-            
-            self.peerToPeerServer?.didFailStartServerPublisher.sink { result in
-                self.viewAction = .errorOccured
-            }.store(in: &self.subscribers)
+            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
+
+            self.listenToServerRegistrationEvents()
         }
     }
     
-    func listenToRegisterPublisher() {
-        peerToPeerServer?.didRegisterPublisher
-            .sink { result in
-                self.viewAction = result == true ? .showReceiveFiles : .errorOccured
-            }.store(in: &subscribers)
+    private func listenToServerRegistrationEvents() {
+        peerToPeerServer?.eventPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .serverStartFailed:
+                    self.viewAction = .errorOccured
+
+                case .didRegister(let success, let manual):
+                    if !manual {
+                        self.viewAction = success ? .showReceiveFiles : .errorOccured
+                    }
+
+                default:
+                    break
+                }
+            }
+            .store(in: &subscribers)
     }
-    
+
     func stopServerListening() {
-        peerToPeerServer?.stopServer()
+        peerToPeerServer?.resetServer()
     }
     
 }
