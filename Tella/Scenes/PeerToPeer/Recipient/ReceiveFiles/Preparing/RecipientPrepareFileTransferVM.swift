@@ -40,64 +40,50 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.peerToPeerServer = mainAppModel.peerToPeerServer
-        setupListeners()
+        listenToServerEvents()
     }
-    
-    // MARK: - Setup Methods
-    
-    private func setupListeners() {
-        listenToPrepareUploadPublisher()
-        listenToSendPrepareUploadResponsePublisher()
-        listenToCloseConnectionPublisher()
-    }
-    
+
     // MARK: - Private Methods
-    
-    private func listenToPrepareUploadPublisher() {
-        peerToPeerServer?.didReceivePrepareUploadPublisher
+
+    private func listenToServerEvents() {
+        peerToPeerServer?.eventPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] files in
+            .sink { [weak self] event in
                 guard let self = self else { return }
-                self.files = files ?? []
-                self.viewState = .awaitingAcceptance
-            }
-            .store(in: &subscribers)
-    }
-    
-    private func listenToSendPrepareUploadResponsePublisher() {
-        peerToPeerServer?.didSendPrepareUploadResponsePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                guard let acceptance else { return }
-                
-                if acceptance {
-                    viewAction = .displayFileTransferView(files: self.files)
-                } else {
-                    self.viewState = .waitingRequest
-                    viewAction = .showToast(message: LocalizablePeerToPeer.recipientFilesRejected.localized)
+
+                switch event {
+
+                case .prepareUploadReceived(let files):
+                    self.files = files ?? []
+                    self.viewState = .awaitingAcceptance
+
+                case .prepareUploadResponseSent(let accepted):
+                    if accepted {
+                        self.viewAction = .displayFileTransferView(files: self.files)
+                    } else {
+                        self.viewState = .waitingRequest
+                        self.viewAction = .showToast(message: LocalizablePeerToPeer.recipientFilesRejected.localized)
+                    }
+
+                case .connectionClosed:
+                    self.viewAction = .errorOccured
+
+                default:
+                    break
                 }
             }
             .store(in: &subscribers)
     }
-    
-    private func listenToCloseConnectionPublisher() {
-         peerToPeerServer?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
-            guard let self = self else { return }
-            self.viewAction = .errorOccured
-        }.store(in: &subscribers)
-    }
-    
+
     // MARK: - Public Methods
-    
+
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
-        peerToPeerServer?.prepareUploadPublisher.send(acceptance)
-        peerToPeerServer?.prepareUploadPublisher.send(completion: .finished)
-    }
-    
+        peerToPeerServer?.respondToFileOffer(accept: acceptance)
+     }
+
      func stopServerListening() {
-         peerToPeerServer?.stopServer()
+         peerToPeerServer?.resetServer()
     }
 
 }

@@ -120,7 +120,7 @@ final class NetworkManager {
             guard let self = self else { return}
             
             if let error {
-                delegate?.networkManager(connection, didFailWith: error, request:nil)
+                delegate?.networkManager(connection, didFailWith: error, request: requestsDictionary[connection.id])
                 return
             }
             guard let data else {
