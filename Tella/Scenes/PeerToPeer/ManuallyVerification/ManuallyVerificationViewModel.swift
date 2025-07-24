@@ -43,7 +43,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         
         updateButtonsState(state: .waitingForSenderResponse)
         
-        setupListeners()
+        listenToServerEvents()
     }
     
     func updateButtonsState(state: ManuallyVerificationState) {
@@ -59,15 +59,7 @@ class ManuallyVerificationViewModel: ObservableObject {
             confirmButtonTitle = result ? LocalizablePeerToPeer.verificationWaitingSender.localized : LocalizablePeerToPeer.verificationConfirm.localized
         }
     }
-    
-    // MARK: - Setup Methods
-    
-    private func setupListeners() {
-        listenToRequestRegisterPublisher()
-        listenToRegisterPublisher()
-        listenToCloseConnectionPublisher()
-    }
-    
+
     func confirmAction() {
         participant == .recipient ? acceptRegisterRequest() : register()
     }
@@ -77,13 +69,12 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardSenderRegisterRequest() {
-        self.peerToPeerServer?.discardRegisterPublisher.send(completion: .finished)
-        self.peerToPeerServer?.stopServer()
+        self.peerToPeerServer?.respondToRegistrationRequest(accept: false)
+        self.peerToPeerServer?.resetServer()
         recipientViewAction = .discardAndStartOver
     }
     
     private func discardRegisterRequest() {
-        self.peerToPeerRepository?.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.session?.sessionId))
         senderViewAction = .discardAndStartOver
     }
     
@@ -110,30 +101,35 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             }).store(in: &self.subscribers)
     }
-    
+
     private func acceptRegisterRequest() {
-        self.peerToPeerServer?.acceptRegisterPublisher.send(completion: .finished)
-    }
-    
-    func listenToRegisterPublisher() {
-        self.peerToPeerServer?.didRegisterManuallyPublisher
-            .sink { [weak self] result in
-                guard let self = self else { return }
-                self.recipientViewAction = result == true ? .showReceiveFiles : .errorOccured
-            }.store(in: &subscribers)
+
+        peerToPeerServer?.respondToRegistrationRequest(accept: true)
+      
     }
 
-    private func listenToRequestRegisterPublisher() {
-        self.peerToPeerServer?.didRequestRegisterPublisher.sink { [weak self] value in
-            guard let self = self else { return }
-            self.updateButtonsState(state: .waitingForRecipientResponse)
-        }.store(in: &subscribers)
+    func listenToServerEvents() {
+        peerToPeerServer?.eventPublisher
+            .sink { [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .registrationRequested:
+                    self.updateButtonsState(state: .waitingForRecipientResponse)
+
+                case .didRegister(let success, let manual):
+                    if manual {
+                        self.recipientViewAction = success ? .showReceiveFiles : .errorOccured
+                    }
+
+                case .connectionClosed:
+                    self.recipientViewAction = .errorOccured
+
+                default:
+                    break
+                }
+            }
+            .store(in: &subscribers)
     }
-    
-    private func listenToCloseConnectionPublisher() {
-        self.peerToPeerServer?.didReceiveCloseConnectionPublisher.sink { [weak self] value in
-            guard let self = self else { return }
-            self.recipientViewAction = .errorOccured
-        }.store(in: &subscribers)
-    }
+
 }
