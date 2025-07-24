@@ -24,7 +24,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     init?(mainAppModel: MainAppModel) {
         self.peerToPeerServer = mainAppModel.peerToPeerServer
-        guard let session = peerToPeerServer?.server.session else { return nil }
+        guard let session = peerToPeerServer?.serverState.session else { return nil }
         
         super.init(mainAppModel: mainAppModel,
                    title: LocalizablePeerToPeer.receivingAppBar.localized,
@@ -53,27 +53,28 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Private Methods
     
     private func listenToServer() {
-        peerToPeerServer?.didSendProgress
+        peerToPeerServer?.eventPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
+            .sink { [weak self] event in
                 guard let self else { return }
-                switch completion {
-                case .finished:
+                
+                switch event {
+                case .fileTransferProgress(let file):
+                    self.updateProgress(with: file)
                     
-                    self.peerToPeerServer?.stopServer()
-
-                    let finishedFiles = transferredFiles.filter({$0.status == .finished})
+                case .allTransfersCompleted:
+                    
+                    let finishedFiles = transferredFiles.filter { $0.status == .finished }
                     if finishedFiles.isEmpty {
-                        viewAction = .shouldShowResults
+                        self.viewAction = .shouldShowResults
                     } else {
-                        viewAction = .transferIsFinished
-                        saveFiles()
+                        self.viewAction = .transferIsFinished
+                        self.saveFiles()
                     }
-                case .failure:
+                    
+                default:
                     break
                 }
-            } receiveValue: { [weak self] file in
-                self?.updateProgress(with: file)
             }
             .store(in: &subscribers)
     }
@@ -106,6 +107,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                     }
                     
                     self.viewAction = .shouldShowResults
+                    self.peerToPeerServer?.cleanServer()
                     
                 case .importProgress(let importProgress):
                     self.updateProgress(importProgress:importProgress)
@@ -125,7 +127,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
-        peerToPeerServer?.cleanServer()
+        peerToPeerServer?.stopServer()
     }
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {

@@ -38,7 +38,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         self.connectionInfo = connectionInfo
         
         initParameters()
-        listenToRegisterPublisher()
+        listenToServerEvents()
     }
     
     func initParameters() {
@@ -48,11 +48,20 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         self.port = "\(connectionInfo.port)"
     }
     
-    func listenToRegisterPublisher() {
-        self.peerToPeerServer?.showVerificationHashPublisher
-            .sink { value in
-                self.viewState = .showVerificationHash
-            }.store(in: &subscribers)
+    func listenToServerEvents() {
+        peerToPeerServer?.eventPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                guard let self = self else { return }
+
+                switch event {
+                case .verificationRequested:
+                    self.viewState = .showVerificationHash
+                default:
+                    break
+                }
+            }
+            .store(in: &subscribers)
     }
-    
+
 }

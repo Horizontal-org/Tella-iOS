@@ -11,495 +11,489 @@ import Network
 import Combine
 import Foundation
 
-final class PeerToPeerServer {
+final class PeerToPeerServer: NetworkManagerDelegate {
+    // MARK: - Types
+    
+    /// Represents events and notifications from the PeerToPeerServer.
+    enum PeerToPeerEvent {
+        case serverStartFailed(Error?)
+        case didRegister(success: Bool, manual: Bool)
+        case registrationRequested         // A client has requested to register (manual confirmation needed).
+        case verificationRequested         // Received a ping; show verification hash to user.
+        case prepareUploadReceived(files: [P2PFile]?)
+        case prepareUploadResponseSent(success: Bool)
+        case connectionClosed
+        case fileTransferProgress(P2PTransferredFile)
+        case allTransfersCompleted
+    }
     
     // MARK: - Properties
+    
     private let networkManager = NetworkManager()
-    var server = P2PServerState()
+    private(set) var serverState = P2PServerState()
     
-    // Publishers
-    var didFailStartServerPublisher = PassthroughSubject<Void, Never>()
-    var didRegisterPublisher = PassthroughSubject<Bool, Never>()
-    var didRegisterManuallyPublisher = PassthroughSubject<Bool, Never>()
-    var didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
-    var showVerificationHashPublisher = PassthroughSubject<Void, Never>()
-    var didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile]?, Never>()
-    var didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
-    var didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
-    var didSendProgress = PassthroughSubject<P2PTransferredFile, Never>()
+    /// Single Combine publisher for all server events.
+    var eventPublisher = PassthroughSubject<PeerToPeerEvent, Never>()
     
-    var acceptRegisterPublisher = PassthroughSubject<Void, Never>()
-    var discardRegisterPublisher = PassthroughSubject<Void, Never>()
-    var prepareUploadPublisher = PassthroughSubject<Bool, Never>()
-    
-    var subscribers = Set<AnyCancellable>()
+    /// Stored context for pending user decisions.
+    private var pendingRegisterConnection: NWConnection?
+    private var pendingRegisterRequest: HTTPRequest?
+    private var pendingUploadConnection: NWConnection?
     
     init() {
         networkManager.delegate = self
     }
     
     // MARK: - Server Lifecycle
+    
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
-        server.pin = pin
-        initPublishers()
+        serverState.pin = pin
         networkManager.startListening(port: port, clientIdentity: clientIdentity)
     }
     
-    func initPublishers() {
-        didFailStartServerPublisher = PassthroughSubject<Void, Never>()
-        didRegisterPublisher = PassthroughSubject<Bool, Never>()
-        didRegisterManuallyPublisher = PassthroughSubject<Bool, Never>()
-        didRequestRegisterPublisher = PassthroughSubject<Void, Never>()
-        showVerificationHashPublisher = PassthroughSubject<Void, Never>()
-        didReceivePrepareUploadPublisher = PassthroughSubject<[P2PFile]?, Never>()
-        didSendPrepareUploadResponsePublisher = PassthroughSubject<Bool, Never>()
-        didReceiveCloseConnectionPublisher = PassthroughSubject<Void, Never>()
-        
-        didSendProgress = PassthroughSubject<P2PTransferredFile, Never>()
-        acceptRegisterPublisher = PassthroughSubject<Void, Never>()
-        discardRegisterPublisher = PassthroughSubject<Void, Never>()
-        prepareUploadPublisher = PassthroughSubject<Bool, Never>()
-    }
-    
     func stopServer() {
+        networkManager.stopListening()
+    }
+
+    func resetServer() {
         networkManager.stopListening()
         resetConnectionState()
     }
     
     func cleanServer() {
-        stopServer()
         cleanTempFiles()
+        resetServer()
     }
     
-    func cleanTempFiles() {
-        // Clean temp files
-        guard let paths = server.session?.files.values.compactMap({$0.url}) else {
-            return
+    private func cleanTempFiles() {
+        // Remove any temporary files that were stored during transfers
+        guard let fileURLs = serverState.session?.files.values.compactMap({ $0.url }) else { return }
+        fileURLs.forEach { $0.remove() }
+    }
+    
+    private func resetConnectionState() {
+        // Reset session state and pending request info
+        serverState.reset()
+        pendingRegisterConnection = nil
+        pendingRegisterRequest = nil
+        pendingUploadConnection = nil
+        eventPublisher = PassthroughSubject<PeerToPeerEvent, Never>()
+    }
+    
+    // MARK: - Responding to User Decisions
+    
+    /// Call this to respond to a pending registration request (from a `.registrationRequested` event).
+    func respondToRegistrationRequest(accept: Bool) {
+        guard let connection = pendingRegisterConnection,
+              let request = pendingRegisterRequest else {
+            return  // No pending request to respond to
         }
-        paths.forEach({$0.remove()})
+        if accept {
+            acceptRegisterRequest(connection: connection, httpRequest: request)
+        } else {
+            discardRegisterRequest(connection: connection)
+        }
+        // Clear the pending request after responding
+        pendingRegisterConnection = nil
+        pendingRegisterRequest = nil
     }
     
-    // MARK: - Request Handling
-    func acceptRegisterRequest(connection: NWConnection, httpRequest:HTTPRequest) {
+    /// Call this to respond to a pending file upload offer (from a `.prepareUploadReceived` event).
+    func respondToFileOffer(accept: Bool) {
+        guard let connection = pendingUploadConnection else {
+            return  // No pending file offer to respond to
+        }
+        sendPrepareUploadResponse(connection: connection, accept: accept)
+        pendingUploadConnection = nil
+    }
+    
+    // MARK: - Internal Request Handling
+    
+    private func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) {
         do {
-            let serverResponse = try generateRegisterServerResponse(httpRequest: httpRequest)
-            handleServerResponse(connection: connection, serverResponse)
-        } catch let error as HTTPStatusCode {
-            handleServerResponse(connection: connection, createErrorResponse(error))
+            let serverResponse = try generateRegisterServerResponse(from: httpRequest)
+            sendResponse(connection: connection, serverResponse: serverResponse)
+        } catch let statusError as HTTPStatusCode {
+            // Known HTTP error (e.g., conflict, unauthorized, etc.)
+            sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
         } catch {
+            // Unexpected error
             sendInternalServerError(connection: connection)
         }
     }
     
-    func discardRegisterRequest(connection: NWConnection) {
-        handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
+    private func discardRegisterRequest(connection: NWConnection) {
+        // Deny the registration request with 401 Unauthorized
+        sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
     }
     
-    func sendPrepareUploadFiles(connection: NWConnection, filesAccepted: Bool) {
-        let serverResponse = filesAccepted ? createAcceptUploadResponse() : createRejectUploadResponse()
-        handleServerResponse(connection: connection, serverResponse)
+    private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) {
+        let response = accept ? createAcceptUploadResponse() : createRejectUploadResponse()
+        sendResponse(connection: connection, serverResponse: response)
     }
     
-    // MARK: - Request Processing
-    private func processCompleteBody(connection: NWConnection, httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
+    // MARK: - Core Request Processing
+    
+    /// Process a completed HTTP request (headers and full body if applicable).
+    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest, bodyFileHandler: ((URL) -> Void)? = nil) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
-            debugLog("Unknown endpoint")
+            debugLog("Received request for unknown endpoint")
             return
         }
-        
         switch endpoint {
         case .ping:
-            handlePingRequest(connection: connection)
+            handlePingRequest(on: connection)
         case .register:
-            handleRegisterRequest(connection: connection, httpRequest: httpRequest)
+            handleRegisterRequest(on: connection, request: httpRequest)
         case .prepareUpload:
-            handlePrepareUploadRequest(httpRequest: httpRequest, connection: connection)
+            handlePrepareUploadRequest(on: connection, request: httpRequest)
         case .upload:
-            handleFileUpload(connection: connection, httpRequest: httpRequest, completion: completion)
+            handleFileUploadRequest(on: connection, request: httpRequest, bodyFileHandler: bodyFileHandler)
         case .closeConnection:
-            handleCloseConnectionRequest(connection: connection, httpRequest: httpRequest)
+            handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
     }
     
-    private func processProgress(connection: NWConnection, progress : Int, httpRequest: HTTPRequest) {
+    /// Update progress for a file upload.
+    private func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest) {
         do {
-            let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
-            
-            guard let fileID = fileUploadRequest.fileID,
-                  let progressFile = server.session?.files[fileID] else {
-                handleServerResponse(connection: connection, createErrorResponse(.badRequest))
+            let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+            guard let fileID = uploadReq.fileID,
+                  let fileInfo = serverState.session?.files[fileID] else {
+                // Can't find matching file info
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
                 return
             }
-            progressFile.bytesReceived += progress
-            
-            server.session?.files[fileID] = progressFile
-            
-            didSendProgress.send(progressFile)
+            // Update the bytes received for the file and notify progress
+            fileInfo.bytesReceived += bytesReceived
+            serverState.session?.files[fileID] = fileInfo
+            eventPublisher.send(.fileTransferProgress(fileInfo))
         } catch {
-            
+            debugLog("Failed to decode file upload progress")
+            // We could send an error event here if needed
         }
     }
     
-    private func handlePingRequest(connection: NWConnection) {
-        showVerificationHashPublisher.send()
-        server.isUsingManualConnection = true
+    // MARK: - Endpoint-specific Handlers
+    
+    private func handlePingRequest(on connection: NWConnection) {
+        // A ping indicates a new manual connection attempt.
+        eventPublisher.send(.verificationRequested)
+        serverState.isUsingManualConnection = true
+        // Respond to the ping with success (to acknowledge).
         sendSuccessResponse(connection: connection, endpoint: .ping)
     }
     
-    private func sendSuccessResponse(connection: NWConnection, endpoint: PeerToPeerEndpoint) {
-        
-        let response = BoolResponse(success: true)
-        
-        let responseData = HTTPResponseBuilder()
-            .setContentType(.json)
-            .setBody(response)
-            .closeConnection()
-            .build()
-        
-        if let responseData {
-            let response = P2PServerResponse(dataResponse: responseData, response: .success, endpoint: endpoint)
-            sendDataToConnection(connection: connection, serverResponse: response)
-        }
-    }
-    
-    private func handleRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) {
-        
-        if server.isUsingManualConnection {
-            didRequestRegisterPublisher.send()
-            
-            acceptRegisterPublisher
-                .sink(receiveCompletion: { _ in
-                    self.acceptRegisterRequest(connection: connection, httpRequest: httpRequest)
-                }, receiveValue: { _ in
-                }).store(in: &subscribers)
-            
-            discardRegisterPublisher
-                .sink(receiveCompletion: { _ in
-                    self.discardRegisterRequest(connection: connection)
-                }, receiveValue: { _ in
-                }).store(in: &subscribers)
+    private func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
+        if serverState.isUsingManualConnection {
+            // Manual mode: store the request and ask the user for confirmation.
+            pendingRegisterConnection = connection
+            pendingRegisterRequest = request
+            eventPublisher.send(.registrationRequested)
+            // (The actual response will be sent when `respondToRegistrationRequest` is called.)
         } else {
-            do {
-                let serverResponse = try generateRegisterServerResponse(httpRequest: httpRequest)
-                handleServerResponse(connection: connection, serverResponse)
-            } catch let error as HTTPStatusCode {
-                handleServerResponse(connection: connection, createErrorResponse(error))
-            } catch {
-                sendInternalServerError(connection: connection)
-            }
+            // Automatic mode: process registration immediately.
+            acceptRegisterRequest(connection: connection, httpRequest: request)
         }
     }
     
-    private func generateRegisterServerResponse(httpRequest:HTTPRequest) throws -> P2PServerResponse {
-        
-        if server.session != nil {
-            throw HTTPStatusCode.conflict
+    private func generateRegisterServerResponse(from request: HTTPRequest) throws -> P2PServerResponse {
+        // Ensure no active session exists
+        if serverState.session != nil {
+            throw HTTPStatusCode.conflict  // Already a session in progress
         }
-        
-        if server.hasReachedMaxAttempts {
+        if serverState.hasReachedMaxAttempts {
             throw HTTPStatusCode.tooManyRequests
         }
-        
-        guard let registerRequest = httpRequest.body.decodeJSON(RegisterRequest.self) else {
+        // Decode the registration request body (expects a PIN)
+        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
-        
-        guard server.pin == registerRequest.pin else {
-            server.incrementFailedAttempts()
-            if server.hasReachedMaxAttempts {
+        // Verify the PIN
+        if serverState.pin != regReq.pin {
+            serverState.incrementFailedAttempts()
+            if serverState.hasReachedMaxAttempts {
                 throw HTTPStatusCode.tooManyRequests
             }
             throw HTTPStatusCode.unauthorized
         }
-        
-        let sessionId = UUID().uuidString
-        let session = P2PSession(sessionId: sessionId)
-        server.session = session
-        
-        let response = RegisterResponse(sessionId: sessionId)
-        
-        let responseData = HTTPResponseBuilder()
+        // PIN is correct, reset failed attempts and create a session
+        serverState.session = P2PSession(sessionId: UUID().uuidString)
+        // Build a success response with the new session ID
+        let payload = RegisterResponse(sessionId: serverState.session!.sessionId)
+        guard let responseData = HTTPResponseBuilder()
             .setContentType(.json)
-            .setBody(response)
+            .setBody(payload)
             .closeConnection()
-            .build()
-        
-        guard let responseData else {
+            .build() else {
             throw HTTPStatusCode.internalServerError
         }
-        
         return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
     }
     
-    private func handlePrepareUploadRequest(httpRequest: HTTPRequest, connection: NWConnection) {
-        guard let prepareUploadRequest = httpRequest.body.decodeJSON(PrepareUploadRequest.self) else {
-            handleServerResponse(connection: connection, createErrorResponse(.badRequest))
+    private func handlePrepareUploadRequest(on connection: NWConnection, request: HTTPRequest) {
+        guard let prepReq = request.body.decodeJSON(PrepareUploadRequest.self) else {
+            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
             return
         }
-        
-        guard prepareUploadRequest.sessionID == server.session?.sessionId else {
-            handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
+        guard prepReq.sessionID == serverState.session?.sessionId else {
+            sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
             return
         }
-        
-        server.session?.title = prepareUploadRequest.title
-        
-        prepareUploadRequest.files?.forEach({ file in
-            guard let id = file.id else { return }
-            server.session?.files[id] = P2PTransferredFile(file: file)
-        })
-        
-        prepareUploadPublisher.sink { result in
-        } receiveValue: { filesAccepted in
-            self.sendPrepareUploadFiles(connection: connection, filesAccepted: filesAccepted)
-        }.store(in: &subscribers)
-        
-        didReceivePrepareUploadPublisher.send(prepareUploadRequest.files)
-        
+        // Store metadata about the files to be uploaded
+        serverState.session?.title = prepReq.title
+        prepReq.files?.forEach { file in
+            if let fileId = file.id {
+                serverState.session?.files[fileId] = P2PTransferredFile(file: file)
+            }
+        }
+        // Save the connection and notify the UI about incoming files
+        pendingUploadConnection = connection
+        eventPublisher.send(.prepareUploadReceived(files: prepReq.files))
+        // (UI will call `respondToFileOffer(accept:)` to continue.)
     }
     
-    private func handleFileUpload(connection: NWConnection, httpRequest: HTTPRequest, completion: ((URL)-> Void)? = nil) {
+    private func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest, bodyFileHandler: ((URL) -> Void)?) {
         do {
-            let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
-            
-            guard let fileID = fileUploadRequest.fileID,
-                  let transmissionID = fileUploadRequest.transmissionID,
-                  let sessionID = fileUploadRequest.sessionID else {
-                handleServerResponse(connection: connection, createErrorResponse(.badRequest))
+            let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+            guard let fileID = uploadReq.fileID,
+                  let transmissionID = uploadReq.transmissionID,
+                  let sessionID = uploadReq.sessionID else {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+                return
+            }
+            // Validate session and file identifiers
+            guard sessionID == serverState.session?.sessionId else {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
+                return
+            }
+            guard let fileInfo = serverState.session?.files[fileID],
+                  fileInfo.transmissionId == transmissionID,
+                  let fileName = fileInfo.file.fileName else {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
                 return
             }
             
-            guard sessionID == server.session?.sessionId else {
-                handleServerResponse(connection: connection, createErrorResponse(.unauthorized))
-                return
-            }
-            
-            guard let progressFile = server.session?.files[fileID],
-                  progressFile.transmissionId == transmissionID,
-                  let fileName = progressFile.file.fileName
-            else {
-                handleServerResponse(connection: connection, createErrorResponse(.forbidden))
-                return
-            }
-            
-            if httpRequest.bodyFullyReceived {
+            if request.bodyFullyReceived {
+                // File upload complete
                 sendSuccessResponse(connection: connection, endpoint: .upload)
-                progressFile.status = .finished
-                
-                checkAllFilesAreReceived()
+                fileInfo.status = .finished
+                serverState.session?.files[fileID] = fileInfo
+                checkAllFilesReceived()
             } else {
-                let url = FileManager.tempDirectory(withFileName: fileName)
-                progressFile.status = .transferring
-                progressFile.url = url
-                completion?(url)
+                // File upload starting: provide a temp file URL to write incoming data
+                let fileURL = FileManager.tempDirectory(withFileName: fileName)
+                fileInfo.status = .transferring
+                fileInfo.url = fileURL
+                serverState.session?.files[fileID] = fileInfo
+                bodyFileHandler?(fileURL)
             }
         } catch {
-            
+            debugLog("Error processing file upload request")
+            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
         }
     }
     
-    func handleCloseConnectionRequest(connection: NWConnection, httpRequest: HTTPRequest) {
+    private func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest) {
         do {
-            let serverResponse = try generateCloseConnectionResponse(body: httpRequest.body)
-            handleServerResponse(connection: connection, serverResponse)
-        } catch let error as HTTPStatusCode {
-            handleServerResponse(connection: connection, createErrorResponse(error))
+            let closeResponse = try generateCloseConnectionResponse(from: request.body)
+            sendResponse(connection: connection, serverResponse: closeResponse)
+        } catch let statusError as HTTPStatusCode {
+            sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
         } catch {
             sendInternalServerError(connection: connection)
         }
     }
     
-    private func generateCloseConnectionResponse(body: String) throws -> P2PServerResponse {
-        guard let closeConnectionRequest = body.decodeJSON(CloseConnectionRequest.self) else {
+    private func generateCloseConnectionResponse(from requestBody: String) throws -> P2PServerResponse {
+        guard let closeReq = requestBody.decodeJSON(CloseConnectionRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
-        
-        guard closeConnectionRequest.sessionID == server.session?.sessionId else {
+        guard closeReq.sessionID == serverState.session?.sessionId else {
             throw HTTPStatusCode.unauthorized
         }
-        
-        let response = BoolResponse(success: true)
-        
-        let responseData = HTTPResponseBuilder()
+        // Build a success response indicating the connection will close
+        let payload = BoolResponse(success: true)
+        guard let responseData = HTTPResponseBuilder()
             .setContentType(.json)
-            .setBody(response)
+            .setBody(payload)
             .closeConnection()
-            .build()
-        
-        guard let responseData else {
-            return createErrorResponse(.internalServerError)
+            .build() else {
+            throw HTTPStatusCode.internalServerError
         }
-        
         return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .closeConnection)
     }
     
+    // MARK: - Response Helpers
+    
     private func createAcceptUploadResponse() -> P2PServerResponse {
-        
-        var files : [P2PFileResponse] = []
-        
-        server.session?.files.forEach({ (key, value) in
-            let transmeissionId = UUID().uuidString
-            value.transmissionId = transmeissionId
-            let fileResponse = P2PFileResponse(id: value.file.id, transmissionID: transmeissionId)
-            files.append(fileResponse)
-        })
-        
-        let response = PrepareUploadResponse(files: files)
-        
-        let responseData = HTTPResponseBuilder()
+        // Assign unique transmission IDs for each file and prepare the response payload
+        var filesResponse: [P2PFileResponse] = []
+        serverState.session?.files.forEach { (fileID, fileInfo) in
+            let transmissionId = UUID().uuidString
+            // Update the file info with the new transmission ID
+            serverState.session?.files[fileID]?.transmissionId = transmissionId
+            filesResponse.append(P2PFileResponse(id: fileInfo.file.id, transmissionID: transmissionId))
+        }
+        let payload = PrepareUploadResponse(files: filesResponse)
+        guard let responseData = HTTPResponseBuilder()
             .setContentType(.json)
-            .setBody(response)
+            .setBody(payload)
             .closeConnection()
-            .build()
-        
-        guard let responseData else {
+            .build() else {
             return createErrorResponse(.internalServerError)
         }
-        
-        return P2PServerResponse(dataResponse: responseData,
-                                 response: .success,
-                                 endpoint: .prepareUpload)
+        return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .prepareUpload)
     }
     
     private func createRejectUploadResponse() -> P2PServerResponse {
-        createErrorResponse(.forbidden)
+        // Deny the upload request with Forbidden status
+        return createErrorResponse(.forbidden)
     }
     
-    private func createErrorResponse(_ error: HTTPStatusCode) -> P2PServerResponse {
-        
-        let response = ErrorMessage(error: error.reasonPhrase)
-        
-        let responseData = HTTPResponseBuilder(status: error)
+    private func createErrorResponse(_ status: HTTPStatusCode) -> P2PServerResponse {
+        // Build an HTTP error response with the given status
+        let errorPayload = ErrorMessage(error: status.reasonPhrase)
+        let responseData = HTTPResponseBuilder(status: status)
             .setContentType(.json)
-            .setBody(response)
+            .setBody(errorPayload)
             .closeConnection()
             .build()
-        
         return P2PServerResponse(dataResponse: responseData, response: .failure, endpoint: nil)
     }
     
-    // MARK: - Response Handling
-    private func handleServerResponse(connection: NWConnection, _ serverResponse: P2PServerResponse?) {
-        guard let serverResponse = serverResponse else {
+    private func sendSuccessResponse(connection: NWConnection, endpoint: PeerToPeerEndpoint) {
+        // Send a simple success=true JSON response for endpoints like ping or upload
+        let payload = BoolResponse(success: true)
+        guard let responseData = HTTPResponseBuilder()
+            .setContentType(.json)
+            .setBody(payload)
+            .closeConnection()
+            .build() else {
             sendInternalServerError(connection: connection)
             return
         }
-        sendDataToConnection(connection: connection, serverResponse: serverResponse)
+        let response = P2PServerResponse(dataResponse: responseData, response: .success, endpoint: endpoint)
+        sendData(connection: connection, serverResponse: response)
+    }
+    
+    // MARK: - Low-level Response Sending
+    
+    private func sendResponse(connection: NWConnection, serverResponse: P2PServerResponse?) {
+        guard let response = serverResponse else {
+            sendInternalServerError(connection: connection)
+            return
+        }
+        sendData(connection: connection, serverResponse: response)
     }
     
     private func sendInternalServerError(connection: NWConnection) {
-        let response = createErrorResponse(.internalServerError)
-        sendDataToConnection(connection: connection, serverResponse: response)
+        let errorResponse = createErrorResponse(.internalServerError)
+        sendData(connection: connection, serverResponse: errorResponse)
     }
     
-    private func sendDataToConnection(connection: NWConnection, serverResponse: P2PServerResponse) {
+    private func sendData(connection: NWConnection, serverResponse: P2PServerResponse) {
         guard let data = serverResponse.dataResponse else {
-            debugLog("No data to send in server response")
+            debugLog("No data to send for response.")
             return
         }
-        
         networkManager.sendData(connection: connection, data) { [weak self] error in
-            if error == nil {
-                self?.handleSuccessfulResponse(serverResponse)
+            if error != nil {
+                debugLog("Failed to send response data")
+                // We could emit an event for send failure if needed
+                return
             }
+            // On successful send, handle post-send actions
+            self?.handleResponseSent(serverResponse)
         }
     }
     
-    private func handleSuccessfulResponse(_ serverResponse: P2PServerResponse) {
-        guard let endpoint = serverResponse.endpoint else {
-            debugLog("No endpoint found in current HTTP response")
-            return
-        }
-        
-        let isSuccess = serverResponse.response == .success
-        
+    private func handleResponseSent(_ serverResponse: P2PServerResponse) {
+        guard let endpoint = serverResponse.endpoint else { return }
+        let success = (serverResponse.response == .success)
         switch endpoint {
         case .register:
-            server.isUsingManualConnection ? didRegisterManuallyPublisher.send(isSuccess) : didRegisterPublisher.send(isSuccess)
+            // Notify listeners whether registration succeeded (manual or auto)
+            eventPublisher.send(.didRegister(success: success, manual: serverState.isUsingManualConnection))
         case .prepareUpload:
-            didSendPrepareUploadResponsePublisher.send(isSuccess)
+            // Notify that we replied to the file upload offer
+            eventPublisher.send(.prepareUploadResponseSent(success: success))
         case .closeConnection:
-            didReceiveCloseConnectionPublisher.send()
-            stopServer()
-        default:
-            debugLog("Unhandled endpoint")
+            // The connection is about to close
+            eventPublisher.send(.connectionClosed)
+            resetServer()  // Clean up server state after closing
+        case .upload, .ping:
+            // No special action needed after sending these responses
+            break
         }
     }
     
-    private func handleErrors(httpRequest:HTTPRequest?, connection: NWConnection) {
-        
-        guard let httpRequest else {
+    /// Check if all files in the current session have been received or completed.
+    private func checkAllFilesReceived() {
+        guard let files = serverState.session?.files else { return }
+        let pendingFiles = files.values.filter { $0.status == .transferring || $0.status == .queue }
+        if pendingFiles.isEmpty {
+            // All files are finished transferring
+            eventPublisher.send(.allTransfersCompleted)
+        }
+    }
+    
+    private func handleError(for request: HTTPRequest?, on connection: NWConnection) {
+        // Generic error handler for failed requests or connections
+        guard let req = request,
+              let endpoint = PeerToPeerEndpoint(rawValue: req.endpoint) else {
             sendInternalServerError(connection: connection)
             return
         }
-        
-        switch PeerToPeerEndpoint(rawValue: httpRequest.endpoint ) {
-        case .upload:
-            do {
-                let fileUploadRequest: FileUploadRequest = try httpRequest.queryParameters.decode(FileUploadRequest.self)
-                
-                guard let fileID = fileUploadRequest.fileID else {
-                    sendInternalServerError(connection: connection)
-                    return
-                }
-                let progressFile = server.session?.files[fileID]
-                progressFile?.status = .failed
-                sendInternalServerError(connection: connection)
-            } catch {
-                sendInternalServerError(connection: connection)
+        if endpoint == .upload {
+            // Mark the file as failed if we know which file was uploading
+            if let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
+               let fileID = uploadReq.fileID {
+                serverState.session?.files[fileID]?.status = .failed
             }
-            checkAllFilesAreReceived()
-            
-        default:
+            sendInternalServerError(connection: connection)
+            checkAllFilesReceived()  // finalize if this was the last file
+        } else {
             sendInternalServerError(connection: connection)
         }
     }
     
-    func checkAllFilesAreReceived() {
-        guard let files = server.session?.files else { return }
-        let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
-        if (filesAreNotfinishReceiving.isEmpty) {
-            self.didSendProgress.send(completion: .finished)
-        }
-    }
-    
-    private func resetConnectionState() {
-        server.reset()
-    }
-}
-
-extension PeerToPeerServer: NetworkManagerDelegate {
+    // MARK: - NetworkManagerDelegate
     
     func networkManager(didFailWithListener error: Error?) {
-        debugLog("Server error")
-        self.didFailStartServerPublisher.send()
+        debugLog("Server failed to start")
+        eventPublisher.send(.serverStartFailed(error))
     }
     
     func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?) {
-        guard let request else { return  }
-        handleErrors(httpRequest: request, connection: connection)
+        // Handle connection/request failure
+        handleError(for: request, on: connection)
     }
     
     func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest) {
-        processCompleteBody(connection: connection, httpRequest: request)
+        // Received a full request (possibly with body fully read)
+        processRequest(connection: connection, httpRequest: request)
     }
     
-    
-    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?) {
-        processCompleteBody(connection: connection, httpRequest: request, completion:completion)
+    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL) -> Void)?) {
+        // Received request headers for a data upload; provide file URL for streaming data
+        processRequest(connection: connection, httpRequest: request, bodyFileHandler: completion)
     }
     
-    func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest) {
-        processProgress(connection: connection, progress: progress, httpRequest: request)
+    func networkManager(_ connection: NWConnection, didReceive bytes: Int, for request: HTTPRequest) {
+        // Received a chunk of data for an ongoing upload
+        processProgress(connection: connection, bytesReceived: bytes, for: request)
     }
     
     func networkManagerDidStartListening() {
-        debugLog("Network manager started listening")
+        debugLog("Server is now listening on the specified port.")
+        // Optionally, we could emit an event here to indicate the server started successfully.
     }
     
     func networkManagerDidStopListening() {
-        debugLog("Network manager did stop listening")
-        self.didSendProgress.send(completion: .finished)
+        debugLog("Server stopped listening.")
+        // Notify that any ongoing transfers should be considered complete/terminated
+        eventPublisher.send(.allTransfersCompleted)
     }
 }
 
