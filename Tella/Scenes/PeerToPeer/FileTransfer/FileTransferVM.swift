@@ -73,8 +73,10 @@ class FileTransferVM: ObservableObject {
                 let received = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
                 let total = (file.file.size ?? 0).getFormattedFileSize()
                 item.transferSummary = "\(received)/\(total)"
+                item.p2pFileStatus = file.status
             }
         }
+        
     }
     
     // MARK: - Helpers
@@ -89,7 +91,8 @@ class FileTransferVM: ObservableObject {
         return ProgressFileItemViewModel(
             vaultFile: file.vaultFile,
             transferSummary: summary,
-            transferProgress: 0
+            transferProgress: 0,
+            p2pFileStatus: file.status
         )
     }
     

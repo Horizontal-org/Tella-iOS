@@ -12,10 +12,28 @@ class ProgressFileItemViewModel: ObservableObject {
     
     @Published var transferSummary: String
     @Published var transferProgress: Double?
-
-    init(vaultFile: VaultFileDB, transferSummary: String, transferProgress: Double? = nil) {
+    @Published var p2pFileStatus: P2PFileStatus?
+    
+    init(vaultFile: VaultFileDB,
+         transferSummary: String,
+         transferProgress: Double? = nil,
+         p2pFileStatus: P2PFileStatus? = nil) {
         self.vaultFile = vaultFile
         self.transferSummary = transferSummary
         self.transferProgress = transferProgress
+        self.p2pFileStatus = p2pFileStatus
+    }
+}
+
+extension P2PFileStatus {
+    var statusIcon: String? {
+        switch self {
+        case .transferring:
+            return "home.progress-circle"
+        case .finished:
+            return "report.submitted"
+        default:
+            return nil
+        }
     }
 }
