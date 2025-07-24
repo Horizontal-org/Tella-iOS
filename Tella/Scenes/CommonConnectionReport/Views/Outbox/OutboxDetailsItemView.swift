@@ -40,7 +40,13 @@ struct OutboxDetailsItemView: View {
             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 40))
             
             Spacer()
-        }    }
+
+            if let p2pFileStatus = item.p2pFileStatus,
+               let statusIcon = p2pFileStatus.statusIcon {
+                Image(statusIcon)
+            }
+        }
+    }
 }
 
 
