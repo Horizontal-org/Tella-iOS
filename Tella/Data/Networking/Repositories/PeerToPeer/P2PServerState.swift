@@ -104,7 +104,6 @@ final class P2PTransferredFile: Codable {
         self.url = url
         self.bytesReceived = Int(bytesReceived)
     }
-    
 }
 
 enum P2PFileStatus: String, Codable {

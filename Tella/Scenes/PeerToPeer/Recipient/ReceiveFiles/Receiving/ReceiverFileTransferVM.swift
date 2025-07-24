@@ -44,7 +44,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
         let importedFiles = finishedFiles.compactMap({ImportedFile(urlFile: $0.url,
                                                                    parentId: parentId,
                                                                    shouldPreserveMetadata:isPreserveMetadataOn,
-                                                                   deleteOriginal: false,
+                                                                   deleteOriginal: true,
                                                                    fileSource: .files,
                                                                    fileId: $0.vaultFile.id)})
         addVaultFileWithProgressView(importedFiles: importedFiles)
