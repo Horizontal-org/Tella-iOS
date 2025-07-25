@@ -9,6 +9,7 @@
 
 /// Represents events and notifications from the PeerToPeerServer.
 enum PeerToPeerEvent {
+    case serverStarted
     case serverStartFailed(Error?)
     case didRegister(success: Bool, manual: Bool)
     case registrationRequested         // A client has requested to register (manual confirmation needed).
