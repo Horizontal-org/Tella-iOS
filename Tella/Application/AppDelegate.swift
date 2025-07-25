@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftyDropbox
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -19,7 +20,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         AppDelegate.instance = self
         
         setupDropbox()
-        
+        configureGoogleSignIn()
         return true
     }
     
@@ -38,5 +39,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             return
         }
         DropboxClientsManager.setupWithAppKey(dropboxAppKey)
+    }
+    
+    func configureGoogleSignIn() {
+        guard let clientID = ConfigurationManager.getValue(GoogleAuthConstants.gDriveClientID) else  {
+            debugLog("Google Drive Client ID not found")
+            return
+        }
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
     }
 }
