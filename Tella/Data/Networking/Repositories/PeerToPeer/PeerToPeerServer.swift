@@ -31,7 +31,6 @@ protocol PrepareUploadHandler {
 protocol UploadHandler {
     func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest, bodyFileHandler: ((URL) -> Void)?)
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest)
-    func checkAllFilesReceived()
 }
 
 protocol CloseConnectionHandler {
@@ -170,25 +169,18 @@ final class PeerToPeerServer {
     }
     
     private func handleError(for request: HTTPRequest?, on connection: NWConnection) {
-        // Generic error handler for failed requests or connections
         guard let req = request,
               let endpoint = PeerToPeerEndpoint(rawValue: req.endpoint) else {
             sendInternalServerError(connection: connection)
             return
         }
+        
         if endpoint == .upload {
-            // Mark the file as failed if we know which file was uploading
-            if let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
-               let fileID = uploadReq.fileID {
-                serverState.session?.files[fileID]?.status = .failed
-            }
-            sendInternalServerError(connection: connection)
-            checkAllFilesReceived()  // finalize if this was the last file
+            handleUploadFailure(connection: connection, request: req)
         } else {
             sendInternalServerError(connection: connection)
         }
     }
-    
     
     // MARK: - Request Processing
     
@@ -475,8 +467,23 @@ extension PeerToPeerServer: UploadHandler {
         }
     }
     
+    func handleUploadFailure(connection: NWConnection, request: HTTPRequest?) {
+        guard let req = request else {
+            sendInternalServerError(connection: connection)
+            return
+        }
+        
+        if let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
+           let fileID = uploadReq.fileID {
+            serverState.session?.files[fileID]?.status = .failed
+        }
+        
+        sendInternalServerError(connection: connection)
+        checkAllFilesReceived()
+    }
+    
     /// Check if all files in the current session have been received or completed.
-    func checkAllFilesReceived() {
+    private func checkAllFilesReceived() {
         guard let files = serverState.session?.files else { return }
         let pendingFiles = files.values.filter { $0.status == .transferring || $0.status == .queue }
         if pendingFiles.isEmpty {
