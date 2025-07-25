@@ -67,6 +67,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                     let finishedFiles = transferredFiles.filter { $0.status == .finished }
                     if finishedFiles.isEmpty {
                         self.viewAction = .shouldShowResults
+                        self.peerToPeerServer?.cleanServer()
                     } else {
                         self.viewAction = .transferIsFinished
                         self.saveFiles()
