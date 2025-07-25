@@ -19,4 +19,6 @@ enum PeerToPeerEvent {
     case connectionClosed
     case fileTransferProgress(P2PTransferredFile)
     case allTransfersCompleted
+    case errorOccured
+
 }

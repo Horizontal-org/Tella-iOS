@@ -18,14 +18,13 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManagerDidStopListening()
     func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?)
     func networkManager(didFailWithListener error: Error? )
-
 }
 
 final class NetworkManager {
     // MARK: - Properties
     private var listener: NWListener?
     private var requestsDictionary: [ObjectIdentifier:HTTPRequest] = [:]
-
+    
     weak var delegate: NetworkManagerDelegate?
     
     private let kMinimumIncompleteLength = 1
@@ -38,7 +37,7 @@ final class NetworkManager {
             if listener != nil {
                 stopListening()
             }
-
+            
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
             listener = try NWListener(using: parameters, on: NWEndpoint.Port(integerLiteral: UInt16(port)))
             
@@ -128,12 +127,12 @@ final class NetworkManager {
                 delegate?.networkManager(connection, didFailWith: nil, request: requestsDictionary[connection.id])
                 return
             }
-
+            
             processHTTPRequest(on: connection, data: data, parser: parser)
         }
         
     }
-
+    
     func processHTTPRequest(on connection: NWConnection,
                             data:Data,
                             parser:HTTPParser) {
@@ -154,14 +153,14 @@ final class NetworkManager {
             try parser.parse(data: data)
             
             requestsDictionary[connection.id] = parser.request
-
+            
             if parser.parserIsPaused {
                 try parser.resumeParsing()
                 check(on: connection, parser: parser)
             } else {
                 check(on: connection, parser: parser)
             }
-
+            
         } catch {
             debugLog("Failed to parse HTTP request")
             self.delegate?.networkManager(connection, didFailWith: error, request: parser.request)
