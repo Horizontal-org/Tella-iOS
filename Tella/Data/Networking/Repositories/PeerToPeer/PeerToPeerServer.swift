@@ -40,7 +40,7 @@ final class PeerToPeerServer: NetworkManagerDelegate {
     func stopServer() {
         networkManager.stopListening()
     }
-
+    
     func resetServer() {
         networkManager.stopListening()
         resetConnectionState()
@@ -109,7 +109,6 @@ final class PeerToPeerServer: NetworkManagerDelegate {
     }
     
     private func discardRegisterRequest(connection: NWConnection) {
-        // Deny the registration request with 401 Unauthorized
         sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
     }
     
@@ -236,7 +235,6 @@ final class PeerToPeerServer: NetworkManagerDelegate {
         // Save the connection and notify the UI about incoming files
         pendingUploadConnection = connection
         eventPublisher.send(.prepareUploadReceived(files: prepReq.files))
-        // (UI will call `respondToFileOffer(accept:)` to continue.)
     }
     
     private func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest, bodyFileHandler: ((URL) -> Void)?) {
@@ -473,7 +471,7 @@ final class PeerToPeerServer: NetworkManagerDelegate {
     
     func networkManagerDidStartListening() {
         debugLog("Server is now listening on the specified port.")
-        // Optionally, we could emit an event here to indicate the server started successfully.
+        eventPublisher.send(.serverStarted)
     }
     
     func networkManagerDidStopListening() {
