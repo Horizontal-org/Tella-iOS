@@ -103,9 +103,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
 
     private func acceptRegisterRequest() {
-
         peerToPeerServer?.respondToRegistrationRequest(accept: true)
-      
     }
 
     func listenToServerEvents() {

@@ -230,6 +230,7 @@
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
 		126B70122DB1575D00742897 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B70112DB1575600742897 /* CustomText.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
+		126B91BB2E337390002C8B35 /* PeerToPeerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
 		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
@@ -954,6 +955,7 @@
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
 		126B70112DB1575600742897 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
+		126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerEvent.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
 		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
@@ -1903,6 +1905,7 @@
 				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
 				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
 				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
+				126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
@@ -4331,6 +4334,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				126B91BB2E337390002C8B35 /* PeerToPeerEvent.swift in Sources */,
 				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* NavigationBottomView.swift in Sources */,
