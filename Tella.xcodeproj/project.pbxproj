@@ -4506,6 +4506,7 @@
 		};
 		F66E65D123E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1293800B2DC284D50019ECC4 /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -4568,6 +4569,7 @@
 		};
 		F66E65D223E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1293800B2DC284D50019ECC4 /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
