@@ -65,8 +65,8 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                                                 pin: pin)
             
             self.connectionInfo = connectionInfo
-            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
             self.listenToServerRegistrationEvents()
+            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
         }
     }
     

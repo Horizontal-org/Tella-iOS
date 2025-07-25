@@ -65,7 +65,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                         self.viewAction = .showToast(message: LocalizablePeerToPeer.recipientFilesRejected.localized)
                     }
 
-                case .connectionClosed:
+                case .connectionClosed, .errorOccured:
                     self.viewAction = .errorOccured
 
                 default:
@@ -80,7 +80,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
         peerToPeerServer?.respondToFileOffer(accept: acceptance)
-     }
+    }
 
      func stopServerListening() {
          peerToPeerServer?.resetServer()
