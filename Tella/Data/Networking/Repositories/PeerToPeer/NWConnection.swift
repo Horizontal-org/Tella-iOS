@@ -10,12 +10,16 @@
 import Network
 import Foundation
 
+private struct ActiveConnection {
+    let connection: NWConnection
+    var request: HTTPRequest
+}
+
 protocol NetworkManagerDelegate: AnyObject {
     func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest)
     func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL)-> Void)?)
     func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest)
     func networkManagerDidStartListening()
-    func networkManagerDidStopListening()
     func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?)
     func networkManager(didFailWithListener error: Error? )
 }
@@ -23,8 +27,8 @@ protocol NetworkManagerDelegate: AnyObject {
 final class NetworkManager {
     // MARK: - Properties
     private var listener: NWListener?
-    private var requestsDictionary: [ObjectIdentifier:HTTPRequest] = [:]
-    
+    private var activeConnections: [ObjectIdentifier: ActiveConnection] = [:]
+
     weak var delegate: NetworkManagerDelegate?
     
     private let kMinimumIncompleteLength = 1
@@ -50,9 +54,19 @@ final class NetworkManager {
     }
     
     func stopListening() {
-        listener?.cancel()
+        if listener?.state != .cancelled {
+            listener?.cancel()
+        }
+
+        for connection in activeConnections.values {
+            connection.connection.cancel()
+        }
     }
     
+    func clean() {
+        activeConnections.removeAll()
+    }
+
     func sendData(connection: NWConnection, _ data: Data, completion: ((NWError?) -> Void)? = nil) {
         connection.send(content: data, completion: .contentProcessed { error in
             if let _ = error {
@@ -93,7 +107,6 @@ final class NetworkManager {
                 self.stopListening()
             case .cancelled:
                 debugLog("Listener cancelled")
-                delegate?.networkManagerDidStopListening()
             default:
                 break
             }
@@ -107,9 +120,12 @@ final class NetworkManager {
     private func handleNewConnection(_ connection: NWConnection) {
         connection.start(queue: .main)
         let parser = HTTPParser()
-        
+
         receive(connection,
                 parser: parser)
+        
+        activeConnections[connection.id] = ActiveConnection(connection: connection, request: parser.request)
+
     }
     
     private func receive(_ connection: NWConnection,
@@ -119,15 +135,15 @@ final class NetworkManager {
             guard let self = self else { return}
             
             if let error {
-                delegate?.networkManager(connection, didFailWith: error, request: requestsDictionary[connection.id])
+                delegate?.networkManager(connection, didFailWith: error, request: activeConnections[connection.id]?.request)
+                self.activeConnections.removeValue(forKey: connection.id)
                 return
             }
             guard let data else {
-                debugLog("Failed to read HTTP data")
-                delegate?.networkManager(connection, didFailWith: nil, request: requestsDictionary[connection.id])
+                delegate?.networkManager(connection, didFailWith: nil, request: activeConnections[connection.id]?.request)
+                self.activeConnections.removeValue(forKey: connection.id)
                 return
             }
-            
             processHTTPRequest(on: connection, data: data, parser: parser)
         }
         
@@ -151,8 +167,8 @@ final class NetworkManager {
             }
             
             try parser.parse(data: data)
-            
-            requestsDictionary[connection.id] = parser.request
+
+            activeConnections[connection.id]?.request = parser.request
             
             if parser.parserIsPaused {
                 try parser.resumeParsing()
