@@ -76,8 +76,9 @@ final class PeerToPeerServer {
     }
     
     func cleanServer() {
+        networkManager.clean()
         cleanTempFiles()
-        resetServer()
+        resetConnectionState()
     }
     
     private func cleanTempFiles() {
@@ -171,7 +172,6 @@ final class PeerToPeerServer {
     private func handleError(for request: HTTPRequest?, on connection: NWConnection) {
         guard let req = request,
               let endpoint = PeerToPeerEndpoint(rawValue: req.endpoint) else {
-            sendInternalServerError(connection: connection)
             return
         }
         
@@ -238,12 +238,6 @@ extension PeerToPeerServer: NetworkManagerDelegate {
     func networkManagerDidStartListening() {
         debugLog("Server is now listening on the specified port.")
         eventPublisher.send(.serverStarted)
-    }
-    
-    func networkManagerDidStopListening() {
-        debugLog("Server stopped listening.")
-        // Notify that any ongoing transfers should be considered complete/terminated
-        eventPublisher.send(.allTransfersCompleted)
     }
 }
 
@@ -469,7 +463,6 @@ extension PeerToPeerServer: UploadHandler {
     
     func handleUploadFailure(connection: NWConnection, request: HTTPRequest?) {
         guard let req = request else {
-            sendInternalServerError(connection: connection)
             return
         }
         
@@ -478,7 +471,6 @@ extension PeerToPeerServer: UploadHandler {
             serverState.session?.files[fileID]?.status = .failed
         }
         
-        sendInternalServerError(connection: connection)
         checkAllFilesReceived()
     }
     
