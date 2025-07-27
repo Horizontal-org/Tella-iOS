@@ -24,8 +24,9 @@ struct Regex {
     static let usernameRegex = "^.{3,}"
     static let urlRegex = #"^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$"#
     static let codeRegex = "^[0-9]{6,6}$"
-    static let ipAddressRegex = "^[\\d.-]+$"
+    static let ipAddressRegex = #"^(?:\d{1,3}\.){3}\d{1,3}$"#
     static let pinRegex = "^[0-9]{6}$"
+    static let portRegex = "^[0-9]{5}$"
 }
 
     func validateRegex(value: String, pattern:String) -> Bool {
@@ -115,6 +116,17 @@ extension String {
         }
         return true
     }
+    
+    func portValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.portRegex) else {
+            return false
+        }
+        return true
+    }
+
 
 }
 

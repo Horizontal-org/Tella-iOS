@@ -16,6 +16,8 @@ enum FieldType {
     case folderName
     case ipAddress
     case pin
+    case port
+
 }
 
 struct TextfieldView : View {
@@ -43,7 +45,7 @@ struct TextfieldView : View {
             return .URL
         case .text:
             return .alphabet
-        case .code, .pin:
+        case .code, .pin, .port:
             return .numberPad
         case .ipAddress:
             return .numbersAndPunctuation
@@ -196,6 +198,9 @@ struct TextfieldView : View {
             self.isValid = value.ipAddressValidator()
         case .pin:
             self.isValid = value.pinValidator()
+        case .port:
+            self.isValid = value.portValidator()
+
         }
         
         

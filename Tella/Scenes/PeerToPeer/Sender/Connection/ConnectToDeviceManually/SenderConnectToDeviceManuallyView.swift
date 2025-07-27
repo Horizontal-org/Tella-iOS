@@ -93,8 +93,9 @@ struct SenderConnectToDeviceManuallyView: View {
         TextfieldView(fieldContent: $viewModel.port,
                       isValid: $viewModel.isValidPort,
                       shouldShowError:  .constant(false),
-                      fieldType: .text,
-                      placeholder : LocalizablePeerToPeer.port.localized)
+                      fieldType: .port,
+                      placeholder : LocalizablePeerToPeer.port.localized,
+                      shouldValidateOnChange: true)
         .frame(height: 78)
     }
     
