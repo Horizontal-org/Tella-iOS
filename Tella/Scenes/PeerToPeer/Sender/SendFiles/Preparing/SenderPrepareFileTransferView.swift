@@ -51,20 +51,22 @@ struct SenderPrepareFileTransferView: View {
     
     fileprivate var prepareFiles: some View {
         VStack(alignment: .leading, spacing: 8) {
-            
-            titleTextFieldView()
-            
-            AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizablePeerToPeer.selectFilesToSend.localized)
-                .padding(.top, 24)
-            
-            Spacer()
-            
+            ScrollView {
+                
+                titleTextFieldView()
+                
+                AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizablePeerToPeer.selectFilesToSend.localized)
+                    .padding(.top, 24)
+                
+                Spacer()
+            }
             TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
-                                      nextButtonAction: .action,
-                                      buttonType: .yellow,
-                             isValid: $viewModel.reportIsValid) {
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            isValid: $viewModel.reportIsValid) {
                 viewModel.prepareUpload()
             }.padding(.bottom, 20)
+            
             
         }.padding(16)
     }
@@ -90,7 +92,7 @@ struct SenderPrepareFileTransferView: View {
     private func handleViewState(state: SenderPrepareFileTransferAction) {
         switch state {
         case .displaySendingFiles:
-              let session = self.viewModel.session 
+            let session = self.viewModel.session
             let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel,
                                                  repository: self.viewModel.peerToPeerRepository,
                                                  session: session)
