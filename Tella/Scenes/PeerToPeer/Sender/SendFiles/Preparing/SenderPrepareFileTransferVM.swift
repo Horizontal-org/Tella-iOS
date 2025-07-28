@@ -122,6 +122,10 @@ class SenderPrepareFileTransferVM: ObservableObject {
     }
     
     func closeConnection() {
-        self.peerToPeerRepository.closeConnection(closeConnectionRequest:CloseConnectionRequest(sessionID: self.session.sessionId))
+        let request = CloseConnectionRequest(sessionID: session.sessionId)
+        peerToPeerRepository.closeConnection(closeConnectionRequest: request)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+            .store(in: &subscribers)
     }
 }
