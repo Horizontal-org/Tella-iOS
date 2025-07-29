@@ -139,16 +139,17 @@ final class PeerToPeerServer {
             eventPublisher.send(.errorOccured)
             return
         }
-        networkManager.sendData(to: connection, data: data) { [weak self] error in
-            if error != nil {
-                debugLog("Failed to send response data")
-                self?.eventPublisher.send(.errorOccured)
-                return
+        
+        Task {
+            do {
+                try await networkManager.sendData(to: connection, data: data)
+                handleResponseSent(serverResponse)
+            } catch {
+                debugLog("Failed to send response data: \(error)")
+                eventPublisher.send(.errorOccured)
             }
-            self?.handleResponseSent(serverResponse)
         }
     }
-    
     private func handleResponseSent(_ serverResponse: P2PServerResponse) {
         guard let endpoint = serverResponse.endpoint else {
             eventPublisher.send(.errorOccured)
@@ -231,9 +232,16 @@ extension PeerToPeerServer: NetworkManagerDelegate {
         processRequest(connection: context.connection, httpRequest: context.request)
     }
 
-    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?) {
-        // Received request headers for a data upload; provide file URL for streaming data
-        processRequest(connection: context.connection, httpRequest: context.request, bodyFileHandler: completion)
+    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL? {
+        await withCheckedContinuation { continuation in
+            processRequest(
+                connection: context.connection,
+                httpRequest: context.request,
+                bodyFileHandler: { url in
+                    continuation.resume(returning: url)
+                }
+            )
+        }
     }
 
     func networkManager(didReceive bytes: Int, for context: ConnectionContext) {
