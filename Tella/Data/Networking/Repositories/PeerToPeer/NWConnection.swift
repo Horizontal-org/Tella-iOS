@@ -10,17 +10,17 @@
 import Network
 import Foundation
 
-private struct ActiveConnection {
+struct ConnectionContext {
     let connection: NWConnection
     var request: HTTPRequest
 }
 
 protocol NetworkManagerDelegate: AnyObject {
-    func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest)
-    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL) -> Void)?)
-    func networkManager(_ connection: NWConnection, didReceive progress: Int, for request: HTTPRequest)
+    func networkManager(didReceiveCompleteRequest context: ConnectionContext)
+    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?)
+    func networkManager(didReceive progress: Int, for context: ConnectionContext)
     func networkManagerDidStartListening()
-    func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?)
+    func networkManager(didFailWith error: Error?, context: ConnectionContext?)
     func networkManager(didFailWithListener error: Error?)
 }
 
@@ -28,7 +28,7 @@ final class NetworkManager {
     // MARK: - Properties
     
     private var listener: NWListener?
-    private var activeConnections: [ObjectIdentifier: ActiveConnection] = [:]
+    private var activeConnections: [ObjectIdentifier: ConnectionContext] = [:]
     weak var delegate: NetworkManagerDelegate?
     
     private let minIncompleteLength = 1
@@ -37,7 +37,7 @@ final class NetworkManager {
     // MARK: - Lifecycle
     
     func startListening(port: Int, clientIdentity: SecIdentity) {
-        stopListening()  // Cancel existing listener if any
+        stopListening()
         
         do {
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
@@ -54,9 +54,10 @@ final class NetworkManager {
         if listener?.state != .cancelled {
             listener?.cancel()
         }
+        listener = nil
         
-        for connection in activeConnections.values {
-            connection.connection.cancel()
+        for context in activeConnections.values {
+            context.connection.cancel()
         }
     }
     
@@ -118,7 +119,10 @@ final class NetworkManager {
         connection.start(queue: .main)
         let parser = HTTPParser()
         setupParserCallbacks(for: parser, connection: connection)
-        activeConnections[connection.id] = ActiveConnection(connection: connection, request: parser.request)
+        
+        let context = ConnectionContext(connection: connection, request: parser.request)
+        activeConnections[connection.id] = context
+        
         receiveData(on: connection, using: parser)
     }
     
@@ -152,14 +156,16 @@ final class NetworkManager {
             continueReceivingIfNeeded(on: connection, parser: parser)
         } catch {
             debugLog("Parse error")
-            delegate?.networkManager(connection, didFailWith: error, request: parser.request)
+            delegate?.networkManager(didFailWith: error, context: connectionContext(for: connection))
             cleanupConnection(connection, error: error)
         }
     }
     
     private func continueReceivingIfNeeded(on connection: NWConnection, parser: HTTPParser) {
         if parser.request.bodyFullyReceived {
-            delegate?.networkManager(connection, didReceiveCompleteRequest: parser.request)
+            if let context = connectionContext(for: connection) {
+                delegate?.networkManager(didReceiveCompleteRequest: context)
+            }
         } else {
             receiveData(on: connection, using: parser)
         }
@@ -167,19 +173,36 @@ final class NetworkManager {
     
     private func setupParserCallbacks(for parser: HTTPParser, connection: NWConnection) {
         parser.onReceiveBody = { [weak self] length in
-            self?.delegate?.networkManager(connection, didReceive: length, for: parser.request)
+            guard let self,
+                  let context = self.updateContext(for: connection, with: parser.request) else { return }
+            self.delegate?.networkManager(didReceive: length, for: context)
         }
         
         parser.onReceiveQueryParameters = { [weak self] in
-            self?.delegate?.networkManager(connection, verifyParametersForDataRequest: parser.request) { url in
+            guard let self,
+                  let context = self.updateContext(for: connection, with: parser.request) else { return }
+            self.delegate?.networkManager(verifyParametersFor: context) { url in
                 parser.fileURL = url
             }
         }
     }
     
     private func cleanupConnection(_ connection: NWConnection, error: Error?) {
-        let request = activeConnections[connection.id]?.request
-        delegate?.networkManager(connection, didFailWith: error, request: request)
+        let context = connectionContext(for: connection)
+        delegate?.networkManager(didFailWith: error, context: context)
         activeConnections.removeValue(forKey: connection.id)
     }
+    
+    private func connectionContext(for connection: NWConnection) -> ConnectionContext? {
+        return activeConnections[connection.id]
+    }
+    
+    private func updateContext(for connection: NWConnection,
+                               with request: HTTPRequest) -> ConnectionContext? {
+        guard var context = activeConnections[connection.id] else { return nil }
+        context.request = request
+        activeConnections[connection.id] = context
+        return context
+    }
+    
 }
