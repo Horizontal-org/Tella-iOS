@@ -76,7 +76,7 @@ final class PeerToPeerServer {
     }
     
     func cleanServer() {
-        networkManager.clean()
+        networkManager.cleanConnections()
         cleanTempFiles()
         resetConnectionState()
     }
