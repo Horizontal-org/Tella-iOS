@@ -36,29 +36,12 @@ final class NetworkManager {
     
     private var listener: NWListener?
     private var activeConnections: [ObjectIdentifier: ConnectionContext] = [:]
-    private let queue: DispatchQueue
     
     weak var delegate: NetworkManagerDelegate?
     
-    // MARK: - Constants
+    private let minIncompleteLength = 1
+    private let maxLength = 1024 * 1024
     
-    private enum Constants {
-        static let minIncompleteLength = 1
-        static let maxLength = 1024 * 1024  // 1MB
-        static let mainQueueLabel = "com.wearehorizontal.networkmanager.queue"
-    }
-    
-
-    // MARK: - Initialization
-    
-    init(queue: DispatchQueue? = nil) {
-        self.queue = queue ?? DispatchQueue(
-            label: Constants.mainQueueLabel,
-            qos: .userInitiated,
-            attributes: .concurrent
-        )
-    }
-
     // MARK: - Public API
     
     func startListening(port: Int, clientIdentity: SecIdentity) {
@@ -143,7 +126,7 @@ final class NetworkManager {
     // MARK: - Connection Handling
     
     private func handleNewConnection(_ connection: NWConnection) {
-        connection.start(queue: queue)
+        connection.start(queue: .main)
         
         let parser = HTTPParser()
         configureParser(parser, for: connection)
@@ -155,7 +138,7 @@ final class NetworkManager {
     }
     
     private func receiveData(on connection: NWConnection, using parser: HTTPParser) {
-        connection.receive(minimumIncompleteLength: Constants.minIncompleteLength, maximumLength: Constants.maxLength) { [weak self] data, _, _, error in
+        connection.receive(minimumIncompleteLength: minIncompleteLength, maximumLength: maxLength) { [weak self] data, _, _, error in
             guard let self else { return }
             
             if let error = error {
