@@ -209,35 +209,36 @@ final class PeerToPeerServer {
 // MARK: - NetworkManagerDelegate
 
 extension PeerToPeerServer: NetworkManagerDelegate {
-    
+
+    func networkManagerDidStartListening() {
+        debugLog("Server is now listening on the specified port.")
+        eventPublisher.send(.serverStarted)
+    }
+
     func networkManager(didFailWithListener error: Error?) {
         debugLog("Server failed to start")
         eventPublisher.send(.serverStartFailed(error))
     }
-    
-    func networkManager(_ connection: NWConnection, didFailWith error: Error?, request: HTTPRequest?) {
+
+    func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
         // Handle connection/request failure
-        handleError(for: request, on: connection)
+        guard let context else { return  }
+        handleError(for: context.request, on: context.connection)
     }
-    
-    func networkManager(_ connection: NWConnection, didReceiveCompleteRequest request: HTTPRequest) {
+
+    func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
         // Received a full request (possibly with body fully read)
-        processRequest(connection: connection, httpRequest: request)
+        processRequest(connection: context.connection, httpRequest: context.request)
     }
-    
-    func networkManager(_ connection: NWConnection, verifyParametersForDataRequest request: HTTPRequest, completion: ((URL) -> Void)?) {
+
+    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?) {
         // Received request headers for a data upload; provide file URL for streaming data
-        processRequest(connection: connection, httpRequest: request, bodyFileHandler: completion)
+        processRequest(connection: context.connection, httpRequest: context.request, bodyFileHandler: completion)
     }
-    
-    func networkManager(_ connection: NWConnection, didReceive bytes: Int, for request: HTTPRequest) {
+
+    func networkManager(didReceive bytes: Int, for context: ConnectionContext) {
         // Received a chunk of data for an ongoing upload
-        processProgress(connection: connection, bytesReceived: bytes, for: request)
-    }
-    
-    func networkManagerDidStartListening() {
-        debugLog("Server is now listening on the specified port.")
-        eventPublisher.send(.serverStarted)
+        processProgress(connection: context.connection, bytesReceived: bytes, for: context.request)
     }
 }
 
