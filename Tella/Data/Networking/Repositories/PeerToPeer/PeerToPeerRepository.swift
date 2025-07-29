@@ -86,7 +86,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
     }
     
     func cancelUpload() {
-        uploadTasks.compactMap({$0.cancel()})
+        _ = uploadTasks.compactMap({$0.cancel()})
     }
 }
 
