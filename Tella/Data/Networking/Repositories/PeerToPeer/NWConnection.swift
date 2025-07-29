@@ -21,7 +21,7 @@ struct ConnectionContext {
 
 protocol NetworkManagerDelegate: AnyObject {
     func networkManager(didReceiveCompleteRequest context: ConnectionContext)
-    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL?
+    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?)
     func networkManager(didReceive progress: Int, for context: ConnectionContext)
     func networkManagerDidStartListening()
     func networkManager(didFailWith error: Error?, context: ConnectionContext?)
@@ -48,6 +48,7 @@ final class NetworkManager {
         static let mainQueueLabel = "com.wearehorizontal.networkmanager.queue"
     }
     
+
     // MARK: - Initialization
     
     init(queue: DispatchQueue? = nil) {
@@ -57,7 +58,7 @@ final class NetworkManager {
             attributes: .concurrent
         )
     }
-    
+
     // MARK: - Public API
     
     func startListening(port: Int, clientIdentity: SecIdentity) {
@@ -89,17 +90,13 @@ final class NetworkManager {
         activeConnections.removeAll()
     }
     
-    func sendData(to connection: NWConnection, data: Data) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            connection.send(content: data, completion: .contentProcessed { error in
-                if let error = error {
-                    debugLog("Send error: \(error)")
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
-                }
-            })
-        }
+    func sendData(to connection: NWConnection, data: Data, completion: ((NWError?) -> Void)? = nil) {
+        connection.send(content: data, completion: .contentProcessed { error in
+            if let error = error {
+                debugLog("Send error: \(error)")
+            }
+            completion?(error)
+        })
     }
     
     // MARK: - TLS Parameters
@@ -154,52 +151,52 @@ final class NetworkManager {
         let context = ConnectionContext(connection: connection, request: parser.request)
         activeConnections[connection.id] = context
         
-        Task {
-            await receiveData(on: connection, using: parser)
+        receiveData(on: connection, using: parser)
+    }
+    
+    private func receiveData(on connection: NWConnection, using parser: HTTPParser) {
+        connection.receive(minimumIncompleteLength: Constants.minIncompleteLength, maximumLength: Constants.maxLength) { [weak self] data, _, _, error in
+            guard let self else { return }
+            
+            if let error = error {
+                self.handleConnectionError(connection, error: error)
+                return
+            }
+            
+            guard let data = data else {
+                self.handleConnectionError(connection, error: nil)
+                return
+            }
+            
+            self.processIncomingData(data, on: connection, with: parser)
         }
     }
     
-    private func receiveData(on connection: NWConnection, using parser: HTTPParser) async {
+    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser) {
         do {
-            while true {
-                let data = try await receiveData(from: connection)
-                try await processIncomingData(data, on: connection, with: parser)
-                
-                if parser.request.bodyFullyReceived {
-                    if let context = connectionContext(for: connection) {
-                        delegate?.networkManager(didReceiveCompleteRequest: context)
-                    }
-                    break
-                }
+            try parser.parse(data: data)
+            updateContext(for: connection, with: parser.request)
+            
+            if parser.parserIsPaused {
+                try parser.resumeParsing()
             }
+            
+            continueReceiving(connection: connection, parser: parser)
         } catch {
+            debugLog("Parsing error: \(error)")
+            delegate?.networkManager(didFailWith: error, context: connectionContext(for: connection))
             handleConnectionError(connection, error: error)
         }
     }
     
-    private func receiveData(from connection: NWConnection) async throws -> Data {
-        return try await withCheckedThrowingContinuation { continuation in
-            connection.receive(
-                minimumIncompleteLength: Constants.minIncompleteLength,
-                maximumLength: Constants.maxLength
-            ) { data, _, _, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let data = data {
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: RuntimeError("No data and no error received"))
-                }
-            }
+    private func continueReceiving(connection: NWConnection, parser: HTTPParser) {
+        guard parser.request.bodyFullyReceived else {
+            receiveData(on: connection, using: parser)
+            return
         }
-    }
-    
-    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser) async throws {
-        try parser.parse(data: data)
-        updateContext(for: connection, with: parser.request)
         
-        if parser.parserIsPaused {
-            try parser.resumeParsing()
+        if let context = connectionContext(for: connection) {
+            delegate?.networkManager(didReceiveCompleteRequest: context)
         }
     }
     
@@ -215,11 +212,8 @@ final class NetworkManager {
         parser.onReceiveQueryParameters = { [weak self] in
             guard let self,
                   let context = self.updateContext(for: connection, with: parser.request) else { return }
-            
-            Task {
-                if let url = await self.delegate?.networkManager(verifyParametersFor: context) {
-                    parser.fileURL = url
-                }
+            self.delegate?.networkManager(verifyParametersFor: context) { url in
+                parser.fileURL = url
             }
         }
     }
