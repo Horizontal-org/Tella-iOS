@@ -139,7 +139,7 @@ final class PeerToPeerServer {
             eventPublisher.send(.errorOccured)
             return
         }
-        networkManager.sendData(connection: connection, data) { [weak self] error in
+        networkManager.sendData(to: connection, data: data) { [weak self] error in
             if error != nil {
                 debugLog("Failed to send response data")
                 self?.eventPublisher.send(.errorOccured)
