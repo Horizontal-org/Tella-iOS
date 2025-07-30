@@ -21,7 +21,7 @@ struct ConnectionContext {
 
 protocol NetworkManagerDelegate: AnyObject {
     func networkManager(didReceiveCompleteRequest context: ConnectionContext)
-    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?)
+    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL
     func networkManager(didReceive progress: Int, for context: ConnectionContext)
     func networkManagerDidStartListening()
     func networkManager(didFailWith error: Error?, context: ConnectionContext?)
@@ -197,13 +197,16 @@ final class NetworkManager {
         
         parser.onReceiveQueryParameters = { [weak self] in
             guard let self,
-                  let context = self.updateContext(for: connection, with: parser.request) else { return }
-            self.delegate?.networkManager(verifyParametersFor: context) { url in
+                  let context = self.updateContext(for: connection, with: parser.request),
+                  let delegate = self.delegate else { return }
+            
+            Task {
+                let url = await delegate.networkManager(verifyParametersFor: context)
                 parser.fileURL = url
             }
         }
     }
-    
+
     // MARK: - Helpers
     
     private func handleConnectionError(_ connection: NWConnection, error: Error?) {

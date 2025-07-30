@@ -149,7 +149,7 @@ final class PeerToPeerServer {
             }
         }
     }
-
+    
     private func handleResponseSent(_ serverResponse: P2PServerResponse) {
         guard let endpoint = serverResponse.endpoint else {
             eventPublisher.send(.errorOccured)
@@ -210,39 +210,46 @@ final class PeerToPeerServer {
 // MARK: - NetworkManagerDelegate
 
 extension PeerToPeerServer: NetworkManagerDelegate {
-
+    
     func networkManagerDidStartListening() {
         debugLog("Server is now listening on the specified port.")
         eventPublisher.send(.serverStarted)
     }
-
+    
     func networkManager(didFailWithListener error: Error?) {
         debugLog("Server failed to start")
         eventPublisher.send(.serverStartFailed(error))
     }
-
+    
     func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
         // Handle connection/request failure
-        guard let context else { return  }
+        guard let context else { return }
         handleError(for: context.request, on: context.connection)
     }
-
+    
     func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
-        // Received a full request (possibly with body fully read)
+        // Received a full request
         processRequest(connection: context.connection, httpRequest: context.request)
     }
-
-    func networkManager(verifyParametersFor context: ConnectionContext, completion: ((URL) -> Void)?) {
+    
+    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL {
         // Received request headers for a data upload; provide file URL for streaming data
-        processRequest(connection: context.connection, httpRequest: context.request, bodyFileHandler: completion)
+        return await withCheckedContinuation { continuation in
+            processRequest(
+                connection: context.connection,
+                httpRequest: context.request,
+                bodyFileHandler: { url in
+                    continuation.resume(returning: url)
+                }
+            )
+        }
     }
-
+    
     func networkManager(didReceive bytes: Int, for context: ConnectionContext) {
         // Received a chunk of data for an ongoing upload
         processProgress(connection: context.connection, bytesReceived: bytes, for: context.request)
     }
 }
-
 // MARK: - PingHandler Implementation
 
 extension PeerToPeerServer: PingHandler {
@@ -427,14 +434,18 @@ extension PeerToPeerServer: UploadHandler {
                 // File upload complete
                 sendSuccessResponse(connection: connection, endpoint: .upload)
                 fileInfo.status = .finished
-                serverState.session?.files[fileID] = fileInfo
+                DispatchQueue.main.async {
+                    self.serverState.session?.files[fileID] = fileInfo
+                }
                 checkAllFilesReceived()
             } else {
                 // File upload starting: provide a temp file URL to write incoming data
                 let fileURL = FileManager.tempDirectory(withFileName: fileName)
                 fileInfo.status = .transferring
                 fileInfo.url = fileURL
-                serverState.session?.files[fileID] = fileInfo
+                DispatchQueue.main.async {
+                    self.serverState.session?.files[fileID] = fileInfo
+                }
                 bodyFileHandler?(fileURL)
             }
         } catch {
