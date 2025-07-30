@@ -55,7 +55,7 @@ final class NetworkManager {
             configureListener()
             listener?.start(queue: .main)
         } catch {
-            debugLog("Failed to start listener: \(error)")
+            debugLog("Failed to start listener")
             delegate?.networkManager(didFailWithListener: error)
         }
     }
@@ -73,15 +73,18 @@ final class NetworkManager {
         activeConnections.removeAll()
     }
     
-    func sendData(to connection: NWConnection, data: Data, completion: ((NWError?) -> Void)? = nil) {
-        connection.send(content: data, completion: .contentProcessed { error in
-            if let error = error {
-                debugLog("Send error: \(error)")
-            }
-            completion?(error)
-        })
+    func sendData(to connection: NWConnection, data: Data) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            connection.send(content: data, completion: .contentProcessed { error in
+                if let error = error {
+                    debugLog("Send error")
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: ())
+                }
+            })
+        }
     }
-    
     // MARK: - TLS Parameters
     
     private func createNetworkParameters(clientIdentity: SecIdentity) throws -> NWParameters {
@@ -108,7 +111,7 @@ final class NetworkManager {
                 debugLog("Listener ready")
                 delegate?.networkManagerDidStartListening()
             case .failed(let error):
-                debugLog("Listener failed: \(error)")
+                debugLog("Listener failed")
                 delegate?.networkManager(didFailWithListener: error)
                 stopListening()
             case .cancelled:
@@ -166,7 +169,7 @@ final class NetworkManager {
             
             continueReceiving(connection: connection, parser: parser)
         } catch {
-            debugLog("Parsing error: \(error)")
+            debugLog("Parsing error")
             delegate?.networkManager(didFailWith: error, context: connectionContext(for: connection))
             handleConnectionError(connection, error: error)
         }
