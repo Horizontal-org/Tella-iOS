@@ -139,16 +139,17 @@ final class PeerToPeerServer {
             eventPublisher.send(.errorOccured)
             return
         }
-        networkManager.sendData(to: connection, data: data) { [weak self] error in
-            if error != nil {
+        Task {
+            do {
+                try await networkManager.sendData(to: connection, data: data)
+                handleResponseSent(serverResponse)
+            } catch {
                 debugLog("Failed to send response data")
-                self?.eventPublisher.send(.errorOccured)
-                return
+                eventPublisher.send(.errorOccured)
             }
-            self?.handleResponseSent(serverResponse)
         }
     }
-    
+
     private func handleResponseSent(_ serverResponse: P2PServerResponse) {
         guard let endpoint = serverResponse.endpoint else {
             eventPublisher.send(.errorOccured)
