@@ -67,7 +67,7 @@ struct PeerToPeerMainView: View {
     
     var learnMoreView: some View {
         Button {
-            TellaUrls.connectionLearnMore.url()?.open()
+            TellaUrls.p2pLearnMore.url()?.open()
         } label: {
             CustomText(LocalizablePeerToPeer.learnMore.localized,
                        style: .buttonDetailRegularStyle,
