@@ -37,7 +37,10 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         self.mainAppModel = mainAppModel
         
         super.init()
-        
+        observeScannedCode()
+    }
+    
+    func observeScannedCode() {
         self.$scannedCode
             .compactMap { $0 }
             .prefix(1)

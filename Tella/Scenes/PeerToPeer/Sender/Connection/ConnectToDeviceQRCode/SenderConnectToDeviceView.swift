@@ -68,8 +68,9 @@ struct SenderConnectToDeviceView: View {
     private func showBottomSheetError() {
         isBottomSheetShown = true
         let content = ConnectionFailedView( tryAction:  {
-            startScanning.send(true)  }
-        )
+            startScanning.send(true)
+            self.viewModel.observeScannedCode()
+        })
         self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
     }
     
