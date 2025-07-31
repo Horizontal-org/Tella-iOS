@@ -29,7 +29,7 @@ protocol PrepareUploadHandler {
 }
 
 protocol UploadHandler {
-    func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest, bodyFileHandler: ((URL) -> Void)?)
+    func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL?
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest)
 }
 
@@ -139,12 +139,13 @@ final class PeerToPeerServer {
             eventPublisher.send(.errorOccured)
             return
         }
+        
         Task {
             do {
                 try await networkManager.sendData(to: connection, data: data)
                 handleResponseSent(serverResponse)
             } catch {
-                debugLog("Failed to send response data")
+                debugLog("Failed to send response data: \(error)")
                 eventPublisher.send(.errorOccured)
             }
         }
@@ -186,7 +187,7 @@ final class PeerToPeerServer {
     // MARK: - Request Processing
     
     /// Process a completed HTTP request (headers and full body if applicable).
-    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest, bodyFileHandler: ((URL) -> Void)? = nil) {
+    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
         guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Received request for unknown endpoint")
             return
@@ -200,7 +201,9 @@ final class PeerToPeerServer {
         case .prepareUpload:
             handlePrepareUploadRequest(on: connection, request: httpRequest)
         case .upload:
-            handleFileUploadRequest(on: connection, request: httpRequest, bodyFileHandler: bodyFileHandler)
+            Task {
+                await handleFileUploadRequest(on: connection, request: httpRequest)
+            }
         case .closeConnection:
             handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
@@ -223,26 +226,21 @@ extension PeerToPeerServer: NetworkManagerDelegate {
     
     func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
         // Handle connection/request failure
-        guard let context else { return }
+        guard let context else { return  }
         handleError(for: context.request, on: context.connection)
     }
     
     func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
-        // Received a full request
+        // Received a full request (possibly with body fully read)
         processRequest(connection: context.connection, httpRequest: context.request)
     }
     
-    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL {
-        // Received request headers for a data upload; provide file URL for streaming data
-        return await withCheckedContinuation { continuation in
-            processRequest(
-                connection: context.connection,
-                httpRequest: context.request,
-                bodyFileHandler: { url in
-                    continuation.resume(returning: url)
-                }
-            )
+    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL? {
+        guard context.request.endpoint == PeerToPeerEndpoint.upload.rawValue else {
+            return nil
         }
+        
+        return await handleFileUploadRequest(on: context.connection, request: context.request)
     }
     
     func networkManager(didReceive bytes: Int, for context: ConnectionContext) {
@@ -409,48 +407,46 @@ extension PeerToPeerServer: PrepareUploadHandler {
 
 extension PeerToPeerServer: UploadHandler {
     
-    func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest, bodyFileHandler: ((URL) -> Void)?) {
+    func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL? {
         do {
             let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
             guard let fileID = uploadReq.fileID,
                   let transmissionID = uploadReq.transmissionID,
                   let sessionID = uploadReq.sessionID else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
-                return
+                return nil
             }
             // Validate session and file identifiers
             guard sessionID == serverState.session?.sessionId else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
-                return
+                return nil
             }
             guard let fileInfo = serverState.session?.files[fileID],
                   fileInfo.transmissionId == transmissionID,
                   let fileName = fileInfo.file.fileName else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
-                return
+                return nil
             }
             
             if request.bodyFullyReceived {
                 // File upload complete
                 sendSuccessResponse(connection: connection, endpoint: .upload)
                 fileInfo.status = .finished
-                DispatchQueue.main.async {
-                    self.serverState.session?.files[fileID] = fileInfo
-                }
+                serverState.session?.files[fileID] = fileInfo
                 checkAllFilesReceived()
+                return nil
             } else {
                 // File upload starting: provide a temp file URL to write incoming data
                 let fileURL = FileManager.tempDirectory(withFileName: fileName)
                 fileInfo.status = .transferring
                 fileInfo.url = fileURL
-                DispatchQueue.main.async {
-                    self.serverState.session?.files[fileID] = fileInfo
-                }
-                bodyFileHandler?(fileURL)
+                serverState.session?.files[fileID] = fileInfo
+                return fileURL
             }
         } catch {
             debugLog("Error processing file upload request")
             sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            return nil
         }
     }
     
