@@ -21,7 +21,7 @@ struct ConnectionContext {
 
 protocol NetworkManagerDelegate: AnyObject {
     func networkManager(didReceiveCompleteRequest context: ConnectionContext)
-    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL
+    func networkManager(verifyParametersFor context: ConnectionContext) async -> URL?
     func networkManager(didReceive progress: Int, for context: ConnectionContext)
     func networkManagerDidStartListening()
     func networkManager(didFailWith error: Error?, context: ConnectionContext?)
