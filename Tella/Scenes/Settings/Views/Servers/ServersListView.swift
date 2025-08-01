@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -9,11 +9,8 @@ import SwiftUI
 
 struct ServersListView: View {
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    var serversViewModel : ServersViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var settingViewModel : SettingsViewModel
-    
     @State var shouldShowEditServer : Bool = false
     
     var body: some View {
@@ -24,7 +21,9 @@ struct ServersListView: View {
             contentView
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
-            EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
+            EditSettingsServerView(appModel: serversViewModel.mainAppModel,
+                                   isPresented: $shouldShowEditServer,
+                                   server: serversViewModel.mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
         })
     }
     
@@ -106,7 +105,7 @@ struct ServersListView: View {
     }
     
     fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
-        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel, currentServer: server))
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel, currentServer: server))
             .environmentObject(serversViewModel))
     }
     private func serverActionItems(server: Server) -> [ListActionSheetItem]{
@@ -129,6 +128,6 @@ struct ServersListView: View {
 
 struct ServersListView_Previews: PreviewProvider {
     static var previews: some View {
-        ServersListView()
+        ServersListView(serversViewModel: ServersViewModel.stub())
     }
 }

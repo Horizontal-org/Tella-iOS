@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -63,8 +63,6 @@ struct SettingsMainView: View {
                             GeneralView().environmentObject(settingsViewModel))
     }
     
-    
-    
     var securityView: some View {
         SettingsItemView(imageName: "settings.lock",
                          title: LocalizableSettings.settSecAppBar.localized,
@@ -74,8 +72,7 @@ struct SettingsMainView: View {
     var serversView: some View {
         SettingsItemView(imageName: "settings.servers",
                          title: LocalizableSettings.settConnections.localized,
-                         destination:ServersListView()
-            .environmentObject(serversViewModel))
+                         destination:ServersListView(serversViewModel:serversViewModel))
     }
     
     var helpView: some View {
