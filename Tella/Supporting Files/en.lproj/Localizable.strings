@@ -248,6 +248,17 @@ If you want to take a picture or a video, proceed in the following way:\
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Settings_Sett_Connections" = "Connections";
+
+"Settings_Sett_AddConnection" = "Add a Connection";
+"Settings_Sett_AddConnection_Expl" = "If you work with an organization, connect to its server to send files and data. You can also back up files to a personal cloud.";
+"Setting_Sett_AddConnection_LearnMore" = "Learn more";
+
+"Settings_Sett_NearbySharing" = "Nearby Sharing";
+"Settings_Sett_NearbySharing_Expl" = "Enable this feature to share files with devices near you, without an Internet connection.";
+"Setting_Sett_NearbySharing_LearnMore" = "Learn more";
+
+
+
 "Settings_Sett_Feedback" = "Feedback";
 "Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
 "Settings_SettSec_DeleteAfterFail_Off" = "Off";
@@ -554,8 +565,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "PeerToPeer_AppBar" = "Nearby sharing";
 
-
-"PeerToPeer_AppBar" = "Nearby sharing";
 "PeerToPeer_NearbySharing_Subhead" = "How it works";
 "PeerToPeer_NearbySharing_Expl" = "Share files with nearby devices without an Internet connection \
   1. Both devices must be connected to the same Wifi network \
