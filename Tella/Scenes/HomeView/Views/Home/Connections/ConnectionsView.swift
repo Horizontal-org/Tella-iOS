@@ -34,9 +34,11 @@ struct ConnectionsView: View {
     var serverItems : some View {
         HStack(spacing: 12) {
             
-            ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
-                                image: "p2p.home",
-                                destination: peerToPeerMainView)
+            if homeViewModel.appModel.settings.nearbySharing {
+                ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
+                                    image: "p2p.home",
+                                    destination: peerToPeerMainView)
+            }
             
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
