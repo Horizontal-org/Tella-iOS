@@ -51,6 +51,8 @@ class SettingsModel: ObservableObject, Codable {
     ///  - on lock it returns false
     @Published var shouldMergeVaultFilesToDb: Bool? = nil
 
+    @Published var nearbySharing: Bool = true
+
     enum CodingKeys: CodingKey {
         case offlineMode
         case quickDelete

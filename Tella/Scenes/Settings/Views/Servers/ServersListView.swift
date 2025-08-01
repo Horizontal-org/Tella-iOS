@@ -40,6 +40,8 @@ struct ServersListView: View {
             
             SettingsCardView<AnyView> (cardViewArray: serversView())
             
+            SettingsCardView(cardViewArray: [nearbySharingView.eraseToAnyView()])
+            
             Spacer()
         }.scrollOnOverflow()
     }
@@ -54,6 +56,14 @@ struct ServersListView: View {
             
         })
         return arrayView
+    }
+    
+    private var nearbySharingView: some View {
+        SettingToggleItem(title: LocalizableSettings.settNearbySharing.localized,
+                          description: LocalizableSettings.settNearbySharingExpl.localized,
+                          linkText:LocalizableSettings.settNearbySharingLearnMore.localized,
+                          link:TellaUrls.p2pLearnMore,
+                          toggle: $serversViewModel.mainAppModel.settings.nearbySharing)
     }
     
     private func showServerActionBottomSheet(server:Server) {
