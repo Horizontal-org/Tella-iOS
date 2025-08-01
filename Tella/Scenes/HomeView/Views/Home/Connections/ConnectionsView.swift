@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -32,7 +32,7 @@ struct ConnectionsView: View {
     
     @ViewBuilder
     var serverItems : some View {
-        HStack(spacing: 7) {
+        HStack(spacing: 12) {
             
             ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
                                 image: "p2p.home",
@@ -71,6 +71,9 @@ struct ConnectionsView: View {
                                         destination: dropboxMainView)
                 }
             }
+            
+            addButton
+            
             Spacer()
         }.padding(.trailing, 17)
     }
@@ -94,6 +97,17 @@ struct ConnectionsView: View {
     
     var peerToPeerMainView: PeerToPeerMainView {
         PeerToPeerMainView(mainAppModel: homeViewModel.appModel)
+    }
+    
+    var addButton: some View {
+        Button {
+            // Show Connections View()
+            let viewModel = ServersViewModel(mainAppModel: homeViewModel.appModel)
+            navigateTo(destination: ServersListView(serversViewModel: viewModel))
+        } label: {
+            Image("home.add")
+                .frame(width: 92,height: 92)
+        }
     }
 }
 
