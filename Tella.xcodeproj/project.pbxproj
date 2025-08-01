@@ -1091,6 +1091,7 @@
 		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
 		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
 		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
+		129919BC2E2EC92900A4417D /* az */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = az; path = az.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
@@ -3983,6 +3984,7 @@
 				ts,
 				ml,
 				"sn-ZW",
+				az,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4906,6 +4908,7 @@
 				129380072DC284D50019ECC4 /* ts */,
 				129380082DC284D50019ECC4 /* vi */,
 				1282DE472DDD0302004D2176 /* sn-ZW */,
+				129919BC2E2EC92900A4417D /* az */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -4975,6 +4978,7 @@
 		};
 		F66E65D123E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1293800B2DC284D50019ECC4 /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -5037,6 +5041,7 @@
 		};
 		F66E65D223E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1293800B2DC284D50019ECC4 /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -5100,6 +5105,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 98;
 				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
@@ -5111,7 +5117,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.15.0;
+				MARKETING_VERSION = 1.16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5130,6 +5136,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 98;
 				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -5142,7 +5149,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.15.0;
+				MARKETING_VERSION = 1.16.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

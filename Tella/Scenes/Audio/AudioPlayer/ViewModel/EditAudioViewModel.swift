@@ -24,10 +24,19 @@ class EditAudioViewModel: EditMediaViewModel {
         super.init(file: file, fileURL: fileURL, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
         if let currentFile = file {
             self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
+            initFileURL()
         }
         headerTitle = LocalizableVault.editAudioTitle.localized
         loadAudio()
         listenToAudioPlayerUpdates()
+    }
+    
+    func initFileURL() {
+        if let fileExtension = file?.fileExtension {
+            let url = appModel.vaultManager.saveDataToTempFile(data: self.currentData,
+                                                               pathExtension: fileExtension)
+            self.fileURL = url
+        }
     }
     
     func loadAudio() {
