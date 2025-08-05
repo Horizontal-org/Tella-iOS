@@ -23,6 +23,7 @@ struct GoogleAuthConstants {
     static let gDriveFolderMimeType = "application/vnd.google-apps.folder"
     static let GTLRErrorObjectDomain = "com.google.GTLRErrorObjectDomain"
     static let HTTPStatus = "com.google.HTTPStatus"
+    static let gDriveClientID = "GIDClientID"
 }
 
 struct DropboxAuthConstants {
