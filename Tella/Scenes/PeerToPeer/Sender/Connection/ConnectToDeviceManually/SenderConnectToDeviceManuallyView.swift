@@ -73,8 +73,7 @@ struct SenderConnectToDeviceManuallyView: View {
                       shouldShowError: $viewModel.shouldShowIpAddressError,
                       errorMessage: LocalizablePeerToPeer.invalidIpAddress.localized,
                       fieldType: .ipAddress,
-                      placeholder : LocalizablePeerToPeer.ipAddress.localized,
-                      shouldValidateOnChange: true)
+                      placeholder : LocalizablePeerToPeer.ipAddress.localized)
         .frame(height: 78)
     }
     
@@ -84,8 +83,7 @@ struct SenderConnectToDeviceManuallyView: View {
                       shouldShowError: $viewModel.shouldShowPinError ,
                       errorMessage:LocalizablePeerToPeer.invalidPin.localized,
                       fieldType: .pin,
-                      placeholder : LocalizablePeerToPeer.pin.localized,
-                      shouldValidateOnChange: true)
+                      placeholder : LocalizablePeerToPeer.pin.localized)
         .frame(height: 78)
     }
     
@@ -94,8 +92,7 @@ struct SenderConnectToDeviceManuallyView: View {
                       isValid: $viewModel.isValidPort,
                       shouldShowError:  .constant(false),
                       fieldType: .port,
-                      placeholder : LocalizablePeerToPeer.port.localized,
-                      shouldValidateOnChange: true)
+                      placeholder : LocalizablePeerToPeer.port.localized)
         .frame(height: 78)
     }
     
