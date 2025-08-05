@@ -33,7 +33,6 @@ struct ManuallyVerificationView: View {
     var contentView: some View {
         VStack {
             topView
-                .padding(.bottom, 8)
             infoView
             Spacer()
             buttonsView
@@ -50,12 +49,9 @@ struct ManuallyVerificationView: View {
     }
     
     var topView: some View {
-        ServerConnectionHeaderView(
-            title: LocalizablePeerToPeer.verificationSubhead.localized,
-            imageIconName: "device",
-            subtitleTextAlignment: .center)
+        Image("device")
+            .padding(.bottom, 16)
     }
-    
     
     var infoView: some View {
         participantInfoView(
@@ -70,14 +66,15 @@ struct ManuallyVerificationView: View {
     }
     
     private func participantInfoView(part1Text: String, part2Text: String) -> some View {
-        VStack(alignment: .center, spacing: 24) {
-            CustomText(part1Text, style: .body1Style)
+        VStack(alignment: .center, spacing: 16) {
             
             CustomText(viewModel.connectionInfo.certificateHash?.formatHash() ?? "",
                        style: .body1Style,
                        alignment: .center)
             .frame(maxWidth: .infinity, alignment: .center)
             .cardModifier()
+            
+            CustomText(part1Text, style: .body1Style)
             
             CustomText(part2Text, style: .body1Style)
         }

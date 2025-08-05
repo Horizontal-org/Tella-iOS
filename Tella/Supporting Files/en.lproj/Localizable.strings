@@ -607,11 +607,12 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "PeerToPeer_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "PeerToPeer_ConnectionFailed_SheetAction" = "Try again";
 
-"PeerToPeer_Verification_Subhead" = "Verification";
-"PeerToPeer_Verification_Sender_Part1_Expl" = "Make sure that this sequence matches what is shown on the recipient’s device.";
-"PeerToPeer_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the recipient’s device, the connection may not be secure and should be discarded.";
 
-"PeerToPeer_Verification_Recipient_Part1_Expl" = "Make sure that this sequence matches what is shown on the sender’s device.";
+"PeerToPeer_Verification_Sender_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the recipient’s device.\n2. You need to confirm the connection first.\n3. After that, the recipient will be able to confirm the connection and start receiving files";
+"PeerToPeer_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
+
+
+"PeerToPeer_Verification_Recipient_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the sender’s device.\n2. The sender needs to confirm the connection first.\n3. After that, you will be able to confirm the connection and start sharing files";
 "PeerToPeer_Verification_Recipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
 
 "PeerToPeer_Verification_Action_Confirm" = "Confirm and connect";
