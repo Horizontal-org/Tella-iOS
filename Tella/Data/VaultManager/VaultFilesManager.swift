@@ -295,7 +295,9 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         async let thumnail = await filePath.thumbnail()
         
-        let fileName = filePath.deletingPathExtension().lastPathComponent
+        var fileName = filePath.deletingPathExtension().lastPathComponent
+        fileName = getIncrementedName(name: fileName)
+        
         let path = filePath.path
         let pathExtension = filePath.pathExtension
         
@@ -321,6 +323,20 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                           height: height)
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
+    
+    private func getIncrementedName(name:String) -> String {
+        
+        var copyNumber = 0
+
+        // Generate the new filename and check if it exists
+        var newFileName = name
+        while self.vaultFileExists(name: newFileName) == true {
+            copyNumber += 1
+            newFileName = name + "-" + "\(copyNumber)"
+        }
+        return newFileName
+    }
+
     
     func getFilesTotalSize(filePaths: [URL]) -> Int {
         
