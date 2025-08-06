@@ -87,6 +87,6 @@ struct FileTransferView: View {
     }
 }
 
-//#Preview {
-//    FileTransferView(viewModel: SenderFileTransferVM())
-//}
+#Preview {
+    FileTransferView(viewModel: SenderFileTransferVM.stub())
+}

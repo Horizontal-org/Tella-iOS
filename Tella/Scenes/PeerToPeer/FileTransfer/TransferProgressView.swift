@@ -78,6 +78,6 @@ struct TransferProgressView: View {
     }
 }
 
-//#Preview {
-//    FileTransfertView(viewModel: ProgressViewModel.stub)
-//}
+#Preview {
+    TransferProgressView(viewModel: ProgressViewModel.stub())
+}
