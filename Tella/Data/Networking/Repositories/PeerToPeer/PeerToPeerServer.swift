@@ -75,10 +75,9 @@ final class PeerToPeerServer {
         resetConnectionState()
     }
     
-    func resetFullServerState() { 
+    func resetFullServerState() {
         stopServer()
-        networkManager.cleanConnections()
-        resetConnectionState()
+        cleanServer()
     }
 
     func cleanServer() {
