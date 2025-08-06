@@ -83,7 +83,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     }
 
      func stopServerListening() {
-         peerToPeerServer?.resetServer()
+         peerToPeerServer?.resetServerState()
     }
 
 }
