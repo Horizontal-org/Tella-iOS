@@ -90,18 +90,12 @@ extension APIRequest {
     
     func body(boundary: String? = nil) throws -> Data? {
         let keyValues = keyValues?.compactMapValues { $0 } ?? [:]
-
+        
         // Convert to JSON-safe dictionary
-        let queryItemsDictionary: [String: Any] = keyValues.reduce(into: [:]) { result, item in
-            if let dataValue = item.value as? Data {
-                if let stringValue = String(data: dataValue, encoding: .utf8) {
-                    result[item.key.apiString] = stringValue
-                }
-            } else {
-                result[item.key.apiString] = item.value
+        let queryItemsDictionary = keyValues
+            .reduce(into: [:]) { result, tuple in
+                result[tuple.key.apiString] = tuple.value
             }
-        }
-
         if !queryItemsDictionary.isEmpty, encoding == .json {
             return try JSONSerialization.data(withJSONObject: queryItemsDictionary,
                                               options: .prettyPrinted
@@ -109,7 +103,7 @@ extension APIRequest {
         }
         return nil
     }
-
+    
     private func addURLQueryParameters(toURL url: URL) -> URL {
         guard let urlQueryParameters else { return url }
         
