@@ -41,6 +41,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     }
     
     func observeScannedCode() {
+        scannedCode = nil
         self.$scannedCode
             .compactMap { $0 }
             .prefix(1)
