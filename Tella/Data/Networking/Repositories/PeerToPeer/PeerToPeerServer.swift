@@ -70,18 +70,24 @@ final class PeerToPeerServer {
         networkManager.stopListening()
     }
     
-    func resetServer() {
-        networkManager.stopListening()
+    func resetServerState() {
+        stopServer()
         resetConnectionState()
     }
     
+    func resetFullServerState() { 
+        stopServer()
+        networkManager.cleanConnections()
+        resetConnectionState()
+    }
+
     func cleanServer() {
         networkManager.cleanConnections()
-        cleanTempFiles()
+        removeTempFiles()
         resetConnectionState()
     }
     
-    private func cleanTempFiles() {
+    private func removeTempFiles() {
         guard let fileURLs = serverState.session?.files.values.compactMap({ $0.url }) else { return }
         fileURLs.forEach { $0.remove() }
     }
@@ -165,7 +171,7 @@ final class PeerToPeerServer {
             eventPublisher.send(.prepareUploadResponseSent(success: success))
         case .closeConnection:
             eventPublisher.send(.connectionClosed)
-            resetServer()
+            resetServerState()
         case .upload, .ping:
             break
         }

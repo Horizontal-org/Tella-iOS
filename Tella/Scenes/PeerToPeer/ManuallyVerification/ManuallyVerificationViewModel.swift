@@ -70,7 +70,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     private func discardSenderRegisterRequest() {
         self.peerToPeerServer?.respondToRegistrationRequest(accept: false)
-        self.peerToPeerServer?.resetServer()
+        self.peerToPeerServer?.resetServerState()
         recipientViewAction = .discardAndStartOver
     }
     
