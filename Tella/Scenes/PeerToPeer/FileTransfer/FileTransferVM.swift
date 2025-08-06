@@ -23,7 +23,6 @@ class FileTransferVM: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var viewAction: TransferViewAction = .none
     
-    
     var title: String
     var bottomSheetTitle: String
     var bottomSheetMessage: String
