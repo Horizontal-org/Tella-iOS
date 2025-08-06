@@ -45,8 +45,7 @@ final class NetworkManager {
     // MARK: - Public API
     
     func startListening(port: Int, clientIdentity: SecIdentity) {
-        stopListening()
-        
+
         do {
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
             let portValue = NWEndpoint.Port(integerLiteral: UInt16(port))
