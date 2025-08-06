@@ -19,7 +19,7 @@ class ProgressViewModel: ObservableObject {
     @Published var transferredFilesSummary: String
     @Published var percentTransferred: Double
     @Published var progressFileItems: [ProgressFileItemViewModel]
-
+    
     // MARK: - Initializer
     init(
         title: String = "",
@@ -35,5 +35,18 @@ class ProgressViewModel: ObservableObject {
         self.transferredFilesSummary = transferredFilesSummary
         self.percentTransferred = percentTransferred
         self.progressFileItems = progressFileItems
+    }
+}
+
+extension ProgressViewModel {
+    static func stub() -> ProgressViewModel {
+        ProgressViewModel(title: "Title",
+                          description: "description",
+                          percentTransferredText: "73% sent",
+                          transferredFilesSummary: "11 files, 67/89 MB sent",
+                          percentTransferred: 0.4,
+                          progressFileItems:[ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(),
+                                                                       transferSummary: "0/4.5MB")]
+        )
     }
 }
