@@ -97,7 +97,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func stopServerListening() {
-        peerToPeerServer?.resetServer()
+        peerToPeerServer?.resetServerState()
     }
     
 }
