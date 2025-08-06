@@ -40,6 +40,16 @@ class P2PFile: Codable {
         self.thumbnail = thumbnail
         self.sha256 = sha256
     }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.id, forKey: .id)
+        try container.encodeIfPresent(self.fileName, forKey: .fileName)
+        try container.encodeIfPresent(self.size, forKey: .size)
+        try container.encodeIfPresent(self.fileType, forKey: .fileType)
+        try container.encodeIfPresent(self.sha256, forKey: .sha256)
+        try container.encodeIfPresent(self.thumbnail?.base64EncodedString(), forKey: .thumbnail)
+    }
 }
 
 extension P2PFile {
