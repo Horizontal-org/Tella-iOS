@@ -94,7 +94,9 @@ extension APIRequest {
         // Convert to JSON-safe dictionary
         let queryItemsDictionary: [String: Any] = keyValues.reduce(into: [:]) { result, item in
             if let dataValue = item.value as? Data {
-                result[item.key.apiString] = dataValue.base64EncodedString()
+                if let stringValue = String(data: dataValue, encoding: .utf8) {
+                    result[item.key.apiString] = stringValue
+                }
             } else {
                 result[item.key.apiString] = item.value
             }
