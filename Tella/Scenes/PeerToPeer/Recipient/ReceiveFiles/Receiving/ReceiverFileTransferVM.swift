@@ -128,7 +128,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
-        peerToPeerServer?.stopServer()
+        peerToPeerServer?.resetFullServerState()
+        _ = transferredFiles.compactMap({$0.status = .failed})
+        self.viewAction = .shouldShowResults
     }
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
