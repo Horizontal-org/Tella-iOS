@@ -22,24 +22,24 @@ class ManuallyVerificationViewModel: ObservableObject {
     @Published var shouldEnableConfirmButton: Bool = false
     @Published var confirmButtonTitle: String = ""
 
-    var participant : PeerToPeerParticipant
-    var peerToPeerRepository: PeerToPeerRepository?
+    var participant : NearbySharingParticipant
+    var nearbySharingRepository: NearbySharingRepository?
     var session : P2PSession?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
-    var peerToPeerServer:NearbySharingServer?
+    var nearbySharingServer:NearbySharingServer?
     
     private var subscribers = Set<AnyCancellable>()
     
-    init(participant:PeerToPeerParticipant,
-         peerToPeerRepository:PeerToPeerRepository? = nil,
+    init(participant:NearbySharingParticipant,
+         nearbySharingRepository:NearbySharingRepository? = nil,
          connectionInfo:ConnectionInfo,
          mainAppModel:MainAppModel) {
         self.participant = participant
-        self.peerToPeerRepository = peerToPeerRepository
+        self.nearbySharingRepository = nearbySharingRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
-        self.peerToPeerServer = mainAppModel.peerToPeerServer
+        self.nearbySharingServer = mainAppModel.nearbySharingServer
         
         updateButtonsState(state: .waitingForSenderResponse)
         
@@ -69,8 +69,8 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardSenderRegisterRequest() {
-        self.peerToPeerServer?.respondToRegistrationRequest(accept: false)
-        self.peerToPeerServer?.resetServerState()
+        self.nearbySharingServer?.respondToRegistrationRequest(accept: false)
+        self.nearbySharingServer?.resetServerState()
         recipientViewAction = .discardAndStartOver
     }
     
@@ -83,7 +83,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
         self.updateButtonsState(state: .waitingForRecipientResponse)
 
-        self.peerToPeerRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
+        self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
@@ -103,11 +103,11 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
 
     private func acceptRegisterRequest() {
-        peerToPeerServer?.respondToRegistrationRequest(accept: true)
+        nearbySharingServer?.respondToRegistrationRequest(accept: true)
     }
 
     func listenToServerEvents() {
-        peerToPeerServer?.eventPublisher
+        nearbySharingServer?.eventPublisher
             .sink { [weak self] event in
                 guard let self = self else { return }
 

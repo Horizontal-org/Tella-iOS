@@ -32,7 +32,7 @@ extension WebRepository {
             let configuration = URLSessionConfiguration.default
             request.curlRepresentation()
             
-            let delegate = PeerToPeerURLSessionDelegate(
+            let delegate = NearbySharingURLSessionDelegate(
                 path:endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
@@ -65,7 +65,7 @@ extension WebRepository {
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
             request.curlRepresentation()
-            let delegate = PeerToPeerURLSessionDelegate(
+            let delegate = NearbySharingURLSessionDelegate(
                 path:endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
@@ -91,7 +91,7 @@ extension WebRepository {
             
             var capturedServerHash: String?
             
-            let delegate = PeerToPeerURLSessionDelegate(
+            let delegate = NearbySharingURLSessionDelegate(
                 path: endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash,
                 onReceiveServerCertificateHash: { hash in

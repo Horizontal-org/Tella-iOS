@@ -1,5 +1,5 @@
 //
-//  PeerToPeerParticipent.swift
+//  NearbySharingParticipant.swift
 //  Tella
 //
 //  Created by RIMA on 11.02.25.
@@ -8,7 +8,7 @@
 //
 
 import Foundation
-enum PeerToPeerParticipant {
+enum NearbySharingParticipant {
     case sender
     case recipient
 }

@@ -25,7 +25,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     private var subscribers : Set<AnyCancellable> = []
     
     var mainAppModel: MainAppModel
-    var peerToPeerServer: NearbySharingServer?
+    var nearbySharingServer: NearbySharingServer?
     var connectionInfo: ConnectionInfo?
     
     init(certificateGenerator : CertificateGenerator,
@@ -34,7 +34,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
-        self.peerToPeerServer = mainAppModel.peerToPeerServer
+        self.nearbySharingServer = mainAppModel.nearbySharingServer
         self.connectionInfo = connectionInfo
         
         initParameters()
@@ -49,7 +49,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     }
     
     func listenToServerEvents() {
-        peerToPeerServer?.eventPublisher
+        nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }

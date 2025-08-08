@@ -26,8 +26,8 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     // MARK: - Properties
     
-     var mainAppModel: MainAppModel
-     var peerToPeerServer: NearbySharingServer?
+    var mainAppModel: MainAppModel
+    var nearbySharingServer: NearbySharingServer?
     private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?
     // MARK: - Published Properties
@@ -39,24 +39,24 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
-        self.peerToPeerServer = mainAppModel.peerToPeerServer
+        self.nearbySharingServer = mainAppModel.nearbySharingServer
         listenToServerEvents()
     }
-
+    
     // MARK: - Private Methods
-
+    
     private func listenToServerEvents() {
-        peerToPeerServer?.eventPublisher
+        nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
-
+                
                 switch event {
-
+                    
                 case .prepareUploadReceived(let files):
                     self.files = files ?? []
                     self.viewState = .awaitingAcceptance
-
+                    
                 case .prepareUploadResponseSent(let accepted):
                     if accepted {
                         self.viewAction = .displayFileTransferView(files: self.files)
@@ -64,28 +64,28 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                         self.viewState = .waitingRequest
                         self.viewAction = .showToast(message: LocalizableNearbySharing.recipientFilesRejected.localized)
                     }
-
+                    
                 case .connectionClosed, .errorOccured:
                     self.viewAction = .errorOccured
-
+                    
                 default:
                     break
                 }
             }
             .store(in: &subscribers)
     }
-
+    
     // MARK: - Public Methods
-
+    
     func respondToFileUpload(acceptance: Bool) {
         self.acceptance = acceptance
-        peerToPeerServer?.respondToFileOffer(accept: acceptance)
+        nearbySharingServer?.respondToFileOffer(accept: acceptance)
     }
-
-     func stopServerListening() {
-         peerToPeerServer?.resetServerState()
+    
+    func stopServerListening() {
+        nearbySharingServer?.resetServerState()
     }
-
+    
 }
 
 // MARK: - Preview / Stub

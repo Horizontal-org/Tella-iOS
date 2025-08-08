@@ -44,7 +44,7 @@ struct ManuallyVerificationView: View {
         NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
-                             backButtonAction: {self.popTo(ViewClassType.peerToPeerMainView)},
+                             backButtonAction: {self.popTo(ViewClassType.nearbySharingMainView)},
                              rightButtonType: .none)
     }
     
@@ -108,7 +108,7 @@ struct ManuallyVerificationView: View {
         isBottomSheetShown = true
         let content = ConnectionFailedView {
             isBottomSheetShown = false
-            popTo(ViewClassType.peerToPeerMainView)
+            popTo(ViewClassType.nearbySharingMainView)
         }
         self.showBottomSheetView(content: content,
                                  modalHeight: 192,
@@ -122,18 +122,18 @@ struct ManuallyVerificationView: View {
             showBottomSheetError()
         case .showSendFiles:
             guard let session = viewModel.session,
-                  let peerToPeerRepository = viewModel.peerToPeerRepository
+                  let nearbySharingRepository = viewModel.nearbySharingRepository
             else {
                 return
             }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
                                                         session: session,
-                                                        peerToPeerRepository:peerToPeerRepository)
+                                                        nearbySharingRepository:nearbySharingRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .discardAndStartOver:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
         default:
             break
         }
@@ -145,12 +145,12 @@ struct ManuallyVerificationView: View {
             let viewModel = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: RecipientFileTransferView(viewModel: viewModel))
         case .errorOccured:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .discardAndStartOver:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
         default:
             break
         }

@@ -45,7 +45,7 @@ struct RecipientFileTransferView: View {
         NavigationHeaderView(title: LocalizableNearbySharing.receiveFiles.localized,
                              navigationBarType: .inline,
                              backButtonAction: {
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             viewModel.stopServerListening()
         },
                              rightButtonType: .none)
@@ -90,7 +90,7 @@ struct RecipientFileTransferView: View {
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         default:
             break

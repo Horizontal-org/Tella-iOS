@@ -1,5 +1,5 @@
 //
-//  PeerToPeerEvent.swift
+//  NearbySharingEvent.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 25/7/2025.
@@ -7,8 +7,8 @@
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
-/// Represents events and notifications from the PeerToPeerServer.
-enum PeerToPeerEvent {
+/// Represents events and notifications from the NearbySharingEvent.
+enum NearbySharingEvent {
     case serverStarted
     case serverStartFailed(Error?)
     case didRegister(success: Bool, manual: Bool)

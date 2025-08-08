@@ -37,7 +37,7 @@ struct ConnectionsView: View {
             if homeViewModel.appModel.settings.nearbySharing {
                 ConnectionsItemView(title: LocalizableNearbySharing.nearbySharingAppBar.localized,
                                     image: "p2p.home",
-                                    destination: peerToPeerMainView)
+                                    destination: nearbySharingMainView)
             }
             
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
@@ -96,8 +96,8 @@ struct ConnectionsView: View {
                                                                      dropboxRepository: DropboxRepository()))
     }
     
-    var peerToPeerMainView: PeerToPeerMainView {
-        PeerToPeerMainView(mainAppModel: homeViewModel.appModel)
+    var nearbySharingMainView: NearbySharingMainView {
+        NearbySharingMainView(mainAppModel: homeViewModel.appModel)
     }
     
     var addButton: some View {

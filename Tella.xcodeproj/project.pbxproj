@@ -151,9 +151,9 @@
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
 		1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */; };
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
-		1252FDE02E006E13002AF5E8 /* PeerToPeerURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */; };
+		1252FDE02E006E13002AF5E8 /* NearbySharingURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252FDDF2E006E10002AF5E8 /* NearbySharingURLSessionDelegate.swift */; };
 		125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125392012D7B12EC00F96BA2 /* WifiSSID.swift */; };
-		125392802D897A9100F96BA2 /* PeerToPeerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */; };
+		125392802D897A9100F96BA2 /* NearbySharingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
 		1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */; };
@@ -230,7 +230,7 @@
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
 		126B70122DB1575D00742897 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B70112DB1575600742897 /* CustomText.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
-		126B91BB2E337390002C8B35 /* PeerToPeerEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */; };
+		126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
 		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
@@ -243,7 +243,7 @@
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FAACE2D4B956400F6BCD8 /* LocalizableNearbySharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */; };
-		126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */; };
+		126FAAD32D4B9D2100F6BCD8 /* NearbySharingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
 		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
@@ -517,7 +517,7 @@
 		200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */; };
 		200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399022CE60B2B00DCFCF0 /* ResizableImage.swift */; };
 		200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */; };
-		200751D42D5B91F1000CC076 /* PeerToPeerParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200751D32D5B91F1000CC076 /* PeerToPeerParticipant.swift */; };
+		200751D42D5B91F1000CC076 /* NearbySharingParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200751D32D5B91F1000CC076 /* NearbySharingParticipant.swift */; };
 		2012D5422D5695D3000E0443 /* RecipientConnectToDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
@@ -879,9 +879,9 @@
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
 		1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstanceToSend.swift; sourceTree = "<group>"; };
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
-		1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerURLSessionDelegate.swift; sourceTree = "<group>"; };
+		1252FDDF2E006E10002AF5E8 /* NearbySharingURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingURLSessionDelegate.swift; sourceTree = "<group>"; };
 		125392012D7B12EC00F96BA2 /* WifiSSID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiSSID.swift; sourceTree = "<group>"; };
-		1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerRepository.swift; sourceTree = "<group>"; };
+		1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRepository.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
 		1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -955,7 +955,7 @@
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
 		126B70112DB1575600742897 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
-		126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerEvent.swift; sourceTree = "<group>"; };
+		126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingEvent.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
 		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
@@ -967,7 +967,7 @@
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableNearbySharing.swift; sourceTree = "<group>"; };
-		126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerMainView.swift; sourceTree = "<group>"; };
+		126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingMainView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
 		127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDatabase.swift; sourceTree = "<group>"; };
@@ -1252,7 +1252,7 @@
 		200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoViewModel.swift; sourceTree = "<group>"; };
 		200399022CE60B2B00DCFCF0 /* ResizableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableImage.swift; sourceTree = "<group>"; };
 		200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaViewModel.swift; sourceTree = "<group>"; };
-		200751D32D5B91F1000CC076 /* PeerToPeerParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerParticipant.swift; sourceTree = "<group>"; };
+		200751D32D5B91F1000CC076 /* NearbySharingParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingParticipant.swift; sourceTree = "<group>"; };
 		2012D5412D5695D3000E0443 /* RecipientConnectToDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceView.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
@@ -1639,7 +1639,7 @@
 				1233007728E30C7900B8F7BA /* APIRequest.swift */,
 				12D7D11B28E3581E008121C8 /* URLRequest.swift */,
 				124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */,
-				1252FDDF2E006E10002AF5E8 /* PeerToPeerURLSessionDelegate.swift */,
+				1252FDDF2E006E10002AF5E8 /* NearbySharingURLSessionDelegate.swift */,
 				1203CDE82992C19D00D09073 /* JSONStringEncoder.swift */,
 				1203CDEA2992C1CB00D09073 /* HTTPCodes.swift */,
 				1233007928E3115500B8F7BA /* Request.swift */,
@@ -1903,10 +1903,10 @@
 		12505B1C2D899B4500483E34 /* PeerToPeer */ = {
 			isa = PBXGroup;
 			children = (
-				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
+				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
 				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
-				126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */,
+				126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
@@ -2197,7 +2197,7 @@
 		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
 			isa = PBXGroup;
 			children = (
-				126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */,
+				126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */,
 				1276B7372E1E56840024C38A /* FileTransfer */,
 				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
@@ -2416,7 +2416,7 @@
 		128247A22D5F935100B7E63E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				200751D32D5B91F1000CC076 /* PeerToPeerParticipant.swift */,
+				200751D32D5B91F1000CC076 /* NearbySharingParticipant.swift */,
 				128247A32D5F935A00B7E63E /* ConnectionInfo.swift */,
 			);
 			path = Models;
@@ -4247,7 +4247,7 @@
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
 				CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
-				200751D42D5B91F1000CC076 /* PeerToPeerParticipant.swift in Sources */,
+				200751D42D5B91F1000CC076 /* NearbySharingParticipant.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
 				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
@@ -4283,7 +4283,7 @@
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
-				1252FDE02E006E13002AF5E8 /* PeerToPeerURLSessionDelegate.swift in Sources */,
+				1252FDE02E006E13002AF5E8 /* NearbySharingURLSessionDelegate.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
 				123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
@@ -4336,7 +4336,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
-				126B91BB2E337390002C8B35 /* PeerToPeerEvent.swift in Sources */,
+				126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */,
 				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* NavigationBottomView.swift in Sources */,
@@ -4469,7 +4469,7 @@
 				12F2C65C2B86567F008457EB /* FileDetailsViewModel.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
-				125392802D897A9100F96BA2 /* PeerToPeerRepository.swift in Sources */,
+				125392802D897A9100F96BA2 /* NearbySharingRepository.swift in Sources */,
 				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,
 				1254E2722C6FDCFB004C6280 /* MoreButtonView.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
@@ -4521,7 +4521,7 @@
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */,
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
-				126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */,
+				126FAAD32D4B9D2100F6BCD8 /* NearbySharingMainView.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
 				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
