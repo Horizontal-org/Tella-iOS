@@ -137,7 +137,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var shouldHideAddFileButton: Bool {
-        return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles
+        return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles || fileListType == .nearbySharing
     }
     
     var shouldShowSelectButton: Bool {
