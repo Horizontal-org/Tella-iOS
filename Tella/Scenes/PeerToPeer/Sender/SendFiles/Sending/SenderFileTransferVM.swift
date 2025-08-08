@@ -13,12 +13,12 @@ import Combine
 class SenderFileTransferVM: FileTransferVM {
     
     var repository: NearbySharingRepository?
-    var session: P2PSession?
+    var session: NearbySharingSession?
     private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel: MainAppModel,
          repository: NearbySharingRepository,
-         session: P2PSession) {
+         session: NearbySharingSession) {
         
         self.repository = repository
         self.session = session

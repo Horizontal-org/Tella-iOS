@@ -1,5 +1,5 @@
 //
-//  P2PResultView.swift
+//  NearbySharingResultView.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 14/7/2025.
@@ -9,9 +9,9 @@
 
 import SwiftUI
 
-struct P2PResultView: View {
+struct NearbySharingResultView: View {
     
-    var viewModel: P2PResultVM
+    var viewModel: NearbySharingResultVM
     var buttonAction: (()->()) = { }
     
     var body: some View {
@@ -43,6 +43,6 @@ struct P2PResultView: View {
 }
 
 //#Preview {
-//    P2PResultView()
+//    NearbySharingResultView()
 //}
 

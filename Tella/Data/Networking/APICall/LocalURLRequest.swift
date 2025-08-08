@@ -10,7 +10,7 @@
 import Foundation
 import Combine
 
-enum P2PUploadResponse {
+enum NearbySharingUploadResponse {
     case initial
     case didCreateTask(task: URLSessionTask)
     case progress(progress: Int)
@@ -25,7 +25,7 @@ extension WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func uploadFile(endpoint: any APIRequest) -> AnyPublisher<P2PUploadResponse, APIError> {
+    func uploadFile(endpoint: any APIRequest) -> AnyPublisher<NearbySharingUploadResponse, APIError> {
         do {
             
             let request = try endpoint.urlRequest()
@@ -36,7 +36,7 @@ extension WebRepository {
                 path:endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
-            guard let fileURL = endpoint.fileToUpload?.url else {   return Fail<P2PUploadResponse, APIError>(error: APIError.errorOccured)
+            guard let fileURL = endpoint.fileToUpload?.url else {   return Fail<NearbySharingUploadResponse, APIError>(error: APIError.errorOccured)
                     .eraseToAnyPublisher()
             }
             

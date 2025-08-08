@@ -8,20 +8,25 @@ import Foundation
 import Combine
 
 class ProgressFileItemViewModel: ObservableObject {
-    var file : VaultFileDB
-    @Published var progression : String
-    @Published var fileStatus: FileStatus?
-    @Published var p2pFileStatus: P2PFileStatus?
-    init(file: VaultFileDB, progression: String, fileStatus: FileStatus? = nil) {
-         p2pFileStatus: P2PFileStatus? = nil) {
-        self.file = file
-        self.progression = progression
+    
+    let vaultFile: VaultFileDB
+    
+    @Published var transferSummary: String
+    @Published var transferProgress: Double?
+    @Published var fileStatus: NearbySharingFileStatus?
+    
+    init(vaultFile: VaultFileDB,
+         transferSummary: String,
+         transferProgress: Double? = nil,
+         fileStatus: NearbySharingFileStatus? = nil) {
+        self.vaultFile = vaultFile
+        self.transferSummary = transferSummary
+        self.transferProgress = transferProgress
         self.fileStatus = fileStatus
-        self.p2pFileStatus = p2pFileStatus
     }
 }
 
-extension P2PFileStatus {
+extension NearbySharingFileStatus {
     var statusIcon: String? {
         switch self {
         case .transferring:
