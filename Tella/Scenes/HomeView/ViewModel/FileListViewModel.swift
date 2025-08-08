@@ -22,6 +22,7 @@ enum FileListType {
     case recordList
     case fileList
     case selectFiles
+    case nearbySharing
 }
 
 class FileListViewModel: ObservableObject {
@@ -314,7 +315,7 @@ class FileListViewModel: ObservableObject {
             viewType = .list
         case .selectFiles:
             selectingFiles = true
-        case .fileList:
+        default:
             break
         }
     }
