@@ -43,12 +43,20 @@ struct FileReceivingView: View {
                                        participant: .recipient)
             
             let resultView = P2PResultView(viewModel: resultVM, buttonAction: {
-                self.popToRoot()
+                navigateTo(destination: getFileListView())
             })
             navigateTo(destination: resultView)
         default:
             break
         }
+    }
+    
+    private func getFileListView() -> some View {
+        FileListView(appModel: viewModel.mainAppModel,
+                     rootFile: viewModel.rootFile,
+                     filterType: .all,
+                     title: viewModel.rootFile?.name ?? "",
+                     fileListType: .nearbySharing)
     }
 }
 //

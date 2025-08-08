@@ -28,7 +28,7 @@ class FileTransferVM: ObservableObject {
     var bottomSheetMessage: String
     
     var transferredFiles: [P2PTransferredFile] = []
-    
+
     init(mainAppModel: MainAppModel,
          title: String,
          bottomSheetTitle: String,
