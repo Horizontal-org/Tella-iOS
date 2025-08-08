@@ -24,7 +24,7 @@ class ManuallyVerificationViewModel: ObservableObject {
 
     var participant : NearbySharingParticipant
     var nearbySharingRepository: NearbySharingRepository?
-    var session : P2PSession?
+    var session : NearbySharingSession?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
     var nearbySharingServer:NearbySharingServer?
@@ -97,7 +97,7 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             }, receiveValue: { response in
                 if let sessionId = response.sessionId {
-                    self.session = P2PSession(sessionId: sessionId)
+                    self.session = NearbySharingSession(sessionId: sessionId)
                 }
             }).store(in: &self.subscribers)
     }

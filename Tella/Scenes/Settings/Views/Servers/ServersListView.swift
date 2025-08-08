@@ -61,7 +61,7 @@ struct ServersListView: View {
         SettingToggleItem(title: LocalizableSettings.settNearbySharing.localized,
                           description: LocalizableSettings.settNearbySharingExpl.localized,
                           linkText:LocalizableSettings.settNearbySharingLearnMore.localized,
-                          link:TellaUrls.p2pLearnMore,
+                          link:TellaUrls.nearbySharingLearnMore,
                           toggle: $serversViewModel.mainAppModel.settings.nearbySharing)
     }
     

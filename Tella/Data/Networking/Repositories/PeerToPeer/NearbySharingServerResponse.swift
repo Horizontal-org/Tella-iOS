@@ -1,5 +1,5 @@
 //
-//  P2PServerResponse.swift
+//  NearbySharingServerResponse.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 3/6/2025.
@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct P2PServerResponse {
+struct NearbySharingServerResponse {
     let dataResponse: Data?
     let response: ServerResponseStatus
     let endpoint: NearbySharingEndpoint?

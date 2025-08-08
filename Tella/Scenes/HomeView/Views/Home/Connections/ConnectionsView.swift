@@ -36,7 +36,7 @@ struct ConnectionsView: View {
             
             if homeViewModel.appModel.settings.nearbySharing {
                 ConnectionsItemView(title: LocalizableNearbySharing.nearbySharingAppBar.localized,
-                                    image: "p2p.home",
+                                    image: "nearby-sharing.home",
                                     destination: nearbySharingMainView)
             }
             

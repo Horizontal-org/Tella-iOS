@@ -26,10 +26,10 @@ struct FileSendingView: View {
             
         case .transferIsFinished:
             
-            let resultVM = P2PResultVM(transferredFiles: viewModel.transferredFiles,
+            let resultVM = NearbySharingResultVM(transferredFiles: viewModel.transferredFiles,
                                        participant: .sender)
  
-            let resultView = P2PResultView(viewModel: resultVM)
+            let resultView = NearbySharingResultView(viewModel: resultVM)
             navigateTo(destination: resultView)
          default:
             break

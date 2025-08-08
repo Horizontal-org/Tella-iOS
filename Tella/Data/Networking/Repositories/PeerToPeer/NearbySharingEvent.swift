@@ -14,10 +14,10 @@ enum NearbySharingEvent {
     case didRegister(success: Bool, manual: Bool)
     case registrationRequested         // A client has requested to register (manual confirmation needed).
     case verificationRequested         // Received a ping; show verification hash to user.
-    case prepareUploadReceived(files: [P2PFile]?)
+    case prepareUploadReceived(files: [NearbySharingFile]?)
     case prepareUploadResponseSent(success: Bool)
     case connectionClosed
-    case fileTransferProgress(P2PTransferredFile)
+    case fileTransferProgress(NearbySharingTransferredFile)
     case allTransfersCompleted
     case errorOccured
 

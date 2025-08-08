@@ -30,7 +30,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     
     var mainAppModel: MainAppModel
     var nearbySharingRepository: NearbySharingRepository
-    var session: P2PSession?
+    var session: NearbySharingSession?
     
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
@@ -69,7 +69,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
                 }
             }, receiveValue: { response in
                 if let sessionId = response.sessionId {
-                    self.session = P2PSession(sessionId: sessionId)
+                    self.session = NearbySharingSession(sessionId: sessionId)
                 }
             }).store(in: &self.subscribers)
     }

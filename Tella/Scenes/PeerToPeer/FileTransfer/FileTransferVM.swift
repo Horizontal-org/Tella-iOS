@@ -27,7 +27,7 @@ class FileTransferVM: ObservableObject {
     var bottomSheetTitle: String
     var bottomSheetMessage: String
     
-    var transferredFiles: [P2PTransferredFile] = []
+    var transferredFiles: [NearbySharingTransferredFile] = []
 
     init(mainAppModel: MainAppModel,
          title: String,
@@ -41,7 +41,7 @@ class FileTransferVM: ObservableObject {
         self.bottomSheetMessage = bottomSheetMessage
     }
     
-    func initProgress(session: P2PSession) {
+    func initProgress(session: NearbySharingSession) {
         let title = session.title ?? ""
         let totalSize = transferredFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
         let progressItems = transferredFiles.map(makeProgressItem)
@@ -55,7 +55,7 @@ class FileTransferVM: ObservableObject {
         )
     }
     
-    func updateProgress(with file: P2PTransferredFile) {
+    func updateProgress(with file: NearbySharingTransferredFile) {
         let totalBytesReceived = transferredFiles.reduce(0) { $0 + $1.bytesReceived }
         let totalBytes = transferredFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
         
@@ -72,7 +72,7 @@ class FileTransferVM: ObservableObject {
                 let received = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
                 let total = (file.file.size ?? 0).getFormattedFileSize()
                 item.transferSummary = "\(received)/\(total)"
-                item.p2pFileStatus = file.status
+                item.fileStatus = file.status
             }
         }
         
@@ -84,14 +84,14 @@ class FileTransferVM: ObservableObject {
         return ""
     }
     
-    private func makeProgressItem(from file: P2PTransferredFile) -> ProgressFileItemViewModel {
+    private func makeProgressItem(from file: NearbySharingTransferredFile) -> ProgressFileItemViewModel {
         let size = (file.file.size ?? 0).getFormattedFileSize()
         let summary = "0/\(size)"
         return ProgressFileItemViewModel(
             vaultFile: file.vaultFile,
             transferSummary: summary,
             transferProgress: 0,
-            p2pFileStatus: file.status
+            fileStatus: file.status
         )
     }
     

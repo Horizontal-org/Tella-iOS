@@ -43,7 +43,7 @@ struct NearbySharingMainView: View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.nearbySharingSubhead.localized,
             subtitle: LocalizableNearbySharing.nearbySharingExpl.localized,
-            imageIconName: "p2p.share",
+            imageIconName: "nearby-sharing.share",
             subtitleTextAlignment: .leading)
     }
     
@@ -67,7 +67,7 @@ struct NearbySharingMainView: View {
     
     var learnMoreView: some View {
         Button {
-            TellaUrls.p2pLearnMore.url()?.open()
+            TellaUrls.nearbySharingLearnMore.url()?.open()
         } label: {
             CustomText(LocalizableNearbySharing.learnMore.localized,
                        style: .buttonDetailRegularStyle,

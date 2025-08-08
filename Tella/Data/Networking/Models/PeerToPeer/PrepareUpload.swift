@@ -12,7 +12,7 @@ import Foundation
 // MARK: - PrepareUpload
 struct PrepareUploadRequest: Codable {
     let title, sessionID: String?
-    let files: [P2PFile]?
+    let files: [NearbySharingFile]?
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -21,8 +21,8 @@ struct PrepareUploadRequest: Codable {
     }
 }
 
-// MARK: - P2PFile
-class P2PFile: Codable {
+// MARK: - NearbySharingFile
+class NearbySharingFile: Codable {
     var id, fileName: String?
     var size: Int?
     var fileType, sha256: String?
@@ -52,7 +52,7 @@ class P2PFile: Codable {
     }
 }
 
-extension P2PFile {
+extension NearbySharingFile {
     convenience init(vaultFile: VaultFileDB) {
         self.init(id: vaultFile.id,
                   fileName: vaultFile.name,
@@ -65,11 +65,11 @@ extension P2PFile {
 
 // MARK: - PrepareUploadResponse
 struct PrepareUploadResponse: Codable {
-    var files: [P2PFileResponse]?
+    var files: [NearbySharingFileResponse]?
     
 }
 
-struct P2PFileResponse: Codable {
+struct NearbySharingFileResponse: Codable {
     let id: String?
     let transmissionID: String?
     

@@ -39,10 +39,10 @@ struct FileReceivingView: View {
         case .transferIsFinished:
             showProgressView()
         case .shouldShowResults:
-            let resultVM = P2PResultVM(transferredFiles: viewModel.transferredFiles,
+            let resultVM = NearbySharingResultVM(transferredFiles: viewModel.transferredFiles,
                                        participant: .recipient)
             
-            let resultView = P2PResultView(viewModel: resultVM, buttonAction: {
+            let resultView = NearbySharingResultView(viewModel: resultVM, buttonAction: {
                 navigateTo(destination: getFileListView())
             })
             navigateTo(destination: resultView)

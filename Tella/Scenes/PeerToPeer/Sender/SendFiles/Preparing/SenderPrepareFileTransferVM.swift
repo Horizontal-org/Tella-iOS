@@ -1,5 +1,5 @@
 //
-//  P2PSendFilesViewModel.swift
+//  SenderPrepareFileTransferVM.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 3/4/2025.
@@ -25,7 +25,7 @@ enum SenderPrepareFileTransferState {
 class SenderPrepareFileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
-    var session : P2PSession
+    var session : NearbySharingSession
     var nearbySharingRepository: NearbySharingRepository
     
     //MARK: -AddFilesViewModel
@@ -39,7 +39,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     
-    init(mainAppModel: MainAppModel, session : P2PSession, nearbySharingRepository: NearbySharingRepository) {
+    init(mainAppModel: MainAppModel, session : NearbySharingSession, nearbySharingRepository: NearbySharingRepository) {
         self.mainAppModel = mainAppModel
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
         self.session = session
@@ -59,15 +59,15 @@ class SenderPrepareFileTransferVM: ObservableObject {
     func prepareUpload() {
         self.viewState = .waiting
         session.title = title
-        var nearbySharingFileArray: [String: P2PTransferredFile] = [:]
+        var nearbySharingFileArray: [String: NearbySharingTransferredFile] = [:]
         let sessionId = session.sessionId
         
-        let files: [P2PFile] = addFilesViewModel.files.compactMap { file in
+        let files: [NearbySharingFile] = addFilesViewModel.files.compactMap { file in
             guard let id = file.id else {
                 return nil
             }
             
-            let p2pFile = P2PFile(
+            let nearbySharingFile = NearbySharingFile(
                 id: id,
                 fileName: file.name.appending(".\(file.fileExtension)"),
                 size: file.size,
@@ -76,8 +76,8 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 sha256: ""
             )
             
-            nearbySharingFileArray[id] = P2PTransferredFile(vaultFile: file)
-            return p2pFile
+            nearbySharingFileArray[id] = NearbySharingTransferredFile(vaultFile: file)
+            return nearbySharingFile
         }
         
         let prepareUploadRequest = PrepareUploadRequest(
