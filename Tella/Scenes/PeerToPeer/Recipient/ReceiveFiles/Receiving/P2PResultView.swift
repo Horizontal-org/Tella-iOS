@@ -27,7 +27,7 @@ struct P2PResultView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.resultsAppBar.localized ,
+        NavigationHeaderView(title: LocalizableNearbySharing.resultsAppBar.localized ,
                              backButtonType: .close,
                              backButtonAction: {self.popToRoot()})
     }

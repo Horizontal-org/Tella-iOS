@@ -14,9 +14,9 @@ struct ConnectionFailedView: View {
     var tryAction: (()->())?
     
     var body: some View {
-        ConfirmBottomSheet(titleText: LocalizablePeerToPeer.connectionFailedTitle.localized,
-                           msgText: LocalizablePeerToPeer.connectionFailedExpl.localized,
-                           actionText:LocalizablePeerToPeer.connectionFailedAction.localized,
+        ConfirmBottomSheet(titleText: LocalizableNearbySharing.connectionFailedTitle.localized,
+                           msgText: LocalizableNearbySharing.connectionFailedExpl.localized,
+                           actionText:LocalizableNearbySharing.connectionFailedAction.localized,
                            shouldHideSheet: false,
                            didConfirmAction: {
             self.dismiss {

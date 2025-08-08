@@ -38,7 +38,7 @@ struct RecipientConnectToDeviceManuallyView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectToDevice.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              rightButtonType: .none)
@@ -46,17 +46,17 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     var topView: some View {
         ServerConnectionHeaderView(
-            title: LocalizablePeerToPeer.showDeviceInformation.localized,
-            subtitle: LocalizablePeerToPeer.sendInputDesc.localized,
+            title: LocalizableNearbySharing.showDeviceInformation.localized,
+            subtitle: LocalizableNearbySharing.sendInputDesc.localized,
             imageIconName: "device",
             subtitleTextAlignment: .center)
     }
     
     var cardsView: some View  {
         VStack(spacing: 8) {
-            CardItemView(title: LocalizablePeerToPeer.ipAddress.localized, subtitle: viewModel.ipAddress)
-            CardItemView(title: LocalizablePeerToPeer.pin.localized, subtitle: viewModel.pin)
-            CardItemView(title: LocalizablePeerToPeer.port.localized, subtitle: viewModel.port)
+            CardItemView(title: LocalizableNearbySharing.ipAddress.localized, subtitle: viewModel.ipAddress)
+            CardItemView(title: LocalizableNearbySharing.pin.localized, subtitle: viewModel.pin)
+            CardItemView(title: LocalizableNearbySharing.port.localized, subtitle: viewModel.port)
         }
     }
     

@@ -143,7 +143,7 @@
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
-		12505B1E2D899BD900483E34 /* PeerToPeerServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */; };
+		12505B1E2D899BD900483E34 /* NearbySharingServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B1D2D899BD100483E34 /* NearbySharingServer.swift */; };
 		12505B222D89A2A700483E34 /* HTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B212D89A2A500483E34 /* HTTPResponse.swift */; };
 		1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* UwaziListView.swift */; };
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
@@ -242,7 +242,7 @@
 		126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
-		126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */; };
+		126FAACE2D4B956400F6BCD8 /* LocalizableNearbySharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */; };
 		126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
@@ -871,7 +871,7 @@
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerServer.swift; sourceTree = "<group>"; };
+		12505B1D2D899BD100483E34 /* NearbySharingServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServer.swift; sourceTree = "<group>"; };
 		12505B212D89A2A500483E34 /* HTTPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResponse.swift; sourceTree = "<group>"; };
 		1251C38F2BB45616002E9898 /* UwaziListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziListView.swift; sourceTree = "<group>"; };
 		125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportVaultFileResult.swift; sourceTree = "<group>"; };
@@ -966,7 +966,7 @@
 		126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftViewModel.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
-		126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizablePeerToPeer.swift; sourceTree = "<group>"; };
+		126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableNearbySharing.swift; sourceTree = "<group>"; };
 		126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerMainView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
@@ -1904,7 +1904,7 @@
 			isa = PBXGroup;
 			children = (
 				1253927F2D897A8F00F96BA2 /* PeerToPeerRepository.swift */,
-				12505B1D2D899BD100483E34 /* PeerToPeerServer.swift */,
+				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
 				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
 				126B91BA2E33738C002C8B35 /* PeerToPeerEvent.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
@@ -2896,7 +2896,7 @@
 				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
 				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
-				126FAACD2D4B954F00F6BCD8 /* LocalizablePeerToPeer.swift */,
+				126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -4275,7 +4275,7 @@
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
-				126FAACE2D4B956400F6BCD8 /* LocalizablePeerToPeer.swift in Sources */,
+				126FAACE2D4B956400F6BCD8 /* LocalizableNearbySharing.swift in Sources */,
 				1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
@@ -4667,7 +4667,7 @@
 				125C16062DAEF5430086D4F0 /* ManuallyVerificationView.swift in Sources */,
 				20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */,
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
-				12505B1E2D899BD900483E34 /* PeerToPeerServer.swift in Sources */,
+				12505B1E2D899BD900483E34 /* NearbySharingServer.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */,
 				12181ABD2D146F1500CDF0F4 /* AssetItem.swift in Sources */,
@@ -5105,7 +5105,6 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 98;
 				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
@@ -5136,7 +5135,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 98;
 				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";

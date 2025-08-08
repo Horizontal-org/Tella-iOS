@@ -25,7 +25,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     private var subscribers : Set<AnyCancellable> = []
     
     var mainAppModel: MainAppModel
-    var peerToPeerServer: PeerToPeerServer?
+    var peerToPeerServer: NearbySharingServer?
     var connectionInfo: ConnectionInfo?
     
     init(certificateGenerator : CertificateGenerator,
