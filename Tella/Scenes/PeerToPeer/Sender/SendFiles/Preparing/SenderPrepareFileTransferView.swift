@@ -43,7 +43,7 @@ struct SenderPrepareFileTransferView: View {
     
     fileprivate var waitingView: some View {
         VStack {
-            CustomText(LocalizablePeerToPeer.senderWaitingRecipient.localized, style: .heading1Style)
+            CustomText(LocalizableNearbySharing.senderWaitingRecipient.localized, style: .heading1Style)
             ResizableImage("clock").frame(width: 48, height: 48)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -55,12 +55,12 @@ struct SenderPrepareFileTransferView: View {
                 
                 titleTextFieldView()
                 
-                AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizablePeerToPeer.selectFilesToSend.localized)
+                AddFileGridView(viewModel: viewModel.addFilesViewModel, titleText: LocalizableNearbySharing.selectFilesToSend.localized)
                     .padding(.top, 24)
                 
                 Spacer()
             }
-            TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizableNearbySharing.sendFiles.localized.uppercased(),
                             nextButtonAction: .action,
                             buttonType: .yellow,
                             isValid: $viewModel.reportIsValid) {
@@ -82,7 +82,7 @@ struct SenderPrepareFileTransferView: View {
     }
     
     fileprivate var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.sendFiles.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.sendFiles.localized,
                              backButtonAction: {
             self.popTo(ViewClassType.peerToPeerMainView)
             self.viewModel.closeConnection()

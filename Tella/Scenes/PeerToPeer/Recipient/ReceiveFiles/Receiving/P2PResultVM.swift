@@ -26,19 +26,19 @@ final class P2PResultVM: ObservableObject {
     }
     
     private var successSingle: LocalizableDelegate {
-        participant == .recipient ? LocalizablePeerToPeer.successFileReceivedExpl : LocalizablePeerToPeer.successFileSentExpl
+        participant == .recipient ? LocalizableNearbySharing.successFileReceivedExpl : LocalizableNearbySharing.successFileSentExpl
     }
     
     private var successMultiple: LocalizableDelegate {
-        participant == .recipient ? LocalizablePeerToPeer.successFilesReceivedExpl : LocalizablePeerToPeer.successFilesSentExpl
+        participant == .recipient ? LocalizableNearbySharing.successFilesReceivedExpl : LocalizableNearbySharing.successFilesSentExpl
     }
     
     private var failureSingle: LocalizableDelegate {
-        LocalizablePeerToPeer.failureFileReceivedExpl
+        LocalizableNearbySharing.failureFileReceivedExpl
     }
     
     private var failureMultiple: LocalizableDelegate {
-        LocalizablePeerToPeer.failureFilesReceivedExpl
+        LocalizableNearbySharing.failureFilesReceivedExpl
     }
     
     var allFilesTransferred: Bool {
@@ -54,7 +54,7 @@ final class P2PResultVM: ObservableObject {
     }
     
     var title: String {
-        allFilesTransferred ? LocalizablePeerToPeer.successTitle.localized : LocalizablePeerToPeer.failureTitle.localized
+        allFilesTransferred ? LocalizableNearbySharing.successTitle.localized : LocalizableNearbySharing.failureTitle.localized
     }
     
     var subTitle: String {
@@ -75,19 +75,19 @@ final class P2PResultVM: ObservableObject {
             let format: String
             switch (successCount, failureCount) {
             case (1, 1):
-                format = LocalizablePeerToPeer.fileReceivedFileNotReceivedExpl.localized
+                format = LocalizableNearbySharing.fileReceivedFileNotReceivedExpl.localized
             case (1, _):
-                format = LocalizablePeerToPeer.fileReceivedFilesNotReceivedExpl.localized
+                format = LocalizableNearbySharing.fileReceivedFilesNotReceivedExpl.localized
             case (_, 1):
-                format = LocalizablePeerToPeer.filesReceivedFileNotReceivedExpl.localized
+                format = LocalizableNearbySharing.filesReceivedFileNotReceivedExpl.localized
             default:
-                format = LocalizablePeerToPeer.filesReceivedFilesNotReceivedExpl.localized
+                format = LocalizableNearbySharing.filesReceivedFilesNotReceivedExpl.localized
             }
             return String(format: format, successCount, failureCount)
         }
     }
     
     var buttonTitle: String? {
-        (noFilesTransferred || participant == .sender) ? nil : LocalizablePeerToPeer.viewFilesAction.localized
+        (noFilesTransferred || participant == .sender) ? nil : LocalizableNearbySharing.viewFilesAction.localized
     }
 }

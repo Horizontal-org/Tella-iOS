@@ -27,7 +27,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     var session : P2PSession?
     var connectionInfo:ConnectionInfo
     var mainAppModel:MainAppModel
-    var peerToPeerServer:PeerToPeerServer?
+    var peerToPeerServer:NearbySharingServer?
     
     private var subscribers = Set<AnyCancellable>()
     
@@ -53,10 +53,10 @@ class ManuallyVerificationViewModel: ObservableObject {
         switch participant {
         case .sender:
              shouldEnableConfirmButton = result
-            confirmButtonTitle = result ? LocalizablePeerToPeer.verificationConfirm.localized : LocalizablePeerToPeer.verificationWaitingRecipient.localized
+            confirmButtonTitle = result ? LocalizableNearbySharing.verificationConfirm.localized : LocalizableNearbySharing.verificationWaitingRecipient.localized
         case .recipient:
             shouldEnableConfirmButton = !result
-            confirmButtonTitle = result ? LocalizablePeerToPeer.verificationWaitingSender.localized : LocalizablePeerToPeer.verificationConfirm.localized
+            confirmButtonTitle = result ? LocalizableNearbySharing.verificationWaitingSender.localized : LocalizableNearbySharing.verificationConfirm.localized
         }
     }
 
@@ -91,7 +91,7 @@ class ManuallyVerificationViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     self.senderViewAction = .showSendFiles
-                    self.senderViewAction = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
+                    self.senderViewAction = .showToast(message: LocalizableNearbySharing.successConnectToast.localized)
                 case .failure:
                     self.senderViewAction = .showBottomSheetError
                 }

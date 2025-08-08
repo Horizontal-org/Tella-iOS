@@ -41,7 +41,7 @@ struct ManuallyVerificationView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.connectManually.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              backButtonAction: {self.popTo(ViewClassType.peerToPeerMainView)},
@@ -56,12 +56,12 @@ struct ManuallyVerificationView: View {
     var infoView: some View {
         participantInfoView(
             part1Text: viewModel.participant == .sender
-            ? LocalizablePeerToPeer.verificationSenderPart1.localized
-            : LocalizablePeerToPeer.verificationRecipientPart1.localized,
+            ? LocalizableNearbySharing.verificationSenderPart1.localized
+            : LocalizableNearbySharing.verificationRecipientPart1.localized,
             
             part2Text: viewModel.participant == .sender
-            ? LocalizablePeerToPeer.verificationSenderPart2.localized
-            : LocalizablePeerToPeer.verificationRecipientPart2.localized
+            ? LocalizableNearbySharing.verificationSenderPart2.localized
+            : LocalizableNearbySharing.verificationRecipientPart2.localized
         )
     }
     
@@ -97,7 +97,7 @@ struct ManuallyVerificationView: View {
     }
     
     var discardButton: some View {
-        TellaButtonView(title: LocalizablePeerToPeer.verificationDiscard.localized.uppercased(),
+        TellaButtonView(title: LocalizableNearbySharing.verificationDiscard.localized.uppercased(),
                         nextButtonAction: .action,
                         isValid: .constant(true)) {
             viewModel.discardAction()

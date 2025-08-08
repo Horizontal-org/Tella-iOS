@@ -114,7 +114,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
             switch error {
             case .httpCode(HTTPErrorCodes.forbidden.rawValue):
                 self.viewState = .prepareFiles
-                self.viewAction = .showToast(message:LocalizablePeerToPeer.senderFilesRejected.localized)
+                self.viewAction = .showToast(message:LocalizableNearbySharing.senderFilesRejected.localized)
             default:
                 self.viewAction = .errorOccured
             }

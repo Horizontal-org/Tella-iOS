@@ -14,7 +14,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     // MARK: - Properties
     
-    private let peerToPeerServer: PeerToPeerServer?
+    private let peerToPeerServer: NearbySharingServer?
     private var subscribers = Set<AnyCancellable>()
     
     @Published var progressFile: ProgressFile = ProgressFile()
@@ -29,9 +29,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
         guard let session = peerToPeerServer?.serverState.session else { return nil }
         
         super.init(mainAppModel: mainAppModel,
-                   title: LocalizablePeerToPeer.receivingAppBar.localized,
-                   bottomSheetTitle: LocalizablePeerToPeer.stopReceivingSheetTitle.localized,
-                   bottomSheetMessage: LocalizablePeerToPeer.stopReceivingSheetExpl.localized)
+                   title: LocalizableNearbySharing.receivingAppBar.localized,
+                   bottomSheetTitle: LocalizableNearbySharing.stopReceivingSheetTitle.localized,
+                   bottomSheetMessage: LocalizableNearbySharing.stopReceivingSheetExpl.localized)
         
         transferredFiles = Array(session.files.values)
         initProgress(session: session)
@@ -138,8 +138,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
         let template = transferredFiles.count > 1
-        ? LocalizablePeerToPeer.recipientFilesReceived.localized
-        : LocalizablePeerToPeer.recipientFileReceived.localized
+        ? LocalizableNearbySharing.recipientFilesReceived.localized
+        : LocalizableNearbySharing.recipientFileReceived.localized
         
         let receivedFormatted = receivedBytes.getFormattedFileSize().getFileSizeWithoutUnit()
         let totalFormatted = totalBytes.getFormattedFileSize()
@@ -148,7 +148,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     }
     
     override func formatPercentage(_ percent: Int) -> String {
-        return String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, percent)
+        return String(format: LocalizableNearbySharing.recipientPercentageReceived.localized, percent)
     }
     
 }
