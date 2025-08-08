@@ -122,7 +122,7 @@
 		123CBAFE2DEF0DCF0030A9BD /* HTTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */; };
 		123CBB022DEF34660030A9BD /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB012DEF34640030A9BD /* HTTPRequest.swift */; };
 		123CBB042DEF97290030A9BD /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */; };
-		123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */; };
+		123CBB062DEF99470030A9BD /* NearbySharingEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB052DEF99410030A9BD /* NearbySharingEndpoint.swift */; };
 		123CBB082DEF998C0030A9BD /* NearbySharingServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* TellaWebServerViewModel.swift */; };
@@ -878,7 +878,7 @@
 		123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPParser.swift; sourceTree = "<group>"; };
 		123CBB012DEF34640030A9BD /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
-		123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerEndpoints.swift; sourceTree = "<group>"; };
+		123CBB052DEF99410030A9BD /* NearbySharingEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingEndpoint.swift; sourceTree = "<group>"; };
 		123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServerResponse.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* TellaWebServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerViewModel.swift; sourceTree = "<group>"; };
@@ -1755,7 +1755,7 @@
 				1293F6762AD88A0400F6CFBD /* FeedbackDTO.swift */,
 				15FABA372B7405B800B2EFEE /* ResourceDTO.swift */,
 				15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */,
-				1282C09C2D8AD7890033E4CA /* PeerToPeer */,
+				1282C09C2D8AD7890033E4CA /* NearbySharing */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1919,6 +1919,7 @@
 		1236EE8328E2226F00973EEA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				12505B1C2D899B4500483E34 /* NearbySharing */,
 				1203CDEC2992C63C00D09073 /* APICall */,
 				125F9B962AD965520073748C /* Feedback */,
 				125AAD32295348D2002194D6 /* Upload */,
@@ -1958,7 +1959,7 @@
 			path = Preparing;
 			sourceTree = "<group>";
 		};
-		12505B1C2D899B4500483E34 /* PeerToPeer */ = {
+		12505B1C2D899B4500483E34 /* NearbySharing */ = {
 			isa = PBXGroup;
 			children = (
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
@@ -1970,10 +1971,10 @@
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
 				12505B212D89A2A500483E34 /* HTTPResponse.swift */,
 				123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */,
-				123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */,
+				123CBB052DEF99410030A9BD /* NearbySharingEndpoint.swift */,
 				123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */,
 			);
-			path = PeerToPeer;
+			path = NearbySharing;
 			sourceTree = "<group>";
 		};
 		1251C38E2BB455E5002E9898 /* EntityInstances */ = {
@@ -2254,7 +2255,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */ = {
+		126FAAD12D4B9CFE00F6BCD8 /* NearbySharing */ = {
 			isa = PBXGroup;
 			children = (
 				126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */,
@@ -2265,7 +2266,7 @@
 				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
 				128247A22D5F935100B7E63E /* Models */,
 			);
-			path = PeerToPeer;
+			path = NearbySharing;
 			sourceTree = "<group>";
 		};
 		126FC6BF2F20108B00FC9316 /* BackNextButton */ = {
@@ -2508,7 +2509,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1282C09C2D8AD7890033E4CA /* PeerToPeer */ = {
+		1282C09C2D8AD7890033E4CA /* NearbySharing */ = {
 			isa = PBXGroup;
 			children = (
 				1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */,
@@ -2516,7 +2517,7 @@
 				1282C0A12D8AEE110033E4CA /* FileUpload.swift */,
 				1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */,
 			);
-			path = PeerToPeer;
+			path = NearbySharing;
 			sourceTree = "<group>";
 		};
 		1283C258272AABC9009180CA /* Views */ = {
@@ -3057,7 +3058,6 @@
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 				155541B12C0672C20031D3A5 /* GDriveRepository.swift */,
-				12505B1C2D899B4500483E34 /* PeerToPeer */,
 				1275A8472C5E6EDF0071A97D /* Nextcloud */,
 			);
 			path = Repositories;
@@ -3633,6 +3633,7 @@
 				0DD99E0126910378009327B3 /* Camera */,
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
+				126FAAD12D4B9CFE00F6BCD8 /* NearbySharing */,
 				126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */,
 				127BCA1F2E85208900902C59 /* Onboarding */,
 			);
@@ -4411,6 +4412,7 @@
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1252FDE02E006E13002AF5E8 /* NearbySharingURLSessionDelegate.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
+				123CBB062DEF99470030A9BD /* NearbySharingEndpoint.swift in Sources */,
 				123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
 				12D39B512F1977720065EACD /* Device.swift in Sources */,
