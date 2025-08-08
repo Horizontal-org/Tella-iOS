@@ -1,5 +1,5 @@
 //
-//  P2PResultVM.swift
+//  NearbySharingResultVM.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 15/7/2025.
@@ -9,19 +9,19 @@
 
 import Combine
 
-final class P2PResultVM: ObservableObject {
+final class NearbySharingResultVM: ObservableObject {
     
-    let transferredFiles: [P2PTransferredFile]
+    let transferredFiles: [NearbySharingTransferredFile]
     let participant: NearbySharingParticipant
     
-    init(transferredFiles: [P2PTransferredFile], participant: NearbySharingParticipant) {
+    init(transferredFiles: [NearbySharingTransferredFile], participant: NearbySharingParticipant) {
         self.transferredFiles = transferredFiles
         self.participant = participant
     }
     
     // MARK: - Computed Properties
     
-    private var successStatus: P2PFileStatus {
+    private var successStatus: NearbySharingFileStatus {
         participant == .recipient ? .saved : .finished
     }
     

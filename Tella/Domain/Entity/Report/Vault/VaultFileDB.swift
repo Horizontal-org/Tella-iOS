@@ -77,13 +77,13 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
     }
     
-    init(p2pFile: P2PFile) {
+    init(file: NearbySharingFile) {
         self.id = UUID().uuidString
         self.type = .file
-        self.name = p2pFile.fileName ?? ""
-        self.thumbnail = p2pFile.thumbnail
-        self.size = p2pFile.size ?? 0
-        self.mimeType = p2pFile.fileType
+        self.name = file.fileName ?? ""
+        self.thumbnail = file.thumbnail
+        self.size = file.size ?? 0
+        self.mimeType = file.fileType
         self.created = Date()
     }
 

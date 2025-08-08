@@ -12,20 +12,20 @@ class ProgressFileItemViewModel: ObservableObject {
     
     @Published var transferSummary: String
     @Published var transferProgress: Double?
-    @Published var p2pFileStatus: P2PFileStatus?
+    @Published var fileStatus: NearbySharingFileStatus?
     
     init(vaultFile: VaultFileDB,
          transferSummary: String,
          transferProgress: Double? = nil,
-         p2pFileStatus: P2PFileStatus? = nil) {
+         fileStatus: NearbySharingFileStatus? = nil) {
         self.vaultFile = vaultFile
         self.transferSummary = transferSummary
         self.transferProgress = transferProgress
-        self.p2pFileStatus = p2pFileStatus
+        self.fileStatus = fileStatus
     }
 }
 
-extension P2PFileStatus {
+extension NearbySharingFileStatus {
     var statusIcon: String? {
         switch self {
         case .transferring:

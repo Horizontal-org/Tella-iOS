@@ -19,7 +19,7 @@ protocol PingHandler {
 
 protocol RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateRegisterServerResponse(from request: HTTPRequest) throws -> P2PServerResponse
+    func generateRegisterServerResponse(from request: HTTPRequest) throws -> NearbySharingServerResponse
     func respondToRegistrationRequest(accept: Bool)
 }
 
@@ -35,7 +35,7 @@ protocol UploadHandler {
 
 protocol CloseConnectionHandler {
     func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateCloseConnectionResponse(from requestBody: String) throws -> P2PServerResponse
+    func generateCloseConnectionResponse(from requestBody: String) throws -> NearbySharingServerResponse
 }
 
 // MARK: - Main Server Class
@@ -45,7 +45,7 @@ final class NearbySharingServer {
     // MARK: - Properties
     
     private let networkManager = NetworkManager()
-    private(set) var serverState = P2PServerState()
+    private(set) var serverState = NearbySharingServerState()
     
     /// Single Combine publisher for all server events.
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
@@ -101,14 +101,14 @@ final class NearbySharingServer {
     
     // MARK: - Response Helpers
     
-    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> P2PServerResponse {
+    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> NearbySharingServerResponse {
         let errorPayload = ErrorMessage(error: status.reasonPhrase)
         let responseData = HTTPResponseBuilder(status: status)
             .setContentType(.json)
             .setBody(errorPayload)
             .closeConnection()
             .build()
-        return P2PServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
+        return NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
     }
     
     private func sendSuccessResponse(connection: NWConnection, endpoint: NearbySharingEndpoint) {
@@ -121,11 +121,11 @@ final class NearbySharingServer {
             sendInternalServerError(connection: connection)
             return
         }
-        let response = P2PServerResponse(dataResponse: responseData, response: .success, endpoint: endpoint)
+        let response = NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: endpoint)
         sendData(connection: connection, serverResponse: response)
     }
     
-    private func sendResponse(connection: NWConnection, serverResponse: P2PServerResponse?) {
+    private func sendResponse(connection: NWConnection, serverResponse: NearbySharingServerResponse?) {
         guard let response = serverResponse else {
             sendInternalServerError(connection: connection)
             return
@@ -138,7 +138,7 @@ final class NearbySharingServer {
         sendData(connection: connection, serverResponse: errorResponse)
     }
     
-    private func sendData(connection: NWConnection, serverResponse: P2PServerResponse) {
+    private func sendData(connection: NWConnection, serverResponse: NearbySharingServerResponse) {
         guard let data = serverResponse.dataResponse else {
             debugLog("No data to send for response.")
             eventPublisher.send(.errorOccured)
@@ -156,7 +156,7 @@ final class NearbySharingServer {
         }
     }
     
-    private func handleResponseSent(_ serverResponse: P2PServerResponse) {
+    private func handleResponseSent(_ serverResponse: NearbySharingServerResponse) {
         guard let endpoint = serverResponse.endpoint else {
             eventPublisher.send(.errorOccured)
             return
@@ -280,7 +280,7 @@ extension NearbySharingServer: RegisterHandler {
         }
     }
     
-    func generateRegisterServerResponse(from request: HTTPRequest) throws -> P2PServerResponse {
+    func generateRegisterServerResponse(from request: HTTPRequest) throws -> NearbySharingServerResponse {
         // Ensure no active session exists
         if serverState.session != nil {
             throw HTTPStatusCode.conflict  // Already a session in progress
@@ -301,7 +301,7 @@ extension NearbySharingServer: RegisterHandler {
             throw HTTPStatusCode.unauthorized
         }
         // PIN is correct, reset failed attempts and create a session
-        serverState.session = P2PSession(sessionId: UUID().uuidString)
+        serverState.session = NearbySharingSession(sessionId: UUID().uuidString)
         // Build a success response with the new session ID
         let payload = RegisterResponse(sessionId: serverState.session!.sessionId)
         guard let responseData = HTTPResponseBuilder()
@@ -311,7 +311,7 @@ extension NearbySharingServer: RegisterHandler {
             .build() else {
             throw HTTPStatusCode.internalServerError
         }
-        return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
+        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
     }
     
     /// Call this to respond to a pending registration request (from a `.registrationRequested` event).
@@ -363,7 +363,7 @@ extension NearbySharingServer: PrepareUploadHandler {
         serverState.session?.title = prepReq.title
         prepReq.files?.forEach { file in
             if let fileId = file.id {
-                serverState.session?.files[fileId] = P2PTransferredFile(file: file)
+                serverState.session?.files[fileId] = NearbySharingTransferredFile(file: file)
             }
         }
         // Save the connection and notify the UI about incoming files
@@ -378,12 +378,12 @@ extension NearbySharingServer: PrepareUploadHandler {
         pendingUploadConnection = nil
     }
     
-    private func createAcceptUploadResponse() -> P2PServerResponse {
-        var filesResponse: [P2PFileResponse] = []
+    private func createAcceptUploadResponse() -> NearbySharingServerResponse {
+        var filesResponse: [NearbySharingFileResponse] = []
         serverState.session?.files.forEach { (fileID, fileInfo) in
             let transmissionId = UUID().uuidString
             serverState.session?.files[fileID]?.transmissionId = transmissionId
-            filesResponse.append(P2PFileResponse(id: fileInfo.file.id, transmissionID: transmissionId))
+            filesResponse.append(NearbySharingFileResponse(id: fileInfo.file.id, transmissionID: transmissionId))
         }
         
         let payload = PrepareUploadResponse(files: filesResponse)
@@ -395,7 +395,7 @@ extension NearbySharingServer: PrepareUploadHandler {
             return createErrorResponse(.internalServerError)
         }
         
-        return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .prepareUpload)
+        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .prepareUpload)
     }
     
     private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) {
@@ -403,7 +403,7 @@ extension NearbySharingServer: PrepareUploadHandler {
         sendResponse(connection: connection, serverResponse: response)
     }
     
-    private func createRejectUploadResponse() -> P2PServerResponse {
+    private func createRejectUploadResponse() -> NearbySharingServerResponse {
         return createErrorResponse(.forbidden, endpoint: .prepareUpload)
     }
 }
@@ -513,7 +513,7 @@ extension NearbySharingServer: CloseConnectionHandler {
         }
     }
     
-    func generateCloseConnectionResponse(from requestBody: String) throws -> P2PServerResponse {
+    func generateCloseConnectionResponse(from requestBody: String) throws -> NearbySharingServerResponse {
         guard let closeReq = requestBody.decodeJSON(CloseConnectionRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
@@ -531,7 +531,7 @@ extension NearbySharingServer: CloseConnectionHandler {
             throw HTTPStatusCode.internalServerError
         }
         
-        return P2PServerResponse(dataResponse: responseData, response: .success, endpoint: .closeConnection)
+        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .closeConnection)
     }
 }
 

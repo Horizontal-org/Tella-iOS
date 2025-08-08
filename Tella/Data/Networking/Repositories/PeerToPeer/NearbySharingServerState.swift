@@ -1,5 +1,5 @@
 //
-//  P2PServerState.swift
+//  NearbySharingServerState.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 23/6/2025.
@@ -9,10 +9,10 @@
 
 import Foundation
 
-final class P2PServerState {
+final class NearbySharingServerState {
     
     var pin: String?
-    var session: P2PSession?
+    var session: NearbySharingSession?
     var isUsingManualConnection: Bool
     
     private(set) var failedAttempts: Int
@@ -23,7 +23,7 @@ final class P2PServerState {
     }
     
     init(pin: String? = nil,
-         session: P2PSession? = nil,
+         session: NearbySharingSession? = nil,
          failedAttempts: Int = 0,
          isUsingManualConnection: Bool = false) {
         self.pin = pin
@@ -44,16 +44,16 @@ final class P2PServerState {
     }
 }
 
-final class P2PSession {
+final class NearbySharingSession {
     
     let sessionId: String
     var status: SessionStatus
     var title: String?
-    var files: [String: P2PTransferredFile]
+    var files: [String: NearbySharingTransferredFile]
     
     init(sessionId: String,
          status: SessionStatus = .waiting,
-         files: [String: P2PTransferredFile] = [:],
+         files: [String: NearbySharingTransferredFile] = [:],
          title: String? = nil) {
         self.sessionId = sessionId
         self.status = status
@@ -70,22 +70,22 @@ final class P2PSession {
     }
 }
 
-final class P2PTransferredFile: Codable {
+final class NearbySharingTransferredFile: Codable {
     
-    var file: P2PFile
+    var file: NearbySharingFile
     var vaultFile: VaultFileDB
-    var status: P2PFileStatus
+    var status: NearbySharingFileStatus
     var transmissionId: String?
     var url: URL?
     var bytesReceived: Int = 0
     
-    init(file: P2PFile,
-         status: P2PFileStatus = .queue,
+    init(file: NearbySharingFile,
+         status: NearbySharingFileStatus = .queue,
          transmissionId: String? = nil,
          url: URL? = nil,
          bytesReceived: Int = 0) {
         self.file = file
-        self.vaultFile =  VaultFileDB(p2pFile: file)
+        self.vaultFile =  VaultFileDB(file: file)
         self.status = status
         self.transmissionId = transmissionId
         self.url = url
@@ -93,12 +93,12 @@ final class P2PTransferredFile: Codable {
     }
     
     init(vaultFile: VaultFileDB,
-         status: P2PFileStatus = .queue,
+         status: NearbySharingFileStatus = .queue,
          transmissionId: String? = nil,
          url: URL? = nil,
          bytesReceived: Int64 = 0) {
         self.vaultFile = vaultFile
-        self.file = P2PFile(vaultFile: vaultFile)
+        self.file = NearbySharingFile(vaultFile: vaultFile)
         self.status = status
         self.transmissionId = transmissionId
         self.url = url
@@ -106,7 +106,7 @@ final class P2PTransferredFile: Codable {
     }
 }
 
-enum P2PFileStatus: String, Codable {
+enum NearbySharingFileStatus: String, Codable {
     case queue
     case transferring
     case failed

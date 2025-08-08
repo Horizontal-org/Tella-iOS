@@ -12,7 +12,7 @@ import Foundation
 
 enum RecipientPrepareFileTransferAction {
     case showToast(message: String)
-    case displayFileTransferView(files: [P2PFile])
+    case displayFileTransferView(files: [NearbySharingFile])
     case errorOccured
     case none
 }
@@ -33,7 +33,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     // MARK: - Published Properties
     @Published var viewAction: RecipientPrepareFileTransferAction = .none
     @Published var viewState: RecipientPrepareFileTransferState = .waitingRequest
-    @Published var files: [P2PFile] = []
+    @Published var files: [NearbySharingFile] = []
     
     // MARK: - Initializer
     
