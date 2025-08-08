@@ -20,6 +20,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
     @Published var progressFile: ProgressFile = ProgressFile()
     @Published var should: Bool = false
     
+    var rootFile: VaultFileDB? = nil
+
     // MARK: - Initializer
     
     init?(mainAppModel: MainAppModel) {
@@ -87,6 +89,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
         let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title)
         if case .success(let id) = result  {
             guard let id  else { return  }
+            rootFile = mainAppModel.vaultFilesManager?.getVaultFile(id: id)
             addFiles(parentId: id)
         }
     }
