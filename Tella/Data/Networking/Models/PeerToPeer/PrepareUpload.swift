@@ -48,7 +48,7 @@ class NearbySharingFile: Codable {
         try container.encodeIfPresent(self.size, forKey: .size)
         try container.encodeIfPresent(self.fileType, forKey: .fileType)
         try container.encodeIfPresent(self.sha256, forKey: .sha256)
-        try container.encodeIfPresent(self.thumbnail?.base64EncodedString(), forKey: .thumbnail)
+        try container.encodeIfPresent(self.thumbnail?.map { Int($0) }, forKey: .thumbnail)
     }
 }
 
