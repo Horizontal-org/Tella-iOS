@@ -63,7 +63,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
                 switch completion {
                 case .finished:
                     self.viewState = .showSendFiles
-                    self.viewState = .showToast(message: LocalizablePeerToPeer.successConnectToast.localized)
+                    self.viewState = .showToast(message: LocalizableNearbySharing.successConnectToast.localized)
                 case .failure:
                     self.viewState = .showBottomSheetError
                 }

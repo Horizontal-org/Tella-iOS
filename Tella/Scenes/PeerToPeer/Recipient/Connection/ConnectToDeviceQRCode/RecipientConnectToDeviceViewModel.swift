@@ -24,7 +24,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     var mainAppModel: MainAppModel
     var certificateGenerator : CertificateGenerator
-    var peerToPeerServer: PeerToPeerServer?
+    var peerToPeerServer: NearbySharingServer?
     var connectionInfo : ConnectionInfo?
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading

@@ -36,7 +36,7 @@ struct ConnectionsView: View {
         HStack(spacing: 12) {
             
             if homeViewModel.appModel.settings.nearbySharing {
-                ConnectionsItemView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized,
+                ConnectionsItemView(title: LocalizableNearbySharing.nearbySharingAppBar.localized,
                                     image: "p2p.home",
                                     destination: peerToPeerMainView)
             }

@@ -52,7 +52,7 @@ struct WifiConnetionView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.wifi.localized ,
+        NavigationHeaderView(title: LocalizableNearbySharing.wifi.localized ,
                              navigationBarType: .inline,
                              rightButtonType: .none)
     }
@@ -67,8 +67,8 @@ struct WifiConnetionView: View {
         VStack(alignment: .center, spacing: 12) {
             
             ServerConnectionHeaderView(
-                title: LocalizablePeerToPeer.getConnected.localized,
-                subtitle: LocalizablePeerToPeer.wifiConnectionDescription.localized,
+                title: LocalizableNearbySharing.getConnected.localized,
+                subtitle: LocalizableNearbySharing.wifiConnectionDescription.localized,
                 imageIconName: "wifi.icon",
                 subtitleTextAlignment: .leading)
             tipsView
@@ -80,13 +80,13 @@ struct WifiConnetionView: View {
     var tipsView: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                CustomText(LocalizablePeerToPeer.wifiConnectionTipsToConnect.localized,
+                CustomText(LocalizableNearbySharing.wifiConnectionTipsToConnect.localized,
                            style: .body1Style)
                 
                 if isExpanded {
                     Spacer()
                         .frame(height: 2)
-                    CustomText(LocalizablePeerToPeer.wifiConnectionTipsToConnectDescription.localized,
+                    CustomText(LocalizableNearbySharing.wifiConnectionTipsToConnectDescription.localized,
                                style: .body2Style)
                 }
             }
@@ -108,7 +108,7 @@ struct WifiConnetionView: View {
     
     private var currentWifiView: some View {
         HStack {
-            CustomText(LocalizablePeerToPeer.currentWifi.localized, style: .body1Style)
+            CustomText(LocalizableNearbySharing.currentWifi.localized, style: .body1Style)
             
             Spacer()
             
@@ -116,7 +116,7 @@ struct WifiConnetionView: View {
                 CustomText("\(ssid)",
                            style: .body1Style)
             } else {
-                CustomText(LocalizablePeerToPeer.noConnection.localized,
+                CustomText(LocalizableNearbySharing.noConnection.localized,
                            style: .body1Style,
                            color: .gray)
             }
@@ -126,7 +126,7 @@ struct WifiConnetionView: View {
     
     var sameWifiNetworkView: some View {
         HStack {
-            CustomText(LocalizablePeerToPeer.wifiSameNetworkDescription.localized,
+            CustomText(LocalizableNearbySharing.wifiSameNetworkDescription.localized,
                        style: .body1Style)
             Spacer()
             ResizableImage(isCheckboxOn ? "checkbox.on" : "checkbox.off")
@@ -160,10 +160,10 @@ struct WifiConnetionView: View {
     
     private func getSettingsAlertView() {
         sheetManager.showBottomSheet(modalHeight: 190) {
-            ConfirmBottomSheet(titleText: LocalizablePeerToPeer.locationAccess.localized,
-                               msgText: LocalizablePeerToPeer.detectWifiSettingsDesc.localized,
-                               cancelText: LocalizablePeerToPeer.cancel.localized.uppercased(),
-                               actionText: LocalizablePeerToPeer.settings.localized.uppercased(), didConfirmAction: {
+            ConfirmBottomSheet(titleText: LocalizableNearbySharing.locationAccess.localized,
+                               msgText: LocalizableNearbySharing.detectWifiSettingsDesc.localized,
+                               cancelText: LocalizableNearbySharing.cancel.localized.uppercased(),
+                               actionText: LocalizableNearbySharing.settings.localized.uppercased(), didConfirmAction: {
                 UIApplication.shared.openSettings()
             }, didCancelAction: {
                 self.viewModel.showPermissionAlert = false

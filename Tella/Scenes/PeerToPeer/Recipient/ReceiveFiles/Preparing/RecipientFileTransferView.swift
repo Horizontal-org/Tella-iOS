@@ -35,14 +35,14 @@ struct RecipientFileTransferView: View {
     
     var waitingView: some View {
         VStack {
-            CustomText(LocalizablePeerToPeer.waitingForSenderDesc.localized, style: .heading1Style)
+            CustomText(LocalizableNearbySharing.waitingForSenderDesc.localized, style: .heading1Style)
             ResizableImage("clock").frame(width: 48, height: 48)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.receiveFiles.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.receiveFiles.localized,
                              navigationBarType: .inline,
                              backButtonAction: {
             self.popTo(ViewClassType.peerToPeerMainView)
@@ -56,20 +56,20 @@ struct RecipientFileTransferView: View {
             Spacer().frame(height: 100)
             ResizableImage("folders.icon").frame(width: 109, height: 109)
             
-            CustomText(String(format: LocalizablePeerToPeer.senderRequestFilesNumberDesc.localized, viewModel.files.count), style: .heading1Style)
+            CustomText(String(format: LocalizableNearbySharing.senderRequestFilesNumberDesc.localized, viewModel.files.count), style: .heading1Style)
                 .padding(.bottom, 16)
             
-            CustomText(LocalizablePeerToPeer.requestQuestion.localized, style: .body1Style)
+            CustomText(LocalizableNearbySharing.requestQuestion.localized, style: .body1Style)
             
                 .padding(.bottom, 48)
             VStack(spacing: 16) {
-                TellaButtonView(title: LocalizablePeerToPeer.accept.localized.uppercased(),
+                TellaButtonView(title: LocalizableNearbySharing.accept.localized.uppercased(),
                                 nextButtonAction: .action,
                                 buttonType: .yellow,
                                 isValid: .constant(true)) {
                     viewModel.respondToFileUpload(acceptance: true)
                 }
-                TellaButtonView(title: LocalizablePeerToPeer.reject.localized.uppercased(),
+                TellaButtonView(title: LocalizableNearbySharing.reject.localized.uppercased(),
                                 nextButtonAction: .action,
                                 isValid: .constant(true)) {
                     viewModel.respondToFileUpload(acceptance: false)
