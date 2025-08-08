@@ -59,7 +59,7 @@ struct SenderConnectToDeviceView: View {
     var connectManuallyButton: some View {
         TellaButtonView(title: LocalizableNearbySharing.connectManually.localized.uppercased(),
                         nextButtonAction: .destination,
-                        destination: SenderConnectToDeviceManuallyView(viewModel: ConnectToDeviceManuallyVM(peerToPeerRepository: viewModel.peerToPeerRepository, mainAppModel: viewModel.mainAppModel)),
+                        destination: SenderConnectToDeviceManuallyView(viewModel: ConnectToDeviceManuallyVM(nearbySharingRepository: viewModel.nearbySharingRepository, mainAppModel: viewModel.mainAppModel)),
                         isValid: .constant(true),
                         buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
@@ -82,7 +82,7 @@ struct SenderConnectToDeviceView: View {
             guard let session = viewModel.session else { return }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,
                                                         session:session,
-                                                        peerToPeerRepository:viewModel.peerToPeerRepository)
+                                                        nearbySharingRepository:viewModel.nearbySharingRepository)
             self.navigateTo(destination: SenderPrepareFileTransferView(viewModel: viewModel ))
         case .showToast(let message):
             Toast.displayToast(message: message)
@@ -93,6 +93,6 @@ struct SenderConnectToDeviceView: View {
 }
 
 #Preview {
-    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(nearbySharingRepository:NearbySharingRepository(),
                                                                         mainAppModel: MainAppModel.stub()))
 }

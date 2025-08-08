@@ -26,7 +26,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
     var session : P2PSession
-    var peerToPeerRepository: PeerToPeerRepository
+    var nearbySharingRepository: NearbySharingRepository
     
     //MARK: -AddFilesViewModel
     @Published var addFilesViewModel: AddFilesViewModel
@@ -39,11 +39,11 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     
-    init(mainAppModel: MainAppModel, session : P2PSession, peerToPeerRepository: PeerToPeerRepository) {
+    init(mainAppModel: MainAppModel, session : P2PSession, nearbySharingRepository: NearbySharingRepository) {
         self.mainAppModel = mainAppModel
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
         self.session = session
-        self.peerToPeerRepository = peerToPeerRepository
+        self.nearbySharingRepository = nearbySharingRepository
         validateReport()
     }
     
@@ -59,7 +59,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     func prepareUpload() {
         self.viewState = .waiting
         session.title = title
-        var peerToPeerFileArray: [String: P2PTransferredFile] = [:]
+        var nearbySharingFileArray: [String: P2PTransferredFile] = [:]
         let sessionId = session.sessionId
         
         let files: [P2PFile] = addFilesViewModel.files.compactMap { file in
@@ -76,7 +76,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 sha256: ""
             )
             
-            peerToPeerFileArray[id] = P2PTransferredFile(vaultFile: file)
+            nearbySharingFileArray[id] = P2PTransferredFile(vaultFile: file)
             return p2pFile
         }
         
@@ -86,19 +86,19 @@ class SenderPrepareFileTransferVM: ObservableObject {
             files: files
         )
         
-        self.peerToPeerRepository.prepareUpload(prepareUpload: prepareUploadRequest)
+        self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
                     self.handlePrepareUpload(completion: completion)
                 }, receiveValue: { response in
                     
-                    peerToPeerFileArray.values.forEach { file in
+                    nearbySharingFileArray.values.forEach { file in
                         if let transmissionId = response.files?.first(where: { $0.id == file.file.id })?.transmissionID {
                             file.transmissionId = transmissionId
                         }
                     }
-                    self.session.files = peerToPeerFileArray
+                    self.session.files = nearbySharingFileArray
                     self.viewAction = .displaySendingFiles
                 }
             )
@@ -123,7 +123,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
     
     func closeConnection() {
         let request = CloseConnectionRequest(sessionID: session.sessionId)
-        peerToPeerRepository.closeConnection(closeConnectionRequest: request)
+        nearbySharingRepository.closeConnection(closeConnectionRequest: request)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
             .store(in: &subscribers)

@@ -1,5 +1,5 @@
 //
-//  PeerToPeerRepository.swift
+//  NearbySharingRepository.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 18/3/2025.
@@ -10,7 +10,7 @@
 import Foundation
 import Combine
 
-class PeerToPeerRepository: NSObject, WebRepository {
+class NearbySharingRepository: NSObject, WebRepository {
     
     private var connectionInfo:ConnectionInfo?
     private var uploadTasks : [URLSessionTask] = []
@@ -90,7 +90,7 @@ class PeerToPeerRepository: NSObject, WebRepository {
     }
 }
 
-extension PeerToPeerRepository {
+extension NearbySharingRepository {
     
     enum API {
         case ping(connectionInfo:ConnectionInfo)
@@ -101,7 +101,7 @@ extension PeerToPeerRepository {
     }
 }
 
-extension PeerToPeerRepository.API: APIRequest {
+extension NearbySharingRepository.API: APIRequest {
     
     typealias Value = Any
     
@@ -156,19 +156,19 @@ extension PeerToPeerRepository.API: APIRequest {
         switch self {
             
         case .ping:
-            return PeerToPeerEndpoint.ping.rawValue
+            return NearbySharingEndpoint.ping.rawValue
             
         case .register:
-            return PeerToPeerEndpoint.register.rawValue
+            return NearbySharingEndpoint.register.rawValue
             
         case .prepareUpload:
-            return  PeerToPeerEndpoint.prepareUpload.rawValue
+            return  NearbySharingEndpoint.prepareUpload.rawValue
             
         case .uploadFile:
-            return  PeerToPeerEndpoint.upload.rawValue
+            return  NearbySharingEndpoint.upload.rawValue
             
         case .closeConnection:
-            return PeerToPeerEndpoint.closeConnection.rawValue
+            return NearbySharingEndpoint.closeConnection.rawValue
             
         }
     }

@@ -1,5 +1,5 @@
 //
-//  PeerToPeerMainView.swift
+//  NearbySharingMainView.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 30/1/2025.
@@ -9,10 +9,10 @@
 
 import SwiftUI
 
-struct PeerToPeerMainView: View {
+struct NearbySharingMainView: View {
     
     @StateObject var mainAppModel: MainAppModel
-    @State var participant: PeerToPeerParticipant?
+    @State var participant: NearbySharingParticipant?
     
     var body: some View {
         
@@ -31,7 +31,7 @@ struct PeerToPeerMainView: View {
         VStack(alignment: .center, spacing: 24) {
             Spacer()
             headerView
-            peerToPeerParticipantButtons
+            nearbySharingParticipantButtons
             learnMoreView
             Spacer()
             bottomView
@@ -47,7 +47,7 @@ struct PeerToPeerMainView: View {
             subtitleTextAlignment: .leading)
     }
     
-    var peerToPeerParticipantButtons: some View {
+    var nearbySharingParticipantButtons: some View {
         VStack(spacing: 12) {
             
             TellaButtonView(title: LocalizableNearbySharing.sendFiles.localized.uppercased(),
@@ -91,5 +91,5 @@ struct PeerToPeerMainView: View {
 }
 
 #Preview {
-    PeerToPeerMainView(mainAppModel: MainAppModel.stub())
+    NearbySharingMainView(mainAppModel: MainAppModel.stub())
 }
