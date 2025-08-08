@@ -24,9 +24,9 @@ class SenderFileTransferVM: FileTransferVM {
         self.session = session
         
         super.init(mainAppModel: mainAppModel,
-                   title: LocalizablePeerToPeer.senderSendingAppBar.localized,
-                   bottomSheetTitle: LocalizablePeerToPeer.stopSharingTitle.localized,
-                   bottomSheetMessage: LocalizablePeerToPeer.stopSharingSheetExpl.localized)
+                   title: LocalizableNearbySharing.senderSendingAppBar.localized,
+                   bottomSheetTitle: LocalizableNearbySharing.stopSharingTitle.localized,
+                   bottomSheetMessage: LocalizableNearbySharing.stopSharingSheetExpl.localized)
         transferredFiles = Array(session.files.values)
         initProgress(session: session)
         submitReport()
@@ -94,8 +94,8 @@ class SenderFileTransferVM: FileTransferVM {
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
         let template = transferredFiles.count > 1
-        ? LocalizablePeerToPeer.recipientFilesReceived.localized
-        : LocalizablePeerToPeer.recipientFileReceived.localized
+        ? LocalizableNearbySharing.recipientFilesReceived.localized
+        : LocalizableNearbySharing.recipientFileReceived.localized
         
         let receivedFormatted = receivedBytes.getFormattedFileSize().getFileSizeWithoutUnit()
         let totalFormatted = totalBytes.getFormattedFileSize()
@@ -104,6 +104,6 @@ class SenderFileTransferVM: FileTransferVM {
     }
     
     override func formatPercentage(_ percent: Int) -> String {
-        return String(format: LocalizablePeerToPeer.recipientPercentageReceived.localized, percent)
+        return String(format: LocalizableNearbySharing.recipientPercentageReceived.localized, percent)
     }
 }

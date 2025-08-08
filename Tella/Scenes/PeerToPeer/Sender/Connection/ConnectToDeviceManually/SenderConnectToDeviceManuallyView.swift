@@ -44,7 +44,7 @@ struct SenderConnectToDeviceManuallyView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.connectManually.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              rightButtonType: .none)
@@ -52,7 +52,7 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var topView: some View {
         ServerConnectionHeaderView(
-            title: LocalizablePeerToPeer.enterDeviceInformation.localized,
+            title: LocalizableNearbySharing.enterDeviceInformation.localized,
             imageIconName: "device",
             subtitleTextAlignment: .leading)
     }
@@ -71,9 +71,9 @@ struct SenderConnectToDeviceManuallyView: View {
         TextfieldView(fieldContent: $viewModel.ipAddress,
                       isValid: $viewModel.isValidIpAddress,
                       shouldShowError: $viewModel.shouldShowIpAddressError,
-                      errorMessage: LocalizablePeerToPeer.invalidIpAddress.localized,
+                      errorMessage: LocalizableNearbySharing.invalidIpAddress.localized,
                       fieldType: .ipAddress,
-                      placeholder : LocalizablePeerToPeer.ipAddress.localized)
+                      placeholder : LocalizableNearbySharing.ipAddress.localized)
         .frame(height: 78)
     }
     
@@ -81,9 +81,9 @@ struct SenderConnectToDeviceManuallyView: View {
         TextfieldView(fieldContent: $viewModel.pin,
                       isValid: $viewModel.isValidPin,
                       shouldShowError: $viewModel.shouldShowPinError ,
-                      errorMessage:LocalizablePeerToPeer.invalidPin.localized,
+                      errorMessage:LocalizableNearbySharing.invalidPin.localized,
                       fieldType: .pin,
-                      placeholder : LocalizablePeerToPeer.pin.localized)
+                      placeholder : LocalizableNearbySharing.pin.localized)
         .frame(height: 78)
     }
     
@@ -92,7 +92,7 @@ struct SenderConnectToDeviceManuallyView: View {
                       isValid: $viewModel.isValidPort,
                       shouldShowError:  .constant(false),
                       fieldType: .port,
-                      placeholder : LocalizablePeerToPeer.port.localized)
+                      placeholder : LocalizableNearbySharing.port.localized)
         .frame(height: 78)
     }
     

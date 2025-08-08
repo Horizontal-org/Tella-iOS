@@ -55,7 +55,7 @@ struct FileTransferView: View {
             
             HStack {
                 Spacer()
-                TellaButtonView(title: LocalizablePeerToPeer.cancel.localized.uppercased(),
+                TellaButtonView(title: LocalizableNearbySharing.cancel.localized.uppercased(),
                                 nextButtonAction: .action,
                                 isValid: .constant(true),
                                 buttonRole: .secondary) {
@@ -74,8 +74,8 @@ struct FileTransferView: View {
         isBottomSheetShown = true
         let content = ConfirmBottomSheet(titleText: viewModel.bottomSheetTitle,
                                          msgText: viewModel.bottomSheetMessage,
-                                         cancelText: LocalizablePeerToPeer.continueSharing.localized.uppercased(),
-                                         actionText:LocalizablePeerToPeer.stopSharing.localized.uppercased(),
+                                         cancelText: LocalizableNearbySharing.continueSharing.localized.uppercased(),
+                                         actionText:LocalizableNearbySharing.stopSharing.localized.uppercased(),
                                          shouldHideSheet: false,
                                          didConfirmAction: {
             self.dismiss()

@@ -30,10 +30,10 @@ struct SenderConnectToDeviceView: View {
     var contentView: some View {
         VStack(alignment: .center, spacing: 12) {
             Spacer()
-            CustomText(LocalizablePeerToPeer.scanCode.localized, style: .heading1Style)
+            CustomText(LocalizableNearbySharing.scanCode.localized, style: .heading1Style)
             qrCodeView
                 .padding(.bottom, 28)
-            CustomText(LocalizablePeerToPeer.havingTrouble.localized, style: .body1Style)
+            CustomText(LocalizableNearbySharing.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
         }
@@ -41,7 +41,7 @@ struct SenderConnectToDeviceView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.connectToDevice.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectToDevice.localized,
                              navigationBarType: .inline,
                              rightButtonType: .none)
     }
@@ -57,7 +57,7 @@ struct SenderConnectToDeviceView: View {
     }
     
     var connectManuallyButton: some View {
-        TellaButtonView(title: LocalizablePeerToPeer.connectManually.localized.uppercased(),
+        TellaButtonView(title: LocalizableNearbySharing.connectManually.localized.uppercased(),
                         nextButtonAction: .destination,
                         destination: SenderConnectToDeviceManuallyView(viewModel: ConnectToDeviceManuallyVM(peerToPeerRepository: viewModel.peerToPeerRepository, mainAppModel: viewModel.mainAppModel)),
                         isValid: .constant(true),

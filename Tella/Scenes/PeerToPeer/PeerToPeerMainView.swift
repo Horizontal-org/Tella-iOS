@@ -24,7 +24,7 @@ struct PeerToPeerMainView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizablePeerToPeer.peerToPeerAppBar.localized)
+        NavigationHeaderView(title: LocalizableNearbySharing.nearbySharingAppBar.localized)
     }
     
     var contentView: some View {
@@ -41,8 +41,8 @@ struct PeerToPeerMainView: View {
     
     var headerView: some View {
         ServerConnectionHeaderView(
-            title: LocalizablePeerToPeer.nearbySharingSubhead.localized,
-            subtitle: LocalizablePeerToPeer.nearbySharingExpl.localized,
+            title: LocalizableNearbySharing.nearbySharingSubhead.localized,
+            subtitle: LocalizableNearbySharing.nearbySharingExpl.localized,
             imageIconName: "p2p.share",
             subtitleTextAlignment: .leading)
     }
@@ -50,13 +50,13 @@ struct PeerToPeerMainView: View {
     var peerToPeerParticipantButtons: some View {
         VStack(spacing: 12) {
             
-            TellaButtonView(title: LocalizablePeerToPeer.sendFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizableNearbySharing.sendFiles.localized.uppercased(),
                                      nextButtonAction: .action,
                                      isOverlay: participant == .sender,
                                      isValid: .constant(true),
                                      action: { participant = .sender }
             ).frame(height: 54)
-            TellaButtonView(title: LocalizablePeerToPeer.receiveFiles.localized.uppercased(),
+            TellaButtonView(title: LocalizableNearbySharing.receiveFiles.localized.uppercased(),
                                      nextButtonAction: .action,
                                      isOverlay: participant == .recipient,
                                      isValid: .constant(true),
@@ -69,7 +69,7 @@ struct PeerToPeerMainView: View {
         Button {
             TellaUrls.p2pLearnMore.url()?.open()
         } label: {
-            CustomText(LocalizablePeerToPeer.learnMore.localized,
+            CustomText(LocalizableNearbySharing.learnMore.localized,
                        style: .buttonDetailRegularStyle,
                        alignment: .center,
                        color: Styles.Colors.yellow)

@@ -27,7 +27,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     // MARK: - Properties
     
      var mainAppModel: MainAppModel
-     var peerToPeerServer: PeerToPeerServer?
+     var peerToPeerServer: NearbySharingServer?
     private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?
     // MARK: - Published Properties
@@ -62,7 +62,7 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                         self.viewAction = .displayFileTransferView(files: self.files)
                     } else {
                         self.viewState = .waitingRequest
-                        self.viewAction = .showToast(message: LocalizablePeerToPeer.recipientFilesRejected.localized)
+                        self.viewAction = .showToast(message: LocalizableNearbySharing.recipientFilesRejected.localized)
                     }
 
                 case .connectionClosed, .errorOccured:

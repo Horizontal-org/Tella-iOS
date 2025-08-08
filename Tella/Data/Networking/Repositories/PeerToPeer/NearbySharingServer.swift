@@ -40,7 +40,7 @@ protocol CloseConnectionHandler {
 
 // MARK: - Main Server Class
 
-final class PeerToPeerServer {
+final class NearbySharingServer {
     
     // MARK: - Properties
     
@@ -217,7 +217,7 @@ final class PeerToPeerServer {
 
 // MARK: - NetworkManagerDelegate
 
-extension PeerToPeerServer: NetworkManagerDelegate {
+extension NearbySharingServer: NetworkManagerDelegate {
     
     func networkManagerDidStartListening() {
         debugLog("Server is now listening on the specified port.")
@@ -255,7 +255,7 @@ extension PeerToPeerServer: NetworkManagerDelegate {
 }
 // MARK: - PingHandler Implementation
 
-extension PeerToPeerServer: PingHandler {
+extension NearbySharingServer: PingHandler {
     func handlePingRequest(on connection: NWConnection) {
         // A ping indicates a new manual connection attempt.
         eventPublisher.send(.verificationRequested)
@@ -267,7 +267,7 @@ extension PeerToPeerServer: PingHandler {
 
 // MARK: - RegisterHandler Implementation
 
-extension PeerToPeerServer: RegisterHandler {
+extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         if serverState.isUsingManualConnection {
             // Manual mode: store the request and ask the user for confirmation.
@@ -348,7 +348,7 @@ extension PeerToPeerServer: RegisterHandler {
 
 // MARK: - PrepareUploadHandler Implementation
 
-extension PeerToPeerServer: PrepareUploadHandler {
+extension NearbySharingServer: PrepareUploadHandler {
     
     func handlePrepareUploadRequest(on connection: NWConnection, request: HTTPRequest) {
         guard let prepReq = request.body.decodeJSON(PrepareUploadRequest.self) else {
@@ -410,7 +410,7 @@ extension PeerToPeerServer: PrepareUploadHandler {
 
 // MARK: - UploadHandler Implementation
 
-extension PeerToPeerServer: UploadHandler {
+extension NearbySharingServer: UploadHandler {
     
     func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL? {
         do {
@@ -501,7 +501,7 @@ extension PeerToPeerServer: UploadHandler {
 
 // MARK: - CloseConnectionHandler Implementation
 
-extension PeerToPeerServer: CloseConnectionHandler {
+extension NearbySharingServer: CloseConnectionHandler {
     func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest) {
         do {
             let closeResponse = try generateCloseConnectionResponse(from: request.body)
@@ -537,8 +537,8 @@ extension PeerToPeerServer: CloseConnectionHandler {
 
 // MARK: - Stub Extension
 
-extension PeerToPeerServer {
-    static func stub() -> PeerToPeerServer {
-        return PeerToPeerServer()
+extension NearbySharingServer {
+    static func stub() -> NearbySharingServer {
+        return NearbySharingServer()
     }
 }
