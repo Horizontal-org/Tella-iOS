@@ -12,9 +12,9 @@ import Combine
 final class P2PResultVM: ObservableObject {
     
     let transferredFiles: [P2PTransferredFile]
-    let participant: PeerToPeerParticipant
+    let participant: NearbySharingParticipant
     
-    init(transferredFiles: [P2PTransferredFile], participant: PeerToPeerParticipant) {
+    init(transferredFiles: [P2PTransferredFile], participant: NearbySharingParticipant) {
         self.transferredFiles = transferredFiles
         self.participant = participant
     }

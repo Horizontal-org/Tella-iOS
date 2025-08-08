@@ -29,11 +29,11 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     var mainAppModel: MainAppModel
-    var peerToPeerRepository: PeerToPeerRepository
+    var nearbySharingRepository: NearbySharingRepository
     var session: P2PSession?
     
-    init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
-        self.peerToPeerRepository = peerToPeerRepository
+    init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
+        self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
         
         super.init()
@@ -57,7 +57,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString)
         
-        self.peerToPeerRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
+        self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {

@@ -105,7 +105,7 @@ struct RecipientConnectToDeviceView: View {
             let fileTransferVM = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: RecipientFileTransferView(viewModel:fileTransferVM))
         case .errorOccured:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         case .showToast(let message):
             Toast.displayToast(message: message)
@@ -116,6 +116,6 @@ struct RecipientConnectToDeviceView: View {
 }
 
 #Preview {
-    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(peerToPeerRepository:PeerToPeerRepository(),
+    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(nearbySharingRepository:NearbySharingRepository(),
                                                                         mainAppModel: MainAppModel.stub()))
 }

@@ -1,5 +1,5 @@
 //
-//  PeerToPeerURLSessionDelegate.swift
+//  NearbySharingURLSessionDelegate.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 16/6/2025.
@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
+class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     
     var trustedCertificateHash : String?
     var path: String?
@@ -68,7 +68,7 @@ class PeerToPeerURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionData
         
         // No trusted public key hash: potentially first connection
         guard let trustedHash = trustedCertificateHash else {
-            if path == PeerToPeerEndpoint.ping.rawValue {
+            if path == NearbySharingEndpoint.ping.rawValue {
                 let credential = URLCredential(trust: serverTrust)
                 completionHandler(.useCredential, credential)
                 onReceiveServerCertificateHash?(serverCertificateHash)
