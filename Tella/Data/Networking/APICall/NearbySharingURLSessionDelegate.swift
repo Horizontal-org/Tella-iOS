@@ -14,7 +14,7 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
     var trustedCertificateHash : String?
     var path: String?
     var onReceiveServerCertificateHash: ((String) -> Void)?
-    var response = CurrentValueSubject<P2PUploadResponse, APIError>(.initial)
+    var response = CurrentValueSubject<NearbySharingUploadResponse, APIError>(.initial)
     
     init(path: String?, trustedCertificateHash: String? = nil, onReceiveServerCertificateHash: ((String) -> Void)? = nil) {
         self.path = path
@@ -23,11 +23,11 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
     }
 
     func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
-        response.send(P2PUploadResponse.didCreateTask(task: task))
+        response.send(NearbySharingUploadResponse.didCreateTask(task: task))
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        response.send(P2PUploadResponse.progress(progress:Int(bytesSent)))
+        response.send(NearbySharingUploadResponse.progress(progress:Int(bytesSent)))
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {

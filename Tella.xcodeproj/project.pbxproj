@@ -123,7 +123,7 @@
 		123CBB022DEF34660030A9BD /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB012DEF34640030A9BD /* HTTPRequest.swift */; };
 		123CBB042DEF97290030A9BD /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */; };
 		123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */; };
-		123CBB082DEF998C0030A9BD /* P2PServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB072DEF998A0030A9BD /* P2PServerResponse.swift */; };
+		123CBB082DEF998C0030A9BD /* NearbySharingServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* TellaWebServerViewModel.swift */; };
 		1240917B2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */; };
@@ -132,7 +132,7 @@
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
-		12444EFA2E09D6F6006CB86A /* P2PServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12444EF92E09D6F3006CB86A /* P2PServerState.swift */; };
+		12444EFA2E09D6F6006CB86A /* NearbySharingServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */; };
 		1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* FileTransferView.swift */; };
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
@@ -462,9 +462,9 @@
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07EC92B0660240030AD6E /* EncryptionOperation.swift */; };
 		12FAC4572E2519F5007A4651 /* FileSendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC4562E2519F5007A4651 /* FileSendingView.swift */; };
-		12FAC4592E2571E0007A4651 /* P2PResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC4582E2571E0007A4651 /* P2PResultView.swift */; };
+		12FAC4592E2571E0007A4651 /* NearbySharingResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC4582E2571E0007A4651 /* NearbySharingResultView.swift */; };
 		12FAC45B2E257A3E007A4651 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45A2E257A3E007A4651 /* ResultView.swift */; };
-		12FAC45D2E265BF7007A4651 /* P2PResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45C2E265BE4007A4651 /* P2PResultVM.swift */; };
+		12FAC45D2E265BF7007A4651 /* NearbySharingResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
@@ -879,7 +879,7 @@
 		123CBB012DEF34640030A9BD /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
 		123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerEndpoints.swift; sourceTree = "<group>"; };
-		123CBB072DEF998A0030A9BD /* P2PServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PServerResponse.swift; sourceTree = "<group>"; };
+		123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServerResponse.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* TellaWebServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerViewModel.swift; sourceTree = "<group>"; };
 		1240917A2DB03FCC005AFE9B /* ManuallyVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManuallyVerificationViewModel.swift; sourceTree = "<group>"; };
@@ -888,7 +888,7 @@
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
-		12444EF92E09D6F3006CB86A /* P2PServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PServerState.swift; sourceTree = "<group>"; };
+		12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServerState.swift; sourceTree = "<group>"; };
 		1244945D2DD61256002B4A9B /* FileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferView.swift; sourceTree = "<group>"; };
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
@@ -1226,9 +1226,9 @@
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FAC4562E2519F5007A4651 /* FileSendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSendingView.swift; sourceTree = "<group>"; };
-		12FAC4582E2571E0007A4651 /* P2PResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PResultView.swift; sourceTree = "<group>"; };
+		12FAC4582E2571E0007A4651 /* NearbySharingResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingResultView.swift; sourceTree = "<group>"; };
 		12FAC45A2E257A3E007A4651 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
-		12FAC45C2E265BE4007A4651 /* P2PResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PResultVM.swift; sourceTree = "<group>"; };
+		12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingResultVM.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebAddServerURLView.swift; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
@@ -1963,7 +1963,7 @@
 			children = (
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
-				12444EF92E09D6F3006CB86A /* P2PServerState.swift */,
+				12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */,
 				126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
@@ -1971,7 +1971,7 @@
 				12505B212D89A2A500483E34 /* HTTPResponse.swift */,
 				123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */,
 				123CBB052DEF99410030A9BD /* PeerToPeerEndpoints.swift */,
-				123CBB072DEF998A0030A9BD /* P2PServerResponse.swift */,
+				123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */,
 			);
 			path = PeerToPeer;
 			sourceTree = "<group>";
@@ -2378,8 +2378,8 @@
 			children = (
 				125D58AC2E1BE9A000365C40 /* ReceiverFileTransferVM.swift */,
 				1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */,
-				12FAC4582E2571E0007A4651 /* P2PResultView.swift */,
-				12FAC45C2E265BE4007A4651 /* P2PResultVM.swift */,
+				12FAC4582E2571E0007A4651 /* NearbySharingResultView.swift */,
+				12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */,
 				12FAC45A2E257A3E007A4651 /* ResultView.swift */,
 			);
 			path = Receiving;
@@ -4588,7 +4588,7 @@
 				12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */,
 				12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
-				123CBB082DEF998C0030A9BD /* P2PServerResponse.swift in Sources */,
+				123CBB082DEF998C0030A9BD /* NearbySharingServerResponse.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
@@ -4691,13 +4691,13 @@
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				209AC6932C332F6000492356 /* PHAssetExtension.swift in Sources */,
-				12444EFA2E09D6F6006CB86A /* P2PServerState.swift in Sources */,
+				12444EFA2E09D6F6006CB86A /* NearbySharingServerState.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
 				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */,
-				12FAC45D2E265BF7007A4651 /* P2PResultVM.swift in Sources */,
+				12FAC45D2E265BF7007A4651 /* NearbySharingResultVM.swift in Sources */,
 				1282DE512DDE1021004D2176 /* NWConnection.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1222363F2DD3DDC4006A9F01 /* RecipientPrepareFileTransferVM.swift in Sources */,
@@ -4773,7 +4773,7 @@
 				1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */,
 				15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */,
 				1267D7782D2ED4780059D50F /* AVCapturePhotoSettingsExtension.swift in Sources */,
-				12FAC4592E2571E0007A4651 /* P2PResultView.swift in Sources */,
+				12FAC4592E2571E0007A4651 /* NearbySharingResultView.swift in Sources */,
 				209AC6832C332DA700492356 /* VaultFilesManagerExtension.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */,

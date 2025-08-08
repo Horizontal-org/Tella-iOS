@@ -1,5 +1,5 @@
 //
-//  P2PSendFilesView.swift
+//  SenderPrepareFileTransferView.swift
 //  Tella
 //
 //  Created by RIMA on 25.02.25.
@@ -9,7 +9,6 @@
 
 import SwiftUI
 import Combine
-
 
 struct SenderPrepareFileTransferView: View {
     

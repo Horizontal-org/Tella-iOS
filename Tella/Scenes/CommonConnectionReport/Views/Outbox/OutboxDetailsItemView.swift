@@ -41,8 +41,8 @@ struct OutboxDetailsItemView: View {
             
             Spacer()
 
-            if let p2pFileStatus = item.p2pFileStatus,
-               let statusIcon = p2pFileStatus.statusIcon {
+            if let fileStatus = item.fileStatus,
+               let statusIcon = fileStatus.statusIcon {
                 Image(statusIcon)
             }
         }
