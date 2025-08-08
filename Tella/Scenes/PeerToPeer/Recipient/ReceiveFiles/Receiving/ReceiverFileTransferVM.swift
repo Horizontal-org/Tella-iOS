@@ -14,7 +14,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     // MARK: - Properties
     
-    private let peerToPeerServer: NearbySharingServer?
+    private let nearbySharingServer: NearbySharingServer?
     private var subscribers = Set<AnyCancellable>()
     
     @Published var progressFile: ProgressFile = ProgressFile()
@@ -25,8 +25,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Initializer
     
     init?(mainAppModel: MainAppModel) {
-        self.peerToPeerServer = mainAppModel.peerToPeerServer
-        guard let session = peerToPeerServer?.serverState.session else { return nil }
+        self.nearbySharingServer = mainAppModel.nearbySharingServer
+        guard let session = nearbySharingServer?.serverState.session else { return nil }
         
         super.init(mainAppModel: mainAppModel,
                    title: LocalizableNearbySharing.receivingAppBar.localized,
@@ -55,7 +55,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Private Methods
     
     private func listenToServer() {
-        peerToPeerServer?.eventPublisher
+        nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -65,11 +65,11 @@ final class ReceiverFileTransferVM: FileTransferVM {
                     self.updateProgress(with: file)
                     
                 case .allTransfersCompleted:
-                    self.peerToPeerServer?.stopServer()
+                    self.nearbySharingServer?.stopServer()
                     let finishedFiles = transferredFiles.filter { $0.status == .finished }
                     if finishedFiles.isEmpty {
                         self.viewAction = .shouldShowResults
-                        self.peerToPeerServer?.cleanServer()
+                        self.nearbySharingServer?.cleanServer()
                     } else {
                         self.viewAction = .transferIsFinished
                         self.saveFiles()
@@ -111,7 +111,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                     }
                     
                     self.viewAction = .shouldShowResults
-                    self.peerToPeerServer?.cleanServer()
+                    self.nearbySharingServer?.cleanServer()
                     
                 case .importProgress(let importProgress):
                     self.updateProgress(importProgress:importProgress)
@@ -131,7 +131,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
-        peerToPeerServer?.resetFullServerState()
+        nearbySharingServer?.resetFullServerState()
         _ = transferredFiles.compactMap({$0.status = .failed})
         self.viewAction = .shouldShowResults
     }

@@ -84,7 +84,7 @@ struct SenderPrepareFileTransferView: View {
     fileprivate var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableNearbySharing.sendFiles.localized,
                              backButtonAction: {
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             self.viewModel.closeConnection()
         })
     }
@@ -94,13 +94,13 @@ struct SenderPrepareFileTransferView: View {
         case .displaySendingFiles:
             let session = self.viewModel.session
             let viewModel = SenderFileTransferVM(mainAppModel: self.viewModel.mainAppModel,
-                                                 repository: self.viewModel.peerToPeerRepository,
+                                                 repository: self.viewModel.nearbySharingRepository,
                                                  session: session)
             self.navigateTo(destination: FileSendingView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
         case .errorOccured:
-            self.popTo(ViewClassType.peerToPeerMainView)
+            self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         default:
             break

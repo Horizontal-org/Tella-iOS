@@ -12,7 +12,7 @@ import Foundation
 struct P2PServerResponse {
     let dataResponse: Data?
     let response: ServerResponseStatus
-    let endpoint: PeerToPeerEndpoint?
+    let endpoint: NearbySharingEndpoint?
 }
 
 enum ServerResponseStatus {

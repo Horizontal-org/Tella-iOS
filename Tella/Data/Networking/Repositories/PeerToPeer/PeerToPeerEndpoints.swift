@@ -1,5 +1,5 @@
 //
-//  PeerToPeerEndpoints.swift
+//  NearbySharingEndpoint.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 3/6/2025.
@@ -7,7 +7,7 @@
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
-enum PeerToPeerEndpoint: String {
+enum NearbySharingEndpoint: String {
     case ping = "/api/v1/ping"
     case register = "/api/v1/register"
     case prepareUpload = "/api/v1/prepare-upload"

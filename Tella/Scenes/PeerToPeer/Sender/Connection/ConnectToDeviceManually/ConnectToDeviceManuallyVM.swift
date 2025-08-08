@@ -12,7 +12,7 @@ import Combine
 
 class ConnectToDeviceManuallyVM: ObservableObject {
     
-    var peerToPeerRepository:PeerToPeerRepository
+    var nearbySharingRepository:NearbySharingRepository
     var sessionId : String?
     var mainAppModel: MainAppModel
     
@@ -37,8 +37,8 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     var connectionInfo : ConnectionInfo?
     
-    init(peerToPeerRepository:PeerToPeerRepository, mainAppModel:MainAppModel) {
-        self.peerToPeerRepository = peerToPeerRepository
+    init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
+        self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
         
         validateFields()
@@ -59,7 +59,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
         let connectionInfo = ConnectionInfo(ipAddress: ipAddress, port: port, certificateHash: nil, pin: pin)
         self.connectionInfo = connectionInfo
         
-        self.peerToPeerRepository.getHash(connectionInfo: connectionInfo)
+        self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 debugLog(completion)

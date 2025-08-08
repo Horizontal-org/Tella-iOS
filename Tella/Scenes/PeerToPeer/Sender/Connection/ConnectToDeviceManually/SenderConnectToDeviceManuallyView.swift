@@ -112,7 +112,7 @@ struct SenderConnectToDeviceManuallyView: View {
         case .showVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return  }
             let viewModel = ManuallyVerificationViewModel(participant: .sender,
-                                                          peerToPeerRepository:viewModel.peerToPeerRepository,
+                                                          nearbySharingRepository:viewModel.nearbySharingRepository,
                                                           connectionInfo: connectionInfo,
                                                           mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel ))

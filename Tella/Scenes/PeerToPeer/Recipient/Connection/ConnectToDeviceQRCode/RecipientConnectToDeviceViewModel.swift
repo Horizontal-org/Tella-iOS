@@ -24,7 +24,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     var mainAppModel: MainAppModel
     var certificateGenerator : CertificateGenerator
-    var peerToPeerServer: NearbySharingServer?
+    var nearbySharingServer: NearbySharingServer?
     var connectionInfo : ConnectionInfo?
     
     @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
@@ -36,7 +36,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel) {
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
-        self.peerToPeerServer = mainAppModel.peerToPeerServer
+        self.nearbySharingServer = mainAppModel.nearbySharingServer
         
         generateConnectionInfo()
     }
@@ -66,12 +66,12 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             
             self.connectionInfo = connectionInfo
             self.listenToServerRegistrationEvents()
-            self.peerToPeerServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
+            self.nearbySharingServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
         }
     }
     
     private func listenToServerRegistrationEvents() {
-        peerToPeerServer?.eventPublisher
+        nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -97,7 +97,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func stopServerListening() {
-        peerToPeerServer?.resetServerState()
+        nearbySharingServer?.resetServerState()
     }
     
 }

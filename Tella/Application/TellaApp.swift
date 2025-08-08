@@ -56,7 +56,7 @@ struct TellaApp: App {
         let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
         
         if shouldResetApp && !hasFileOnBackground {
-            appViewState.homeViewModel.peerToPeerServer?.resetFullServerState()
+            appViewState.homeViewModel.nearbySharingServer?.resetFullServerState()
             
             appViewState.homeViewModel.shouldSaveCurrentData = true
             DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
@@ -74,7 +74,7 @@ struct TellaApp: App {
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
             UIApplication.getTopViewController()?.dismiss(animated: false)
             
-            appViewState.homeViewModel.peerToPeerServer?.resetFullServerState()
+            appViewState.homeViewModel.nearbySharingServer?.resetFullServerState()
 
             DispatchQueue.main.async {
                 appViewState.resetApp()

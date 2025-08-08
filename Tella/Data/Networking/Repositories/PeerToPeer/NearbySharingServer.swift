@@ -1,5 +1,5 @@
 //
-//  PeerToPeerServer.swift
+//  NearbySharingServer.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 18/3/2025.
@@ -48,7 +48,7 @@ final class NearbySharingServer {
     private(set) var serverState = P2PServerState()
     
     /// Single Combine publisher for all server events.
-    var eventPublisher = PassthroughSubject<PeerToPeerEvent, Never>()
+    var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     
     // Stored context for pending user decisions
     private var pendingRegisterConnection: NWConnection?
@@ -96,12 +96,12 @@ final class NearbySharingServer {
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
         pendingUploadConnection = nil
-        eventPublisher = PassthroughSubject<PeerToPeerEvent, Never>()
+        eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     }
     
     // MARK: - Response Helpers
     
-    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: PeerToPeerEndpoint? = nil) -> P2PServerResponse {
+    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> P2PServerResponse {
         let errorPayload = ErrorMessage(error: status.reasonPhrase)
         let responseData = HTTPResponseBuilder(status: status)
             .setContentType(.json)
@@ -111,7 +111,7 @@ final class NearbySharingServer {
         return P2PServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
     }
     
-    private func sendSuccessResponse(connection: NWConnection, endpoint: PeerToPeerEndpoint) {
+    private func sendSuccessResponse(connection: NWConnection, endpoint: NearbySharingEndpoint) {
         let payload = BoolResponse(success: true)
         guard let responseData = HTTPResponseBuilder()
             .setContentType(.json)
@@ -178,7 +178,7 @@ final class NearbySharingServer {
     
     private func handleError(for request: HTTPRequest?, on connection: NWConnection) {
         guard let req = request,
-              let endpoint = PeerToPeerEndpoint(rawValue: req.endpoint) else {
+              let endpoint = NearbySharingEndpoint(rawValue: req.endpoint) else {
             return
         }
         
@@ -193,7 +193,7 @@ final class NearbySharingServer {
     
     /// Process a completed HTTP request (headers and full body if applicable).
     private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
-        guard let endpoint = PeerToPeerEndpoint(rawValue: httpRequest.endpoint) else {
+        guard let endpoint = NearbySharingEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Received request for unknown endpoint")
             return
         }
@@ -241,7 +241,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
     }
     
     func networkManager(verifyParametersFor context: ConnectionContext) async -> URL? {
-        guard context.request.endpoint == PeerToPeerEndpoint.upload.rawValue else {
+        guard context.request.endpoint == NearbySharingEndpoint.upload.rawValue else {
             return nil
         }
         
