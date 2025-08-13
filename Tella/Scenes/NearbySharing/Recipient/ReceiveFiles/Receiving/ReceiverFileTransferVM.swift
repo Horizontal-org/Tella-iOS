@@ -21,21 +21,27 @@ final class ReceiverFileTransferVM: FileTransferVM {
     @Published var should: Bool = false
     
     var rootFile: VaultFileDB? = nil
-
+    
     // MARK: - Initializer
     
     init?(mainAppModel: MainAppModel) {
         self.nearbySharingServer = mainAppModel.nearbySharingServer
-        guard let session = nearbySharingServer?.serverState.session else { return nil }
+        guard nearbySharingServer != nil else { return nil }
         
-        super.init(mainAppModel: mainAppModel,
-                   title: LocalizableNearbySharing.receivingAppBar.localized,
-                   bottomSheetTitle: LocalizableNearbySharing.stopReceivingSheetTitle.localized,
-                   bottomSheetMessage: LocalizableNearbySharing.stopReceivingSheetExpl.localized)
-        
-        transferredFiles = Array(session.files.values)
-        initProgress(session: session)
-        listenToServer()
+        super.init(
+            mainAppModel: mainAppModel,
+            title: LocalizableNearbySharing.receivingAppBar.localized,
+            bottomSheetTitle: LocalizableNearbySharing.stopReceivingSheetTitle.localized,
+            bottomSheetMessage: LocalizableNearbySharing.stopReceivingSheetExpl.localized
+        )
+        Task { [weak self] in
+            guard let self, let server = self.nearbySharingServer else { return }
+            if let session = await server.state.currentSession() {
+                self.transferredFiles = Array(session.files.values)
+                self.initProgress(session: session)
+                self.listenToServer()
+            }
+        }
     }
     
     // MARK: - Public Methods
