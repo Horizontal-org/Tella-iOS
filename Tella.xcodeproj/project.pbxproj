@@ -58,6 +58,8 @@
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
 		121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8212943A2F00056AC2A /* ReportRepository.swift */; };
 		121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8252943D52B0056AC2A /* SubmitReportResult.swift */; };
+		121AFF932E4CA9DA007300AD /* NearbySharingStateActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */; };
+		121AFF952E4CDE7B007300AD /* NearbySharingServerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AFF942E4CDE6E007300AD /* NearbySharingServerHandler.swift */; };
 		121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */; };
 		121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */; };
 		121C5D7729422D6800A64123 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7629422D6800A64123 /* DataModel.swift */; };
@@ -811,6 +813,8 @@
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		121AD8212943A2F00056AC2A /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		121AD8252943D52B0056AC2A /* SubmitReportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportResult.swift; sourceTree = "<group>"; };
+		121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingStateActor.swift; sourceTree = "<group>"; };
+		121AFF942E4CDE6E007300AD /* NearbySharingServerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServerHandler.swift; sourceTree = "<group>"; };
 		121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
 		121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsResult.swift; sourceTree = "<group>"; };
 		121C5D7629422D6800A64123 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -1964,8 +1968,10 @@
 			children = (
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
+				121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */,
 				12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */,
 				126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */,
+				121AFF942E4CDE6E007300AD /* NearbySharingServerHandler.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
@@ -4508,6 +4514,7 @@
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
+				121AFF952E4CDE7B007300AD /* NearbySharingServerHandler.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
 				128EE4EE2E8FD2DA00DF55C5 /* MainServerOnboardingView.swift in Sources */,
@@ -4896,6 +4903,7 @@
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
 				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
+				121AFF932E4CA9DA007300AD /* NearbySharingStateActor.swift in Sources */,
 				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyVM.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,

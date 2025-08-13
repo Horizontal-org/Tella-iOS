@@ -11,49 +11,15 @@ import Network
 import Combine
 import Foundation
 
-// MARK: - Handler Protocols
-
-protocol PingHandler {
-    func handlePingRequest(on connection: NWConnection)
-}
-
-protocol RegisterHandler {
-    func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateRegisterServerResponse(from request: HTTPRequest) throws -> NearbySharingServerResponse
-    func respondToRegistrationRequest(accept: Bool)
-}
-
-protocol PrepareUploadHandler {
-    func handlePrepareUploadRequest(on connection: NWConnection, request: HTTPRequest)
-    func respondToFileOffer(accept: Bool)
-}
-
-protocol UploadHandler {
-    func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL?
-    func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest)
-}
-
-protocol CloseConnectionHandler {
-    func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateCloseConnectionResponse(from requestBody: String) throws -> NearbySharingServerResponse
-}
-
 // MARK: - Main Server Class
 
 final class NearbySharingServer {
     
-    // MARK: - Properties
-    
+    let state = NearbySharingStateActor()
     private let networkManager = NetworkManager()
-    private(set) var serverState = NearbySharingServerState()
     
     /// Single Combine publisher for all server events.
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
-    
-    // Stored context for pending user decisions
-    private var pendingRegisterConnection: NWConnection?
-    private var pendingRegisterRequest: HTTPRequest?
-    private var pendingUploadConnection: NWConnection?
     
     init() {
         networkManager.delegate = self
@@ -62,7 +28,7 @@ final class NearbySharingServer {
     // MARK: - Server Lifecycle
     
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
-        serverState.pin = pin
+        Task { await state.setPin(pin) }
         networkManager.startListening(port: port, clientIdentity: clientIdentity)
     }
     
@@ -72,44 +38,25 @@ final class NearbySharingServer {
     
     func resetServerState() {
         stopServer()
-        resetConnectionState()
+        Task { await state.resetConnectionState() }
+        eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     }
     
     func resetFullServerState() {
         stopServer()
         cleanServer()
     }
-
+    
     func cleanServer() {
         networkManager.cleanConnections()
-        removeTempFiles()
-        resetConnectionState()
-    }
-    
-    private func removeTempFiles() {
-        guard let fileURLs = serverState.session?.files.values.compactMap({ $0.url }) else { return }
-        fileURLs.forEach { $0.remove() }
-    }
-    
-    private func resetConnectionState() {
-        serverState.reset()
-        pendingRegisterConnection = nil
-        pendingRegisterRequest = nil
-        pendingUploadConnection = nil
+        Task {
+            await state.removeTempFiles()
+            await state.resetConnectionState()
+        }
         eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     }
     
     // MARK: - Response Helpers
-    
-    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> NearbySharingServerResponse {
-        let errorPayload = ErrorMessage(error: status.reasonPhrase)
-        let responseData = HTTPResponseBuilder(status: status)
-            .setContentType(.json)
-            .setBody(errorPayload)
-            .closeConnection()
-            .build()
-        return NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
-    }
     
     private func sendSuccessResponse(connection: NWConnection, endpoint: NearbySharingEndpoint) {
         let payload = BoolResponse(success: true)
@@ -123,6 +70,16 @@ final class NearbySharingServer {
         }
         let response = NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: endpoint)
         sendData(connection: connection, serverResponse: response)
+    }
+    
+    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> NearbySharingServerResponse {
+        let errorPayload = ErrorMessage(error: status.reasonPhrase)
+        let responseData = HTTPResponseBuilder(status: status)
+            .setContentType(.json)
+            .setBody(errorPayload)
+            .closeConnection()
+            .build()
+        return NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
     }
     
     private func sendResponse(connection: NWConnection, serverResponse: NearbySharingServerResponse?) {
@@ -165,7 +122,10 @@ final class NearbySharingServer {
         
         switch endpoint {
         case .register:
-            eventPublisher.send(.didRegister(success: success, manual: serverState.isUsingManualConnection))
+            Task {
+                let manual = await state.isManualConnection()
+                eventPublisher.send(.didRegister(success: success, manual: manual))
+            }
         case .prepareUpload:
             eventPublisher.send(.prepareUploadResponseSent(success: success))
         case .closeConnection:
@@ -191,7 +151,6 @@ final class NearbySharingServer {
     
     // MARK: - Request Processing
     
-    /// Process a completed HTTP request (headers and full body if applicable).
     private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
         guard let endpoint = NearbySharingEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Received request for unknown endpoint")
@@ -206,9 +165,7 @@ final class NearbySharingServer {
         case .prepareUpload:
             handlePrepareUploadRequest(on: connection, request: httpRequest)
         case .upload:
-            Task {
-                await handleFileUploadRequest(on: connection, request: httpRequest)
-            }
+            Task { _ = await handleFileUploadRequest(on: connection, request: httpRequest) }
         case .closeConnection:
             handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
@@ -230,13 +187,11 @@ extension NearbySharingServer: NetworkManagerDelegate {
     }
     
     func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
-        // Handle connection/request failure
         guard let context else { return  }
         handleError(for: context.request, on: context.connection)
     }
     
     func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
-        // Received a full request (possibly with body fully read)
         processRequest(connection: context.connection, httpRequest: context.request)
     }
     
@@ -244,66 +199,66 @@ extension NearbySharingServer: NetworkManagerDelegate {
         guard context.request.endpoint == NearbySharingEndpoint.upload.rawValue else {
             return nil
         }
-        
         return await handleFileUploadRequest(on: context.connection, request: context.request)
     }
     
     func networkManager(didReceive bytes: Int, for context: ConnectionContext) {
-        // Received a chunk of data for an ongoing upload
         processProgress(connection: context.connection, bytesReceived: bytes, for: context.request)
     }
 }
-// MARK: - PingHandler Implementation
+
+// MARK: - PingHandler
 
 extension NearbySharingServer: PingHandler {
     func handlePingRequest(on connection: NWConnection) {
-        // A ping indicates a new manual connection attempt.
         eventPublisher.send(.verificationRequested)
-        serverState.isUsingManualConnection = true
-        // Respond to the ping with success (to acknowledge).
+        Task { await state.markManualConnection() }
         sendSuccessResponse(connection: connection, endpoint: .ping)
     }
 }
 
-// MARK: - RegisterHandler Implementation
+// MARK: - RegisterHandler
 
 extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
-        if serverState.isUsingManualConnection {
-            // Manual mode: store the request and ask the user for confirmation.
-            pendingRegisterConnection = connection
-            pendingRegisterRequest = request
-            eventPublisher.send(.registrationRequested)
-        } else {
-            // Automatic mode: process registration immediately.
-            acceptRegisterRequest(connection: connection, httpRequest: request)
+        Task {
+            if await state.isManualConnection() {
+                await state.setPendingRegister(connection: connection, request: request)
+                eventPublisher.send(.registrationRequested)
+            } else {
+                await acceptRegisterRequest(connection: connection, httpRequest: request)
+            }
         }
     }
     
-    func generateRegisterServerResponse(from request: HTTPRequest) throws -> NearbySharingServerResponse {
-        // Ensure no active session exists
-        if serverState.session != nil {
-            throw HTTPStatusCode.conflict  // Already a session in progress
+    func generateRegisterServerResponse(from request: HTTPRequest) async throws -> NearbySharingServerResponse {
+        // 1) existing session / rate limiting
+        if await state.hasSession() {
+            throw HTTPStatusCode.conflict
         }
-        if serverState.hasReachedMaxAttempts {
+        if await state.tooManyAttempts() {
             throw HTTPStatusCode.tooManyRequests
         }
-        // Decode the registration request body (expects a PIN)
+        
+        // 2) decode body
         guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
-        // Verify the PIN
-        if serverState.pin != regReq.pin {
-            serverState.incrementFailedAttempts()
-            if serverState.hasReachedMaxAttempts {
+        
+        // 3) verify PIN
+        guard let pin = regReq.pin, await state.pinMatches(pin) else {
+            await state.incrementFailedAttempts()
+            if await state.tooManyAttempts() {
                 throw HTTPStatusCode.tooManyRequests
             }
             throw HTTPStatusCode.unauthorized
         }
-        // PIN is correct, reset failed attempts and create a session
-        serverState.session = NearbySharingSession(sessionId: UUID().uuidString)
-        // Build a success response with the new session ID
-        let payload = RegisterResponse(sessionId: serverState.session!.sessionId)
+        
+        // 4) create session
+        let newSessionId = await state.createSessionAndReturnID()
+        
+        // 5) response
+        let payload = RegisterResponse(sessionId: newSessionId)
         guard let responseData = HTTPResponseBuilder()
             .setContentType(.json)
             .setBody(payload)
@@ -311,28 +266,24 @@ extension NearbySharingServer: RegisterHandler {
             .build() else {
             throw HTTPStatusCode.internalServerError
         }
+        
         return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
     }
     
-    /// Call this to respond to a pending registration request (from a `.registrationRequested` event).
     func respondToRegistrationRequest(accept: Bool) {
-        guard let connection = pendingRegisterConnection,
-              let request = pendingRegisterRequest else { return } // No pending request to respond to
-        
-        if accept {
-            acceptRegisterRequest(connection: connection, httpRequest: request)
-        } else {
-            discardRegisterRequest(connection: connection)
+        Task {
+            guard let (connection, request) = await state.getPendingRegister() else { return }
+            if accept {
+                await acceptRegisterRequest(connection: connection, httpRequest: request)
+            } else {
+                discardRegisterRequest(connection: connection)
+            }
         }
-        // Clear the pending request after responding
-        pendingRegisterConnection = nil
-        pendingRegisterRequest = nil
     }
     
-    
-    private func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) {
+    private func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
         do {
-            let serverResponse = try generateRegisterServerResponse(from: httpRequest)
+            let serverResponse = try await generateRegisterServerResponse(from: httpRequest)
             sendResponse(connection: connection, serverResponse: serverResponse)
         } catch let statusError as HTTPStatusCode {
             sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
@@ -346,7 +297,7 @@ extension NearbySharingServer: RegisterHandler {
     }
 }
 
-// MARK: - PrepareUploadHandler Implementation
+// MARK: - PrepareUploadHandler
 
 extension NearbySharingServer: PrepareUploadHandler {
     
@@ -355,35 +306,24 @@ extension NearbySharingServer: PrepareUploadHandler {
             sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
             return
         }
-        guard prepReq.sessionID == serverState.session?.sessionId else {
-            sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
-            return
-        }
-        // Store metadata about the files to be uploaded
-        serverState.session?.title = prepReq.title
-        prepReq.files?.forEach { file in
-            if let fileId = file.id {
-                serverState.session?.files[fileId] = NearbySharingTransferredFile(file: file)
+        
+        Task {
+            let sessionID = await state.currentSessionID()
+            guard prepReq.sessionID == sessionID else {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
+                return
             }
+            
+            await state.storePrepareUpload(prepReq)
+            await state.setPendingUploadConnection(connection)
+            eventPublisher.send(.prepareUploadReceived(files: prepReq.files))
         }
-        // Save the connection and notify the UI about incoming files
-        pendingUploadConnection = connection
-        eventPublisher.send(.prepareUploadReceived(files: prepReq.files))
     }
     
-    /// Call this to respond to a pending file upload offer (from a `.prepareUploadReceived` event).
-    func respondToFileOffer(accept: Bool) {
-        guard let connection = pendingUploadConnection else { return } // No pending file offer to respond to
-        sendPrepareUploadResponse(connection: connection, accept: accept)
-        pendingUploadConnection = nil
-    }
-    
-    private func createAcceptUploadResponse() -> NearbySharingServerResponse {
-        var filesResponse: [NearbySharingFileResponse] = []
-        serverState.session?.files.forEach { (fileID, fileInfo) in
-            let transmissionId = UUID().uuidString
-            serverState.session?.files[fileID]?.transmissionId = transmissionId
-            filesResponse.append(NearbySharingFileResponse(id: fileInfo.file.id, transmissionID: transmissionId))
+    private func createAcceptUploadResponse() async -> NearbySharingServerResponse {
+        let fileTuples = await state.assignTransmissionIDs()
+        let filesResponse = fileTuples.map {
+            NearbySharingFileResponse(id: $0.originalID, transmissionID: $0.transmissionID)
         }
         
         let payload = PrepareUploadResponse(files: filesResponse)
@@ -395,12 +335,24 @@ extension NearbySharingServer: PrepareUploadHandler {
             return createErrorResponse(.internalServerError)
         }
         
-        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .prepareUpload)
+        return NearbySharingServerResponse(
+            dataResponse: responseData,
+            response: .success,
+            endpoint: .prepareUpload
+        )
     }
     
-    private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) {
-        let response = accept ? createAcceptUploadResponse() : createRejectUploadResponse()
+    private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) async {
+        let response = accept ? await createAcceptUploadResponse()
+        : createRejectUploadResponse()
         sendResponse(connection: connection, serverResponse: response)
+    }
+    
+    func respondToFileOffer(accept: Bool) {
+        Task {
+            guard let connection = await state.getPendingUploadConnection() else { return }
+            await sendPrepareUploadResponse(connection: connection, accept: accept)
+        }
     }
     
     private func createRejectUploadResponse() -> NearbySharingServerResponse {
@@ -415,110 +367,104 @@ extension NearbySharingServer: UploadHandler {
     func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL? {
         do {
             let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+            
+            // --- Validate query params ---
             guard let fileID = uploadReq.fileID,
                   let transmissionID = uploadReq.transmissionID,
                   let sessionID = uploadReq.sessionID else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
                 return nil
             }
-            // Validate session and file identifiers
-            guard sessionID == serverState.session?.sessionId else {
+            
+            // --- Validate session ---
+            let currentID = await state.currentSessionID()
+            guard sessionID == currentID else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
                 return nil
             }
-            guard let fileInfo = serverState.session?.files[fileID],
-                  fileInfo.transmissionId == transmissionID,
-                  let fileName = fileInfo.file.fileName else {
+            
+            // --- Validate file + transmission, grab fileName for mutations ---
+            guard let fileInfo = await state.fileInfo(for: fileID),
+                  fileInfo.transmissionID == transmissionID,
+                  let fileName = fileInfo.fileName else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
                 return nil
             }
             
             if request.bodyFullyReceived {
-                // File upload complete
+                await state.markUploadFinished(fileID: fileID)
                 sendSuccessResponse(connection: connection, endpoint: .upload)
-                fileInfo.status = .finished
-                serverState.session?.files[fileID] = fileInfo
-                checkAllFilesReceived()
+                
+                if await state.allTransfersCompleted() {
+                    eventPublisher.send(.allTransfersCompleted)
+                }
                 return nil
             } else {
-                // File upload starting: provide a temp file URL to write incoming data
-                let fileURL = FileManager.tempDirectory(withFileName: fileName)
-                fileInfo.status = .transferring
-                fileInfo.url = fileURL
-                serverState.session?.files[fileID] = fileInfo
-                return fileURL
+                let url = await state.beginUpload(fileID: fileID, fileName: fileName)
+                return url
             }
+            
         } catch {
-            debugLog("Error processing file upload request")
+            debugLog("Error processing file upload request: \(error)")
             sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
             return nil
         }
     }
     
-    /// Update progress for a file upload.
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest) {
-        do {
-            let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
-            guard let fileID = uploadReq.fileID,
-                  let fileInfo = serverState.session?.files[fileID] else {
-                // Can't find matching file info
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
-                return
+        guard let uploadReq: FileUploadRequest = try? request.queryParameters.decode(FileUploadRequest.self),
+              let fileID = uploadReq.fileID else {
+            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            return
+        }
+        
+        Task {
+            if let updated = await state.updateUploadProgress(fileID: fileID, bytes: bytesReceived) {
+                eventPublisher.send(.fileTransferProgress(updated))
             }
-            // Update the bytes received for the file and notify progress
-            fileInfo.bytesReceived += bytesReceived
-            serverState.session?.files[fileID] = fileInfo
-            eventPublisher.send(.fileTransferProgress(fileInfo))
-        } catch {
-            debugLog("Failed to decode file upload progress")
-            // We could send an error event here if needed
         }
     }
     
     func handleUploadFailure(connection: NWConnection, request: HTTPRequest?) {
-        guard let req = request else {
-            return
-        }
+        guard
+            let req = request,
+            let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
+            let fileID = uploadReq.fileID
+        else { return }
         
-        if let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
-           let fileID = uploadReq.fileID {
-            serverState.session?.files[fileID]?.status = .failed
-        }
-        
-        checkAllFilesReceived()
-    }
-    
-    /// Check if all files in the current session have been received or completed.
-    private func checkAllFilesReceived() {
-        guard let files = serverState.session?.files else { return }
-        let pendingFiles = files.values.filter { $0.status == .transferring || $0.status == .queue }
-        if pendingFiles.isEmpty {
-            // All files are finished transferring
-            eventPublisher.send(.allTransfersCompleted)
+        Task {
+            await state.markUploadFailed(fileID: fileID)
+            if await state.allTransfersCompleted() {
+                eventPublisher.send(.allTransfersCompleted)
+            }
         }
     }
 }
 
-// MARK: - CloseConnectionHandler Implementation
+// MARK: - CloseConnectionHandler
 
 extension NearbySharingServer: CloseConnectionHandler {
+    
     func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest) {
-        do {
-            let closeResponse = try generateCloseConnectionResponse(from: request.body)
-            sendResponse(connection: connection, serverResponse: closeResponse)
-        } catch let statusError as HTTPStatusCode {
-            sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
-        } catch {
-            sendInternalServerError(connection: connection)
+        Task {
+            do {
+                let closeResponse = try await generateCloseConnectionResponse(from: request.body)
+                sendResponse(connection: connection, serverResponse: closeResponse)
+            } catch let statusError as HTTPStatusCode {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
+            } catch {
+                sendInternalServerError(connection: connection)
+            }
         }
     }
     
-    func generateCloseConnectionResponse(from requestBody: String) throws -> NearbySharingServerResponse {
+    func generateCloseConnectionResponse(from requestBody: String) async throws -> NearbySharingServerResponse {
         guard let closeReq = requestBody.decodeJSON(CloseConnectionRequest.self) else {
             throw HTTPStatusCode.badRequest
         }
         
-        guard closeReq.sessionID == serverState.session?.sessionId else {
+        let sessionID = await state.currentSessionID()
+        guard closeReq.sessionID == sessionID else {
             throw HTTPStatusCode.unauthorized
         }
         
@@ -531,14 +477,16 @@ extension NearbySharingServer: CloseConnectionHandler {
             throw HTTPStatusCode.internalServerError
         }
         
-        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .closeConnection)
+        return NearbySharingServerResponse(
+            dataResponse: responseData,
+            response: .success,
+            endpoint: .closeConnection
+        )
     }
 }
 
-// MARK: - Stub Extension
+// MARK: - Stub
 
 extension NearbySharingServer {
-    static func stub() -> NearbySharingServer {
-        return NearbySharingServer()
-    }
+    static func stub() -> NearbySharingServer { NearbySharingServer() }
 }
