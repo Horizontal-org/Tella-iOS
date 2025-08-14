@@ -11,8 +11,6 @@ import Network
 import Combine
 import Foundation
 
-// MARK: - Main Server Class
-
 final class NearbySharingServer {
     
     let state = NearbySharingStateActor()
@@ -22,18 +20,18 @@ final class NearbySharingServer {
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     
     init() {
-        networkManager.delegate = self
+        Task { await networkManager.setDelegate(self) }
     }
     
     // MARK: - Server Lifecycle
     
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
         Task { await state.setPin(pin) }
-        networkManager.startListening(port: port, clientIdentity: clientIdentity)
+        Task { await networkManager.startListening(port: port, clientIdentity: clientIdentity) }
     }
     
     func stopServer() {
-        networkManager.stopListening()
+        Task { await networkManager.stopListening() }
     }
     
     func resetServerState() {
@@ -48,8 +46,8 @@ final class NearbySharingServer {
     }
     
     func cleanServer() {
-        networkManager.cleanConnections()
         Task {
+            await networkManager.cleanConnections()
             await state.removeTempFiles()
             await state.resetConnectionState()
         }
@@ -187,7 +185,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
     }
     
     func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
-        guard let context else { return  }
+        guard let context else { return }
         handleError(for: context.request, on: context.connection)
     }
     
