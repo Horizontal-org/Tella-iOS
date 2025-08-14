@@ -13,4 +13,8 @@ extension NWConnection {
     var id: ObjectIdentifier {
         return ObjectIdentifier(self)
     }
+    
+    /// Convenience for naming connection queues
+    var idHash: Int { ObjectIdentifier(self).hashValue }
+
 }
