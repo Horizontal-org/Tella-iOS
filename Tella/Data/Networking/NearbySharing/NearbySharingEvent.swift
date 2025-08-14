@@ -8,6 +8,7 @@
 //
 
 /// Represents events and notifications from the NearbySharingEvent.
+@MainActor
 enum NearbySharingEvent {
     case serverStarted
     case serverStartFailed(Error?)

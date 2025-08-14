@@ -11,7 +11,7 @@ import SwiftUI
 
 struct SenderConnectToDeviceManuallyView: View {
     
-    @ObservedObject var viewModel: ConnectToDeviceManuallyVM
+    @StateObject var viewModel: ConnectToDeviceManuallyVM
     @State var isBottomSheetShown : Bool = false
     
     var body: some View {
