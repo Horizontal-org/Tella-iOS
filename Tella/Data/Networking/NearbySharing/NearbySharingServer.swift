@@ -20,18 +20,18 @@ final class NearbySharingServer {
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     
     init() {
-        Task { await networkManager.setDelegate(self) }
+          networkManager.setDelegate(self)
     }
     
     // MARK: - Server Lifecycle
     
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
         Task { await state.setPin(pin) }
-        Task { await networkManager.startListening(port: port, clientIdentity: clientIdentity) }
+   networkManager.startListening(port: port, clientIdentity: clientIdentity)
     }
     
     func stopServer() {
-        Task { await networkManager.stopListening() }
+      networkManager.stopListening()
     }
     
     func resetServerState() {
@@ -47,7 +47,7 @@ final class NearbySharingServer {
     
     func cleanServer() {
         Task {
-            await networkManager.cleanConnections()
+           networkManager.cleanConnections()
             await state.removeTempFiles()
             await state.resetConnectionState()
         }
@@ -383,14 +383,17 @@ extension NearbySharingServer: UploadHandler {
             
             // --- Validate file + transmission, grab fileName for mutations ---
             guard let fileInfo = await state.fileInfo(for: fileID),
-                  fileInfo.transmissionID == transmissionID,
-                  let fileName = fileInfo.fileName else {
+                  fileInfo.transmissionId == transmissionID,
+                  let fileName = fileInfo.file.fileName else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
                 return nil
             }
             
             if request.bodyFullyReceived {
                 await state.markUploadFinished(fileID: fileID)
+                if let fileInfo = await state.fileInfo(for: fileID) {
+                    eventPublisher.send(.fileTransferProgress(fileInfo))
+                }
                 sendSuccessResponse(connection: connection, endpoint: .upload)
                 
                 if await state.allTransfersCompleted() {
