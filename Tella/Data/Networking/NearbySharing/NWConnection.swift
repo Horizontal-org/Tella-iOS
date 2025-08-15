@@ -28,20 +28,17 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManager(didFailWithListener error: Error?)
 }
 
-actor NetworkManager {
+class NetworkManager {
     
     // MARK: - Properties
     
     private var listener: NWListener?
-    private var activeConnections: [ObjectIdentifier: ConnectionContext] = [:]
+    private let connections = ConnectionStore()
     
     private weak var delegate: NetworkManagerDelegate?
     
     private let minIncompleteLength = 1
     private let maxLength = 1024 * 1024
-    
-    // A background queue for Network.framework runloops.
-    private let networkQueue = DispatchQueue(label: "NearbySharing.NetworkListener")
     
     // MARK: - Delegate
     
@@ -63,7 +60,7 @@ actor NetworkManager {
             
             self.listener = listener
             configureListener(listener)
-            listener.start(queue: networkQueue)
+            listener.start(queue: .main)
         } catch {
             delegate?.networkManager(didFailWithListener: error)
         }
@@ -73,13 +70,16 @@ actor NetworkManager {
         if listener?.state != .cancelled {
             listener?.cancel()
         }
-        for context in activeConnections.values {
-            context.connection.cancel()
+        Task {
+            for conn in await connections.allConnections() {
+                conn.cancel()
+            }
+            await connections.removeAll()
         }
     }
     
     func cleanConnections() {
-        activeConnections.removeAll()
+        Task { await connections.removeAll() }
     }
     
     func sendData(to connection: NWConnection, data: Data) async throws {
@@ -106,7 +106,7 @@ actor NetworkManager {
         // Use our network queue for the challenge block
         sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { _, completion in
             completion(identity)
-        }, networkQueue)
+        }, .main)
         
         return NWParameters(tls: tlsOptions)
     }
@@ -121,11 +121,11 @@ actor NetworkManager {
                 switch state {
                 case .ready:
                     debugLog("Listener ready")
-                    await self.delegate?.networkManagerDidStartListening()
+                    self.delegate?.networkManagerDidStartListening()
                 case .failed(let error):
                     debugLog("Listener failed")
-                    await self.delegate?.networkManager(didFailWithListener: error)
-                    await self.stopListening()
+                    self.delegate?.networkManager(didFailWithListener: error)
+                    self.stopListening()
                 case .cancelled:
                     debugLog("Listener cancelled")
                 default:
@@ -134,10 +134,7 @@ actor NetworkManager {
             }
         }
         listener.newConnectionHandler = { [weak self] connection in
-            guard let self else { return }
-            Task { [weak self] in
-                await self?.handleNewConnection(connection)
-            }
+            self?.handleNewConnection(connection)
         }
     }
     
@@ -148,44 +145,39 @@ actor NetworkManager {
         configureParser(parser, for: connection)
         
         let context = ConnectionContext(connection: connection, request: parser.request)
-        activeConnections[connection.id] = context
+        Task { await connections.set(context, for: connection.id) }   // <- actor call
         
-        // Start the connection on a dedicated queue
-        connection.start(queue: DispatchQueue(label: "Nearby.Connection.\(connection.idHash)"))
+        connection.start(queue: .main)
         receiveData(on: connection, using: parser)
     }
     
     private func receiveData(on connection: NWConnection, using parser: HTTPParser) {
         connection.receive(minimumIncompleteLength: minIncompleteLength, maximumLength: maxLength) { [weak self] data, _, _, error in
             guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
-                if let error = error {
-                    await self.handleConnectionError(connection, error: error)
-                    return
-                }
-                guard let data = data else {
-                    await self.handleConnectionError(connection, error: nil)
-                    return
-                }
-                await self.processIncomingData(data, on: connection, with: parser)
+            if let error = error {
+                self.handleConnectionError(connection, error: error)
+                return
             }
+            guard let data = data else {
+                self.handleConnectionError(connection, error: nil)
+                return
+            }
+            self.processIncomingData(data, on: connection, with: parser)
         }
     }
     
-    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser) async {
+    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser)  {
         do {
             try parser.parse(data: data)
-            _ = updateContext(for: connection, with: parser.request)
-            
+            Task { _ = await self.updateContext(for: connection, with: parser.request) }
             if parser.parserIsPaused {
-                try parser.resumeParsing()
-            }
+                
+                return }
             
             continueReceiving(connection: connection, parser: parser)
         } catch {
             debugLog("Parsing error")
-            await self.handleConnectionError(connection, error: error)
+            self.handleConnectionError(connection, error: error)
         }
     }
     
@@ -194,10 +186,11 @@ actor NetworkManager {
             receiveData(on: connection, using: parser)
             return
         }
-        if let ctx = connectionContext(for: connection) {
-            Task { [weak self] in
-                guard let self else { return }
-                await self.delegate?.networkManager(didReceiveCompleteRequest: ctx)
+        Task {
+            if let ctx = await self.connectionContext(for: connection) {
+                await MainActor.run {
+                    self.delegate?.networkManager(didReceiveCompleteRequest: ctx)
+                }
             }
         }
     }
@@ -207,21 +200,25 @@ actor NetworkManager {
     private func configureParser(_ parser: HTTPParser, for connection: NWConnection) {
         parser.onReceiveBody = { [weak self] length in
             guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
+            Task {
                 if let context = await self.updateContext(for: connection, with: parser.request) {
-                    await self.delegate?.networkManager(didReceive: length, for: context)
+                    await MainActor.run {
+                        self.delegate?.networkManager(didReceive: length, for: context)
+                    }
                 }
             }
         }
         
         parser.onReceiveQueryParameters = { [weak self] in
             guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
+            Task {
                 if let context = await self.updateContext(for: connection, with: parser.request),
                    let url = await self.delegate?.networkManager(verifyParametersFor: context) {
                     parser.fileURL = url
+                    
+                    try parser.resumeParsing()
+                    self.continueReceiving(connection: connection, parser: parser)
+                    
                 }
             }
         }
@@ -229,23 +226,55 @@ actor NetworkManager {
     
     // MARK: - Helpers
     
-    private func handleConnectionError(_ connection: NWConnection, error: Error?) async {
-        let context = connectionContext(for: connection)
-        delegate?.networkManager(didFailWith: error, context: context)
-        activeConnections.removeValue(forKey: connection.id)
-        connection.cancel()
+    private func handleConnectionError(_ connection: NWConnection, error: Error?) {
+        Task {
+            let ctx = await  self.connectionContext(for: connection)
+            await MainActor.run {
+                self.delegate?.networkManager(didFailWith: error, context: ctx)
+            }
+            await self.connections.remove(for: connection.id)
+            connection.cancel()
+        }
     }
     
-    private func connectionContext(for connection: NWConnection) -> ConnectionContext? {
-        activeConnections[connection.id]
+    private func connectionContext(for connection: NWConnection) async -> ConnectionContext? {
+        await connections.get(for: connection.id)
     }
     
     @discardableResult
-    private func updateContext(for connection: NWConnection, with request: HTTPRequest) -> ConnectionContext? {
-        guard var context = activeConnections[connection.id] else { return nil }
-        context.request = request
-        activeConnections[connection.id] = context
-        return context
+    private func updateContext(for connection: NWConnection, with request: HTTPRequest) async -> ConnectionContext? {
+        await connections.update(for: connection.id, with: request)
     }
 }
 
+actor ConnectionStore {
+    private var storage: [ObjectIdentifier: ConnectionContext] = [:]
+    
+    func set(_ context: ConnectionContext, for id: ObjectIdentifier) {
+        storage[id] = context
+    }
+    
+    func get(for id: ObjectIdentifier) -> ConnectionContext? {
+        storage[id]
+    }
+    
+    @discardableResult
+    func update(for id: ObjectIdentifier, with request: HTTPRequest) -> ConnectionContext? {
+        guard var ctx = storage[id] else { return nil }
+        ctx.request = request
+        storage[id] = ctx
+        return ctx
+    }
+    
+    func remove(for id: ObjectIdentifier) {
+        storage.removeValue(forKey: id)
+    }
+    
+    func removeAll() {
+        storage.removeAll()
+    }
+    
+    func allConnections() -> [NWConnection] {
+        storage.values.map { $0.connection }
+    }
+}

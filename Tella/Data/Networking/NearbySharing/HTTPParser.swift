@@ -29,8 +29,13 @@ final class HTTPParser {
     var queryParametersAreVerified : Bool = false
     
     private var fileHandle: FileHandle?
-    var fileURL: URL?
-    
+    var fileURL: URL? {
+            didSet {
+                if fileURL != nil {
+                    createFileHandle()
+                }
+            }
+        }
     var onReceiveBody: ((Int) -> Void)?
     var onReceiveQueryParameters: (() -> Void)?
     
@@ -118,9 +123,6 @@ final class HTTPParser {
                 let value = String(decoding: buffer, as: UTF8.self)
                 instance.body += value
             case .octetStream:
-                if instance.fileHandle == nil {
-                    instance.createFileHandle()
-                }
                 do {
                     try instance.fileHandle?.seekToEnd()
                     try instance.fileHandle?.write(contentsOf: buffer)

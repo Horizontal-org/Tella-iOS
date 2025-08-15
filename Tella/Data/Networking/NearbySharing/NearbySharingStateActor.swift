@@ -94,12 +94,12 @@ actor NearbySharingStateActor {
     }
     
     // MARK: - Upload
-    
-    func fileInfo(for fileID: String) -> (transmissionID: String?, fileName: String?)? {
+
+    func fileInfo(for fileID: String) -> NearbySharingTransferredFile? {
         guard let file = state.session?.files[fileID] else { return nil }
-        return (file.transmissionId, file.file.fileName)
+        return file
     }
-    
+
     func markUploadFinished(fileID: String) {
         guard let file = state.session?.files[fileID] else { return }
         file.status = .finished
