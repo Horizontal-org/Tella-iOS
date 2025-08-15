@@ -27,31 +27,60 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     var nearbySharingServer: NearbySharingServer?
     var connectionInfo : ConnectionInfo?
     
-    @Published var qrCodeState: ViewModelState<ConnectionInfo> = .loading
-    @Published var viewAction: RecipientConnectToDeviceViewAction = .none
+    // MARK: - State
+    
+    @Published private(set) var qrCodeState: ViewModelState<ConnectionInfo> = .loading
+    @Published private(set) var qrImage: UIImage?
+    @Published private(set) var viewAction: RecipientConnectToDeviceViewAction = .none
+    
+    // MARK: - Combine
     
     private var subscribers : Set<AnyCancellable> = []
+    private var networkChangeCancellable: AnyCancellable?
+    
+    // MARK: - Config
+    
     private let port: Int = 53317
+    
+    // MARK: - Init
     
     init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel) {
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         
+        observeNetworkChanges()
         generateConnectionInfo()
     }
     
-    func generateConnectionInfo() {
+    // MARK: - Public Methods
+    
+    func stopServerListening() {
+        nearbySharingServer?.resetServerState()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func observeNetworkChanges() {
+        mainAppModel.networkMonitor.connectionDidChange
+            .first()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.viewAction = .showToast(message: LocalizableNearbySharing.connectionChangedToast.localized)
+            }.store(in: &subscribers)
+    }
+    
+    private func generateConnectionInfo() {
         DispatchQueue.main.async {
             let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
             
             guard let ipAddress = UIDevice.current.getIPAddress(for: interfaceType) else {
-                self.qrCodeState = .error("Try to connect to wifi")
+                self.viewAction = .errorOccured
                 return
             }
             
             guard let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress) else {
-                self.qrCodeState = .error(LocalizableCommon.commonError.localized)
+                self.viewAction = .errorOccured
                 return
             }
             
@@ -65,6 +94,9 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                                                 pin: pin)
             
             self.connectionInfo = connectionInfo
+            
+            self.qrImage = connectionInfo.generateQRCode(size: 215)
+            
             self.listenToServerRegistrationEvents()
             self.nearbySharingServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
         }
@@ -95,9 +127,4 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             }
             .store(in: &subscribers)
     }
-    
-    func stopServerListening() {
-        nearbySharingServer?.resetServerState()
-    }
-    
 }
