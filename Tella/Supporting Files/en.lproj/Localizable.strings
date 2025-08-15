@@ -693,3 +693,5 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "NearbySharing_Results_ViewFiles_Action" = "View files";
 
+
+"NearbySharing_ConnectionChanged_Toast" = "Your Wi-Fi connection has changed. Please start over.";
