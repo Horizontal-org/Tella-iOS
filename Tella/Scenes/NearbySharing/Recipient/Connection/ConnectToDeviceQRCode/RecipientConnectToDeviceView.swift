@@ -70,19 +70,21 @@ struct RecipientConnectToDeviceView: View {
             EmptyView()
         }
     }
-    
+    @ViewBuilder
     func qrCodeImageView(connectionInfo:ConnectionInfo) -> some View {
-        Image(uiImage: connectionInfo.generateQRCode(size: CGFloat(215)))
-            .resizable()
-            .scaledToFill()
-            .frame(width: 215, height: 215)
-            .padding(.all, 16)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Styles.Colors.yellow, lineWidth: 8)
-            )
+        if let image = viewModel.qrImage {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 215, height: 215)
+                .padding(.all, 16)
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Styles.Colors.yellow, lineWidth: 8)
+                )
+        }
     }
     
     var connectManuallyButton: some View {
