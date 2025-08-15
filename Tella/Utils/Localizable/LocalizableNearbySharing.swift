@@ -119,4 +119,6 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case failureFileReceivedExpl = "NearbySharing_Results_FailureFileReceived_Expl"
 
     case viewFilesAction = "NearbySharing_Results_ViewFiles_Action"
+    
+    case connectionChangedToast = "NearbySharing_ConnectionChanged_Toast"
 }
