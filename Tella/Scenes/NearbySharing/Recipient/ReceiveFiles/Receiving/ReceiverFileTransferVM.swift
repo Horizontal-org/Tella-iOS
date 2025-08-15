@@ -71,7 +71,6 @@ final class ReceiverFileTransferVM: FileTransferVM {
                     self.updateProgress(with: file)
                     
                 case .allTransfersCompleted:
-                    self.nearbySharingServer?.stopServer()
                     let finishedFiles = transferredFiles.filter { $0.status == .finished }
                     if finishedFiles.isEmpty {
                         self.viewAction = .shouldShowResults
@@ -80,7 +79,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                         self.viewAction = .transferIsFinished
                         self.saveFiles()
                     }
-                    
+                    self.nearbySharingServer?.stopServer()
                 default:
                     break
                 }
