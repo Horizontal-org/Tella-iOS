@@ -108,6 +108,7 @@ class ManuallyVerificationViewModel: ObservableObject {
 
     func listenToServerEvents() {
         nearbySharingServer?.eventPublisher
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
 
