@@ -171,8 +171,8 @@ class NetworkManager {
             try parser.parse(data: data)
             Task { _ = await self.updateContext(for: connection, with: parser.request) }
             if parser.parserIsPaused {
-                
-                return }
+                return
+            }
             
             continueReceiving(connection: connection, parser: parser)
         } catch {
@@ -215,10 +215,12 @@ class NetworkManager {
                 if let context = await self.updateContext(for: connection, with: parser.request),
                    let url = await self.delegate?.networkManager(verifyParametersFor: context) {
                     parser.fileURL = url
-                    
-                    try parser.resumeParsing()
-                    self.continueReceiving(connection: connection, parser: parser)
-                    
+                    do {
+                        try parser.resumeParsing()  
+                        self.continueReceiving(connection: connection, parser: parser)
+                    } catch {
+                        self.handleConnectionError(connection, error: error)
+                    }
                 }
             }
         }
