@@ -216,7 +216,8 @@ class NetworkManager {
                    let url = await self.delegate?.networkManager(verifyParametersFor: context) {
                     parser.fileURL = url
                     do {
-                        try parser.resumeParsing()  
+                        try parser.resumeParsing()
+                        Task { _ = await self.updateContext(for: connection, with: parser.request) }
                         self.continueReceiving(connection: connection, parser: parser)
                     } catch {
                         self.handleConnectionError(connection, error: error)
