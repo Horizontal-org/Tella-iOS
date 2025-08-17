@@ -54,7 +54,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
                                                                    shouldPreserveMetadata:isPreserveMetadataOn,
                                                                    deleteOriginal: true,
                                                                    fileSource: .files,
-                                                                   fileId: $0.vaultFile.id)})
+                                                                   fileId: $0.vaultFile.id,
+                                                                   fileName:$0.vaultFile.name)})
         addVaultFileWithProgressView(importedFiles: importedFiles)
     }
     

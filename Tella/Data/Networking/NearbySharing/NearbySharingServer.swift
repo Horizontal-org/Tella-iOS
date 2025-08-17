@@ -384,11 +384,11 @@ extension NearbySharingServer: UploadHandler {
             // --- Validate file + transmission, grab fileName for mutations ---
             guard let fileInfo = await state.fileInfo(for: fileID),
                   fileInfo.transmissionId == transmissionID,
-                  let fileName = fileInfo.file.fileName else {
+                  let fileType = fileInfo.file.fileType else {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
                 return nil
             }
-            
+
             if request.bodyFullyReceived {
                 await state.markUploadFinished(fileID: fileID)
                 if let fileInfo = await state.fileInfo(for: fileID) {
@@ -401,7 +401,8 @@ extension NearbySharingServer: UploadHandler {
                 }
                 return nil
             } else {
-                let url = await state.beginUpload(fileID: fileID, fileName: fileName)
+                
+                let url = await state.beginUpload(fileID: fileID, fileType: fileType)
                 return url
             }
             
