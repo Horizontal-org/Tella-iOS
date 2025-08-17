@@ -106,9 +106,11 @@ extension String {
         
         return fileExtension as String
     }
+    
+    func fileExtensionFromMimeType() -> String? {
+        UTType(mimeType: self)?.preferredFilenameExtension
+    }
 
-    
-    
     var tellaFileType: TellaFileType {
 
         guard let type = UTType(mimeType: self) else {

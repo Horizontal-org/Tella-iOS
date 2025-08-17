@@ -107,7 +107,8 @@ actor NearbySharingStateActor {
     }
     
     @discardableResult
-    func beginUpload(fileID: String, fileName: String) -> URL {
+    func beginUpload(fileID: String, fileType: String) -> URL {
+        let fileName = UUID().uuidString + "." + (fileType.fileExtensionFromMimeType() ?? "")
         let url = FileManager.tempDirectory(withFileName: fileName)
         if let file = state.session?.files[fileID] {
             file.status = .transferring

@@ -18,6 +18,7 @@ struct ImportedFile {
     var deleteOriginal : Bool = false
     var fileSource : FileSource
     var fileId : String?
+    var fileName : String?
 }
 
 enum FileSource {
