@@ -23,7 +23,7 @@ actor NearbySharingStateActor {
     
     func currentSessionID() -> String? { state.session?.sessionId }
     func currentSession() -> NearbySharingSession? { state.session }
-
+    
     func resetConnectionState() {
         state.reset()
         pendingRegisterConnection = nil
@@ -94,14 +94,15 @@ actor NearbySharingStateActor {
     }
     
     // MARK: - Upload
-
+    
     func fileInfo(for fileID: String) -> NearbySharingTransferredFile? {
         guard let file = state.session?.files[fileID] else { return nil }
         return file
     }
-
+    
     func markUploadFinished(fileID: String) {
         guard let file = state.session?.files[fileID] else { return }
+        guard file.status == .transferring else { return }
         file.status = .finished
         state.session?.files[fileID] = file
     }
@@ -110,7 +111,8 @@ actor NearbySharingStateActor {
     func beginUpload(fileID: String, fileType: String) -> URL {
         let fileName = UUID().uuidString + "." + (fileType.fileExtensionFromMimeType() ?? "")
         let url = FileManager.tempDirectory(withFileName: fileName)
-        if let file = state.session?.files[fileID] {
+        if let file = state.session?.files[fileID],
+           file.status == .queue {
             file.status = .transferring
             file.url = url
             state.session?.files[fileID] = file
@@ -120,6 +122,8 @@ actor NearbySharingStateActor {
     
     func updateUploadProgress(fileID: String, bytes: Int) -> NearbySharingTransferredFile? {
         guard let file = state.session?.files[fileID] else { return nil }
+        guard file.status == .transferring else { return nil }
+        
         file.bytesReceived += bytes
         state.session?.files[fileID] = file
         return file
