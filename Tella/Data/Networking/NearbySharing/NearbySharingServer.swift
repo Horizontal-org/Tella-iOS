@@ -394,11 +394,12 @@ extension NearbySharingServer: UploadHandler {
                 if let fileInfo = await state.fileInfo(for: fileID) {
                     eventPublisher.send(.fileTransferProgress(fileInfo))
                 }
-                sendSuccessResponse(connection: connection, endpoint: .upload)
                 
                 if await state.allTransfersCompleted() {
                     eventPublisher.send(.allTransfersCompleted)
                 }
+                
+                sendSuccessResponse(connection: connection, endpoint: .upload)
                 return nil
             } else {
                 
