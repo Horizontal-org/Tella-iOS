@@ -295,9 +295,14 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         async let thumnail = await filePath.thumbnail()
         
-        var fileName = filePath.deletingPathExtension().lastPathComponent
-        fileName = getIncrementedName(name: fileName)
+        var fileName : String
         
+        if let name = importedFile.fileName {
+            fileName = name
+        } else {
+            fileName = filePath.deletingPathExtension().lastPathComponent
+        }
+
         let path = filePath.path
         let pathExtension = filePath.pathExtension
         
