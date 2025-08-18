@@ -9,7 +9,7 @@
 
 import Foundation
 
-final class HTTPParser {
+final class HTTPParser: @unchecked Sendable {
     
     private var parser = llhttp_t()
     private var settings = llhttp_settings_t()

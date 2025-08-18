@@ -28,13 +28,12 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManager(didFailWithListener error: Error?)
 }
 
-class NetworkManager {
+actor NetworkManager {
     
     // MARK: - Properties
     
     private var listener: NWListener?
     private let connections = ConnectionStore()
-    
     private weak var delegate: NetworkManagerDelegate?
     
     private let minIncompleteLength = 1
@@ -62,7 +61,7 @@ class NetworkManager {
             configureListener(listener)
             listener.start(queue: .main)
         } catch {
-            delegate?.networkManager(didFailWithListener: error)
+            self.delegate?.networkManager(didFailWithListener: error)
         }
     }
     
@@ -103,7 +102,6 @@ class NetworkManager {
         }
         sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, identity)
         
-        // Use our network queue for the challenge block
         sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { _, completion in
             completion(identity)
         }, .main)
@@ -116,16 +114,17 @@ class NetworkManager {
     private func configureListener(_ listener: NWListener) {
         listener.stateUpdateHandler = { [weak self] state in
             guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
+            Task {
                 switch state {
                 case .ready:
                     debugLog("Listener ready")
-                    self.delegate?.networkManagerDidStartListening()
+                    let delegate = await self.delegate
+                    delegate?.networkManagerDidStartListening()
                 case .failed(let error):
                     debugLog("Listener failed")
-                    self.delegate?.networkManager(didFailWithListener: error)
-                    self.stopListening()
+                    let delegate = await self.delegate
+                    delegate?.networkManager(didFailWithListener: error)
+                    await self.stopListening()
                 case .cancelled:
                     debugLog("Listener cancelled")
                 default:
@@ -133,8 +132,9 @@ class NetworkManager {
                 }
             }
         }
+        
         listener.newConnectionHandler = { [weak self] connection in
-            self?.handleNewConnection(connection)
+            Task { await self?.handleNewConnection(connection) }
         }
     }
     
@@ -145,39 +145,41 @@ class NetworkManager {
         configureParser(parser, for: connection)
         
         let context = ConnectionContext(connection: connection, request: parser.request)
-        Task { await connections.set(context, for: connection.id) }   // <- actor call
+        Task { await connections.set(context, for: connection.id) }
         
         connection.start(queue: .main)
         receiveData(on: connection, using: parser)
     }
     
     private func receiveData(on connection: NWConnection, using parser: HTTPParser) {
-        connection.receive(minimumIncompleteLength: minIncompleteLength, maximumLength: maxLength) { [weak self] data, _, _, error in
+        connection.receive(minimumIncompleteLength: minIncompleteLength,
+                           maximumLength: maxLength) { [weak self] data, _, _, error in
             guard let self else { return }
-            if let error = error {
-                self.handleConnectionError(connection, error: error)
-                return
+            Task {
+                if let error = error {
+                    await self.handleConnectionError(connection, error: error)
+                    return
+                }
+                guard let data = data else {
+                    await self.handleConnectionError(connection, error: nil)
+                    return
+                }
+                await self.processIncomingData(data, on: connection, with: parser)
             }
-            guard let data = data else {
-                self.handleConnectionError(connection, error: nil)
-                return
-            }
-            self.processIncomingData(data, on: connection, with: parser)
         }
     }
     
-    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser)  {
+    private func processIncomingData(_ data: Data, on connection: NWConnection, with parser: HTTPParser) async {
         do {
             try parser.parse(data: data)
-            Task { _ = await self.updateContext(for: connection, with: parser.request) }
+            _ = await self.updateContext(for: connection, with: parser.request)
             if parser.parserIsPaused {
                 return
             }
-            
             continueReceiving(connection: connection, parser: parser)
         } catch {
             debugLog("Parsing error")
-            self.handleConnectionError(connection, error: error)
+            await self.handleConnectionError(connection, error: error)
         }
     }
     
@@ -188,9 +190,7 @@ class NetworkManager {
         }
         Task {
             if let ctx = await self.connectionContext(for: connection) {
-                await MainActor.run {
-                    self.delegate?.networkManager(didReceiveCompleteRequest: ctx)
-                }
+                self.delegate?.networkManager(didReceiveCompleteRequest: ctx)
             }
         }
     }
@@ -202,9 +202,8 @@ class NetworkManager {
             guard let self else { return }
             Task {
                 if let context = await self.updateContext(for: connection, with: parser.request) {
-                    await MainActor.run {
-                        self.delegate?.networkManager(didReceive: length, for: context)
-                    }
+                    let delegate = await self.delegate
+                    delegate?.networkManager(didReceive: length, for: context)
                 }
             }
         }
@@ -217,10 +216,10 @@ class NetworkManager {
                     parser.fileURL = url
                     do {
                         try parser.resumeParsing()
-                        Task { _ = await self.updateContext(for: connection, with: parser.request) }
-                        self.continueReceiving(connection: connection, parser: parser)
+                        _ = await self.updateContext(for: connection, with: parser.request)
+                        await self.continueReceiving(connection: connection, parser: parser)
                     } catch {
-                        self.handleConnectionError(connection, error: error)
+                        await self.handleConnectionError(connection, error: error)
                     }
                 }
             }
@@ -229,15 +228,11 @@ class NetworkManager {
     
     // MARK: - Helpers
     
-    private func handleConnectionError(_ connection: NWConnection, error: Error?) {
-        Task {
-            let ctx = await  self.connectionContext(for: connection)
-            await MainActor.run {
-                self.delegate?.networkManager(didFailWith: error, context: ctx)
-            }
-            await self.connections.remove(for: connection.id)
-            connection.cancel()
-        }
+    private func handleConnectionError(_ connection: NWConnection, error: Error?) async {
+        let ctx = await self.connectionContext(for: connection)
+        self.delegate?.networkManager(didFailWith: error, context: ctx)
+        await self.connections.remove(for: connection.id)
+        connection.cancel()
     }
     
     private func connectionContext(for connection: NWConnection) async -> ConnectionContext? {
@@ -251,6 +246,7 @@ class NetworkManager {
 }
 
 actor ConnectionStore {
+    
     private var storage: [ObjectIdentifier: ConnectionContext] = [:]
     
     func set(_ context: ConnectionContext, for id: ObjectIdentifier) {
