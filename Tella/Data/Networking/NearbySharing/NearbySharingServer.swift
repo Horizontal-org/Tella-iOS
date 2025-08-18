@@ -20,18 +20,24 @@ final class NearbySharingServer {
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     
     init() {
-          networkManager.setDelegate(self)
+        Task {
+            await networkManager.setDelegate(self)
+        }
     }
     
     // MARK: - Server Lifecycle
     
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
-        Task { await state.setPin(pin) }
-   networkManager.startListening(port: port, clientIdentity: clientIdentity)
+        Task {
+            await state.setPin(pin)
+            await networkManager.startListening(port: port, clientIdentity: clientIdentity)
+        }
     }
     
     func stopServer() {
-      networkManager.stopListening()
+        Task {
+            await networkManager.stopListening()
+        }
     }
     
     func resetServerState() {
@@ -47,7 +53,7 @@ final class NearbySharingServer {
     
     func cleanServer() {
         Task {
-           networkManager.cleanConnections()
+            await networkManager.cleanConnections()
             await state.removeTempFiles()
             await state.resetConnectionState()
         }
@@ -388,7 +394,7 @@ extension NearbySharingServer: UploadHandler {
                 sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
                 return nil
             }
-
+            
             if request.bodyFullyReceived {
                 await state.markUploadFinished(fileID: fileID)
                 if let fileInfo = await state.fileInfo(for: fileID) {
