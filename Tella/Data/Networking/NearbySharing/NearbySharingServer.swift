@@ -169,7 +169,7 @@ final class NearbySharingServer {
         case .prepareUpload:
             handlePrepareUploadRequest(on: connection, request: httpRequest)
         case .upload:
-            Task { _ = await handleFileUploadRequest(on: connection, request: httpRequest) }
+            handleReceivedCompleteRequest(on: connection, request: httpRequest)
         case .closeConnection:
             handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
@@ -395,28 +395,44 @@ extension NearbySharingServer: UploadHandler {
                 return nil
             }
             
-            if request.bodyFullyReceived {
-                await state.markUploadFinished(fileID: fileID)
-                if let fileInfo = await state.fileInfo(for: fileID) {
-                    eventPublisher.send(.fileTransferProgress(fileInfo))
-                }
-                
-                if await state.allTransfersCompleted() {
-                    eventPublisher.send(.allTransfersCompleted)
-                }
-                
-                sendSuccessResponse(connection: connection, endpoint: .upload)
-                return nil
-            } else {
-                
-                let url = await state.beginUpload(fileID: fileID, fileType: fileType)
-                return url
-            }
+            let url = await state.beginUpload(fileID: fileID, fileType: fileType)
+            return url
             
         } catch {
             debugLog("Error processing file upload request: \(error)")
             sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
             return nil
+        }
+    }
+    
+    func handleReceivedCompleteRequest(on connection: NWConnection, request: HTTPRequest) {
+        
+        Task { do {
+            
+            let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+            
+            guard let fileID = uploadReq.fileID else {
+                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+                return
+            }
+            
+            await state.markUploadFinished(fileID: fileID)
+            
+            if let fileInfo = await state.fileInfo(for: fileID) {
+                eventPublisher.send(.fileTransferProgress(fileInfo))
+            }
+            
+            if await state.allTransfersCompleted() {
+                eventPublisher.send(.allTransfersCompleted)
+            }
+            
+            sendSuccessResponse(connection: connection, endpoint: .upload)
+            
+        } catch {
+            debugLog("Error processing file upload request: \(error)")
+            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            return
+        }
         }
     }
     
