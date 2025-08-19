@@ -22,7 +22,7 @@ final class HTTPParser: @unchecked Sendable {
     private var pausedData: Data?
     private var queryParameters: [String:String] = [:]
     private var headers: Headers?
-
+    
     var bodyFullyReceived: Bool = false
     var parserIsPaused: Bool = false
     
@@ -30,12 +30,12 @@ final class HTTPParser: @unchecked Sendable {
     
     private var fileHandle: FileHandle?
     var fileURL: URL? {
-            didSet {
-                if fileURL != nil {
-                    createFileHandle()
-                }
+        didSet {
+            if fileURL != nil {
+                createFileHandle()
             }
         }
+    }
     var onReceiveBody: ((Int) -> Void)?
     var onReceiveQueryParameters: (() -> Void)?
     
@@ -127,7 +127,6 @@ final class HTTPParser: @unchecked Sendable {
                     try instance.fileHandle?.seekToEnd()
                     try instance.fileHandle?.write(contentsOf: buffer)
                     instance.onReceiveBody?(buffer.count)
-                    debugLog("Wrote data chunk to file")
                 } catch {
                     debugLog("Write error: \(error)")
                 }
