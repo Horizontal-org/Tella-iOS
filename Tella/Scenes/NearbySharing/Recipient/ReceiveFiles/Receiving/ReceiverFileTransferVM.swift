@@ -47,11 +47,10 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Public Methods
     
     func addFiles(parentId: String) {
-        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
         let finishedFiles = transferredFiles.filter({$0.status == .finished})
         let importedFiles = finishedFiles.compactMap({ImportedFile(urlFile: $0.url,
                                                                    parentId: parentId,
-                                                                   shouldPreserveMetadata:isPreserveMetadataOn,
+                                                                   shouldPreserveMetadata:true,
                                                                    deleteOriginal: true,
                                                                    fileSource: .files,
                                                                    fileId: $0.vaultFile.id,
