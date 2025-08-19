@@ -28,6 +28,7 @@ protocol PrepareUploadHandler {
 
 protocol UploadHandler {
     func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL?
+    func handleReceivedCompleteRequest(on connection: NWConnection, request: HTTPRequest) 
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest)
 }
 
