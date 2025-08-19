@@ -29,8 +29,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     // MARK: - State
     
-    @Published private(set) var qrCodeState: ViewModelState<ConnectionInfo> = .loading
-    @Published private(set) var qrImage: UIImage?
+    @Published private(set) var qrCodeState: ViewModelState<UIImage> = .loading
     @Published private(set) var viewAction: RecipientConnectToDeviceViewAction = .none
     
     // MARK: - Combine
@@ -95,8 +94,6 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             
             self.connectionInfo = connectionInfo
             
-            self.qrImage = connectionInfo.generateQRCode(size: 215)
-            
             self.listenToServerRegistrationEvents()
             self.nearbySharingServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
         }
@@ -111,7 +108,8 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                 switch event {
                 case .serverStarted:
                     if let connectionInfo = self.connectionInfo {
-                        self.qrCodeState = .loaded(connectionInfo)
+                        let qrImage = connectionInfo.generateQRCode(size: 215)
+                        self.qrCodeState = .loaded(qrImage)
                     }
                 case .serverStartFailed:
                     self.viewAction = .errorOccured
