@@ -38,7 +38,11 @@ actor NetworkManager {
     
     private let minIncompleteLength = 1
     private let maxLength = 1024 * 1024
-    
+    let networkQueue = DispatchQueue(
+        label: "org.wearehorizontal.tella.nearbysharing.listener",
+        qos: .userInitiated
+    )
+
     // MARK: - Delegate
     
     func setDelegate(_ delegate: NetworkManagerDelegate?) {
@@ -59,7 +63,7 @@ actor NetworkManager {
             
             self.listener = listener
             configureListener(listener)
-            listener.start(queue: .main)
+            listener.start(queue: networkQueue)
         } catch {
             self.delegate?.networkManager(didFailWithListener: error)
         }
@@ -104,7 +108,7 @@ actor NetworkManager {
         
         sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { _, completion in
             completion(identity)
-        }, .main)
+        }, networkQueue)
         
         return NWParameters(tls: tlsOptions)
     }
@@ -147,7 +151,7 @@ actor NetworkManager {
         let context = ConnectionContext(connection: connection, request: parser.request)
         Task { await connections.set(context, for: connection.id) }
         
-        connection.start(queue: .main)
+        connection.start(queue: networkQueue)
         receiveData(on: connection, using: parser)
     }
     
