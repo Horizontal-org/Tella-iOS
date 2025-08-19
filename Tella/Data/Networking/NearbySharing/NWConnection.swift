@@ -206,8 +206,7 @@ actor NetworkManager {
             guard let self else { return }
             Task {
                 if let context = await self.updateContext(for: connection, with: parser.request) {
-                    let delegate = await self.delegate
-                    delegate?.networkManager(didReceive: length, for: context)
+                    await self.delegate?.networkManager(didReceive: length, for: context)
                 }
             }
         }
