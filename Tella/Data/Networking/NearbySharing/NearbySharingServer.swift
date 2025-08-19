@@ -431,7 +431,6 @@ extension NearbySharingServer: UploadHandler {
         } catch {
             debugLog("Error processing file upload request: \(error)")
             sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
-            return
         }
         }
     }
