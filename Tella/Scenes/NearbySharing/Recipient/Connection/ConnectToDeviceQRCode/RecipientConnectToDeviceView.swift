@@ -61,8 +61,8 @@ struct RecipientConnectToDeviceView: View {
         case .loading:
             CircularActivityIndicatory(isTransparent:true)
                 .frame(width: 240, height: 240)
-        case .loaded(let connectionInfo):
-            qrCodeImageView(connectionInfo: connectionInfo)
+        case .loaded(let qrImage):
+            qrCodeImageView(qrImage: qrImage)
         case .error(let error):
             CustomText(error, style: .body1Style)
                 .frame(width: 240, height: 240)
@@ -71,20 +71,18 @@ struct RecipientConnectToDeviceView: View {
         }
     }
     @ViewBuilder
-    func qrCodeImageView(connectionInfo:ConnectionInfo) -> some View {
-        if let image = viewModel.qrImage {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 215, height: 215)
-                .padding(.all, 16)
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Styles.Colors.yellow, lineWidth: 8)
-                )
-        }
+    func qrCodeImageView(qrImage:UIImage) -> some View {
+        Image(uiImage: qrImage)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 215, height: 215)
+            .padding(.all, 16)
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Styles.Colors.yellow, lineWidth: 8)
+            )
     }
     
     var connectManuallyButton: some View {
