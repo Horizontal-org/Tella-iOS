@@ -69,7 +69,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
             
             let nearbySharingFile = NearbySharingFile(
                 id: id,
-                fileName: file.name.appending(".\(file.fileExtension)"),
+                fileName: file.name,
                 size: file.size,
                 fileType: file.mimeType,
                 thumbnail: file.thumbnail,
