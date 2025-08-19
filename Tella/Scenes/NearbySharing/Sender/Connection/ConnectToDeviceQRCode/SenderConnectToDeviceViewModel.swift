@@ -37,6 +37,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         self.mainAppModel = mainAppModel
         
         super.init()
+        observeNetworkChanges()
         observeScannedCode()
     }
     
@@ -48,6 +49,15 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
                 self?.register(connectionInfo: connectionInfo)
+            }.store(in: &subscribers)
+    }
+    
+    private func observeNetworkChanges() {
+        mainAppModel.networkMonitor.connectionDidChange
+            .first()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.viewState = .showToast(message: LocalizableNearbySharing.connectionChangedToast.localized)
             }.store(in: &subscribers)
     }
     
