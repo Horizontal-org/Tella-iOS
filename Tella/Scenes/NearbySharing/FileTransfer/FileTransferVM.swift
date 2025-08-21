@@ -62,29 +62,43 @@ class FileTransferVM: ObservableObject {
             guard totalBytes > 0 else { return }
             
             let ratio = Double(totalBytesReceived) / Double(totalBytes)
-            if ratio <= 1 {
-                await MainActor.run {
-                    progressViewModel?.percentTransferred = ratio
-                    progressViewModel?.percentTransferredText = formatPercentage(Int(ratio * 100))
-                    progressViewModel?.transferredFilesSummary = makeTransferredSummary(receivedBytes: totalBytesReceived, totalBytes: totalBytes)
-                }
+            guard ratio <= 1 else { return }
+            
+            let percentText = formatPercentage(Int(ratio * 100))
+            let summaryText = makeTransferredSummary(
+                receivedBytes: totalBytesReceived,
+                totalBytes: totalBytes
+            )
+            
+            let itemToUpdate = progressViewModel?.progressFileItems.first(where: {
+                $0.vaultFile.id == file.vaultFile.id
+            })
+            
+            let receivedFormatted = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
+            let totalFormatted = (file.file.size ?? 0).getFormattedFileSize()
+            let newTransferSummary = "\(receivedFormatted)/\(totalFormatted)"
+            
+            await MainActor.run { [weak self] in
+                guard let self = self else { return }
                 
-                // Update individual file progress
-                if let item = progressViewModel?.progressFileItems.first(where: { $0.vaultFile.id == file.vaultFile.id }) {
-                    let received = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
-                    let total = (file.file.size ?? 0).getFormattedFileSize()
-                    await MainActor.run {
-                        item.transferSummary = "\(received)/\(total)"
-                        item.fileStatus = file.status
-                    }
+                self.progressViewModel?.percentTransferred = ratio
+                self.progressViewModel?.percentTransferredText = percentText
+                self.progressViewModel?.transferredFilesSummary = summaryText
+                
+                if let item = itemToUpdate {
+                    item.transferSummary = newTransferSummary
+                    item.fileStatus = file.status
                 }
             }
         }
     }
-    
     func updateStatus(with file: NearbySharingTransferredFile) {
         Task {
-            if let item = progressViewModel?.progressFileItems.first(where: { $0.vaultFile.id == file.vaultFile.id }) {
+            let itemToUpdate = progressViewModel?.progressFileItems.first(where: {
+                $0.vaultFile.id == file.vaultFile.id
+            })
+            
+            if let item = itemToUpdate {
                 await MainActor.run {
                     item.fileStatus = file.status
                 }
@@ -123,4 +137,6 @@ extension FileTransferVM {
         return FileTransferVM(mainAppModel: MainAppModel.stub(), title: "Title", bottomSheetTitle: "Title", bottomSheetMessage: "Message")
     }
 }
+
+
 

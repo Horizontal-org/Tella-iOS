@@ -47,91 +47,123 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     private func listenToServer() {
         nearbySharingServer?.eventPublisher
-            .sink { [weak self] event in
+            .compactMap { event -> NearbySharingTransferredFile? in
+                if case let .fileTransferProgress(file) = event { return file }
+                return nil
+            }
+            .sink { [weak self] file in
                 guard let self else { return }
-                
-                switch event {
-                case .fileTransferProgress(let file):
-                    handle(file: file)
-                default:
-                    break
-                }
+                Task { await self.handle(file: file) }
             }
             .store(in: &subscribers)
     }
     
-    private func handle(file: NearbySharingTransferredFile) {
-        Task {
-            
-            if file.status == .finished {
-                
-                guard let transferredFile = self.transferredFiles.first(where: {$0.vaultFile.id == file.vaultFile.id}) else {return}
-                
-                transferredFile.status = .saving
-                self.updateStatus(with: transferredFile)
-                
-                if self.rootFile == nil {
-                    self.rootFile = await self.saveFolder()
-                }
-                guard let parentId = self.rootFile?.id  else { return }
-                
-                let importedFile = ImportedFile(urlFile: file.url,
-                                                parentId: parentId,
-                                                shouldPreserveMetadata:true,
-                                                deleteOriginal: true,
-                                                fileSource: .files,
-                                                fileId: file.vaultFile.id,
-                                                fileName:file.vaultFile.name)
-                
-                guard let _ = await self.mainAppModel.vaultFilesManager?.addVaultFile(importedFile: importedFile) else {
-                    transferredFile.status = .failed
-                    self.updateStatus(with: transferredFile)
-                    return
-                }
-                
-                transferredFile.status = .saved
-                self.updateStatus(with: transferredFile)
-                
-                checkAllFilesAreReceived()
-                
-            } else if file.status == .failed {
-                guard let transferredFile = self.transferredFiles.first(where: {$0.vaultFile.id == file.vaultFile.id}) else {return}
-                
-                transferredFile.status = .failed
-                self.updateStatus(with: transferredFile)
-                
-                checkAllFilesAreReceived()
-                
-            } else {
-                await MainActor.run {
-                    self.updateProgress(with: file)
-                }
+    
+    private var rootFolderTask: Task<VaultFileDB?, Never>?
+    
+    private func ensureRootFolder() async -> VaultFileDB? {
+        if let task = rootFolderTask { return await task.value }
+        
+        let task = Task<VaultFileDB?, Never> { [weak self] in
+            guard let self else { return nil }
+            return await self.saveFolder()
+        }
+        rootFolderTask = task
+        
+        let value = await task.value
+        if value == nil { rootFolderTask = nil } // retry on next call if creation failed
+        return value
+    }
+    
+    // MARK: - Event handling
+    
+    private func handle(file: NearbySharingTransferredFile) async {
+        guard let fileID = file.vaultFile.id else { return }
+        
+        switch file.status {
+        case .finished:
+            if let transferred = transferredFiles.first(where: { $0.vaultFile.id == fileID }) {
+                transferred.status = .saving
+                self.updateStatus(with: transferred)
             }
+            
+            guard
+                let parent = await ensureRootFolder(),
+                let manager = self.mainAppModel.vaultFilesManager
+            else {
+                markFailed(id: fileID)
+                return
+            }
+            
+            let imported = ImportedFile(
+                urlFile: file.url,
+                parentId: parent.id,
+                shouldPreserveMetadata: true,
+                deleteOriginal: true,
+                fileSource: .files,
+                fileId: fileID,
+                fileName: file.vaultFile.name
+            )
+            
+            if await manager.addVaultFile(importedFile: imported) != nil {
+                markSaved(id: fileID)
+            } else {
+                markFailed(id: fileID)
+            }
+            
+            checkAllFilesAreReceived()
+            
+        case .failed:
+            markFailed(id: fileID)
+            checkAllFilesAreReceived()
+            
+        default:
+            self.updateProgress(with: file)
         }
     }
+    
+    // MARK: - UI helpers
+    
+    private func markSaved(id: String) {
+        guard let transferred = transferredFiles.first(where: { $0.vaultFile.id == id }) else { return }
+        transferred.status = .saved
+        updateStatus(with: transferred)
+    }
+    
+    private func markFailed(id: String) {
+        guard let transferred = transferredFiles.first(where: { $0.vaultFile.id == id }) else { return }
+        transferred.status = .failed
+        updateStatus(with: transferred)
+    }
+    
+    // MARK: - Folder creation
     
     private func saveFolder() async -> VaultFileDB? {
         
-        guard let title = progressViewModel?.title else { return nil }
+        guard let title = progressViewModel?.title, !title.isEmpty else { return nil }
+        guard let manager = mainAppModel.vaultFilesManager else { return nil }
         
-        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title)
+        let result = manager.addFolderFile(name: title)
         if case .success(let id) = result {
             guard let id  else { return nil }
             return mainAppModel.vaultFilesManager?.getVaultFile(id: id)
-        } else {
-            return nil
         }
+        return nil
     }
     
-    private func checkAllFilesAreReceived() {
+    // MARK: - Completion check
+    
+    private func checkAllFilesAreReceived()  {
         Task {
-            let filesAreNotfinishing = transferredFiles.first { $0.status != .saved && $0.status != .failed } == nil
+            // Read & act on UI state on the main actor
+            let allDone =
+            self.transferredFiles.allSatisfy { $0.status == .saved || $0.status == .failed }
             
-            if (filesAreNotfinishing) {
+            if allDone {
                 await MainActor.run {
                     self.viewAction = .shouldShowResults
                 }
-                self.nearbySharingServer?.cleanServer()
+                nearbySharingServer?.resetFullServerState
             }
         }
     }
