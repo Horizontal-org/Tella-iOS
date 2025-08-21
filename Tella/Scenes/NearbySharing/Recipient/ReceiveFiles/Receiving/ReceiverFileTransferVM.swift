@@ -17,7 +17,6 @@ final class ReceiverFileTransferVM: FileTransferVM {
     private let nearbySharingServer: NearbySharingServer?
     private var subscribers = Set<AnyCancellable>()
     
-    @Published var progressFile: ProgressFile = ProgressFile()
     @Published var should: Bool = false
     
     var rootFile: VaultFileDB? = nil
@@ -44,42 +43,16 @@ final class ReceiverFileTransferVM: FileTransferVM {
         }
     }
     
-    // MARK: - Public Methods
-    
-    func addFiles(parentId: String) {
-        let finishedFiles = transferredFiles.filter({$0.status == .finished})
-        let importedFiles = finishedFiles.compactMap({ImportedFile(urlFile: $0.url,
-                                                                   parentId: parentId,
-                                                                   shouldPreserveMetadata:true,
-                                                                   deleteOriginal: true,
-                                                                   fileSource: .files,
-                                                                   fileId: $0.vaultFile.id,
-                                                                   fileName:$0.vaultFile.name)})
-        addVaultFileWithProgressView(importedFiles: importedFiles)
-    }
-    
     // MARK: - Private Methods
     
     private func listenToServer() {
         nearbySharingServer?.eventPublisher
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
                 
                 switch event {
                 case .fileTransferProgress(let file):
-                    self.updateProgress(with: file)
-                    
-                case .allTransfersCompleted:
-                    let finishedFiles = transferredFiles.filter { $0.status == .finished }
-                    if finishedFiles.isEmpty {
-                        self.viewAction = .shouldShowResults
-                        self.nearbySharingServer?.cleanServer()
-                    } else {
-                        self.viewAction = .transferIsFinished
-                        self.saveFiles()
-                    }
-                    self.nearbySharingServer?.stopServer()
+                    handle(file: file)
                 default:
                     break
                 }
@@ -87,49 +60,79 @@ final class ReceiverFileTransferVM: FileTransferVM {
             .store(in: &subscribers)
     }
     
-    private func saveFiles() {
-        
-        guard let title = progressViewModel?.title else { return }
-        
-        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title)
-        if case .success(let id) = result  {
-            guard let id  else { return  }
-            rootFile = mainAppModel.vaultFilesManager?.getVaultFile(id: id)
-            addFiles(parentId: id)
+    private func handle(file: NearbySharingTransferredFile) {
+        Task {
+            
+            if file.status == .finished {
+                
+                guard let transferredFile = self.transferredFiles.first(where: {$0.vaultFile.id == file.vaultFile.id}) else {return}
+                
+                transferredFile.status = .saving
+                self.updateStatus(with: transferredFile)
+                
+                if self.rootFile == nil {
+                    self.rootFile = await self.saveFolder()
+                }
+                guard let parentId = self.rootFile?.id  else { return }
+                
+                let importedFile = ImportedFile(urlFile: file.url,
+                                                parentId: parentId,
+                                                shouldPreserveMetadata:true,
+                                                deleteOriginal: true,
+                                                fileSource: .files,
+                                                fileId: file.vaultFile.id,
+                                                fileName:file.vaultFile.name)
+                
+                guard let _ = await self.mainAppModel.vaultFilesManager?.addVaultFile(importedFile: importedFile) else {
+                    transferredFile.status = .failed
+                    self.updateStatus(with: transferredFile)
+                    return
+                }
+                
+                transferredFile.status = .saved
+                self.updateStatus(with: transferredFile)
+                
+                checkAllFilesAreReceived()
+                
+            } else if file.status == .failed {
+                guard let transferredFile = self.transferredFiles.first(where: {$0.vaultFile.id == file.vaultFile.id}) else {return}
+                
+                transferredFile.status = .failed
+                self.updateStatus(with: transferredFile)
+                
+                checkAllFilesAreReceived()
+                
+            } else {
+                await MainActor.run {
+                    self.updateProgress(with: file)
+                }
+            }
         }
     }
     
-    private func addVaultFileWithProgressView(importedFiles: [ImportedFile]) {
+    private func saveFolder() async -> VaultFileDB? {
         
-        self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles)
-            .receive(on: DispatchQueue.main)
-            .sink { importVaultFileResult in
-                
-                switch importVaultFileResult {
-                case .fileAdded(let files):
-                    let fileIDs = Set(files.map(\.id))
-                    
-                    self.transferredFiles.forEach { file in
-                        if fileIDs.contains(file.vaultFile.id) {
-                            file.status = .saved
-                        }
-                    }
-                    
-                    self.viewAction = .shouldShowResults
-                    self.nearbySharingServer?.cleanServer()
-                    
-                case .importProgress(let importProgress):
-                    self.updateProgress(importProgress:importProgress)
-                }
-                
-            }.store(in: &subscribers)
+        guard let title = progressViewModel?.title else { return nil }
+        
+        let result = mainAppModel.vaultFilesManager?.addFolderFile(name: title)
+        if case .success(let id) = result {
+            guard let id  else { return nil }
+            return mainAppModel.vaultFilesManager?.getVaultFile(id: id)
+        } else {
+            return nil
+        }
     }
     
-    private func updateProgress(importProgress:ImportProgress) {
-        DispatchQueue.main.async {
-            self.progressFile.progress = importProgress.progress.value
-            self.progressFile.progressFile = importProgress.progressFile.value
-            self.progressFile.isFinishing = importProgress.isFinishing.value
+    private func checkAllFilesAreReceived() {
+        Task {
+            let filesAreNotfinishing = transferredFiles.first { $0.status != .saved && $0.status != .failed } == nil
+            
+            if (filesAreNotfinishing) {
+                await MainActor.run {
+                    self.viewAction = .shouldShowResults
+                }
+                self.nearbySharingServer?.cleanServer()
+            }
         }
     }
     

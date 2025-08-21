@@ -80,7 +80,7 @@ class SenderFileTransferVM: FileTransferVM {
         guard let files = session?.files else { return  }
         let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
         if (filesAreNotfinishReceiving.isEmpty) {
-            self.viewAction = .transferIsFinished
+            self.viewAction = .shouldShowResults
         }
     }
     
