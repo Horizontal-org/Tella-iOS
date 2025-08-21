@@ -70,6 +70,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
         
         let value = await task.value
         if value == nil { rootFolderTask = nil } // retry on next call if creation failed
+        self.rootFile = value
         return value
     }
     
@@ -154,8 +155,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
     private func checkAllFilesAreReceived()  {
         Task {
             // Read & act on UI state on the main actor
-            let allDone =
-            self.transferredFiles.allSatisfy { $0.status == .saved || $0.status == .failed }
+            let allDone = self.transferredFiles.allSatisfy { $0.status == .saved || $0.status == .failed }
             
             if allDone {
                 await MainActor.run {
@@ -169,11 +169,18 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
+        // Reset server state
         nearbySharingServer?.resetFullServerState()
-        _ = transferredFiles.compactMap({$0.status = .failed})
-        self.viewAction = .shouldShowResults
+        
+        // Mark any in-progress files as failed
+        for file in transferredFiles where file.status != .saved && file.status != .failed {
+            file.status = .failed
+        }
+        
+        // Trigger UI update
+        viewAction = .shouldShowResults
     }
-    
+
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
         let template = transferredFiles.count > 1
         ? LocalizableNearbySharing.recipientFilesReceived.localized
