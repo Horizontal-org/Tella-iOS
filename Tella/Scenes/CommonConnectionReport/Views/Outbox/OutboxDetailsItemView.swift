@@ -8,7 +8,7 @@ import SwiftUI
 
 struct OutboxDetailsItemView: View {
     
-    @Binding var item : ProgressFileItemViewModel
+    @ObservedObject var item : ProgressFileItemViewModel
     
     var body: some View {
         
@@ -52,6 +52,6 @@ struct OutboxDetailsItemView: View {
 
 struct ReportDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "0/4.5 MB") ))
+        OutboxDetailsItemView(item: ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "0/4.5 MB") )
     }
 }
