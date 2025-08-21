@@ -29,9 +29,9 @@ class ProgressFileItemViewModel: ObservableObject {
 extension NearbySharingFileStatus {
     var statusIcon: String? {
         switch self {
-        case .transferring:
+        case .saving:
             return "home.progress-circle"
-        case .finished:
+        case .saved:
             return "report.submitted"
         default:
             return nil
