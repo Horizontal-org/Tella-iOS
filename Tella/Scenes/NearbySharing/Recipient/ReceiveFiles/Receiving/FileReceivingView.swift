@@ -21,26 +21,12 @@ struct FileReceivingView: View {
         }
     }
     
-    func showProgressView() {
-        viewModel.progressFile = ProgressFile()
-        
-        sheetManager.showBottomSheet(modalHeight: 190,
-                                     shouldHideOnTap: false,
-                                     content: {
-            
-            ImportFilesProgressView(progress: viewModel.progressFile,
-                                    importFilesProgressProtocol: ImportFilesProgress())
-        })
-    }
-    
     func handleViewAction(action: TransferViewAction)  {
         switch action {
             
-        case .transferIsFinished:
-            showProgressView()
         case .shouldShowResults:
             let resultVM = NearbySharingResultVM(transferredFiles: viewModel.transferredFiles,
-                                       participant: .recipient)
+                                                 participant: .recipient)
             
             let resultView = NearbySharingResultView(viewModel: resultVM, buttonAction: {
                 navigateTo(destination: getFileListView())
