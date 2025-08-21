@@ -421,11 +421,7 @@ extension NearbySharingServer: UploadHandler {
             if let fileInfo = await state.fileInfo(for: fileID) {
                 eventPublisher.send(.fileTransferProgress(fileInfo))
             }
-            
-            if await state.allTransfersCompleted() {
-                eventPublisher.send(.allTransfersCompleted)
-            }
-            
+
             sendSuccessResponse(connection: connection, endpoint: .upload)
             
         } catch {
@@ -458,8 +454,9 @@ extension NearbySharingServer: UploadHandler {
         
         Task {
             await state.markUploadFailed(fileID: fileID)
-            if await state.allTransfersCompleted() {
-                eventPublisher.send(.allTransfersCompleted)
+            
+            if let fileInfo = await state.fileInfo(for: fileID) {
+                eventPublisher.send(.fileTransferProgress(fileInfo))
             }
         }
     }

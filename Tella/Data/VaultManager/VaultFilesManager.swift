@@ -62,6 +62,23 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+    func addVaultFile(importedFile:  ImportedFile) async -> VaultFileDB? {
+        
+        guard let fileDetails =  await getFileDetails(importedFile: importedFile),
+              let filePath = importedFile.urlFile,
+              let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
+        else {
+            return nil
+        }
+        
+        if isSaved {
+            self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
+            return fileDetails.file
+        } else {
+            return nil
+        }
+    }
+    
     private func updateImportedFilesURLs(_ importedFiles: inout [ImportedFile]) async {
         for index in importedFiles.indices {
             await updateURL(importedFile: &importedFiles[index])
@@ -302,8 +319,8 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         } else {
             fileName = filePath.deletingPathExtension().lastPathComponent
         }
-
-        let path = filePath.path
+        
+        let path = filePath.relativePath
         let pathExtension = filePath.pathExtension
         
         var width : Double?
@@ -332,7 +349,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     private func getIncrementedName(name:String) -> String {
         
         var copyNumber = 0
-
+        
         // Generate the new filename and check if it exists
         var newFileName = name
         while self.vaultFileExists(name: newFileName) == true {
@@ -341,7 +358,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         }
         return newFileName
     }
-
+    
     
     func getFilesTotalSize(filePaths: [URL]) -> Int {
         

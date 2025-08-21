@@ -24,7 +24,7 @@ struct FileSendingView: View {
     func handleViewAction(action: TransferViewAction)  {
         switch action {
             
-        case .transferIsFinished:
+        case .shouldShowResults:
             
             let resultVM = NearbySharingResultVM(transferredFiles: viewModel.transferredFiles,
                                        participant: .sender)

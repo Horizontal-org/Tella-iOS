@@ -109,6 +109,7 @@ final class NearbySharingTransferredFile: Codable {
 enum NearbySharingFileStatus: String, Codable {
     case queue
     case transferring
+    case saving
     case failed
     case finished
     case saved

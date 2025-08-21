@@ -11,7 +11,6 @@ import Combine
 
 enum TransferViewAction: Equatable {
     case none
-    case transferIsFinished
     case shouldShowResults
 }
 
@@ -28,7 +27,7 @@ class FileTransferVM: ObservableObject {
     var bottomSheetMessage: String
     
     var transferredFiles: [NearbySharingTransferredFile] = []
-
+    
     init(mainAppModel: MainAppModel,
          title: String,
          bottomSheetTitle: String,
@@ -56,26 +55,41 @@ class FileTransferVM: ObservableObject {
     }
     
     func updateProgress(with file: NearbySharingTransferredFile) {
-        let totalBytesReceived = transferredFiles.reduce(0) { $0 + $1.bytesReceived }
-        let totalBytes = transferredFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
-        
-        guard totalBytes > 0 else { return }
-        
-        let ratio = Double(totalBytesReceived) / Double(totalBytes)
-        if ratio <= 1 {
-            progressViewModel?.percentTransferred = ratio
-            progressViewModel?.percentTransferredText = formatPercentage(Int(ratio * 100))
-            progressViewModel?.transferredFilesSummary = makeTransferredSummary(receivedBytes: totalBytesReceived, totalBytes: totalBytes)
+        Task {
+            let totalBytesReceived = transferredFiles.reduce(0) { $0 + $1.bytesReceived }
+            let totalBytes = transferredFiles.reduce(0) { $0 + ($1.file.size ?? 0) }
             
-            // Update individual file progress
-            if let item = progressViewModel?.progressFileItems.first(where: { $0.vaultFile.id == file.vaultFile.id }) {
-                let received = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
-                let total = (file.file.size ?? 0).getFormattedFileSize()
-                item.transferSummary = "\(received)/\(total)"
-                item.fileStatus = file.status
+            guard totalBytes > 0 else { return }
+            
+            let ratio = Double(totalBytesReceived) / Double(totalBytes)
+            if ratio <= 1 {
+                await MainActor.run {
+                    progressViewModel?.percentTransferred = ratio
+                    progressViewModel?.percentTransferredText = formatPercentage(Int(ratio * 100))
+                    progressViewModel?.transferredFilesSummary = makeTransferredSummary(receivedBytes: totalBytesReceived, totalBytes: totalBytes)
+                }
+                
+                // Update individual file progress
+                if let item = progressViewModel?.progressFileItems.first(where: { $0.vaultFile.id == file.vaultFile.id }) {
+                    let received = file.bytesReceived.getFormattedFileSize().getFileSizeWithoutUnit()
+                    let total = (file.file.size ?? 0).getFormattedFileSize()
+                    await MainActor.run {
+                        item.transferSummary = "\(received)/\(total)"
+                        item.fileStatus = file.status
+                    }
+                }
             }
         }
-        
+    }
+    
+    func updateStatus(with file: NearbySharingTransferredFile) {
+        Task {
+            if let item = progressViewModel?.progressFileItems.first(where: { $0.vaultFile.id == file.vaultFile.id }) {
+                await MainActor.run {
+                    item.fileStatus = file.status
+                }
+            }
+        }
     }
     
     // MARK: - Helpers

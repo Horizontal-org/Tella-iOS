@@ -19,7 +19,6 @@ enum NearbySharingEvent {
     case prepareUploadResponseSent(success: Bool)
     case connectionClosed
     case fileTransferProgress(NearbySharingTransferredFile)
-    case allTransfersCompleted
     case errorOccured
 
 }
