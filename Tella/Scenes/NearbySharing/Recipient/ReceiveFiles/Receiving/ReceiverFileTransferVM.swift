@@ -16,7 +16,8 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     private let nearbySharingServer: NearbySharingServer?
     private var subscribers = Set<AnyCancellable>()
-    
+    private var rootFolderTask: Task<VaultFileDB?, Never>?
+
     @Published var should: Bool = false
     
     var rootFile: VaultFileDB? = nil
@@ -57,10 +58,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
             }
             .store(in: &subscribers)
     }
-    
-    
-    private var rootFolderTask: Task<VaultFileDB?, Never>?
-    
+
     private func ensureRootFolder() async -> VaultFileDB? {
         if let task = rootFolderTask { return await task.value }
         
@@ -163,7 +161,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 await MainActor.run {
                     self.viewAction = .shouldShowResults
                 }
-                nearbySharingServer?.resetFullServerState
+                nearbySharingServer?.resetFullServerState()
             }
         }
     }
