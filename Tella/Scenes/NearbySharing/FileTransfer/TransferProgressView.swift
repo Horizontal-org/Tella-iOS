@@ -70,7 +70,7 @@ struct TransferProgressView: View {
     
     private var itemsListView: some View {
         LazyVStack(spacing: 1) {
-            ForEach($viewModel.progressFileItems, id: \.vaultFile.id) { file in
+            ForEach(viewModel.progressFileItems, id: \.vaultFile.id) { file in
                 OutboxDetailsItemView(item: file)
                     .frame(height: 60)
             }

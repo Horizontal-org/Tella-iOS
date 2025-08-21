@@ -51,6 +51,6 @@ struct SubmittedDetailsItemView: View {
 
 struct SubmittedDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "4.5/4.5 MB") ))
+        OutboxDetailsItemView(item: ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "4.5/4.5 MB") )
     }
 }
