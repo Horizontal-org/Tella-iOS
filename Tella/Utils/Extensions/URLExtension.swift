@@ -251,10 +251,8 @@ extension URL {
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
     }
-    
-    
-    func remove() {
 
+    func remove() {
         let fileManager = FileManager.default
         let accessed = self.startAccessingSecurityScopedResource()
         defer {
@@ -262,12 +260,13 @@ extension URL {
                 self.stopAccessingSecurityScopedResource()
             }
         }
-        do {
-            try fileManager.removeItem(at: self)
-        } catch {
-            debugLog("Error removing item")
+        
+        if fileManager.fileExists(atPath: self.path) {
+            do {
+                try fileManager.removeItem(at: self)
+            } catch {
+                debugLog("Error removing item: \(error.localizedDescription)")
+            }
         }
     }
-
-    
 }
