@@ -17,7 +17,7 @@ protocol PingHandler {
 
 protocol RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateRegisterServerResponse(from request: HTTPRequest) async throws -> NearbySharingServerResponse
+    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async
     func respondToRegistrationRequest(accept: Bool)
 }
 
@@ -34,5 +34,4 @@ protocol UploadHandler {
 
 protocol CloseConnectionHandler {
     func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest)
-    func generateCloseConnectionResponse(from requestBody: String) async throws -> NearbySharingServerResponse
 }

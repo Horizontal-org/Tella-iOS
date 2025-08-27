@@ -12,8 +12,8 @@ import Foundation
 final class HTTPResponseBuilder {
     private var response: HTTPResponse
     
-    init(status: HTTPStatusCode = .ok) {
-        self.response = HTTPResponse(status: status)
+    init(serverStatus: ServerStatus) {
+        self.response = HTTPResponse(serverStatus: serverStatus)
     }
     
     func setContentType(_ contentType: ContentType) -> Self {
@@ -46,13 +46,13 @@ fileprivate struct HTTPField {
     let value: String
 }
 
-struct ErrorMessage: Codable {
+struct ErrorResponse: Codable {
     let error: String
 }
 
 fileprivate struct HTTPResponse {
     
-    let status: HTTPStatusCode
+    var serverStatus: ServerStatus
     var headerFields: [HTTPField] = []
     var body: Data?
     
@@ -61,7 +61,7 @@ fileprivate struct HTTPResponse {
     }
     
     func serialized() -> Data? {
-        var responseString = "HTTP/1.1 \(status.rawValue) \(status.reasonPhrase)\r\n"
+        var responseString = "HTTP/1.1 \(serverStatus.code.rawValue) \(serverStatus.message.rawValue)\r\n"
         for field in headerFields {
             responseString += "\(field.name): \(field.value)\r\n"
         }

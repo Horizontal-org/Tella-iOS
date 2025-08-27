@@ -16,17 +16,24 @@ enum HTTPStatusCode: Int, Error {
     case forbidden = 403
     case conflict = 409
     case tooManyRequests = 429
-    
-    var reasonPhrase: String {
-        switch self {
-        case .ok: return "OK"
-        case .internalServerError: return "Internal Server Error"
-        case .notFound: return "Not Found"
-        case .unauthorized: return "Unauthorized"
-        case .badRequest: return "Invalid request format"
-        case .forbidden: return "Rejected"
-        case .conflict: return "Active session already exists"
-        case .tooManyRequests: return "Too many requests"
-        }
-    }
+}
+
+enum ServerMessage: String {
+    case ok = "OK"
+    case invalidRequestFormat = "Invalid request format"
+    case invalidPIN = "Invalid PIN"
+    case activeSessionAlreadyExists = "Active session already exists"
+    case tooManyRequests = "Too many requests"
+    case invalidSessionID = "Invalid session ID"
+    case rejected = "Rejected"
+    case invalidTransmissionID = "Invalid transmission ID"
+    case transferAlreadyCompleted = "Transfer already completed"
+    case missingParameters = "Missing parameters"
+    case sessionAlreadyClosed = "Session already closed"
+    case serverError = "Server error"
+}
+
+struct ServerStatus : Error {
+    let code : HTTPStatusCode
+    let message : ServerMessage
 }
