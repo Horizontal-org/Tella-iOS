@@ -64,7 +64,7 @@ final class NearbySharingServer {
     
     private func sendSuccessResponse(connection: NWConnection, endpoint: NearbySharingEndpoint) {
         let payload = BoolResponse(success: true)
-        guard let responseData = HTTPResponseBuilder()
+        guard let responseData = HTTPResponseBuilder(serverStatus: ServerStatus(code: .ok, message: .ok))
             .setContentType(.json)
             .setBody(payload)
             .closeConnection()
@@ -76,14 +76,15 @@ final class NearbySharingServer {
         sendData(connection: connection, serverResponse: response)
     }
     
-    private func createErrorResponse(_ status: HTTPStatusCode, endpoint: NearbySharingEndpoint? = nil) -> NearbySharingServerResponse {
-        let errorPayload = ErrorMessage(error: status.reasonPhrase)
-        let responseData = HTTPResponseBuilder(status: status)
+    private func sendErrorResponse(_ error: ServerStatus, connection: NWConnection, endpoint: NearbySharingEndpoint? = nil) {
+        let errorPayload = ErrorResponse(error: error.message.rawValue)
+        let responseData = HTTPResponseBuilder(serverStatus: error)
             .setContentType(.json)
             .setBody(errorPayload)
             .closeConnection()
             .build()
-        return NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
+        let response = NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
+        sendData(connection: connection, serverResponse: response)
     }
     
     private func sendResponse(connection: NWConnection, serverResponse: NearbySharingServerResponse?) {
@@ -95,8 +96,8 @@ final class NearbySharingServer {
     }
     
     private func sendInternalServerError(connection: NWConnection) {
-        let errorResponse = createErrorResponse(.internalServerError)
-        sendData(connection: connection, serverResponse: errorResponse)
+        let error = ServerStatus(code: .internalServerError, message: .serverError)
+        sendErrorResponse(error,connection: connection)
     }
     
     private func sendData(connection: NWConnection, serverResponse: NearbySharingServerResponse) {
@@ -235,27 +236,36 @@ extension NearbySharingServer: RegisterHandler {
         }
     }
     
-    func generateRegisterServerResponse(from request: HTTPRequest) async throws -> NearbySharingServerResponse {
+    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
         // 1) existing session / rate limiting
         if await state.hasSession() {
-            throw HTTPStatusCode.conflict
+            let error = ServerStatus(code: .conflict, message: .activeSessionAlreadyExists)
+            sendErrorResponse(error, connection: connection)
         }
         if await state.tooManyAttempts() {
-            throw HTTPStatusCode.tooManyRequests
+            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
+            sendErrorResponse(error, connection: connection)
+            return
         }
         
         // 2) decode body
-        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
-            throw HTTPStatusCode.badRequest
+        guard let regReq = httpRequest.body.decodeJSON(RegisterRequest.self) else {
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            sendErrorResponse(error, connection: connection)
+            return
         }
         
         // 3) verify PIN
         guard let pin = regReq.pin, await state.pinMatches(pin) else {
             await state.incrementFailedAttempts()
             if await state.tooManyAttempts() {
-                throw HTTPStatusCode.tooManyRequests
+                let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
+                sendErrorResponse(error, connection: connection)
+                return
             }
-            throw HTTPStatusCode.unauthorized
+            let error = ServerStatus(code: .unauthorized, message: .invalidPIN)
+            sendErrorResponse(error, connection: connection)
+            return
         }
         
         // 4) create session
@@ -263,15 +273,17 @@ extension NearbySharingServer: RegisterHandler {
         
         // 5) response
         let payload = RegisterResponse(sessionId: newSessionId)
-        guard let responseData = HTTPResponseBuilder()
+        guard let responseData = HTTPResponseBuilder(serverStatus: ServerStatus(code: .ok, message: .ok))
             .setContentType(.json)
             .setBody(payload)
             .closeConnection()
             .build() else {
-            throw HTTPStatusCode.internalServerError
+            sendInternalServerError(connection: connection)
+            return
         }
         
-        return NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
+        let serverResponse = NearbySharingServerResponse(dataResponse: responseData, response: .success, endpoint: .register)
+        sendResponse(connection: connection, serverResponse: serverResponse)
     }
     
     func respondToRegistrationRequest(accept: Bool) {
@@ -285,19 +297,9 @@ extension NearbySharingServer: RegisterHandler {
         }
     }
     
-    private func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
-        do {
-            let serverResponse = try await generateRegisterServerResponse(from: httpRequest)
-            sendResponse(connection: connection, serverResponse: serverResponse)
-        } catch let statusError as HTTPStatusCode {
-            sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
-        } catch {
-            sendInternalServerError(connection: connection)
-        }
-    }
-    
     private func discardRegisterRequest(connection: NWConnection) {
-        sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
+        let error = ServerStatus(code: .forbidden, message: .rejected)
+        sendErrorResponse(error, connection: connection)
     }
 }
 
@@ -307,14 +309,16 @@ extension NearbySharingServer: PrepareUploadHandler {
     
     func handlePrepareUploadRequest(on connection: NWConnection, request: HTTPRequest) {
         guard let prepReq = request.body.decodeJSON(PrepareUploadRequest.self) else {
-            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            sendErrorResponse(error, connection: connection)
             return
         }
         
         Task {
             let sessionID = await state.currentSessionID()
             guard prepReq.sessionID == sessionID else {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
+                let error = ServerStatus(code: .unauthorized, message: .invalidSessionID)
+                sendErrorResponse(error, connection: connection)
                 return
             }
             
@@ -324,33 +328,6 @@ extension NearbySharingServer: PrepareUploadHandler {
         }
     }
     
-    private func createAcceptUploadResponse() async -> NearbySharingServerResponse {
-        let fileTuples = await state.assignTransmissionIDs()
-        let filesResponse = fileTuples.map {
-            NearbySharingFileResponse(id: $0.originalID, transmissionID: $0.transmissionID)
-        }
-        
-        let payload = PrepareUploadResponse(files: filesResponse)
-        guard let responseData = HTTPResponseBuilder()
-            .setContentType(.json)
-            .setBody(payload)
-            .closeConnection()
-            .build() else {
-            return createErrorResponse(.internalServerError)
-        }
-        
-        return NearbySharingServerResponse(
-            dataResponse: responseData,
-            response: .success,
-            endpoint: .prepareUpload
-        )
-    }
-    
-    private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) async {
-        let response = accept ? await createAcceptUploadResponse()
-        : createRejectUploadResponse()
-        sendResponse(connection: connection, serverResponse: response)
-    }
     
     func respondToFileOffer(accept: Bool) {
         Task {
@@ -359,8 +336,41 @@ extension NearbySharingServer: PrepareUploadHandler {
         }
     }
     
-    private func createRejectUploadResponse() -> NearbySharingServerResponse {
-        return createErrorResponse(.forbidden, endpoint: .prepareUpload)
+    private func sendPrepareUploadResponse(connection: NWConnection, accept: Bool) async {
+        accept ? await sendAcceptUploadResponse(connection: connection)
+        : sendRejectUploadResponse(connection:connection)
+    }
+    
+    private func sendAcceptUploadResponse(connection: NWConnection) async {
+        let fileTuples = await state.assignTransmissionIDs()
+        let filesResponse = fileTuples.map {
+            NearbySharingFileResponse(id: $0.originalID, transmissionID: $0.transmissionID)
+        }
+        
+        let payload = PrepareUploadResponse(files: filesResponse)
+        guard let responseData = HTTPResponseBuilder(serverStatus: ServerStatus(code: .ok, message: .ok))
+            .setContentType(.json)
+            .setBody(payload)
+            .closeConnection()
+            .build() else {
+            let error = ServerStatus(code: .internalServerError, message: .serverError)
+            sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        let response = NearbySharingServerResponse(
+            dataResponse: responseData,
+            response: .success,
+            endpoint: .prepareUpload
+        )
+        
+        sendResponse(connection: connection, serverResponse: response)
+        
+    }
+    
+    private func sendRejectUploadResponse(connection: NWConnection) {
+        let error = ServerStatus(code: .forbidden, message: .rejected)
+        sendErrorResponse(error, connection: connection,endpoint: .prepareUpload)
     }
 }
 
@@ -376,14 +386,16 @@ extension NearbySharingServer: UploadHandler {
             guard let fileID = uploadReq.fileID,
                   let transmissionID = uploadReq.transmissionID,
                   let sessionID = uploadReq.sessionID else {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+                let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+                sendErrorResponse(error, connection: connection)
                 return nil
             }
             
             // --- Validate session ---
             let currentID = await state.currentSessionID()
             guard sessionID == currentID else {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.unauthorized))
+                let error = ServerStatus(code: .unauthorized, message: .invalidSessionID)
+                sendErrorResponse(error, connection: connection)
                 return nil
             }
             
@@ -391,7 +403,8 @@ extension NearbySharingServer: UploadHandler {
             guard let fileInfo = await state.fileInfo(for: fileID),
                   fileInfo.transmissionId == transmissionID,
                   let fileType = fileInfo.file.fileType else {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.forbidden))
+                let error = ServerStatus(code: .forbidden, message: .invalidTransmissionID)
+                sendErrorResponse(error, connection: connection)
                 return nil
             }
             
@@ -400,7 +413,8 @@ extension NearbySharingServer: UploadHandler {
             
         } catch {
             debugLog("Error processing file upload request: \(error)")
-            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            sendErrorResponse(error, connection: connection)
             return nil
         }
     }
@@ -412,7 +426,6 @@ extension NearbySharingServer: UploadHandler {
             let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
             
             guard let fileID = uploadReq.fileID else {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
                 return
             }
             
@@ -421,12 +434,11 @@ extension NearbySharingServer: UploadHandler {
             if let fileInfo = await state.fileInfo(for: fileID) {
                 eventPublisher.send(.fileTransferProgress(fileInfo))
             }
-
+            
             sendSuccessResponse(connection: connection, endpoint: .upload)
             
         } catch {
-            debugLog("Error processing file upload request: \(error)")
-            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
+            debugLog("Error processing file upload request")
         }
         }
     }
@@ -434,7 +446,6 @@ extension NearbySharingServer: UploadHandler {
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest) {
         guard let uploadReq: FileUploadRequest = try? request.queryParameters.decode(FileUploadRequest.self),
               let fileID = uploadReq.fileID else {
-            sendResponse(connection: connection, serverResponse: createErrorResponse(.badRequest))
             return
         }
         
@@ -468,41 +479,39 @@ extension NearbySharingServer: CloseConnectionHandler {
     
     func handleCloseConnectionRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
-            do {
-                let closeResponse = try await generateCloseConnectionResponse(from: request.body)
-                sendResponse(connection: connection, serverResponse: closeResponse)
-            } catch let statusError as HTTPStatusCode {
-                sendResponse(connection: connection, serverResponse: createErrorResponse(statusError))
-            } catch {
-                sendInternalServerError(connection: connection)
+            guard let closeReq = request.body.decodeJSON(CloseConnectionRequest.self) else {
+                
+                let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+                sendErrorResponse(error,connection: connection)
+                return
             }
+            
+            let sessionID = await state.currentSessionID()
+            guard closeReq.sessionID == sessionID else {
+                
+                let error = ServerStatus(code: .unauthorized, message: .activeSessionAlreadyExists)
+                sendErrorResponse(error,connection: connection)
+                return
+            }
+            
+            let payload = BoolResponse(success: true)
+            guard let responseData = HTTPResponseBuilder(serverStatus: ServerStatus(code: .ok, message: .ok))
+                .setContentType(.json)
+                .setBody(payload)
+                .closeConnection()
+                .build() else {
+                
+                sendInternalServerError(connection: connection)
+                return
+            }
+            
+            let closeResponse = NearbySharingServerResponse(
+                dataResponse: responseData,
+                response: .success,
+                endpoint: .closeConnection
+            )
+            sendResponse(connection: connection, serverResponse: closeResponse)
         }
-    }
-    
-    func generateCloseConnectionResponse(from requestBody: String) async throws -> NearbySharingServerResponse {
-        guard let closeReq = requestBody.decodeJSON(CloseConnectionRequest.self) else {
-            throw HTTPStatusCode.badRequest
-        }
-        
-        let sessionID = await state.currentSessionID()
-        guard closeReq.sessionID == sessionID else {
-            throw HTTPStatusCode.unauthorized
-        }
-        
-        let payload = BoolResponse(success: true)
-        guard let responseData = HTTPResponseBuilder()
-            .setContentType(.json)
-            .setBody(payload)
-            .closeConnection()
-            .build() else {
-            throw HTTPStatusCode.internalServerError
-        }
-        
-        return NearbySharingServerResponse(
-            dataResponse: responseData,
-            response: .success,
-            endpoint: .closeConnection
-        )
     }
 }
 
