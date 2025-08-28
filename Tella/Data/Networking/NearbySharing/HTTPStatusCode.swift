@@ -28,7 +28,7 @@ enum ServerMessage: String {
     case rejected = "Rejected"
     case invalidTransmissionID = "Invalid transmission ID"
     case transferAlreadyCompleted = "Transfer already completed"
-    case missingParameters = "Missing parameters"
+    case missingRequiredParameters = "Missing required parameters"
     case sessionAlreadyClosed = "Session already closed"
     case serverError = "Server error"
 }

@@ -355,7 +355,7 @@ extension NearbySharingServer: UploadHandler {
             guard let fileID = uploadReq.fileID,
                   let transmissionID = uploadReq.transmissionID,
                   let sessionID = uploadReq.sessionID else {
-                let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+                let error = ServerStatus(code: .badRequest, message: .missingRequiredParameters)
                 sendErrorResponse(error, connection: connection)
                 return nil
             }
@@ -376,13 +376,19 @@ extension NearbySharingServer: UploadHandler {
                 sendErrorResponse(error, connection: connection)
                 return nil
             }
-            
+
+            if fileInfo.status == .finished {
+                let error = ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
+                sendErrorResponse(error, connection: connection)
+                return nil
+            }
+
             let url = await state.beginUpload(fileID: fileID, fileType: fileType)
             return url
             
         } catch {
             debugLog("Error processing file upload request: \(error)")
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            let error = ServerStatus(code: .badRequest, message: .missingRequiredParameters)
             sendErrorResponse(error, connection: connection)
             return nil
         }
