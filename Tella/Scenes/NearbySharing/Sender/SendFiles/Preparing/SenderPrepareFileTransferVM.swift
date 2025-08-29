@@ -72,9 +72,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 fileName: file.name,
                 size: file.size,
                 fileType: file.mimeType,
-                thumbnail: file.thumbnail,
-                sha256: ""
-            )
+                thumbnail: file.thumbnail)
             
             nearbySharingFileArray[id] = NearbySharingTransferredFile(vaultFile: file)
             return nearbySharingFile
