@@ -22,28 +22,25 @@ enum RecipientConnectToDeviceViewAction {
 
 class RecipientConnectToDeviceViewModel: ObservableObject {
     
+    // MARK: - Dependencies
     var mainAppModel: MainAppModel
-    var certificateGenerator : CertificateGenerator
+    var certificateGenerator: CertificateGenerator
     var nearbySharingServer: NearbySharingServer?
-    var connectionInfo : ConnectionInfo?
+    var connectionInfo: ConnectionInfo?
     
     // MARK: - State
-    
     @Published private(set) var qrCodeState: ViewModelState<UIImage> = .loading
     @Published private(set) var viewAction: RecipientConnectToDeviceViewAction = .none
     
     // MARK: - Combine
-    
-    private var subscribers : Set<AnyCancellable> = []
+    private var registrationEventsCancellable: AnyCancellable?
     private var networkChangeCancellable: AnyCancellable?
     
     // MARK: - Config
-    
     private let port: Int = 53317
     
     // MARK: - Init
-    
-    init(certificateGenerator : CertificateGenerator, mainAppModel:MainAppModel) {
+    init(certificateGenerator: CertificateGenerator, mainAppModel: MainAppModel) {
         self.certificateGenerator = certificateGenerator
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
@@ -52,21 +49,39 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         generateConnectionInfo()
     }
     
-    // MARK: - Public Methods
+    // MARK: - Lifecycle Hooks (from View)
+    func onAppear() {
+        // Re-subscribe if needed
+        if registrationEventsCancellable == nil {
+            listenToServerRegistrationEvents()
+        }
+        if networkChangeCancellable == nil {
+            observeNetworkChanges()
+        }
+    }
     
+    func onDisappear() {
+        // Cancel subscriptions to pause listening
+        registrationEventsCancellable?.cancel()
+        registrationEventsCancellable = nil
+        
+        networkChangeCancellable?.cancel()
+        networkChangeCancellable = nil
+    }
+    
+    // MARK: - Public Methods
     func stopServerListening() {
         nearbySharingServer?.resetServerState()
     }
     
     // MARK: - Private Methods
-    
     private func observeNetworkChanges() {
-        mainAppModel.networkMonitor.connectionDidChange
+        networkChangeCancellable = mainAppModel.networkMonitor.connectionDidChange
             .first()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.viewAction = .showToast(message: LocalizableNearbySharing.connectionChangedToast.localized)
-            }.store(in: &subscribers)
+            }
     }
     
     private func generateConnectionInfo() {
@@ -87,20 +102,26 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let certificateHash = certificateData.certificateHash
             let pin = "\(Int.randomSixDigitPIN)"
             
-            let connectionInfo = ConnectionInfo(ipAddress: ipAddress,
-                                                port: self.port,
-                                                certificateHash: certificateHash,
-                                                pin: pin)
+            let connectionInfo = ConnectionInfo(
+                ipAddress: ipAddress,
+                port: self.port,
+                certificateHash: certificateHash,
+                pin: pin
+            )
             
             self.connectionInfo = connectionInfo
             
             self.listenToServerRegistrationEvents()
-            self.nearbySharingServer?.startListening(port: self.port, pin: pin, clientIdentity: clientIdentity)
+            self.nearbySharingServer?.startListening(
+                port: self.port,
+                pin: pin,
+                clientIdentity: clientIdentity
+            )
         }
     }
     
     private func listenToServerRegistrationEvents() {
-        nearbySharingServer?.eventPublisher
+        registrationEventsCancellable = nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -111,6 +132,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                         let qrImage = connectionInfo.generateQRCode(size: 215)
                         self.qrCodeState = .loaded(qrImage)
                     }
+                    
                 case .serverStartFailed:
                     self.viewAction = .errorOccured
                     
@@ -123,6 +145,5 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     break
                 }
             }
-            .store(in: &subscribers)
     }
 }
