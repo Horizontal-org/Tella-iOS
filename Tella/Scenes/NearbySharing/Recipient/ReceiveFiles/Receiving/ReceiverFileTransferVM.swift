@@ -15,9 +15,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
     // MARK: - Properties
     
     private let nearbySharingServer: NearbySharingServer?
-    private var subscribers = Set<AnyCancellable>()
     private var rootFolderTask: Task<VaultFileDB?, Never>?
-
+    private var uploadEventsCancellable: AnyCancellable?
+    
     @Published var should: Bool = false
     
     var rootFile: VaultFileDB? = nil
@@ -34,6 +34,24 @@ final class ReceiverFileTransferVM: FileTransferVM {
             bottomSheetTitle: LocalizableNearbySharing.stopReceivingSheetTitle.localized,
             bottomSheetMessage: LocalizableNearbySharing.stopReceivingSheetExpl.localized
         )
+    }
+    
+    // MARK: - Observers
+    func onAppear() {
+        if uploadEventsCancellable == nil {
+            observeServerSession()
+        }
+    }
+    
+    func onDisappear() {
+        // Cancel subscriptions to pause listening
+        uploadEventsCancellable?.cancel()
+        uploadEventsCancellable = nil
+    }
+    
+    // MARK: - Private Methods
+    
+    private func observeServerSession() {
         Task { [weak self] in
             guard let self, let server = self.nearbySharingServer else { return }
             if let session = await server.state.currentSession() {
@@ -44,21 +62,23 @@ final class ReceiverFileTransferVM: FileTransferVM {
         }
     }
     
-    // MARK: - Private Methods
-    
     private func listenToServer() {
-        nearbySharingServer?.eventPublisher
-            .compactMap { event -> NearbySharingTransferredFile? in
-                if case let .fileTransferProgress(file) = event { return file }
-                return nil
-            }
-            .sink { [weak self] file in
+        uploadEventsCancellable = nearbySharingServer?.eventPublisher
+            .sink(receiveValue: { [weak self] event in
                 guard let self else { return }
-                Task { await self.handle(file: file) }
-            }
-            .store(in: &subscribers)
+                
+                switch event {
+                case .fileTransferProgress(let file):
+                    Task { await self.handle(file: file) }
+                case .connectionClosed, .errorOccured:
+                    _ = self.transferredFiles.filter{ $0.status != .saved}.compactMap({$0.status = .failed})
+                    checkAllFilesAreReceived()
+                default:
+                    break
+                }
+            })
     }
-
+    
     private func ensureRootFolder() async -> VaultFileDB? {
         if let task = rootFolderTask { return await task.value }
         
@@ -159,7 +179,9 @@ final class ReceiverFileTransferVM: FileTransferVM {
             
             if allDone {
                 await MainActor.run {
-                    self.viewAction = .shouldShowResults
+                    if self.viewAction != .shouldShowResults {
+                        self.viewAction = .shouldShowResults
+                    }
                 }
                 nearbySharingServer?.resetFullServerState()
             }
@@ -180,7 +202,7 @@ final class ReceiverFileTransferVM: FileTransferVM {
         // Trigger UI update
         viewAction = .shouldShowResults
     }
-
+    
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
         let template = transferredFiles.count > 1
         ? LocalizableNearbySharing.recipientFilesReceived.localized
