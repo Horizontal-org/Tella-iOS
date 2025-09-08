@@ -28,8 +28,9 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     
     var mainAppModel: MainAppModel
     var nearbySharingServer: NearbySharingServer?
-    private var subscribers: Set<AnyCancellable> = []
     private var acceptance: Bool?
+    private var prepareUploadEventsCancellable: AnyCancellable?
+
     // MARK: - Published Properties
     @Published var viewAction: RecipientPrepareFileTransferAction = .none
     @Published var viewState: RecipientPrepareFileTransferState = .waitingRequest
@@ -40,13 +41,25 @@ class RecipientPrepareFileTransferVM: ObservableObject {
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
-        listenToServerEvents()
     }
     
+    // MARK: - Observers
+    func onAppear() {
+         if prepareUploadEventsCancellable == nil {
+            listenToServerEvents()
+        }
+    }
+    
+    func onDisappear() {
+        // Cancel subscriptions to pause listening
+        prepareUploadEventsCancellable?.cancel()
+        prepareUploadEventsCancellable = nil
+    }
+
     // MARK: - Private Methods
     
     private func listenToServerEvents() {
-        nearbySharingServer?.eventPublisher
+        prepareUploadEventsCancellable = nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
@@ -72,7 +85,6 @@ class RecipientPrepareFileTransferVM: ObservableObject {
                     break
                 }
             }
-            .store(in: &subscribers)
     }
     
     // MARK: - Public Methods
