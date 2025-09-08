@@ -49,7 +49,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         generateConnectionInfo()
     }
     
-    // MARK: - Lifecycle Hooks (from View)
+    // MARK: - Observers
     func onAppear() {
         // Re-subscribe if needed
         if registrationEventsCancellable == nil {

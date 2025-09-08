@@ -22,6 +22,8 @@ struct RecipientFileTransferView: View {
         .onReceive(viewModel.$viewAction) { state in
             handleViewState(state: state)
         }
+        .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
     }
     
     var contentView: some View {

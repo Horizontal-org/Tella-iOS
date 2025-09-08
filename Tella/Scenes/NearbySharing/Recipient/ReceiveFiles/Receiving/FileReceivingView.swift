@@ -19,6 +19,9 @@ struct FileReceivingView: View {
         }.onReceive(viewModel.$viewAction) { action in
             handleViewAction(action:action)
         }
+        .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
+
     }
     
     func handleViewAction(action: TransferViewAction)  {
