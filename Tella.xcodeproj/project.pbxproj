@@ -140,6 +140,7 @@
 		1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* FileTransferView.swift */; };
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
+		124852A02E6EF9E000BDDC2D /* TipsToConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */; };
 		124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
@@ -154,7 +155,6 @@
 		1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */; };
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
 		1252FDE02E006E13002AF5E8 /* NearbySharingURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252FDDF2E006E10002AF5E8 /* NearbySharingURLSessionDelegate.swift */; };
-		125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125392012D7B12EC00F96BA2 /* WifiSSID.swift */; };
 		125392802D897A9100F96BA2 /* NearbySharingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
@@ -566,9 +566,9 @@
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
-		20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */; };
+		20BA4FAF2D50DFEB006DD8B9 /* GetConnectedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */; };
 		20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FB02D522551006DD8B9 /* CardModifier.swift */; };
-		20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */; };
+		20BB11BB2D4D1AB5004B1BBF /* GetConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
 		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
 		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
@@ -870,6 +870,7 @@
 		1244945D2DD61256002B4A9B /* FileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferView.swift; sourceTree = "<group>"; };
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
+		1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsToConnectView.swift; sourceTree = "<group>"; };
 		124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalURLRequest.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
@@ -884,7 +885,6 @@
 		1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstanceToSend.swift; sourceTree = "<group>"; };
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
 		1252FDDF2E006E10002AF5E8 /* NearbySharingURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingURLSessionDelegate.swift; sourceTree = "<group>"; };
-		125392012D7B12EC00F96BA2 /* WifiSSID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiSSID.swift; sourceTree = "<group>"; };
 		1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRepository.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
@@ -1303,9 +1303,9 @@
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
-		20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionViewModel.swift; sourceTree = "<group>"; };
+		20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetConnectedViewModel.swift; sourceTree = "<group>"; };
 		20BA4FB02D522551006DD8B9 /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
-		20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiConnetionView.swift; sourceTree = "<group>"; };
+		20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetConnectedView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
 		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
 		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
@@ -2209,7 +2209,7 @@
 				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
 				2012D5432D5697B0000E0443 /* Sender */,
-				20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */,
+				20BA4FAD2D50DFB2006DD8B9 /* GetConnected */,
 				128247A22D5F935100B7E63E /* Models */,
 			);
 			path = NearbySharing;
@@ -3341,14 +3341,14 @@
 			path = AddFileGridViewComponent;
 			sourceTree = "<group>";
 		};
-		20BA4FAD2D50DFB2006DD8B9 /* WifiConnexion */ = {
+		20BA4FAD2D50DFB2006DD8B9 /* GetConnected */ = {
 			isa = PBXGroup;
 			children = (
-				20BB11BA2D4D1AB5004B1BBF /* WifiConnetionView.swift */,
-				20BA4FAE2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift */,
-				125392012D7B12EC00F96BA2 /* WifiSSID.swift */,
+				20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */,
+				1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */,
+				20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */,
 			);
-			path = WifiConnexion;
+			path = GetConnected;
 			sourceTree = "<group>";
 		};
 		20BF26712C9843C200E81535 /* Modifiers */ = {
@@ -4191,7 +4191,7 @@
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
-				20BB11BB2D4D1AB5004B1BBF /* WifiConnetionView.swift in Sources */,
+				20BB11BB2D4D1AB5004B1BBF /* GetConnectedView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
@@ -4440,7 +4440,7 @@
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
 				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
-				20BA4FAF2D50DFEB006DD8B9 /* WifiConnetionViewModel.swift in Sources */,
+				20BA4FAF2D50DFEB006DD8B9 /* GetConnectedViewModel.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
@@ -4550,7 +4550,6 @@
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
 				1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */,
-				125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
@@ -4659,6 +4658,7 @@
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
 				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
+				124852A02E6EF9E000BDDC2D /* TipsToConnectView.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				125D58AD2E1BE9A500365C40 /* ReceiverFileTransferVM.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
