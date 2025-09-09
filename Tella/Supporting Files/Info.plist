@@ -63,7 +63,7 @@
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>We need access to your local network for peer-to-peer sharing.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Tella requires access to the location to capture photos with location information and to detect the Wi-Fi network.</string>
+	<string>Tella requires access to the location to capture photos with location information.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tella requires access to your microphone to record audio inside the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
