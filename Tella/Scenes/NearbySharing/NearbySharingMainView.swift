@@ -43,7 +43,7 @@ struct NearbySharingMainView: View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.nearbySharingSubhead.localized,
             subtitle: LocalizableNearbySharing.nearbySharingExpl.localized,
-            imageIconName: "nearby-sharing.share",
+            imageIconName: "nearby-sharing.main",
             subtitleTextAlignment: .leading)
     }
     
@@ -83,8 +83,8 @@ struct NearbySharingMainView: View {
                                 shouldHideBack: true,
                                 nextAction: {
             guard let participant  else { return }
-            let wifiConnetionViewModel = WifiConnetionViewModel(participant: participant, mainAppModel: mainAppModel)
-            navigateTo(destination: WifiConnetionView(viewModel:wifiConnetionViewModel,
+            let wifiConnetionViewModel = GetConnectedViewModel(participant: participant, mainAppModel: mainAppModel)
+            navigateTo(destination: GetConnectedView(viewModel:wifiConnetionViewModel,
                                                       mainAppModel: mainAppModel))
         })
     }

@@ -19,17 +19,30 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case receiveFiles = "NearbySharing_Main_ReceiveFiles"
     
     case learnMore = "NearbySharing_Main_LearnMore"
-    case getConnected = "NearbySharing_Getconnected"
-    case wifiConnectionDescription = "NearbySharing_WifiConnection_Desc"
-    case wifiConnectionTipsToConnect = "NearbySharing_WifiConnection_TipsToConnect_Txt"
-    case wifiConnectionTipsToConnectDescription = "NearbySharing_WifiConnection_TipsToConnect_Desc"
-    case currentWifi = "NearbySharing_CurrentWifi"
-    case wifiSameNetworkDescription = "NearbySharing_SameNetworkDescription"
+    
+    case getConnected = "NearbySharing_Getconnected_AppBar"
+    
+    
+    case getConnectedSubhead = "NearbySharing_Getconnected_Subhead"
+    case getconnectedExpl = "NearbySharing_Getconnected_Expl"
+    case tipsToConnect = "NearbySharing_Getconnected_TipsToConnect"
+    case tipsToConnectExpl = "NearbySharing_Getconnected_TipsToConnect_Expl"
+    case sameNetworkExpl = "NearbySharing_Getconnected_SameNetwork_Expl"
+    
+    case settingUp = "NearbySharing_TipsToConnect_SettingUp"
+    case settingUpExpl = "NearbySharing_TipsToConnect_SettingUp_Expl"
+
+    case joining = "NearbySharing_TipsToConnect_Joining"
+    case joiningExpl = "NearbySharing_TipsToConnect_Joining_Expl"
+
+    case moreTips = "NearbySharing_TipsToConnect_MoreTips"
+    case moreTipsExpl = "NearbySharing_TipsToConnect_MoreTips_Expl"
+
+    
     case connectToDevice = "NearbySharing_ConnectToDevice"
     case scanCode = "NearbySharing_ScanCode"
     case showQrCode = "NearbySharing_ShowQrCode"
     case havingTrouble = "NearbySharing_HavingTrouble"
-    case wifi = "NearbySharing_Wifi"
     case connectManually = "NearbySharing_ConnectManually"
     case enterDeviceInformation = "NearbySharing_EnterDevice_Information"
     case ipAddress = "NearbySharing_IpAddress"
@@ -39,7 +52,6 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case showDeviceInformation = "NearbySharing_ShowDeviceInformation"
     case sendInputDesc = "NearbySharing_ConnectToDevice_SenderInputDesc"
     case locationAccess = "NearbySharing_LocationAccess"
-    case detectWifiSettingsDesc = "NearbySharing_WifiSettingsDesc"
     case cancel = "NearbySharing_Cancel"
     case settings = "NearbySharing_Settings"
     case noConnection = "NearbySharing_NoConnection"
