@@ -16,7 +16,7 @@ struct GetConnectedView: View {
     @State var isCheckboxOn = false
     
     struct TipsToConnectButton : IconTextButtonConfig {
-        var title = LocalizableNearbySharing.tipsToConnect.localized
+        var title = LocalizableNearbySharing.tipsToConnect.localized.uppercased()
         var description = LocalizableNearbySharing.tipsToConnectExpl.localized
         var imageName = "help.yellow"
     }
