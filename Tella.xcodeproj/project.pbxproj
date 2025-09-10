@@ -140,6 +140,7 @@
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
 		124852A02E6EF9E000BDDC2D /* TipsToConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */; };
+		124852A22E7173BC00BDDC2D /* IconTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124852A12E7173BC00BDDC2D /* IconTextButton.swift */; };
 		124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
@@ -898,6 +899,7 @@
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
 		1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsToConnectView.swift; sourceTree = "<group>"; };
+		124852A12E7173BC00BDDC2D /* IconTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextButton.swift; sourceTree = "<group>"; };
 		124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalURLRequest.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
@@ -3112,6 +3114,7 @@
 				20A3BD482D5A495D009E5E12 /* CardItemView.swift */,
 				12A148932720A89E00A1ADDC /* NavigationBottomView.swift */,
 				1202C8A22DB985B80013E17D /* BackBottomView.swift */,
+				124852A12E7173BC00BDDC2D /* IconTextButton.swift */,
 				127E81A42DB7C69A002AED4C /* Texts Styles */,
 				126B70112DB1575600742897 /* CustomText.swift */,
 				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
@@ -4403,6 +4406,7 @@
 				CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
+				124852A22E7173BC00BDDC2D /* IconTextButton.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,

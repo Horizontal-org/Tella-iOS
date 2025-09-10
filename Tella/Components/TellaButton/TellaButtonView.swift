@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -82,11 +82,12 @@ struct TellaButtonView<Destination:View> : View {
                     navigateTo(destination: destination)
                 }
             } label: {
-                Text(title)
-                    .frame(maxWidth:.infinity)
-                    .frame(height: 55)
-                    .contentShape(Rectangle())
                 
+                CustomText(title,
+                           style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
+                .frame(maxWidth:.infinity)
+                .frame(height: 55)
+                .contentShape(Rectangle())
             }
             if (destination != nil) {
                 navigateTo(destination: destination)
@@ -127,11 +128,11 @@ struct TellaButtonStyle : ButtonStyle {
             .background(configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor())
             .cornerRadius(cornerRadius)
             .overlay(
-                configuration.isPressed && isValid ? RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(buttonStyle.overlayColor, lineWidth: 4) : RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
+                configuration.isPressed && isValid ?
+                RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: 3) :
+                RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
             )
             .foregroundColor(getForegroundColor())
-            .style(buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
     }
     
     func getBackgroundColor() -> Color {
@@ -141,7 +142,6 @@ struct TellaButtonStyle : ButtonStyle {
     func getForegroundColor() -> Color {
         isValid ? buttonStyle.foregroundColor :  buttonStyle.disabledForegroundColor
     }
-    
 }
 
 struct TellaButtonView_Previews: PreviewProvider {

@@ -15,6 +15,12 @@ struct GetConnectedView: View {
     @StateObject var mainAppModel: MainAppModel
     @State var isCheckboxOn = false
     
+    struct TipsToConnectButton : IconTextButtonConfig {
+        var title = LocalizableNearbySharing.tipsToConnect.localized
+        var description = LocalizableNearbySharing.tipsToConnectExpl.localized
+        var imageName = "help.yellow"
+    }
+    
     var body: some View {
         ContainerViewWithHeader {
             navigationBarView
@@ -61,31 +67,9 @@ struct GetConnectedView: View {
                        alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            Button() {
-                showTipsToConnectView()
-            } label: {
-                tipsView
-            }
+            IconTextButton(buttonConfig: TipsToConnectButton(),
+                           destination: TipsToConnectView())
         }
-    }
-    
-    var tipsView: some View {
-        
-        HStack(alignment: .center, spacing: 20) {
-            
-            Image("help.yellow")
-            
-            VStack(alignment: .leading) {
-                CustomText(LocalizableNearbySharing.tipsToConnect.localized,
-                           style: .buttonLStyle)
-                Spacer()
-                    .frame(height: 3)
-                CustomText(LocalizableNearbySharing.tipsToConnectExpl.localized,
-                           style: .buttonDetailRegularStyle)
-                
-            } .frame(maxWidth: .infinity, alignment: .leading)
-        }.frame(maxWidth: .infinity, alignment: .leading)
-            .cardModifier()
     }
     
     var sameNetworkView: some View {
@@ -127,7 +111,7 @@ struct GetConnectedView: View {
 
 #Preview {
     GetConnectedView(viewModel: GetConnectedViewModel(participant: .recipient,
-                                                       mainAppModel: MainAppModel.stub()),
+                                                      mainAppModel: MainAppModel.stub()),
                      mainAppModel: MainAppModel.stub())
 }
 

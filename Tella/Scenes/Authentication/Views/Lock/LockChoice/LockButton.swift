@@ -10,19 +10,13 @@
 
 import Foundation
 
-protocol LockButtonProtocol {
-    var title : String { get }
-    var description: String { get }
-    var imageName: String { get }
-}
-
-struct PasswordLockButton : LockButtonProtocol {
+struct PasswordLockButton : IconTextButtonConfig {
     var title = LocalizableLock.lockSelectActionPassword.localized
     var description = LocalizableLock.lockSelectActionExplPassword.localized
     var imageName = "lock.password"
 }
 
-struct PINLockButton : LockButtonProtocol {
+struct PINLockButton : IconTextButtonConfig {
     var title = LocalizableLock.lockSelectActionPin.localized
     var description = LocalizableLock.lockSelectActionExplPin.localized
     var imageName = "lock.pin"
