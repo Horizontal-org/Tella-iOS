@@ -74,12 +74,12 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case connectionFailedExpl = "NearbySharing_ConnectionFailed_SheetExpl"
     case connectionFailedAction = "NearbySharing_ConnectionFailed_SheetAction"
 
-    
-    case verificationSenderPart1 = "NearbySharing_Verification_Sender_Part1_Expl"
-    case verificationSenderPart2 = "NearbySharing_Verification_Sender_Part2_Expl"
-    case verificationRecipientPart1 = "NearbySharing_Verification_Recipient_Part1_Expl"
-    case verificationRecipientPart2 = "NearbySharing_Verification_Recipient_Part2_Expl"
+    case verificationAppBar = "NearbySharing_Verification_AppBar"
 
+    case verificationSender = "NearbySharing_Verification_Sender_Expl"
+
+    case verificationRecipient = "NearbySharing_Verification_Recipient_Expl"
+ 
     case verificationConfirm = "NearbySharing_Verification_Action_Confirm"
     case verificationWaitingSender = "NearbySharing_Verification_Action_WaitingSender"
     case verificationWaitingRecipient = "NearbySharing_Verification_Action_WaitingRecipient"
