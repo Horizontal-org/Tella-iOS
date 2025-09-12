@@ -5117,7 +5117,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 104;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -5147,7 +5147,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 101;
+				CURRENT_PROJECT_VERSION = 104;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
