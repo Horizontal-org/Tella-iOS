@@ -758,13 +758,16 @@ To get started, join the same Wi-Fi network as the recipient. Nearby Sharing wil
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
 
+"NearbySharing_Verification_AppBar" = "Verification";
+"NearbySharing_Verification_Sender_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.
 
-"NearbySharing_Verification_Sender_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the recipient’s device.\n2. You need to confirm the connection first.\n3. After that, the recipient will be able to confirm the connection and start receiving files";
-"NearbySharing_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
+If the sequences do not match, the connection may not be secure and should be discarded.";
 
 
-"NearbySharing_Verification_Recipient_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the sender’s device.\n2. The sender needs to confirm the connection first.\n3. After that, you will be able to confirm the connection and start sharing files";
-"NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
+
+"NearbySharing_Verification_Recipient_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.
+
+If the sequences do not match, the connection may not be secure and should be discarded.";
 
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
