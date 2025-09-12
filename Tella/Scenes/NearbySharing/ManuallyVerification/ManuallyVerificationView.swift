@@ -28,6 +28,8 @@ struct ManuallyVerificationView: View {
         .onReceive(viewModel.$recipientViewAction) { action in
             handleRecipientViewAction(action: action)
         }
+        .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
     }
     
     var contentView: some View {

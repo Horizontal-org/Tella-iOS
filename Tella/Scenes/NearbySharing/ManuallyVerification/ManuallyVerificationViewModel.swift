@@ -23,6 +23,8 @@ class ManuallyVerificationViewModel: ObservableObject {
     @Published var shouldEnableConfirmButton: Bool = false
     @Published var confirmButtonTitle: String = ""
     
+    private var serverEventsCancellable: AnyCancellable?
+    
     var participant: NearbySharingParticipant
     var nearbySharingRepository: NearbySharingRepository?
     var session : NearbySharingSession?
@@ -43,10 +45,20 @@ class ManuallyVerificationViewModel: ObservableObject {
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         
         updateButtonsState(state: .initial)
-        
-        listenToServerEvents()
     }
     
+    // MARK: - Observers
+    func onAppear() {
+        if serverEventsCancellable == nil {
+            listenToServerEvents()
+        }
+    }
+    
+    func onDisappear() {
+        serverEventsCancellable?.cancel()
+        serverEventsCancellable = nil
+    }
+
     func updateButtonsState(state: ManuallyVerificationState) {
         
         let result = state == .initial
@@ -108,7 +120,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     func listenToServerEvents() {
-        nearbySharingServer?.eventPublisher
+        serverEventsCancellable = nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
@@ -124,6 +136,5 @@ class ManuallyVerificationViewModel: ObservableObject {
                     break
                 }
             }
-            .store(in: &subscribers)
     }
 }
