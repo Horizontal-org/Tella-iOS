@@ -85,7 +85,7 @@ final class NearbySharingServer {
         let response = NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
         sendData(connection: connection, serverResponse: response)
     }
-
+    
     private func sendInternalServerError(connection: NWConnection) {
         let error = ServerStatus(code: .internalServerError, message: .serverError)
         sendErrorResponse(error,connection: connection)
@@ -220,8 +220,15 @@ extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
             if await state.isManualConnection() {
-                await state.setPendingRegister(connection: connection, request: request)
-                eventPublisher.send(.registrationRequested)
+                
+                if let pendingRegisterResponse = await state.getPendingRegisterResponse() {
+                    await sendRegistrationResponse(accept: pendingRegisterResponse,
+                                                   connection: connection,
+                                                   request: request)
+                } else {
+                    await state.setPendingRegister(connection: connection, request: request)
+                }
+                
             } else {
                 await acceptRegisterRequest(connection: connection, httpRequest: request)
             }
@@ -268,17 +275,27 @@ extension NearbySharingServer: RegisterHandler {
         sendSuccessResponse(connection: connection,
                             payload: payload,
                             endpoint: .register)
-        
     }
     
     func respondToRegistrationRequest(accept: Bool) {
         Task {
-            guard let (connection, request) = await state.getPendingRegister() else { return }
-            if accept {
-                await acceptRegisterRequest(connection: connection, httpRequest: request)
-            } else {
-                discardRegisterRequest(connection: connection)
+            guard let (connection, request) = await state.getPendingRegister() else {
+                await state.savePendingRegisterResponse(accept: accept)
+                return
             }
+            await sendRegistrationResponse(accept: accept,
+                                           connection: connection,
+                                           request: request)
+        }
+    }
+    
+    private func sendRegistrationResponse(accept: Bool,
+                                          connection: NWConnection,
+                                          request: HTTPRequest) async {
+        if accept {
+            await acceptRegisterRequest(connection: connection, httpRequest: request)
+        } else {
+            discardRegisterRequest(connection: connection)
         }
     }
     
@@ -376,13 +393,13 @@ extension NearbySharingServer: UploadHandler {
                 sendErrorResponse(error, connection: connection)
                 return nil
             }
-
+            
             if fileInfo.status == .finished {
                 let error = ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
                 sendErrorResponse(error, connection: connection)
                 return nil
             }
-
+            
             let url = await state.beginUpload(fileID: fileID, fileType: fileType)
             return url
             

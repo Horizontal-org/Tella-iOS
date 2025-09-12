@@ -91,7 +91,7 @@ struct ManuallyVerificationView: View {
         TellaButtonView(title: viewModel.confirmButtonTitle.uppercased(),
                         nextButtonAction: .action,
                         buttonType: .yellow,
-                        isValid: .constant(true)) {
+                        isValid: $viewModel.shouldEnableConfirmButton) {
             viewModel.confirmAction()
         }.disabled(!viewModel.shouldEnableConfirmButton)
     }

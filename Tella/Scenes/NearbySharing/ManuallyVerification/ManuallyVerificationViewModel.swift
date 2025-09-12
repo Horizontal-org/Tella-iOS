@@ -9,11 +9,12 @@
 
 import Foundation
 import Combine
+
 enum ManuallyVerificationState {
-    case waitingForSenderResponse
-    case waitingForRecipientResponse
+    case initial
+    case waiting
 }
-                                    
+
 class ManuallyVerificationViewModel: ObservableObject {
     
     @Published var senderViewAction: SenderConnectToDeviceViewAction = .none
@@ -21,45 +22,45 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     @Published var shouldEnableConfirmButton: Bool = false
     @Published var confirmButtonTitle: String = ""
-
-    var participant : NearbySharingParticipant
+    
+    var participant: NearbySharingParticipant
     var nearbySharingRepository: NearbySharingRepository?
     var session : NearbySharingSession?
-    var connectionInfo:ConnectionInfo
-    var mainAppModel:MainAppModel
-    var nearbySharingServer:NearbySharingServer?
+    var connectionInfo: ConnectionInfo
+    var mainAppModel: MainAppModel
+    var nearbySharingServer: NearbySharingServer?
     
     private var subscribers = Set<AnyCancellable>()
     
-    init(participant:NearbySharingParticipant,
-         nearbySharingRepository:NearbySharingRepository? = nil,
-         connectionInfo:ConnectionInfo,
-         mainAppModel:MainAppModel) {
+    init(participant: NearbySharingParticipant,
+         nearbySharingRepository: NearbySharingRepository? = nil,
+         connectionInfo: ConnectionInfo,
+         mainAppModel: MainAppModel) {
         self.participant = participant
         self.nearbySharingRepository = nearbySharingRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         
-        updateButtonsState(state: .waitingForSenderResponse)
+        updateButtonsState(state: .initial)
         
         listenToServerEvents()
     }
     
     func updateButtonsState(state: ManuallyVerificationState) {
         
-        let result = state == .waitingForSenderResponse
-
+        let result = state == .initial
+        
         switch participant {
         case .sender:
-             shouldEnableConfirmButton = result
+            shouldEnableConfirmButton = result
             confirmButtonTitle = result ? LocalizableNearbySharing.verificationConfirm.localized : LocalizableNearbySharing.verificationWaitingRecipient.localized
         case .recipient:
-            shouldEnableConfirmButton = !result
-            confirmButtonTitle = result ? LocalizableNearbySharing.verificationWaitingSender.localized : LocalizableNearbySharing.verificationConfirm.localized
+            shouldEnableConfirmButton = result
+            confirmButtonTitle = result ? LocalizableNearbySharing.verificationConfirm.localized: LocalizableNearbySharing.verificationWaitingSender.localized
         }
     }
-
+    
     func confirmAction() {
         participant == .recipient ? acceptRegisterRequest() : register()
     }
@@ -81,13 +82,12 @@ class ManuallyVerificationViewModel: ObservableObject {
     private func register() {
         
         let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
-        self.updateButtonsState(state: .waitingForRecipientResponse)
-
+        self.updateButtonsState(state: .waiting)
+        
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                updateButtonsState(state: ManuallyVerificationState.waitingForSenderResponse)
                 switch completion {
                 case .finished:
                     self.senderViewAction = .showSendFiles
@@ -101,34 +101,29 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             }).store(in: &self.subscribers)
     }
-
+    
     private func acceptRegisterRequest() {
         nearbySharingServer?.respondToRegistrationRequest(accept: true)
+        self.updateButtonsState(state: .waiting)
     }
-
+    
     func listenToServerEvents() {
         nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
-
+                
                 switch event {
-                case .registrationRequested:
-                    self.updateButtonsState(state: .waitingForRecipientResponse)
-
                 case .didRegister(let success, let manual):
                     if manual {
                         self.recipientViewAction = success ? .showReceiveFiles : .errorOccured
                     }
-
                 case .connectionClosed:
                     self.recipientViewAction = .errorOccured
-
                 default:
                     break
                 }
             }
             .store(in: &subscribers)
     }
-
 }
