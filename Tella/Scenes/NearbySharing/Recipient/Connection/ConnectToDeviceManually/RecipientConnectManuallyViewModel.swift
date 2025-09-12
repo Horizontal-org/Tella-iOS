@@ -22,7 +22,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     @Published var viewState: RecipientConnectToDeviceViewAction = .none
     
     private var certificateGenerator : CertificateGenerator
-    private var subscribers : Set<AnyCancellable> = []
+    private var serverEventsCancellable: AnyCancellable?
     
     var mainAppModel: MainAppModel
     var nearbySharingServer: NearbySharingServer?
@@ -41,6 +41,18 @@ class RecipientConnectManuallyViewModel: ObservableObject {
         listenToServerEvents()
     }
     
+    // MARK: - Observers
+    func onAppear() {
+        if serverEventsCancellable == nil {
+            listenToServerEvents()
+        }
+    }
+    
+    func onDisappear() {
+        serverEventsCancellable?.cancel()
+        serverEventsCancellable = nil
+    }
+    
     func initParameters() {
         guard let connectionInfo else { return }
         self.pin = connectionInfo.pin
@@ -49,11 +61,11 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     }
     
     func listenToServerEvents() {
-        nearbySharingServer?.eventPublisher
+        serverEventsCancellable = nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
-
+                
                 switch event {
                 case .verificationRequested:
                     self.viewState = .showVerificationHash
@@ -61,7 +73,5 @@ class RecipientConnectManuallyViewModel: ObservableObject {
                     break
                 }
             }
-            .store(in: &subscribers)
     }
-
 }

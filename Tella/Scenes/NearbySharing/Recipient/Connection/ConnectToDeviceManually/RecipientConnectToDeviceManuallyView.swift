@@ -23,6 +23,8 @@ struct RecipientConnectToDeviceManuallyView: View {
         .onReceive(viewModel.$viewState) { state in
             handleViewState(state: state)
         }
+        .onAppear { viewModel.onAppear() }
+        .onDisappear { viewModel.onDisappear() }
     }
     
     var contentView: some View {
