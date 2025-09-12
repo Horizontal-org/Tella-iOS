@@ -16,6 +16,7 @@ actor NearbySharingStateActor {
     
     var state = NearbySharingServerState()
     var pendingRegisterConnection: NWConnection?
+    var pendingRegisterResponse: Bool?
     var pendingRegisterRequest: HTTPRequest?
     var pendingUploadConnection: NWConnection?
     
@@ -29,6 +30,7 @@ actor NearbySharingStateActor {
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
         pendingUploadConnection = nil
+        pendingRegisterResponse = nil
     }
     
     func removeTempFiles() {
@@ -63,6 +65,16 @@ actor NearbySharingStateActor {
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
         return (connection, request)
+    }
+    
+    func getPendingRegisterResponse() -> Bool? {
+        let response = pendingRegisterResponse
+        pendingRegisterResponse = nil
+        return response
+    }
+    
+    func savePendingRegisterResponse(accept: Bool) {
+        pendingRegisterResponse = accept
     }
     
     // MARK: - Prepare Upload
