@@ -43,7 +43,7 @@ struct ManuallyVerificationView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.verificationAppBar.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              backButtonAction: {self.popTo(ViewClassType.nearbySharingMainView)},
@@ -57,17 +57,13 @@ struct ManuallyVerificationView: View {
     
     var infoView: some View {
         participantInfoView(
-            part1Text: viewModel.participant == .sender
-            ? LocalizableNearbySharing.verificationSenderPart1.localized
-            : LocalizableNearbySharing.verificationRecipientPart1.localized,
-            
-            part2Text: viewModel.participant == .sender
-            ? LocalizableNearbySharing.verificationSenderPart2.localized
-            : LocalizableNearbySharing.verificationRecipientPart2.localized
+            text: viewModel.participant == .sender
+            ? LocalizableNearbySharing.verificationSender.localized
+            : LocalizableNearbySharing.verificationRecipient.localized
         )
     }
     
-    private func participantInfoView(part1Text: String, part2Text: String) -> some View {
+    private func participantInfoView(text: String) -> some View {
         VStack(alignment: .center, spacing: 16) {
             
             CustomText(viewModel.connectionInfo.certificateHash?.formatHash() ?? "",
@@ -76,9 +72,7 @@ struct ManuallyVerificationView: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .cardModifier()
             
-            CustomText(part1Text, style: .body1Style)
-            
-            CustomText(part2Text, style: .body1Style)
+            CustomText(text, style: .body1Style)
         }
     }
     
