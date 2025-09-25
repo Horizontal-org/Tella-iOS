@@ -244,6 +244,9 @@
 		1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278B66427EB9C1400C9AC4D /* CameraView.swift */; };
 		127A5B2228538E0800FAAEB0 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A5B2128538DFB00FAAEB0 /* Language.swift */; };
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
+		127BCA232E8520C100902C59 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA222E8520C100902C59 /* OnboardingView.swift */; };
+		127BCA252E85216500902C59 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA242E85216500902C59 /* OnboardingViewModel.swift */; };
+		127BCA2C2E8522EB00902C59 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */; };
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
@@ -894,6 +897,9 @@
 		1278B66427EB9C1400C9AC4D /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		127A5B2128538DFB00FAAEB0 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
+		127BCA222E8520C100902C59 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		127BCA242E85216500902C59 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
@@ -2136,6 +2142,16 @@
 			path = Servers;
 			sourceTree = "<group>";
 		};
+		127BCA1F2E85208900902C59 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				127BCA222E8520C100902C59 /* OnboardingView.swift */,
+				127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */,
+				127BCA242E85216500902C59 /* OnboardingViewModel.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		127C155927DA69A8009EC15B /* TransitionViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -3109,6 +3125,7 @@
 				0DD99E0126910378009327B3 /* Camera */,
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
+				127BCA1F2E85208900902C59 /* Onboarding */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -3844,6 +3861,7 @@
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
+				127BCA232E8520C100902C59 /* OnboardingView.swift in Sources */,
 				155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
@@ -3877,6 +3895,7 @@
 				125A89542A94C0F1009347C3 /* VaultFileDatabaseConstants.swift in Sources */,
 				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
+				127BCA252E85216500902C59 /* OnboardingViewModel.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */,
 				125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */,
@@ -3940,6 +3959,7 @@
 				126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */,
 				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
+				127BCA2C2E8522EB00902C59 /* OnboardingPageView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
