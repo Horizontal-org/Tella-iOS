@@ -15,23 +15,22 @@ struct OnboardingPageView: View {
     let message: String
     
     var body: some View {
-        VStack {
+        
+        VStack(alignment: .center, spacing: 16) {
             Spacer()
             
-            VStack(alignment: .center, spacing: 16) {
-                
-                Image(imageName)
-                
-                Text(title)
-                    .font(.custom(Styles.Fonts.boldFontName, size: 18))
-                    .foregroundColor(.white)
-                
-                Text(message)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(.white)
-                
-            } 
+            Image(imageName)
             
+            Text(title)
+                .font(.custom(Styles.Fonts.boldFontName, size: 18))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+
+            Text(message)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+
             Spacer()
         }
     }

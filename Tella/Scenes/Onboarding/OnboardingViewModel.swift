@@ -16,20 +16,20 @@ final class OnboardingViewModel: ObservableObject {
     let pages: [OnboardingItem] = [OnboardingItem(imageName: .onboardCamera,
                                                   title: LocalizableLock.onboardingCameraTitle.localized,
                                                   message: LocalizableLock.onboardingCameraExpl.localized),
-                                  
+                                   
                                    OnboardingItem(imageName: .onboardMic,
                                                   title: LocalizableLock.onboardingRecorderTitle.localized ,
                                                   message: LocalizableLock.onboardingRecorderExpl.localized),
-
+                                   
                                    OnboardingItem(imageName: .onboardFiles,
                                                   title: LocalizableLock.onboardingEncryptedFilesFoldersTitle.localized ,
                                                   message: LocalizableLock.onboardingEncryptedFilesFoldersExpl.localized),
-
+                                   
                                    OnboardingItem(imageName: .onboardConnections,
                                                   title: LocalizableLock.onboardingServerConnectionsTitle.localized ,
-                                                  message: LocalizableLock.onboardingServerConnectionspart1Expl.localized +
+                                                  message: LocalizableLock.onboardingServerConnectionspart1Expl.localized + "\n\n" +
                                                   LocalizableLock.onboardingServerConnectionspart1Expl.localized),
-
+                                   
                                    OnboardingItem(imageName: .onboardNearbysharing,
                                                   title: LocalizableLock.onboardingNearbySharingTitle.localized ,
                                                   message: LocalizableLock.onboardingNearbySharingExpl.localized),
