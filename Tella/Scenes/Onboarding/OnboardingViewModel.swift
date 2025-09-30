@@ -12,12 +12,28 @@ import Foundation
 final class OnboardingViewModel: ObservableObject {
     @Published var index: Int
     let startIndex: Int = 0
-    let pages: [OnboardingItem] = [OnboardingItem(imageName: .lockDone,
-                                                  title: "Camera" ,
-                                                  message: "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery."),
-                                   OnboardingItem(imageName: .lockDone,
-                                                  title: "Camera" ,
-                                                  message: "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery." )]
+    
+    let pages: [OnboardingItem] = [OnboardingItem(imageName: .onboardCamera,
+                                                  title: LocalizableLock.onboardingCameraTitle.localized,
+                                                  message: LocalizableLock.onboardingCameraExpl.localized),
+                                  
+                                   OnboardingItem(imageName: .onboardMic,
+                                                  title: LocalizableLock.onboardingRecorderTitle.localized ,
+                                                  message: LocalizableLock.onboardingRecorderExpl.localized),
+
+                                   OnboardingItem(imageName: .onboardFiles,
+                                                  title: LocalizableLock.onboardingEncryptedFilesFoldersTitle.localized ,
+                                                  message: LocalizableLock.onboardingEncryptedFilesFoldersExpl.localized),
+
+                                   OnboardingItem(imageName: .onboardConnections,
+                                                  title: LocalizableLock.onboardingServerConnectionsTitle.localized ,
+                                                  message: LocalizableLock.onboardingServerConnectionspart1Expl.localized +
+                                                  LocalizableLock.onboardingServerConnectionspart1Expl.localized),
+
+                                   OnboardingItem(imageName: .onboardNearbysharing,
+                                                  title: LocalizableLock.onboardingNearbySharingTitle.localized ,
+                                                  message: LocalizableLock.onboardingNearbySharingExpl.localized),
+    ]
     
     init() {
         self.index = min(max(startIndex, 0), max(0, pages.count - 1))

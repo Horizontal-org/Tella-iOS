@@ -18,7 +18,20 @@ enum LocalizableLock: String, LocalizableDelegate {
     case onboardingIntroHead = "Onboarding_Intro_Head"
     case onboardingIntroSubhead = "Onboarding_Intro_Subhead"
     case onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted"
-    
+
+    case onboardingCameraTitle = "Onboarding_Camera_Title"
+    case onboardingCameraExpl = "Onboarding_Camera_Expl"
+
+    case onboardingRecorderTitle = "Onboarding_Recorder_Title"
+    case onboardingRecorderExpl = "Onboarding_Recorder_Expl"
+    case onboardingEncryptedFilesFoldersTitle = "Onboarding_EncryptedFilesFolders_Title"
+    case onboardingEncryptedFilesFoldersExpl = "Onboarding_EncryptedFilesFolders_Expl"
+    case onboardingServerConnectionsTitle = "Onboarding_ServerConnections_Title"
+    case onboardingServerConnectionspart1Expl = "Onboarding_ServerConnections_part1_Expl"
+    case onboardingServerConnectionspart2Expl = "Onboarding_ServerConnections_part2_Expl"
+    case onboardingNearbySharingTitle = "Onboarding_NearbySharing_Title"
+    case onboardingNearbySharingExpl = "Onboarding_NearbySharing_Expl"
+
     // Done
     case onboardingdLockSuccessHead = "Onboarding_LockSuccess_Head"
     case onboardingLockSuccessSubhead = "Onboarding_LockSuccess_Subhead"

@@ -5,6 +5,27 @@
 "Onboarding_LockSuccess_Head" = "You’re all done!";
 "Onboarding_LockSuccess_Subhead" = "You can always continue changing your preferences in Settings.";
 "Onboarding_LockSuccess_Action_GoToTella" = "GO TO TELLA";
+
+
+
+"Onboarding_Camera_Title" = "Camera";
+"Onboarding_Camera_Expl" = "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery.";
+
+"Onboarding_Recorder_Title" = "Recorder";
+"Onboarding_Recorder_Expl" = "Record interviews or sound directly in Tella. The audio files are automatically encrypted and saved in Tella, and will not be accessible from your phone’s regular storage.";
+
+"Onboarding_EncryptedFilesFolders_Title" = "Encrypted files & folders";
+"Onboarding_EncryptedFilesFolders_Expl" = "All files and folders in Tella are encrypted. As long as Tella is locked, your files and folders are encrypted and will remain inaccessible from outside of Tella.";
+
+"Onboarding_ServerConnections_Title" = "Server Connections";
+"Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
+
+"Onboarding_ServerConnections_part2_Expl" = "Tella supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi, Tella Web and Open Data Kit (ODK).";
+
+"Onboarding_NearbySharing_Title" = "Nearby Sharing";
+"Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
+
+
 "LockUnlock_LockSelect_Subhead" = "How would you like to lock Tella?";
 "LockUnlock_LockSelect_Action_Password" = "PASSWORD";
 "LockUnlock_LockSelect_ActionExpl_Password" = "The most secure option";
