@@ -10,32 +10,30 @@ import SwiftUI
 
 struct OnboardingPageView: View {
     
-    let imageName: ImageResource
-    let title: String
-    let message: String
+    let content: any OnboardingContent
     
     var body: some View {
         
         VStack(alignment: .center, spacing: 16) {
             Spacer()
             
-            Image(imageName)
+            Image(content.imageName)
             
-            Text(title)
+            Text(content.title)
                 .font(.custom(Styles.Fonts.boldFontName, size: 18))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-
-            Text(message)
+            
+            Text(content.message)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-
+            
             Spacer()
         }
     }
 }
 
-//#Preview {
-//    OnboardingView(viewModel: OnboardingViewModel())
-//}
+#Preview {
+    OnboardingPageView(content: CameraContent())
+}

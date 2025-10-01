@@ -10,28 +10,26 @@ import SwiftUI
 
 struct OnboardingView: View {
     @StateObject private var viewModel: OnboardingViewModel
-
+    
     init(viewModel: OnboardingViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-
+    
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
                 TabView(selection: $viewModel.index) {
-                    ForEach(Array(viewModel.pages.enumerated()), id: \.offset) { index, page in
-                        OnboardingPageView(
-                            imageName: page.imageName,
-                            title: page.title,
-                            message: page.message
-                        )
-                        .tag(index)
+                    ForEach(Array(viewModel.pages.enumerated()), id: \.element.id) { index, page in
+                        page.content
+                            .tag(index)
+                        
                     }
                 }
                 .padding(.horizontal, 24)
                 .tabViewStyle(.page(indexDisplayMode: .never))
-
+                
                 PageDots(current: viewModel.index, total: viewModel.count)
+                
                 BottomLockView<AnyView>(
                     isValid: Binding(get: { viewModel.canGoNext }, set: { _ in }),
                     nextButtonAction: .action,
@@ -44,9 +42,9 @@ struct OnboardingView: View {
     }
 }
 
-//#Preview {
-//    OnboardingView()
-//}
+#Preview {
+    OnboardingView(viewModel: OnboardingViewModel.stub())
+}
 
 // MARK: - Dots
 private struct PageDots: View {
