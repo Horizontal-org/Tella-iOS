@@ -20,9 +20,8 @@ struct OnboardingView: View {
             VStack(spacing: 0) {
                 TabView(selection: $viewModel.index) {
                     ForEach(Array(viewModel.pages.enumerated()), id: \.element.id) { index, page in
-                        page.content
+                        page.view
                             .tag(index)
-                        
                     }
                 }
                 .padding(.horizontal, 24)

@@ -16,15 +16,13 @@ final class OnboardingViewModel: ObservableObject {
     @Published var index: Int
     let startIndex: Int = 0
     
-    typealias Item = OnboardingItem<AnyView>
-    
-    let pages: [Item] = [
-        Item(type: .intro, content: AnyView(OnboardingPageView(content: CameraContent()))),
-        Item(type: .intro, content: AnyView(OnboardingPageView(content: MicContent()))),
-        Item(type: .intro, content: AnyView(OnboardingPageView(content: FilesContent()))),
-        Item(type: .intro, content: AnyView(OnboardingPageView(content: ConnectionsContent()))),
-        Item(type: .intro, content: AnyView(OnboardingPageView(content: NearbySharingContent()))),
-        Item(type: .lock, content: AnyView(LockChoiceView()))
+    let pages: [OnboardingItem] = [
+        .intro(CameraContent()),
+        .intro(MicContent()),
+        .intro(FilesContent()),
+        .intro(ConnectionsContent()),
+        .intro(NearbySharingContent()),
+        .lock
     ]
     
     init() {
@@ -45,30 +43,10 @@ final class OnboardingViewModel: ObservableObject {
 }
 
 extension OnboardingViewModel {
-    static func stub() -> OnboardingViewModel {
-        return OnboardingViewModel()
-    }
+    static func stub() -> OnboardingViewModel { OnboardingViewModel() }
 }
-
 
 // MARK: - Model
-
-struct OnboardingItem<T: View>: Identifiable {
-    
-    let id: String
-    let type: OnboardingType
-    let content: T
-    
-    
-    init(type: OnboardingType, content: T) {
-        self.id = UUID().uuidString
-        self.type = type
-        self.content = content
-    }
-    static func == (lhs: OnboardingItem<T>, rhs: OnboardingItem<T>) -> Bool {
-        lhs.id == rhs.id
-    }
-}
 
 enum OnboardingType: String, Codable, CaseIterable, Hashable {
     case intro
@@ -76,6 +54,53 @@ enum OnboardingType: String, Codable, CaseIterable, Hashable {
     case lockSuccess
     case allDone
 }
+
+enum OnboardingItem: Identifiable, Equatable {
+    static func == (lhs: OnboardingItem, rhs: OnboardingItem) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    case intro(any OnboardingContent)
+    case lock
+    case lockSuccess
+    case allDone
+    
+    var id: String {
+        switch self {
+        case .intro(let content): return "intro-\(content.hashValue)"
+        case .lock:               return "lock"
+        case .lockSuccess:        return "lockSuccess"
+        case .allDone:            return "allDone"
+        }
+    }
+    
+    var type: OnboardingType {
+        switch self {
+        case .intro:        return .intro
+        case .lock:         return .lock
+        case .lockSuccess:  return .lockSuccess
+        case .allDone:      return .allDone
+        }
+    }
+    
+    @ViewBuilder
+    var view: some View {
+        switch self {
+        case let .intro(content):
+            OnboardingPageView(content: content)
+            
+        case .lock:
+            LockChoiceView()
+            
+        case .lockSuccess:
+            LockChoiceView()
+            
+        case .allDone:
+            LockChoiceView()
+        }
+    }
+}
+// MARK: - Content protocol & concrete content
 
 protocol OnboardingContent: Hashable {
     var imageName: ImageResource { get }
