@@ -46,14 +46,6 @@ extension OnboardingViewModel {
     static func stub() -> OnboardingViewModel { OnboardingViewModel() }
 }
 
-// MARK: - Model
-
-enum OnboardingType: String, Codable, CaseIterable, Hashable {
-    case intro
-    case lock
-    case lockSuccess
-    case allDone
-}
 
 enum OnboardingItem: Identifiable, Equatable {
     static func == (lhs: OnboardingItem, rhs: OnboardingItem) -> Bool {
@@ -74,31 +66,6 @@ enum OnboardingItem: Identifiable, Equatable {
         }
     }
     
-    var type: OnboardingType {
-        switch self {
-        case .intro:        return .intro
-        case .lock:         return .lock
-        case .lockSuccess:  return .lockSuccess
-        case .allDone:      return .allDone
-        }
-    }
-    
-    @ViewBuilder
-    var view: some View {
-        switch self {
-        case let .intro(content):
-            OnboardingPageView(content: content)
-            
-        case .lock:
-            LockChoiceView()
-            
-        case .lockSuccess:
-            LockChoiceView()
-            
-        case .allDone:
-            LockChoiceView()
-        }
-    }
 }
 // MARK: - Content protocol & concrete content
 

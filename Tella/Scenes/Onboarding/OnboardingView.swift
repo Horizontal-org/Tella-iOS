@@ -20,8 +20,23 @@ struct OnboardingView: View {
             VStack(spacing: 0) {
                 TabView(selection: $viewModel.index) {
                     ForEach(Array(viewModel.pages.enumerated()), id: \.element.id) { index, page in
-                        page.view
-                            .tag(index)
+                        switch page {
+                        case let .intro(content):
+                            OnboardingPageView(content: content)
+                                .tag(index)
+                            
+                        case .lock:
+                            LockChoiceView()
+                                .tag(index)
+                            
+                        case .lockSuccess:
+                            LockChoiceView()
+                                .tag(index)
+                            
+                        case .allDone:
+                            LockChoiceView()
+                                .tag(index)
+                        }
                     }
                 }
                 .padding(.horizontal, 24)
