@@ -14,7 +14,6 @@ struct UwaziDatePicker: View {
     @State private var selectedDate: Date
     @State private var dateString: String
     @ObservedObject var prompt: UwaziTextEntryPrompt
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
         
     init(prompt: UwaziTextEntryPrompt) {
         self.prompt = prompt

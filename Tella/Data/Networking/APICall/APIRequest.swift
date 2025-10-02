@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -13,7 +13,7 @@ public protocol APIRequest {
     var urlQueryParameters : [String : String?]? { get }
     
     var baseURL: String { get }
-    var path: String { get }
+    var path: String? { get }
     var httpMethod: HTTPMethod { get }
     var encoding: Encoding { get }
     var decoder: JSONDecoder { get }
@@ -25,6 +25,7 @@ public protocol APIRequest {
     var apiSession: URLSession? { get }
     var multipartBody: Data? { get }
     var multipartHeader: String? {get}
+    var trustedPublicKeyHash: String? {get}
 }
 
 public extension APIRequest {
@@ -45,12 +46,12 @@ public extension APIRequest {
     
     var decoder: JSONDecoder { JSONDecoder() }
     var fileToUpload: FileInfo? { nil }
-    var url: URL? { return  URL(string: baseURL + path) }
+    var url: URL? { return  URL(string: baseURL + (path ?? "")) }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
     var multipartBody: Data? { nil }
     var multipartHeader: String? { nil }
-
+    var trustedPublicKeyHash: String? { nil }
 }
 
 extension APIRequest {
@@ -74,22 +75,23 @@ extension APIRequest {
         request.httpMethod = httpMethod.rawValue
         if encoding == .form {
             request.setValue(multipartHeader, forHTTPHeaderField: "Content-Type")
-                
+            
             request.httpBody = multipartBody
         } else {
             request.httpBody = try body()
         }
-
+        
         request.timeoutInterval = TimeInterval(30)
         return request
     }
-} 
+}
 
 extension APIRequest {
     
     func body(boundary: String? = nil) throws -> Data? {
         let keyValues = keyValues?.compactMapValues { $0 } ?? [:]
         
+        // Convert to JSON-safe dictionary
         let queryItemsDictionary = keyValues
             .reduce(into: [:]) { result, tuple in
                 result[tuple.key.apiString] = tuple.value
@@ -99,12 +101,8 @@ extension APIRequest {
                                               options: .prettyPrinted
             )
         }
-//        if let fileToUpload {
-//            return getHttpBody(fieldInfo: fileToUpload)
-//        }
         return nil
     }
-    
     
     private func addURLQueryParameters(toURL url: URL) -> URL {
         guard let urlQueryParameters else { return url }
@@ -126,14 +124,6 @@ extension APIRequest {
         
         return url
     }
-    
-//    func getHttpBody(fieldInfo:FileInfo) -> Data? {
-//        let data = NSMutableData()
-//        if let fieldInfoData = fieldInfo.data {
-//            data.append(fieldInfoData)
-//        }
-//        return data as Data
-//    }
 }
 
 extension NSMutableData {

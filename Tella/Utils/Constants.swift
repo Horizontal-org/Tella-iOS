@@ -14,8 +14,7 @@ struct TellaUrls {
     static let faq = "https://tella-app.org/faq"
     static let tutorial = "https://tella-app.org/get-started-ios/"
     static let connectionLearnMore = "https://tella-app.org/for-organizations"
-    
-    
+    static let nearbySharingLearnMore = "https://tella-app.org/nearby-sharing"
 }
 
 struct GoogleAuthConstants {

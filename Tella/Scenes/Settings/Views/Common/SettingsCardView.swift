@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsCardView<T:View> : View {
     
-    var cardViewArray : [T?]
+    var cardViewArray : [T]
     
     var body : some View {
         

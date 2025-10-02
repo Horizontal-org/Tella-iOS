@@ -76,7 +76,7 @@ extension ReportRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
             
         case .createReport(let report):

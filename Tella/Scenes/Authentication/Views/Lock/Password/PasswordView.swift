@@ -12,6 +12,7 @@ import SwiftUI
 import UIKit
 
 enum NextButtonAction {
+    case none
     case action
     case destination
 }
@@ -57,7 +58,7 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                     ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPasswordConfirmErrorPasswordsDoNotMatch.localized)
                 }
                 
-                BottomLockView(isValid: $isValid,
+                NavigationBottomView(shouldActivateNext: $isValid,
                                shouldEnableBackButton: shouldEnableBackButton,
                                nextButtonAction: nextButtonAction,
                                destination:destination,

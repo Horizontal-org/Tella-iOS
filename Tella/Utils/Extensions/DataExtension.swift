@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,6 +8,8 @@ import AVFoundation
 import AVKit
 import Combine
 import CoreLocation
+import CommonCrypto
+import Crypto
 
 extension Data {
     
@@ -17,6 +19,11 @@ extension Data {
     
     func string() -> String {
         return String(decoding:  self , as: UTF8.self)
+    }
+    
+    /// Strict UTF-8 decoding — returns nil if data is invalid
+    func utf8String() -> String? {
+        return String(data: self, encoding: .utf8)
     }
     
     mutating func extract(size: Int?) -> Data? {
@@ -38,7 +45,7 @@ extension Data {
         // Return the new copy of data
         return self
     }
-
+    
     /// This function takes the image data and metadata as parameter and returns the image data with metadata
     /// - Parameters:
     ///   - data: The original image data
@@ -49,7 +56,7 @@ extension Data {
         let uti: CFString = CGImageSourceGetType(imageRef)!
         let dataWithEXIF: NSMutableData = NSMutableData(data: self)
         let destination: CGImageDestination = CGImageDestinationCreateWithData((dataWithEXIF as CFMutableData), uti, 1, nil)!
-
+        
         CGImageDestinationAddImageFromSource(destination, imageRef, 0, (properties as CFDictionary))
         CGImageDestinationFinalize(destination)
         return dataWithEXIF
@@ -61,32 +68,39 @@ extension Data {
         {
             return nil
         }
-
+        
         let count = CGImageSourceGetCount(source)
         let mutableData = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(mutableData, type, count, nil) else {
             return nil
         }
-
+        
         let exifToRemove: CFDictionary = [
             kCGImagePropertyExifDictionary: kCFNull,
             kCGImagePropertyGPSDictionary: kCFNull,
             kCGImagePropertyTIFFDictionary : kCFNull
         ] as CFDictionary
-
+        
         for index in 0 ..< count {
             CGImageDestinationAddImageFromSource(destination, source, index, exifToRemove)
             if !CGImageDestinationFinalize(destination) {
                 debugLog("Failed to finalize")
             }
         }
-
+        
         return mutableData as Data
     }
-
+    
     
     func fileExtension(vaultManager:VaultManager) -> String? {
         let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
         return fileTypeHelper?.fileExtension
+    }
+    
+    // Function to compute SHA-256 hash
+    func sha256() -> String {
+        let hashBytes = SHA256.hash(data: self)
+        // Convert to hex string array: each element is "%02x"
+        return hashBytes.map { String(format: "%02x", $0) }.joined()
     }
 }

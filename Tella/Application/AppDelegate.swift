@@ -15,13 +15,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     var backgroundSessionCompletionHandler: (() -> Void)?
     static private(set) var instance: AppDelegate! = nil
     @Published var shouldHandleTimeout : Bool = false
-    
+    @Published var appWillTerminate : Bool = false
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
         
         setupDropbox()
         configureGoogleSignIn()
         return true
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        appWillTerminate = true
     }
     
     func application(

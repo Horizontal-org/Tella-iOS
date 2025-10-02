@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,19 +17,19 @@ class ServersViewModel: ObservableObject {
     @Published var unavailableServers: [Server] = []
     @Published var shouldEnableNextButton: Bool = false
     @Published var selectedServerType: ServerConnectionType?
-
+    
     private var subscribers = Set<AnyCancellable>()
     
     let gDriveRepository : GDriveRepositoryProtocol
     let dropboxRepository : DropboxRepositoryProtocol
-
+    
     init(mainAppModel : MainAppModel,
          gDriveRepository : GDriveRepositoryProtocol = GDriveRepository(),
          dropboxRepository : DropboxRepositoryProtocol = DropboxRepository()) {
         
         self.gDriveRepository = gDriveRepository
         self.dropboxRepository = dropboxRepository
-
+        
         self.mainAppModel = mainAppModel
         
         self.getServers()
@@ -62,7 +62,6 @@ class ServersViewModel: ObservableObject {
         default:
             break
         }
-
     }
     
     func deleteAllServersConnection() {
@@ -75,4 +74,11 @@ class ServersViewModel: ObservableObject {
         return serverConnections.filter { connection in
             !unavailableTypes.contains(connection.type)
         }
-    }}
+    }
+}
+
+extension ServersViewModel {
+    static func stub() -> ServersViewModel {
+        return ServersViewModel(mainAppModel: MainAppModel.stub())
+    }
+}

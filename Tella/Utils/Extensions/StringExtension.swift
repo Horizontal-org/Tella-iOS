@@ -8,6 +8,7 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
+import Network
 
 extension String {
     func getDate() -> Date? {
@@ -105,9 +106,11 @@ extension String {
         
         return fileExtension as String
     }
+    
+    func fileExtensionFromMimeType() -> String? {
+        UTType(mimeType: self)?.preferredFilenameExtension
+    }
 
-    
-    
     var tellaFileType: TellaFileType {
 
         guard let type = UTType(mimeType: self) else {
@@ -184,7 +187,7 @@ extension String {
 
     
     func decode<T: Codable>(_ type: T.Type) throws -> T {
-        let data = try JSONSerialization.data(withJSONObject: self)
+        let data = try? JSONSerialization.data(withJSONObject: self)
         return try JSONDecoder().decode (type, from: data)
     }
     
@@ -200,7 +203,18 @@ extension String {
             return nil
         }
     }
+
+    func convertIPAddressToBytes() throws -> [UInt8] {
+        if let ipv4 = IPv4Address(self) {
+            return Array(ipv4.rawValue)
+        } else if let ipv6 = IPv6Address(self) {
+            return Array(ipv6.rawValue)
+        } else {
+            throw CertificateError.invalidIPAddress
+        }
+    }
 }
+
 extension String: @retroactive Identifiable {
     public var id: String { self }
 }
@@ -208,5 +222,37 @@ extension String: @retroactive Identifiable {
 extension String {
     func url() -> URL? {
         return URL(string: self)
+    }
+
+    func asFileURL() -> URL? {
+        guard !self.isEmpty else { return nil }
+        return URL(fileURLWithPath: self)
+    }
+
+}
+
+
+enum CertificateError: Error {
+    case invalidIPAddress
+}
+
+extension String {
+    func formatHash() -> String {
+        let trimmed = String(self.prefix(64))
+        let chunks = self.chunked(into: 4)
+        let lines = chunks.chunked(into: 4)
+        return lines.map { $0.joined(separator: " ") }.joined(separator: "\n")
+    }
+    
+    // Chunk String into substrings of fixed size
+    func chunked(into size: Int) -> [String] {
+        var result: [String] = []
+        var start = startIndex
+        while start < endIndex {
+            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            result.append(String(self[start..<end]))
+            start = end
+        }
+        return result
     }
 }
