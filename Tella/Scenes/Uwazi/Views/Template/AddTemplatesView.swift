@@ -58,7 +58,8 @@ struct AddTemplatesView: View {
                 firstPart + secondPart
             }
             .onTapGesture {
-                navigateTo(destination: ServersListView().environmentObject(ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)))
+                let viewModel = ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)
+                navigateTo(destination: ServersListView(serversViewModel: viewModel))
             }
         }
         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))

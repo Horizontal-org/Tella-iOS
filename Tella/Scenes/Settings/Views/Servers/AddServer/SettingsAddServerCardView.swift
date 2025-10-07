@@ -9,9 +9,8 @@ import SwiftUI
 
 struct SettingsAddServerCardView: View {
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var settingViewModel: SettingsViewModel
-
+    @StateObject var serversViewModel : ServersViewModel
+    
     var body: some View {
         ZStack {
             HStack{
@@ -28,8 +27,7 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    navigateTo(destination: ServerSelectionView(appModel: serversViewModel.mainAppModel,
-                                                                serversViewModel: serversViewModel).environmentObject(serversViewModel))
+                    navigateTo(destination: ServerSelectionView(serversViewModel: serversViewModel))
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)
@@ -38,18 +36,14 @@ struct SettingsAddServerCardView: View {
         }
         
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
-        .environmentObject(serversViewModel)
     }
     
-    var addServerURLView: some View {
-        TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel)
-    }
 }
 
-struct SettingsAddServerCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsAddServerCardView()
-            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
-    }
-}
+//struct SettingsAddServerCardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsAddServerCardView()
+//            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+//            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
+//    }
+//}

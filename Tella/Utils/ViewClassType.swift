@@ -21,5 +21,6 @@ struct ViewClassType {
     static let tellaServerReportMainView : AnyClass = UIHostingController<TellaServerReportsMainView>.self
     static let dropboxReportMainView: AnyClass = UIHostingController<DropboxReportMainView>.self
     static let fileListView: AnyClass = UIHostingController<FileListView>.self
+    static let serverOnboardingView: AnyClass = UIHostingController<ServerOnboardingView>.self
 }
 

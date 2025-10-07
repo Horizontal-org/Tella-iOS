@@ -42,8 +42,8 @@ extension View {
         toPresent.modalTransitionStyle = transitionStyle
         toPresent.view.isOpaque = false
         toPresent.view.backgroundColor = .clear
-
-        UIApplication.getTopViewController()?.present(toPresent, animated: false, completion: nil)
+        
+        UIApplication.getTopViewController()?.present(toPresent, animated: true, completion: nil)
     }
     
     func dismiss() {
@@ -53,7 +53,7 @@ extension View {
     func dismiss(completion:@escaping () -> Void) {
         UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
     }
-
+    
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
         

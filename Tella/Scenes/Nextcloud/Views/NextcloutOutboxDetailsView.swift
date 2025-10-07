@@ -42,7 +42,8 @@ struct NextcloutOutboxDetailsView<T: NextcloudServer>: View {
     
     func navigateToLoginView() {
         guard let server = outboxReportVM.reportViewModel.server else { return  }
-        let nextcloudVM = NextcloudServerViewModel(mainAppModel: mainAppModel,currentServer: server)
+        let nextcloudVM = NextcloudServerViewModel(mainAppModel: mainAppModel,
+                                                   currentServer: server)
         navigateTo(destination: NextcloudLoginView(nextcloudVM: nextcloudVM))
     }
 }

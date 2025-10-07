@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 5/20/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -22,7 +22,6 @@ struct SelectSharedDriveView: View {
         } content: {
             contentView
         }
-        
         .onAppear {
             gDriveServerViewModel.getSharedDrives()
         }
@@ -72,9 +71,12 @@ struct SelectSharedDriveView: View {
         }
         gDriveServerViewModel.addServer(rootFolder: selectedDrive.id,
                                         rootFolderName: selectedDrive.name)
-        
-        navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
-                                                 type: .gDrive))
+        if gDriveServerViewModel.serversSourceView == .onboarding {
+            self.popTo(ViewClassType.serverOnboardingView)
+        } else {
+            navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
+                                                     type: .gDrive))
+        }
         
     }
     
@@ -106,7 +108,7 @@ struct DriveCardView: View {
     }
 }
 
-
 #Preview {
-    SelectSharedDriveView(gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(), mainAppModel: MainAppModel.stub()))
+    SelectSharedDriveView(gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(),
+                                                                       mainAppModel: MainAppModel.stub()))
 }

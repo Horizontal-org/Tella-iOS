@@ -10,14 +10,14 @@ import SwiftUI
 struct SecuritySettingsView: View {
     
     @EnvironmentObject var appModel : MainAppModel
-     var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
     @StateObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
     
     
     init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel, appViewState: appViewState))
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appViewState: appViewState))
         self.settingsViewModel = settingsViewModel
     }
     
@@ -143,19 +143,19 @@ struct SecuritySettingsView: View {
     var unlockView : some View {
         
         let passwordType = appModel.vaultManager.getPasswordType()
-
+        
         return ContainerViewWithHeader {
             NavigationHeaderView()
         } content: {
             passwordType == .tellaPassword ?
             
-            UnlockView(type: .tellaPassword)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()  :
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPassword)
+            .eraseToAnyView()  :
             
-            UnlockView(type: .tellaPin)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPin)
+            .eraseToAnyView()
         }
     }
     

@@ -32,10 +32,25 @@ enum LocalizableLock: String, LocalizableDelegate {
     case onboardingNearbySharingTitle = "Onboarding_NearbySharing_Title"
     case onboardingNearbySharingExpl = "Onboarding_NearbySharing_Expl"
 
-    // Done
-    case onboardingdLockSuccessHead = "Onboarding_LockSuccess_Head"
-    case onboardingLockSuccessSubhead = "Onboarding_LockSuccess_Subhead"
-    case onboardingLockSuccessActionGoToTella = "Onboarding_LockSuccess_Action_GoToTella"
+    case onboardingLockSuccessTitle = "Onboarding_LockSuccess_Title"
+    case onboardingLockSuccessExpl = "Onboarding_LockSuccess_Expl"
+    
+    case onboardingLockDoneTitle = "Onboarding_LockDone_Title"
+    case onboardingLockDoneExpl = "Onboarding_LockDone_Expl"
+    case goToTella = "Onboarding_Done_Action_GoToTella"
+    case advancedSettings = "Onboarding_LockDone_Action_AdvancedSettings"
+    
+    case onboardingServerDoneTitle = "Onboarding_ServerDone_Title"
+    case onboardingServerDoneExpl = "Onboarding_ServerDone_Expl"
+
+    case onboardingServerMainTitle = "Onboarding_ServerMain_Title"
+    case onboardingServerMainExpl = "Onboarding_ServerMain_Expl"
+    case onboardingServerMainConnectServer = "Onboarding_ServerMain_Action_ConnectServer"
+    case onboardingServerMainContinue = "Onboarding_ServerMain_Action_Continue"
+
+    case onboardingServerConnectedTitle = "Onboarding_ServerConnected_Title"
+    case onboardingServerConnectedExpl = "Onboarding_ServerConnected_Expl"
+
     
     // Lock Select view
     case lockSelectSubhead = "LockUnlock_LockSelect_Subhead"

@@ -2,8 +2,8 @@
 //  UIApplicationExtension.swift
 //  Tella
 //
-//  
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -29,11 +29,6 @@ extension UIApplication {
             .first?.windows
             .filter { $0.isKeyWindow }
             .first
-    }
-    
-    func topNavigationController(_ viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UINavigationController? {
-        let window = keyWindow
-        return window?.rootViewController?.children.last as? UINavigationController
     }
     
     func popToRootView(animated:Bool = true) {
@@ -64,23 +59,21 @@ extension UIApplication {
         if let matchingVC = nvc?.viewControllers.first(where: { $0.isKind(of: classType) }) {
             return true
         }
-
+        
         return false
     }
-
+    
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        
         if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-            
-        } 
-        
-        else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-            
-        } 
-        
-        else if let presented = base?.presentedViewController {
+            return getTopViewController(base: nav.visibleViewController ?? nav.topViewController)
+        }
+        if let tab = base as? UITabBarController {
+            return getTopViewController(base: tab.selectedViewController)
+        }
+        if let split = base as? UISplitViewController {
+            return getTopViewController(base: split.viewControllers.last)
+        }
+        if let presented = base?.presentedViewController {
             return getTopViewController(base: presented)
         }
         return base
@@ -106,8 +99,47 @@ extension UIApplication {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
     }
-
+    
     var rootViewController: UIViewController? {
         return keyWindow?.rootViewController
     }
+    
+    func topNavigationController() -> UINavigationController? {
+        guard let root = keyWindow?.rootViewController else { return nil }
+        
+        // 1) If the top VC is inside a nav
+        if let nav = UIApplication.getTopViewController()?.navigationController { return nav }
+        
+        // 2) If the top VC itself is a nav
+        if let nav = UIApplication.getTopViewController() as? UINavigationController { return nav }
+        
+        // 3) Recursive search from root (tabs/modals/split/children)
+        if let nav = findNav(from: root) { return nav }
+        
+        // 4) Fallback (your working case): root.children.last as UINavigationController
+        if let lastChildNav = (root.children.last { $0 is UINavigationController }) as? UINavigationController,
+           lastChildNav.isViewLoaded, lastChildNav.view.window != nil {
+            return lastChildNav
+        }
+        
+        return nil
+    }
+    
+    private func findNav(from vc: UIViewController?) -> UINavigationController? {
+        switch vc {
+        case let nav as UINavigationController:
+            return nav
+        case let tab as UITabBarController:
+            return findNav(from: tab.selectedViewController)
+        case let split as UISplitViewController:
+            return findNav(from: split.viewControllers.last)
+        default:
+            if let presented = vc?.presentedViewController { return findNav(from: presented) }
+            for child in vc?.children ?? [] {
+                if let found = findNav(from: child) { return found }
+            }
+            return vc?.navigationController
+        }
+    }
+    
 }

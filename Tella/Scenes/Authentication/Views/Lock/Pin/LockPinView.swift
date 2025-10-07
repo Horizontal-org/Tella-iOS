@@ -3,7 +3,7 @@
 //  Tella
 //
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -11,8 +11,9 @@
 import SwiftUI
 
 struct LockPinView: View {
-    @EnvironmentObject var lockViewModel: LockViewModel
-
+    
+    @ObservedObject var lockViewModel: LockViewModel
+    
     var body: some View {
         
         CustomPinView(shouldEnableBackButton: false,
@@ -21,16 +22,17 @@ struct LockPinView: View {
                       fieldContent: $lockViewModel.password,
                       shouldShowErrorMessage: .constant(false),
                       destination: LockConfirmPinView().environmentObject(lockViewModel))
-            .onAppear {
-                lockViewModel.initLockData()
-
-            }
+        .onAppear {
+            lockViewModel.initLockData()
+        }
+        
+        
     }
 }
 
 struct LockPinView_Previews: PreviewProvider {
     static var previews: some View {
-        LockPinView()
+        LockPinView(lockViewModel: LockViewModel.stub())
     }
 }
 

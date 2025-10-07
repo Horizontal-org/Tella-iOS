@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,15 +7,13 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    
-    @State var shouldShowLockChoice : Bool = false
-    var action: (() -> Void)?
+    @EnvironmentObject private var appViewState: AppViewState
     
     var body: some View {
         NavigationContainerView {
             TransitionView(transitionViewData: WelcomeViewData()) {
-                shouldShowLockChoice = true
-                navigateTo(destination: LockChoiceView())
+                let lockViewModel = LockViewModel(unlockType: .new, appViewState: appViewState)
+                navigateTo(destination: MainOnboardingView(viewModel: MainOnboardingViewModel(),lockViewModel: lockViewModel))
             }
         }
     }

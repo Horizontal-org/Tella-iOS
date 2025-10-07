@@ -1,9 +1,10 @@
 //
-//  OnboardingViewModel.swift
+//  MainOnboardingViewModel.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 25/9/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import Foundation
@@ -12,7 +13,7 @@ import SwiftUI
 // MARK: - ViewModel
 
 @MainActor
-final class OnboardingViewModel: ObservableObject {
+final class MainOnboardingViewModel: ObservableObject {
     @Published var index: Int
     let startIndex: Int = 0
     
@@ -22,7 +23,8 @@ final class OnboardingViewModel: ObservableObject {
         .intro(FilesContent()),
         .intro(ConnectionsContent()),
         .intro(NearbySharingContent()),
-        .lock
+        .lock,
+        .allDone
     ]
     
     init() {
@@ -38,12 +40,16 @@ final class OnboardingViewModel: ObservableObject {
         guard count > 0 else { return }
         index = min(max(newIndex, 0), lastIndex)
     }
-    func goNext() { goToPage(index + 1) }
-    func goBack() { goToPage(index - 1) }
+    func goNext() {
+        goToPage(index + 1)
+    }
+    func goBack() {
+        goToPage(index - 1)
+    }
 }
 
-extension OnboardingViewModel {
-    static func stub() -> OnboardingViewModel { OnboardingViewModel() }
+extension MainOnboardingViewModel {
+    static func stub() -> MainOnboardingViewModel { MainOnboardingViewModel() }
 }
 
 
@@ -54,14 +60,12 @@ enum OnboardingItem: Identifiable, Equatable {
     
     case intro(any OnboardingContent)
     case lock
-    case lockSuccess
     case allDone
-    
+
     var id: String {
         switch self {
         case .intro(let content): return "intro-\(content.hashValue)"
         case .lock:               return "lock"
-        case .lockSuccess:        return "lockSuccess"
         case .allDone:            return "allDone"
         }
     }
@@ -106,3 +110,41 @@ struct NearbySharingContent: OnboardingContent {
     var title: String = LocalizableLock.onboardingNearbySharingTitle.localized
     var message: String = LocalizableLock.onboardingNearbySharingExpl.localized
 }
+
+struct SuccessLockContent: OnboardingContent {
+    var imageName: ImageResource = .lockPhone
+    var title: String = LocalizableLock.onboardingLockSuccessTitle.localized
+    var message: String = LocalizableLock.onboardingLockSuccessExpl.localized
+}
+
+struct ServerConnectedContent: OnboardingContent {
+    var imageName: ImageResource = .settingsServer
+    var title: String = LocalizableLock.onboardingServerConnectedTitle.localized
+    var message: String = LocalizableLock.onboardingServerConnectedExpl.localized
+}
+
+
+
+
+struct LockDoneContent: OnboardingContent {
+    var imageName: ImageResource = .lockDone
+    var title: String = LocalizableLock.onboardingLockDoneTitle.localized
+    var message: String = LocalizableLock.onboardingLockDoneExpl.localized
+}
+
+
+struct MainServerOnboardingContent: OnboardingContent {
+    var imageName: ImageResource = .settingsServer
+    var title: String = LocalizableLock.onboardingServerMainTitle.localized
+    var message: String = LocalizableLock.onboardingServerMainExpl.localized
+}
+
+
+
+struct AdvancedCustomizationComplete: OnboardingContent {
+    var imageName: ImageResource = .lockDone
+    var title: String = LocalizableLock.onboardingServerDoneTitle.localized
+    var message: String = LocalizableLock.onboardingServerDoneExpl.localized
+}
+
+

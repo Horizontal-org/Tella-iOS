@@ -12,7 +12,6 @@ import SwiftUI
 struct ServerLoginView: View {
     
     @StateObject var viewModel: ServerViewModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var successLoginAction: (() -> Void)? = nil

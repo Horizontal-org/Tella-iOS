@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct SuccessAdvancedSettingsView: View {
-    
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    
+
     var body: some View {
         ContainerView {
             
@@ -59,6 +57,7 @@ struct SuccessAdvancedSettingsView: View {
         }
     }
 }
+
 struct SuccessAdvancedSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SuccessAdvancedSettingsView()

@@ -2,7 +2,7 @@
 //  ServerViewModel.swift
 //  Tella
 //
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -34,9 +34,12 @@ class ServerViewModel: ObservableObject {
     @Published var showNextSuccessLoginView : Bool = false
     @Published var loginState: ViewModelState<Bool> = .loaded(false)
     
+    var serversSourceView: ServersSourceView
+    
     private var cancellable: Cancellable? = nil
     
-    init() {
+    init(serversSourceView: ServersSourceView = .settings) {
+        self.serversSourceView = serversSourceView
         validateCredentials()
     }
     

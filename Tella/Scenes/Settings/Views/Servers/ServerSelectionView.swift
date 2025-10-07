@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/12/23.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -18,17 +18,23 @@ struct ServerSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(appModel:MainAppModel, serversViewModel : ServersViewModel) {
+    init(serversViewModel : ServersViewModel) {
         self.serversViewModel = serversViewModel
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: serversViewModel.gDriveRepository, mainAppModel: appModel))
-        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: appModel))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: serversViewModel.gDriveRepository,
+                                                                            mainAppModel: serversViewModel.mainAppModel,
+                                                                            serversSourceView: serversViewModel.serversSourceView))
+        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: serversViewModel.mainAppModel))
     }
     
     var body: some View {
-        ContainerViewWithHeader {
-            navigationBarView
-        } content: {
-            contentView
+        Group {
+            ContainerViewWithHeader {
+                if serversViewModel.serversSourceView == .settings {
+                    navigationBarView
+                }
+            } content: {
+                contentView
+            }
         }
         .onReceive(gDriveServerVM.$signInState){ signInState in
             if case .error(let message) = signInState {
@@ -40,6 +46,11 @@ struct ServerSelectionView: View {
         }
         .onOpenURL { url in
             dropboxServerVM.handleURLRedirect(url: url)
+        }
+        .onReceive(serversViewModel.$shouldHideView) { shouldHideView in
+            if shouldHideView {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
     
@@ -81,7 +92,7 @@ struct ServerSelectionView: View {
     fileprivate func bottomView() -> BottomLockView<AnyView> {
         return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
-                                       shouldHideBack: true,
+                                       shouldHideBack: serversViewModel.serversSourceView == .settings,
                                        nextAction: {
             switch serversViewModel.selectedServerType {
             case .tella:
@@ -108,24 +119,25 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToNextCloud() {
-        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel)))
+        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel, serversSourceView: serversViewModel.serversSourceView)))
     }
     
     fileprivate func navigateToTellaWebFlow() {
-        navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel))
+        navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel, serversSourceView: serversViewModel.serversSourceView))
     }
     
     fileprivate func navigateToUwaziFlow() {
-        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel))
-            .environmentObject(serversViewModel))
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel, serversSourceView: serversViewModel.serversSourceView)))
     }
     
     fileprivate func navigateToGDriveFlow() {
         gDriveServerVM.handleSignIn {
-            navigateTo(
-                destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
-                title: LocalizableSettings.settServerGDrive.localized
-            )
+            DispatchQueue.main.async() {
+                navigateTo(
+                    destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
+                    title: LocalizableSettings.settServerGDrive.localized
+                )
+            }
         }
     }
     
@@ -196,8 +208,6 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), serversViewModel: ServersViewModel(mainAppModel: MainAppModel.stub()))
-            .environmentObject(MainAppModel.stub())
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
+        ServerSelectionView(serversViewModel: ServersViewModel.stub())
     }
 }

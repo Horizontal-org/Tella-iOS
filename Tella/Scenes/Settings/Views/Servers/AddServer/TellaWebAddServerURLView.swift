@@ -11,13 +11,11 @@ struct TellaWebAddServerURLView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var nextButtonAction: NextButtonAction = .action
-    
-    
-    @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : TellaWebServerViewModel
-    
-    init(appModel:MainAppModel, server: TellaServer? = nil) {
-        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
+
+    init(appModel:MainAppModel, server: TellaServer? = nil,
+         serversSourceView: ServersSourceView) {
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server, serversSourceView: serversSourceView))
     }
     
     var body: some View {
@@ -73,14 +71,12 @@ struct TellaWebAddServerURLView: View {
     }
     
     private var serverLoginView: some View {
-        TellaWebServerLoginView()
-            .environmentObject(serverViewModel)
+        TellaWebServerLoginView(serverViewModel: serverViewModel)
     }
-    
 }
 
 struct AddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        TellaWebAddServerURLView(appModel: MainAppModel.stub())
+        TellaWebAddServerURLView(appModel: MainAppModel.stub(), serversSourceView: .settings)
     }
 }

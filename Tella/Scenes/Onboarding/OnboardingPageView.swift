@@ -3,7 +3,8 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 25/9/2025.
-//  Copyright © 2025 HORIZONTAL. All rights reserved.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 import SwiftUI
@@ -15,7 +16,6 @@ struct OnboardingPageView: View {
     var body: some View {
         
         VStack(alignment: .center, spacing: 16) {
-            Spacer()
             
             Image(content.imageName)
             
@@ -28,9 +28,7 @@ struct OnboardingPageView: View {
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
+        }.padding(.horizontal, 25)
     }
 }
 

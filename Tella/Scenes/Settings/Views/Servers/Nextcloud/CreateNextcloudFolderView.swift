@@ -19,10 +19,16 @@ struct CreateNextcloudFolderView: View {
     }
     
     private func navigateToSuccessLogin() {
-        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .nextcloud))
+        
+        if nextcloudVM.serversSourceView == .onboarding {
+            self.popTo(ViewClassType.serverOnboardingView)
+        } else {
+            navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .nextcloud))
+        }
     }
 }
 
 #Preview {
-    CreateNextcloudFolderView(nextcloudVM: NextcloudServerViewModel(nextcloudRepository: NextcloudRepository(), mainAppModel: MainAppModel.stub()))
+    CreateNextcloudFolderView(nextcloudVM: NextcloudServerViewModel(nextcloudRepository: NextcloudRepository(),
+                                                                    mainAppModel: MainAppModel.stub()))
 }

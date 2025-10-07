@@ -31,7 +31,7 @@ struct LockConfirmPinView: View {
     
     func lockWithPin() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
-        navigateTo(destination: OnboardingEndView())
+        lockViewModel.shouldDismiss.send(true)
     }
     
     func updatePin() {
