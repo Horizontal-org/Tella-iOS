@@ -59,4 +59,5 @@ enum UwaziLanguageTypeEnum: String, Codable {
     case relationshipType = "Relationship Type"
     case thesaurus = "Thesaurus"
     case uwaziUI = "Uwazi UI"
+    case connection = "Connection" 
 }
