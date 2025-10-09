@@ -25,30 +25,44 @@ struct ServerOnboardingView: View {
         .navigationBarHidden(true)
     }
     
-    private func tabView() -> some View {
-        TabView(selection: $viewModel.index) {
-            ForEach(Array(viewModel.pages.enumerated()), id: \.offset) { index, page in
-                Group {
-                    switch page {
-                    case .main:
-                        if viewModel.isConnectionSucceded {
-                            ServerConnectedSuccessView()
-                        } else {
-                            MainServerOnboardingView(serversViewModel: serversViewModel)
-                        }
-                        
-                    case .customizationDone:
-                        AdvancedCustomizationCompleteView()
-                    }
-                }
-                .tag(index)
+    func tabView() -> some View {
+        ControlledPager(
+            pageCount: viewModel.count,
+            index: $viewModel.index,
+            canSwipe: { idx, direction in
+                let page = viewModel.pages[idx]
+                return handleSwipe(for: page, direction: direction)
+            },
+            content: { idx in
+                let page = viewModel.pages[idx]
+                view(for: page)
             }
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .animation(
-            .interactiveSpring(response: 0.35, dampingFraction: 0.9, blendDuration: 0.2),
-            value: viewModel.index
         )
+    }
+    
+    func handleSwipe(for page: ServerOnboardingItem, direction: SwipeDirection) -> Bool {
+        switch page {
+        case .main:
+            return viewModel.isConnectionSucceded ? (direction == .left)
+            : false
+        case .customizationDone:
+            return false
+        }
+    }
+    
+    @ViewBuilder
+    func view(for page: ServerOnboardingItem) -> some View {
+        switch page {
+        case .main:
+            if viewModel.isConnectionSucceded {
+                ServerConnectedSuccessView()
+            } else {
+                MainServerOnboardingView(serversViewModel: serversViewModel)
+            }
+            
+        case .customizationDone:
+            AdvancedCustomizationCompleteView()
+        }
     }
     
     private func bottomView() -> some View {
