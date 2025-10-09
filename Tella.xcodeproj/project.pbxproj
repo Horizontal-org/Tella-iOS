@@ -383,6 +383,7 @@
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
 		12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E971362E97A96A00A87531 /* OnboardingContent.swift */; };
 		12E9713B2E97AEE500A87531 /* PageDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713A2E97AEE500A87531 /* PageDots.swift */; };
+		12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713C2E97C27700A87531 /* Collection+Extension.swift */; };
 		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
 		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
 		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
@@ -1059,6 +1060,7 @@
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
 		12E971362E97A96A00A87531 /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
 		12E9713A2E97AEE500A87531 /* PageDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDots.swift; sourceTree = "<group>"; };
+		12E9713C2E97C27700A87531 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
 		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
@@ -1912,6 +1914,7 @@
 				120D86632CB56FC500C007B4 /* ResultExtension.swift */,
 				129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */,
 				12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */,
+				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2160,9 +2163,8 @@
 			children = (
 				12E971362E97A96A00A87531 /* OnboardingContent.swift */,
 				12E9713A2E97AEE500A87531 /* PageDots.swift */,
-				128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */,
 				127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */,
-				126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */,
+				128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */,
 				128EE4E72E8FC3A100DF55C5 /* AdvancedOnboarding */,
 			);
 			path = Onboarding;
@@ -2317,6 +2319,7 @@
 			children = (
 				127BCA222E8520C100902C59 /* MainOnboardingView.swift */,
 				127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */,
+				126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */,
 			);
 			path = MainOnboarding;
 			sourceTree = "<group>";
@@ -4293,6 +4296,7 @@
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
+				12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
 				1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */,
 				125A895B2A965BED009347C3 /* FilterType.swift in Sources */,

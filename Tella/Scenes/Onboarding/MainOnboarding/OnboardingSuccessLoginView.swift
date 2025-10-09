@@ -11,10 +11,10 @@ import SwiftUI
 
 struct OnboardingSuccessLoginView: View {
     var body: some View {
-      
+        
         VStack(spacing: 50) {
             Spacer()
-
+            
             OnboardingPageView(content: SuccessLockContent())
             Image(.settingsCheckedCircle)
             Spacer()
@@ -25,10 +25,10 @@ struct OnboardingSuccessLoginView: View {
 
 struct ServerConnectedSuccessView: View {
     var body: some View {
-      
+        
         VStack(spacing: 50) {
             Spacer()
-
+            
             OnboardingPageView(content: ServerConnectedContent())
             Image(.settingsCheckedCircle)
             Spacer()

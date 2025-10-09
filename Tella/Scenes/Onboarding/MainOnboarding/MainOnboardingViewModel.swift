@@ -50,7 +50,7 @@ final class MainOnboardingViewModel: ObservableObject {
         if case .allDone = currentPage { return true }
         return false
     }
-
+    
     var isSwipeAllowed: Bool {
         !isOnLock && !isOnAllDone
     }
@@ -70,13 +70,6 @@ final class MainOnboardingViewModel: ObservableObject {
     }
     func goNext() { goToPage(index + 1) }
     func goBack() { goToPage(index - 1) }
-}
-
-// Safe subscript to avoid out-of-bounds if index desyncs briefly
-private extension Collection {
-    subscript(safe i: Index) -> Element? {
-        indices.contains(i) ? self[i] : nil
-    }
 }
 
 enum OnboardingItem: Identifiable, Equatable {

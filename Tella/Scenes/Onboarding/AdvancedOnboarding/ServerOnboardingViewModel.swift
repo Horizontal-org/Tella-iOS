@@ -11,79 +11,97 @@ import Foundation
 import SwiftUI
 import Combine
 
-// MARK: - ViewModel
 
 @MainActor
 final class ServerOnboardingViewModel: ObservableObject {
     
-    var mainAppModel: MainAppModel
-    var subscribers = Set<AnyCancellable>()
-
+    // MARK: - Dependencies
+    let mainAppModel: MainAppModel
+    
+    // MARK: - Published state
     @Published var isConnectionSucceded: Bool = false
     @Published var index: Int
-
-    let startIndex: Int = 0
     
+    // MARK: - Pages
     let pages: [ServerOnboardingItem] = [
         .main,
         .customizationDone
     ]
     
+    // MARK: - Combine
+    private var subscribers = Set<AnyCancellable>()
+    
+    // MARK: - Init
     init(mainAppModel: MainAppModel) {
-        self.index = min(max(startIndex, 0), max(0, pages.count - 1))
         self.mainAppModel = mainAppModel
+        self.index = 0
         
-        mainAppModel.tellaData?.shouldReloadServers.sink { completion in
-        } receiveValue: { shouldReload in
-            if shouldReload {
-                self.getServers()
-            }
-        }.store(in: &subscribers)
+        if let reloadPublisher = mainAppModel.tellaData?.shouldReloadServers {
+            reloadPublisher
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] shouldReload in
+                    guard let self, shouldReload else { return }
+                    self.getServers()
+                }
+                .store(in: &subscribers)
+        }
+        getServers()
     }
     
+    // MARK: - Data
     func getServers() {
         let serverArray = mainAppModel.tellaData?.getServers() ?? []
-
-        if !serverArray.isEmpty {
-            isConnectionSucceded = true
-        }
+        isConnectionSucceded = !serverArray.isEmpty
     }
-
+    
+    // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
     var canGoBack: Bool { index > 0 }
     var canGoNext: Bool { index < lastIndex }
     
+    var currentPage: ServerOnboardingItem {
+        pages[safe: index] ?? .main
+    }
+    
+    var isOnMain: Bool { currentPage == .main }
+    var isOnCustomizationDone: Bool { currentPage == .customizationDone }
+    
+    var shouldHideNext: Bool {
+        !isConnectionSucceded || isOnCustomizationDone
+    }
+    
+    var shouldShowDots: Bool {
+        isOnMain
+    }
+    
+    var isSwipeAllowed: Bool {
+        isConnectionSucceded && !isOnCustomizationDone
+    }
+    
+    // MARK: - Navigation
     func goToPage(_ newIndex: Int) {
         guard count > 0 else { return }
         index = min(max(newIndex, 0), lastIndex)
     }
+    
     func goNext() {
         goToPage(index + 1)
     }
+    
     func goBack() {
         goToPage(index - 1)
     }
 }
 
-extension ServerOnboardingViewModel {
-    static func stub() -> ServerOnboardingViewModel { ServerOnboardingViewModel(mainAppModel: MainAppModel.stub()) }
-}
-
-
 enum ServerOnboardingItem: Identifiable, Equatable {
-    static func == (lhs: ServerOnboardingItem, rhs: ServerOnboardingItem) -> Bool {
-        lhs.id == rhs.id
-    }
-    
     case main
     case customizationDone
-
+    
     var id: String {
         switch self {
-        case .main:                 return "main"
-        case .customizationDone:    return "customizationDone"
+        case .main:              return "main"
+        case .customizationDone: return "customizationDone"
         }
     }
-    
 }
