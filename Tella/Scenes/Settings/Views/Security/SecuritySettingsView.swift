@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -123,10 +123,25 @@ struct SecuritySettingsView: View {
     // MARK: Quick delete
     var quickDeleteView: some View {
         
-        Group {
+        let quickDeleteBinding = Binding<Bool>(
+            get: { appModel.settings.quickDelete },
+            set: { isOn in
+                withTransaction(Transaction(animation: .easeInOut)) {
+                    let settings = appModel.settings
+                    settings.quickDelete = isOn
+                    settings.deleteVault = isOn
+                    settings.deleteServerSettings = isOn
+                    appModel.settings = settings
+                }
+                appModel.saveSettings()
+            }
+        )
+        
+        return Group {
+            
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
-                              toggle: $appModel.settings.quickDelete)
+                              toggle: quickDeleteBinding)
             if appModel.settings.quickDelete {
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteVault ,
