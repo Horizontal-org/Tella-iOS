@@ -381,6 +381,8 @@
 		12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
+		12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E971362E97A96A00A87531 /* OnboardingContent.swift */; };
+		12E9713B2E97AEE500A87531 /* PageDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713A2E97AEE500A87531 /* PageDots.swift */; };
 		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
 		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
 		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
@@ -1055,6 +1057,8 @@
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
+		12E971362E97A96A00A87531 /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
+		12E9713A2E97AEE500A87531 /* PageDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDots.swift; sourceTree = "<group>"; };
 		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
 		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
@@ -2154,10 +2158,12 @@
 		127BCA1F2E85208900902C59 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				12E971362E97A96A00A87531 /* OnboardingContent.swift */,
+				12E9713A2E97AEE500A87531 /* PageDots.swift */,
 				128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */,
 				127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */,
 				126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */,
-				128EE4E72E8FC3A100DF55C5 /* FirstOnboarding */,
+				128EE4E72E8FC3A100DF55C5 /* AdvancedOnboarding */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2295,7 +2301,7 @@
 			path = "File list";
 			sourceTree = "<group>";
 		};
-		128EE4E72E8FC3A100DF55C5 /* FirstOnboarding */ = {
+		128EE4E72E8FC3A100DF55C5 /* AdvancedOnboarding */ = {
 			isa = PBXGroup;
 			children = (
 				128EE4E82E8FC3BC00DF55C5 /* ServerOnboardingView.swift */,
@@ -2303,7 +2309,7 @@
 				128EE4ED2E8FD2D300DF55C5 /* MainServerOnboardingView.swift */,
 				128EE4EF2E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift */,
 			);
-			path = FirstOnboarding;
+			path = AdvancedOnboarding;
 			sourceTree = "<group>";
 		};
 		128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */ = {
@@ -4077,6 +4083,7 @@
 				CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				126E1B042C3D9A9B000AE4CE /* NextcloudData.swift in Sources */,
+				12E9713B2E97AEE500A87531 /* PageDots.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */,
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
@@ -4354,6 +4361,7 @@
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				129BC3A62CBE582A001C7323 /* FileHandleExtension.swift in Sources */,
+				12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
