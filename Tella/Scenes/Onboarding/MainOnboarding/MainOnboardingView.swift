@@ -32,31 +32,56 @@ struct MainOnboardingView: View {
     }
     
     func tabView() -> some View {
-        TabView(selection: $viewModel.index) {
-            ForEach(Array(viewModel.pages.enumerated()), id: \.offset) { index, page in
-                Group {
-                    switch page {
-                    case let .intro(content):
-                        OnboardingPageView(content: content)
-                        
-                    case .lock:
-                        if isLockSucceded {
-                            OnboardingSuccessLoginView()
-                        } else {
-                            LockChoiceView(lockViewModel: lockViewModel)
-                        }
-                        
-                    case .allDone:
-                        OnboardingLockDoneView()
-                    }
-                }
-                .tag(index)
+        ControlledPager(
+            pageCount: viewModel.count,
+            index: $viewModel.index,
+            canSwipe: { idx, direction in
+                let page = viewModel.pages[idx]
+                return handleSwipe(for: page, direction: direction)
+            },
+            content: { idx in
+                let page = viewModel.pages[idx]
+                view(for: page)
             }
+        )
+    }
+    
+    func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
+        switch page {
+        case .camera:
+            return direction == .left
+        case .recorder, .files, .connections, .nearbySharing:
+            return true
+        case .lock:
+            return isLockSucceded ? (direction == .left)
+            : (direction == .right)
+        case .allDone:
+            return direction == .right
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .animation(.interactiveSpring(response: 0.35, dampingFraction: 0.9, blendDuration: 0.2),
-                   value: viewModel.index)
-        
+    }
+    
+    @ViewBuilder
+    func view(for page: OnboardingItem) -> some View {
+        switch page {
+        case .camera(let content),
+                .recorder(let content),
+                .files(let content),
+                .connections(let content),
+                .nearbySharing(let content):
+            OnboardingPageView(content: content)
+            
+        case .lock:
+            Group {
+                if isLockSucceded {
+                    OnboardingSuccessLoginView()
+                } else {
+                    LockChoiceView(lockViewModel: lockViewModel)
+                }
+            }
+            
+        case .allDone:
+            OnboardingLockDoneView()
+        }
     }
     
     func bottomView() -> some View {

@@ -384,6 +384,7 @@
 		12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E971362E97A96A00A87531 /* OnboardingContent.swift */; };
 		12E9713B2E97AEE500A87531 /* PageDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713A2E97AEE500A87531 /* PageDots.swift */; };
 		12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713C2E97C27700A87531 /* Collection+Extension.swift */; };
+		12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713E2E97CC5B00A87531 /* ControlledPager.swift */; };
 		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
 		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
 		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
@@ -1061,6 +1062,7 @@
 		12E971362E97A96A00A87531 /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
 		12E9713A2E97AEE500A87531 /* PageDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDots.swift; sourceTree = "<group>"; };
 		12E9713C2E97C27700A87531 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
+		12E9713E2E97CC5B00A87531 /* ControlledPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledPager.swift; sourceTree = "<group>"; };
 		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
 		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
@@ -2164,6 +2166,7 @@
 				12E971362E97A96A00A87531 /* OnboardingContent.swift */,
 				12E9713A2E97AEE500A87531 /* PageDots.swift */,
 				127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */,
+				12E9713E2E97CC5B00A87531 /* ControlledPager.swift */,
 				128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */,
 				128EE4E72E8FC3A100DF55C5 /* AdvancedOnboarding */,
 			);
@@ -4198,6 +4201,7 @@
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
+				12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,

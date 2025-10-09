@@ -18,11 +18,11 @@ final class MainOnboardingViewModel: ObservableObject {
     private let startIndex: Int = 0
     
     let pages: [OnboardingItem] = [
-        .intro(CameraContent()),
-        .intro(MicContent()),
-        .intro(FilesContent()),
-        .intro(ConnectionsContent()),
-        .intro(NearbySharingContent()),
+        .camera(CameraContent()),
+        .recorder(MicContent()),
+        .files(FilesContent()),
+        .connections(ConnectionsContent()),
+        .nearbySharing(NearbySharingContent()),
         .lock,
         .allDone
     ]
@@ -38,7 +38,7 @@ final class MainOnboardingViewModel: ObservableObject {
     var canGoNext: Bool { index < lastIndex }
     
     var currentPage: OnboardingItem {
-        pages[safe: index] ?? .intro(CameraContent())
+        pages[safe: index] ?? .camera(CameraContent())
     }
     
     var isOnLock: Bool {
@@ -77,15 +77,31 @@ enum OnboardingItem: Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
-    case intro(any OnboardingContent)
+    case camera(any OnboardingContent)
+    case recorder(any OnboardingContent)
+    case files(any OnboardingContent)
+    case connections(any OnboardingContent)
+    case nearbySharing(any OnboardingContent)
     case lock
     case allDone
     
     var id: String {
+        
         switch self {
-        case .intro(let content): return "intro-\(content.hashValue)"
-        case .lock:               return "lock"
-        case .allDone:            return "allDone"
+        case .camera:
+            return "camera"
+        case .recorder:
+            return "recorder"
+        case .files:
+            return "files"
+        case .connections:
+            return "connections"
+        case .nearbySharing:
+            return "nearbySharing"
+        case .lock:
+            return "lock"
+        case .allDone:
+            return "allDone"
         }
     }
 }
