@@ -26,7 +26,7 @@ struct NextcloutOutboxDetailsView<T: NextcloudServer>: View {
     }
     
     private func showLoginConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 327) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(imageName:"nextcloud.icon",
                                titleText: LocalizableNextcloud.connectionExpiredTitle.localized,
                                msgText: LocalizableNextcloud.connectionExpiredExpl.localized,

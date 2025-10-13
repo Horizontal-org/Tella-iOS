@@ -99,7 +99,7 @@ struct LimitedAccessPhotoView: View {
     }
     
     func showManagelimitedPhotoBottomSheet() {
-        self.showBottomSheetView(content: ManagelimitedPhotoBottomSheet(), modalHeight: 195)
+        self.showBottomSheetView(content: ManagelimitedPhotoBottomSheet())
     }
 }
 

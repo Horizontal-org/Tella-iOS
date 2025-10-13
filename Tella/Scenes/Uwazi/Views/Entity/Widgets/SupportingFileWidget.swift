@@ -28,13 +28,13 @@ struct SupportingFileWidget: View {
     
     func showAddFileSheet() {
             
-            sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
+            sheetManager.showBottomSheet {
                 ActionListBottomSheet(items: addFileToDraftItems,
                                       headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
                                       action:  {item in
                     self.handleActions(item : item)
                 })
-            })
+            }
         }
     
     func showAddPhotoVideoSheet() {

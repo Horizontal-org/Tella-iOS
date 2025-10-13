@@ -107,7 +107,7 @@ struct SubmittedEntityView: View {
         let cancelText = LocalizableUwazi.submittedDeleteCancelAction.localized
         let actionText = LocalizableUwazi.submittedDeleteDeleteAction.localized
         
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: deleteTitle,
                                       msgText: deleteMessage,
                                       cancelText: cancelText,

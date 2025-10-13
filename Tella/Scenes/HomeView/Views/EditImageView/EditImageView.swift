@@ -41,7 +41,9 @@ struct EditImageView: View {
         isBottomSheetShown = true
         let content = EditFileCancelBottomSheet(saveAction:  { handleSaveAction() },
                                                 cancelAction: {self.dismiss()})
-        self.showBottomSheetView(content: content , modalHeight: 171, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content,
+                                 isPresented: $isBottomSheetShown,
+                                 tapToDismiss: true)
     }
     
     private func handleSaveAction() {

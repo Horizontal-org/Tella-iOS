@@ -55,7 +55,7 @@ struct DownloadedResources: View {
     }
     
     private func showResourceBottomSheet() {
-        sheetManager.showBottomSheet(modalHeight: 176) {
+        sheetManager.showBottomSheet() {
             ActionListBottomSheet(items: ResourceActionItems, headerTitle: viewModel.selectedResource?.title ?? "", action: { item in
                     let type = item.type as? ResourceActionType
                     if type == .delete {
@@ -68,7 +68,7 @@ struct DownloadedResources: View {
     }
     
     private func showDeleteResourceConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: LocalizableResources.resourcesDownloadRemoveSheetTitle.localized,
                                       msgText: LocalizableResources.resourcesDownloadRemoveSheetExpl.localized,
                                       cancelText: LocalizableResources.resourcesDownloadRemoveCancelSheetAction.localized,

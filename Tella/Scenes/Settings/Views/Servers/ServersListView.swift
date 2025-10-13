@@ -58,8 +58,8 @@ struct ServersListView: View {
     
     private func showServerActionBottomSheet(server:Server) {
         let items = serverActionItems(server: server)
-        let modalHeight = items.count == 1 ? 140 : 175
-        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
+
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: serverActionItems(server: server),
                                   headerTitle: server.name ?? "",
                                   action:  {item in
@@ -94,7 +94,7 @@ struct ServersListView: View {
         }
     }
     private func showDeleteServerConfirmationView(server: Server) {
-        sheetManager.showBottomSheet(modalHeight: 210) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, server.name ?? ""),
                                msgText: LocalizableSettings.settServerDeleteConnectionMessage.localized,
                                cancelText: LocalizableSettings.settServerCancelSheetAction.localized,

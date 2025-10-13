@@ -46,7 +46,7 @@ struct TemplateItemView: View {
     }
     
     private func showTemplateActionBottomSheet() {
-        sheetManager.showBottomSheet(modalHeight: 176) {
+        sheetManager.showBottomSheet() {
             ActionListBottomSheet(items: templateActionItems,
                                   headerTitle: templateItemViewModel.name ,
                                   action:  {item in

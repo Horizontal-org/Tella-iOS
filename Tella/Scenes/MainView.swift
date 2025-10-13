@@ -25,10 +25,10 @@ struct MainView: View  {
             
             contentView
             
-            DragView(modalHeight: sheetManager.modalHeight,
-                     shouldHideOnTap: sheetManager.shouldHideOnTap,
+            DragView(isPresented: $sheetManager.isPresented,
+                     presentationType: .show,
                      backgroundColor: sheetManager.backgroundColor,
-                     isShown: $sheetManager.isPresented) {
+                     tapToDismiss: sheetManager.shouldHideOnTap) {
                 sheetManager.content
             }
             securityScreenView

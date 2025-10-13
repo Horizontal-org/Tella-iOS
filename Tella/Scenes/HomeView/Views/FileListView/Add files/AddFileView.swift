@@ -43,33 +43,33 @@ struct AddFileView: View {
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: CGFloat(fileListViewModel.manageFilesItems.count * 50 + 90), content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: fileListViewModel.manageFilesItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)
             })
-        })
+        }
     }
     
     func showCreateNewFolderSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
+        sheetManager.showBottomSheet {
             TextFieldBottomSheetView(titleText: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
                                      validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
                                      fieldContent: $fieldContent) {
                 fileListViewModel.addFolder(name: fieldContent)
             }
-        })
+        }
     }
     
     func showAddPhotoVideoSheet() {
-        sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: AddPhotoVideoItems,
                                   headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized, action: {item in
                 self.handleAddPhotoVideoActions(item : item)
             })
-        })
+        }
     }
     
     func showImportDeleteSheet(itemType: AddPhotoVideoType) {
@@ -89,9 +89,9 @@ struct AddFileView: View {
             }
             sheetManager.hide()
         }
-        sheetManager.showBottomSheet(modalHeight: 300, content: {
+        sheetManager.showBottomSheet {
             sheetContent
-        })
+        }
     }
     
     private func handleActions(item: ListActionSheetItem) {

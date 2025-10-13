@@ -71,14 +71,12 @@ struct MainOnboardingView: View {
             OnboardingPageView(content: content)
             
         case .lock:
-            Group {
                 if isLockSucceded {
                     OnboardingSuccessLoginView()
                 } else {
                     LockChoiceView(lockViewModel: lockViewModel)
                 }
-            }
-            
+
         case .allDone:
             OnboardingLockDoneView()
         }

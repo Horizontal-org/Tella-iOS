@@ -175,14 +175,14 @@ struct SecuritySettingsView: View {
     }
     
     func showLockTimeout() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
+        sheetManager.showBottomSheet() {
             LockTimeoutView()
                 .environmentObject(settingsViewModel)
         }
     }
     
     func showDeleteAfterFailedAttempts() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
+        sheetManager.showBottomSheet() {
             DeleteAfterFailView()
                 .environmentObject(settingsViewModel)
         }

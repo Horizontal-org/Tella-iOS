@@ -26,13 +26,13 @@ struct PrimaryDocuments: View {
     
     func showAddFileSheet() {
         
-        sheetManager.showBottomSheet( modalHeight: CGFloat(200), content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: addFileToPdfItems,
                                   headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
                                   action:  {item in
                 self.handleActions(item : item)
             })
-        })
+        }
     }
     
     func showAddPhotoVideoSheet() {

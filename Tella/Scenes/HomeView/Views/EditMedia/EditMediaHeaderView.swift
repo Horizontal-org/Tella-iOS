@@ -13,7 +13,7 @@ import SwiftUI
 
 struct EditMediaHeaderView: View {
     @ObservedObject var viewModel: EditMediaViewModel
-    @State private var isBottomSheetShown : Bool = false
+    @State private var isBottomSheetPresented : Bool = false
     var showRotate: (()->())?
     @Binding var isMiddleButtonEnabled : Bool
     
@@ -39,8 +39,10 @@ struct EditMediaHeaderView: View {
     }
     
     private func cancelAction() {
-        isBottomSheetShown = true
+        isBottomSheetPresented = true
         let content = EditFileCancelBottomSheet( saveAction:  { viewModel.trim() }, cancelAction: {self.dismiss()} )
-        self.showBottomSheetView(content: content, modalHeight: 171, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content,
+                                 isPresented: $isBottomSheetPresented,
+                                 tapToDismiss: true)
     }
 }

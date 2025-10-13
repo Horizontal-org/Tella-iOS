@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -23,9 +23,6 @@ class SheetManager: ObservableObject {
     /// The content of the sheet
     @Published var content: AnyView
     
-    /// The height of the sheet
-    @Published var modalHeight: CGFloat = 0
-    
     /// The backgroundColor of the sheet
     @Published var backgroundColor: Color = Styles.Colors.backgroundTab
     
@@ -40,14 +37,12 @@ class SheetManager: ObservableObject {
     /**
      Updates the properties of the **Partial Sheet**
      */
-    func showBottomSheet<T>(modalHeight : CGFloat,
-                            backgroundColor : Color = Styles.Colors.backgroundTab,
+    func showBottomSheet<T>(backgroundColor : Color = Styles.Colors.backgroundTab,
                             shouldHideOnTap: Bool = true,
                             content: (() -> T)) where T: View {
         
         self.isPresented = true
         self.content = AnyView(content())
-        self.modalHeight = modalHeight
         self.shouldHideOnTap = shouldHideOnTap
         self.backgroundColor = backgroundColor
     }
