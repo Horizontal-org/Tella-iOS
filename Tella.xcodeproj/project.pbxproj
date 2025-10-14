@@ -294,6 +294,8 @@
 		1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */; };
 		1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */; };
 		1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */; };
+		1291BDE02E9EB44800AA078F /* PopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291BDDF2E9EB43900AA078F /* PopoverController.swift */; };
+		1291BDE22E9EB4F000AA078F /* HelpIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291BDE12E9EB4F000AA078F /* HelpIcon.swift */; };
 		1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */; };
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
 		129209032C9DB00500767760 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 129209022C9DB00500767760 /* NextcloudKit */; };
@@ -956,6 +958,8 @@
 		1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAddServerCardView.swift; sourceTree = "<group>"; };
 		1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsServerItemView.swift; sourceTree = "<group>"; };
 		1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLinkItemView.swift; sourceTree = "<group>"; };
+		1291BDDF2E9EB43900AA078F /* PopoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverController.swift; sourceTree = "<group>"; };
+		1291BDE12E9EB4F000AA078F /* HelpIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpIcon.swift; sourceTree = "<group>"; };
 		1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuePlayer.swift; sourceTree = "<group>"; };
 		1291F4F527B54300006A34D3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		129354762949F04700735ED0 /* EmptyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResult.swift; sourceTree = "<group>"; };
@@ -2654,6 +2658,8 @@
 			isa = PBXGroup;
 			children = (
 				124543D32E9D41140031E568 /* RoundedCorner.swift */,
+				1291BDE12E9EB4F000AA078F /* HelpIcon.swift */,
+				1291BDDF2E9EB43900AA078F /* PopoverController.swift */,
 				20BF26712C9843C200E81535 /* Modifiers */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
@@ -3898,6 +3904,7 @@
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
 				CCF8D5C22AE994BF000D27C5 /* SupportingFileWidget.swift in Sources */,
 				12AFF1B82D3FACBC00C2455C /* NavigationHeaderTypes.swift in Sources */,
+				1291BDE02E9EB44800AA078F /* PopoverController.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
@@ -3920,6 +3927,7 @@
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
+				1291BDE22E9EB4F000AA078F /* HelpIcon.swift in Sources */,
 				127BCA232E8520C100902C59 /* MainOnboardingView.swift in Sources */,
 				155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
