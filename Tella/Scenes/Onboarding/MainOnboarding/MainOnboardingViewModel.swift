@@ -22,7 +22,7 @@ final class MainOnboardingViewModel: ObservableObject {
         .recorder(MicContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
-        .nearbySharing(NearbySharingContent()),
+        // .nearbySharing(NearbySharingContent()),
         .lock,
         .allDone
     ]

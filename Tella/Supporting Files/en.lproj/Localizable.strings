@@ -17,7 +17,7 @@
 "Onboarding_ServerConnections_Title" = "Server Connections";
 "Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
 
-"Onboarding_ServerConnections_part2_Expl" = "Tella supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi, Tella Web and Open Data Kit (ODK).";
+"Onboarding_ServerConnections_part2_Expl" = "Tella supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi, Tella Web";
 
 "Onboarding_NearbySharing_Title" = "Nearby Sharing";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
