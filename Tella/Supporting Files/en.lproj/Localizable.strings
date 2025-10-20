@@ -2,52 +2,6 @@
 "Onboarding_Intro_Head" = "Welcome to Tella";
 "Onboarding_Intro_Subhead" = "Document & Protect";
 "Onboarding_Intro_Action_GetStarted" = "GET STARTED";
-
-
-
-"Onboarding_Camera_Title" = "Camera";
-"Onboarding_Camera_Expl" = "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery.";
-
-"Onboarding_Recorder_Title" = "Recorder";
-"Onboarding_Recorder_Expl" = "Record interviews or sound directly in Tella. The audio files are automatically encrypted and saved in Tella, and will not be accessible from your phone’s regular storage.";
-
-"Onboarding_EncryptedFilesFolders_Title" = "Encrypted files & folders";
-"Onboarding_EncryptedFilesFolders_Expl" = "All files and folders in Tella are encrypted. As long as Tella is locked, your files and folders are encrypted and will remain inaccessible from outside of Tella.";
-
-"Onboarding_ServerConnections_Title" = "Server Connections";
-"Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
-
-"Onboarding_ServerConnections_part2_Expl" = "Tella supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi, Tella Web";
-
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
-"Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
-
-
-"Onboarding_LockSuccess_Title" = "Lock";
-"Onboarding_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
-
-
-"Onboarding_LockDone_Title" = "You’re all done!";
-"Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
-"Onboarding_Done_Action_GoToTella" = "Go to tella";
-"Onboarding_LockDone_Action_AdvancedSettings" = "Advanced settings";
-
-
-"Onboarding_ServerDone_Title" = "Advanced customization complete!";
-"Onboarding_ServerDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
-
-"Onboarding_ServerMain_Title" = "Share data you collect";
-"Onboarding_ServerMain_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
-
-"Onboarding_ServerMain_Action_ConnectServer" = "Connect to server";
-"Onboarding_ServerMain_Action_Continue" = "Continue without connecting to a server";
-
-
-"Onboarding_ServerConnected_Title" = "Connected to project";
-"Onboarding_ServerConnected_Expl" = "You have successfully connected to the server and will be able to share your data.";
-
-
- 
 "LockUnlock_LockSelect_Subhead" = "How would you like to lock Tella?";
 "LockUnlock_LockSelect_Action_Password" = "PASSWORD";
 "LockUnlock_LockSelect_ActionExpl_Password" = "The most secure option";
@@ -226,11 +180,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_Sett_QuickDelete_Expl" = "Shows a sliding button on Tella’s homescreen to quicky delete files in Tella in emergency situations.";
 "Settings_Sett_QuickDelete_Files_CheckboxItem" = "Delete files";
 "Settings_Sett_QuickDelete_Connections_CheckboxItem" = "Delete connections";
-
-"Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
-"Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
-
-
 "Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
 "Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
 "Settings_SettLockTimeout_Immediately_SheetSelect" = "Immediately";
@@ -598,3 +547,30 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
+"Onboarding_Camera_Title" = "Camera";
+"Onboarding_Camera_Expl" = "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery.";
+"Onboarding_Recorder_Title" = "Recorder";
+"Onboarding_Recorder_Expl" = "Record interviews or sound directly in Tella. The audio files are automatically encrypted and saved in Tella, and will not be accessible from your phone’s regular storage.";
+"Onboarding_EncryptedFilesFolders_Title" = "Encrypted files & folders";
+"Onboarding_EncryptedFilesFolders_Expl" = "All files and folders in Tella are encrypted. As long as Tella is locked, your files and folders are encrypted and will remain inaccessible from outside of Tella.";
+"Onboarding_ServerConnections_Title" = "Server Connections";
+"Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
+"Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
+"Onboarding_NearbySharing_Title" = "Nearby Sharing";
+"Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
+"Onboarding_LockSuccess_Title" = "Lock";
+"Onboarding_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
+"Onboarding_LockDone_Title" = "You’re all done!";
+"Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
+"Onboarding_Done_Action_GoToTella" = "Go to tella";
+"Onboarding_LockDone_Action_AdvancedSettings" = "Advanced settings";
+"Onboarding_ServerDone_Title" = "Advanced customization complete!";
+"Onboarding_ServerDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
+"Onboarding_ServerMain_Title" = "Share data you collect";
+"Onboarding_ServerMain_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
+"Onboarding_ServerMain_Action_ConnectServer" = "Connect to server";
+"Onboarding_ServerMain_Action_Continue" = "Continue without connecting to a server";
+"Onboarding_ServerConnected_Title" = "Connected to project";
+"Onboarding_ServerConnected_Expl" = "You have successfully connected to the server and will be able to share your data.";
+"Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
+"Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
