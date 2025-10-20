@@ -66,12 +66,12 @@ struct MoreFileActionButton: View {
             fileListViewModel.updateSingleSelection(for: file)
         }
         
-        sheetManager.showBottomSheet( modalHeight: modalHeight, content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: fileListViewModel.fileActionItems,
                                   headerTitle: fileListViewModel.fileActionsTitle , action: {item in
                 self.handleActions(item : item)
             })
-        })
+        }
     }
     
     private func handleActions(item: ListActionSheetItem) {
@@ -161,7 +161,7 @@ struct MoreFileActionButton: View {
     }
     
     func showRenameFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
+        sheetManager.showBottomSheet {
             TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,
                                      validateButtonText: LocalizableVault.renameFileSaveSheetAction.localized,
                                      cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
@@ -171,7 +171,7 @@ struct MoreFileActionButton: View {
                 fileListViewModel.selectedFiles[0].name = fileNameToUpdate
                 fileListViewModel.renameSelectedFile()
             })
-        })
+        }
     }
     
     
@@ -183,7 +183,7 @@ struct MoreFileActionButton: View {
     
     func showDeleteConfirmationSheet() {
         let deleteConfirmation = fileListViewModel.deleteConfirmation
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
+        sheetManager.showBottomSheet {
             ConfirmBottomSheet(titleText: deleteConfirmation.title,
                                msgText: deleteConfirmation.message,
                                cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
@@ -195,7 +195,7 @@ struct MoreFileActionButton: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }
             })
-        })
+        }
     }
     
     private func deleteAction() {
@@ -205,7 +205,7 @@ struct MoreFileActionButton: View {
     }
     
     func showDeleteWarningSheet() {
-        sheetManager.showBottomSheet(modalHeight: 194, content: {
+        sheetManager.showBottomSheet {
             ConfirmBottomSheet(titleText: LocalizableVault.deleteFileWarningTitle.localized,
                                msgText:  LocalizableVault.deleteFileWarningDescription.localized,
                                cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
@@ -214,12 +214,12 @@ struct MoreFileActionButton: View {
                                didConfirmAction:{
                 deleteAction()
             })
-        })
+        }
     }
     
     
     func showSaveConfirmationSheet() {
-        sheetManager.showBottomSheet( modalHeight: 180, content: {
+        sheetManager.showBottomSheet {
             ConfirmBottomSheet(titleText: LocalizableVault.saveToDeviceSheetTitle.localized,
                                msgText: LocalizableVault.saveToDeviceSheetExpl.localized,
                                cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
@@ -227,7 +227,7 @@ struct MoreFileActionButton: View {
                                didConfirmAction: {
                 showDocumentPickerView()
             })
-        })
+        }
     }
     
     func showDocumentPickerView() {

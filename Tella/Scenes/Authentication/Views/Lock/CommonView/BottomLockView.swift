@@ -28,8 +28,11 @@ struct BottomLockView<Destination:View>:View {
         HStack {
             if !shouldHideBack{
                 BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
-                    self.backAction?()
-                    self.presentationMode.wrappedValue.dismiss()
+                    if let backAction = self.backAction {
+                        backAction()
+                    } else {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
             Spacer()

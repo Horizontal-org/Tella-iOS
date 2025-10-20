@@ -100,7 +100,7 @@ struct ReportMainView: View {
     }
     
     private func showBottomSheet(cardViewModel:CommonCardViewModel) {
-        sheetManager.showBottomSheet(modalHeight: 176) {
+        sheetManager.showBottomSheet() {
             
             ActionListBottomSheet(items: cardViewModel.listActionSheetItem,
                                   headerTitle: cardViewModel.title,
@@ -141,7 +141,7 @@ struct ReportMainView: View {
     
     private func showDeleteReportConfirmationView(cardViewModel:CommonCardViewModel) {
         
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
                                       cancelText: LocalizableReport.deleteCancel.localized,
@@ -152,7 +152,7 @@ struct ReportMainView: View {
     }
     
     private func showDeleteAllSubmittedReportConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableReport.clearSheetTitle.localized,
                                msgText: LocalizableReport.clearSheetExpl.localized,
                                cancelText: LocalizableReport.clearCancel.localized,

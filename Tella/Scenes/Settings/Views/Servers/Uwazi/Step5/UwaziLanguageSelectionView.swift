@@ -12,8 +12,7 @@ import SwiftUI
 
 struct UwaziLanguageSelectionView: View {
     @Binding var isPresented : Bool
-    @EnvironmentObject var uwaziServerViewModel: UwaziServerViewModel
-    @EnvironmentObject var serversViewModel: ServersViewModel
+    @StateObject var uwaziServerViewModel: UwaziServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -56,9 +55,15 @@ struct UwaziLanguageSelectionView: View {
             SettingsBottomView(cancelAction: {
                 self.presentationMode.wrappedValue.dismiss()
             }, saveAction: {
-                uwaziServerViewModel.handleServerAction()
-                navigateTo(destination: UwaziSuccessView())
                 
+                uwaziServerViewModel.handleServerAction()
+
+                if uwaziServerViewModel.serversSourceView == .onboarding {
+                    self.popTo(ViewClassType.serverOnboardingView)
+                } else {
+                    navigateTo(destination: UwaziSuccessView())
+                }
+
             }, saveActionTitle: LocalizableSettings.UwaziLanguageOk.localized, isDisable: isDisable)
         }
         .padding(.trailing, 20)
@@ -151,8 +156,8 @@ struct UwaziLanguageItemView : View {
 
 struct UwaziLanguageSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(SettingsViewModel(appModel: MainAppModel.stub()))
+        UwaziLanguageSelectionView(isPresented: .constant(true),
+                                   uwaziServerViewModel: UwaziServerViewModel.stub())
     }
 }
 

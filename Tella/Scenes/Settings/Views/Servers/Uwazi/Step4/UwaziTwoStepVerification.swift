@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/25/23.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -11,11 +11,10 @@
 import SwiftUI
 
 struct UwaziTwoStepVerification: View {
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
-
+    @StateObject var uwaziServerViewModel : UwaziServerViewModel
+    
     var body: some View {
         ContainerView {
             ZStack {
@@ -60,10 +59,8 @@ struct UwaziTwoStepVerification: View {
         .navigationBarHidden(true)
         .onReceive(uwaziServerViewModel.$showLanguageSelectionView) { value in
             if value {
-                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                    //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
-                    .environmentObject(serversViewModel)
-                    .environmentObject(uwaziServerViewModel)
+                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true),
+                                                              uwaziServerViewModel: uwaziServerViewModel)
                 navigateTo(destination: languageView)
             }
         }
@@ -72,6 +69,6 @@ struct UwaziTwoStepVerification: View {
 
 struct UwaziTwoStepVerification_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziTwoStepVerification()
+        UwaziTwoStepVerification(uwaziServerViewModel: UwaziServerViewModel.stub())
     }
 }

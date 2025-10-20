@@ -20,8 +20,7 @@ struct UwaziServerAccessSelectionView: View {
     @State var isButtonValid = true
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var accessServerType: UwaziAccessServerType = .none
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
+    @StateObject var uwaziServerViewModel : UwaziServerViewModel
 
     var body: some View {
         ContainerView {
@@ -83,30 +82,21 @@ struct UwaziServerAccessSelectionView: View {
             break
         }
     }
+    
     fileprivate func navigateToLoginView() {
-        let loginView = UwaziLoginView()
-            .environmentObject(serversViewModel)
-            .environmentObject(uwaziServerViewModel)
+        let loginView = UwaziLoginView(uwaziServerViewModel: uwaziServerViewModel)
         navigateTo(destination: loginView)
     }
 
     fileprivate func navigateToLanguageView() {
-        let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(serversViewModel)
-            .environmentObject(uwaziServerViewModel)
+        let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true),
+                                                            uwaziServerViewModel: uwaziServerViewModel)
         navigateTo(destination: languageSelection)
     }
-
 }
 
 struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziServerAccessSelectionView()
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
-            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+        UwaziServerAccessSelectionView(uwaziServerViewModel: UwaziServerViewModel.stub())
     }
 }
-
-
-
-

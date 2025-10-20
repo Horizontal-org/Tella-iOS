@@ -20,8 +20,13 @@ struct CreateDriveFolderView: View {
     }
     
     private func navigateToSuccessLogin() {
-        navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
-                                                 type: .gDrive))
+        if gDriveServerViewModel.serversSourceView == .onboarding {
+                self.popTo(ViewClassType.serverOnboardingView)
+            } else {
+
+            navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
+                                                     type: .gDrive))
+        }
     }
     private var reportsView: GdriveReportMainView {
         GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel, gDriveRepository: GDriveRepository()))

@@ -205,7 +205,7 @@ struct OutboxDetailsView<T: Server>: View {
     }
     
     private func showCancelUploadConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 150) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableReport.exitReportSheetTitle.localized,
                                msgText: LocalizableReport.exitReportSheetExpl.localized,
                                cancelText: LocalizableReport.exitReportCancelSheetAction.localized.uppercased(),
@@ -219,7 +219,7 @@ struct OutboxDetailsView<T: Server>: View {
     }
     
     private func showDeleteReportConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
                                          message: LocalizableReport.deleteOutboxReportMessage.localized) {
                 outboxReportVM.deleteReport()

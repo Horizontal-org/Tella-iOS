@@ -243,7 +243,7 @@ struct RecordView: View {
     }
     
     func showRenameFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
+        sheetManager.showBottomSheet {
             
             TextFieldBottomSheetView(titleText: LocalizableRecorder.renameRecordingSheetTitle.localized,
                                      validateButtonText: LocalizableRecorder.renameRecordingSaveSheetAction.localized,
@@ -253,14 +253,12 @@ struct RecordView: View {
                                      didConfirmAction: {
                 viewModel.fileName =  fileName
             })
-        })
+        }
     }
     
     func showSaveAudioConfirmationView() {
-        
-        sheetManager.showBottomSheet( modalHeight: 180.0,
-                                      shouldHideOnTap: false,
-                                      content: {
+        sheetManager.showBottomSheet(shouldHideOnTap: false,
+                                     content: {
             SaveAudioConfirmationView(viewModel: viewModel, showingSaveSuccessView: $showingSaveSuccessView)
         })
     }

@@ -143,8 +143,7 @@ struct CameraView: View {
     }
     
     func showProgressView() {
-        sheetManager.showBottomSheet(modalHeight: 190,
-                                     shouldHideOnTap: false,
+        sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
             ImportFilesProgressView(progress: cameraViewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())

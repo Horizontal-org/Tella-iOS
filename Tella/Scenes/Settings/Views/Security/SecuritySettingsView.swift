@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -10,14 +10,14 @@ import SwiftUI
 struct SecuritySettingsView: View {
     
     @EnvironmentObject var appModel : MainAppModel
-     var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
     @StateObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
     
     
     init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel, appViewState: appViewState))
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appViewState: appViewState))
         self.settingsViewModel = settingsViewModel
     }
     
@@ -123,18 +123,38 @@ struct SecuritySettingsView: View {
     // MARK: Quick delete
     var quickDeleteView: some View {
         
-        Group {
+        let quickDeleteBinding = Binding<Bool>(
+            get: { appModel.settings.quickDelete },
+            set: { isOn in
+                withTransaction(Transaction(animation: .easeInOut)) {
+                    let settings = appModel.settings
+                    settings.quickDelete = isOn
+                    settings.deleteVault = isOn
+                    settings.deleteServerSettings = isOn
+                    appModel.settings = settings
+                }
+                appModel.saveSettings()
+            }
+        )
+        
+        return Group {
+            
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
-                              toggle: $appModel.settings.quickDelete)
+                              toggle: quickDeleteBinding)
+            
+            DividerView()
+            
             if appModel.settings.quickDelete {
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteVault ,
-                    title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized
+                    title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized,
+                    helpText: LocalizableSettings.settQuickDeleteFilesTooltip.localized
                 )
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteServerSettings ,
-                    title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized
+                    title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized,
+                    helpText: LocalizableSettings.settQuickDeleteConnectionsTooltip.localized
                 )
             }
         }
@@ -143,31 +163,31 @@ struct SecuritySettingsView: View {
     var unlockView : some View {
         
         let passwordType = appModel.vaultManager.getPasswordType()
-
+        
         return ContainerViewWithHeader {
             NavigationHeaderView()
         } content: {
             passwordType == .tellaPassword ?
             
-            UnlockView(type: .tellaPassword)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()  :
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPassword)
+            .eraseToAnyView()  :
             
-            UnlockView(type: .tellaPin)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPin)
+            .eraseToAnyView()
         }
     }
     
     func showLockTimeout() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
+        sheetManager.showBottomSheet() {
             LockTimeoutView()
                 .environmentObject(settingsViewModel)
         }
     }
     
     func showDeleteAfterFailedAttempts() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
+        sheetManager.showBottomSheet() {
             DeleteAfterFailView()
                 .environmentObject(settingsViewModel)
         }

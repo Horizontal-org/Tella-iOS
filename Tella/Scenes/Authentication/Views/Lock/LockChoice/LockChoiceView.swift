@@ -3,7 +3,7 @@
 //  Tella
 //
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -13,20 +13,23 @@ import CoreMIDI
 
 struct LockChoiceView: View {
     
-    @EnvironmentObject var lockViewModel : LockViewModel
+    var lockViewModel : LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var appViewState: AppViewState
     
     var body: some View {
-        
-        ContainerViewWithHeader {
+        Group {
             if lockViewModel.unlockType == .update {
-                navigationBarView
+                ContainerViewWithHeader {
+                    navigationBarView
+                } content: {
+                    contentView
+                }
+            } else {
+                contentView
             }
-        } content: {
-            contentView
-        }
-        .onReceive(appViewState.$shouldHidePresentedView) { value in
+            
+        }.onReceive(appViewState.$shouldHidePresentedView) { value in
             if(value) {
                 self.presentationMode.wrappedValue.dismiss()
             }
@@ -55,10 +58,12 @@ struct LockChoiceView: View {
                 VStack(spacing: 15) {
                     
                     LockButtonView(lockButtonProtocol: PasswordLockButton(),
-                                   destination: LockPasswordView().environmentObject(lockViewModel))
+                                   destination: LockPasswordView(lockViewModel:lockViewModel),
+                                   presentationType: lockViewModel.unlockType == .new ? .present : .push)
                     
                     LockButtonView(lockButtonProtocol: PINLockButton(),
-                                   destination: LockPinView().environmentObject(lockViewModel))
+                                   destination: LockPinView(lockViewModel:lockViewModel),
+                                   presentationType: lockViewModel.unlockType == .new ? .present : .push)
                 }
                 Spacer()
             }
@@ -71,11 +76,21 @@ struct LockButtonView<Destination:View> : View {
     
     var lockButtonProtocol : LockButtonProtocol
     var destination : Destination
+    var presentationType : ViewPresentationType = .push
     
     var body: some View {
         
         Button {
-            navigateTo(destination: destination)
+            if presentationType == .present {
+                self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
+                    CustomNavigation() {
+                        destination
+                    }
+                }
+            } else {
+                navigateTo(destination: destination)
+            }
+            
         } label: {
             HStack(spacing: 20) {
                 
@@ -115,6 +130,6 @@ struct LockButtonStyle : ButtonStyle {
 
 struct LockChoiceView_Previews: PreviewProvider {
     static var previews: some View {
-        LockChoiceView()
+        LockChoiceView(lockViewModel: LockViewModel.stub())
     }
 }

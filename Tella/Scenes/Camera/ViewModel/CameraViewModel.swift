@@ -10,7 +10,6 @@ import UIKit
 import SwiftUI
 import AVFoundation
 import AVKit
-import AssetsLibrary
 import CoreLocation
 
 class CameraViewModel: ObservableObject {

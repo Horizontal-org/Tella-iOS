@@ -28,10 +28,12 @@ class TellaWebServerViewModel: ServerViewModel {
         return mainAppModel.tellaData?.getAutoUploadServer() != nil && self.currentServer?.autoUpload == false
     }
     
-    init(mainAppModel : MainAppModel, currentServer: TellaServer?) {
+    init(mainAppModel : MainAppModel,
+         currentServer: TellaServer?,
+         serversSourceView: ServersSourceView = .settings) {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        super.init()
+        super.init(serversSourceView: serversSourceView)
         fillReportVM()
     }
     
@@ -141,4 +143,10 @@ class TellaWebServerViewModel: ServerViewModel {
         }
     }
     
+}
+
+extension TellaWebServerViewModel {
+    static func stub() -> TellaWebServerViewModel {
+        return TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil)
+    }
 }

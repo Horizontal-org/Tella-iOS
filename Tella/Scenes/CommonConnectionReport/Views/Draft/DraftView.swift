@@ -224,7 +224,7 @@ struct DraftView: View  {
     }
     
     private func showSaveReportConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableReport.exitTitle.localized,
                                msgText: LocalizableReport.exitMessage.localized,
                                cancelText: LocalizableReport.exitCancel.localized.uppercased(),

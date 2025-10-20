@@ -63,5 +63,6 @@ struct ContainerViewWithHeader<Header:View,Content:View>: View {
                   }
                   self.content()
               }.containerStyle()
+            .navigationBarHidden(true)
        }
 }

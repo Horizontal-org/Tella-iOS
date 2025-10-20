@@ -46,13 +46,12 @@ struct FileSortMenu: View {
     }
     
     private func showSortFilesActionSheet() {
-        sheetManager.showBottomSheet( modalHeight: 300, content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: items, headerTitle: LocalizableVault.SortBySheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)
             })
-            
-        }) 
+        }
     }
 }
 

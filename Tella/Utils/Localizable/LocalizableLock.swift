@@ -18,11 +18,39 @@ enum LocalizableLock: String, LocalizableDelegate {
     case onboardingIntroHead = "Onboarding_Intro_Head"
     case onboardingIntroSubhead = "Onboarding_Intro_Subhead"
     case onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted"
+
+    case onboardingCameraTitle = "Onboarding_Camera_Title"
+    case onboardingCameraExpl = "Onboarding_Camera_Expl"
+
+    case onboardingRecorderTitle = "Onboarding_Recorder_Title"
+    case onboardingRecorderExpl = "Onboarding_Recorder_Expl"
+    case onboardingEncryptedFilesFoldersTitle = "Onboarding_EncryptedFilesFolders_Title"
+    case onboardingEncryptedFilesFoldersExpl = "Onboarding_EncryptedFilesFolders_Expl"
+    case onboardingServerConnectionsTitle = "Onboarding_ServerConnections_Title"
+    case onboardingServerConnectionspart1Expl = "Onboarding_ServerConnections_part1_Expl"
+    case onboardingServerConnectionspart2Expl = "Onboarding_ServerConnections_part2_Expl"
+    case onboardingNearbySharingTitle = "Onboarding_NearbySharing_Title"
+    case onboardingNearbySharingExpl = "Onboarding_NearbySharing_Expl"
+
+    case onboardingLockSuccessTitle = "Onboarding_LockSuccess_Title"
+    case onboardingLockSuccessExpl = "Onboarding_LockSuccess_Expl"
     
-    // Done
-    case onboardingdLockSuccessHead = "Onboarding_LockSuccess_Head"
-    case onboardingLockSuccessSubhead = "Onboarding_LockSuccess_Subhead"
-    case onboardingLockSuccessActionGoToTella = "Onboarding_LockSuccess_Action_GoToTella"
+    case onboardingLockDoneTitle = "Onboarding_LockDone_Title"
+    case onboardingLockDoneExpl = "Onboarding_LockDone_Expl"
+    case goToTella = "Onboarding_Done_Action_GoToTella"
+    case advancedSettings = "Onboarding_LockDone_Action_AdvancedSettings"
+    
+    case onboardingServerDoneTitle = "Onboarding_ServerDone_Title"
+    case onboardingServerDoneExpl = "Onboarding_ServerDone_Expl"
+
+    case onboardingServerMainTitle = "Onboarding_ServerMain_Title"
+    case onboardingServerMainExpl = "Onboarding_ServerMain_Expl"
+    case onboardingServerMainConnectServer = "Onboarding_ServerMain_Action_ConnectServer"
+    case onboardingServerMainContinue = "Onboarding_ServerMain_Action_Continue"
+
+    case onboardingServerConnectedTitle = "Onboarding_ServerConnected_Title"
+    case onboardingServerConnectedExpl = "Onboarding_ServerConnected_Expl"
+
     
     // Lock Select view
     case lockSelectSubhead = "LockUnlock_LockSelect_Subhead"

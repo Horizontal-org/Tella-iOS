@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "onboard.connections.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

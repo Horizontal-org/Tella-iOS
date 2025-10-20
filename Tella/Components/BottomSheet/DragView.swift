@@ -1,173 +1,173 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
-
 import SwiftUI
-import Combine
 
-enum DragState {
-    case inactive
-    case dragging(translation: CGSize)
+
+// MARK: - DragView
+public struct DragView<Content: View>: View {
+    // Required
+    @Binding private var isPresented: Bool
+    private let content: Content
+    private let presentationType: PresentationType // TODO: To be updated
     
-    var translation: CGSize {
-        switch self {
-        case .inactive:
-            return .zero
-        case .dragging(let translation):
-            return translation
+    // Appearance / behavior knobs
+    private var backgroundColor: Color = Styles.Colors.backgroundTab
+    private let cornerRadius: CGFloat
+    private let maxHeightRatio: CGFloat
+    private let tapToDismiss: Bool
+    private let hapticsOnDismiss: Bool
+    private let dismissDuration: Double
+    
+    // Gesture / layout state
+    @GestureState private var dragState: CGFloat = 0
+    @State private var dragOffset: CGFloat = 0
+    @State private var contentHeight: CGFloat = 0
+    
+    // Tunables
+    private let minDismissThreshold: CGFloat = 100
+    
+    // Animations
+    private var presentAnimation: Animation { .spring(response: 0.30, dampingFraction: 0.85) }
+    private var dismissAnimation: Animation { .easeOut(duration: dismissDuration) }
+    
+    // Safe bottom inset
+    private var bottomInset: CGFloat {
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first
+            return window?.safeAreaInsets.bottom ?? 0
         }
+        return 0
+    }
+    private var maxSheetHeight: CGFloat { UIScreen.main.bounds.height * maxHeightRatio }
+    
+    // MARK: Init
+    public init(
+        isPresented: Binding<Bool>,
+        presentationType: PresentationType,
+        backgroundColor: Color,
+        cornerRadius: CGFloat = 20,
+        maxHeightRatio: CGFloat = 0.85,
+        tapToDismiss: Bool = true,
+        hapticsOnDismiss: Bool = true,
+        dismissDuration: Double = 0.18,
+        @ViewBuilder content: () -> Content
+    ) {
+        self._isPresented = isPresented
+        self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
+        self.maxHeightRatio = max(0.3, min(maxHeightRatio, 1.0))
+        self.tapToDismiss = tapToDismiss
+        self.hapticsOnDismiss = hapticsOnDismiss
+        self.dismissDuration = dismissDuration
+        self.presentationType = presentationType
+        self.content = content()
     }
     
-    var isDragging: Bool {
-        switch self {
-        case .inactive:
-            return false
-        case .dragging:
-            return true
-        }
-    }
-}
-
-struct DragView<Content: View> : View {
-    
-    var modalHeight:CGFloat
-    var shouldHideOnTap : Bool = true
-    var showWithAnimation : Bool = true
-    var backgroundColor: Color = Styles.Colors.backgroundTab
-    
-    @Binding var isShown:Bool
-    @EnvironmentObject var sheetManager: SheetManager
-
-    @GestureState private var dragState = DragState.inactive
-    @State private var keyboardHeight: CGFloat = 0
-    @State private var keyboardAnimationDuration: Double = 0.28 // default value
-    @State private var keyboardCancellable: AnyCancellable?
-
-    private func onDragEnded(drag: DragGesture.Value) {
-        let dragThreshold = modalHeight * (2/3)
-        if drag.predictedEndTranslation.height > dragThreshold || drag.translation.height > dragThreshold{
-            isShown = false
-            sheetManager.hide()
-            UIApplication.shared.endEditing()
+    // MARK: Body
+    public var body: some View {
+        ZStack(alignment: .bottom) {
             
-        }
-    }
-    
-    var content: () -> Content
-    var body: some View {
-        let drag = DragGesture()
-            .updating($dragState) { drag, state, transaction in
-                state = .dragging(translation: drag.translation)
+            // Backdrop
+            if isPresented {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .contentShape(Rectangle())
+                    .onTapGesture { if tapToDismiss { dismissAnimated() } }
+                    .transition(.opacity)
             }
-            .onEnded(onDragEnded)
-        return Group {
-            GeometryReader { geometry in
-                ZStack {
-                    //Background
+            
+            // Sheet
+            if isPresented {
+                VStack(spacing: 0) {
                     Spacer()
-                        .edgesIgnoringSafeArea(.all)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .background(isShown ?
-                                    Color.black.opacity( 0.5 * fraction_progress(lowerLimit: 0,
-                                                                                 upperLimit: Double(modalHeight),
-                                                                                 current: Double(dragState.translation.height),
-                                                                                 inverted: true)
-                                    )
-                                    : nil)
-                        .if (showWithAnimation) {
-                            $0.animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
-                        }
-                        .gesture(
-                            TapGesture()
-                                .onEnded { _ in
-                                    if shouldHideOnTap {
-                                        self.dismiss()
-                                        self.isShown = false
-                                        UIApplication.shared.endEditing()
-                                    }
-                                })
                     
-                    //Foreground
-                    VStack{
-                        Spacer()
-                        ZStack {
-                            self.content()
-                                .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
-                                .background(backgroundColor.opacity(1.0))
-                                .cornerRadius(25, corners: [.topLeft, .topRight])
-                                .edgesIgnoringSafeArea(.all)
-                        }
-                        .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.keyboardHeight : -self.keyboardHeight) : modalHeight)
-
-                        .animation(.easeOut(duration: keyboardAnimationDuration))
-
-                        .if (shouldHideOnTap) {
-                            $0.gesture(drag)
-                        }
-                    }
-                }}.edgesIgnoringSafeArea(.all)
+                    // Content
+                    content
+                        .fixedSize(horizontal: false, vertical: true)
+                        .background(
+                            GeometryReader { g in
+                                Color.clear
+                                    .onAppear { contentHeight = g.size.height }
+                                    .onChange(of: g.size.height) { contentHeight = $0 }
+                            }
+                        )
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 20)
+                }
+                .padding(.bottom, bottomInset)
+                
+                // 2) Paint backgrounds
+                .background(backgroundColor)
+                .background(backgroundColor.ignoresSafeArea(edges: .bottom))
+                
+                // 3) Mask after both backgrounds so the radius stays
+                .compositingGroup()
+                .mask(
+                    RoundedCorner(radius: cornerRadius, corners: [.topLeft, .topRight])
+                        .padding(.bottom, -bottomInset)
+                )
+                
+                // 4) Effects & layout
+                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -5)
+                .frame(maxWidth: .infinity)
+                .frame(
+                    maxHeight: min(
+                        maxSheetHeight,
+                        contentHeight
+                    )
+                )
+                .offset(y: currentOffset)
+                .gesture(dragGesture)
+                .transition(.move(edge: .bottom))
+            }
         }
-        .onAppear {
-            subscribeToKeyboardEvents()
-        }
-        .onDisappear {
-            self.unsubscribeFromKeyboardEvents()
-        }
+        .animation(isPresented ? presentAnimation : nil, value: isPresented)
+        .animation(.spring(response: 0.28, dampingFraction: 0.9), value: dragState)
     }
     
-    private  func subscribeToKeyboardEvents() {
-        
-        let keyboardWillShowPublisher = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-        let keyboardWillHidePublisher = NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-        
-        keyboardCancellable = Publishers.Merge(keyboardWillShowPublisher, keyboardWillHidePublisher)
-            .sink { notification in
-                if notification.name == UIResponder.keyboardWillShowNotification {
-                    if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                        if keyboardFrame.height > 0 {
-                            self.keyboardHeight = keyboardFrame.height
-                        }
-                    }
+    // MARK: Helpers
+    
+    private var currentOffset: CGFloat {
+        isPresented ? (dragOffset + dragState) : UIScreen.main.bounds.height
+    }
+    
+    private var dragGesture: some Gesture {
+        DragGesture()
+            .updating($dragState) { value, state, _ in
+                state = max(0, value.translation.height)
+            }
+            .onEnded { value in
+                let drag = value.translation.height
+                let predicted = value.predictedEndTranslation.height
+                let shouldDismiss = drag > minDismissThreshold || predicted > 300
+                if shouldDismiss {
+                    dismissAnimated()
                 } else {
-                    self.keyboardHeight = 0
+                    withAnimation(.spring(response: 0.28, dampingFraction: 0.9)) {
+                        dragOffset = 0
+                    }
                 }
             }
     }
     
-    private func unsubscribeFromKeyboardEvents() {
-        keyboardCancellable?.cancel()
+    private func dismissAnimated() {
+        if hapticsOnDismiss { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
+        withAnimation(dismissAnimation) {
+            
+            if presentationType == .present {
+                self.dismiss()
+            } else {
+                isPresented = false
+                dragOffset = 0
+            }
+        }
     }
 }
 
-func fraction_progress(lowerLimit: Double = 0, upperLimit:Double, current:Double, inverted:Bool = false) -> Double {
-    var val:Double = 0
-    if current >= upperLimit {
-        val = 1
-    } else if current <= lowerLimit {
-        val = 0
-    } else {
-        val = (current - lowerLimit)/(upperLimit - lowerLimit)
-    }
-    
-    if inverted {
-        return (1 - val)
-        
-    } else {
-        return val
-    }
-    
+public enum PresentationType {
+    case present // Present/dismiss the bottom sheet view
+    case show // show/hide the bottom sheet in ZStack from home
 }
-
-struct RoundedCorner: Shape {
-    
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
-    }
-}
-

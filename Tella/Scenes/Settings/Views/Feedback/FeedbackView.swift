@@ -167,7 +167,9 @@ struct FeedbackView: View {
     }
     
     var confirmBottomSheet: some View {
-        DragView(modalHeight: 200, isShown: $showSaveDraftSheet) {
+        DragView(isPresented: $showSaveDraftSheet,
+                 presentationType: .show,
+                 backgroundColor: Styles.Colors.backgroundTab) {
             ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
                                msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
                                cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),

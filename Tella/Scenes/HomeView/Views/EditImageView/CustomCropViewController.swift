@@ -10,7 +10,7 @@
 
 import Mantis
 import Combine
-import SwiftUICore
+
 class CustomCropViewController: Mantis.CropViewController {
     
     @Published var isUpdatingImage = PassthroughSubject<Bool, Never>()

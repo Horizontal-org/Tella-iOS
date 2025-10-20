@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 24/02/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,22 +17,28 @@ struct SettingCheckboxItem: View {
     @EnvironmentObject var appModel : MainAppModel
     
     var title: String
+    var helpText: String?
     
     var body: some View {
-        Button(action: {
-            isChecked.toggle()
-            appModel.saveSettings()
-        }) {
-            HStack {
-                VStack(alignment: .leading){
-                    Text(title)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(Color.white).padding(.bottom, -5)
-                }
-                Spacer()
-                Image(systemName: isChecked ? "checkmark.square.fill" : "square")
+        
+        HStack() {
+            Text(title)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(Color.white)
+            
+            if let helpText {
+                HelpIcon(text: helpText)
             }
-        }
-        .padding()
+            
+            Spacer()
+            
+            Button {
+                isChecked.toggle()
+                appModel.saveSettings()
+            } label: {
+                Image(systemName: isChecked ? "checkmark.square.fill" : "square")
+                    .padding(.all, 16)
+            }
+        }.padding(.leading, 16)
     }
 }

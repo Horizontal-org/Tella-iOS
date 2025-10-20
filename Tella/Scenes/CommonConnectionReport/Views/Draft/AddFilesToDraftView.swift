@@ -69,13 +69,13 @@ struct AddFilesToDraftView: View {
 
     func showAddFileSheet() {
         
-        sheetManager.showBottomSheet( modalHeight: CGFloat(draftReportVM.addFileToDraftItems.count * 50 + 90), content: {
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: draftReportVM.addFileToDraftItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action: {item in
                 self.handleActions(item : item)
             })
-        })
+        }
     }
     
     func showAddPhotoVideoSheet() {

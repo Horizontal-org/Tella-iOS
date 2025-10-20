@@ -58,7 +58,7 @@ struct ResourcesView: View {
     }
     
     private func exitResourceConfirmatinoBottomSheet() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: LocalizableResources.resourceExitSheetTitle.localized,
                                       msgText: LocalizableResources.resourceExitSheetExpl.localized,
                                       cancelText: LocalizableResources.resourceExitCancelSheetSelect.localized,

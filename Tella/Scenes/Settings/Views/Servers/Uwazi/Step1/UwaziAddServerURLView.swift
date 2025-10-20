@@ -11,7 +11,6 @@
 import SwiftUI
 
 struct UwaziAddServerURLView: View {
-    @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var uwaziServerViewModel : UwaziServerViewModel
     
     var body: some View {
@@ -27,14 +26,10 @@ struct UwaziAddServerURLView: View {
     
     func handleNavigation(isPublicInstance: Bool) {
         if isPublicInstance {
-            let serverAccess = UwaziServerAccessSelectionView()
-                .environmentObject(uwaziServerViewModel)
-                .environmentObject(serversViewModel)
+            let serverAccess = UwaziServerAccessSelectionView(uwaziServerViewModel: uwaziServerViewModel)
             navigateTo(destination: serverAccess)
         } else {
-            let loginView = UwaziLoginView()
-                .environmentObject(serversViewModel)
-                .environmentObject(uwaziServerViewModel)
+            let loginView = UwaziLoginView(uwaziServerViewModel: uwaziServerViewModel)
             navigateTo(destination: loginView)
         }
     }
@@ -42,6 +37,6 @@ struct UwaziAddServerURLView: View {
 
 struct UwaziAddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+        UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel.stub())
     }
 }

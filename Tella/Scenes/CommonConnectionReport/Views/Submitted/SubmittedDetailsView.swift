@@ -131,7 +131,7 @@ struct SubmittedDetailsView: View {
     }
     
     private func showDeleteReportConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             DeleteReportConfirmationView(title: submittedReportVM.title,
                                          message: LocalizableReport.deleteSubmittedReportMessage.localized) {
                 submittedReportVM.deleteReport()

@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,6 +8,10 @@
 import SwiftUI
 import Combine
 
+enum ServersSourceView {
+    case onboarding
+    case settings
+}
 class ServersViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
@@ -17,20 +21,24 @@ class ServersViewModel: ObservableObject {
     @Published var unavailableServers: [Server] = []
     @Published var shouldEnableNextButton: Bool = false
     @Published var selectedServerType: ServerConnectionType?
-
+    @Published var shouldHideView: Bool = false
+    
     private var subscribers = Set<AnyCancellable>()
     
-    let gDriveRepository : GDriveRepositoryProtocol
-    let dropboxRepository : DropboxRepositoryProtocol
-
-    init(mainAppModel : MainAppModel,
-         gDriveRepository : GDriveRepositoryProtocol = GDriveRepository(),
-         dropboxRepository : DropboxRepositoryProtocol = DropboxRepository()) {
+    let gDriveRepository: GDriveRepositoryProtocol
+    let dropboxRepository: DropboxRepositoryProtocol
+    let serversSourceView: ServersSourceView
+    
+    init(mainAppModel: MainAppModel,
+         gDriveRepository: GDriveRepositoryProtocol = GDriveRepository(),
+         dropboxRepository: DropboxRepositoryProtocol = DropboxRepository(),
+         serversSourceView: ServersSourceView = .settings) {
         
         self.gDriveRepository = gDriveRepository
         self.dropboxRepository = dropboxRepository
-
+        
         self.mainAppModel = mainAppModel
+        self.serversSourceView = serversSourceView
         
         self.getServers()
         
@@ -47,6 +55,10 @@ class ServersViewModel: ObservableObject {
         let serverArray = mainAppModel.tellaData?.getServers() ?? []
         self.serverArray = serverArray
         self.unavailableServers = serverArray.filter { $0.allowMultiple == false }
+        
+        if serversSourceView == .onboarding && !serverArray.isEmpty {
+            shouldHideView = true
+        }
     }
     
     func deleteServer() {
@@ -62,7 +74,7 @@ class ServersViewModel: ObservableObject {
         default:
             break
         }
-
+        
     }
     
     func deleteAllServersConnection() {
@@ -75,4 +87,11 @@ class ServersViewModel: ObservableObject {
         return serverConnections.filter { connection in
             !unavailableTypes.contains(connection.type)
         }
-    }}
+    }
+}
+
+extension ServersViewModel {
+    static func stub() -> ServersViewModel {
+        return ServersViewModel(mainAppModel: MainAppModel.stub())
+    }
+}

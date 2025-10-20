@@ -97,7 +97,7 @@ struct PhotoVideoPickerView: View {
             self.dismiss()
         })
         
-        self.showBottomSheetView(content: content, modalHeight: 255)
+        self.showBottomSheetView(content: content)
     }
     
     func showLimitedAccessView() {
@@ -133,8 +133,7 @@ struct PhotoVideoPickerView: View {
     
     func showProgressView() {
         viewModel.progressFile = ProgressFile()
-        sheetManager.showBottomSheet(modalHeight: 190,
-                                     shouldHideOnTap: false,
+        sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
             ImportFilesProgressView(progress: viewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesProgress())

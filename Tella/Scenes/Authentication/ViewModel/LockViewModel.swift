@@ -59,9 +59,9 @@ class LockViewModel: ObservableObject {
         return maxAttempts - unlockAttempts
     }
     
-    init(unlockType: UnlockType, appModel:MainAppModel, appViewState:AppViewState) {
+    init(unlockType: UnlockType, appViewState:AppViewState) {
         self.unlockType = unlockType
-        self.appModel = appModel
+        self.appModel = appViewState.homeViewModel
         self.appViewState = appViewState
         
         self.unlockAttempts = appModel.settings.unlockAttempts
@@ -184,5 +184,11 @@ class LockViewModel: ObservableObject {
     
     func removeFilesAndConnections () -> Void {
         appModel.deleteAfterMaxAttempts()
+    }
+}
+
+extension LockViewModel {
+    static func stub() -> LockViewModel {
+        return LockViewModel(unlockType: .new, appViewState: AppViewState())
     }
 }

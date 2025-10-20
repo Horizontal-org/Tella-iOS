@@ -26,7 +26,7 @@ struct NextcloutOutboxDetailsView<T: NextcloudServer>: View {
     }
     
     private func showLoginConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 327) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(imageName:"nextcloud.icon",
                                titleText: LocalizableNextcloud.connectionExpiredTitle.localized,
                                msgText: LocalizableNextcloud.connectionExpiredExpl.localized,
@@ -42,7 +42,8 @@ struct NextcloutOutboxDetailsView<T: NextcloudServer>: View {
     
     func navigateToLoginView() {
         guard let server = outboxReportVM.reportViewModel.server else { return  }
-        let nextcloudVM = NextcloudServerViewModel(mainAppModel: mainAppModel,currentServer: server)
+        let nextcloudVM = NextcloudServerViewModel(mainAppModel: mainAppModel,
+                                                   currentServer: server)
         navigateTo(destination: NextcloudLoginView(nextcloudVM: nextcloudVM))
     }
 }

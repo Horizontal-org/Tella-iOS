@@ -27,7 +27,7 @@ struct DropboxOutboxDetailsView<T: DropboxServer>: View {
     }
     
     private func showLoginConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 327) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(imageName:"dropbox.icon",
                                titleText: LocalizableDropbox.connectionExpiredTitle.localized,
                                msgText: LocalizableDropbox.connectionExpiredExpl.localized,

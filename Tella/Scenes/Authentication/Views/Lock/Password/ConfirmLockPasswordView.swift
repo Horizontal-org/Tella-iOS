@@ -37,7 +37,7 @@ struct ConfirmLockPasswordView: View {
     
     func lockWithPassword() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPassword)
-        navigateTo(destination: OnboardingEndView())
+        lockViewModel.shouldDismiss.send(true)
     }
     
     func updatePassword() {

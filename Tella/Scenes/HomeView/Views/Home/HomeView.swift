@@ -110,7 +110,7 @@ struct HomeView: View {
     }
     
     private func showBgEncryptionConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableBackgroundActivities.exitSheetTitle.localized,
                                msgText: LocalizableBackgroundActivities.exitSheetExpl.localized,
                                cancelText: LocalizableBackgroundActivities.exitcancelSheetAction.localized,

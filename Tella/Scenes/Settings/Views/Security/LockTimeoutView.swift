@@ -26,7 +26,7 @@ struct LockTimeoutView: View {
                 
                 OptionsView()
                 
-            }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 24))
+            }
             
             Spacer()
             

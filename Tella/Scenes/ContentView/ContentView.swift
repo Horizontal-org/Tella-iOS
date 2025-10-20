@@ -8,7 +8,7 @@ struct ContentView: View {
     @StateObject var lockViewModel : LockViewModel
     
     init(mainAppModel:MainAppModel, appViewState: AppViewState) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: mainAppModel, appViewState: appViewState))
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appViewState: appViewState))
     }
     var body: some View {
         
@@ -22,17 +22,14 @@ struct ContentView: View {
             
             if appViewState.currentView == .LOCK {
                 WelcomeView()
-                    .environmentObject(lockViewModel)
             }
             
             if appViewState.currentView == .UNLOCK {
                 let passwordType = appViewState.homeViewModel.vaultManager.getPasswordType()
                 passwordType == .tellaPassword ?
-                UnlockView(type: .tellaPassword)
-                    .environmentObject(lockViewModel)
+                UnlockView(viewModel: lockViewModel, type: .tellaPassword)
                     .eraseToAnyView() :
-                UnlockView(type: .tellaPin)
-                    .environmentObject(lockViewModel)
+                UnlockView(viewModel: lockViewModel, type: .tellaPin)
                     .eraseToAnyView()
             }
         }.onAppear {

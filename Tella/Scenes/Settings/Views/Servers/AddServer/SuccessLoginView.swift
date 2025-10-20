@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct SuccessLoginView: View {
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var serverViewModel : TellaWebServerViewModel
+    var serverViewModel : TellaWebServerViewModel? = nil
     @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
     
@@ -39,11 +37,10 @@ struct SuccessLoginView: View {
                 Spacer()
                     .frame(height: 12)
                 
-                if type == .tella {
+                if type == .tella, let serverViewModel {
                     TellaButtonView (title: LocalizableSettings.advancedSettings.localized,
                                      nextButtonAction: .destination,
-                                     destination: AdvancedServerSettingsView()
-                        .environmentObject(serverViewModel),
+                                     destination: AdvancedServerSettingsView(serverVM: serverViewModel),
                                      isValid: .constant(true))
                 }
                 Spacer()
@@ -79,7 +76,5 @@ struct SuccessLoginView: View {
 struct SuccessLoginView_Previews: PreviewProvider {
     static var previews: some View {
         SuccessLoginView(navigateToAction: {})
-            .environmentObject(MainAppModel.stub())
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

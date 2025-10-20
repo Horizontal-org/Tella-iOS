@@ -72,10 +72,12 @@ struct SettingsMainView: View {
     }
     
     var serversView: some View {
-        SettingsItemView(imageName: "settings.servers",
+        let viewModel = ServersViewModel(mainAppModel: appModel)
+
+        return SettingsItemView(imageName: "settings.servers",
                          title: LocalizableSettings.settConnections.localized,
-                         destination:ServersListView()
-            .environmentObject(serversViewModel))
+                         destination:ServersListView(serversViewModel:viewModel ))
+                              
     }
     
     var helpView: some View {

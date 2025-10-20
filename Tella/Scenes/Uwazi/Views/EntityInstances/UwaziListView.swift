@@ -82,7 +82,7 @@ struct EntityInstanceItemView: View {
     }
     
     private func showBottomSheet() {
-        sheetManager.showBottomSheet(modalHeight: 176) {
+        sheetManager.showBottomSheet() {
             ActionListBottomSheet(items: cardViewModel.listActionSheetItem,
                                   headerTitle: cardViewModel.title,
                                   action:  {item in
@@ -136,10 +136,8 @@ struct EntityInstanceItemView: View {
     }
     
     private func showDeleteTemplateConfirmationView() {
-        
-        let modalHeight = cardViewModel.status == .submitted ? 220 : 160
-        
-        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
+
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
                                       cancelText: LocalizableUwazi.noSheetAction.localized,
