@@ -7,16 +7,18 @@
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
-import Foundation
+import Combine
 import SwiftUI
-
-// MARK: - ViewModel
 
 @MainActor
 final class MainOnboardingViewModel: ObservableObject {
     @Published var index: Int
+    @Published var isLockSucceeded = false
+    @Published var lockViewModel: LockViewModel
+
     private let startIndex: Int = 0
-    
+    private var cancellables = Set<AnyCancellable>()
+
     let pages: [OnboardingItem] = [
         .camera(CameraContent()),
         .recorder(MicContent()),
@@ -26,43 +28,56 @@ final class MainOnboardingViewModel: ObservableObject {
         .lock,
         .allDone
     ]
-    
-    init() {
+
+    init(lockViewModel: LockViewModel) {
         self.index = min(max(startIndex, 0), max(0, pages.count - 1))
+        self.lockViewModel = lockViewModel
+
+        lockViewModel.shouldDismiss
+            .filter { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.isLockSucceeded = true
+            }
+            .store(in: &cancellables)
     }
-    
+
     // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
-    var canGoBack: Bool { index > 0 }
-    var canGoNext: Bool { index < lastIndex }
-    
+
     var currentPage: OnboardingItem {
         pages[safe: index] ?? .camera(CameraContent())
     }
-    
+
     var isOnLock: Bool {
         if case .lock = currentPage { return true }
         return false
     }
-    
     var isOnAllDone: Bool {
         if case .allDone = currentPage { return true }
         return false
     }
-    
-    var isSwipeAllowed: Bool {
-        !isOnLock && !isOnAllDone
+
+    func canTapNext() -> Bool {
+        switch currentPage {
+        case .lock:    return isLockSucceeded
+        case .allDone: return false
+        default:       return index < lastIndex
+        }
     }
-    
-    func shouldHideNext(isLockSucceeded: Bool) -> Bool {
-        (isOnLock && !isLockSucceeded) || isOnAllDone
+
+    func canTapBack() -> Bool {
+        switch currentPage {
+        case .lock:    return !isLockSucceeded || index > 0
+        case .allDone: return true
+        default:       return index > 0
+        }
     }
-    
-    func shouldHideBack(isLockSucceeded: Bool) -> Bool {
-        (isOnLock && isLockSucceeded) || isOnAllDone
-    }
-    
+
+    func shouldHideNext() -> Bool { !canTapNext() }
+    func shouldHideBack() -> Bool { (isOnLock && isLockSucceeded) || isOnAllDone }
+
     // MARK: - Navigation
     func goToPage(_ newIndex: Int) {
         guard count > 0 else { return }
@@ -107,5 +122,7 @@ enum OnboardingItem: Identifiable, Equatable {
 }
 
 extension MainOnboardingViewModel {
-    static func stub() -> MainOnboardingViewModel { MainOnboardingViewModel() }
+    static func stub() -> MainOnboardingViewModel {
+        MainOnboardingViewModel(lockViewModel: LockViewModel.stub())
+    }
 }

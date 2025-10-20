@@ -12,22 +12,19 @@ import Combine
 
 struct MainOnboardingView: View {
     @StateObject var viewModel: MainOnboardingViewModel
-    @StateObject var lockViewModel: LockViewModel
-    @State var isLockSucceded: Bool = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
-        
         ZStack {
             tabView()
             bottomView()
         }
         .containerStyle()
         .navigationBarHidden(true)
-        .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
-            guard shouldDismiss else { return }
-            isLockSucceded = true
-            self.dismiss()
+        .onReceive(viewModel.lockViewModel.shouldDismiss
+            .filter { $0 }
+        ) { _ in
+            dismiss()
         }
     }
     
@@ -53,8 +50,7 @@ struct MainOnboardingView: View {
         case .recorder, .files, .connections, .nearbySharing:
             return true
         case .lock:
-            return isLockSucceded ? (direction == .left)
-            : (direction == .right)
+            return viewModel.isLockSucceeded ? (direction == .left) : (direction == .right)
         case .allDone:
             return direction == .right
         }
@@ -71,12 +67,12 @@ struct MainOnboardingView: View {
             OnboardingPageView(content: content)
             
         case .lock:
-                if isLockSucceded {
-                    OnboardingSuccessLoginView()
-                } else {
-                    LockChoiceView(lockViewModel: lockViewModel)
-                }
-
+            if viewModel.isLockSucceeded {
+                OnboardingSuccessLoginView()
+            } else {
+                LockChoiceView(lockViewModel: viewModel.lockViewModel)
+            }
+            
         case .allDone:
             OnboardingLockDoneView()
         }
@@ -90,15 +86,16 @@ struct MainOnboardingView: View {
                 .padding(20)
             
             BottomLockView<AnyView>(
-                isValid: Binding(get: { viewModel.canGoNext }, set: { _ in }),
+                isValid: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
                 nextButtonAction: .action,
-                shouldHideNext: viewModel.shouldHideNext(isLockSucceeded: isLockSucceded),
-                shouldHideBack: viewModel.shouldHideBack(isLockSucceeded: isLockSucceded),
+                shouldHideNext: viewModel.shouldHideNext(),
+                shouldHideBack: viewModel.shouldHideBack(),
                 nextAction: {
-                    if viewModel.canGoNext { viewModel.goNext() }
+                    guard viewModel.canTapNext() else { return }
+                    viewModel.goNext()
                 },
                 backAction: {
-                    if viewModel.canGoBack {
+                    if viewModel.canTapBack() {
                         viewModel.goBack()
                     } else {
                         presentationMode.wrappedValue.dismiss()
@@ -110,5 +107,9 @@ struct MainOnboardingView: View {
 }
 
 #Preview {
-    MainOnboardingView(viewModel: MainOnboardingViewModel.stub(), lockViewModel: LockViewModel.stub())
+    MainOnboardingView(viewModel: MainOnboardingViewModel.stub())
+}
+
+#Preview {
+    MainOnboardingView(viewModel: MainOnboardingViewModel.stub())
 }
