@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/25/23.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -39,25 +39,17 @@ struct UwaziLanguageRowDTO: Codable, DataModel {
 // MARK: - Context
 struct UwaziLanguageContextDTO: Codable, DataModel {
     let contextID, label: String?
-    let type: UwaziLanguageTypeEnum?
     let values: [String: String]?
     let id: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case contextID = "id"
         case label
-        case type, values
+        case values
         case id = "_id"
     }
+    
     func toDomain() -> DomainModel? {
         return UwaziLanguageContext(contextID: contextID, label: label, id: id)
     }
-}
-
-enum UwaziLanguageTypeEnum: String, Codable {
-    case entity = "Entity"
-    case relationshipType = "Relationship Type"
-    case thesaurus = "Thesaurus"
-    case uwaziUI = "Uwazi UI"
-    case connection = "Connection" 
 }
