@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -37,60 +37,52 @@ struct MainView: View  {
     }
     
     private var contentView: some View {
-        
-        ZStack {
-            CustomNavigation() {
+        CustomNavigation() {
+            ZStack {
+                
                 tabbarContentView
+                
+                if appModel.selectedTab == .mic {
+                    RecordView(appModel: appModel,
+                               sourceView: .tab,
+                               showingRecoredrView: $showingRecoredrView)
+                }
+                
+                if appModel.selectedTab == .camera {
+                    CameraView(sourceView: .tab,
+                               showingCameraView: $appViewState.shouldHidePresentedView,
+                               mainAppModel: appModel)
+                }
             }.accentColor(.white)
-            
-            if appModel.selectedTab == .mic {
-                RecordView(appModel: appModel,
-                           sourceView: .tab,
-                           showingRecoredrView: $showingRecoredrView)
-            }
-            
-            if appModel.selectedTab == .camera {
-                CameraView(sourceView: .tab,
-                           showingCameraView: $appViewState.shouldHidePresentedView,
-                           mainAppModel: appModel)
-            }
         }
     }
     
     var tabbarContentView: some View {
         
         TabView(selection: $appModel.selectedTab) {
-            CustomNavigation() {
-                HomeView(appModel: appModel)
-            }
-            .tabItem {
-                Image("tab.home")
-                Text(LocalizableHome.tabBar.localized)
-            }.tag(MainAppModel.Tabs.home)
+            HomeView(appModel: appModel)
+                .tabItem {
+                    Image("tab.home")
+                    Text(LocalizableHome.tabBar.localized)
+                }.tag(MainAppModel.Tabs.home)
             
-            CustomNavigation() {
-                ContainerView{}
-            }
-            .tabItem {
-                Image("tab.camera")
-                Text(LocalizableCamera.tabBar.localized)
-            }.tag(MainAppModel.Tabs.camera)
+            ContainerView{}
+                .tabItem {
+                    Image("tab.camera")
+                    Text(LocalizableCamera.tabBar.localized)
+                }.tag(MainAppModel.Tabs.camera)
             
-            CustomNavigation() {
-                ContainerView{}
-            }
-            .tabItem {
-                Image("tab.mic")
-                Text(LocalizableRecorder.tabBar.localized)
-            }.tag(MainAppModel.Tabs.mic)
+            ContainerView{}
+                .tabItem {
+                    Image("tab.mic")
+                    Text(LocalizableRecorder.tabBar.localized)
+                }.tag(MainAppModel.Tabs.mic)
             
-            CustomNavigation() {
-                SettingsMainView(appModel: appModel)
-            }
-            .tabItem {
-                Image("tab.settings")
-                Text(LocalizableSettings.settAppBar.localized)
-            }.tag(MainAppModel.Tabs.settings)
+            SettingsMainView(appModel: appModel)
+                .tabItem {
+                    Image("tab.settings")
+                    Text(LocalizableSettings.settAppBar.localized)
+                }.tag(MainAppModel.Tabs.settings)
         }
     }
     
