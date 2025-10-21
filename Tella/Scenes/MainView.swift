@@ -53,8 +53,8 @@ struct MainView: View  {
                                showingCameraView: $appViewState.shouldHidePresentedView,
                                mainAppModel: appModel)
                 }
-            }.accentColor(.white)
-        }
+            }
+        }.accentColor(.white)
     }
     
     var tabbarContentView: some View {
