@@ -142,10 +142,11 @@ struct SecuritySettingsView: View {
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
                               toggle: quickDeleteBinding)
-            
-            DividerView()
-            
+
             if appModel.settings.quickDelete {
+                
+                DividerView()
+                
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteVault ,
                     title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized,
