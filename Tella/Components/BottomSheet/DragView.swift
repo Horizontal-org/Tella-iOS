@@ -121,7 +121,6 @@ public struct DragView<Content: View>: View {
                 )
                 .offset(y: currentOffset)
                 .gesture(dragGesture)
-                .transition(.move(edge: .bottom))
             }
         }
         .animation(isPresented ? presentAnimation : nil, value: isPresented)
