@@ -130,7 +130,6 @@ struct SecuritySettingsView: View {
                     let settings = appModel.settings
                     settings.quickDelete = isOn
                     settings.deleteVault = isOn
-                    settings.deleteServerSettings = isOn
                     appModel.settings = settings
                 }
                 appModel.saveSettings()
