@@ -215,6 +215,9 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
 
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
                                         primarykeyValue: templateCondition)
+
+            try statementBuilder.delete(tableName: D.tUwaziEntityInstances,
+                                        primarykeyValue: templateCondition)
             return .success
         } catch let error {
             debugLog(error)

@@ -44,7 +44,7 @@ struct TellaButtonView<Destination:View> : View {
             Text(title)
                 .frame(maxWidth:.infinity)
                 .contentShape(Rectangle())
-                .padding(.horizontal, 45)
+                .padding(.horizontal, 16)
                 .padding(.vertical, 16)
                 .multilineTextAlignment(.center)
 
