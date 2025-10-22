@@ -88,8 +88,6 @@ struct ImportFilesProgressView: View {
                 }
             }
         }
-        .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
-        
     }
 }
 
