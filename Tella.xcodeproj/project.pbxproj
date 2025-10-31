@@ -1007,6 +1007,7 @@
 		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
 		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleExtension.swift; sourceTree = "<group>"; };
+		129FBF422EB4BBED00E4DA57 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -3650,6 +3651,7 @@
 				ml,
 				"sn-ZW",
 				az,
+				zh_CN,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4531,6 +4533,7 @@
 				129380082DC284D50019ECC4 /* vi */,
 				1282DE472DDD0302004D2176 /* sn-ZW */,
 				129919BC2E2EC92900A4417D /* az */,
+				129FBF422EB4BBED00E4DA57 /* zh_CN */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
