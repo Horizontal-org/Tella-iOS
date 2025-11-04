@@ -109,7 +109,7 @@ Tap the “+” button below to import your first file, or go to the Camera or R
 "Vault_EmptyFolder_Expl" = "This folder is empty! Tap the + button below to import a file or create a folder.";
 "Vault_FileAudio_UpdateSecondTime" = "%@s";
 "Recorder_TabBar" = "Rec";
-"Recorder_AppBar" = "Recorder";
+"Recorder_AppBar" = "Grabadora";
 "Recorder_SuffixRecording" = "Recording";
 "Recorder_DeviceTimeLeft" = "left";
 "Recorder_DeviceTimeLeft_Day" = "day";
@@ -136,7 +136,7 @@ If you want to record a voice, proceed in the following way:\
 ";
 "Recorder_DeniedAudioPermission_Action_Settings" = "Configuración";
 "Recorder_DeniedAudioPermission_Action_Cancel" = "CANCEL";
-"Camera_TabBar" = "Camera";
+"Camera_TabBar" = "Cámara";
 "Camera_AppBar" = "Images and Videos";
 "Camera_TabTitle_Photo" = "Foto";
 "Camera_TabTitle_Video" = "Vídeo";
@@ -563,9 +563,9 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_LockDone_Title" = "Todo listo!";
 "Onboarding_LockDone_Expl" = "Puedes ir a Tella ahora o continuar personalizando Tella con opciones avanzadas.";
 "Onboarding_Done_Action_GoToTella" = "Ir a Tella";
-"Onboarding_LockDone_Action_AdvancedSettings" = "Personalización avanzada";
+"Onboarding_LockDone_Action_AdvancedSettings" = "Configuraciones avanzadas";
 "Onboarding_ServerDone_Title" = "Personalización avanzada completada!";
-"Onboarding_ServerDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
+"Onboarding_ServerDone_Expl" = "Puedes ir a Tella ahora o continuar personalizando Tella con opciones avanzadas.";
 "Onboarding_ServerMain_Title" = "Comparte los datos que recolectas";
 "Onboarding_ServerMain_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
 "Onboarding_ServerMain_Action_ConnectServer" = "Conectatate a un servidor";
@@ -574,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "You have successfully connected to the server and will be able to share your data.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";

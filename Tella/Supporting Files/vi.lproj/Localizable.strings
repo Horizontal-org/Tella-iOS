@@ -574,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "Bạn đã kết nối thành công với máy chủ và có thể chia sẻ dữ liệu của mình.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Xóa tất cả các tệp tin được lưu trữ trong Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";

@@ -574,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "Anda berhasil terhubung ke peladen dan akan memiliki kemampuan untuk membagikan data Anda.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";
