@@ -574,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "သင်သည် ဆာဗာနှင့် ချိတ်ဆက်ထားပြီးသောကြောင့် သင့်ဒေတာကို မျှဝေနိုင်ပါမည်။";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Tella တွင် သိမ်းဆည်းထားသော ဖိုင်များအားလုံးကို ဖျက်ပါ။";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";
