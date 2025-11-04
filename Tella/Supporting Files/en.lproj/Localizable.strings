@@ -547,7 +547,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Settings_SettLang_Chinese_Expl" = "Chinese";
 "Onboarding_Camera_Title" = "Camera";
 "Onboarding_Camera_Expl" = "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery.";
 "Onboarding_Recorder_Title" = "Recorder";
@@ -575,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "You have successfully connected to the server and will be able to share your data.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";
