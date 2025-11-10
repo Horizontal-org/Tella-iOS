@@ -14,9 +14,6 @@ import Foundation
 struct RecordView: View {
     
     @StateObject var viewModel : RecordViewModel
-    
-    @EnvironmentObject private var mainAppModel: MainAppModel
-    @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject var sheetManager: SheetManager
     
     @State private var showingSaveSuccessView : Bool = false
@@ -36,11 +33,7 @@ struct RecordView: View {
                                                                sourceView: sourceView,
                                                                showingRecoredrView: showingRecoredrView))
     }
-    
-    func goBack() {
-        self.appViewState.navigateBack()
-    }
-    
+
     var body: some View {
         
         NavigationContainerView {
@@ -65,7 +58,7 @@ struct RecordView: View {
             saveSuccessView
             
         }
-        .onReceive(mainAppModel.$shouldSaveCurrentData) { value in
+        .onReceive(viewModel.mainAppModel.$shouldSaveCurrentData) { value in
             if(value) {
                 self.viewModel.onStopRecording()
             }
@@ -219,7 +212,7 @@ struct RecordView: View {
                     showSaveAudioConfirmationView()
                 } else {
                     if viewModel.sourceView == .tab {
-                        mainAppModel.selectedTab = .home
+                        viewModel.mainAppModel.selectedTab = .home
                     } else {
                         viewModel.showingRecoredrView.wrappedValue = false
                     }
@@ -236,7 +229,7 @@ struct RecordView: View {
     }
     
     private func getFileListView() -> some View {
-        FileListView(appModel: mainAppModel,
+        FileListView(appModel: viewModel.mainAppModel,
                      filterType: .audio,
                      title: LocalizableRecorder.audioRecordingsAppBar.localized,
                      fileListType: .recordList)
@@ -259,7 +252,8 @@ struct RecordView: View {
     func showSaveAudioConfirmationView() {
         sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
-            SaveAudioConfirmationView(viewModel: viewModel, showingSaveSuccessView: $showingSaveSuccessView)
+            SaveAudioConfirmationView(viewModel: viewModel,
+                                      showingSaveSuccessView: $showingSaveSuccessView, mainAppModel: viewModel.mainAppModel)
         })
     }
     

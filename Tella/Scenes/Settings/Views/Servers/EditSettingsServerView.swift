@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -22,27 +22,22 @@ struct EditSettingsServerView: View {
         
         ContainerView {
             VStack {
-            
-            editServerHeaderView
+                
+                editServerHeaderView
+                
+                ScrollView {
+                    SettingsCardView(cardViewArray:[serverNameView.eraseToAnyView(),
+                                                    serverURLView.eraseToAnyView(),
+                                                    serverUsernameView.eraseToAnyView()
+                                                   ])
                     
-            ScrollView {
-                SettingsCardView(cardViewArray:[serverNameView.eraseToAnyView(),
-                    serverURLView.eraseToAnyView(),
-                    serverUsernameView.eraseToAnyView()
-                    ])
-                        
-                SettingsCardView(cardViewArray: [
-                    AutoUploadView(autoUpload: $serverViewModel.autoUpload,
-                        isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
-                            $serverViewModel.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverViewModel.autoDelete).eraseToAnyView() : nil,
-                            BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()
-                            // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView()
-                        ])
-            }
-                    
-            Spacer()
-                    
-            bottomView
+                    AdvancedServerSettingsCardView(serverViewModel: serverViewModel)
+
+                }
+                
+                Spacer()
+                
+                bottomView
             }
         }
     }
@@ -89,13 +84,8 @@ struct EditSettingsServerView: View {
     }
 }
 
-
 struct EditSettingsServerView_Previews: PreviewProvider {
     static var previews: some View {
         EditSettingsServerView(appModel: MainAppModel.stub(), isPresented: .constant(true))
     }
 }
-
-
-
-

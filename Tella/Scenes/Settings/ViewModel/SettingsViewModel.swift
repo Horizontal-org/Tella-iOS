@@ -91,3 +91,8 @@ class SettingsViewModel: ObservableObject {
 
 }
 
+extension SettingsViewModel {
+    static func stub() -> SettingsViewModel {
+        return SettingsViewModel(appModel: MainAppModel.stub())
+    }
+}

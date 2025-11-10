@@ -8,15 +8,11 @@ import SwiftUI
 
 struct FeedbackView: View {
     
-    @StateObject var feedbackViewModel : FeedbackViewModel
+    @ObservedObject var appModel : MainAppModel
+    @ObservedObject var feedbackViewModel : FeedbackViewModel
     @State var showSaveDraftSheet : Bool = false
-    @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    
-    init(mainAppModel:MainAppModel) {
-        _feedbackViewModel = StateObject(wrappedValue: FeedbackViewModel(mainAppModel: mainAppModel))
-    }
-    
+
     var body: some View {
         ContainerView {
             content
@@ -199,8 +195,7 @@ struct FeedbackView: View {
         }
     }
 }
-
-#Preview {
-    FeedbackView(mainAppModel: MainAppModel.stub())
-        .environmentObject(MainAppModel.stub())
-}
+//
+//#Preview {
+//    FeedbackView(appModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
+//}

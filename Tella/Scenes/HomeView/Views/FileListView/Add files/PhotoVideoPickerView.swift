@@ -135,7 +135,8 @@ struct PhotoVideoPickerView: View {
         viewModel.progressFile = ProgressFile()
         sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
-            ImportFilesProgressView(progress: viewModel.progressFile,
+            ImportFilesProgressView(mainAppModel: viewModel.mainAppModel,
+                                    progress: viewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesProgress())
             
         })

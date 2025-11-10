@@ -22,7 +22,6 @@ struct CameraView: View {
     @State private var showingPermissionAlert : Bool = false
     @StateObject private var cameraViewModel :  CameraViewModel
     @StateObject private var model = CameraModel()
-    @EnvironmentObject private var mainAppModel : MainAppModel
     @EnvironmentObject private var sheetManager: SheetManager
     
     
@@ -54,7 +53,7 @@ struct CameraView: View {
             .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
-                model.shouldPreserveMetadata = mainAppModel.settings.preserveMetadata
+                model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
                 model.configure()
             }
             .onDisappear {
@@ -78,11 +77,11 @@ struct CameraView: View {
             .onReceive(model.$shouldCloseCamera) { value in
                 if value {
                     if cameraViewModel.sourceView == .tab {
-                        mainAppModel.selectedTab = .home
+                        cameraViewModel.mainAppModel.selectedTab = .home
                     } else {
                         showingCameraView.wrappedValue = false
                     }
-                    mainAppModel.vaultManager.clearTmpDirectory()
+                    cameraViewModel.mainAppModel.vaultManager.clearTmpDirectory()
                 }
             }
         
@@ -111,7 +110,8 @@ struct CameraView: View {
     
     private func getCameraControlsView() -> some View {
         
-        CameraControlsView(showingCameraView: showingCameraView,
+        CameraControlsView(cameraViewModel: cameraViewModel,
+                           showingCameraView: showingCameraView,
                            sourceView: cameraViewModel.sourceView,
                            captureButtonAction: {
             model.capturePhoto()
@@ -135,17 +135,18 @@ struct CameraView: View {
         Alert(title: Text(""),
               message: Text(LocalizableCamera.deniedCameraPermissionExpl.localized),
               primaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionCancel.localized), action: {
-            mainAppModel.selectedTab = .home
+            cameraViewModel.mainAppModel.selectedTab = .home
         }), secondaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionSettings.localized), action: {
             UIApplication.shared.openSettings()
-            mainAppModel.selectedTab = .home
+            cameraViewModel.mainAppModel.selectedTab = .home
         }))
     }
     
     func showProgressView() {
         sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
-            ImportFilesProgressView(progress: cameraViewModel.progressFile,
+            ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
+                                    progress: cameraViewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())
         })
     }

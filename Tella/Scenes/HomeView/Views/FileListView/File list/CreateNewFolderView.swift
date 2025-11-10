@@ -7,8 +7,7 @@
 import SwiftUI
 
 struct AddNewFolderView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     

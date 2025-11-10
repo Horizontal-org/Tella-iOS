@@ -13,8 +13,7 @@ import SwiftUI
 struct FileGridItem: View {
     
     var file: VaultFileDB
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     
     var body: some View {

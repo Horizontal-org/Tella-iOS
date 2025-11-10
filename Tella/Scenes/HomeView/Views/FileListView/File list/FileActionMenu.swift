@@ -8,7 +8,6 @@ import SwiftUI
 
 struct FileActionMenu: View {
     
-    @EnvironmentObject var appModel: MainAppModel
     @ObservedObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     

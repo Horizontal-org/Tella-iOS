@@ -14,7 +14,7 @@ import SwiftUI
 
 struct SettingCheckboxItem: View {
     @Binding var isChecked: Bool
-    @EnvironmentObject var appModel : MainAppModel
+    var appModel : MainAppModel
     
     var title: String
     var helpText: String?

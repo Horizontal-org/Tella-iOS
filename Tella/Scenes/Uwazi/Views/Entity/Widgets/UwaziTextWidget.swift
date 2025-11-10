@@ -13,7 +13,7 @@ import SwiftUI
 struct UwaziTextWidget: View {
     
     @ObservedObject var prompt: UwaziTextEntryPrompt
-    @EnvironmentObject var uwaziEntityViewModel : UwaziEntityViewModel
+    var uwaziEntityViewModel : UwaziEntityViewModel
     var body: some View {
         VStack(alignment: .leading) {
             TextField("", text: $prompt.value)
@@ -32,6 +32,7 @@ struct UwaziTextWidget: View {
         }
     }
 }
+
 //struct UwaziTextWidget_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ContainerView {

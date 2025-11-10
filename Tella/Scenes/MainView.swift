@@ -11,13 +11,22 @@ struct MainView: View  {
     
     @State private var showingRecoredrView : Bool = false
     
-    @EnvironmentObject private var appModel: MainAppModel
-    @EnvironmentObject private var appViewState: AppViewState
+    @ObservedObject var appModel: MainAppModel
+    @ObservedObject var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     @State private var shouldReload : Bool = false
-    
-    init(mainAppModel: MainAppModel) {
+   
+    var homeViewModel: HomeViewModel
+    var settingsViewModel: SettingsViewModel
+    var serversViewModel: ServersViewModel
+
+    init(appViewState: AppViewState) {
         UIApplication.shared.setupApperance()
+        self.appModel = appViewState.homeViewModel
+        self.appViewState = appViewState
+        self.homeViewModel = HomeViewModel(appViewState: appViewState)
+        self.settingsViewModel = SettingsViewModel(appModel: appViewState.homeViewModel)
+        self.serversViewModel = ServersViewModel(mainAppModel: appViewState.homeViewModel)
     }
     
     var body: some View {
@@ -60,7 +69,7 @@ struct MainView: View  {
     var tabbarContentView: some View {
         
         TabView(selection: $appModel.selectedTab) {
-            HomeView(appModel: appModel)
+            HomeView(viewModel: self.homeViewModel)
                 .tabItem {
                     Image("tab.home")
                     Text(LocalizableHome.tabBar.localized)
@@ -78,7 +87,9 @@ struct MainView: View  {
                     Text(LocalizableRecorder.tabBar.localized)
                 }.tag(MainAppModel.Tabs.mic)
             
-            SettingsMainView(appModel: appModel)
+            SettingsMainView(appViewState: appViewState,
+                             settingsViewModel: SettingsViewModel(appModel: appModel),
+                             serversViewModel: ServersViewModel(mainAppModel: appModel))
                 .tabItem {
                     Image("tab.settings")
                     Text(LocalizableSettings.settAppBar.localized)
@@ -95,13 +106,13 @@ struct MainView: View  {
     }
 }
 
-struct AppView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView(mainAppModel: MainAppModel.stub())
-            .preferredColorScheme(.light)
-            .previewLayout(.device)
-            .previewDevice("iPhone 8")
-            .environmentObject(MainAppModel.stub())
-    }
-}
-
+//struct AppView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainView(mainAppModel: MainAppModel.stub())
+//            .preferredColorScheme(.light)
+//            .previewLayout(.device)
+//            .previewDevice("iPhone 8")
+//            .environmentObject(MainAppModel.stub())
+//    }
+//}
+//

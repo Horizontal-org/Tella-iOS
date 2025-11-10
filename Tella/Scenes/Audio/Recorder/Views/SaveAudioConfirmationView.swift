@@ -12,9 +12,8 @@ struct SaveAudioConfirmationView: View {
     @Binding var showingSaveSuccessView : Bool
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel : MainAppModel
-    
-    
+    var mainAppModel : MainAppModel
+
     var body: some View {
         
         ConfirmBottomSheet(titleText: LocalizableRecorder.saveRecordingSheetTitle.localized,
@@ -68,6 +67,7 @@ struct SaveAudioConfirmationView_Previews: PreviewProvider {
                                                              resultFile: .constant([VaultFileDB.stub()]),
                                                              sourceView: .tab,
                                                              showingRecoredrView: .constant(true)),
-                                  showingSaveSuccessView: .constant(true))
+                                  showingSaveSuccessView: .constant(true),
+                                  mainAppModel: MainAppModel.stub())
     }
 }

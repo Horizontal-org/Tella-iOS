@@ -35,7 +35,6 @@
 		1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDEA2992C1CB00D09073 /* HTTPCodes.swift */; };
 		120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451F928C7525200D572A7 /* EditSettingsServerView.swift */; };
 		120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */; };
-		120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */; };
 		1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FF28C7AC2800D572A7 /* ServerActionType.swift */; };
 		1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204F64227D928C8006E40EE /* FileTypeExtension.swift */; };
 		1205F9C22BA1DE52003DB9ED /* ImportedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205F9C12BA1DE52003DB9ED /* ImportedFile.swift */; };
@@ -127,6 +126,7 @@
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
+		125082722EBB864000730DD8 /* AdvancedServerSettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125082712EBB864000730DD8 /* AdvancedServerSettingsCardView.swift */; };
 		1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* UwaziListView.swift */; };
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
 		125299DF2AD02E9D00191CAB /* FilesActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DE2AD02E9D00191CAB /* FilesActor.swift */; };
@@ -706,7 +706,6 @@
 		1203CDEA2992C1CB00D09073 /* HTTPCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPCodes.swift; sourceTree = "<group>"; };
 		120451F928C7525200D572A7 /* EditSettingsServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSettingsServerView.swift; sourceTree = "<group>"; };
 		120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditServerDisplayItemView.swift; sourceTree = "<group>"; };
-		120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViews.swift; sourceTree = "<group>"; };
 		120451FF28C7AC2800D572A7 /* ServerActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerActionType.swift; sourceTree = "<group>"; };
 		1204F64227D928C8006E40EE /* FileTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeExtension.swift; sourceTree = "<group>"; };
 		1205F9C12BA1DE52003DB9ED /* ImportedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedFile.swift; sourceTree = "<group>"; };
@@ -798,6 +797,7 @@
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		125082712EBB864000730DD8 /* AdvancedServerSettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsCardView.swift; sourceTree = "<group>"; };
 		1251C38F2BB45616002E9898 /* UwaziListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziListView.swift; sourceTree = "<group>"; };
 		125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportVaultFileResult.swift; sourceTree = "<group>"; };
 		125299DE2AD02E9D00191CAB /* FilesActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesActor.swift; sourceTree = "<group>"; };
@@ -1599,8 +1599,8 @@
 				12B3AD8928C0DD0200AC9AF9 /* TellaWebServerLoginView.swift */,
 				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
 				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
+				125082712EBB864000730DD8 /* AdvancedServerSettingsCardView.swift */,
 				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
-				120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */,
 			);
 			path = AddServer;
 			sourceTree = "<group>";
@@ -4377,7 +4377,6 @@
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
-				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
@@ -4428,6 +4427,7 @@
 				15587A012C010F1E0071389E /* GDriveServer.swift in Sources */,
 				209AC6942C332F6000492356 /* AVCaptureMovieFileOutputExtension.swift in Sources */,
 				125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */,
+				125082722EBB864000730DD8 /* AdvancedServerSettingsCardView.swift in Sources */,
 				1254E2712C6FDCFB004C6280 /* ConnectionCardDetails.swift in Sources */,
 				122DA89129CB1F45003801CD /* FileAPI.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,

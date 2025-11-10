@@ -13,7 +13,7 @@ import SwiftUI
 struct SupportingFileWidget: View {
     @ObservedObject var prompt: UwaziFilesEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         UwaziFileSelector(prompt: prompt, addFiles: {

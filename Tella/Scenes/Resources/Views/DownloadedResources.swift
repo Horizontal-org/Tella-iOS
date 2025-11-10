@@ -12,7 +12,7 @@ import SwiftUI
 
 struct DownloadedResources: View {
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var viewModel: ResourcesViewModel
+    var viewModel: ResourcesViewModel
     
     var body: some View {
         VStack(spacing: 8) {
@@ -88,5 +88,5 @@ struct DownloadedResources: View {
 }
 
 #Preview {
-    DownloadedResources()
+    DownloadedResources(viewModel: ResourcesViewModel.stub())
 }

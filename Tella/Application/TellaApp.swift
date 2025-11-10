@@ -12,15 +12,14 @@ import SwiftUI
 @main
 struct TellaApp: App {
     
-    private var appViewState = AppViewState()
+    @StateObject private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let delayTimeInSecond = 1.0
     
     var body: some Scene {
         WindowGroup {
-            ContentView(mainAppModel: appViewState.homeViewModel, appViewState: appViewState)
-                .environmentObject(appViewState)
+            ContentView(appViewState: appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
                     appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }.onReceive(appDelegate.$shouldHandleTimeout) { value in

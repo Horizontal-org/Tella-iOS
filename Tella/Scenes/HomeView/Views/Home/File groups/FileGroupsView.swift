@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FileGroupsView: View {
     
-    @EnvironmentObject var appModel: MainAppModel
+    var appModel: MainAppModel
     
     var shouldShowFilesTitle : Bool
     
@@ -42,8 +42,7 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView(shouldShowFilesTitle: true)
-            .environmentObject(MainAppModel.stub())
-        
+        FileGroupsView(appModel: MainAppModel.stub(),
+                       shouldShowFilesTitle: true)        
     }
 }

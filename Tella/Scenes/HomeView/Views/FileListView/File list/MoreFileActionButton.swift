@@ -17,7 +17,6 @@ struct MoreFileActionButton: View {
     
     @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var appModel: MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var fileNameToUpdate : String = ""
@@ -233,7 +232,7 @@ struct MoreFileActionButton: View {
     func showDocumentPickerView() {
         self.present(style: .pageSheet) {
             DocumentPickerView(documentPickerType: .forExport,
-                               URLs: appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
+                               URLs: fileListViewModel.appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
             }.edgesIgnoringSafeArea(.all)
         }
     }

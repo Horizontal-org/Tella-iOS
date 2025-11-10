@@ -9,18 +9,12 @@ import SwiftUI
 
 struct SecuritySettingsView: View {
     
-    @EnvironmentObject var appModel : MainAppModel
+    @ObservedObject var appModel : MainAppModel
     var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
-    @StateObject var lockViewModel: LockViewModel
+    @ObservedObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
-    
-    
-    init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appViewState: appViewState))
-        self.settingsViewModel = settingsViewModel
-    }
-    
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -103,21 +97,27 @@ struct SecuritySettingsView: View {
     var showUnlockAttemptsRemainingView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
                           description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
-                          toggle: $appModel.settings.showUnlockAttempts)
+                          toggle: $appModel.settings.showUnlockAttempts, onChange: {
+            appModel.saveSettings()
+        })
     }
     
     // MARK: Screen Security
     var screenSecurityView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
                           description: LocalizableSettings.settSecScreenSecurityExpl.localized,
-                          toggle: $appModel.settings.screenSecurity)
+                          toggle: $appModel.settings.screenSecurity, onChange: {
+            appModel.saveSettings()
+        })
     }
     
     // MARK: Preserve metadata when importing
     var preserveMetadataView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
                           description: LocalizableSettings.settSecPreserveMetadataExpl.localized,
-                          toggle: $appModel.settings.preserveMetadata)
+                          toggle: $appModel.settings.preserveMetadata, onChange: {
+            appModel.saveSettings()
+        })
     }
     
     // MARK: Quick delete
@@ -140,19 +140,23 @@ struct SecuritySettingsView: View {
             
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
-                              toggle: quickDeleteBinding)
+                              toggle: quickDeleteBinding, onChange: {
+                appModel.saveSettings()
+            })
 
             if appModel.settings.quickDelete {
                 
                 DividerView()
                 
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteVault ,
+                    isChecked: $appModel.settings.deleteVault,
+                    appModel: appModel,
                     title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized,
                     helpText: LocalizableSettings.settQuickDeleteFilesTooltip.localized
                 )
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteServerSettings ,
+                    isChecked: $appModel.settings.deleteServerSettings,
+                    appModel: appModel,
                     title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized,
                     helpText: LocalizableSettings.settQuickDeleteConnectionsTooltip.localized
                 )
@@ -181,23 +185,21 @@ struct SecuritySettingsView: View {
     
     func showLockTimeout() {
         sheetManager.showBottomSheet() {
-            LockTimeoutView()
-                .environmentObject(settingsViewModel)
+            LockTimeoutView(settingsViewModel: settingsViewModel)
         }
     }
     
     func showDeleteAfterFailedAttempts() {
         sheetManager.showBottomSheet() {
-            DeleteAfterFailView()
-                .environmentObject(settingsViewModel)
+            DeleteAfterFailView(settingsViewModel: settingsViewModel)
         }
     }
 }
 
-struct SecuritySettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub(),
-                             appViewState: AppViewState(),
-                             settingsViewModel: SettingsViewModel(appModel: MainAppModel.stub()))
-    }
-}
+//struct SecuritySettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SecuritySettingsView(appModel: MainAppModel.stub(),
+//                             appViewState: AppViewState(),
+//                             settingsViewModel: SettingsViewModel(appModel: MainAppModel.stub()))
+//    }
+//}

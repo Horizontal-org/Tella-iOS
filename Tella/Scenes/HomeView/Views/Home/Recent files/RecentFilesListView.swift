@@ -8,7 +8,7 @@ import SwiftUI
 
 struct RecentFilesListView: View {
     
-    @EnvironmentObject var appModel: MainAppModel
+    var appModel: MainAppModel
     @State private var moreRecentFilesLoaded = false
     var recentFiles : Binding<[VaultFileDB]>
     
@@ -64,7 +64,8 @@ struct RecentFilesListView: View {
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView(recentFiles: .constant([VaultFileDB.stub()]))
+        RecentFilesListView(appModel: MainAppModel.stub(),
+                            recentFiles: .constant([VaultFileDB.stub()]))
             .background(Styles.Colors.backgroundMain)
             .environmentObject(MainAppModel.stub())
         

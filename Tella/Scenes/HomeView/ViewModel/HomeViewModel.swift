@@ -11,6 +11,7 @@ import Combine
 class HomeViewModel: ObservableObject {
     
     var appModel: MainAppModel
+    var appViewState: AppViewState
     
     @Published var showingAddFileSheet = false
     @Published var serverDataItemArray : [ServerDataItem] = []
@@ -24,8 +25,9 @@ class HomeViewModel: ObservableObject {
     var showingFilesTitle: Bool {
         return (hasRecentFile && appModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
     }
-    init(appModel:MainAppModel) {
-        self.appModel = appModel
+    init(appViewState: AppViewState) {
+        self.appModel = appViewState.homeViewModel
+        self.appViewState = appViewState
         getServersList()
         listenToShouldReloadFiles()
         listenToBackgroundItems()

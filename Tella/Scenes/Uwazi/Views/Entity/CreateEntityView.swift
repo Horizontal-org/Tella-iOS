@@ -13,7 +13,6 @@ import SwiftUI
 struct CreateEntityView: View {
     @StateObject var entityViewModel : UwaziEntityViewModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
@@ -62,9 +61,8 @@ struct CreateEntityView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
-                        RenderPropertyComponentView(prompt: prompt)
+                        RenderPropertyComponentView(prompt: prompt, entityViewModel: entityViewModel)
                             .environmentObject(sheetManager)
-                            .environmentObject(entityViewModel)
                     }
                 }.padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 16))
             }
@@ -77,7 +75,7 @@ struct CreateEntityView: View {
             
             if !checkMandatoryFields {
                 entityViewModel.saveAnswersToEntityInstance()
-                navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
+                navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
                                                           entityInstance: entityViewModel.entityInstance))
             }
         }) {

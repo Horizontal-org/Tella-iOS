@@ -17,15 +17,19 @@ enum CardType {
 }
 
 class UwaziCardViewModel: CommonCardViewModel {
+    var mainAppModel: MainAppModel
     var templateId : Int?
     var entityInstanceID : Int?
     var serverId: Int?
     var status : EntityStatus = EntityStatus.unknown
     var type : CardType = .entityInstance
     
-    init(template : CollectedTemplate,
+    init(mainAppModel: MainAppModel,
+         template : CollectedTemplate,
          deleteTemplate: @escaping (() -> Void)) {
         
+        self.mainAppModel = mainAppModel
+
         let title = template.entityRow?.translatedName ?? ""
         let deleteTitle = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)")
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
@@ -47,9 +51,12 @@ class UwaziCardViewModel: CommonCardViewModel {
         type = .template
     }
     
-    init(instance : UwaziEntityInstance,
+    init(mainAppModel: MainAppModel,
+         instance : UwaziEntityInstance,
          deleteTemplate: @escaping (() -> Void)) {
         
+        self.mainAppModel = mainAppModel
+
         let title = instance.title ?? ""
         let serverName = instance.server?.name ?? ""
         let iconImageName : String? = instance.status.iconImageName

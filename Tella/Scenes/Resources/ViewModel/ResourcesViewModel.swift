@@ -218,3 +218,9 @@ class ResourcesViewModel: ObservableObject {
         self.selectedResource = resource
     }
 }
+
+extension ResourcesViewModel {
+    static func stub() -> ResourcesViewModel {
+        return ResourcesViewModel(mainAppModel: MainAppModel.stub())
+    }
+}

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SuccessLoginView: View {
     var serverViewModel : TellaWebServerViewModel? = nil
-    @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
     
     var navigateToAction: () -> Void

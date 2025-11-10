@@ -50,9 +50,10 @@ struct ConnectionsView: View {
                                         showTitle: false
                     )
                 case .uwazi:
+                    let uwaziViewModel = UwaziViewModel(mainAppModel: homeViewModel.appModel, server: server.servers.first)
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
-                                        destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: homeViewModel.appModel, server: server.servers.first)))
+                                        destination: UwaziView(uwaziViewModel: uwaziViewModel))
                 case .gDrive:
                     ConnectionsItemView(title: LocalizableGDrive.gDriveAppBar.localized,
                                         image: "home.drive",
@@ -123,6 +124,6 @@ struct ConnectionsItemView<Destination:View>: View {
 
 struct ConnectionsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionsView(homeViewModel: HomeViewModel(appModel: MainAppModel.stub()))
+        ConnectionsView(homeViewModel: HomeViewModel(appViewState: AppViewState.stub()))
     }
 }

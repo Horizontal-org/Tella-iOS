@@ -7,8 +7,7 @@
 import SwiftUI
 
 struct FileListView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @StateObject var fileListViewModel : FileListViewModel
     @State var showFileDetails : Bool = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -83,7 +82,9 @@ struct FileListView: View {
     }
     
     var fileDetailView: FileDetailsView {
-        FileDetailsView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first,fileListViewModel:fileListViewModel)
+        FileDetailsView(appModel: fileListViewModel.appModel,
+                        currentFile: fileListViewModel.selectedFiles.first,
+                        fileListViewModel:fileListViewModel)
     }
     
     @ViewBuilder

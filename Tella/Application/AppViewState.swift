@@ -16,8 +16,7 @@ enum MainViewEnum {
 
 final class AppViewState: ObservableObject {
    
-    var homeViewModel : MainAppModel
-
+    @Published var homeViewModel : MainAppModel
     @Published private var viewStack = [MainViewEnum]()
     @Published var shouldHidePresentedView: Bool = false
     @Published var mainAppLayout: LayoutDirection = .leftToRight
@@ -71,3 +70,10 @@ final class AppViewState: ObservableObject {
         Bundle.setLanguage(selectedLanguage)
     }
 }
+
+extension AppViewState {
+    static func stub() -> AppViewState {
+        return AppViewState()
+    }
+}
+
