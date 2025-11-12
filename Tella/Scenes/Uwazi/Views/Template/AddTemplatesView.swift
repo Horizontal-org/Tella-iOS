@@ -11,8 +11,9 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-    @EnvironmentObject var uwaziTemplateViewModel: AddTemplateViewModel
+    @ObservedObject var uwaziTemplateViewModel: AddTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
+    
     var body: some View {
         
         ZStack {

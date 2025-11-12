@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CameraControlsView: View {
     // MARK: - Public properties
-    
+    @ObservedObject var cameraViewModel: CameraViewModel
     @Binding var showingCameraView : Bool
     var sourceView : SourceView
     
@@ -27,9 +27,6 @@ struct CameraControlsView: View {
     @State private var flashIsOn: Bool = false
     @State private var shouldHideCloseButton: Bool = false
     
-    @EnvironmentObject var cameraViewModel: CameraViewModel
-    @EnvironmentObject var mainAppModel: MainAppModel
-    @EnvironmentObject var appViewState: AppViewState
     
     @State private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     @State private var shouldAnimate: Bool = false
@@ -57,7 +54,7 @@ struct CameraControlsView: View {
         .onDisappear {
             flashIsOn = false
         }
-        .onReceive(mainAppModel.$shouldSaveCurrentData) { value in
+        .onReceive(cameraViewModel.mainAppModel.$shouldSaveCurrentData) { value in
             if(value && state == .recordingVideo) {
                 stopRecordingVideo()
             }
@@ -85,7 +82,7 @@ struct CameraControlsView: View {
             Button {
 
                 if sourceView == .tab {
-                    mainAppModel.selectedTab = .home
+                    cameraViewModel.mainAppModel.selectedTab = .home
                 } else {
                     showingCameraView = false
                 }
@@ -257,7 +254,7 @@ struct CameraControlsView: View {
     }
     
     func getFileListView() -> FileListView {
-        FileListView(appModel: mainAppModel,
+        FileListView(mainAppModel: cameraViewModel.mainAppModel,
                      filterType: .photoVideo,
                      title: LocalizableCamera.appBar.localized,
                      fileListType: .cameraGallery)
@@ -311,7 +308,8 @@ struct CameraControlsView: View {
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraControlsView (showingCameraView:.constant(false),
+        CameraControlsView(cameraViewModel: CameraViewModel.stub(),
+                            showingCameraView:.constant(false),
                             sourceView: .tab) {
             
         } recordVideoAction: {

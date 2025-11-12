@@ -12,7 +12,7 @@ import Foundation
 import Combine
 
 class ResourcesViewModel: ObservableObject {
-    private var appModel: MainAppModel
+    private var mainAppModel: MainAppModel
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var downloadedResources: [ResourceCardViewModel] = []
     @Published var isLoadingList: Bool = false
@@ -22,10 +22,8 @@ class ResourcesViewModel: ObservableObject {
     var onShowResourceBottomSheet: (() -> Void)?
     var selectedResource: DownloadedResource?
 
-    init(
-        mainAppModel: MainAppModel
-    ) {
-        self.appModel = mainAppModel
+    init(mainAppModel: MainAppModel) {
+        self.mainAppModel = mainAppModel
         self.servers = mainAppModel.tellaData?.getTellaServers() ?? []
         self.getAvailableForDownloadResources()
         self.getDownloadedResources()
@@ -147,7 +145,7 @@ class ResourcesViewModel: ObservableObject {
     
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
         do {
-            guard let resourceIsSaved = try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data) else {
+            guard let resourceIsSaved = try self.mainAppModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data) else {
                 toggleIsLoadingResource(id: resource.id)
                 return
             }
@@ -169,7 +167,7 @@ class ResourcesViewModel: ObservableObject {
     }
     
     func fetchDownloadedResources() -> [ResourceCardViewModel] {
-        guard let resources = self.appModel.tellaData?.getResources() else {
+        guard let resources = self.mainAppModel.tellaData?.getResources() else {
             return []
         }
 
@@ -184,7 +182,7 @@ class ResourcesViewModel: ObservableObject {
     }
     
     func deleteResource(resourceId: String) -> Void {
-        let result = self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
+        let result = self.mainAppModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
         switch result {
         case .success(_):
             self.getDownloadedResources()
@@ -198,7 +196,7 @@ class ResourcesViewModel: ObservableObject {
     }
     
     func openResource() -> URL? {
-        guard let url = self.appModel.vaultManager.loadFileToURL(fileName: selectedResource?.title ?? "", fileExtension: "pdf", identifier: selectedResource?.id ?? "") else { return nil }
+        guard let url = self.mainAppModel.vaultManager.loadFileToURL(fileName: selectedResource?.title ?? "", fileExtension: "pdf", identifier: selectedResource?.id ?? "") else { return nil }
         return url
     }
     
@@ -216,5 +214,11 @@ class ResourcesViewModel: ObservableObject {
     
     private func selectResource(resource: DownloadedResource) {
         self.selectedResource = resource
+    }
+}
+
+extension ResourcesViewModel {
+    static func stub() -> ResourcesViewModel {
+        return ResourcesViewModel(mainAppModel: MainAppModel.stub())
     }
 }

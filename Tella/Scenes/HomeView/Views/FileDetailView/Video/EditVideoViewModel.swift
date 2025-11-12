@@ -41,8 +41,8 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
-        super.init(file: file, fileURL: fileURL, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
+    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, mainAppModel: MainAppModel, editMedia:EditMediaProtocol) {
+        super.init(file: file, fileURL: fileURL, rootFile: rootFile, mainAppModel: mainAppModel, editMedia: editMedia)
         setupListeners()
         initVideo()
     }
@@ -74,7 +74,7 @@ class EditVideoViewModel: EditMediaViewModel {
         Task {
             guard let file else { return }
             if fileURL == nil {
-                fileURL =  await self.appModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
+                fileURL =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
             }
             guard let fileURL else { return }
             DispatchQueue.main.async {
@@ -117,7 +117,7 @@ class EditVideoViewModel: EditMediaViewModel {
         Task { @MainActor in
             do {
                 rotateState = .loading
-                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                let copyName = file?.getCopyName(from: mainAppModel.vaultFilesManager) ?? ""
                 guard let rotatedVideoUrl = try await fileURL?.rotateVideo(by: rotationAngle, newName: copyName )   else { return }
                 self.addEditedFile(urlFile: rotatedVideoUrl)
                 self.rotateState = .loaded(true)

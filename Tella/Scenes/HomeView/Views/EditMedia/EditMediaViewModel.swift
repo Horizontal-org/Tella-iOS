@@ -44,14 +44,14 @@ class EditMediaViewModel: ObservableObject {
     //MARK: - Init attributes
     var file: VaultFileDB?
     var rootFile: VaultFileDB?
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     var editMedia : EditMediaProtocol
     
-    init(file: VaultFileDB?, fileURL: URL?, rootFile: VaultFileDB?, appModel: MainAppModel, editMedia:EditMediaProtocol) {
+    init(file: VaultFileDB?, fileURL: URL?, rootFile: VaultFileDB?, mainAppModel: MainAppModel, editMedia:EditMediaProtocol) {
         self.file = file
         self.fileURL = fileURL
         self.rootFile = rootFile
-        self.appModel  = appModel
+        self.mainAppModel  = mainAppModel
         self.editMedia  = editMedia
     }
     
@@ -80,7 +80,7 @@ class EditMediaViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 self.trimState = .loading
-                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                let copyName = file?.getCopyName(from: mainAppModel.vaultFilesManager) ?? ""
                 guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedVideoUrl)
                 self.trimState = .loaded(true)
@@ -108,7 +108,7 @@ class EditMediaViewModel: ObservableObject {
         let importedFiles = ImportedFile(urlFile: urlFile,
                                          parentId: rootFile?.id ,
                                          fileSource: FileSource.files)
-        appModel.addVaultFile(importedFiles: [importedFiles])
+        mainAppModel.addVaultFile(importedFiles: [importedFiles])
     }
     
     func undo() {

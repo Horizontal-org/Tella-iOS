@@ -11,12 +11,12 @@ struct VideoViewer: View {
     
     @StateObject private var playerVM : PlayerViewModel
     @ObservedObject  var fileListViewModel: FileListViewModel
-    init(appModel: MainAppModel,
+    init(mainAppModel: MainAppModel,
          currentFile : VaultFileDB?,
          playList: [VaultFileDB?],
          rootFile: VaultFileDB?,
          fileListViewModel: FileListViewModel) {
-        _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
+        _playerVM = StateObject(wrappedValue: PlayerViewModel(mainAppModel: mainAppModel,
                                                               currentFile: currentFile,
                                                               playList: playList,
                                                               rootFile: rootFile))
@@ -84,7 +84,7 @@ struct VideoViewer: View {
         let viewModel =  EditVideoViewModel(file: playerVM.currentFile,
                                             fileURL: playerVM.currentVideoURL,
                                             rootFile: playerVM.rootFile,
-                                            appModel: playerVM.appModel,
+                                            mainAppModel: playerVM.mainAppModel,
                                             editMedia: EditVideoParameters())
         DispatchQueue.main.async {
             self.present(style: .fullScreen) {

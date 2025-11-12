@@ -123,7 +123,7 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToTellaWebFlow() {
-        navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel, serversSourceView: serversViewModel.serversSourceView))
+        navigateTo(destination: TellaWebAddServerURLView(mainAppModel: serversViewModel.mainAppModel, serversSourceView: serversViewModel.serversSourceView))
     }
     
     fileprivate func navigateToUwaziFlow() {

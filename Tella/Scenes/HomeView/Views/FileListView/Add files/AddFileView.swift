@@ -10,8 +10,7 @@ struct AddFileView: View {
     
     @State private var fieldContent: String = ""
     @State private var isValid = false
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
@@ -25,17 +24,17 @@ struct AddFileView: View {
             
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
-                                 appModel: appModel,
+                                 mainAppModel: fileListViewModel.mainAppModel,
                                  rootFile: $fileListViewModel.rootFile)
         }.ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
-                            mainAppModel: appModel,
+                            mainAppModel: fileListViewModel.mainAppModel,
                             rootFile: fileListViewModel.rootFile) : nil)
 
         .overlay(fileListViewModel.showingMicrophone ?
-                 RecordView(appModel: appModel,
+                 RecordView(mainAppModel: fileListViewModel.mainAppModel,
                             rootFile: fileListViewModel.rootFile,
                             sourceView: .addFile,
                             showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
@@ -80,7 +79,7 @@ struct AddFileView: View {
         
         let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
             selectedItem in
-            appModel.importOption = selectedItem
+            fileListViewModel.mainAppModel.importOption = selectedItem
             switch itemType {
             case .photoLibrary:
                 fileListViewModel.showingImagePicker = true
@@ -128,6 +127,5 @@ struct AddFileView: View {
 struct AddFileButtonView_Previews: PreviewProvider {
     static var previews: some View {
         AddFileView(fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }

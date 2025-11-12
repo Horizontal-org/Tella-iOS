@@ -14,7 +14,7 @@ struct RenderPropertyComponentView: View {
     
     var prompt: any UwaziEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         
@@ -31,19 +31,24 @@ struct RenderPropertyComponentView: View {
                 
                 switch prompt.type {
                 case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown:
-                    UwaziTextWidget(prompt: prompt as! UwaziTextEntryPrompt)
+                    UwaziTextWidget(prompt: prompt as! UwaziTextEntryPrompt,
+                                    uwaziEntityViewModel: entityViewModel)
                 case .dataTypeSelect:
-                    UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt)
+                    UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt, uwaziEntityViewModel: entityViewModel)
                 case .dataTypeMultiFiles:
-                    SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt)
+                    SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt,
+                                         entityViewModel: entityViewModel)
                 case .dataTypeMultiPDFFiles:
-                    PrimaryDocuments(prompt: prompt as! UwaziFilesEntryPrompt)
+                    PrimaryDocuments(prompt: prompt as! UwaziFilesEntryPrompt,
+                                     entityViewModel: entityViewModel)
                 case .dataTypeDivider:
                     UwaziDividerWidget()
                 case .dataTypeDate:
-                    UwaziDatePicker(prompt: prompt as! UwaziTextEntryPrompt)
+                    UwaziDatePicker(prompt: prompt as! UwaziTextEntryPrompt,
+                                    entityViewModel: entityViewModel)
                 case .dataRelationship:
-                    UwaziRelationshipWidget(prompt: prompt as! UwaziRelationshipEntryPrompt)
+                    UwaziRelationshipWidget(prompt: prompt as! UwaziRelationshipEntryPrompt,
+                                            entityViewModel: entityViewModel)
                 default:
                     EmptyView()
                 }

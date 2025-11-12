@@ -8,7 +8,6 @@ import SwiftUI
 
 struct FileActionMenu: View {
     
-    @EnvironmentObject var appModel: MainAppModel
     @ObservedObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -28,6 +27,5 @@ struct FileActionMenu: View {
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
         FileActionMenu(fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }

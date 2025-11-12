@@ -21,12 +21,10 @@ struct LockPinView: View {
                       nextButtonAction: .destination,
                       fieldContent: $lockViewModel.password,
                       shouldShowErrorMessage: .constant(false),
-                      destination: LockConfirmPinView().environmentObject(lockViewModel))
+                      destination: LockConfirmPinView(lockViewModel: lockViewModel))
         .onAppear {
             lockViewModel.initLockData()
         }
-        
-        
     }
 }
 

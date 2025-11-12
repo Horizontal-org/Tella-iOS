@@ -9,18 +9,12 @@ import SwiftUI
 
 struct SecuritySettingsView: View {
     
-    @EnvironmentObject var appModel : MainAppModel
+    @ObservedObject var mainAppModel : MainAppModel
     var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
-    @StateObject var lockViewModel: LockViewModel
+    @ObservedObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
-    
-    
-    init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appViewState: appViewState))
-        self.settingsViewModel = settingsViewModel
-    }
-    
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -30,7 +24,7 @@ struct SecuritySettingsView: View {
         }
         .onAppear {
             lockViewModel.shouldDismiss.send(false)
-            let passwordType = appModel.vaultManager.getPasswordType()
+            let passwordType = mainAppModel.vaultManager.getPasswordType()
             passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
         }
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -74,7 +68,7 @@ struct SecuritySettingsView: View {
     var lockTimeoutView: some View {
         SettingsItemView<AnyView>(imageName:"settings.timeout",
                                   title: LocalizableSettings.settSecLockTimeout.localized,
-                                  value: appModel.settings.lockTimeout.displayName,
+                                  value: mainAppModel.settings.lockTimeout.displayName,
                                   destination:nil) {
             showLockTimeout()
         }
@@ -84,7 +78,7 @@ struct SecuritySettingsView: View {
     var deleteAfterFailGroupView: some View {
         Group {
             deleteAfterFailView
-            if(appModel.settings.deleteAfterFail != .off) {
+            if(mainAppModel.settings.deleteAfterFail != .off) {
                 DividerView()
                 showUnlockAttemptsRemainingView
             }
@@ -94,7 +88,7 @@ struct SecuritySettingsView: View {
     var deleteAfterFailView: some View {
         SettingsItemView<AnyView>(imageName: "settings.lock",
                                   title: LocalizableSettings.settSecDeleteAfterFail.localized,
-                                  value: appModel.settings.deleteAfterFail.selectedDisplayName,
+                                  value: mainAppModel.settings.deleteAfterFail.selectedDisplayName,
                                   destination:nil) {
             showDeleteAfterFailedAttempts()
         }
@@ -103,36 +97,42 @@ struct SecuritySettingsView: View {
     var showUnlockAttemptsRemainingView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
                           description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
-                          toggle: $appModel.settings.showUnlockAttempts)
+                          toggle: $mainAppModel.settings.showUnlockAttempts, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Screen Security
     var screenSecurityView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
                           description: LocalizableSettings.settSecScreenSecurityExpl.localized,
-                          toggle: $appModel.settings.screenSecurity)
+                          toggle: $mainAppModel.settings.screenSecurity, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Preserve metadata when importing
     var preserveMetadataView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
                           description: LocalizableSettings.settSecPreserveMetadataExpl.localized,
-                          toggle: $appModel.settings.preserveMetadata)
+                          toggle: $mainAppModel.settings.preserveMetadata, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Quick delete
     var quickDeleteView: some View {
         
         let quickDeleteBinding = Binding<Bool>(
-            get: { appModel.settings.quickDelete },
+            get: { mainAppModel.settings.quickDelete },
             set: { isOn in
                 withTransaction(Transaction(animation: .easeInOut)) {
-                    let settings = appModel.settings
+                    let settings = mainAppModel.settings
                     settings.quickDelete = isOn
                     settings.deleteVault = isOn
-                    appModel.settings = settings
+                    mainAppModel.settings = settings
                 }
-                appModel.saveSettings()
+                mainAppModel.saveSettings()
             }
         )
         
@@ -140,19 +140,23 @@ struct SecuritySettingsView: View {
             
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
-                              toggle: quickDeleteBinding)
+                              toggle: quickDeleteBinding, onChange: {
+                mainAppModel.saveSettings()
+            })
 
-            if appModel.settings.quickDelete {
+            if mainAppModel.settings.quickDelete {
                 
                 DividerView()
                 
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteVault ,
+                    isChecked: $mainAppModel.settings.deleteVault,
+                    mainAppModel: mainAppModel,
                     title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized,
                     helpText: LocalizableSettings.settQuickDeleteFilesTooltip.localized
                 )
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteServerSettings ,
+                    isChecked: $mainAppModel.settings.deleteServerSettings,
+                    mainAppModel: mainAppModel,
                     title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized,
                     helpText: LocalizableSettings.settQuickDeleteConnectionsTooltip.localized
                 )
@@ -162,7 +166,7 @@ struct SecuritySettingsView: View {
     
     var unlockView : some View {
         
-        let passwordType = appModel.vaultManager.getPasswordType()
+        let passwordType = mainAppModel.vaultManager.getPasswordType()
         
         return ContainerViewWithHeader {
             NavigationHeaderView()
@@ -181,23 +185,21 @@ struct SecuritySettingsView: View {
     
     func showLockTimeout() {
         sheetManager.showBottomSheet() {
-            LockTimeoutView()
-                .environmentObject(settingsViewModel)
+            LockTimeoutView(settingsViewModel: settingsViewModel)
         }
     }
     
     func showDeleteAfterFailedAttempts() {
         sheetManager.showBottomSheet() {
-            DeleteAfterFailView()
-                .environmentObject(settingsViewModel)
+            DeleteAfterFailView(settingsViewModel: settingsViewModel)
         }
     }
 }
 
-struct SecuritySettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub(),
-                             appViewState: AppViewState(),
-                             settingsViewModel: SettingsViewModel(appModel: MainAppModel.stub()))
-    }
-}
+//struct SecuritySettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SecuritySettingsView(mainAppModel: MainAppModel.stub(),
+//                             appViewState: AppViewState(),
+//                             settingsViewModel: SettingsViewModel(mainAppModel: MainAppModel.stub()))
+//    }
+//}

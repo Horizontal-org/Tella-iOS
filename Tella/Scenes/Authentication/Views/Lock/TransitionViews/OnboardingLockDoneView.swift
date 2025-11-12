@@ -8,7 +8,7 @@ import SwiftUI
 
 struct OnboardingLockDoneView: View {
     
-    @EnvironmentObject private var appViewState: AppViewState
+    var appViewState: AppViewState
     
     var body: some View {
         
@@ -31,8 +31,10 @@ struct OnboardingLockDoneView: View {
                                           isValid: .constant(true)) {
                     let serversViewModel = ServersViewModel(mainAppModel: appViewState.homeViewModel,
                                                             serversSourceView: .onboarding)
+                    let serverOnboardingViewModel = ServerOnboardingViewModel(mainAppModel: appViewState.homeViewModel)
                     
-                    navigateTo(destination: ServerOnboardingView(viewModel: ServerOnboardingViewModel(mainAppModel: appViewState.homeViewModel),
+                    navigateTo(destination: ServerOnboardingView(appViewState: appViewState,
+                                                                 viewModel: serverOnboardingViewModel,
                                                                  serversViewModel: serversViewModel))
                 }
             }
@@ -41,8 +43,8 @@ struct OnboardingLockDoneView: View {
     }
 }
 
-struct OnboardingEndView_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingLockDoneView()
-    }
-}
+//struct OnboardingEndView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        OnboardingLockDoneView(appViewState: AppViewState.)
+//    }
+//}

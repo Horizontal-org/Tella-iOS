@@ -13,7 +13,7 @@ import SwiftUI
 struct PrimaryDocuments: View {
     @ObservedObject var prompt: UwaziFilesEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         UwaziFileSelector(prompt: prompt, addFiles: {
@@ -40,7 +40,7 @@ struct PrimaryDocuments: View {
     }
     
     var fileListView : some View {
-        FileListView(appModel: entityViewModel.mainAppModel,
+        FileListView(mainAppModel: entityViewModel.mainAppModel,
                      filterType: .documents,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,

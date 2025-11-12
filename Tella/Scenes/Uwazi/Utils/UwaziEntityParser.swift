@@ -14,14 +14,14 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     var template: CollectedTemplate
     let uwaziTitleString = "title"
     var entityInstance: UwaziEntityInstance?
-    let appModel : MainAppModel
+    let mainAppModel : MainAppModel
     
     init(template: CollectedTemplate,
-         appModel : MainAppModel,
+         mainAppModel : MainAppModel,
          entityInstance: UwaziEntityInstance? = nil) {
         self.template = template
         self.entityInstance = entityInstance
-        self.appModel = appModel
+        self.mainAppModel = mainAppModel
         handleEntryPrompts()
     }
     
@@ -215,8 +215,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         entityInstance?.templateId = template.id
         entityInstance?.metadata = metadata
         entityInstance?.updatedDate = Date()
-        entityInstance?.server = appModel.tellaData?.getUwaziServer(serverId: template.serverId)
-        entityInstance?.collectedTemplate = appModel.tellaData?.getUwaziTemplateById(id: template.id)
+        entityInstance?.server = mainAppModel.tellaData?.getUwaziServer(serverId: template.serverId)
+        entityInstance?.collectedTemplate = mainAppModel.tellaData?.getUwaziTemplateById(id: template.id)
         entityInstance?.files = uwaziEntityInstanceFile
         self.entityInstance = entityInstance
     }
@@ -226,7 +226,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         let metadata = self.entityInstance?.metadata
 
         let vaultFilesID = self.entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? []
-        let vaultFiles = appModel.vaultFilesManager?.getVaultFiles(ids: vaultFilesID) ?? []
+        let vaultFiles = mainAppModel.vaultFilesManager?.getVaultFiles(ids: vaultFilesID) ?? []
         
         self.entityInstance?.documents = Set(vaultFiles.filter({$0.mimeType?.isPDF ?? false}))
         self.entityInstance?.attachments = Set(vaultFiles.filter({!($0.mimeType?.isPDF ?? true)}))

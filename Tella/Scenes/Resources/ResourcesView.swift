@@ -31,11 +31,9 @@ struct ResourcesView: View {
     var contentView: some View {
         
         VStack {
-            DownloadedResources()
-                .environmentObject(resourcesViewModel)
+            DownloadedResources(viewModel: resourcesViewModel)
             
-            AvailableResources()
-                .environmentObject(resourcesViewModel)
+            AvailableResources(viewModel: resourcesViewModel)
             
             Spacer()
             

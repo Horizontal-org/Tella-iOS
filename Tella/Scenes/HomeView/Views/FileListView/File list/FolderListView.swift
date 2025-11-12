@@ -9,7 +9,6 @@ import SwiftUI
 struct FolderListView: View {
     
     @ObservedObject var fileListViewModel : FileListViewModel
-    @EnvironmentObject var appModel: MainAppModel
     
     var body: some View {
         HStack(spacing: 5) {
@@ -67,6 +66,5 @@ struct FolderListView_Previews: PreviewProvider {
     static var previews: some View {
         FolderListView(fileListViewModel: FileListViewModel.stub())
             .background(Styles.Colors.backgroundMain)
-            .environmentObject(MainAppModel.stub())
     }
 }

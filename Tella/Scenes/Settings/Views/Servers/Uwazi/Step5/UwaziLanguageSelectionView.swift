@@ -109,7 +109,7 @@ struct UwaziLanguageItemView : View {
     @Binding var selectedLanguage: UwaziLanguageRow?
     
     @Binding var isPresented : Bool
-    @EnvironmentObject private var appModel: MainAppModel
+
     var delayTime = 0.1
     
     var body: some View {

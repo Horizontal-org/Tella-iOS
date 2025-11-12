@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -9,18 +9,12 @@ import SwiftUI
 
 struct SettingsMainView: View {
     
-    @EnvironmentObject var appModel : MainAppModel
-    @EnvironmentObject var appViewState : AppViewState
+    var appViewState : AppViewState
+    var settingsViewModel : SettingsViewModel
+    var serversViewModel : ServersViewModel
     
     @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @StateObject var settingsViewModel : SettingsViewModel
-    @StateObject var serversViewModel : ServersViewModel
-    
-    init(appModel:MainAppModel) {
-        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
-        _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
-    }
     
     var body: some View {
         
@@ -30,7 +24,7 @@ struct SettingsMainView: View {
             contentView
         }
         .onDisappear {
-            appModel.publishUpdates()
+            appViewState.homeViewModel.publishUpdates()
         }
     }
     
@@ -60,10 +54,9 @@ struct SettingsMainView: View {
         SettingsItemView(imageName: "settings.general",
                          title: LocalizableSettings.settGenAppBar.localized,
                          destination:
-                            GeneralView().environmentObject(settingsViewModel))
+                            GeneralView(settingsViewModel: settingsViewModel,
+                                        appViewState: appViewState))
     }
-    
-    
     
     var securityView: some View {
         SettingsItemView(imageName: "settings.lock",
@@ -72,37 +65,45 @@ struct SettingsMainView: View {
     }
     
     var serversView: some View {
-        let viewModel = ServersViewModel(mainAppModel: appModel)
-
+        let viewModel = ServersViewModel(mainAppModel: appViewState.homeViewModel)
+        
         return SettingsItemView(imageName: "settings.servers",
-                         title: LocalizableSettings.settConnections.localized,
-                         destination:ServersListView(serversViewModel:viewModel ))
-                              
+                                title: LocalizableSettings.settConnections.localized,
+                                destination:ServersListView(serversViewModel:viewModel ))
+        
     }
     
     var helpView: some View {
         SettingsItemView(imageName: "settings.help",
                          title: LocalizableSettings.settAbout.localized,
-                         destination:AboutAndHelpView().environmentObject(settingsViewModel))
+                         destination:AboutAndHelpView())
     }
     
     var securitySettingsView: SecuritySettingsView {
-        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState, settingsViewModel:settingsViewModel)
+        let lockViewModel =  LockViewModel(unlockType: .update, appViewState: appViewState)
+        
+        return SecuritySettingsView(mainAppModel: appViewState.homeViewModel,
+                                    settingsViewModel: settingsViewModel,
+                                    lockViewModel: lockViewModel)
     }
     
     var feedbackView: some View {
-        SettingsItemView(imageName: "settings.feedback",
-                         title: LocalizableSettings.settFeedback.localized,
-                         presentationType: .present,
-                         destination:
-                            FeedbackView(mainAppModel: appModel)
-            .environmentObject(appModel)
-            .environmentObject(sheetManager))
+        
+        let feedbackViewModel = FeedbackViewModel(mainAppModel: appViewState.homeViewModel)
+        
+        return SettingsItemView(imageName: "settings.feedback",
+                                title: LocalizableSettings.settFeedback.localized,
+                                presentationType: .present,
+                                destination:
+                                    FeedbackView(mainAppModel: appViewState.homeViewModel,
+                                                 feedbackViewModel: feedbackViewModel))
     }
-    
 }
+
 struct SettingsMainView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsMainView(appModel: MainAppModel.stub())
+        SettingsMainView(appViewState: AppViewState.stub(),
+                         settingsViewModel: SettingsViewModel.stub(),
+                         serversViewModel: ServersViewModel.stub())
     }
 }

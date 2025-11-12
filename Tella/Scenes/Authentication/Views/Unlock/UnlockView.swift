@@ -60,7 +60,7 @@ struct UnlockView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
-        .onReceive(viewModel.appModel.settings.$deleteAfterFail) { value  in
+        .onReceive(viewModel.mainAppModel.settings.$deleteAfterFail) { value  in
             viewModel.resetMaxAttempts()
         }
         .onReceive(viewModel.$presentingLockChoice) { presentingLockChoice in

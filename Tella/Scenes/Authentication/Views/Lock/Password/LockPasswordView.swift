@@ -20,7 +20,7 @@ struct LockPasswordView: View {
                      nextButtonAction: .destination,
                      fieldContent: $lockViewModel.password,
                      shouldShowErrorMessage: .constant(false),
-                     destination: ConfirmLockPasswordView().environmentObject(lockViewModel))
+                     destination: ConfirmLockPasswordView(lockViewModel: lockViewModel))
         .onAppear {
             lockViewModel.initLockData()
         }

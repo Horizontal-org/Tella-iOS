@@ -11,11 +11,11 @@ import SwiftUI
 import Combine
 
 struct ServerOnboardingView: View {
+    var appViewState: AppViewState
+
     @StateObject var viewModel: ServerOnboardingViewModel
     @StateObject var serversViewModel: ServersViewModel
-    
-    @EnvironmentObject private var appViewState: AppViewState
-    
+
     var body: some View {
         ZStack {
             tabView()
@@ -57,11 +57,11 @@ struct ServerOnboardingView: View {
             if viewModel.isConnectionSucceded {
                 ServerConnectedSuccessView()
             } else {
-                MainServerOnboardingView(serversViewModel: serversViewModel)
+                MainServerOnboardingView(appViewState: appViewState, serversViewModel: serversViewModel)
             }
             
         case .customizationDone:
-            AdvancedCustomizationCompleteView()
+            AdvancedCustomizationCompleteView(appViewState: appViewState)
         }
     }
     
@@ -83,3 +83,4 @@ struct ServerOnboardingView: View {
         }
     }
 }
+

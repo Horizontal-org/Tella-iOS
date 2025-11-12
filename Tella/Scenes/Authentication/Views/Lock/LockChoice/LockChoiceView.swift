@@ -9,13 +9,11 @@
 
 
 import SwiftUI
-import CoreMIDI
 
 struct LockChoiceView: View {
     
     var lockViewModel : LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject private var appViewState: AppViewState
     
     var body: some View {
         Group {
@@ -27,11 +25,6 @@ struct LockChoiceView: View {
                 }
             } else {
                 contentView
-            }
-            
-        }.onReceive(appViewState.$shouldHidePresentedView) { value in
-            if(value) {
-                self.presentationMode.wrappedValue.dismiss()
             }
         }
     }

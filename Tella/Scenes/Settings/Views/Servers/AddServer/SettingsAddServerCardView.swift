@@ -43,7 +43,5 @@ struct SettingsAddServerCardView: View {
 //struct SettingsAddServerCardView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SettingsAddServerCardView()
-//            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
-//            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
 //    }
 //}

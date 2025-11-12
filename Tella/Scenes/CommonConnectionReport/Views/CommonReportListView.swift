@@ -48,9 +48,7 @@ struct CommonReportListView: View {
 }
 
 struct CommonItemView: View {
-    
-    @EnvironmentObject var mainAppModel: MainAppModel
-    
+
     @EnvironmentObject var sheetManager: SheetManager
     @Binding var cardViewModel: CommonCardViewModel
     
@@ -83,9 +81,4 @@ struct CommonItemView: View {
             }
         }
     }
-    
-    
-    
 }
-
-

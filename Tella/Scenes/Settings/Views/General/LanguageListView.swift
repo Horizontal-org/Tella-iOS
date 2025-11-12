@@ -9,9 +9,8 @@ import SwiftUI
 struct LanguageListView: View {
     
     @Binding var isPresented : Bool
-    @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
-    @EnvironmentObject private var appViewState: AppViewState
+    var settingsViewModel: SettingsViewModel
+    var appViewState: AppViewState
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -24,15 +23,11 @@ struct LanguageListView: View {
                 List {
                     ForEach(settingsViewModel.languageItems, id:\.self) {item in
                         LanguageItemView(languageItem: item, settingsViewModel: settingsViewModel,
-                                         isPresented: $isPresented)
+                                         isPresented: $isPresented,
+                                         appViewState: appViewState)
                     }
                 }
                 .listStyle(.plain)
-            }
-        }
-        .onReceive(appViewState.$shouldHidePresentedView) { value in
-            if(value) {
-                self.presentationMode.wrappedValue.dismiss()
             }
         }
     }
@@ -68,8 +63,7 @@ struct LanguageItemView : View {
     
     @Binding var isPresented : Bool
     
-    @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject private var appModel: MainAppModel
+    var appViewState: AppViewState
     
     var body: some View {
         
@@ -120,6 +114,8 @@ struct LanguageItemView : View {
 
 struct LanguageListView_Previews: PreviewProvider {
     static var previews: some View {
-        LanguageListView(isPresented: .constant(true))
+        LanguageListView(isPresented: .constant(true),
+                         settingsViewModel: SettingsViewModel.stub(),
+                         appViewState: AppViewState.stub())
     }
 }

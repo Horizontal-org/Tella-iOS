@@ -22,9 +22,10 @@ struct NextcloudDraftView: View {
     }
     
     private func showOutboxDetailsView() {
-        let outboxVM = NextcloudOutboxViewModel(reportsViewModel: nextcloudDraftViewModel.reportsMainViewModel, reportId: nextcloudDraftViewModel.reportId, repository: nextcloudDraftViewModel.nextcloudRepository)
+        let outboxVM = NextcloudOutboxViewModel(reportsViewModel: nextcloudDraftViewModel.reportsMainViewModel,
+                                                reportId: nextcloudDraftViewModel.reportId,
+                                                repository: nextcloudDraftViewModel.nextcloudRepository)
         navigateTo(destination:  NextcloutOutboxDetailsView(outboxReportVM: outboxVM))
-        
     }
 }
 

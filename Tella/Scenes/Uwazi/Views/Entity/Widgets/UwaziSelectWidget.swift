@@ -14,7 +14,8 @@ struct UwaziSelectWidget: View {
     
     @State private var shouldShowMenu : Bool = false
     @ObservedObject var prompt: UwaziSelectEntryPrompt
-    
+    var uwaziEntityViewModel : UwaziEntityViewModel
+
     var body: some View {
         Button {
             DispatchQueue.main.async {
@@ -27,7 +28,9 @@ struct UwaziSelectWidget: View {
             .cornerRadius(12)
         
         if shouldShowMenu {
-            SelectListOptions(shouldShowMenu: $shouldShowMenu, prompt: prompt)
+            SelectListOptions(shouldShowMenu: $shouldShowMenu,
+                              prompt: prompt,
+                              uwaziEntityViewModel: uwaziEntityViewModel)
         }
     }
     
@@ -63,7 +66,8 @@ struct SelectWidgetButton: View {
 struct SelectListOptions: View {
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
-    
+    var uwaziEntityViewModel : UwaziEntityViewModel
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -72,7 +76,8 @@ struct SelectListOptions: View {
                         SelectOptionButton(
                             selectedOption: selectedOptions,
                             shouldShowMenu: $shouldShowMenu,
-                            prompt: prompt
+                            prompt: prompt,
+                            uwaziEntityViewModel: uwaziEntityViewModel
                         )
                     }
                 }
@@ -91,7 +96,7 @@ struct SelectOptionButton: View {
     let selectedOption: SelectValues
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
-    @EnvironmentObject  var uwaziEntityViewModel : UwaziEntityViewModel
+    var uwaziEntityViewModel : UwaziEntityViewModel
     
     var body: some View {
         Button(action: {
@@ -99,7 +104,7 @@ struct SelectOptionButton: View {
             prompt.value = [selectedOption.id]
             uwaziEntityViewModel.publishUpdates()
         }) {
-            Text(selectedOption.label )
+            Text(selectedOption.label)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(.white)

@@ -74,7 +74,7 @@ struct MainOnboardingView: View {
             }
             
         case .allDone:
-            OnboardingLockDoneView()
+            OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
         }
     }
     
