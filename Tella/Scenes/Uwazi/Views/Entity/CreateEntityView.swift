@@ -62,7 +62,6 @@ struct CreateEntityView: View {
                 VStack(alignment: .leading) {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
                         RenderPropertyComponentView(prompt: prompt, entityViewModel: entityViewModel)
-                            .environmentObject(sheetManager)
                     }
                 }.padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 16))
             }

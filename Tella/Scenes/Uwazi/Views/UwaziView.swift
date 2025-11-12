@@ -20,7 +20,6 @@ struct UwaziView: View {
             navigationBarView
         } content: {
             contentView
-                .environmentObject(uwaziViewModel)
         }
         .onReceive(uwaziViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {

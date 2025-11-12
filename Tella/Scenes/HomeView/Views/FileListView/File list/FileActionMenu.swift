@@ -27,6 +27,5 @@ struct FileActionMenu: View {
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
         FileActionMenu(fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }

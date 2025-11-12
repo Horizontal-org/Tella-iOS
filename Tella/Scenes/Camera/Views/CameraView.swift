@@ -51,7 +51,6 @@ struct CameraView: View {
             
         }.background(Color.black)
             .accentColor(.white)
-            .environmentObject(cameraViewModel)
             .onAppear {
                 model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
                 model.configure()
@@ -127,8 +126,6 @@ struct CameraView: View {
             model.stopRunningCaptureSession()
         })
         .edgesIgnoringSafeArea(.all)
-        .environmentObject(cameraViewModel)
-        
     }
     
     private func getSettingsAlertView() -> Alert {

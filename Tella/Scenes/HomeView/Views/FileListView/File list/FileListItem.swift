@@ -117,7 +117,6 @@ struct FileListItemButtonStyle : ButtonStyle {
 struct FileListItem_Previews: PreviewProvider {
     static var previews: some View {
         FileListItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }
 

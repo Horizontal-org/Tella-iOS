@@ -113,6 +113,5 @@ struct FileListView_Previews: PreviewProvider {
                          filterType: .all)
         }
         .background(Styles.Colors.backgroundMain)
-        .environmentObject(MainAppModel.stub())
     }
 }

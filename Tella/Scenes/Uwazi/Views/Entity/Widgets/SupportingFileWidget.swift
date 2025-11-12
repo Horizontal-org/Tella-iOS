@@ -20,7 +20,6 @@ struct SupportingFileWidget: View {
             UIApplication.shared.endEditing()
             showAddFileSheet()
         }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
-            .environmentObject(prompt)
         if(prompt.value.count > 0) {
             FileDropdown(files: $prompt.value)
         }

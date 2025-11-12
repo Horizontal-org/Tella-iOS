@@ -58,6 +58,5 @@ struct FileSortMenu: View {
 struct FileSortSheet_Previews: PreviewProvider {
     static var previews: some View {
         FileSortMenu(fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }

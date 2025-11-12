@@ -110,7 +110,6 @@ struct MainView: View  {
 //            .preferredColorScheme(.light)
 //            .previewLayout(.device)
 //            .previewDevice("iPhone 8")
-//            .environmentObject(MainAppModel.stub())
 //    }
 //}
 //

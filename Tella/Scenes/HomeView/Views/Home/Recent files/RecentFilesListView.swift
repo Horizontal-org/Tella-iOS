@@ -67,7 +67,5 @@ struct ReventFilesListView_Previews: PreviewProvider {
         RecentFilesListView(mainAppModel: MainAppModel.stub(),
                             recentFiles: .constant([VaultFileDB.stub()]))
             .background(Styles.Colors.backgroundMain)
-            .environmentObject(MainAppModel.stub())
-        
     }
 }

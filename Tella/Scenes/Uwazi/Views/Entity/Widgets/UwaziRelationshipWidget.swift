@@ -24,7 +24,6 @@ struct UwaziRelationshipWidget: View {
             selectEntitiesButton
             if(!prompt.value.isEmpty) {
                 SelectedEntityView(prompt: prompt)
-                    .environmentObject(entityViewModel)
             }
         }
         .onChange(of: prompt.value) { newValue in

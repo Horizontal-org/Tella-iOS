@@ -111,8 +111,6 @@ struct FileGridItem: View {
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
         FileGridItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
-        
     }
 }
 

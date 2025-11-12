@@ -44,7 +44,6 @@ struct AddFilesToDraftView: View {
             ForEach(draftReportVM.files.sorted{$0.created < $1.created}, id: \.id) { file in
                 ReportFileGridView(file: file, draftReportVM: draftReportVM)
                     .frame(height: (UIScreen.screenWidth - 64) / 3 )
-                    .environmentObject(draftReportVM)
             }
         }
     }
