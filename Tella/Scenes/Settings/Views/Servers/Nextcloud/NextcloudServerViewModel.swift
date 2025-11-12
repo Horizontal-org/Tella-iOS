@@ -25,7 +25,7 @@ class NextcloudServerViewModel: ServerViewModel {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
         self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.nextcloudCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
-        super.init()
+        super.init(serversSourceView: serversSourceView)
         self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
         
         // initialize server parameters
