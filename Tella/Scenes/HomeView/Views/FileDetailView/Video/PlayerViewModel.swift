@@ -25,7 +25,7 @@ final class PlayerViewModel: ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
     
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     var rootFile: VaultFileDB?
     var playList : [VaultFileDB?] = [] {
         didSet {
@@ -57,9 +57,9 @@ final class PlayerViewModel: ObservableObject {
             player.removeTimeObserver(timeObserver)
         }
     }
-    init(appModel: MainAppModel, currentFile: VaultFileDB?, playList: [VaultFileDB?], rootFile: VaultFileDB?) {
+    init(mainAppModel: MainAppModel, currentFile: VaultFileDB?, playList: [VaultFileDB?], rootFile: VaultFileDB?) {
         
-        self.appModel = appModel
+        self.mainAppModel = mainAppModel
         self.currentFile = currentFile
         self.playList = playList
         self.rootFile = rootFile
@@ -133,7 +133,7 @@ final class PlayerViewModel: ObservableObject {
         guard let file = file else { return }
        
         Task {
-            guard let videoURL = await self.appModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)  else {return}
+            guard let videoURL = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)  else {return}
             self.currentVideoURL = videoURL
             let playerItem = AVPlayerItem(url:videoURL)
             self.player.replaceCurrentItem(with: playerItem)
@@ -201,7 +201,7 @@ final class PlayerViewModel: ObservableObject {
     
     func deleteTmpFile() {
         guard let url = self.player.currentItem?.url else {return}
-        appModel.vaultManager.deleteFiles(files: [url])
+        mainAppModel.vaultManager.deleteFiles(files: [url])
     }
 }
 

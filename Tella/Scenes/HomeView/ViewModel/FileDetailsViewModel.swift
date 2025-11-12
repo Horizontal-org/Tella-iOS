@@ -11,7 +11,7 @@ import Foundation
 
 final class FileDetailsViewModel: ObservableObject {
     
-    var appModel: MainAppModel?
+    var mainAppModel: MainAppModel?
     var currentFile: VaultFileDB?
     
     var urlDocument: URL?
@@ -26,8 +26,8 @@ final class FileDetailsViewModel: ObservableObject {
         }
     }
     
-    init(appModel: MainAppModel?, currentFile: VaultFileDB?) {
-        self.appModel = appModel
+    init(mainAppModel: MainAppModel?, currentFile: VaultFileDB?) {
+        self.mainAppModel = mainAppModel
         self.currentFile = currentFile
         loadDocument()
     }
@@ -43,11 +43,11 @@ final class FileDetailsViewModel: ObservableObject {
             switch currentFile.tellaFileType {
                 
             case .audio, .image:
-                self.data = self.appModel?.vaultManager.loadFileData(file: currentFile)
+                self.data = self.mainAppModel?.vaultManager.loadFileData(file: currentFile)
             case .video:
                 break
             default:
-                self.urlDocument = self.appModel?.vaultManager.loadVaultFileToURL(file: currentFile)
+                self.urlDocument = self.mainAppModel?.vaultManager.loadVaultFileToURL(file: currentFile)
             }
             
             self.documentIsReady = true
@@ -56,6 +56,6 @@ final class FileDetailsViewModel: ObservableObject {
     
     func deleteTmpFile() {
         guard let url = self.urlDocument else {return}
-        appModel?.vaultManager.deleteFiles(files: [url])
+        mainAppModel?.vaultManager.deleteFiles(files: [url])
     }
 }

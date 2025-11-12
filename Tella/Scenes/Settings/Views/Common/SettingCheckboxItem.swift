@@ -14,7 +14,7 @@ import SwiftUI
 
 struct SettingCheckboxItem: View {
     @Binding var isChecked: Bool
-    var appModel : MainAppModel
+    var mainAppModel : MainAppModel
     
     var title: String
     var helpText: String?
@@ -34,7 +34,7 @@ struct SettingCheckboxItem: View {
             
             Button {
                 isChecked.toggle()
-                appModel.saveSettings()
+                mainAppModel.saveSettings()
             } label: {
                 Image(systemName: isChecked ? "checkmark.square.fill" : "square")
                     .padding(.all, 16)

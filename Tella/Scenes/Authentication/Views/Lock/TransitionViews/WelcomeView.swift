@@ -22,6 +22,6 @@ struct WelcomeView: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-//        WelcomeView(appModel: MainAppModel.stub())
+//        WelcomeView(mainAppModel: MainAppModel.stub())
     }
 }

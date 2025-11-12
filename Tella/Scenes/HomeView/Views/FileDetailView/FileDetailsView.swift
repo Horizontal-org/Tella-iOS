@@ -14,8 +14,8 @@ struct FileDetailsView: View {
     @StateObject var viewModel : FileDetailsViewModel
     @State private var isEditFilePresented = false
     
-    init(  appModel: MainAppModel, currentFile: VaultFileDB?, fileListViewModel: FileListViewModel) {
-        _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
+    init(  mainAppModel: MainAppModel, currentFile: VaultFileDB?, fileListViewModel: FileListViewModel) {
+        _viewModel = StateObject(wrappedValue: FileDetailsViewModel(mainAppModel: mainAppModel, currentFile: currentFile))
         self.fileListViewModel = fileListViewModel
     }
     
@@ -57,7 +57,7 @@ struct FileDetailsView: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
+                                           mainAppModel: fileListViewModel.mainAppModel,
                                            editMedia: EditAudioParameters())
         DispatchQueue.main.async {
             self.present(style: .fullScreen) {
@@ -70,7 +70,7 @@ struct FileDetailsView: View {
     func detailsView() -> some View {
         
         if viewModel.currentFile?.tellaFileType == .video {
-            VideoViewer(appModel: fileListViewModel.appModel,
+            VideoViewer(mainAppModel: fileListViewModel.mainAppModel,
                         currentFile: viewModel.currentFile,
                         playList: self.fileListViewModel.getVideoFiles(),
                         rootFile: fileListViewModel.rootFile,

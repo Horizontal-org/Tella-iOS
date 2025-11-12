@@ -128,7 +128,7 @@ struct MoreFileActionButton: View {
     private func showEditVideoView() {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
+                                           mainAppModel: fileListViewModel.mainAppModel,
                                            editMedia: EditVideoParameters())
         DispatchQueue.main.async {
             self.present(style: .fullScreen) {
@@ -145,7 +145,7 @@ struct MoreFileActionButton: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
                                            rootFile: fileListViewModel.rootFile,
-                                           appModel: fileListViewModel.appModel,
+                                           mainAppModel: fileListViewModel.mainAppModel,
                                            editMedia: EditAudioParameters())
         DispatchQueue.main.async {
             self.present(style: .fullScreen) {
@@ -232,7 +232,7 @@ struct MoreFileActionButton: View {
     func showDocumentPickerView() {
         self.present(style: .pageSheet) {
             DocumentPickerView(documentPickerType: .forExport,
-                               URLs: fileListViewModel.appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
+                               URLs: fileListViewModel.mainAppModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
             }.edgesIgnoringSafeArea(.all)
         }
     }

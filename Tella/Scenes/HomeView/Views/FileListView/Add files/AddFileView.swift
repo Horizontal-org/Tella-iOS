@@ -24,17 +24,17 @@ struct AddFileView: View {
             
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
-                                 appModel: fileListViewModel.appModel,
+                                 mainAppModel: fileListViewModel.mainAppModel,
                                  rootFile: $fileListViewModel.rootFile)
         }.ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
-                            mainAppModel: fileListViewModel.appModel,
+                            mainAppModel: fileListViewModel.mainAppModel,
                             rootFile: fileListViewModel.rootFile) : nil)
 
         .overlay(fileListViewModel.showingMicrophone ?
-                 RecordView(appModel: fileListViewModel.appModel,
+                 RecordView(mainAppModel: fileListViewModel.mainAppModel,
                             rootFile: fileListViewModel.rootFile,
                             sourceView: .addFile,
                             showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
@@ -79,7 +79,7 @@ struct AddFileView: View {
         
         let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
             selectedItem in
-            fileListViewModel.appModel.importOption = selectedItem
+            fileListViewModel.mainAppModel.importOption = selectedItem
             switch itemType {
             case .photoLibrary:
                 fileListViewModel.showingImagePicker = true

@@ -13,8 +13,8 @@ struct EditSettingsServerView: View {
     
     @StateObject private var serverViewModel : TellaWebServerViewModel
     
-    init(appModel:MainAppModel, isPresented : Binding<Bool>, server: TellaServer? = nil) {
-        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
+    init(mainAppModel:MainAppModel, isPresented : Binding<Bool>, server: TellaServer? = nil) {
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: mainAppModel, currentServer: server))
         self.isPresented = isPresented
     }
     
@@ -86,6 +86,6 @@ struct EditSettingsServerView: View {
 
 struct EditSettingsServerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditSettingsServerView(appModel: MainAppModel.stub(), isPresented: .constant(true))
+        EditSettingsServerView(mainAppModel: MainAppModel.stub(), isPresented: .constant(true))
     }
 }

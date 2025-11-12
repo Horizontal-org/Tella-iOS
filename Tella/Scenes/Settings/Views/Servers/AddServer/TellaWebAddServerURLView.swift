@@ -13,9 +13,9 @@ struct TellaWebAddServerURLView: View {
     var nextButtonAction: NextButtonAction = .action
     @StateObject var serverViewModel : TellaWebServerViewModel
 
-    init(appModel:MainAppModel, server: TellaServer? = nil,
+    init(mainAppModel:MainAppModel, server: TellaServer? = nil,
          serversSourceView: ServersSourceView) {
-        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server, serversSourceView: serversSourceView))
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: mainAppModel, currentServer: server, serversSourceView: serversSourceView))
     }
     
     var body: some View {
@@ -77,6 +77,6 @@ struct TellaWebAddServerURLView: View {
 
 struct AddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        TellaWebAddServerURLView(appModel: MainAppModel.stub(), serversSourceView: .settings)
+        TellaWebAddServerURLView(mainAppModel: MainAppModel.stub(), serversSourceView: .settings)
     }
 }

@@ -40,7 +40,7 @@ struct PrimaryDocuments: View {
     }
     
     var fileListView : some View {
-        FileListView(appModel: entityViewModel.mainAppModel,
+        FileListView(mainAppModel: entityViewModel.mainAppModel,
                      filterType: .documents,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,

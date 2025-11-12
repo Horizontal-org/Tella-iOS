@@ -118,7 +118,7 @@ struct EntityInstanceItemView: View {
     }
     
     private func showCreateEntityView() {
-        navigateTo(destination: CreateEntityView(appModel: cardViewModel.mainAppModel,
+        navigateTo(destination: CreateEntityView(mainAppModel: cardViewModel.mainAppModel,
                                                  templateId: cardViewModel.templateId,
                                                  entityInstanceID: cardViewModel.entityInstanceID))
     }

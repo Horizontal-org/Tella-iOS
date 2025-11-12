@@ -47,7 +47,7 @@ class UwaziEntityViewModel: ObservableObject {
         guard let templateId, let template = getTemplateById(id: templateId)  else {return}
         guard let server = getServerById(id: template.serverId) else { return }
         
-        uwaziEntityParser = UwaziEntityParser(template: template, appModel: mainAppModel, entityInstance: entityInstance)
+        uwaziEntityParser = UwaziEntityParser(template: template, mainAppModel: mainAppModel, entityInstance: entityInstance)
         entryPrompts = uwaziEntityParser?.getEntryPrompts() ?? []
         uwaziEntityParser?.putAnswers()
         entityFetcher = UwaziEntityFetcher(server: server, subscribers: subscribers)

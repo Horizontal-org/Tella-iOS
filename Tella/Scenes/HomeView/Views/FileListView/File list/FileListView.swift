@@ -14,14 +14,14 @@ struct FileListView: View {
     
     var title : String = ""
     
-    init(appModel: MainAppModel,
+    init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB? = nil ,
          filterType: FilterType ,
          title : String = "",
          fileListType : FileListType = .fileList,
          resultFile: Binding<[VaultFileDB]?>? = nil) {
         
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(mainAppModel: mainAppModel,
                                                                          filterType:filterType,
                                                                          rootFile: rootFile,
                                                                          fileListType : fileListType,
@@ -82,7 +82,7 @@ struct FileListView: View {
     }
     
     var fileDetailView: FileDetailsView {
-        FileDetailsView(appModel: fileListViewModel.appModel,
+        FileDetailsView(mainAppModel: fileListViewModel.mainAppModel,
                         currentFile: fileListViewModel.selectedFiles.first,
                         fileListViewModel:fileListViewModel)
     }
@@ -108,7 +108,7 @@ struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-            FileListView(appModel: MainAppModel.stub(),
+            FileListView(mainAppModel: MainAppModel.stub(),
                          rootFile: VaultFileDB.stub(),
                          filterType: .all)
         }

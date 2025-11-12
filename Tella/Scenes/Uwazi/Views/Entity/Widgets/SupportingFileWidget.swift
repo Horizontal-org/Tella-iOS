@@ -43,7 +43,7 @@ struct SupportingFileWidget: View {
         }
     
     var fileListView : some View {
-        FileListView(appModel: entityViewModel.mainAppModel,
+        FileListView(mainAppModel: entityViewModel.mainAppModel,
                      filterType: .audioPhotoVideo,
                          title: LocalizableReport.selectFiles.localized,
                          fileListType: .selectFiles,

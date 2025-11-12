@@ -35,17 +35,17 @@ struct HomeView: View {
                     Spacer()
                         .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
                     
-                    if viewModel.appModel.settings.showRecentFiles {
+                    if viewModel.mainAppModel.settings.showRecentFiles {
                         Spacer()
                             .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
-                        RecentFilesListView(appModel: viewModel.appModel,
+                        RecentFilesListView(mainAppModel: viewModel.mainAppModel,
                                             recentFiles: $viewModel.recentFiles)
                     }
                     
                     Spacer()
                         .frame(height: 30)
                     
-                    FileGroupsView(appModel: viewModel.appModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
+                    FileGroupsView(mainAppModel: viewModel.mainAppModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
                 }
             }
             
@@ -57,14 +57,14 @@ struct HomeView: View {
     
     @ViewBuilder
     var quickDeleteView: some View {
-        if viewModel.appModel.settings.quickDelete {
+        if viewModel.mainAppModel.settings.quickDelete {
             SwipeToDeleteActionView(completion: {
-                if(viewModel.appModel.settings.deleteVault) {
+                if(viewModel.mainAppModel.settings.deleteVault) {
                     // removes files and folders
                     viewModel.deleteAllVaultFiles()
                 }
                 
-                if(viewModel.appModel.settings.deleteServerSettings) {
+                if(viewModel.mainAppModel.settings.deleteServerSettings) {
                     // remove servers connections
                     viewModel.deleteAllServersConnection()
                 }
@@ -79,7 +79,7 @@ struct HomeView: View {
         HStack(spacing: 0) {
             
             Button() {
-                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: viewModel.appModel))
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: viewModel.mainAppModel))
             } label: {
                 Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
                     .padding()

@@ -45,12 +45,12 @@ struct ConnectionsView: View {
                                         destination: reportsMainView)
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
-                                        destination: ResourcesView(mainAppModel: homeViewModel.appModel),
+                                        destination: ResourcesView(mainAppModel: homeViewModel.mainAppModel),
                                         largeTitle: false,
                                         showTitle: false
                     )
                 case .uwazi:
-                    let uwaziViewModel = UwaziViewModel(mainAppModel: homeViewModel.appModel, server: server.servers.first)
+                    let uwaziViewModel = UwaziViewModel(mainAppModel: homeViewModel.mainAppModel, server: server.servers.first)
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
                                         destination: UwaziView(uwaziViewModel: uwaziViewModel))
@@ -74,19 +74,19 @@ struct ConnectionsView: View {
     }
     
     var reportsMainView: TellaServerReportsMainView { //Check if we can rename it
-        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: homeViewModel.appModel))
+        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: homeViewModel.mainAppModel))
     }
     
     var gDriveMainView : GdriveReportMainView {
-        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: homeViewModel.appModel, gDriveRepository: GDriveRepository()))
+        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: homeViewModel.mainAppModel, gDriveRepository: GDriveRepository()))
     }
     
     var nextcloudMainView : NextcloudReportMainView {
-        NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: homeViewModel.appModel, nextcloudRepository: NextcloudRepository()))
+        NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: homeViewModel.mainAppModel, nextcloudRepository: NextcloudRepository()))
     }
     
     var dropboxMainView: DropboxReportMainView {
-        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.appModel, dropboxRepository: DropboxRepository()))
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.mainAppModel, dropboxRepository: DropboxRepository()))
     }
 }
 

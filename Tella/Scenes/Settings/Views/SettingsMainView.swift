@@ -82,7 +82,7 @@ struct SettingsMainView: View {
     var securitySettingsView: SecuritySettingsView {
         let lockViewModel =  LockViewModel(unlockType: .update, appViewState: appViewState)
         
-        return SecuritySettingsView(appModel: appViewState.homeViewModel,
+        return SecuritySettingsView(mainAppModel: appViewState.homeViewModel,
                                     settingsViewModel: settingsViewModel,
                                     lockViewModel: lockViewModel)
     }
@@ -95,7 +95,7 @@ struct SettingsMainView: View {
                                 title: LocalizableSettings.settFeedback.localized,
                                 presentationType: .present,
                                 destination:
-                                    FeedbackView(appModel: appViewState.homeViewModel,
+                                    FeedbackView(mainAppModel: appViewState.homeViewModel,
                                                  feedbackViewModel: feedbackViewModel))
     }
 }

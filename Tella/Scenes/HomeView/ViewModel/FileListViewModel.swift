@@ -41,7 +41,7 @@ class FileListViewModel: ObservableObject {
     @Published var vaultFiles : [VaultFileDB] = []
     
     
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     var filterType: FilterType
     var oldParentFile : VaultFileDB?
     var fileActionSource : FileActionSource = .listView
@@ -225,7 +225,7 @@ class FileListViewModel: ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     
     init(
-        appModel:MainAppModel,
+        mainAppModel:MainAppModel,
         filterType:FilterType = .all,
         rootFile:VaultFileDB? = nil,
         fileActionSource : FileActionSource = .listView,
@@ -234,7 +234,7 @@ class FileListViewModel: ObservableObject {
         selectedFile: VaultFileDB? = nil
     ) {
         
-        self.appModel = appModel
+        self.mainAppModel = mainAppModel
         self.filterType = filterType
         self.rootFile = rootFile
         self.oldParentFile = rootFile
@@ -343,7 +343,7 @@ class FileListViewModel: ObservableObject {
     }
     
     func bindReloadVaultFiles() {
-        self.appModel.vaultFilesManager?.shouldReloadFiles
+        self.mainAppModel.vaultFilesManager?.shouldReloadFiles
             .sink(receiveValue: { shouldReloadVaultFiles in
                 DispatchQueue.main.async {
                     self.getFiles()
@@ -358,15 +358,15 @@ class FileListViewModel: ObservableObject {
 extension FileListViewModel {
    
     func getFiles() {
-        vaultFiles = appModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy) ?? []
+        vaultFiles = mainAppModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy) ?? []
     }
     
     func getVideoFiles() -> [VaultFileDB] {
-        return appModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy) ?? []
+        return mainAppModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy) ?? []
     }
 
     func addFolder(name: String) {
-        let addFolderFileResult = appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
+        let addFolderFileResult = mainAppModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
         if case .success = addFolderFileResult {
             DispatchQueue.main.async {
                 self.getFiles()
@@ -376,7 +376,7 @@ extension FileListViewModel {
     
     func moveFiles() {
         let selectedFilesIds = selectedFiles.compactMap({$0.id})
-        let moveVaultFileResult = appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
+        let moveVaultFileResult = mainAppModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
         if case .success = moveVaultFileResult {
             DispatchQueue.main.async {
                 self.getFiles()
@@ -385,7 +385,7 @@ extension FileListViewModel {
     }
     
     func renameSelectedFile() {
-        let renameVaultFileResult = appModel.vaultFilesManager?.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
+        let renameVaultFileResult = mainAppModel.vaultFilesManager?.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
         if case .success = renameVaultFileResult {
             getFiles()
         }
@@ -394,31 +394,31 @@ extension FileListViewModel {
   
 
     func filesAreUsedInConnections() -> Bool {
-        guard let database = appModel.tellaData?.database else { return false }
+        guard let database = mainAppModel.tellaData?.database else { return false }
         let fileIds = selectedFiles.compactMap { $0.id }
         return database.checkFilesInConnections(ids: fileIds)
     }
     
     func deleteSelectedFiles() {
-        let deleteVaultFileResult = appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
+        let deleteVaultFileResult = mainAppModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
         if case .success = deleteVaultFileResult {
             getFiles()
         }
     }
     
     func clearTmpDirectory() {
-        appModel.vaultManager.clearTmpDirectory()
+        mainAppModel.vaultManager.clearTmpDirectory()
     }
     
     func getDataToShare() -> [Any] {
-        appModel.vaultManager.loadVaultFilesToURL(files: selectedFiles)
+        mainAppModel.vaultManager.loadVaultFilesToURL(files: selectedFiles)
     }
 
 }
 
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
-        return FileListViewModel(appModel: MainAppModel.stub(), filterType: .all, rootFile: VaultFileDB.stub())
+        return FileListViewModel(mainAppModel: MainAppModel.stub(), filterType: .all, rootFile: VaultFileDB.stub())
     }
 }
 
@@ -426,7 +426,7 @@ extension FileListViewModel {
     var deleteConfirmation: DeleteConfirmation {
         let selectedFolders = selectedFiles.filter { $0.type == .directory }
         let fileCount = selectedFiles.count - selectedFolders.count
-        let  totalFilesInsideFolders = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: selectedFolders).count
+        let  totalFilesInsideFolders = self.mainAppModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: selectedFolders).count
 
         let selectionCountDetails = SelectionCountDetails(fileCount: fileCount,
                             foldersCount: selectedFolders.count,

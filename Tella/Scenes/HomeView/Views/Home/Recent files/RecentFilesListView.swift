@@ -8,7 +8,7 @@ import SwiftUI
 
 struct RecentFilesListView: View {
     
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     @State private var moreRecentFilesLoaded = false
     var recentFiles : Binding<[VaultFileDB]>
     
@@ -41,9 +41,9 @@ struct RecentFilesListView: View {
                 // The 3 first or all items
                 ForEach(0..<number, id: \.self) { i in
                     RecentFileCell(recentFile: recentFiles[i].wrappedValue,
-                                   desination: FileDetailsView(appModel: appModel,
+                                   desination: FileDetailsView(mainAppModel: mainAppModel,
                                                                currentFile: recentFiles[i].wrappedValue,
-                                                               fileListViewModel: FileListViewModel(appModel: appModel,
+                                                               fileListViewModel: FileListViewModel(mainAppModel: mainAppModel,
                                                                                                     selectedFile: recentFiles[i].wrappedValue))
                     )
                 }
@@ -64,7 +64,7 @@ struct RecentFilesListView: View {
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView(appModel: MainAppModel.stub(),
+        RecentFilesListView(mainAppModel: MainAppModel.stub(),
                             recentFiles: .constant([VaultFileDB.stub()]))
             .background(Styles.Colors.backgroundMain)
             .environmentObject(MainAppModel.stub())

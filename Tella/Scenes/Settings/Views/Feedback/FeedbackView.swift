@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FeedbackView: View {
     
-    @ObservedObject var appModel : MainAppModel
+    @ObservedObject var mainAppModel : MainAppModel
     @ObservedObject var feedbackViewModel : FeedbackViewModel
     @State var showSaveDraftSheet : Bool = false
     @EnvironmentObject var sheetManager : SheetManager
@@ -117,7 +117,7 @@ struct FeedbackView: View {
             VStack (alignment: .leading, spacing: 0) {
                 SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
                                   description: LocalizableSettings.enableFeedbackExpl.localized ,
-                                  toggle: $appModel.settings.shareFeedback,
+                                  toggle: $mainAppModel.settings.shareFeedback,
                                   withPadding: false) {
                     feedbackViewModel.deleteCurrentDraft()
                 }
@@ -133,7 +133,7 @@ struct FeedbackView: View {
     
     @ViewBuilder
     var feedbackTextView : some View {
-        if $appModel.settings.shareFeedback.wrappedValue {
+        if $mainAppModel.settings.shareFeedback.wrappedValue {
             
             BorderedTextEditorView(placeholder: LocalizableSettings.selectFeedback.localized,
                                    shouldShowTitle: true,
@@ -197,5 +197,5 @@ struct FeedbackView: View {
 }
 //
 //#Preview {
-//    FeedbackView(appModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
+//    FeedbackView(mainAppModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
 //}

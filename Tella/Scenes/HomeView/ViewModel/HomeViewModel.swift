@@ -10,7 +10,7 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     var appViewState: AppViewState
     
     @Published var showingAddFileSheet = false
@@ -23,10 +23,10 @@ class HomeViewModel: ObservableObject {
     
     
     var showingFilesTitle: Bool {
-        return (hasRecentFile && appModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
+        return (hasRecentFile && mainAppModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
     }
     init(appViewState: AppViewState) {
-        self.appModel = appViewState.homeViewModel
+        self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
         getServersList()
         listenToShouldReloadFiles()
@@ -37,7 +37,7 @@ class HomeViewModel: ObservableObject {
         
         self.getServers()
         
-        self.appModel.tellaData?.shouldReloadServers
+        self.mainAppModel.tellaData?.shouldReloadServers
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { shouldReload in
@@ -51,7 +51,7 @@ class HomeViewModel: ObservableObject {
         
         self.serverDataItemArray.removeAll()
         
-        let serverArray = self.appModel.tellaData?.getServers() ?? []
+        let serverArray = self.mainAppModel.tellaData?.getServers() ?? []
         
         var serverConnections: [ServerConnectionType: [Server]] = [:]
         
@@ -66,27 +66,27 @@ class HomeViewModel: ObservableObject {
     }
     
     private func listenToBackgroundItems() {
-        appModel.encryptionService?.$backgroundItems
+        mainAppModel.encryptionService?.$backgroundItems
             .sink(receiveValue: { items in
                 self.items = items
             }).store(in: &subscribers)
     }
     
     func getFiles()   {
-        recentFiles = appModel.vaultFilesManager?.getRecentVaultFiles() ?? []
+        recentFiles = mainAppModel.vaultFilesManager?.getRecentVaultFiles() ?? []
         hasRecentFile = recentFiles.count > 0
     }
     
     func deleteAllVaultFiles()   {
-        appModel.vaultFilesManager?.deleteAllVaultFiles()
+        mainAppModel.vaultFilesManager?.deleteAllVaultFiles()
     }
     
     func deleteAllServersConnection()   {
-        appModel.tellaData?.deleteAllServers()
+        mainAppModel.tellaData?.deleteAllServers()
     }
     
     private func listenToShouldReloadFiles() {
-        self.appModel.vaultFilesManager?.shouldReloadFiles
+        self.mainAppModel.vaultFilesManager?.shouldReloadFiles
             .sink(receiveValue: { shouldReloadVaultFiles in
                 DispatchQueue.main.async {
                     self.getFiles()

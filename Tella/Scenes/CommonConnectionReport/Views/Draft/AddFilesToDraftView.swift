@@ -59,7 +59,7 @@ struct AddFilesToDraftView: View {
     }
     
     var fileListView : some View {
-        FileListView(appModel: draftReportVM.mainAppModel,
+        FileListView(mainAppModel: draftReportVM.mainAppModel,
                      filterType: .audioPhotoVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,

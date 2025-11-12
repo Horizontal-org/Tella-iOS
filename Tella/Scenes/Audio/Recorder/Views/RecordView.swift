@@ -21,13 +21,13 @@ struct RecordView: View {
     
     let modalHeight = 173.0
     
-    init(appModel: MainAppModel,
+    init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB? = nil,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
          resultFile : Binding<[VaultFileDB]?>? = nil) {
         
-        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
+        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: mainAppModel,
                                                                rootFile: rootFile,
                                                                resultFile: resultFile,
                                                                sourceView: sourceView,
@@ -229,7 +229,7 @@ struct RecordView: View {
     }
     
     private func getFileListView() -> some View {
-        FileListView(appModel: viewModel.mainAppModel,
+        FileListView(mainAppModel: viewModel.mainAppModel,
                      filterType: .audio,
                      title: LocalizableRecorder.audioRecordingsAppBar.localized,
                      fileListType: .recordList)

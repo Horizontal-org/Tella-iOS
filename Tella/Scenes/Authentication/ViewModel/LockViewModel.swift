@@ -26,7 +26,7 @@ class LockViewModel: ObservableObject {
     
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
-    var appModel:MainAppModel
+    var mainAppModel:MainAppModel
     var appViewState: AppViewState
     
     @Published var isLoading : Bool = false
@@ -52,7 +52,7 @@ class LockViewModel: ObservableObject {
     }
     
     var shouldShowAttemptsWarning : Bool {
-        return maxAttempts - unlockAttempts <= 3 && appModel.settings.showUnlockAttempts && appModel.settings.deleteAfterFail != .off
+        return maxAttempts - unlockAttempts <= 3 && mainAppModel.settings.showUnlockAttempts && mainAppModel.settings.deleteAfterFail != .off
     }
     
     func remainingAttempts () -> Int {
@@ -61,29 +61,29 @@ class LockViewModel: ObservableObject {
     
     init(unlockType: UnlockType, appViewState:AppViewState) {
         self.unlockType = unlockType
-        self.appModel = appViewState.homeViewModel
+        self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
         
-        self.unlockAttempts = appModel.settings.unlockAttempts
-        self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
+        self.unlockAttempts = mainAppModel.settings.unlockAttempts
+        self.maxAttempts = mainAppModel.settings.deleteAfterFail.numberOfAttempts
         
         setupSettingsObservations()
     }
     
     func resetMaxAttempts() {
-        self.unlockAttempts = appModel.settings.unlockAttempts
-        self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
+        self.unlockAttempts = mainAppModel.settings.unlockAttempts
+        self.maxAttempts = mainAppModel.settings.deleteAfterFail.numberOfAttempts
     }
     
 
     
     private func setupSettingsObservations() {
-        appModel.settings.$deleteAfterFail
+        mainAppModel.settings.$deleteAfterFail
             .map({ $0.numberOfAttempts })
             .assign(to: \.maxAttempts, on: self)
             .store(in: &cancellables)
         
-        appModel.settings.$unlockAttempts
+        mainAppModel.settings.$unlockAttempts
             .assign(to: \.unlockAttempts, on: self)
             .store(in: &cancellables)
     }
@@ -91,7 +91,7 @@ class LockViewModel: ObservableObject {
     func login() {
         isLoading = true
         
-        self.appModel.vaultManager.login(password: self.loginPassword)
+        self.mainAppModel.vaultManager.login(password: self.loginPassword)
             .subscribe(on: DispatchQueue.global(qos: .userInteractive))
             .receive(on: DispatchQueue.main)
             .sink { authorized in
@@ -139,12 +139,12 @@ class LockViewModel: ObservableObject {
     }
     
     func initKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.vaultManager.initKeys(passwordTypeEnum,
+        mainAppModel.vaultManager.initKeys(passwordTypeEnum,
                                        password: password)
     }
     
     func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.vaultManager.updateKeys(passwordTypeEnum,
+        mainAppModel.vaultManager.updateKeys(passwordTypeEnum,
                                          newPassword: password,
                                          oldPassword: loginPassword)
     }
@@ -172,18 +172,18 @@ class LockViewModel: ObservableObject {
     
     func resetUnlockAttempts () -> Void {
         DispatchQueue.main.async {
-            self.appModel.settings.unlockAttempts = 0
-            self.appModel.saveSettings()
+            self.mainAppModel.settings.unlockAttempts = 0
+            self.mainAppModel.saveSettings()
         }
     }
     
     func increaseUnlockAttempts () -> Void {
-        appModel.settings.unlockAttempts = appModel.settings.unlockAttempts + 1
-        appModel.saveSettings()
+        mainAppModel.settings.unlockAttempts = mainAppModel.settings.unlockAttempts + 1
+        mainAppModel.saveSettings()
     }
     
     func removeFilesAndConnections () -> Void {
-        appModel.deleteAfterMaxAttempts()
+        mainAppModel.deleteAfterMaxAttempts()
     }
 }
 

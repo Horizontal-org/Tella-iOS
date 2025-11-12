@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FileGroupsView: View {
     
-    var appModel: MainAppModel
+    var mainAppModel: MainAppModel
     
     var shouldShowFilesTitle : Bool
     
@@ -28,7 +28,7 @@ struct FileGroupsView: View {
                     ForEach(homeFileItems, id: \.self) { homeFileItem in
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName,
-                                      destination: FileListView(appModel: appModel,
+                                      destination: FileListView(mainAppModel: mainAppModel,
                                                                 filterType: homeFileItem.filterType,
                                                                 title: homeFileItem.title ))
                     }
@@ -42,7 +42,7 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView(appModel: MainAppModel.stub(),
+        FileGroupsView(mainAppModel: MainAppModel.stub(),
                        shouldShowFilesTitle: true)        
     }
 }

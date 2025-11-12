@@ -11,7 +11,7 @@ struct MainView: View  {
     
     @State private var showingRecoredrView : Bool = false
     
-    @ObservedObject var appModel: MainAppModel
+    @ObservedObject var mainAppModel: MainAppModel
     @ObservedObject var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     @State private var shouldReload : Bool = false
@@ -22,10 +22,10 @@ struct MainView: View  {
 
     init(appViewState: AppViewState) {
         UIApplication.shared.setupApperance()
-        self.appModel = appViewState.homeViewModel
+        self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
         self.homeViewModel = HomeViewModel(appViewState: appViewState)
-        self.settingsViewModel = SettingsViewModel(appModel: appViewState.homeViewModel)
+        self.settingsViewModel = SettingsViewModel(mainAppModel: appViewState.homeViewModel)
         self.serversViewModel = ServersViewModel(mainAppModel: appViewState.homeViewModel)
     }
     
@@ -51,16 +51,16 @@ struct MainView: View  {
                 
                 tabbarContentView
                 
-                if appModel.selectedTab == .mic {
-                    RecordView(appModel: appModel,
+                if mainAppModel.selectedTab == .mic {
+                    RecordView(mainAppModel: mainAppModel,
                                sourceView: .tab,
                                showingRecoredrView: $showingRecoredrView)
                 }
                 
-                if appModel.selectedTab == .camera {
+                if mainAppModel.selectedTab == .camera {
                     CameraView(sourceView: .tab,
                                showingCameraView: $appViewState.shouldHidePresentedView,
-                               mainAppModel: appModel)
+                               mainAppModel: mainAppModel)
                 }
             }
         }.accentColor(.white)
@@ -68,7 +68,7 @@ struct MainView: View  {
     
     var tabbarContentView: some View {
         
-        TabView(selection: $appModel.selectedTab) {
+        TabView(selection: $mainAppModel.selectedTab) {
             HomeView(viewModel: self.homeViewModel)
                 .tabItem {
                     Image("tab.home")
@@ -88,8 +88,8 @@ struct MainView: View  {
                 }.tag(MainAppModel.Tabs.mic)
             
             SettingsMainView(appViewState: appViewState,
-                             settingsViewModel: SettingsViewModel(appModel: appModel),
-                             serversViewModel: ServersViewModel(mainAppModel: appModel))
+                             settingsViewModel: SettingsViewModel(mainAppModel: mainAppModel),
+                             serversViewModel: ServersViewModel(mainAppModel: mainAppModel))
                 .tabItem {
                     Image("tab.settings")
                     Text(LocalizableSettings.settAppBar.localized)

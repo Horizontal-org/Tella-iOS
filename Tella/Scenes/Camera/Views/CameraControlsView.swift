@@ -254,7 +254,7 @@ struct CameraControlsView: View {
     }
     
     func getFileListView() -> FileListView {
-        FileListView(appModel: cameraViewModel.mainAppModel,
+        FileListView(mainAppModel: cameraViewModel.mainAppModel,
                      filterType: .photoVideo,
                      title: LocalizableCamera.appBar.localized,
                      fileListType: .cameraGallery)

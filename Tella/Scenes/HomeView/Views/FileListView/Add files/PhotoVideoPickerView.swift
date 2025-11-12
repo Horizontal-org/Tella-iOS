@@ -25,11 +25,11 @@ struct PhotoVideoPickerView: View {
     
     init(showingImagePicker: Binding<Bool>,
          showingImportDocumentPicker: Binding<Bool>,
-         appModel: MainAppModel,
+         mainAppModel: MainAppModel,
          resultFile : Binding<[VaultFileDB]?>? = nil,
          rootFile:Binding<VaultFileDB?>? = nil) {
         
-        _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
+        _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: mainAppModel,
                                                                    folderPathArray: [],
                                                                    resultFile: resultFile,
                                                                    rootFile: rootFile))

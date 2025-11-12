@@ -16,8 +16,8 @@ struct CreateEntityView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(appModel: MainAppModel, templateId: Int? = nil, entityInstanceID:Int? = nil) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, entityInstanceId: entityInstanceID))
+    init(mainAppModel: MainAppModel, templateId: Int? = nil, entityInstanceID:Int? = nil) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: mainAppModel, templateId:templateId, entityInstanceId: entityInstanceID))
     }
     
     var body: some View {
@@ -97,7 +97,7 @@ struct CreateEntityView: View {
     
     var recordView : some View {
         entityViewModel.showingRecordView ?
-        RecordView(appModel: entityViewModel.mainAppModel,
+        RecordView(mainAppModel: entityViewModel.mainAppModel,
                    sourceView: .addReportFile,
                    showingRecoredrView: $entityViewModel.showingRecordView,
                    resultFile: $entityViewModel.resultFile) : nil
@@ -106,7 +106,7 @@ struct CreateEntityView: View {
     var photoVideoPickerView : some View {
         PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
                              showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
-                             appModel: entityViewModel.mainAppModel,
+                             mainAppModel: entityViewModel.mainAppModel,
                              resultFile: $entityViewModel.resultFile)
     }
     
