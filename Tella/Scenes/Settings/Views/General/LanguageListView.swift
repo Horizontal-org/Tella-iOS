@@ -30,11 +30,6 @@ struct LanguageListView: View {
                 .listStyle(.plain)
             }
         }
-        .onReceive(appViewState.$shouldHidePresentedView) { value in //TODO: Remove this and an other solution
-            if(value) {
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
     }
 }
 

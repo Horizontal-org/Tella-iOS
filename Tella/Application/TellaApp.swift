@@ -74,9 +74,7 @@ struct TellaApp: App {
             UIApplication.getTopViewController()?.dismiss(animated: false)
 
             DispatchQueue.main.async {
-                appViewState.shouldHidePresentedView = true
                 appViewState.resetApp()
-                appViewState.shouldHidePresentedView = false
             }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
         }

@@ -26,11 +26,6 @@ struct LockChoiceView: View {
             } else {
                 contentView
             }
-            
-        }.onReceive(lockViewModel.appViewState.$shouldHidePresentedView) { value in
-            if(value) {
-                self.presentationMode.wrappedValue.dismiss()
-            }
         }
     }
     
