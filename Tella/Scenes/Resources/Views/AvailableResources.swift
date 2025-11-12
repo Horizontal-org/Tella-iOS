@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct AvailableResources: View {
-    var viewModel : ResourcesViewModel
+    @ObservedObject var viewModel : ResourcesViewModel
     
     var body: some View {
         VStack(spacing: 8) {
