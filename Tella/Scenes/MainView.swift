@@ -8,9 +8,7 @@ import SwiftUI
 import Combine
 
 struct MainView: View  {
-    
-    @State private var showingRecoredrView : Bool = false
-    
+
     @ObservedObject var mainAppModel: MainAppModel
     @ObservedObject var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
@@ -54,12 +52,12 @@ struct MainView: View  {
                 if mainAppModel.selectedTab == .mic {
                     RecordView(mainAppModel: mainAppModel,
                                sourceView: .tab,
-                               showingRecoredrView: $showingRecoredrView)
+                               showingRecoredrView: .constant(true))
                 }
                 
                 if mainAppModel.selectedTab == .camera {
                     CameraView(sourceView: .tab,
-                               showingCameraView: $appViewState.shouldHidePresentedView,
+                               showingCameraView: .constant(true),
                                mainAppModel: mainAppModel)
                 }
             }

@@ -18,7 +18,6 @@ final class AppViewState: ObservableObject {
    
     @Published var homeViewModel : MainAppModel
     @Published private var viewStack = [MainViewEnum]()
-    @Published var shouldHidePresentedView: Bool = false
     @Published var mainAppLayout: LayoutDirection = .leftToRight
     @Published var networkMonitor : NetworkMonitor 
 
