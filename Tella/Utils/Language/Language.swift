@@ -32,7 +32,7 @@ enum Language: String, CaseIterable {
     case tsonga = "ts"
     case ndau = "sn-ZW"
     case azerbaijani = "az"
-    case chinese = "zh_CN"
+    case chinese = "zh-Hans"
     
     var code : String {
         switch self {
@@ -75,7 +75,7 @@ enum Language: String, CaseIterable {
         case .azerbaijani:
             return "az"
         case .chinese:
-            return "zh_CN"
+            return "zh-Hans"
         }
     }
     

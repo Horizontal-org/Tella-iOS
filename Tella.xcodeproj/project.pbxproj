@@ -761,6 +761,7 @@
 		122DA89629CB2709003801CD /* SettingsBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBottomView.swift; sourceTree = "<group>"; };
 		122DBE002A5C1E0500D6561A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		122E0AED2A33B788009B1E33 /* FileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetails.swift; sourceTree = "<group>"; };
+		122E2F4A2EC50343004E42B3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		122E6A5229A3812A00BDACAD /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		122E6A5429A396C400BDACAD /* ServerFileSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerFileSize.swift; sourceTree = "<group>"; };
 		123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressFileItemViewModel.swift; sourceTree = "<group>"; };
@@ -3652,6 +3653,7 @@
 				"sn-ZW",
 				az,
 				zh_CN,
+				"zh-Hans",
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4534,6 +4536,7 @@
 				1282DE472DDD0302004D2176 /* sn-ZW */,
 				129919BC2E2EC92900A4417D /* az */,
 				129FBF422EB4BBED00E4DA57 /* zh_CN */,
+				122E2F4A2EC50343004E42B3 /* zh-Hans */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
