@@ -69,7 +69,7 @@ struct SelectWidgetButton: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Image(shouldShowMenu ? "select.arrow.up" : "reports.arrow-down")
+            Image(shouldShowMenu ? .selectArrowUp : .reportsArrowDown)
                 .padding()
         }
     }
