@@ -107,39 +107,29 @@ struct SelectListOptions: View {
     func listView(selectedOptions:SelectValues) -> some View {
         if let values = selectedOptions.values, !values.isEmpty {
             
-            TitleOptionButton(selectedOption: selectedOptions)
+            titleOptionRow(selectedOption: selectedOptions)
             
             ForEach(selectedOptions.values ?? [], id: \.self) { value in
-                SelectOptionButton(
-                    selectedOption: value,
-                    shouldShowMenu: $shouldShowMenu,
-                    prompt: prompt,
-                    uwaziEntityViewModel: uwaziEntityViewModel
-                ).padding(.leading, 20)
-                
-                    .background(prompt.value.first == value.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+                selectOptionButton(selectedOption: value,
+                                   leadingPadding: 20)
             }
             
         } else {
-            SelectOptionButton(
-                selectedOption: selectedOptions,
-                shouldShowMenu: $shouldShowMenu,
-                prompt: prompt,
-                uwaziEntityViewModel: uwaziEntityViewModel
-            )
-            .background(prompt.value.first == selectedOptions.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
-            
+            selectOptionButton(selectedOption: selectedOptions)
         }
     }
-}
-
-struct SelectOptionButton: View {
-    let selectedOption: SelectValues
-    @Binding var shouldShowMenu: Bool
-    var prompt: UwaziSelectEntryPrompt
-    var uwaziEntityViewModel : UwaziEntityViewModel
     
-    var body: some View {
+    func titleOptionRow(selectedOption: SelectValues) -> some View {
+        Text(selectedOption.label)
+            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.white)
+            .padding(.all, 14)
+            .background(Color.white.opacity(0.08))
+    }
+    
+    func selectOptionButton(selectedOption: SelectValues,
+                            leadingPadding: CGFloat = 0) -> some View {
         
         Button(action: {
             shouldShowMenu = false
@@ -152,18 +142,8 @@ struct SelectOptionButton: View {
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
+        .padding(.leading, leadingPadding)
+        .background(prompt.value.first == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
     }
-}
-
-struct TitleOptionButton: View {
-    let selectedOption: SelectValues
     
-    var body: some View {
-        Text(selectedOption.label)
-            .font(.custom(Styles.Fonts.regularFontName, size: 14))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(.white)
-            .padding(.all, 14)
-            .background(Color.white.opacity(0.08))
-    }
 }
