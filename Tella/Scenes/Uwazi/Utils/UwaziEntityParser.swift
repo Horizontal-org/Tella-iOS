@@ -78,6 +78,9 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         
         template.entityRow?.properties.forEach {
             
+            dump($0)
+            
+            
             var prompt : any UwaziEntryPrompt
             
             switch UwaziEntityPropertyType(rawValue: $0.type ?? "") {
@@ -94,8 +97,22 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             case .dataTypeSelect:
               
-                let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
+ 
+                let selectValues = $0.values?.map { value in
+                    let nestedValues = value.values?.map { nested in
+                        SelectValues(
+                            id: nested.id ?? "",
+                            label: nested.label ?? ""
+                        )
+                    }
 
+                    return SelectValues(
+                        id: value.id ?? "",
+                        label: value.translatedLabel ?? "",
+                        values: nestedValues
+                    )
+                }
+                
                 prompt = UwaziSelectEntryPrompt(id: $0.id ?? "",
                                                 type: $0.type ?? "",
                                                 question: $0.translatedLabel ?? "",

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 23/10/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,7 +15,7 @@ struct UwaziSelectWidget: View {
     @State private var shouldShowMenu : Bool = false
     @ObservedObject var prompt: UwaziSelectEntryPrompt
     var uwaziEntityViewModel : UwaziEntityViewModel
-
+    
     var body: some View {
         Button {
             DispatchQueue.main.async {
@@ -35,8 +35,25 @@ struct UwaziSelectWidget: View {
     }
     
     func selectTitle() -> String {
-        guard let item = prompt.selectValues?.filter({$0.id == prompt.value.first}).first else {return "Select"}
-        return item.label
+        guard
+            let selectedId = prompt.value.first,
+            let selectValues = prompt.selectValues
+        else {
+            return "Select"
+        }
+        
+        if let nestedMatch = selectValues
+            .compactMap({ $0.values })
+            .flatMap({ $0 })
+            .first(where: { $0.id == selectedId }) {
+            return nestedMatch.label
+        }
+        
+        if let topLevelMatch = selectValues.first(where: { $0.id == selectedId }) {
+            return topLevelMatch.label
+        }
+        
+        return "Select"
     }
 }
 
@@ -67,18 +84,13 @@ struct SelectListOptions: View {
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
     var uwaziEntityViewModel : UwaziEntityViewModel
-
+    
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
-                        SelectOptionButton(
-                            selectedOption: selectedOptions,
-                            shouldShowMenu: $shouldShowMenu,
-                            prompt: prompt,
-                            uwaziEntityViewModel: uwaziEntityViewModel
-                        )
+                        listView(selectedOptions:selectedOptions)
                     }
                 }
             }
@@ -90,6 +102,35 @@ struct SelectListOptions: View {
         }
         .background(Color.clear)
     }
+    
+    @ViewBuilder
+    func listView(selectedOptions:SelectValues) -> some View {
+        if let values = selectedOptions.values, !values.isEmpty {
+            
+            TitleOptionButton(selectedOption: selectedOptions)
+            
+            ForEach(selectedOptions.values ?? [], id: \.self) { value in
+                SelectOptionButton(
+                    selectedOption: value,
+                    shouldShowMenu: $shouldShowMenu,
+                    prompt: prompt,
+                    uwaziEntityViewModel: uwaziEntityViewModel
+                ).padding(.leading, 20)
+                
+                    .background(prompt.value.first == value.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+            }
+            
+        } else {
+            SelectOptionButton(
+                selectedOption: selectedOptions,
+                shouldShowMenu: $shouldShowMenu,
+                prompt: prompt,
+                uwaziEntityViewModel: uwaziEntityViewModel
+            )
+            .background(prompt.value.first == selectedOptions.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+            
+        }
+    }
 }
 
 struct SelectOptionButton: View {
@@ -99,6 +140,7 @@ struct SelectOptionButton: View {
     var uwaziEntityViewModel : UwaziEntityViewModel
     
     var body: some View {
+        
         Button(action: {
             shouldShowMenu = false
             prompt.value = [selectedOption.id]
@@ -110,6 +152,18 @@ struct SelectOptionButton: View {
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
-        .background(prompt.value.first == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+    }
+}
+
+struct TitleOptionButton: View {
+    let selectedOption: SelectValues
+    
+    var body: some View {
+        Text(selectedOption.label)
+            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.white)
+            .padding(.all, 14)
+            .background(Color.white.opacity(0.08))
     }
 }
