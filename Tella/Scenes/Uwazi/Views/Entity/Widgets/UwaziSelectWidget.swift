@@ -19,7 +19,7 @@ struct UwaziSelectWidget: View {
     var body: some View {
         Button {
             DispatchQueue.main.async {
-                shouldShowMenu = true
+                shouldShowMenu.toggle()
             }
             
         } label: {
@@ -69,13 +69,8 @@ struct SelectWidgetButton: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            if(shouldShowMenu) {
-                Image("select.arrow.up")
-                    .padding()
-            } else {
-                Image("reports.arrow-down")
-                    .padding()
-            }
+            Image(shouldShowMenu ? "select.arrow.up" : "reports.arrow-down")
+                .padding()
         }
     }
 }
