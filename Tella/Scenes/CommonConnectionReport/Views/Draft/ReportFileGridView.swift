@@ -12,7 +12,7 @@ struct ReportFileGridView: View {
     
     var file: VaultFileDB
     
-    var draftReportVM: DraftMainViewModel
+    @ObservedObject var draftReportVM: DraftMainViewModel
     
     var body: some View {
         fileGridView

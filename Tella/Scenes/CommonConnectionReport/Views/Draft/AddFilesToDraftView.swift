@@ -13,7 +13,7 @@ import SwiftUI
 struct AddFilesToDraftView: View {
 
     @EnvironmentObject var sheetManager: SheetManager
-    @StateObject var draftReportVM: DraftMainViewModel
+    @ObservedObject var draftReportVM: DraftMainViewModel
     
     private let gridLayout: [GridItem] = [GridItem(spacing: 12),
                                           GridItem(spacing: 12),

@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct DraftView: View  {
-    @StateObject var viewModel: DraftMainViewModel
+    @ObservedObject var viewModel: DraftMainViewModel
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
