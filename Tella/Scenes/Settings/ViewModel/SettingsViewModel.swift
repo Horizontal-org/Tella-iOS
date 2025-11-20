@@ -8,7 +8,7 @@ import Foundation
 
 class SettingsViewModel: ObservableObject {
     
-    var appModel : MainAppModel
+    var mainAppModel : MainAppModel
     
     var languageItems : [Language] = {
         var languageItems = Language.allCases.map {$0}
@@ -38,9 +38,9 @@ class SettingsViewModel: ObservableObject {
     @Published var lockTimeoutOptions : [LockTimeoutOptionsStatus]
     @Published var deleteAfterFailOptions: [DeleteAfterFailedOptionsStatus]
     
-    init(appModel: MainAppModel) {
+    init(mainAppModel: MainAppModel) {
         
-        self.appModel = appModel
+        self.mainAppModel = mainAppModel
         
         // Init lock timeout Options
         lockTimeoutOptions = [LockTimeoutOptionsStatus(lockTimeoutOption: .immediately, isSelected: false),
@@ -48,46 +48,51 @@ class SettingsViewModel: ObservableObject {
                               LockTimeoutOptionsStatus(lockTimeoutOption: .fiveMinutes, isSelected: false),
                               LockTimeoutOptionsStatus(lockTimeoutOption: .thirtyMinutes, isSelected: false),
                               LockTimeoutOptionsStatus(lockTimeoutOption: .onehour, isSelected: false)]
-        selectedLockTimeoutOption =  appModel.settings.lockTimeout
+        selectedLockTimeoutOption =  mainAppModel.settings.lockTimeout
         
         // Init delete after fail options
         deleteAfterFailOptions=[DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .off, isSelected: false),
                                 DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .five, isSelected: false),
                                 DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .ten, isSelected: false),
                                 DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .twenty, isSelected: false)]
-        selectedDeleteAfterFailOption = appModel.settings.deleteAfterFail
+        selectedDeleteAfterFailOption = mainAppModel.settings.deleteAfterFail
         
-        lockTimeoutOptions.filter{$0.lockTimeoutOption == appModel.settings.lockTimeout}.first?.isSelected = true
-        deleteAfterFailOptions.filter{$0.deleteAfterFailOption == appModel.settings.deleteAfterFail}.first?.isSelected = true
+        lockTimeoutOptions.filter{$0.lockTimeoutOption == mainAppModel.settings.lockTimeout}.first?.isSelected = true
+        deleteAfterFailOptions.filter{$0.deleteAfterFailOption == mainAppModel.settings.deleteAfterFail}.first?.isSelected = true
     }
     
     func saveLockTimeout() {
-        appModel.settings.lockTimeout = selectedLockTimeoutOption
-        appModel.saveSettings()
+        mainAppModel.settings.lockTimeout = selectedLockTimeoutOption
+        mainAppModel.saveSettings()
     }
     
     func cancelLockTimeout() {
-        selectedLockTimeoutOption = appModel.settings.lockTimeout
+        selectedLockTimeoutOption = mainAppModel.settings.lockTimeout
     }
     
     func saveDeleteAfterFail() {
         setShowUnlockAttempts()
-        appModel.settings.deleteAfterFail = selectedDeleteAfterFailOption
-        appModel.saveSettings()
+        mainAppModel.settings.deleteAfterFail = selectedDeleteAfterFailOption
+        mainAppModel.saveSettings()
     }
     
     func setShowUnlockAttempts () {
-        if(appModel.settings.deleteAfterFail == .off && selectedDeleteAfterFailOption != .off) {
-            appModel.settings.showUnlockAttempts = true
+        if(mainAppModel.settings.deleteAfterFail == .off && selectedDeleteAfterFailOption != .off) {
+            mainAppModel.settings.showUnlockAttempts = true
         }
         if(selectedDeleteAfterFailOption == .off) {
-            appModel.settings.showUnlockAttempts = false
+            mainAppModel.settings.showUnlockAttempts = false
         }
     }
     
     func cancelDeleteAfterFail() {
-        selectedDeleteAfterFailOption = appModel.settings.deleteAfterFail
+        selectedDeleteAfterFailOption = mainAppModel.settings.deleteAfterFail
     }
 
 }
 
+extension SettingsViewModel {
+    static func stub() -> SettingsViewModel {
+        return SettingsViewModel(mainAppModel: MainAppModel.stub())
+    }
+}

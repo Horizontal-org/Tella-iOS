@@ -22,7 +22,7 @@ struct ServersListView: View {
             contentView
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
-            EditSettingsServerView(appModel: serversViewModel.mainAppModel,
+            EditSettingsServerView(mainAppModel: serversViewModel.mainAppModel,
                                    isPresented: $shouldShowEditServer,
                                    server: serversViewModel.mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
         })

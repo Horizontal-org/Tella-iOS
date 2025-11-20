@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,16 +8,23 @@ import SwiftUI
 import Combine
 
 struct MainView: View  {
-    
-    @State private var showingRecoredrView : Bool = false
-    
-    @EnvironmentObject private var appModel: MainAppModel
-    @EnvironmentObject private var appViewState: AppViewState
+
+    @ObservedObject var mainAppModel: MainAppModel
+    @ObservedObject var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     @State private var shouldReload : Bool = false
-    
-    init(mainAppModel: MainAppModel) {
+   
+    var homeViewModel: HomeViewModel
+    var settingsViewModel: SettingsViewModel
+    var serversViewModel: ServersViewModel
+
+    init(appViewState: AppViewState) {
         UIApplication.shared.setupApperance()
+        self.mainAppModel = appViewState.homeViewModel
+        self.appViewState = appViewState
+        self.homeViewModel = HomeViewModel(appViewState: appViewState)
+        self.settingsViewModel = SettingsViewModel(mainAppModel: appViewState.homeViewModel)
+        self.serversViewModel = ServersViewModel(mainAppModel: appViewState.homeViewModel)
     }
     
     var body: some View {
@@ -37,60 +44,54 @@ struct MainView: View  {
     }
     
     private var contentView: some View {
-        
-        ZStack {
-            CustomNavigation() {
+        CustomNavigation() {
+            ZStack {
+                
                 tabbarContentView
-            }.accentColor(.white)
-            
-            if appModel.selectedTab == .mic {
-                RecordView(appModel: appModel,
-                           sourceView: .tab,
-                           showingRecoredrView: $showingRecoredrView)
+                
+                if mainAppModel.selectedTab == .mic {
+                    RecordView(mainAppModel: mainAppModel,
+                               sourceView: .tab,
+                               showingRecoredrView: .constant(true))
+                }
+                
+                if mainAppModel.selectedTab == .camera {
+                    CameraView(sourceView: .tab,
+                               showingCameraView: .constant(true),
+                               mainAppModel: mainAppModel)
+                }
             }
-            
-            if appModel.selectedTab == .camera {
-                CameraView(sourceView: .tab,
-                           showingCameraView: $appViewState.shouldHidePresentedView,
-                           mainAppModel: appModel)
-            }
-        }
+        }.accentColor(.white)
     }
     
     var tabbarContentView: some View {
         
-        TabView(selection: $appModel.selectedTab) {
-            CustomNavigation() {
-                HomeView(appModel: appModel)
-            }
-            .tabItem {
-                Image("tab.home")
-                Text(LocalizableHome.tabBar.localized)
-            }.tag(MainAppModel.Tabs.home)
+        TabView(selection: $mainAppModel.selectedTab) {
+            HomeView(viewModel: self.homeViewModel)
+                .tabItem {
+                    Image("tab.home")
+                    Text(LocalizableHome.tabBar.localized)
+                }.tag(MainAppModel.Tabs.home)
             
-            CustomNavigation() {
-                ContainerView{}
-            }
-            .tabItem {
-                Image("tab.camera")
-                Text(LocalizableCamera.tabBar.localized)
-            }.tag(MainAppModel.Tabs.camera)
+            ContainerView{}
+                .tabItem {
+                    Image("tab.camera")
+                    Text(LocalizableCamera.tabBar.localized)
+                }.tag(MainAppModel.Tabs.camera)
             
-            CustomNavigation() {
-                ContainerView{}
-            }
-            .tabItem {
-                Image("tab.mic")
-                Text(LocalizableRecorder.tabBar.localized)
-            }.tag(MainAppModel.Tabs.mic)
+            ContainerView{}
+                .tabItem {
+                    Image("tab.mic")
+                    Text(LocalizableRecorder.tabBar.localized)
+                }.tag(MainAppModel.Tabs.mic)
             
-            CustomNavigation() {
-                SettingsMainView(appModel: appModel)
-            }
-            .tabItem {
-                Image("tab.settings")
-                Text(LocalizableSettings.settAppBar.localized)
-            }.tag(MainAppModel.Tabs.settings)
+            SettingsMainView(appViewState: appViewState,
+                             settingsViewModel: SettingsViewModel(mainAppModel: mainAppModel),
+                             serversViewModel: ServersViewModel(mainAppModel: mainAppModel))
+                .tabItem {
+                    Image("tab.settings")
+                    Text(LocalizableSettings.settAppBar.localized)
+                }.tag(MainAppModel.Tabs.settings)
         }
     }
     
@@ -103,13 +104,12 @@ struct MainView: View  {
     }
 }
 
-struct AppView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView(mainAppModel: MainAppModel.stub())
-            .preferredColorScheme(.light)
-            .previewLayout(.device)
-            .previewDevice("iPhone 8")
-            .environmentObject(MainAppModel.stub())
-    }
-}
-
+//struct AppView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainView(mainAppModel: MainAppModel.stub())
+//            .preferredColorScheme(.light)
+//            .previewLayout(.device)
+//            .previewDevice("iPhone 8")
+//    }
+//}
+//

@@ -20,10 +20,10 @@ class EditAudioViewModel: EditMediaViewModel {
     //MARK: - Private attributes
     private var currentData : Data?
     
-    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, appModel: MainAppModel,editMedia:EditMediaProtocol) {
-        super.init(file: file, fileURL: fileURL, rootFile: rootFile, appModel: appModel, editMedia: editMedia)
+    override init(file: VaultFileDB?, fileURL: URL? = nil, rootFile: VaultFileDB?, mainAppModel: MainAppModel,editMedia:EditMediaProtocol) {
+        super.init(file: file, fileURL: fileURL, rootFile: rootFile, mainAppModel: mainAppModel, editMedia: editMedia)
         if let currentFile = file {
-            self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
+            self.currentData = mainAppModel.vaultManager.loadFileData(file: currentFile)
             initFileURL()
         }
         headerTitle = LocalizableVault.editAudioTitle.localized
@@ -33,7 +33,7 @@ class EditAudioViewModel: EditMediaViewModel {
     
     func initFileURL() {
         if let fileExtension = file?.fileExtension {
-            let url = appModel.vaultManager.saveDataToTempFile(data: self.currentData,
+            let url = mainAppModel.vaultManager.saveDataToTempFile(data: self.currentData,
                                                                pathExtension: fileExtension)
             self.fileURL = url
         }

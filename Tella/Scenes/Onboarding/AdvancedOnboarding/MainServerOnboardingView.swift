@@ -12,7 +12,7 @@ import SwiftUI
 
 struct MainServerOnboardingView: View {
     
-    @EnvironmentObject private var appViewState: AppViewState
+    var appViewState: AppViewState
     var serversViewModel: ServersViewModel
     
     var body: some View {
@@ -44,3 +44,4 @@ struct MainServerOnboardingView: View {
         
     }
 }
+

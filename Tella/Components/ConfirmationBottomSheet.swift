@@ -51,7 +51,6 @@ struct ConfirmationBottomSheet: View {
                 }
             }
         }
-        .padding(EdgeInsets(top: 20, leading: 24, bottom: 0, trailing: 24))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }

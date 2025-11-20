@@ -46,9 +46,7 @@ struct UwaziListView: View {
 }
 
 struct EntityInstanceItemView: View {
-    
-    @EnvironmentObject var mainAppModel: MainAppModel
-    
+
     @EnvironmentObject var sheetManager: SheetManager
     @Binding var cardViewModel: UwaziCardViewModel
     
@@ -120,18 +118,18 @@ struct EntityInstanceItemView: View {
     }
     
     private func showCreateEntityView() {
-        navigateTo(destination: CreateEntityView(appModel: mainAppModel,
+        navigateTo(destination: CreateEntityView(mainAppModel: cardViewModel.mainAppModel,
                                                  templateId: cardViewModel.templateId,
                                                  entityInstanceID: cardViewModel.entityInstanceID))
     }
     
     private func showSummaryEntityView() {
-        navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
+        navigateTo(destination: SummaryEntityView(mainAppModel: cardViewModel.mainAppModel,
                                                   entityInstanceId: cardViewModel.entityInstanceID))
     }
     
     private func showSubmittedEntityView() {
-        navigateTo(destination: SubmittedEntityView(mainAppModel: mainAppModel,
+        navigateTo(destination: SubmittedEntityView(mainAppModel: cardViewModel.mainAppModel,
                                                     entityInstanceId: cardViewModel.entityInstanceID))
     }
     

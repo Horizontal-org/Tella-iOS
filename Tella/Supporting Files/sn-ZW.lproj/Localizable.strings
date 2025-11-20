@@ -575,3 +575,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "Vabhathana swakanaka no mudjeke unozotumira mashoko hako.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Lassa swikwama swesse swalonguedjwa pa Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";

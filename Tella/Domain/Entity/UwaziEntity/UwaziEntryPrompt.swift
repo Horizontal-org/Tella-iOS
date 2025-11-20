@@ -183,3 +183,9 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
         value = []
     }
 }
+
+extension UwaziRelationshipEntryPrompt {
+    static func stub() -> UwaziRelationshipEntryPrompt {
+        return UwaziRelationshipEntryPrompt(type: "Type", question: "Question")
+    }
+}

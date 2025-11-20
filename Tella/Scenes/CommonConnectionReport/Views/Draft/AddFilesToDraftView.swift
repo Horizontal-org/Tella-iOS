@@ -11,10 +11,9 @@
 import SwiftUI
 
 struct AddFilesToDraftView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @EnvironmentObject var sheetManager: SheetManager
-    @StateObject var draftReportVM: DraftMainViewModel
+    @ObservedObject var draftReportVM: DraftMainViewModel
     
     private let gridLayout: [GridItem] = [GridItem(spacing: 12),
                                           GridItem(spacing: 12),
@@ -43,9 +42,8 @@ struct AddFilesToDraftView: View {
     var itemsGridView: some View {
         LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
             ForEach(draftReportVM.files.sorted{$0.created < $1.created}, id: \.id) { file in
-                ReportFileGridView(file: file)
+                ReportFileGridView(file: file, draftReportVM: draftReportVM)
                     .frame(height: (UIScreen.screenWidth - 64) / 3 )
-                    .environmentObject(draftReportVM)
             }
         }
     }
@@ -60,7 +58,7 @@ struct AddFilesToDraftView: View {
     }
     
     var fileListView : some View {
-        FileListView(appModel: appModel,
+        FileListView(mainAppModel: draftReportVM.mainAppModel,
                      filterType: .audioPhotoVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,

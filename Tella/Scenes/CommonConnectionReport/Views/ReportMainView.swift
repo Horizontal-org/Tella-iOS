@@ -166,6 +166,6 @@ struct ReportMainView: View {
 
 struct ReportMainView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziView()
+        UwaziView(uwaziViewModel: UwaziViewModel.stub())
     }
 }

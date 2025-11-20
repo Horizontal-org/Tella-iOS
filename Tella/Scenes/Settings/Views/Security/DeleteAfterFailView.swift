@@ -12,7 +12,7 @@ import SwiftUI
 
 struct DeleteAfterFailView: View {
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     
     var body: some View {
         
@@ -26,7 +26,7 @@ struct DeleteAfterFailView: View {
                 Spacer()
                     .frame(height: 30)
                 
-                DeleteOptionsView()
+                DeleteOptionsView(settingsViewModel: settingsViewModel)
                 
             }
             
@@ -36,15 +36,18 @@ struct DeleteAfterFailView: View {
     }
     
     var bottomButtonsView : some View {
-        BottomButtonsView(cancelAction: {
+        BottomButtonsView(settingsViewModel: settingsViewModel,
+                          cancelAction: {
             settingsViewModel.cancelDeleteAfterFail()
             sheetManager.hide()
-        }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
+        },
+                          cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized,
+                          saveAction: {
             settingsViewModel.saveDeleteAfterFail()
             sheetManager.hide()
-            
             displayDeleteAfterFailToast()
-        }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
+        },
+                          saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
     }
     
     func displayDeleteAfterFailToast () {
@@ -62,7 +65,7 @@ struct DeleteAfterFailView: View {
 struct DeleteOptionsView : View {
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     
     var body: some View {
         
@@ -100,6 +103,6 @@ struct DeleteAfterFailOptionView : View {
 
 struct DeleteAfterFailView_Previews: PreviewProvider {
     static var previews: some View {
-        DeleteAfterFailView()
+        DeleteAfterFailView(settingsViewModel: SettingsViewModel.stub())
     }
 }

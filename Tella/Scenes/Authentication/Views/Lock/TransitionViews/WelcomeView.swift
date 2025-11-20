@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @EnvironmentObject private var appViewState: AppViewState
+    var appViewState: AppViewState
     
     var body: some View {
         NavigationContainerView {
@@ -22,6 +22,6 @@ struct WelcomeView: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView()
+//        WelcomeView(mainAppModel: MainAppModel.stub())
     }
 }

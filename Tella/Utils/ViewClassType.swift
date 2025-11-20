@@ -12,7 +12,7 @@ import Foundation
 import SwiftUI
 
 struct ViewClassType {
-    static let uwaziView : AnyClass = UIHostingController<ModifiedContent<UwaziView, _EnvironmentKeyWritingModifier<UwaziViewModel?>>>.self
+    static let uwaziView : AnyClass = UIHostingController<UwaziView>.self
     static let securitySettingsView : AnyClass = UIHostingController<Optional<SecuritySettingsView>>.self
     static let serversListView : AnyClass = UIHostingController<Optional<ServersListView>>.self
     static let reportMainView : AnyClass = UIHostingController<ReportMainView>.self

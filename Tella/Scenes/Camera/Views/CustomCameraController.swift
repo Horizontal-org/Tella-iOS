@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,7 +15,7 @@ struct CameraImageCompletion {
 }
 
 public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
-
+    
     // MARK: - Private properties
     
     private var photoOutput: AVCapturePhotoOutput?
@@ -54,7 +54,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
         
         photoSettings.isHighResolutionPhotoEnabled = true
-
+        
         if let currentLocation = locationManager.currentLocation {
             photoSettings.add(location: currentLocation)
         }
@@ -92,27 +92,28 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     func startCaptureVideo() {
-        if let videoOutput = videoOutput, videoOutput.isRecording {
+        guard let videoOutput = videoOutput else { return }
+        
+        if videoOutput.isRecording {
             videoOutput.stopRecording()
             shouldShowProgressView = true
-        } else {
-            let outFileUrl = createTempFileURL()
-            guard let delegate = videoRecordingDelegate else {
-                return
-            }
-            
-            if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
-                videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
-            }
-            
-            if shouldPreserveMetadata {
-                // Add location to the video output
-                guard let currentLocation = locationManager.currentLocation else { return }
-                videoOutput?.add(location: currentLocation)
-            }
-            
-            videoOutput?.startRecording(to: outFileUrl, recordingDelegate: delegate )
+            return
         }
+        let outFileUrl = createTempFileURL()
+        guard let delegate = videoRecordingDelegate else {
+            return
+        }
+        
+        if let videoOutputConnection = videoOutput.connection(with: .video) {
+            videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
+        }
+        
+        if shouldPreserveMetadata, let currentLocation = locationManager.currentLocation {
+            // Add location to the video output
+            videoOutput.add(location: currentLocation)
+        }
+        
+        videoOutput.startRecording(to: outFileUrl, recordingDelegate: delegate )
     }
     
     func toggleCameraType() {
@@ -176,7 +177,15 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     private func setupCaptureSession() {
-        captureSession.sessionPreset = AVCaptureSession.Preset.photo
+        captureSession.beginConfiguration()
+        if cameraType == .video {
+            if captureSession.canSetSessionPreset(.high) {
+                captureSession.sessionPreset = .high
+            }
+        } else {
+            captureSession.sessionPreset = .photo
+        }
+        captureSession.commitConfiguration()
     }
     
     private func createTempFileURL() -> URL {
@@ -351,6 +360,14 @@ extension CameraService  {
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
+        if error != nil {
+            DispatchQueue.main.async {
+                self.shouldShowProgressView = false
+                self.isRecording = false
+            }
+            return
+        }
+        
         self.videoURLCompletion =  outputFileURL
         self.isRecording = false
     }

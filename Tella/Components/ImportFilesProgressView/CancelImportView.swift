@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CancelImportView: View {
     
-    @EnvironmentObject var mainAppModel: MainAppModel
+    var mainAppModel: MainAppModel
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     
@@ -30,9 +30,11 @@ struct CancelImportView: View {
         }
     }
 }
-//
+
 struct CancelImportView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelImportView( importFilesProgressProtocol: ImportFilesProgress(), shouldShowView: .constant(true))
+        CancelImportView( mainAppModel: MainAppModel.stub(),
+                          importFilesProgressProtocol: ImportFilesProgress(),
+                          shouldShowView: .constant(true))
     }
 }

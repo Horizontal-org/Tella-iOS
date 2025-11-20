@@ -26,6 +26,7 @@ struct HelpIcon: View {
                 helpText
                     .frame(maxWidth: 300, alignment: .leading)
                     .presentationCompactAdaptation(.popover)
+                    .presentationBackground(Color.white)
             }
         } else {
             Button {

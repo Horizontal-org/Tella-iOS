@@ -13,7 +13,7 @@ import SwiftUI
 struct EntitySelectorView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var prompt: UwaziRelationshipEntryPrompt
+    @ObservedObject var prompt: UwaziRelationshipEntryPrompt
     @State private var searchText: String = ""
     
     var body: some View {
@@ -99,5 +99,5 @@ struct entityListOptionsView: View {
 }
 
 #Preview {
-    EntitySelectorView()
+    EntitySelectorView(prompt: UwaziRelationshipEntryPrompt.stub())
 }

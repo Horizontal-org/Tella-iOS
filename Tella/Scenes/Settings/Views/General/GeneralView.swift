@@ -11,10 +11,8 @@ import SwiftUI
 
 struct GeneralView: View {
     
-    @EnvironmentObject var appModel : MainAppModel
-    @EnvironmentObject var settingsModel : SettingsModel
-    @EnvironmentObject var appViewState : AppViewState
-    
+    var settingsViewModel : SettingsViewModel
+    @ObservedObject var appViewState: AppViewState
     @State private var presentingLanguage = false
     
     var body: some View {
@@ -27,7 +25,9 @@ struct GeneralView: View {
         .fullScreenCover(isPresented: $presentingLanguage) {
             
         } content: {
-            LanguageListView(isPresented: $presentingLanguage)
+            LanguageListView(isPresented: $presentingLanguage,
+                             settingsViewModel: settingsViewModel,
+                             appViewState: appViewState)
         }
     }
     
@@ -60,13 +60,18 @@ struct GeneralView: View {
     var recentFilesView: some View {
         SettingToggleItem(title: LocalizableSettings.settGenRecentFiles.localized,
                           description: LocalizableSettings.settGenRecentFilesExpl.localized,
-                          toggle: $appModel.settings.showRecentFiles)
+                          toggle: $appViewState.homeViewModel.settings.showRecentFiles,
+                          onChange: {
+            appViewState.homeViewModel.saveSettings()
+        })
     }
     
 }
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView()
+        GeneralView(settingsViewModel: SettingsViewModel.stub(),
+                    appViewState: AppViewState.stub())
     }
 }
+

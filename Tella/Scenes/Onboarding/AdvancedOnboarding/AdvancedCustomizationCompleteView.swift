@@ -11,7 +11,7 @@ import SwiftUI
 
 struct AdvancedCustomizationCompleteView: View {
     
-    @EnvironmentObject private var appViewState: AppViewState
+    var appViewState: AppViewState
     
     var body: some View {
         
@@ -33,5 +33,5 @@ struct AdvancedCustomizationCompleteView: View {
 
 
 #Preview {
-    AdvancedCustomizationCompleteView()
+    AdvancedCustomizationCompleteView(appViewState: AppViewState.stub())
 }

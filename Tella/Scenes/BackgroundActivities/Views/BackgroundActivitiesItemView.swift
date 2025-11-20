@@ -9,8 +9,7 @@ import SwiftUI
 struct BackgroundActivitiesItemView: View {
     
     @Binding var item: BackgroundActivityModel
-    @EnvironmentObject var appModel: MainAppModel
-    
+
     var body: some View {
         
         HStack(alignment: .center, spacing: 12) {

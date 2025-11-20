@@ -12,7 +12,8 @@ import SwiftUI
 
 struct UwaziRelationshipWidget: View {
     @ObservedObject var prompt: UwaziRelationshipEntryPrompt
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    var entityViewModel: UwaziEntityViewModel
+    
     var body: some View {
         VStack {
             Text(LocalizableUwazi.uwaziEntityRelationshipExpl.localized)
@@ -23,7 +24,6 @@ struct UwaziRelationshipWidget: View {
             selectEntitiesButton
             if(!prompt.value.isEmpty) {
                 SelectedEntityView(prompt: prompt)
-                    .environmentObject(entityViewModel)
             }
         }
         .onChange(of: prompt.value) { newValue in
@@ -33,9 +33,7 @@ struct UwaziRelationshipWidget: View {
 
     var selectEntitiesButton : some View {
         Button {
-            navigateTo(destination: EntitySelectorView()
-                .environmentObject(entityViewModel)
-                .environmentObject(prompt)
+            navigateTo(destination: EntitySelectorView(prompt: prompt)
             )
         } label: {
             entitiesSelect

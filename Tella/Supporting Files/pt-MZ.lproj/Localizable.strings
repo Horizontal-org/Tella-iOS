@@ -574,3 +574,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerConnected_Expl" = "Conectou-se ao servidor com sucesso e poderá partilhar os seus dados.";
 "Settings_Sett_QuickDelete_Files_tooltip" = "Apagar todos os ficheiros armazenados no Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
+"Settings_SettLang_Chinese_Expl" = "Chinese";

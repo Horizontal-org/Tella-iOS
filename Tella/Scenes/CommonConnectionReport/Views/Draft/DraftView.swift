@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct DraftView: View  {
-    @StateObject var viewModel: DraftMainViewModel
+    @ObservedObject var viewModel: DraftMainViewModel
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
@@ -198,13 +198,13 @@ struct DraftView: View  {
     var photoVideoPickerView: some View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
-                             appModel: viewModel.mainAppModel,
+                             mainAppModel: viewModel.mainAppModel,
                              resultFile: $viewModel.resultFile)
     }
     
     var recordView: some View {
         viewModel.showingRecordView ?
-        RecordView(appModel: viewModel.mainAppModel,
+        RecordView(mainAppModel: viewModel.mainAppModel,
                    sourceView: .addReportFile,
                    showingRecoredrView: $viewModel.showingRecordView,
                    resultFile: $viewModel.resultFile) : nil

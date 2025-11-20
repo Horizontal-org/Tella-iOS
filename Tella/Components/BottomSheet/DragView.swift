@@ -18,7 +18,6 @@ public struct DragView<Content: View>: View {
     private let cornerRadius: CGFloat
     private let maxHeightRatio: CGFloat
     private let tapToDismiss: Bool
-    private let hapticsOnDismiss: Bool
     private let dismissDuration: Double
     
     // Gesture / layout state
@@ -51,7 +50,6 @@ public struct DragView<Content: View>: View {
         cornerRadius: CGFloat = 20,
         maxHeightRatio: CGFloat = 0.85,
         tapToDismiss: Bool = true,
-        hapticsOnDismiss: Bool = true,
         dismissDuration: Double = 0.18,
         @ViewBuilder content: () -> Content
     ) {
@@ -60,7 +58,6 @@ public struct DragView<Content: View>: View {
         self.cornerRadius = cornerRadius
         self.maxHeightRatio = max(0.3, min(maxHeightRatio, 1.0))
         self.tapToDismiss = tapToDismiss
-        self.hapticsOnDismiss = hapticsOnDismiss
         self.dismissDuration = dismissDuration
         self.presentationType = presentationType
         self.content = content()
@@ -121,7 +118,6 @@ public struct DragView<Content: View>: View {
                 )
                 .offset(y: currentOffset)
                 .gesture(dragGesture)
-                .transition(.move(edge: .bottom))
             }
         }
         .animation(isPresented ? presentAnimation : nil, value: isPresented)
@@ -154,9 +150,7 @@ public struct DragView<Content: View>: View {
     }
     
     private func dismissAnimated() {
-        if hapticsOnDismiss { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
         withAnimation(dismissAnimation) {
-            
             if presentationType == .present {
                 self.dismiss()
             } else {

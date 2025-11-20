@@ -156,3 +156,9 @@ class DraftMainViewModel: ObservableObject {
         self.objectWillChange.send()
     }
 }
+
+extension DraftMainViewModel {
+    static func stub() -> DraftMainViewModel {
+        return DraftMainViewModel(reportsMainViewModel: ReportsMainViewModel.stub())
+    }
+}

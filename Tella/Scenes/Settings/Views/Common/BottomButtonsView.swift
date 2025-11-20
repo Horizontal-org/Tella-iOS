@@ -13,7 +13,7 @@ import SwiftUI
 struct BottomButtonsView : View {
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     
     var cancelAction: () -> Void
     var cancelLabel: String

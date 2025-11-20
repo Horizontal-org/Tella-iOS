@@ -2,8 +2,8 @@
 //  PasswordTextFieldView.swift
 //  Tella
 //
-//  
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -62,24 +62,25 @@ struct PasswordTextFieldViewWithFocus : View {
                     .frame(width: 32)
                 
                 if shouldShowPassword {
-                    TextField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
-                    }).focused($isFocused)
+                    TextField("", text: $fieldContent).focused($isFocused)
                         .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
                             validateField(value: value)
                         })
+                        .onSubmit {
+                            self.onCommit?()
+                        }
                         .disabled(disabled)
                         .frame( height: 22)
                     
                 } else {
-                    SecureField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
-                    }).focused($isFocused)
+                    SecureField("", text: $fieldContent).focused($isFocused)
                         .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
                             validateField(value: value)
-                        })
+                        }).onSubmit {
+                            self.onCommit?()
+                        }
                         .disabled(disabled)
                         .frame( height: 22)
                 }

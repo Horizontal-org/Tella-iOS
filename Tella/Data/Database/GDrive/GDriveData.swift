@@ -50,7 +50,7 @@ extension TellaData {
     @discardableResult
     func deleteDriveSubmittedReports() -> Result<Void,Error> {
         let deleteSubmittedReportResult = database.deleteDriveSubmittedReports()
-        shouldReloadNextcloudReports.send(true)
+        shouldReloadGDriveReports.send(true)
         return deleteSubmittedReportResult
     }
 
