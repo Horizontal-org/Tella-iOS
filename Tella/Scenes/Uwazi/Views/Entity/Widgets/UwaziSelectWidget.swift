@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 23/10/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -14,11 +14,12 @@ struct UwaziSelectWidget: View {
     
     @State private var shouldShowMenu : Bool = false
     @ObservedObject var prompt: UwaziSelectEntryPrompt
+    var uwaziEntityViewModel : UwaziEntityViewModel
     
     var body: some View {
         Button {
             DispatchQueue.main.async {
-                shouldShowMenu = true
+                shouldShowMenu.toggle()
             }
             
         } label: {
@@ -27,13 +28,32 @@ struct UwaziSelectWidget: View {
             .cornerRadius(12)
         
         if shouldShowMenu {
-            SelectListOptions(shouldShowMenu: $shouldShowMenu, prompt: prompt)
+            SelectListOptions(shouldShowMenu: $shouldShowMenu,
+                              prompt: prompt,
+                              uwaziEntityViewModel: uwaziEntityViewModel)
         }
     }
     
     func selectTitle() -> String {
-        guard let item = prompt.selectValues?.filter({$0.id == prompt.value.first}).first else {return "Select"}
-        return item.label
+        guard
+            let selectedId = prompt.value.first,
+            let selectValues = prompt.selectValues
+        else {
+            return "Select"
+        }
+        
+        if let nestedMatch = selectValues
+            .compactMap({ $0.values })
+            .flatMap({ $0 })
+            .first(where: { $0.id == selectedId }) {
+            return nestedMatch.label
+        }
+        
+        if let topLevelMatch = selectValues.first(where: { $0.id == selectedId }) {
+            return topLevelMatch.label
+        }
+        
+        return "Select"
     }
 }
 
@@ -49,13 +69,8 @@ struct SelectWidgetButton: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            if(shouldShowMenu) {
-                Image("select.arrow.up")
-                    .padding()
-            } else {
-                Image("reports.arrow-down")
-                    .padding()
-            }
+            Image(shouldShowMenu ? .selectArrowUp : .reportsArrowDown)
+                .padding()
         }
     }
 }
@@ -63,17 +78,14 @@ struct SelectWidgetButton: View {
 struct SelectListOptions: View {
     @Binding var shouldShowMenu: Bool
     var prompt: UwaziSelectEntryPrompt
+    var uwaziEntityViewModel : UwaziEntityViewModel
     
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
-                        SelectOptionButton(
-                            selectedOption: selectedOptions,
-                            shouldShowMenu: $shouldShowMenu,
-                            prompt: prompt
-                        )
+                        listView(selectedOptions:selectedOptions)
                     }
                 }
             }
@@ -85,26 +97,48 @@ struct SelectListOptions: View {
         }
         .background(Color.clear)
     }
-}
-
-struct SelectOptionButton: View {
-    let selectedOption: SelectValues
-    @Binding var shouldShowMenu: Bool
-    var prompt: UwaziSelectEntryPrompt
-    @EnvironmentObject  var uwaziEntityViewModel : UwaziEntityViewModel
     
-    var body: some View {
+    @ViewBuilder
+    func listView(selectedOptions:SelectValues) -> some View {
+        if let values = selectedOptions.values, !values.isEmpty {
+            
+            titleOptionRow(selectedOption: selectedOptions)
+            
+            ForEach(selectedOptions.values ?? [], id: \.self) { value in
+                selectOptionButton(selectedOption: value,
+                                   leadingPadding: 20)
+            }
+            
+        } else {
+            selectOptionButton(selectedOption: selectedOptions)
+        }
+    }
+    
+    func titleOptionRow(selectedOption: SelectValues) -> some View {
+        Text(selectedOption.label)
+            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.white)
+            .padding(.all, 14)
+            .background(Color.white.opacity(0.08))
+    }
+    
+    func selectOptionButton(selectedOption: SelectValues,
+                            leadingPadding: CGFloat = 0) -> some View {
+        
         Button(action: {
             shouldShowMenu = false
             prompt.value = [selectedOption.id]
             uwaziEntityViewModel.publishUpdates()
         }) {
-            Text(selectedOption.label )
+            Text(selectedOption.label)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
+        .padding(.leading, leadingPadding)
         .background(prompt.value.first == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
     }
+    
 }

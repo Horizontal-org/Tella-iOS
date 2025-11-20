@@ -13,4 +13,5 @@ import Foundation
 struct SelectValues : Equatable, Hashable, Identifiable {
     var id: String
     var label : String
+    var values : [SelectValues]?
 }

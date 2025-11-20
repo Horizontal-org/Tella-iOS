@@ -14,9 +14,6 @@ import Foundation
 struct RecordView: View {
     
     @StateObject var viewModel : RecordViewModel
-    
-    @EnvironmentObject private var mainAppModel: MainAppModel
-    @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject var sheetManager: SheetManager
     
     @State private var showingSaveSuccessView : Bool = false
@@ -24,23 +21,19 @@ struct RecordView: View {
     
     let modalHeight = 173.0
     
-    init(appModel: MainAppModel,
+    init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB? = nil,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
          resultFile : Binding<[VaultFileDB]?>? = nil) {
         
-        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
+        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: mainAppModel,
                                                                rootFile: rootFile,
                                                                resultFile: resultFile,
                                                                sourceView: sourceView,
                                                                showingRecoredrView: showingRecoredrView))
     }
-    
-    func goBack() {
-        self.appViewState.navigateBack()
-    }
-    
+
     var body: some View {
         
         NavigationContainerView {
@@ -65,7 +58,7 @@ struct RecordView: View {
             saveSuccessView
             
         }
-        .onReceive(mainAppModel.$shouldSaveCurrentData) { value in
+        .onReceive(viewModel.mainAppModel.$shouldSaveCurrentData) { value in
             if(value) {
                 self.viewModel.onStopRecording()
             }
@@ -219,7 +212,7 @@ struct RecordView: View {
                     showSaveAudioConfirmationView()
                 } else {
                     if viewModel.sourceView == .tab {
-                        mainAppModel.selectedTab = .home
+                        viewModel.mainAppModel.selectedTab = .home
                     } else {
                         viewModel.showingRecoredrView.wrappedValue = false
                     }
@@ -236,14 +229,14 @@ struct RecordView: View {
     }
     
     private func getFileListView() -> some View {
-        FileListView(appModel: mainAppModel,
+        FileListView(mainAppModel: viewModel.mainAppModel,
                      filterType: .audio,
                      title: LocalizableRecorder.audioRecordingsAppBar.localized,
                      fileListType: .recordList)
     }
     
     func showRenameFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
+        sheetManager.showBottomSheet {
             
             TextFieldBottomSheetView(titleText: LocalizableRecorder.renameRecordingSheetTitle.localized,
                                      validateButtonText: LocalizableRecorder.renameRecordingSaveSheetAction.localized,
@@ -253,15 +246,14 @@ struct RecordView: View {
                                      didConfirmAction: {
                 viewModel.fileName =  fileName
             })
-        })
+        }
     }
     
     func showSaveAudioConfirmationView() {
-        
-        sheetManager.showBottomSheet( modalHeight: 180.0,
-                                      shouldHideOnTap: false,
-                                      content: {
-            SaveAudioConfirmationView(viewModel: viewModel, showingSaveSuccessView: $showingSaveSuccessView)
+        sheetManager.showBottomSheet(shouldHideOnTap: false,
+                                     content: {
+            SaveAudioConfirmationView(viewModel: viewModel,
+                                      showingSaveSuccessView: $showingSaveSuccessView, mainAppModel: viewModel.mainAppModel)
         })
     }
     

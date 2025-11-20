@@ -7,9 +7,8 @@
 import SwiftUI
 
 struct LockConfirmPinView: View {
-    
-    @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject var lockViewModel: LockViewModel
+
+    @ObservedObject var lockViewModel: LockViewModel
     @State var shouldShowErrorMessage : Bool = false
     
     var body: some View {
@@ -31,18 +30,17 @@ struct LockConfirmPinView: View {
     
     func lockWithPin() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
-        navigateTo(destination: OnboardingEndView())
+        lockViewModel.shouldDismiss.send(true)
     }
     
     func updatePin() {
         lockViewModel.updateKeys(passwordTypeEnum: .tellaPin)
         lockViewModel.shouldDismiss.send(true)
     }
-    
 }
 
 struct LockConfirmPinView_Previews: PreviewProvider {
     static var previews: some View {
-        LockConfirmPinView().environmentObject(AppViewState())
+        LockConfirmPinView(lockViewModel: LockViewModel.stub())
     }
 }

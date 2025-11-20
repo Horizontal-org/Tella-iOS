@@ -2,8 +2,8 @@
 //  ViewExtension.swift
 //  Tella
 //
-//  
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -42,8 +42,8 @@ extension View {
         toPresent.modalTransitionStyle = transitionStyle
         toPresent.view.isOpaque = false
         toPresent.view.backgroundColor = .clear
-
-        UIApplication.getTopViewController()?.present(toPresent, animated: false, completion: nil)
+        
+        UIApplication.getTopViewController()?.present(toPresent, animated: true, completion: nil)
     }
     
     func dismiss() {
@@ -53,7 +53,7 @@ extension View {
     func dismiss(completion:@escaping () -> Void) {
         UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
     }
-
+    
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
         
@@ -122,8 +122,14 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
     
-    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool> = .constant(true)) {
-        let viewToShow = DragView(modalHeight: modalHeight, isShown: isShown, content: {content})
+    func showBottomSheetView<Content:View>(content : Content, isPresented: Binding<Bool> = .constant(true),
+                                           tapToDismiss: Bool = true) {
+        let viewToShow = DragView(isPresented: isPresented,
+                                  presentationType: .present,
+                                  backgroundColor: Styles.Colors.backgroundTab,
+                                  tapToDismiss: tapToDismiss,
+                                  content: {content})
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
 }
+

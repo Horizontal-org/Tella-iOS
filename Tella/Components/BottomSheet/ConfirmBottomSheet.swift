@@ -87,12 +87,9 @@ struct ConfirmBottomSheet : View {
                     Text(self.actionText.uppercased())
                         .foregroundColor(destructive ? Color.red : Color.white)
                 }.buttonStyle(ButtonSheetStyle())
-                
             }
-        } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 10))
+        }
     }
-    
-    
 }
 
 struct ButtonSheetStyle: ButtonStyle {

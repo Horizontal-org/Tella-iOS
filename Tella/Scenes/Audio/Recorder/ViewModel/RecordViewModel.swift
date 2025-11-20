@@ -22,7 +22,7 @@ class RecordViewModel: ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     var sourceView : SourceView = .tab
     
-    private var mainAppModel: MainAppModel
+    var mainAppModel: MainAppModel
     private var rootFile: VaultFileDB?
     private var resultFile: Binding<[VaultFileDB]?>?
     

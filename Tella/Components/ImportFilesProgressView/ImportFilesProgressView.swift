@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ImportFilesProgressView: View {
     
-    @EnvironmentObject var mainAppModel : MainAppModel
+    var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
     @ObservedObject var progress : ProgressFile
     @State var shouldShowCancelImportView : Bool = false
@@ -23,7 +23,9 @@ struct ImportFilesProgressView: View {
             contentView
             
             if shouldShowCancelImportView {
-                CancelImportView(importFilesProgressProtocol: importFilesProgressProtocol, shouldShowView: $shouldShowCancelImportView)
+                CancelImportView(mainAppModel: mainAppModel,
+                                 importFilesProgressProtocol: importFilesProgressProtocol,
+                                 shouldShowView: $shouldShowCancelImportView)
             }
             
         } .onReceive( progress.$isFinishing) { isFinishing in
@@ -88,14 +90,13 @@ struct ImportFilesProgressView: View {
                 }
             }
         }
-        .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
-        
     }
 }
 
 struct ImportFilesProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        ImportFilesProgressView(progress: ProgressFile(),
+        ImportFilesProgressView(mainAppModel: MainAppModel.stub(),
+                                progress: ProgressFile(),
                                 importFilesProgressProtocol: ImportFilesProgress())
         .background(Styles.Colors.backgroundMain)
     }

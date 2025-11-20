@@ -73,17 +73,20 @@ class UwaziViewModel: ObservableObject {
         let submittedEntities = tellaData?.getSubmittedUwaziEntityInstances() ?? []
         
         draftEntitiesViewModel = draftEntities.compactMap{ entity in
-            UwaziCardViewModel(instance: entity,
+            UwaziCardViewModel(mainAppModel: mainAppModel,
+                               instance: entity,
                                deleteTemplate: { self.deleteEntity(entity: entity)})
         }
         
         outboxedEntitiesViewModel = outboxedEntities.compactMap{ entity in
-            UwaziCardViewModel(instance: entity,
+            UwaziCardViewModel(mainAppModel: mainAppModel,
+                               instance: entity,
                                deleteTemplate: { self.deleteEntity(entity: entity)})
         }
         
         submittedEntitiesViewModel = submittedEntities.compactMap{ entity in
-            UwaziCardViewModel(instance: entity,
+            UwaziCardViewModel(mainAppModel: mainAppModel,
+                               instance: entity,
                                deleteTemplate: { self.deleteEntity(entity: entity)})
         }
     }
@@ -93,7 +96,8 @@ class UwaziViewModel: ObservableObject {
         
         self.templateCardsViewModel = self.downloadedTemplates.compactMap({ collectedTemplate in
             
-            UwaziCardViewModel(template: collectedTemplate,
+            UwaziCardViewModel(mainAppModel: mainAppModel,
+                               template: collectedTemplate,
                                deleteTemplate: {self.deleteDownloadedTemplate(template:collectedTemplate)})
         })
     }
@@ -156,6 +160,8 @@ class UwaziViewModel: ObservableObject {
     }
 }
 
-
-
-
+extension UwaziViewModel {
+    static func stub() -> UwaziViewModel {
+        return UwaziViewModel(mainAppModel: MainAppModel.stub(), server: Server.stub())
+    }
+}

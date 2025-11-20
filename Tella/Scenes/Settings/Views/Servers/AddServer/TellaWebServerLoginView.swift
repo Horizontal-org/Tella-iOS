@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -9,11 +9,8 @@ import SwiftUI
 
 struct TellaWebServerLoginView: View {
     
-    @EnvironmentObject var serverViewModel : TellaWebServerViewModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    
+    @StateObject var serverViewModel : TellaWebServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var mainAppModel : MainAppModel
     
     @State var presentingSuccessLoginView : Bool = false
     
@@ -41,7 +38,7 @@ struct TellaWebServerLoginView: View {
                                       placeholder : "Username",
                                       shouldShowTitle: true)
                         .frame(height: 65)
-
+                        
                         Spacer()
                             .frame(height: 13)
                         
@@ -53,10 +50,10 @@ struct TellaWebServerLoginView: View {
                                       placeholder : "Password",
                                       shouldShowTitle: true)
                         .frame(height: 65)
-
+                        
                         Spacer()
                             .frame(height: 32)
-
+                        
                         TellaButtonView<AnyView>(title: "LOG IN",
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
@@ -83,19 +80,25 @@ struct TellaWebServerLoginView: View {
         .navigationBarHidden(true)
         .onReceive(serverViewModel.$showNextSuccessLoginView) { value in
             if value {
-                navigateTo(destination: successLoginView)
+                successLoginView()
             }
         }
-
     }
     
-    private var successLoginView: some View {
-        SuccessLoginView(navigateToAction: {
-            navigateTo(destination: reportsMainView)
-        }).environmentObject(serverViewModel)
+    private func successLoginView() {
+        if serverViewModel.serversSourceView == .onboarding {
+            self.popTo(ViewClassType.serverOnboardingView)
+        } else {
+            let successLoginView = SuccessLoginView(serverViewModel: serverViewModel,
+                                                    navigateToAction: {
+                navigateTo(destination: reportsMainView)
+            })
+            
+            navigateTo(destination: successLoginView)
+        }
     }
     
     var reportsMainView: TellaServerReportsMainView {
-        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: mainAppModel))
+        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: serverViewModel.mainAppModel))
     }
 }

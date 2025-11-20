@@ -9,8 +9,7 @@ import SwiftUI
 struct FileListItem: View {
     
     var file: VaultFileDB
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     
     var backgroundColor : Color {
@@ -118,7 +117,6 @@ struct FileListItemButtonStyle : ButtonStyle {
 struct FileListItem_Previews: PreviewProvider {
     static var previews: some View {
         FileListItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
     }
 }
 

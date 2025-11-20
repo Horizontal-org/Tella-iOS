@@ -41,10 +41,12 @@ class UwaziServerViewModel: ServerViewModel {
     var setting: UwaziCheckURL?
     var cookie: String?
 
-    init(mainAppModel : MainAppModel, currentServer: UwaziServer? = nil) {
+    init(mainAppModel : MainAppModel,
+         currentServer: UwaziServer? = nil,
+         serversSourceView: ServersSourceView = .settings) {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        super.init()
+        super.init(serversSourceView: serversSourceView)
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
@@ -309,3 +311,8 @@ class UwaziServerViewModel: ServerViewModel {
     }
 }
 
+extension UwaziServerViewModel {
+    static func stub() -> UwaziServerViewModel {
+        return UwaziServerViewModel(mainAppModel: MainAppModel.stub())
+    }
+}

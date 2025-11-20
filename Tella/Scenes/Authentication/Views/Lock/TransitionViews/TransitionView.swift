@@ -69,6 +69,6 @@ struct ReadyButtonStyle : ButtonStyle {
 
 struct TransitionView_Previews: PreviewProvider {
     static var previews: some View {
-        TransitionView(transitionViewData: OnboardingEndViewData())
+        TransitionView(transitionViewData: WelcomeViewData())
     }
 }

@@ -9,9 +9,8 @@ import SwiftUI
 
 struct AdvancedServerSettingsView: View {
     
-    @EnvironmentObject var serverVM : TellaWebServerViewModel
-    @EnvironmentObject var serversVM : ServersViewModel
-    
+    @StateObject var serverVM : TellaWebServerViewModel
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -28,11 +27,7 @@ struct AdvancedServerSettingsView: View {
     var contentView: some View {
         VStack {
             
-            SettingsCardView(cardViewArray: [/*ShareInfoView(shareInfo: $serverVM.activatedMetadata).eraseToAnyView(),*/
-                AutoUploadView(autoUpload: $serverVM.autoUpload, isDisabled: serverVM.isAutoUploadServerExist).eraseToAnyView(),
-                $serverVM.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverVM.autoDelete).eraseToAnyView() : nil,
-                BackgroundUploadView(backgroundUpload: $serverVM.backgroundUpload).eraseToAnyView()
-                                            ])
+            AdvancedServerSettingsCardView(serverViewModel: serverVM)
             
             Spacer()
             
@@ -53,9 +48,6 @@ struct AdvancedServerSettingsView: View {
 
 struct AdvancedServerSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        AdvancedServerSettingsView()
+        AdvancedServerSettingsView(serverVM: TellaWebServerViewModel.stub())
     }
 }
-
-
-

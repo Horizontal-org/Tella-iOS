@@ -36,7 +36,7 @@ struct ActionListBottomSheet: View {
                         .padding(EdgeInsets(top: 7, leading: -10 , bottom: 7, trailing: -10))
                 }
             }
-        }.padding(EdgeInsets(top: 21, leading: 24, bottom: 32, trailing: 24))
+        }
     }
 }
 

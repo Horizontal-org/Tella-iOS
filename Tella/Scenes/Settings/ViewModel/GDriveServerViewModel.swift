@@ -16,15 +16,19 @@ class GDriveServerViewModel: ObservableObject {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     var serverCreateFolderVM: ServerCreateFolderViewModel
+    var serversSourceView: ServersSourceView
 
     @Published var selectedDrive: SharedDrive? = nil
     @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
     @Published var isSharedDriveButtonValid: Bool = false
     @Published var signInState: ViewModelState<Bool> = .loaded(false)
     
-    init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
+    init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel,
+         serversSourceView: ServersSourceView = .settings) {
         self.mainAppModel = mainAppModel
-        self.gDriveRepository = repository   
+        self.gDriveRepository = repository
+        self.serversSourceView = serversSourceView
+
         self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
 
         self.serverCreateFolderVM.createFolderAction = createDriveFolder

@@ -9,10 +9,8 @@ import SwiftUI
 
 struct ServersListView: View {
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    @StateObject var serversViewModel : ServersViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var settingViewModel : SettingsViewModel
     
     @State var shouldShowEditServer : Bool = false
     
@@ -24,7 +22,9 @@ struct ServersListView: View {
             contentView
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
-            EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
+            EditSettingsServerView(mainAppModel: serversViewModel.mainAppModel,
+                                   isPresented: $shouldShowEditServer,
+                                   server: serversViewModel.mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
         })
     }
     
@@ -46,7 +46,7 @@ struct ServersListView: View {
     
     private func serversView<T>() -> [T] {
         
-        var arrayView : [T] = [SettingsAddServerCardView().environmentObject(serversViewModel)
+        var arrayView : [T] = [SettingsAddServerCardView(serversViewModel: serversViewModel)
             .eraseToAnyView() as! T]
         
         serversViewModel.serverArray.forEach({ server in
@@ -58,8 +58,8 @@ struct ServersListView: View {
     
     private func showServerActionBottomSheet(server:Server) {
         let items = serverActionItems(server: server)
-        let modalHeight = items.count == 1 ? 140 : 175
-        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
+
+        sheetManager.showBottomSheet {
             ActionListBottomSheet(items: serverActionItems(server: server),
                                   headerTitle: server.name ?? "",
                                   action:  {item in
@@ -94,7 +94,7 @@ struct ServersListView: View {
         }
     }
     private func showDeleteServerConfirmationView(server: Server) {
-        sheetManager.showBottomSheet(modalHeight: 210) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, server.name ?? ""),
                                msgText: LocalizableSettings.settServerDeleteConnectionMessage.localized,
                                cancelText: LocalizableSettings.settServerCancelSheetAction.localized,
@@ -106,9 +106,12 @@ struct ServersListView: View {
     }
     
     fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
-        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel, currentServer: server))
-            .environmentObject(serversViewModel))
+        let viewModel = UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel,
+                                             currentServer: server,
+                                             serversSourceView: serversViewModel.serversSourceView)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: viewModel))
     }
+                   
     private func serverActionItems(server: Server) -> [ListActionSheetItem]{
         var serverActionItems : [ListActionSheetItem] = [
             ListActionSheetItem(imageName: "delete-icon-white",
@@ -129,6 +132,6 @@ struct ServersListView: View {
 
 struct ServersListView_Previews: PreviewProvider {
     static var previews: some View {
-        ServersListView()
+        ServersListView(serversViewModel: ServersViewModel.stub())
     }
 }

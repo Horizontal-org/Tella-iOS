@@ -12,7 +12,7 @@ struct ReportFileGridView: View {
     
     var file: VaultFileDB
     
-    @EnvironmentObject var draftReportVM: DraftMainViewModel
+    @ObservedObject var draftReportVM: DraftMainViewModel
     
     var body: some View {
         fileGridView
@@ -52,9 +52,8 @@ struct ReportFileGridView: View {
     }
 }
 
-//
-//struct ReportFileGridView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ReportFileGridView()
-//    }
-//}
+struct ReportFileGridView_Previews: PreviewProvider {
+    static var previews: some View {
+        ReportFileGridView(file: VaultFileDB.stub(), draftReportVM: DraftMainViewModel.stub())
+    }
+}

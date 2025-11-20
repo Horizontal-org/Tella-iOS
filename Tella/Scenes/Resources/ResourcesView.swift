@@ -31,11 +31,9 @@ struct ResourcesView: View {
     var contentView: some View {
         
         VStack {
-            DownloadedResources()
-                .environmentObject(resourcesViewModel)
+            DownloadedResources(viewModel: resourcesViewModel)
             
-            AvailableResources()
-                .environmentObject(resourcesViewModel)
+            AvailableResources(viewModel: resourcesViewModel)
             
             Spacer()
             
@@ -58,7 +56,7 @@ struct ResourcesView: View {
     }
     
     private func exitResourceConfirmatinoBottomSheet() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: LocalizableResources.resourceExitSheetTitle.localized,
                                       msgText: LocalizableResources.resourceExitSheetExpl.localized,
                                       cancelText: LocalizableResources.resourceExitCancelSheetSelect.localized,

@@ -88,7 +88,7 @@ struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView{
             PinView(fieldContent: .constant(""),
-                    keyboardNumbers: LockViewModel(unlockType: .new, appModel: MainAppModel.stub(), appViewState: AppViewState()).unlockKeyboardNumbers)
+                    keyboardNumbers: LockViewModel(unlockType: .new, appViewState: AppViewState()).unlockKeyboardNumbers)
         }
     }
 }

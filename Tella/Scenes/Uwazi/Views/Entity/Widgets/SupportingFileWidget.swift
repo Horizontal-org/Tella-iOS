@@ -13,14 +13,13 @@ import SwiftUI
 struct SupportingFileWidget: View {
     @ObservedObject var prompt: UwaziFilesEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         UwaziFileSelector(prompt: prompt, addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
         }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
-            .environmentObject(prompt)
         if(prompt.value.count > 0) {
             FileDropdown(files: $prompt.value)
         }
@@ -28,13 +27,13 @@ struct SupportingFileWidget: View {
     
     func showAddFileSheet() {
             
-            sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
+            sheetManager.showBottomSheet {
                 ActionListBottomSheet(items: addFileToDraftItems,
                                       headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
                                       action:  {item in
                     self.handleActions(item : item)
                 })
-            })
+            }
         }
     
     func showAddPhotoVideoSheet() {
@@ -43,7 +42,7 @@ struct SupportingFileWidget: View {
         }
     
     var fileListView : some View {
-        FileListView(appModel: entityViewModel.mainAppModel,
+        FileListView(mainAppModel: entityViewModel.mainAppModel,
                      filterType: .audioPhotoVideo,
                          title: LocalizableReport.selectFiles.localized,
                          fileListType: .selectFiles,

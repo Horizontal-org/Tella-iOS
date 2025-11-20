@@ -10,7 +10,7 @@ import SwiftUI
 struct AddServerAccessChoiceView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var serversViewModel : TellaWebServerViewModel
+    @StateObject var serverViewModel : TellaWebServerViewModel
     
     var body: some View {
         ContainerView {
@@ -27,7 +27,7 @@ struct AddServerAccessChoiceView: View {
                     
                     TellaButtonView(title: "YES",
                                     nextButtonAction: .destination,
-                                    destination: TellaWebServerLoginView().environmentObject(serversViewModel),
+                                    destination: TellaWebServerLoginView(serverViewModel: serverViewModel)
                                     isValid: .constant(true) )
                     
                     Spacer()
@@ -35,7 +35,7 @@ struct AddServerAccessChoiceView: View {
                     
                     TellaButtonView (title: "NO",
                                      nextButtonAction: .destination,
-                                     destination: TellaWebServerLoginView().environmentObject(serversViewModel),
+                                     destination: TellaWebServerLoginView(),
                                      isValid: .constant(true))
                     
                     Spacer()

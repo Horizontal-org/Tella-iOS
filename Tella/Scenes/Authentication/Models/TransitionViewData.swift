@@ -19,10 +19,3 @@ struct WelcomeViewData : TransitionViewData {
     var description = LocalizableLock.onboardingIntroSubhead.localized
     var buttonTitle = LocalizableLock.onboardingIntroActionGetStarted.localized
 }
-
-struct OnboardingEndViewData : TransitionViewData {
-    var image = "lock.done"
-    var title = LocalizableLock.onboardingdLockSuccessHead.localized
-    var description = LocalizableLock.onboardingLockSuccessSubhead.localized
-    var buttonTitle = LocalizableLock.onboardingLockSuccessActionGoToTella.localized
-}

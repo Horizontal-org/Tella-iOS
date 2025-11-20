@@ -12,20 +12,20 @@ class NextcloudServerViewModel: ServerViewModel {
     private var nextcloudRepository: NextcloudRepository
     private var mainAppModel: MainAppModel
     var currentServer: NextcloudServer?
-    
     var serverCreateFolderVM: ServerCreateFolderViewModel
-    
+
     private var userId = ""
     init(nextcloudRepository: NextcloudRepository = NextcloudRepository(),
          mainAppModel: MainAppModel,
          currentServer: NextcloudServer? = nil,
-         username:String? = nil) {
+         username:String? = nil,
+         serversSourceView: ServersSourceView = .settings) {
         
         self.nextcloudRepository = nextcloudRepository
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
         self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.nextcloudCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
-        super.init()
+        super.init(serversSourceView: serversSourceView)
         self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
         
         // initialize server parameters

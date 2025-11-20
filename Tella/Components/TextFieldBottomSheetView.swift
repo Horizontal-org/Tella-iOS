@@ -87,7 +87,7 @@ struct TextFieldBottomSheetView: View {
                     sheetManager.hide()
                 }
             }
-        }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 21))
+        } 
     }
 }
 

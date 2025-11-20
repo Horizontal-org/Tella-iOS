@@ -8,15 +8,11 @@ import SwiftUI
 
 struct FeedbackView: View {
     
-    @StateObject var feedbackViewModel : FeedbackViewModel
+    @ObservedObject var mainAppModel : MainAppModel
+    @ObservedObject var feedbackViewModel : FeedbackViewModel
     @State var showSaveDraftSheet : Bool = false
-    @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    
-    init(mainAppModel:MainAppModel) {
-        _feedbackViewModel = StateObject(wrappedValue: FeedbackViewModel(mainAppModel: mainAppModel))
-    }
-    
+
     var body: some View {
         ContainerView {
             content
@@ -121,7 +117,7 @@ struct FeedbackView: View {
             VStack (alignment: .leading, spacing: 0) {
                 SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
                                   description: LocalizableSettings.enableFeedbackExpl.localized ,
-                                  toggle: $appModel.settings.shareFeedback,
+                                  toggle: $mainAppModel.settings.shareFeedback,
                                   withPadding: false) {
                     feedbackViewModel.deleteCurrentDraft()
                 }
@@ -137,7 +133,7 @@ struct FeedbackView: View {
     
     @ViewBuilder
     var feedbackTextView : some View {
-        if $appModel.settings.shareFeedback.wrappedValue {
+        if $mainAppModel.settings.shareFeedback.wrappedValue {
             
             BorderedTextEditorView(placeholder: LocalizableSettings.selectFeedback.localized,
                                    shouldShowTitle: true,
@@ -167,7 +163,9 @@ struct FeedbackView: View {
     }
     
     var confirmBottomSheet: some View {
-        DragView(modalHeight: 200, isShown: $showSaveDraftSheet) {
+        DragView(isPresented: $showSaveDraftSheet,
+                 presentationType: .show,
+                 backgroundColor: Styles.Colors.backgroundTab) {
             ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
                                msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
                                cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
@@ -197,8 +195,7 @@ struct FeedbackView: View {
         }
     }
 }
-
-#Preview {
-    FeedbackView(mainAppModel: MainAppModel.stub())
-        .environmentObject(MainAppModel.stub())
-}
+//
+//#Preview {
+//    FeedbackView(mainAppModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
+//}

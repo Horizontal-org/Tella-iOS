@@ -10,7 +10,6 @@
 import SwiftUI
 struct AddServerURLView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var serversViewModel: ServersViewModel
     @StateObject var viewModel: ServerViewModel
     
     var successCheckServerAction: (() -> Void)? = nil

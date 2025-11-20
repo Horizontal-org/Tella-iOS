@@ -10,7 +10,7 @@ import SwiftUI
 struct LockTimeoutView: View {
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     
     var body: some View {
         
@@ -24,16 +24,18 @@ struct LockTimeoutView: View {
                 Spacer()
                     .frame(height: 30)
                 
-                OptionsView()
+                OptionsView(settingsViewModel: settingsViewModel)
                 
-            }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 24))
+            }
             
             Spacer()
             
-            BottomButtonsView(cancelAction: {
+            BottomButtonsView(settingsViewModel: settingsViewModel, cancelAction: {
                 settingsViewModel.cancelLockTimeout()
                 sheetManager.hide()
-            }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
+            },
+                              cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized,
+                              saveAction: {
                 settingsViewModel.saveLockTimeout()
                 sheetManager.hide()
             }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
@@ -44,7 +46,7 @@ struct LockTimeoutView: View {
 struct OptionsView : View {
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+    var settingsViewModel : SettingsViewModel
     
     var body: some View {
         
@@ -83,7 +85,7 @@ struct LockTimeoutOptionView : View {
 
 struct LockTimeoutView_Previews: PreviewProvider {
     static var previews: some View {
-        LockTimeoutView()
+        LockTimeoutView(settingsViewModel: SettingsViewModel.stub())
             .background(Styles.Colors.backgroundMain)
     }
 }

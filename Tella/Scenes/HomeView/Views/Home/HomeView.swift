@@ -7,17 +7,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject private var appViewState: AppViewState
+
     @EnvironmentObject private var sheetManager: SheetManager
     
-    @StateObject var viewModel : HomeViewModel
-    
-    init(appModel: MainAppModel) {
-        _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
-    }
-    
+    @ObservedObject var viewModel: HomeViewModel
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -41,16 +35,17 @@ struct HomeView: View {
                     Spacer()
                         .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
                     
-                    if appModel.settings.showRecentFiles {
+                    if viewModel.mainAppModel.settings.showRecentFiles {
                         Spacer()
                             .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
-                        RecentFilesListView(recentFiles: $viewModel.recentFiles)
+                        RecentFilesListView(mainAppModel: viewModel.mainAppModel,
+                                            recentFiles: $viewModel.recentFiles)
                     }
                     
                     Spacer()
                         .frame(height: 30)
                     
-                    FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
+                    FileGroupsView(mainAppModel: viewModel.mainAppModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
                 }
             }
             
@@ -62,19 +57,19 @@ struct HomeView: View {
     
     @ViewBuilder
     var quickDeleteView: some View {
-        if appModel.settings.quickDelete {
+        if viewModel.mainAppModel.settings.quickDelete {
             SwipeToDeleteActionView(completion: {
-                if(appModel.settings.deleteVault) {
+                if(viewModel.mainAppModel.settings.deleteVault) {
                     // removes files and folders
                     viewModel.deleteAllVaultFiles()
                 }
                 
-                if(appModel.settings.deleteServerSettings) {
+                if(viewModel.mainAppModel.settings.deleteServerSettings) {
                     // remove servers connections
                     viewModel.deleteAllServersConnection()
                 }
                 
-                appViewState.resetToUnlock()
+                viewModel.appViewState.resetToUnlock()
             })
         }
     }
@@ -84,7 +79,7 @@ struct HomeView: View {
         HStack(spacing: 0) {
             
             Button() {
-                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: viewModel.mainAppModel))
             } label: {
                 Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
                     .padding()
@@ -99,7 +94,7 @@ struct HomeView: View {
             Spacer()
             
             Button {
-                viewModel.items.count > 0 ? showBgEncryptionConfirmationView() : appViewState.resetToUnlock()
+                viewModel.items.count > 0 ? showBgEncryptionConfirmationView() : viewModel.appViewState.resetToUnlock()
             } label: {
                 Image("home.close")
                     .aspectRatio(contentMode: .fit)
@@ -110,20 +105,20 @@ struct HomeView: View {
     }
     
     private func showBgEncryptionConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableBackgroundActivities.exitSheetTitle.localized,
                                msgText: LocalizableBackgroundActivities.exitSheetExpl.localized,
                                cancelText: LocalizableBackgroundActivities.exitcancelSheetAction.localized,
                                actionText: LocalizableBackgroundActivities.exitDiscardSheetAction.localized, didConfirmAction: {
-                appViewState.resetToUnlock()
+                viewModel.appViewState.resetToUnlock()
                 sheetManager.hide()
             })
         }
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(appModel: MainAppModel.stub())
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView(viewModel: HomeViewModel.stub())
+//    }
+//}

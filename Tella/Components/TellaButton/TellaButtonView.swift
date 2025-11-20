@@ -43,9 +43,11 @@ struct TellaButtonView<Destination:View> : View {
         } label: {
             Text(title)
                 .frame(maxWidth:.infinity)
-                .frame(height: 55)
                 .contentShape(Rectangle())
-            
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .multilineTextAlignment(.center)
+
         }.cornerRadius(20)
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)

@@ -42,4 +42,11 @@ class Server: Codable, Equatable, Hashable {
     }
 }
 
-
+extension Server {
+    static func stub() -> Server {
+        return Server(id: 1,
+                      name: "Test Server",
+                      serverType: .tella,
+                      allowMultipleConnections: true)
+    }
+}

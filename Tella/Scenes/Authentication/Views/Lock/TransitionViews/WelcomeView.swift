@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,15 +7,14 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    
-    @State var shouldShowLockChoice : Bool = false
-    var action: (() -> Void)?
+    var appViewState: AppViewState
     
     var body: some View {
         NavigationContainerView {
             TransitionView(transitionViewData: WelcomeViewData()) {
-                shouldShowLockChoice = true
-                navigateTo(destination: LockChoiceView())
+                let lockViewModel = LockViewModel(unlockType: .new, appViewState: appViewState)
+                let mainOnboardingViewModel = MainOnboardingViewModel(lockViewModel: lockViewModel)
+                navigateTo(destination: MainOnboardingView(viewModel: mainOnboardingViewModel))
             }
         }
     }
@@ -23,6 +22,6 @@ struct WelcomeView: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView()
+//        WelcomeView(mainAppModel: MainAppModel.stub())
     }
 }

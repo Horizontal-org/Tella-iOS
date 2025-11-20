@@ -11,7 +11,8 @@
 import SwiftUI
 
 struct UwaziView: View {
-    @EnvironmentObject var uwaziViewModel: UwaziViewModel
+    
+    @ObservedObject var uwaziViewModel: UwaziViewModel
     
     var body: some View {
         
@@ -19,7 +20,6 @@ struct UwaziView: View {
             navigationBarView
         } content: {
             contentView
-                .environmentObject(uwaziViewModel)
         }
         .onReceive(uwaziViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {
@@ -74,10 +74,10 @@ struct UwaziView: View {
                 .frame(height: 20)
             
             AddFileYellowButton(action: {
-                navigateTo(destination: AddTemplatesView()
-                    .environmentObject(AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server?.id)))
+                let addTemplateViewModel = AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel,
+                                                                serverId: uwaziViewModel.server?.id)
+                navigateTo(destination: AddTemplatesView(uwaziTemplateViewModel: addTemplateViewModel))
             }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
-            
         }
         .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
     }
@@ -85,6 +85,6 @@ struct UwaziView: View {
 
 struct UwaziView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziView()
+        UwaziView(uwaziViewModel: UwaziViewModel.stub())
     }
 }

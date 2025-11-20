@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 16/08/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,10 +17,10 @@ enum UnlockType {
 }
 
 struct UnlockView: View {
-
-    @EnvironmentObject private var viewModel: LockViewModel
+    
+    @ObservedObject var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     var type : PasswordTypeEnum
     var body: some View {
         ContainerView {
@@ -60,7 +60,7 @@ struct UnlockView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
-        .onReceive(viewModel.appModel.settings.$deleteAfterFail) { value  in
+        .onReceive(viewModel.mainAppModel.settings.$deleteAfterFail) { value  in
             viewModel.resetMaxAttempts()
         }
         .onReceive(viewModel.$presentingLockChoice) { presentingLockChoice in
@@ -111,12 +111,12 @@ struct UnlockView: View {
         }
     }
     private func showLockChoiceView() {
-        navigateTo(destination: LockChoiceView().environmentObject(viewModel))
+        navigateTo(destination: LockChoiceView(lockViewModel: viewModel))
     }
 }
 
 struct UnlockView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockView(type: .tellaPassword)
+        UnlockView(viewModel: LockViewModel.stub(), type: .tellaPassword)
     }
 }

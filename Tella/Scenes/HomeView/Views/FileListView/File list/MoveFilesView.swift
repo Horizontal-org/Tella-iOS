@@ -7,8 +7,7 @@
 import SwiftUI
 
 struct MoveFilesView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     
     var title : String = ""
@@ -103,6 +102,5 @@ struct MoveFilesView_Previews: PreviewProvider {
             Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
             MoveFilesView(title: "Move “IMG9092.jpg”", fileListViewModel: FileListViewModel.stub())
         }
-        .environmentObject(MainAppModel.stub())
     }
 }

@@ -11,8 +11,7 @@
 import SwiftUI
 
 struct UwaziLoginView: View {
-    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    @StateObject var uwaziServerViewModel : UwaziServerViewModel
     
     var body: some View {
         ServerLoginView(viewModel: uwaziServerViewModel)
@@ -32,16 +31,13 @@ struct UwaziLoginView: View {
     }
     
     fileprivate func showLanguageSelectionView() {
-        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(serversViewModel)
-            .environmentObject(uwaziServerViewModel)
+        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true),
+                                                      uwaziServerViewModel: uwaziServerViewModel)
         navigateTo(destination: languageView)
     }
     
     fileprivate func show2FAView() {
-        let twoStepVerification =  UwaziTwoStepVerification()
-            .environmentObject(serversViewModel)
-            .environmentObject(uwaziServerViewModel)
+        let twoStepVerification =  UwaziTwoStepVerification(uwaziServerViewModel: uwaziServerViewModel)
         if !uwaziServerViewModel.shouldShowLoginError {
             navigateTo(destination: twoStepVerification)
         }
@@ -50,8 +46,6 @@ struct UwaziLoginView: View {
 
 struct UwaziLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziLoginView()
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
-            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+        UwaziLoginView(uwaziServerViewModel: UwaziServerViewModel.stub())
     }
 }

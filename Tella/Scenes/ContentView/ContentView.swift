@@ -4,35 +4,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject private var appViewState: AppViewState
-    @StateObject var lockViewModel : LockViewModel
     
-    init(mainAppModel:MainAppModel, appViewState: AppViewState) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: mainAppModel, appViewState: appViewState))
+    var lockViewModel : LockViewModel?
+    var appViewState : AppViewState
+    
+    init(appViewState: AppViewState) {
+        self.lockViewModel = LockViewModel(unlockType: .new, appViewState: appViewState)
+        self.appViewState = appViewState
     }
     var body: some View {
         
         ZStack {
             if appViewState.currentView == .MAIN {
-                MainView(mainAppModel: appViewState.homeViewModel)
-                    .environmentObject((appViewState.homeViewModel))
+                MainView(appViewState: appViewState)
                     .environment(\.layoutDirection, LanguageManager.shared.currentLanguage.layoutDirection)
                     .environmentObject(SheetManager())
             }
             
             if appViewState.currentView == .LOCK {
-                WelcomeView()
-                    .environmentObject(lockViewModel)
+                WelcomeView(appViewState: appViewState)
             }
             
-            if appViewState.currentView == .UNLOCK {
+            if appViewState.currentView == .UNLOCK, let lockViewModel  {
                 let passwordType = appViewState.homeViewModel.vaultManager.getPasswordType()
                 passwordType == .tellaPassword ?
-                UnlockView(type: .tellaPassword)
-                    .environmentObject(lockViewModel)
+                UnlockView(viewModel: lockViewModel, type: .tellaPassword)
                     .eraseToAnyView() :
-                UnlockView(type: .tellaPin)
-                    .environmentObject(lockViewModel)
+                UnlockView(viewModel: lockViewModel, type: .tellaPin)
                     .eraseToAnyView()
             }
         }.onAppear {

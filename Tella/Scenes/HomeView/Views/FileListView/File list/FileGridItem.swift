@@ -13,8 +13,7 @@ import SwiftUI
 struct FileGridItem: View {
     
     var file: VaultFileDB
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     
     var body: some View {
@@ -112,8 +111,6 @@ struct FileGridItem: View {
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
         FileGridItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
-            .environmentObject(MainAppModel.stub())
-        
     }
 }
 

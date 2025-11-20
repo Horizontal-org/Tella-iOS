@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -9,18 +9,12 @@ import SwiftUI
 
 struct SecuritySettingsView: View {
     
-    @EnvironmentObject var appModel : MainAppModel
-     var settingsViewModel : SettingsViewModel
+    @ObservedObject var mainAppModel : MainAppModel
+    var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
-    @StateObject var lockViewModel: LockViewModel
+    @ObservedObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
-    
-    
-    init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel, appViewState: appViewState))
-        self.settingsViewModel = settingsViewModel
-    }
-    
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -30,7 +24,7 @@ struct SecuritySettingsView: View {
         }
         .onAppear {
             lockViewModel.shouldDismiss.send(false)
-            let passwordType = appModel.vaultManager.getPasswordType()
+            let passwordType = mainAppModel.vaultManager.getPasswordType()
             passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
         }
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -74,7 +68,7 @@ struct SecuritySettingsView: View {
     var lockTimeoutView: some View {
         SettingsItemView<AnyView>(imageName:"settings.timeout",
                                   title: LocalizableSettings.settSecLockTimeout.localized,
-                                  value: appModel.settings.lockTimeout.displayName,
+                                  value: mainAppModel.settings.lockTimeout.displayName,
                                   destination:nil) {
             showLockTimeout()
         }
@@ -84,7 +78,7 @@ struct SecuritySettingsView: View {
     var deleteAfterFailGroupView: some View {
         Group {
             deleteAfterFailView
-            if(appModel.settings.deleteAfterFail != .off) {
+            if(mainAppModel.settings.deleteAfterFail != .off) {
                 DividerView()
                 showUnlockAttemptsRemainingView
             }
@@ -94,7 +88,7 @@ struct SecuritySettingsView: View {
     var deleteAfterFailView: some View {
         SettingsItemView<AnyView>(imageName: "settings.lock",
                                   title: LocalizableSettings.settSecDeleteAfterFail.localized,
-                                  value: appModel.settings.deleteAfterFail.selectedDisplayName,
+                                  value: mainAppModel.settings.deleteAfterFail.selectedDisplayName,
                                   destination:nil) {
             showDeleteAfterFailedAttempts()
         }
@@ -103,38 +97,68 @@ struct SecuritySettingsView: View {
     var showUnlockAttemptsRemainingView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
                           description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
-                          toggle: $appModel.settings.showUnlockAttempts)
+                          toggle: $mainAppModel.settings.showUnlockAttempts, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Screen Security
     var screenSecurityView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
                           description: LocalizableSettings.settSecScreenSecurityExpl.localized,
-                          toggle: $appModel.settings.screenSecurity)
+                          toggle: $mainAppModel.settings.screenSecurity, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Preserve metadata when importing
     var preserveMetadataView: some View {
         SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
                           description: LocalizableSettings.settSecPreserveMetadataExpl.localized,
-                          toggle: $appModel.settings.preserveMetadata)
+                          toggle: $mainAppModel.settings.preserveMetadata, onChange: {
+            mainAppModel.saveSettings()
+        })
     }
     
     // MARK: Quick delete
     var quickDeleteView: some View {
         
-        Group {
+        let quickDeleteBinding = Binding<Bool>(
+            get: { mainAppModel.settings.quickDelete },
+            set: { isOn in
+                withTransaction(Transaction(animation: .easeInOut)) {
+                    let settings = mainAppModel.settings
+                    settings.quickDelete = isOn
+                    settings.deleteVault = isOn
+                    mainAppModel.settings = settings
+                }
+                mainAppModel.saveSettings()
+            }
+        )
+        
+        return Group {
+            
             SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
                               description: LocalizableSettings.settQuickDeleteExpl.localized,
-                              toggle: $appModel.settings.quickDelete)
-            if appModel.settings.quickDelete {
+                              toggle: quickDeleteBinding, onChange: {
+                mainAppModel.saveSettings()
+            })
+
+            if mainAppModel.settings.quickDelete {
+                
+                DividerView()
+                
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteVault ,
-                    title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized
+                    isChecked: $mainAppModel.settings.deleteVault,
+                    mainAppModel: mainAppModel,
+                    title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized,
+                    helpText: LocalizableSettings.settQuickDeleteFilesTooltip.localized
                 )
                 SettingCheckboxItem(
-                    isChecked: $appModel.settings.deleteServerSettings ,
-                    title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized
+                    isChecked: $mainAppModel.settings.deleteServerSettings,
+                    mainAppModel: mainAppModel,
+                    title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized,
+                    helpText: LocalizableSettings.settQuickDeleteConnectionsTooltip.localized
                 )
             }
         }
@@ -142,42 +166,40 @@ struct SecuritySettingsView: View {
     
     var unlockView : some View {
         
-        let passwordType = appModel.vaultManager.getPasswordType()
-
+        let passwordType = mainAppModel.vaultManager.getPasswordType()
+        
         return ContainerViewWithHeader {
             NavigationHeaderView()
         } content: {
             passwordType == .tellaPassword ?
             
-            UnlockView(type: .tellaPassword)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()  :
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPassword)
+            .eraseToAnyView()  :
             
-            UnlockView(type: .tellaPin)
-                .environmentObject(lockViewModel)
-                .eraseToAnyView()
+            UnlockView(viewModel: lockViewModel,
+                       type: .tellaPin)
+            .eraseToAnyView()
         }
     }
     
     func showLockTimeout() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
-            LockTimeoutView()
-                .environmentObject(settingsViewModel)
+        sheetManager.showBottomSheet() {
+            LockTimeoutView(settingsViewModel: settingsViewModel)
         }
     }
     
     func showDeleteAfterFailedAttempts() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
-            DeleteAfterFailView()
-                .environmentObject(settingsViewModel)
+        sheetManager.showBottomSheet() {
+            DeleteAfterFailView(settingsViewModel: settingsViewModel)
         }
     }
 }
 
-struct SecuritySettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub(),
-                             appViewState: AppViewState(),
-                             settingsViewModel: SettingsViewModel(appModel: MainAppModel.stub()))
-    }
-}
+//struct SecuritySettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SecuritySettingsView(mainAppModel: MainAppModel.stub(),
+//                             appViewState: AppViewState(),
+//                             settingsViewModel: SettingsViewModel(mainAppModel: MainAppModel.stub()))
+//    }
+//}

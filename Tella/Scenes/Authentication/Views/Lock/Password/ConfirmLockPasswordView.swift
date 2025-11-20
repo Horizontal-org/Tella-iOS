@@ -11,10 +11,9 @@
 import SwiftUI
 
 struct ConfirmLockPasswordView: View {
-    
-    @EnvironmentObject private var appViewState: AppViewState
+
     @State var shouldShowErrorMessage : Bool = false
-    @EnvironmentObject var lockViewModel: LockViewModel
+    @ObservedObject var lockViewModel: LockViewModel
     @State var shouldShowOnboarding : Bool = false
     
     
@@ -37,7 +36,7 @@ struct ConfirmLockPasswordView: View {
     
     func lockWithPassword() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPassword)
-        navigateTo(destination: OnboardingEndView())
+        lockViewModel.shouldDismiss.send(true)
     }
     
     func updatePassword() {
@@ -48,6 +47,6 @@ struct ConfirmLockPasswordView: View {
 
 struct ConfirmLPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmLockPasswordView()
+        ConfirmLockPasswordView(lockViewModel: LockViewModel.stub())
     }
 }

@@ -7,8 +7,7 @@
 import SwiftUI
 
 struct AddNewFolderView: View {
-    
-    @EnvironmentObject var appModel: MainAppModel
+
     @ObservedObject var fileListViewModel : FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
@@ -31,7 +30,7 @@ struct AddNewFolderView: View {
     }
     
     func showCreateNewFolderSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, backgroundColor: Styles.Colors.lightBlue, content: {
+        sheetManager.showBottomSheet(backgroundColor: Styles.Colors.lightBlue, content: {
             TextFieldBottomSheetView(titleText: LocalizableVault.createNewFolderSheetTitle.localized,
                                      validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,

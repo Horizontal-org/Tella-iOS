@@ -101,5 +101,5 @@ struct SelectDriveConnectionView: View {
 }
 
 #Preview {
-    SelectDriveConnectionView(selectedDriveConnectionType: .personal, gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(),mainAppModel: MainAppModel.stub()))
+    SelectDriveConnectionView(selectedDriveConnectionType: .personal, gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(),mainAppModel: MainAppModel.stub(), serversSourceView: .settings))
 }

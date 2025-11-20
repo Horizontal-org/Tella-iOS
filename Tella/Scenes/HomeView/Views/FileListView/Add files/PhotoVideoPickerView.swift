@@ -25,11 +25,11 @@ struct PhotoVideoPickerView: View {
     
     init(showingImagePicker: Binding<Bool>,
          showingImportDocumentPicker: Binding<Bool>,
-         appModel: MainAppModel,
+         mainAppModel: MainAppModel,
          resultFile : Binding<[VaultFileDB]?>? = nil,
          rootFile:Binding<VaultFileDB?>? = nil) {
         
-        _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
+        _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: mainAppModel,
                                                                    folderPathArray: [],
                                                                    resultFile: resultFile,
                                                                    rootFile: rootFile))
@@ -97,7 +97,7 @@ struct PhotoVideoPickerView: View {
             self.dismiss()
         })
         
-        self.showBottomSheetView(content: content, modalHeight: 255)
+        self.showBottomSheetView(content: content)
     }
     
     func showLimitedAccessView() {
@@ -133,10 +133,10 @@ struct PhotoVideoPickerView: View {
     
     func showProgressView() {
         viewModel.progressFile = ProgressFile()
-        sheetManager.showBottomSheet(modalHeight: 190,
-                                     shouldHideOnTap: false,
+        sheetManager.showBottomSheet(shouldHideOnTap: false,
                                      content: {
-            ImportFilesProgressView(progress: viewModel.progressFile,
+            ImportFilesProgressView(mainAppModel: viewModel.mainAppModel,
+                                    progress: viewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesProgress())
             
         })

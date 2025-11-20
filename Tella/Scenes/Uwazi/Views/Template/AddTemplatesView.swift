@@ -11,8 +11,9 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-    @EnvironmentObject var uwaziTemplateViewModel: AddTemplateViewModel
+    @ObservedObject var uwaziTemplateViewModel: AddTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
+    
     var body: some View {
         
         ZStack {
@@ -58,7 +59,8 @@ struct AddTemplatesView: View {
                 firstPart + secondPart
             }
             .onTapGesture {
-                navigateTo(destination: ServersListView().environmentObject(ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)))
+                let viewModel = ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)
+                navigateTo(destination: ServersListView(serversViewModel: viewModel))
             }
         }
         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
