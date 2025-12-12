@@ -11,12 +11,12 @@
 import Foundation
 
 struct UwaziRelationshipDTO: Codable {
-    let rows: [UwaziRelationshipRowDTO]
+    let rows: [UwaziRelationshipRowDTO]?
 }
 
 struct UwaziRelationshipRowDTO: Codable, DataModel {
-    let id, name: String
-    let values: [EntityRelationshipItemDTO]
+    let id, name: String?
+    let values: [EntityRelationshipItemDTO]?
     let type: String?
 
     enum CodingKeys: String, CodingKey {
@@ -27,7 +27,7 @@ struct UwaziRelationshipRowDTO: Codable, DataModel {
     }
 
     func toDomain() -> DomainModel? {
-        let transformedValues = values.map { dto -> EntityRelationshipItem in
+        let transformedValues = values?.map { dto -> EntityRelationshipItem in
             EntityRelationshipItem(id: dto.id, label: dto.label)
         }
         return UwaziRelationshipList(id: id,

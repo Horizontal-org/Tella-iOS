@@ -93,10 +93,11 @@ class ResourcesViewModel: ObservableObject {
     }
 
     func downloadResource(serverId: Int?, resource: Resource) {
-        toggleIsLoadingResource(id: resource.id)
         guard let selectedServer = servers.first(where: { $0.id == serverId }) else {
+            Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
             return
         }
+        toggleIsLoadingResource(id: resource.id)
 
         fetchResourceFromServer(server: selectedServer, resource: resource) {
             result in
@@ -125,9 +126,13 @@ class ResourcesViewModel: ObservableObject {
         server: TellaServer, resource: Resource,
         completion: @escaping (Result<Data, APIError>) -> Void
     ) {
+        guard let fileName = resource.fileName else {
+            completion(.failure(APIError.unexpectedResponse))
+            return
+        }
         let resourceRepository = ResourceRepository()
         resourceRepository.getResourceByFileName(
-            server: server, fileName: resource.fileName
+            server: server, fileName: fileName
         )
         .receive(on: DispatchQueue.main)
         .sink(
@@ -200,7 +205,7 @@ class ResourcesViewModel: ObservableObject {
         return url
     }
     
-    private func toggleIsLoadingResource(id: String) {
+    private func toggleIsLoadingResource(id: String?) {
         if let index = self.availableResources.firstIndex(where: { $0.id == id }) {
             self.availableResources[index].isLoading = !self.availableResources[index].isLoading
             self.availableResources = self.availableResources.map { $0 }

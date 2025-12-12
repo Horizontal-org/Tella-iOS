@@ -11,14 +11,14 @@
 import Foundation
 
 class UwaziRelationshipList: DomainModel, Codable, Identifiable {
-    let id, name: String
+    let id, name: String?
     let values: [EntityRelationshipItem]
-    let type: String
+    let type: String?
 
-    init(id: String, name: String, values: [EntityRelationshipItem], type: String) {
+    init(id: String?, name: String?, values: [EntityRelationshipItem]?, type: String?) {
         self.id = id
         self.name = name
-        self.values = values
+        self.values = values ?? []
         self.type = type
     }
 }

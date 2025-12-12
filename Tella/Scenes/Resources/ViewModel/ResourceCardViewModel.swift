@@ -11,7 +11,7 @@
 import Foundation
 
 class ResourceCardViewModel : Hashable, Identifiable {
-    var id: String
+    var id: String?
     var externalId: String?
     var title: String
     var serverName: String
@@ -19,6 +19,7 @@ class ResourceCardViewModel : Hashable, Identifiable {
     var action: () -> Void
     var onTap: () -> Void?
     var isLoading: Bool
+    private let identity: String
     
     init(resource: Resource,
          serverName: String,
@@ -27,8 +28,9 @@ class ResourceCardViewModel : Hashable, Identifiable {
          isLoading: Bool = false
     ) {
         self.id = resource.id
+        self.identity = resource.id ?? UUID().uuidString
         self.externalId = resource.externalId
-        self.title = resource.title
+        self.title = resource.title ?? ""
         self.serverName = serverName
         self.type = type
         self.action = action
@@ -43,6 +45,7 @@ class ResourceCardViewModel : Hashable, Identifiable {
          isLoading: Bool = false ) {
         
         self.id = resource.id
+        self.identity = resource.id ?? UUID().uuidString
         self.externalId = resource.externalId
         self.title = resource.title
         self.serverName = resource.server?.name ?? ""
@@ -53,10 +56,10 @@ class ResourceCardViewModel : Hashable, Identifiable {
     }
     
     static func == (lhs: ResourceCardViewModel, rhs: ResourceCardViewModel) -> Bool {
-        lhs.id == rhs.id
+        lhs.identity == rhs.identity
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(identity)
     }
 }
