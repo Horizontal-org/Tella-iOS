@@ -71,93 +71,107 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             grantedScopes.contains(scope)
         }
     }
-    
+
+    private func ensureScopes(
+        for user: GIDGoogleUser,
+        presenting rootViewController: UIViewController,
+        continuation: CheckedContinuation<Void, Error>
+    ) {
+        if hasRequiredScopes(user) {
+            self.googleUser = user
+            continuation.resume(returning: ())
+            return
+        }
+
+        user.addScopes(
+            [GoogleAuthConstants.gDriveScopesFile,
+             GoogleAuthConstants.gDriveScopesReadonly],
+            presenting: rootViewController
+        ) { [weak self] signInResult, error in
+            guard let self else {
+                continuation.resume(throwing: APIError.unexpectedResponse)
+                return
+            }
+
+            if let error = error {
+                if let nsError = error as NSError?,
+                   nsError.code == GoggleDriveErrorCodes.scopesAlreadyGranted.rawValue {
+                    self.googleUser = user
+                    continuation.resume(returning: ())
+                } else {
+                    continuation.resume(throwing: APIError.driveApiError(error))
+                }
+                return
+            }
+
+            self.googleUser = signInResult?.user ?? user
+            continuation.resume(returning: ())
+        }
+    }
+
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
+                    return
+                }
                 guard let rootViewController = self.rootViewController else {
                     continuation.resume(throwing: APIError.unexpectedResponse)
                     return
                 }
-                GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
+
+                GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [weak self] signInResult, error in
+                    guard let self else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+
                     if let error = error {
                         continuation.resume(throwing: APIError.driveApiError(error))
-                    } else {
-                        guard let user = signInResult?.user else {
-                            continuation.resume(throwing: APIError.unexpectedResponse)
-                            return
-                        }
-                        
-                        if self.hasRequiredScopes(user) {
-                            self.googleUser = user
-                            continuation.resume(returning: ())
-                        } else {
-                            user.addScopes(
-                                [GoogleAuthConstants.gDriveScopesFile,
-                                 GoogleAuthConstants.gDriveScopesReadonly],
-                                presenting: rootViewController
-                            ) { signInResult, error in
-                                if let error = error {
-                                    if let nsError = error as NSError?,
-                                       nsError.code == GoggleDriveErrorCodes.scopesAlreadyGranted.rawValue {
-                                        self.googleUser = user
-                                        continuation.resume(returning: ())
-                                    } else {
-                                        continuation.resume(throwing: APIError.driveApiError(error))
-                                    }
-                                } else {
-                                    self.googleUser = signInResult?.user ?? user
-                                    continuation.resume(returning: ())
-                                }
-                            }
-                        }
+                        return
                     }
+
+                    guard let user = signInResult?.user else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+
+                    self.ensureScopes(for: user, presenting: rootViewController, continuation: continuation)
                 }
             }
         }
     }
-    
+
     private func restorePreviousSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
+                    return
+                }
                 guard let rootViewController = self.rootViewController else {
                     continuation.resume(throwing: APIError.unexpectedResponse)
                     return
                 }
-                
-                GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+
+                GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+                    guard let self else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+
                     if let error = error {
                         continuation.resume(throwing: error)
                         return
                     }
+
                     guard let user = user else {
                         continuation.resume(throwing: APIError.unexpectedResponse)
                         return
                     }
-                    
-                    if self.hasRequiredScopes(user) {
-                        self.googleUser = user
-                        continuation.resume(returning: ())
-                    } else {
-                        user.addScopes(
-                            [GoogleAuthConstants.gDriveScopesFile,
-                             GoogleAuthConstants.gDriveScopesReadonly],
-                            presenting: rootViewController
-                        ) { signInResult, error in
-                            if let error = error {
-                                if let nsError = error as NSError?,
-                                   nsError.code == GoggleDriveErrorCodes.scopesAlreadyGranted.rawValue {
-                                    self.googleUser = user
-                                    continuation.resume(returning: ())
-                                } else {
-                                    continuation.resume(throwing: APIError.driveApiError(error))
-                                }
-                            } else {
-                                self.googleUser = signInResult?.user ?? user
-                                continuation.resume(returning: ())
-                            }
-                        }
-                    }
+
+                    self.ensureScopes(for: user, presenting: rootViewController, continuation: continuation)
                 }
             }
         }
