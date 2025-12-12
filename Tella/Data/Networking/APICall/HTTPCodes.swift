@@ -33,3 +33,7 @@ enum NcHTTPErrorCodes: Int {
     case unauthorized = 401
     case nonExistentFolder = 409
 }
+
+enum GoggleDriveErrorCodes: Int {
+    case scopesAlreadyGranted = -8
+}
