@@ -11,9 +11,9 @@
 import Foundation
 
 struct UwaziCheckURLDTO: Codable, DataModel {
-    let id: String
-    let siteName: String
-    let isPrivate: Bool
+    let id: String?
+    let siteName: String?
+    let isPrivate: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"

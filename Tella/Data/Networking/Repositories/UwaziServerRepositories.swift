@@ -144,11 +144,12 @@ class UwaziServerRepository: WebRepository {
     
     func getRelationshipEntities(serverURL: String, cookie: String, relatedEntityIds: [String]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
         let apiResponse: APIResponse<UwaziRelationshipDTO> = getAPIResponse(endpoint: API.getRelationshipEntities(serverURL:serverURL, cookie:cookie))
+        let shouldFetchAllTemplates = relatedEntityIds.contains { $0.isEmpty }
+
         return apiResponse
             .compactMap{ $0.0 }
-            .map { dto in
-                let shouldFetchAllTemplates = relatedEntityIds.contains { $0.isEmpty }
-                return dto.rows
+            .compactMap { dto in
+                return dto.rows?
                     .filter{ $0.type == UwaziEntityMetadataKeys.template }
                     .filter { relationship in
                         shouldFetchAllTemplates || relatedEntityIds.contains(where: { $0 == relationship.id })
@@ -183,11 +184,11 @@ extension UwaziServerRepository {
         .tryMap({ (templateResult, settings, dictionary, translationResult) in
             let templates = templateResult.rows
             let translations = translationResult.rows
-            let dictionary = dictionary.rows
+            let dictionaryRows = dictionary.rows
             let settings: UwaziSettingDTO = settings
 
             // Maps the options to the property of the template
-            self.handleMapping(templates, dictionary)
+            self.handleMapping(templates, dictionaryRows)
             // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
             let resultTemplates = self.getAllowedTemplates(server: server, settings: settings, templates: templates)
             self.translate(locale: server.locale ?? "", resultTemplates: resultTemplates, translations: translations)
@@ -203,9 +204,10 @@ extension UwaziServerRepository {
         if !self.isPublic(server: server) {
             tempTemplates = templates ?? []
         } else {
-            if !settings.allowedPublicTemplates.isEmpty {
+            let allowedPublicTemplates = settings.allowedPublicTemplates ?? []
+            if !allowedPublicTemplates.isEmpty {
                 templates?.forEach { row in
-                    settings.allowedPublicTemplates.forEach { id in
+                    allowedPublicTemplates.forEach { id in
                         if row.id == id {
                             tempTemplates.append(row)
                         }
@@ -235,7 +237,7 @@ extension UwaziServerRepository {
         resultTemplates.forEach { template in
             // Get only the translations based on the language that user selected
             let filteredTranslations = translations?.filter{$0.locale == locale}
-            filteredTranslations?.first?.contexts.forEach{ context in
+            filteredTranslations?.first?.contexts?.forEach{ context in
                 // Compare context id and template id to determine appropiate translations
                 if context.contextID == template.id {
                     handleTranslationForTemplate(template: template, context: context)
