@@ -13,10 +13,10 @@ import Foundation
 // MARK: - Welcome
 class UwaziSettingDTO: Codable {
     let id, siteName: String?
-    let languages: [UwaziLanguageRowDTO]
+    let languages: [UwaziLanguageRowDTO]?
     let version: Int?
     let isPrivate: Bool?
-    let allowedPublicTemplates: [String]
+    let allowedPublicTemplates: [String]?
     let mapAPIKey: String?
 
     enum CodingKeys: String, CodingKey {

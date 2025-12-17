@@ -16,7 +16,7 @@ struct ResourceRepository: WebRepository {
         let apiResponse: APIResponse<[ProjectDTO]> = getAPIResponse(endpoint: API.getResourcesByProject(serverUrl: server.url ?? "", projectId: server.projectId ?? "", token: server.accessToken ?? ""))
         return apiResponse
             .compactMap{$0.0.first?.toDomain() as? Project}
-            .compactMap{$0.resources}
+            .map{$0.resources}
             .eraseToAnyPublisher()
     }
     

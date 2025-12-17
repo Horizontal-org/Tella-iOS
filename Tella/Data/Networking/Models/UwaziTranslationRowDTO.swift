@@ -16,7 +16,7 @@ struct UwaziTranslationDTO: Codable {
 
 struct UwaziTranslationRowDTO: Codable {
     let id, locale: String?
-    let contexts: [UwaziTranslationContextDTO]
+    let contexts: [UwaziTranslationContextDTO]?
     let version: Int?
 
     enum CodingKeys: String, CodingKey {

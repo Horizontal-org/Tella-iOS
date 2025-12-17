@@ -12,7 +12,7 @@ import Foundation
 
 
 struct UwaziTemplateDTO: Codable {
-    let rows: [UwaziTemplateRowDTO]
+    let rows: [UwaziTemplateRowDTO]?
 }
 
 class UwaziTemplateRowDTO: Codable, DataModel {

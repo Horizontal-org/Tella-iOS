@@ -11,22 +11,22 @@
 import Foundation
 
 class Project: DomainModel {
-    var id: String
+    var id: String?
     var resources: [Resource]
     
-    init(id: String, resources: [Resource]) {
+    init(id: String?, resources: [Resource]?) {
         self.id = id
-        self.resources = resources
+        self.resources = resources ?? []
     }
 }
 
 class Resource: DomainModel {
-    var id: String
+    var id: String?
     var externalId: String?
-    var title: String
-    var fileName: String
+    var title: String?
+    var fileName: String?
     
-    init(id: String, externalId: String? = nil, title: String, fileName: String ) {
+    init(id: String?, externalId: String? = nil, title: String?, fileName: String? ) {
         self.id = id
         self.externalId = externalId
         self.title = title
