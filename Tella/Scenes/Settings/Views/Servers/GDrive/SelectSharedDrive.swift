@@ -30,7 +30,9 @@ struct SelectSharedDriveView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
                              backButtonAction:{ backButtonAction() },
-                             rightButtonType: .save)
+                             rightButtonType: .save,
+                             rightButtonAction: { saveButtonAction() },
+                             isRightButtonEnabled: (gDriveServerViewModel.selectedDrive != nil))
     }
     
     var contentView: some View {
@@ -48,7 +50,7 @@ struct SelectSharedDriveView: View {
             
             Spacer()
         }
-        .padding(.vertical, 8)
+        .padding(.top, 8)
         .background(Color.white.opacity(0.03))
     }
     
@@ -65,8 +67,11 @@ struct SelectSharedDriveView: View {
     
     
     func backButtonAction() {
+        presentationMode.wrappedValue.dismiss()
+    }
+    
+    func saveButtonAction() {
         guard let selectedDrive = gDriveServerViewModel.selectedDrive else {
-            presentationMode.wrappedValue.dismiss()
             return
         }
         gDriveServerViewModel.addServer(rootFolder: selectedDrive.id,
@@ -77,7 +82,6 @@ struct SelectSharedDriveView: View {
             navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
                                                      type: .gDrive))
         }
-        
     }
     
     private var reportsView: GdriveReportMainView {
