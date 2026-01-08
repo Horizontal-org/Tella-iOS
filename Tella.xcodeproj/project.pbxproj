@@ -319,6 +319,7 @@
 		12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */; };
 		12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */; };
 		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
+		129771862F0FE89200828857 /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = 129771852F0FE89200828857 /* Mantis */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
@@ -1349,6 +1350,7 @@
 			files = (
 				129209032C9DB00500767760 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
+				129771862F0FE89200828857 /* Mantis in Frameworks */,
 				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3555,6 +3557,7 @@
 			name = Tella;
 			packageProductDependencies = (
 				129209022C9DB00500767760 /* NextcloudKit */,
+				129771852F0FE89200828857 /* Mantis */,
 			);
 			productName = Tella;
 			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
@@ -3658,6 +3661,7 @@
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
 				129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */,
 			);
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
 			projectDirPath = "";
@@ -4931,6 +4935,14 @@
 				minimumVersion = 4.0.8;
 			};
 		};
+		129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/guoyingtao/Mantis.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.28.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -4938,6 +4950,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
+		};
+		129771852F0FE89200828857 /* Mantis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */;
+			productName = Mantis;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

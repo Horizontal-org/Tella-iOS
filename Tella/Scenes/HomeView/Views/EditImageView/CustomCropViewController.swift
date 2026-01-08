@@ -10,6 +10,7 @@
 
 import Mantis
 import Combine
+import UIKit
 
 class CustomCropViewController: Mantis.CropViewController {
     
