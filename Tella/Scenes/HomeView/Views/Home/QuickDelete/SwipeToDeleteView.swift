@@ -21,6 +21,50 @@ struct SwipeToDeleteActionView: View {
         LanguageManager.shared.currentLanguage.layoutDirection == .rightToLeft
     }
     
+    private func calculateOffset(from translation: CGFloat) -> CGFloat {
+        if isRTL {
+            if translation < 0 {
+                let absTranslation = abs(translation)
+                if absTranslation >= maxtTranslationWidth {
+                    return maxtTranslationWidth
+                } else {
+                    return -translation
+                }
+            } else {
+                return 0
+            }
+        } else {
+            if translation > 0 {
+                if translation >= maxtTranslationWidth {
+                    return maxtTranslationWidth
+                } else {
+                    return translation
+                }
+            } else {
+                return 0
+            }
+        }
+    }
+    
+    private func handleSwipeEnd(translation: CGFloat) {
+        swipeEndAction()
+        
+        if isRTL {
+            if translation < 0 {
+                let absTranslation = abs(translation)
+                if absTranslation >= maxtTranslationWidth {
+                    showQuickDeleteView()
+                }
+            }
+        } else {
+            if translation > 0 {
+                if translation >= maxtTranslationWidth {
+                    showQuickDeleteView()
+                }
+            }
+        }
+    }
+    
     //TODO: add DELETE label
     var body: some View {
         ZStack {
@@ -37,60 +81,12 @@ struct SwipeToDeleteActionView: View {
                 .gesture(
                     DragGesture()
                         .onChanged({ value in
-                            
-                            if isRTL {
-                                if value.translation.width < 0 {
-                                    if (abs(value.translation.width) >= maxtTranslationWidth) {
-                                        self.offset = maxtTranslationWidth
-                                        
-                                    } else {
-                                        
-                                        self.offset = -value.translation.width
-                                        
-                                    }
-                                } else {
-                                    self.offset = 0
-                                }
-                            } else {
-                                if value.translation.width > 0 {
-                                    if (value.translation.width >= maxtTranslationWidth) {
-                                        self.offset = maxtTranslationWidth
-                                    } else {
-                                        self.offset = value.translation.width
-                                    }
-                                }else {
-                                    self.offset = 0
-                                }
-                            }
+                            self.offset = calculateOffset(from: value.translation.width)
                         })
                         .onEnded({ value in
-                            swipeEndAction()
-                            if isRTL {
-                                if value.translation.width < 0 {
-                                    if (abs(value.translation.width) >= maxtTranslationWidth) {
-                                        self.offset = maxtTranslationWidth
-                                        swipeEndAction()
-                                        showQuickDeleteView()
-                                    }else {
-                                        swipeEndAction()
-                                    }
-                                }else {
-                                    swipeEndAction()
-                                }
-                            } else {
-                                if value.translation.width > 0 {
-                                    if (value.translation.width >= maxtTranslationWidth) {
-                                        self.offset = maxtTranslationWidth
-                                        swipeEndAction()
-                                        showQuickDeleteView()
-                                    }else {
-                                        swipeEndAction()
-                                    }
-                                }else {
-                                    swipeEndAction()
-                                }
-                            }
-                        })).animation(.linear)
+                            handleSwipeEnd(translation: value.translation.width)
+                        }))
+                .animation(.linear)
         }
         .padding(EdgeInsets(top: 5, leading: 19, bottom: 19, trailing: 19))
     }
