@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,6 +17,54 @@ struct SwipeToDeleteActionView: View {
     
     @State private var offset:CGFloat = 0
     
+    private var isRTL: Bool {
+        LanguageManager.shared.currentLanguage.layoutDirection == .rightToLeft
+    }
+    
+    private func calculateOffset(from translation: CGFloat) -> CGFloat {
+        if isRTL {
+            if translation < 0 {
+                let absTranslation = abs(translation)
+                if absTranslation >= maxtTranslationWidth {
+                    return maxtTranslationWidth
+                } else {
+                    return -translation
+                }
+            } else {
+                return 0
+            }
+        } else {
+            if translation > 0 {
+                if translation >= maxtTranslationWidth {
+                    return maxtTranslationWidth
+                } else {
+                    return translation
+                }
+            } else {
+                return 0
+            }
+        }
+    }
+    
+    private func handleSwipeEnd(translation: CGFloat) {
+        swipeEndAction()
+        
+        if isRTL {
+            if translation < 0 {
+                let absTranslation = abs(translation)
+                if absTranslation >= maxtTranslationWidth {
+                    showQuickDeleteView()
+                }
+            }
+        } else {
+            if translation > 0 {
+                if translation >= maxtTranslationWidth {
+                    showQuickDeleteView()
+                }
+            }
+        }
+    }
+    
     //TODO: add DELETE label
     var body: some View {
         ZStack {
@@ -33,30 +81,12 @@ struct SwipeToDeleteActionView: View {
                 .gesture(
                     DragGesture()
                         .onChanged({ value in
-                            if value.translation.width > 0 {
-                                if (value.translation.width >= maxtTranslationWidth) {
-                                    self.offset = maxtTranslationWidth
-                                }else {
-                                    self.offset = value.translation.width
-                                }
-                            }else {
-                                self.offset = 0
-                            }
+                            self.offset = calculateOffset(from: value.translation.width)
                         })
                         .onEnded({ value in
-                            swipeEndAction()
-                            if value.translation.width > 0 {
-                                if (value.translation.width >= maxtTranslationWidth) {
-                                    self.offset = maxtTranslationWidth
-                                    swipeEndAction()
-                                    showQuickDeleteView()
-                                }else {
-                                    swipeEndAction()
-                                }
-                            }else {
-                                swipeEndAction()
-                            }
-                        })).animation(.linear)
+                            handleSwipeEnd(translation: value.translation.width)
+                        }))
+                .animation(.linear)
         }
         .padding(EdgeInsets(top: 5, leading: 19, bottom: 19, trailing: 19))
     }
@@ -64,13 +94,14 @@ struct SwipeToDeleteActionView: View {
     func showQuickDeleteView() {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {QuickDeleteView(completion: completion)})
     }
-
+    
     func swipeEndAction() {
         offset = 0
     }
     
     var swipeButton: some View {
-        Image("arrow-right")
+        Image(.arrowRight)
+            .scaleEffect(x: isRTL ? -1 : 1, y: 1)
             .frame(width: 45, height: 45, alignment: .center)
             .padding(.zero)
             .background(Color.white.opacity(0.4))
