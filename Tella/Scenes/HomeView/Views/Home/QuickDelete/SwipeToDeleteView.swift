@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,6 +17,10 @@ struct SwipeToDeleteActionView: View {
     
     @State private var offset:CGFloat = 0
     
+    private var isRTL: Bool {
+        LanguageManager.shared.currentLanguage.layoutDirection == .rightToLeft
+    }
+    
     //TODO: add DELETE label
     var body: some View {
         ZStack {
@@ -33,28 +37,58 @@ struct SwipeToDeleteActionView: View {
                 .gesture(
                     DragGesture()
                         .onChanged({ value in
-                            if value.translation.width > 0 {
-                                if (value.translation.width >= maxtTranslationWidth) {
-                                    self.offset = maxtTranslationWidth
-                                }else {
-                                    self.offset = value.translation.width
+                            
+                            if isRTL {
+                                if value.translation.width < 0 {
+                                    if (abs(value.translation.width) >= maxtTranslationWidth) {
+                                        self.offset = maxtTranslationWidth
+                                        
+                                    } else {
+                                        
+                                        self.offset = -value.translation.width
+                                        
+                                    }
+                                } else {
+                                    self.offset = 0
                                 }
-                            }else {
-                                self.offset = 0
+                            } else {
+                                if value.translation.width > 0 {
+                                    if (value.translation.width >= maxtTranslationWidth) {
+                                        self.offset = maxtTranslationWidth
+                                    } else {
+                                        self.offset = value.translation.width
+                                    }
+                                }else {
+                                    self.offset = 0
+                                }
                             }
                         })
                         .onEnded({ value in
                             swipeEndAction()
-                            if value.translation.width > 0 {
-                                if (value.translation.width >= maxtTranslationWidth) {
-                                    self.offset = maxtTranslationWidth
-                                    swipeEndAction()
-                                    showQuickDeleteView()
+                            if isRTL {
+                                if value.translation.width < 0 {
+                                    if (abs(value.translation.width) >= maxtTranslationWidth) {
+                                        self.offset = maxtTranslationWidth
+                                        swipeEndAction()
+                                        showQuickDeleteView()
+                                    }else {
+                                        swipeEndAction()
+                                    }
                                 }else {
                                     swipeEndAction()
                                 }
-                            }else {
-                                swipeEndAction()
+                            } else {
+                                if value.translation.width > 0 {
+                                    if (value.translation.width >= maxtTranslationWidth) {
+                                        self.offset = maxtTranslationWidth
+                                        swipeEndAction()
+                                        showQuickDeleteView()
+                                    }else {
+                                        swipeEndAction()
+                                    }
+                                }else {
+                                    swipeEndAction()
+                                }
                             }
                         })).animation(.linear)
         }
@@ -64,13 +98,14 @@ struct SwipeToDeleteActionView: View {
     func showQuickDeleteView() {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {QuickDeleteView(completion: completion)})
     }
-
+    
     func swipeEndAction() {
         offset = 0
     }
     
     var swipeButton: some View {
-        Image("arrow-right")
+        Image(.arrowRight)
+            .scaleEffect(x: isRTL ? -1 : 1, y: 1)
             .frame(width: 45, height: 45, alignment: .center)
             .padding(.zero)
             .background(Color.white.opacity(0.4))
