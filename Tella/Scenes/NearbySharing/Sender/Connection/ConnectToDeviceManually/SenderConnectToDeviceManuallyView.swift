@@ -127,7 +127,7 @@ struct SenderConnectToDeviceManuallyView: View {
     private func showBottomSheetError() {
         isBottomSheetShown = true
         let content = ConnectionFailedView()
-        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content, isPresented: $isBottomSheetShown)
     }
 }
 

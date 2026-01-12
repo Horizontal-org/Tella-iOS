@@ -24,9 +24,7 @@ struct MoreFileActionButton: View {
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
     @State var fileData: Data?
-    private var modalHeight : CGFloat {
-        return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
-    }
+
     var body: some View {
         ZStack{
             switch moreButtonType {

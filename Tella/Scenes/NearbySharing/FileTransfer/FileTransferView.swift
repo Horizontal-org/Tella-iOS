@@ -69,7 +69,7 @@ struct FileTransferView: View {
     private func handleBackAction() {
         self.showCancelUploadConfirmationView()
     }
-
+    
     private func showCancelUploadConfirmationView() {
         isBottomSheetShown = true
         let content = ConfirmBottomSheet(titleText: viewModel.bottomSheetTitle,
@@ -83,7 +83,8 @@ struct FileTransferView: View {
         }, didCancelAction: {
             self.dismiss()
         })
-        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content,
+                                 isPresented: $isBottomSheetShown)
     }
 }
 
