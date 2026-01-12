@@ -99,15 +99,13 @@ struct TellaButtonView<Destination:View> : View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
                 .multilineTextAlignment(.center)
-
-        }.cornerRadius(20)
-            .cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
+            
+        }.cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid, cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
                      RoundedRectangle(cornerRadius: getCornerRadius(geometry: geometry))
                 .stroke(.white, lineWidth: 4) : nil)
-        }.frame(height: 55)
     }
     
     func getCornerRadius(geometry:GeometryProxy) -> CGFloat {
@@ -130,7 +128,7 @@ struct TellaButtonStyle : ButtonStyle {
             .overlay(
                 configuration.isPressed && isValid ?
                 RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: 3) :
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
+                    RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
             )
             .foregroundColor(getForegroundColor())
     }
