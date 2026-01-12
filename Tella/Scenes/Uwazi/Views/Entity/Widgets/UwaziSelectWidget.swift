@@ -129,7 +129,7 @@ struct SelectListOptions: View {
         Button(action: {
             shouldShowMenu = false
             prompt.value = [selectedOption.id]
-            entityViewModel.publishUpdates()
+            uwaziEntityViewModel.publishUpdates()
         }) {
             Text(selectedOption.label)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
