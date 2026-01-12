@@ -76,6 +76,7 @@ extension UIApplication {
         if let presented = base?.presentedViewController {
             return getTopViewController(base: presented)
         }
+        return base
     }
     
     func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
