@@ -147,7 +147,7 @@ class UwaziServerRepository: WebRepository {
         let shouldFetchAllTemplates = relatedEntityIds.contains { $0.isEmpty }
 
         return apiResponse
-            .compactMap{ $0.0 }
+            .compactMap{$0.response}
             .compactMap { dto in
                 return dto.rows?
                     .filter{ $0.type == UwaziEntityMetadataKeys.template }
