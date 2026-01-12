@@ -35,7 +35,7 @@ struct ConnectionsView: View {
     var serverItems : some View {
         HStack(spacing: 12) {
             
-            if homeViewModel.appModel.settings.nearbySharing {
+            if homeViewModel.mainAppModel.settings.nearbySharing {
                 ConnectionsItemView(title: LocalizableNearbySharing.nearbySharingAppBar.localized,
                                     image: "nearby-sharing.home",
                                     destination: nearbySharingMainView)
@@ -94,18 +94,18 @@ struct ConnectionsView: View {
     }
     
     var dropboxMainView: DropboxReportMainView {
-        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.appModel,
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.mainAppModel,
                                                                      dropboxRepository: DropboxRepository()))
     }
     
     var nearbySharingMainView: NearbySharingMainView {
-        NearbySharingMainView(mainAppModel: homeViewModel.appModel)
+        NearbySharingMainView(mainAppModel: homeViewModel.mainAppModel)
     }
     
     var addButton: some View {
         Button {
             // Show Connections View()
-            let viewModel = ServersViewModel(mainAppModel: homeViewModel.appModel)
+            let viewModel = ServersViewModel(mainAppModel: homeViewModel.mainAppModel)
             navigateTo(destination: ServersListView(serversViewModel: viewModel))
         } label: {
             Image("home.add")
