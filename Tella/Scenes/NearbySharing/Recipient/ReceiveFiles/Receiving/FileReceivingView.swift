@@ -41,7 +41,7 @@ struct FileReceivingView: View {
     }
     
     private func getFileListView() -> some View {
-        FileListView(appModel: viewModel.mainAppModel,
+        FileListView(mainAppModel: viewModel.mainAppModel,
                      rootFile: viewModel.rootFile,
                      filterType: .all,
                      title: viewModel.rootFile?.name ?? "",

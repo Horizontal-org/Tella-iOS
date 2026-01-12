@@ -14,7 +14,7 @@ struct AddFileRecordView: View {
     
     var body: some View {
         viewModel.showingRecordView ?
-        RecordView(appModel: viewModel.mainAppModel,
+        RecordView(mainAppModel: viewModel.mainAppModel,
                    sourceView: .addReportFile,
                    showingRecoredrView: $viewModel.showingRecordView,
                    resultFile: $viewModel.resultFile) : nil

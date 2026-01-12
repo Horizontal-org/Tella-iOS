@@ -32,7 +32,7 @@ struct AddFileBottomSheetView<Content: View>: View {
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet(modalHeight: CGFloat(viewModel.bottomSheetItems.count * 50 + 90), content: {
+        sheetManager.showBottomSheet(content: {
             ActionListBottomSheet(items: viewModel.bottomSheetItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action: { item in
@@ -68,7 +68,7 @@ struct AddFileBottomSheetView<Content: View>: View {
     }
     
     var fileListView: some View {
-        FileListView(appModel: viewModel.mainAppModel,
+        FileListView(mainAppModel: viewModel.mainAppModel,
                      filterType: viewModel.shouldShowDocumentsOnly ? .documents : .audioPhotoVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,

@@ -71,7 +71,7 @@ struct SenderConnectToDeviceView: View {
             startScanning.send(true)
             self.viewModel.observeScannedCode()
         })
-        self.showBottomSheetView(content: content, modalHeight: 192, isShown: $isBottomSheetShown)
+        self.showBottomSheetView(content: content, isPresented: $isBottomSheetShown)
     }
     
     private func handleViewState(state: SenderConnectToDeviceViewAction) {
