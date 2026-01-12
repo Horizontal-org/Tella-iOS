@@ -16,7 +16,7 @@ struct AddFilePhotoVideoPickerView: View {
     var body: some View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
-                             appModel: viewModel.mainAppModel,
+                             mainAppModel: viewModel.mainAppModel,
                              resultFile: $viewModel.resultFile)
         
     }

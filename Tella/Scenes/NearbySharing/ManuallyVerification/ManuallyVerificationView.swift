@@ -107,9 +107,8 @@ struct ManuallyVerificationView: View {
             popTo(ViewClassType.nearbySharingMainView)
         }
         self.showBottomSheetView(content: content,
-                                 modalHeight: 192,
-                                 isShown: $isBottomSheetShown,
-                                 shouldHideOnTap:false)
+                                 isPresented: $isBottomSheetShown,
+                                 tapToDismiss: false)
     }
     
     private func handleSenderViewAction(action: SenderConnectToDeviceViewAction) {

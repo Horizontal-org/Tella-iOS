@@ -29,7 +29,7 @@ struct SettingToggleItem: View {
                 CustomText(description,
                            style: .buttonDetailRegularStyle,
                            alignment: .leading)
-                
+                .fixedSize(horizontal: false, vertical: true)
                 if let link,
                    let linkText {
                     Button {
@@ -41,7 +41,6 @@ struct SettingToggleItem: View {
                                    color: Styles.Colors.yellow)
                     }
                 }
-                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
             Toggle("", isOn: $toggle)
