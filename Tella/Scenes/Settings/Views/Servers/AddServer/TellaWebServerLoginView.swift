@@ -54,9 +54,9 @@ struct TellaWebServerLoginView: View {
                         Spacer()
                             .frame(height: 32)
                         
-                        TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
-                                                 nextButtonAction: .action,
-                                                 isValid: $serverViewModel.validCredentials) {
+                        TellaButtonView(title: LocalizableSettings.UwaziLogin.localized,
+                                        nextButtonAction: .action,
+                                        isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
                             serverViewModel.login()
                         }
@@ -67,8 +67,8 @@ struct TellaWebServerLoginView: View {
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     
                     NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validPassword,
-                                            nextButtonAction: .action,
-                                            shouldHideNext: true)
+                                                  nextButtonAction: .action,
+                                                  shouldHideNext: true)
                 }
                 
                 if serverViewModel.isLoading {
