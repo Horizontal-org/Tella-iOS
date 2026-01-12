@@ -63,7 +63,7 @@ struct NavigationBottomView<Destination:View>:View {
     }
 }
 
-struct BottomLockView_Previews: PreviewProvider {
+struct NavigationBottomView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationBottomView(shouldActivateNext: .constant(true),
                        nextButtonAction: .action,
