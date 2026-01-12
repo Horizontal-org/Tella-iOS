@@ -70,46 +70,31 @@ struct TellaButtonView<Destination:View> : View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            Button {
-                
-                UIApplication.shared.endEditing()
-                
-                if nextButtonAction == .action  {
-                    action?()
-                }
-                if (destination != nil) && nextButtonAction == .destination {
-                    navigateTo(destination: destination)
-                }
-            } label: {
-                
-                CustomText(title,
-                           style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
-                .frame(maxWidth:.infinity)
-                .frame(height: 55)
-                .contentShape(Rectangle())
+        Button {
+            
+            UIApplication.shared.endEditing()
+            
+            if nextButtonAction == .action  {
+                action?()
             }
             if (destination != nil) {
                 navigateTo(destination: destination)
             }
         } label: {
-            Text(title)
-                .frame(maxWidth:.infinity)
-                .contentShape(Rectangle())
-                .padding(.horizontal, 16)
-                .padding(.vertical, 16)
-                .multilineTextAlignment(.center)
+            CustomText(title,
+                       style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
+            .frame(maxWidth:.infinity)
+            .contentShape(Rectangle())
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+            .multilineTextAlignment(.center)
             
-        }.cornerRadius( buttonRole == .primary ? 20 : geometry.size.height / 2)
-            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid, cornerRadius: buttonRole == .primary ? 20 : geometry.size.height / 2))
+        }.cornerRadius(20)
+            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)
             .overlay(self.isOverlay ?
-                     RoundedRectangle(cornerRadius: getCornerRadius(geometry: geometry))
+                     RoundedRectangle(cornerRadius: 20)
                 .stroke(.white, lineWidth: 4) : nil)
-    }
-    
-    func getCornerRadius(geometry:GeometryProxy) -> CGFloat {
-        return buttonRole == .primary ? 20 : geometry.size.height / 2
     }
 }
 
