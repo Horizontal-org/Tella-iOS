@@ -63,8 +63,8 @@ struct MainOnboardingView: View {
             PageDots(current: viewModel.index, total: viewModel.count)
                 .padding(.smallMedium)
             
-            BottomLockView<AnyView>(
-                isValid: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
+            NavigationBottomView<AnyView>(
+                shouldActivateNext: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
                 nextButtonAction: .action,
                 shouldHideNext: viewModel.shouldHideNext(),
                 shouldHideBack: viewModel.shouldHideBack(),
