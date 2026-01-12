@@ -147,7 +147,6 @@
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
 		12505B1E2D899BD900483E34 /* NearbySharingServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B1D2D899BD100483E34 /* NearbySharingServer.swift */; };
-		12505B222D89A2A700483E34 /* HTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B212D89A2A500483E34 /* HTTPResponse.swift */; };
 		12505B222D89A2A700483E34 /* HTTPResponseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */; };
 		125082722EBB864000730DD8 /* AdvancedServerSettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125082712EBB864000730DD8 /* AdvancedServerSettingsCardView.swift */; };
 		1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* UwaziListView.swift */; };
@@ -447,6 +446,7 @@
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
 		12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
+		12E41E762F1536030043BB3F /* HTTPResponseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E41E752F1536030043BB3F /* HTTPResponseBuilder.swift */; };
 		12E41E7A2F17EC810043BB3F /* OnboardingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
@@ -906,7 +906,6 @@
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		12505B1D2D899BD100483E34 /* NearbySharingServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServer.swift; sourceTree = "<group>"; };
-		12505B212D89A2A500483E34 /* HTTPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResponse.swift; sourceTree = "<group>"; };
 		12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResponseBuilder.swift; sourceTree = "<group>"; };
 		125082712EBB864000730DD8 /* AdvancedServerSettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsCardView.swift; sourceTree = "<group>"; };
 		1251C38F2BB45616002E9898 /* UwaziListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziListView.swift; sourceTree = "<group>"; };
@@ -1139,8 +1138,8 @@
 		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
 		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
 		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
-		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
 		129919BC2E2EC92900A4417D /* az */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = az; path = az.lproj/Localizable.strings; sourceTree = "<group>"; };
+		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
@@ -1215,6 +1214,7 @@
 		12DE98022F1ADB77004436CC /* NextBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBottomView.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
+		12E41E752F1536030043BB3F /* HTTPResponseBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResponseBuilder.swift; sourceTree = "<group>"; };
 		12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfoView.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
@@ -1968,6 +1968,7 @@
 		12505B1C2D899B4500483E34 /* NearbySharing */ = {
 			isa = PBXGroup;
 			children = (
+				12E41E752F1536030043BB3F /* HTTPResponseBuilder.swift */,
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
 				121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */,
@@ -1977,7 +1978,7 @@
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
-				12505B212D89A2A500483E34 /* HTTPResponse.swift */,
+				12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */,
 				123CBB032DEF97270030A9BD /* HTTPStatusCode.swift */,
 				123CBB052DEF99410030A9BD /* NearbySharingEndpoint.swift */,
 				123CBB072DEF998A0030A9BD /* NearbySharingServerResponse.swift */,
@@ -3643,7 +3644,6 @@
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
 				126FAAD12D4B9CFE00F6BCD8 /* NearbySharing */,
-				126FAAD12D4B9CFE00F6BCD8 /* PeerToPeer */,
 				127BCA1F2E85208900902C59 /* Onboarding */,
 			);
 			path = Scenes;
@@ -4341,7 +4341,7 @@
 				15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */,
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
-				12505B222D89A2A700483E34 /* HTTPResponse.swift in Sources */,
+				12505B222D89A2A700483E34 /* HTTPResponseBuilder.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
@@ -4405,6 +4405,7 @@
 				20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */,
 				CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
+				12E41E762F1536030043BB3F /* HTTPResponseBuilder.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				124852A22E7173BC00BDDC2D /* IconTextButton.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
@@ -4582,7 +4583,7 @@
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
 				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
-				209107F32D538CF200808BCF /* ConnectToDeviceView.swift in Sources */,
+				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
 				128EE4E92E8FC3F000DF55C5 /* ServerOnboardingView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				20BA4FAF2D50DFEB006DD8B9 /* GetConnectedViewModel.swift in Sources */,
@@ -4698,7 +4699,6 @@
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
 				1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */,
-				125392022D7B12FC00F96BA2 /* WifiSSID.swift in Sources */,
 				128EE4EC2E8FC50C00DF55C5 /* ServerOnboardingViewModel.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
@@ -4751,7 +4751,6 @@
 				15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */,
 				1275A8402C5A78FB0071A97D /* NextcloudMetadata.swift in Sources */,
 				1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */,
-				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
 				126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */,
 				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
@@ -4907,7 +4906,6 @@
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
 				20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */,
-				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
 				121AFF932E4CA9DA007300AD /* NearbySharingStateActor.swift in Sources */,
 				209107F92D53BD0300808BCF /* ConnectToDeviceManuallyVM.swift in Sources */,
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
