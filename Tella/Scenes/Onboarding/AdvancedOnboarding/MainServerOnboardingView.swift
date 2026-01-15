@@ -17,11 +17,11 @@ struct MainServerOnboardingView: View {
     
     var body: some View {
         
-        VStack(spacing: 50) {
+        VStack(spacing: .extraLarge) {
             Spacer()
             
-            OnboardingPageView(content: MainServerOnboardingContent())
-            VStack(spacing: 12) {
+            ImageTitleMessageView(content: MainServerOnboardingContent())
+            VStack(spacing: .small) {
                 
                 TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainConnectServer.localized.uppercased(),
                                           nextButtonAction: .action,

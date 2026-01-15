@@ -14,12 +14,12 @@ struct PageDots: View {
     let total: Int
     
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: .extraESmall) {
             ForEach(0..<total, id: \.self) { index in
                 Circle()
                     .fill(current == index ? Styles.Colors.yellow
                           : Styles.Colors.gray.opacity(0.6))
-                    .frame(width: 10, height: 10)
+                    .frame(width: .extraSmallIconSize, height: .extraSmallIconSize)
             }
         }
     }

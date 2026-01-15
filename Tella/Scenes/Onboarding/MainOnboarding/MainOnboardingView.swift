@@ -13,11 +13,13 @@ import Combine
 struct MainOnboardingView: View {
     @StateObject var viewModel: MainOnboardingViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    private let bottomViewHeight = CGFloat(85.adjusted)
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 0) {
             tabView()
             bottomView()
+                .frame(height:bottomViewHeight)
         }
         .containerStyle()
         .navigationBarHidden(true)
@@ -34,7 +36,7 @@ struct MainOnboardingView: View {
             index: $viewModel.index,
             canSwipe: { idx, direction in
                 let page = viewModel.pages[idx]
-                return handleSwipe(for: page, direction: direction)
+                return viewModel.handleSwipe(for: page, direction: direction)
             },
             content: { idx in
                 let page = viewModel.pages[idx]
@@ -43,28 +45,17 @@ struct MainOnboardingView: View {
         )
     }
     
-    func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
-        switch page {
-        case .camera:
-            return direction == .left
-        case .recorder, .files, .connections, .nearbySharing:
-            return true
-        case .lock:
-            return viewModel.isLockSucceeded ? (direction == .left) : (direction == .right)
-        case .allDone:
-            return direction == .right
-        }
-    }
-    
     @ViewBuilder
     func view(for page: OnboardingItem) -> some View {
         switch page {
-        case .camera(let content),
-                .recorder(let content),
-                .files(let content),
-                .connections(let content),
-                .nearbySharing(let content):
-            OnboardingPageView(content: content)
+        case .record(let content):
+            OnboardingInfoView(content: content, info: LocalizableLock.onboardingRecordInfo.localized)
+            
+        case .files(let content):
+            OnboardingInfoView(content: content, info: LocalizableLock.onboardingFilesInfo.localized)
+            
+        case .connections(let content), .nearbySharing(let content):
+            OnboardingConnectionsView(content: content)
             
         case .lock:
             if viewModel.isLockSucceeded {
@@ -83,7 +74,7 @@ struct MainOnboardingView: View {
             Spacer()
             
             PageDots(current: viewModel.index, total: viewModel.count)
-                .padding(20)
+                .padding(.smallMedium)
             
             BottomLockView<AnyView>(
                 isValid: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
@@ -104,10 +95,6 @@ struct MainOnboardingView: View {
             )
         }
     }
-}
-
-#Preview {
-    MainOnboardingView(viewModel: MainOnboardingViewModel.stub())
 }
 
 #Preview {

@@ -19,16 +19,24 @@ enum LocalizableLock: String, LocalizableDelegate {
     case onboardingIntroSubhead = "Onboarding_Intro_Subhead"
     case onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted"
 
-    case onboardingCameraTitle = "Onboarding_Camera_Title"
-    case onboardingCameraExpl = "Onboarding_Camera_Expl"
+    case onboardingRecordTitle = "Onboarding_Record_Title"
+    case onboardingRecordExpl = "Onboarding_Record_Expl"
+    case onboardingRecordInfo = "Onboarding_Record_Info"
 
-    case onboardingRecorderTitle = "Onboarding_Recorder_Title"
-    case onboardingRecorderExpl = "Onboarding_Recorder_Expl"
-    case onboardingEncryptedFilesFoldersTitle = "Onboarding_EncryptedFilesFolders_Title"
-    case onboardingEncryptedFilesFoldersExpl = "Onboarding_EncryptedFilesFolders_Expl"
-    case onboardingServerConnectionsTitle = "Onboarding_ServerConnections_Title"
-    case onboardingServerConnectionspart1Expl = "Onboarding_ServerConnections_part1_Expl"
-    case onboardingServerConnectionspart2Expl = "Onboarding_ServerConnections_part2_Expl"
+    case onboardingFilesTitle = "Onboarding_Files_Title"
+    case onboardingFilesExpl = "Onboarding_Files_Expl"
+    case onboardingFilesInfo = "Onboarding_Files_Info"
+
+    case onboardingConnectionsTitle = "Onboarding_Connections_Title"
+    case onboardingConnectionspart1Expl = "Onboarding_Connections_part1_Expl"
+    case onboardingConnectionspart2Expl = "Onboarding_Connections_part2_Expl"
+
+    case onboardingConnectionsDropbox = "Onboarding_Connections_Dropbox"
+    case onboardingConnectionsGDrive = "Onboarding_Connections_GDrive"
+    case onboardingConnectionsNextcloud = "Onboarding_Connections_Nextcloud"
+    case onboardingConnectionsUwazi = "Onboarding_Connections_Uwazi"
+    case onboardingConnectionsTellaWeb = "Onboarding_Connections_TellaWeb"
+
     case onboardingNearbySharingTitle = "Onboarding_NearbySharing_Title"
     case onboardingNearbySharingExpl = "Onboarding_NearbySharing_Expl"
 

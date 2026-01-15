@@ -12,13 +12,12 @@ import SwiftUI
 struct OnboardingSuccessLoginView: View {
     var body: some View {
         
-        VStack(spacing: 50) {
+        VStack(spacing: .extraLarge) {
             Spacer()
-            
-            OnboardingPageView(content: SuccessLockContent())
+            ImageTitleMessageView(content: SuccessLockContent())
             Image(.settingsCheckedCircle)
             Spacer()
-        }
+        }.padding(.horizontal, .medium)
     }
 }
 
@@ -26,13 +25,12 @@ struct OnboardingSuccessLoginView: View {
 struct ServerConnectedSuccessView: View {
     var body: some View {
         
-        VStack(spacing: 50) {
+        VStack(spacing: .extraLarge) {
             Spacer()
-            
-            OnboardingPageView(content: ServerConnectedContent())
+            ImageTitleMessageView(content: ServerConnectedContent())
             Image(.settingsCheckedCircle)
             Spacer()
-        }
+        }.padding(.horizontal, .medium)
     }
 }
 
