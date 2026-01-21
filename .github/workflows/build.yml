@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-12
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install pods
+      run: pod install
+    - name: Install xcbeautify
+      run: brew install xcbeautify
+    - name: Build
+      run: |
+        set -o pipefail && xcodebuild clean build \
+          -workspace 'Tella.xcworkspace' \
+          -scheme 'Tella' \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 13' | xcbeautify
