@@ -11,7 +11,7 @@
 import SwiftUI
 import Combine
 
-enum UnlockType {
+enum LockFlow {
     case new
     case update
 }
@@ -78,10 +78,10 @@ struct UnlockView: View {
         switch type {
         case .tellaPin:
             unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized : ""
-            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+            unlockSubheadString = viewModel.lockFlow == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
         default:
             unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized : ""
-            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
+            unlockSubheadString = viewModel.lockFlow == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
         
         return unlockErrorString.isEmpty ? unlockSubheadString : unlockErrorString

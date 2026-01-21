@@ -2,8 +2,8 @@
 //  ConfirmLPasswordView.swift
 //  Tella
 //
-//   
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct ConfirmLockPasswordView: View {
-
+    
     @State var shouldShowErrorMessage : Bool = false
     @ObservedObject var lockViewModel: LockViewModel
     @State var shouldShowOnboarding : Bool = false
@@ -28,14 +28,29 @@ struct ConfirmLockPasswordView: View {
                 if lockViewModel.shouldShowErrorMessage {
                     shouldShowErrorMessage = true
                 } else {
-                    lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
+                    showProtectLocksheet()
                 }
             }
         }
     }
     
+    func showProtectLocksheet() {
+        let content = ConfirmBottomSheet(titleText: LocalizableLock.protectLocksheetTitle.localized,
+                                         msgText: LocalizableLock.protectLocksheetExpl.localized,
+                                         actionText: LocalizableLock.protectLocksheetAction.localized,
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss {
+                lockViewModel.lockFlow == .new ? lockWithPassword() :  updatePassword()
+            }
+        })
+        
+        showBottomSheetView(content: content)
+    }
+    
     func lockWithPassword() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPassword)
+        self.navigateTo(destination: SuccessLockView())
         lockViewModel.shouldDismiss.send(true)
     }
     

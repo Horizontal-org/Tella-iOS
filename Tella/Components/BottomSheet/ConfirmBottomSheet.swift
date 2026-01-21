@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -10,7 +10,7 @@ struct ConfirmBottomSheet : View {
     var imageName : String? = nil
     var titleText = ""
     var msgText = ""
-    var cancelText = ""
+    var cancelText : String?
     var discardText : String?
     var actionText = ""
     var destructive : Bool = false
@@ -51,15 +51,19 @@ struct ConfirmBottomSheet : View {
             Spacer()
             HStack(alignment: .lastTextBaseline ){
                 Spacer()
-                Button(action: {
-                    didCancelAction?()
-                    if shouldHideSheet {
-                        sheetManager.hide()
-                    }
+                
+                if let cancelText {
+                    Button(action: {
+                        didCancelAction?()
+                        if shouldHideSheet {
+                            sheetManager.hide()
+                        }
+                    }){
+                        Text(cancelText)
+                    }.buttonStyle(ButtonSheetStyle())
                     
-                }){
-                    Text(self.cancelText)
-                }.buttonStyle(ButtonSheetStyle())
+                }
+                
                 if let discardText = discardText {
                     Spacer()
                         .frame(width: 10)

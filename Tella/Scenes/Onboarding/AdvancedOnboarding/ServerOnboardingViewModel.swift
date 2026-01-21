@@ -19,7 +19,7 @@ final class ServerOnboardingViewModel: ObservableObject {
     let mainAppModel: MainAppModel
     
     // MARK: - Published state
-    @Published var isConnectionSucceded: Bool = false
+    @Published var isConnectionSucceeded: Bool = false
     @Published var index: Int
     
     // MARK: - Pages
@@ -51,7 +51,7 @@ final class ServerOnboardingViewModel: ObservableObject {
     // MARK: - Data
     func getServers() {
         let serverArray = mainAppModel.tellaData?.getServers() ?? []
-        isConnectionSucceded = !serverArray.isEmpty
+        isConnectionSucceeded = !serverArray.isEmpty
     }
     
     // MARK: - States
@@ -68,7 +68,7 @@ final class ServerOnboardingViewModel: ObservableObject {
     var isOnCustomizationDone: Bool { currentPage == .customizationDone }
     
     var shouldHideNext: Bool {
-        !isConnectionSucceded || isOnCustomizationDone
+        !isConnectionSucceeded || isOnCustomizationDone
     }
     
     var shouldShowDots: Bool {
@@ -76,7 +76,7 @@ final class ServerOnboardingViewModel: ObservableObject {
     }
     
     var isSwipeAllowed: Bool {
-        isConnectionSucceded && !isOnCustomizationDone
+        isConnectionSucceeded && !isOnCustomizationDone
     }
     
     // MARK: - Navigation

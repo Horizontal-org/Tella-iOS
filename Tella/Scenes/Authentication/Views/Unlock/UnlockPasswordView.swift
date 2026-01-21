@@ -9,11 +9,6 @@
 import SwiftUI
 import Combine
 
-enum UnlockType {
-    case new
-    case update
-}
-
 struct UnlockPasswordView: View {
     @EnvironmentObject private var appViewState: AppViewState
     
@@ -62,7 +57,7 @@ struct UnlockPasswordView: View {
                                       shouldShowError: $viewModel.shouldShowUnlockError) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
-                        if viewModel.unlockType == .new {
+                        if viewModel.lockFlow == .new {
                             isLoading = true
                             initRoot()
                         } else {
@@ -90,7 +85,7 @@ struct UnlockPasswordView: View {
         if viewModel.shouldShowUnlockError {
             return  LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized
         } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
+            return viewModel.lockFlow == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
         
     }

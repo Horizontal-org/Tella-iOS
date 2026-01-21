@@ -13,71 +13,62 @@ import SwiftUI
 @MainActor
 final class MainOnboardingViewModel: ObservableObject {
     @Published var index: Int
-    @Published var isLockSucceeded = false
     @Published var lockViewModel: LockViewModel
-
+    
     private let startIndex: Int = 0
-    private var cancellables = Set<AnyCancellable>()
-
+    private var subscribers = Set<AnyCancellable>()
+    
     let pages: [OnboardingItem] = [
-        .camera(CameraContent()),
-        .recorder(MicContent()),
+        .record(RecordContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
         // .nearbySharing(NearbySharingContent()),
-        .lock,
         .allDone
     ]
-
+    
     init(lockViewModel: LockViewModel) {
-        self.index = min(max(startIndex, 0), max(0, pages.count - 1))
+        self.index = max(0, min(startIndex, pages.count - 1))
         self.lockViewModel = lockViewModel
-
+        
         lockViewModel.shouldDismiss
             .filter { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.isLockSucceeded = true
+                self?.goNext()
             }
-            .store(in: &cancellables)
+            .store(in: &subscribers)
     }
-
+    
     // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
-
+    
     var currentPage: OnboardingItem {
-        pages[safe: index] ?? .camera(CameraContent())
+        pages[safe: index] ?? .record(RecordContent())
     }
 
-    var isOnLock: Bool {
-        if case .lock = currentPage { return true }
-        return false
-    }
     var isOnAllDone: Bool {
         if case .allDone = currentPage { return true }
         return false
     }
-
+    
     func canTapNext() -> Bool {
         switch currentPage {
-        case .lock:    return isLockSucceeded
         case .allDone: return false
         default:       return index < lastIndex
         }
     }
-
+    
     func canTapBack() -> Bool {
         switch currentPage {
-        case .lock:    return !isLockSucceeded || index > 0
         case .allDone: return true
         default:       return index > 0
         }
     }
-
+    
     func shouldHideNext() -> Bool { !canTapNext() }
-    func shouldHideBack() -> Bool { (isOnLock && isLockSucceeded) || isOnAllDone }
-
+    func shouldHideBack() -> Bool { isOnAllDone }
+    
     // MARK: - Navigation
     func goToPage(_ newIndex: Int) {
         guard count > 0 else { return }
@@ -85,6 +76,19 @@ final class MainOnboardingViewModel: ObservableObject {
     }
     func goNext() { goToPage(index + 1) }
     func goBack() { goToPage(index - 1) }
+    
+    func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
+        switch page {
+        case .record:
+            return direction == .left
+        case .files, .nearbySharing:
+            return true
+        case .connections:
+            return direction == .right
+        case .allDone:
+            return false
+        }
+    }
 }
 
 enum OnboardingItem: Identifiable, Equatable {
@@ -92,29 +96,23 @@ enum OnboardingItem: Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
-    case camera(any OnboardingContent)
-    case recorder(any OnboardingContent)
-    case files(any OnboardingContent)
-    case connections(any OnboardingContent)
-    case nearbySharing(any OnboardingContent)
-    case lock
+    case record(any ImageTitleMessageContent)
+    case files(any ImageTitleMessageContent)
+    case connections(any ImageTitleMessageContent)
+    case nearbySharing(any ImageTitleMessageContent)
     case allDone
     
     var id: String {
         
         switch self {
-        case .camera:
-            return "camera"
-        case .recorder:
-            return "recorder"
+        case .record:
+            return "record"
         case .files:
             return "files"
         case .connections:
             return "connections"
         case .nearbySharing:
             return "nearbySharing"
-        case .lock:
-            return "lock"
         case .allDone:
             return "allDone"
         }

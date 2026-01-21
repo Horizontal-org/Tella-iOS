@@ -17,7 +17,7 @@ struct LockChoiceView: View {
     
     var body: some View {
         Group {
-            if lockViewModel.unlockType == .update {
+            if lockViewModel.lockFlow == .update {
                 ContainerViewWithHeader {
                     navigationBarView
                 } content: {
@@ -51,12 +51,14 @@ struct LockChoiceView: View {
                 VStack(spacing: 15) {
                     
                     LockButtonView(lockButtonProtocol: PasswordLockButton(),
-                                   destination: LockPasswordView(lockViewModel:lockViewModel),
-                                   presentationType: lockViewModel.unlockType == .new ? .present : .push)
+                                   destination: LoseFilesWarningOnboardingView(lockViewModel: lockViewModel)) {
+                        lockViewModel.lockType = .password
+                    }
                     
                     LockButtonView(lockButtonProtocol: PINLockButton(),
-                                   destination: LockPinView(lockViewModel:lockViewModel),
-                                   presentationType: lockViewModel.unlockType == .new ? .present : .push)
+                                   destination: LoseFilesWarningOnboardingView(lockViewModel: lockViewModel)) {
+                        lockViewModel.lockType = .pin
+                    }
                 }
                 Spacer()
             }
@@ -70,10 +72,14 @@ struct LockButtonView<Destination:View> : View {
     var lockButtonProtocol : LockButtonProtocol
     var destination : Destination
     var presentationType : ViewPresentationType = .push
+    var action: (() -> ())?
     
     var body: some View {
         
         Button {
+            if let action {
+                action()
+            }
             if presentationType == .present {
                 self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
                     CustomNavigation() {

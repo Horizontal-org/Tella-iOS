@@ -9,15 +9,17 @@
 
 import SwiftUI
 
-struct OnboardingPageView: View {
+struct ImageTitleMessageView: View {
     
-    let content: any OnboardingContent
+    let content: any ImageTitleMessageContent
     
     var body: some View {
         
-        VStack(alignment: .center, spacing: 16) {
+        VStack(alignment: .center, spacing: .normal) {
             
-            Image(content.imageName)
+            if let imageName = content.imageName {
+                Image(imageName)
+            }
             
             Text(content.title)
                 .font(.custom(Styles.Fonts.boldFontName, size: 18))
@@ -28,10 +30,10 @@ struct OnboardingPageView: View {
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-        }.padding(.horizontal, 25)
+        }
     }
 }
 
 #Preview {
-    OnboardingPageView(content: CameraContent())
+    ImageTitleMessageView(content: RecordContent())
 }

@@ -26,5 +26,4 @@ struct PINLockButton : LockButtonProtocol {
     var title = LocalizableLock.lockSelectActionPin.localized
     var description = LocalizableLock.lockSelectActionExplPin.localized
     var imageName = "lock.pin"
-    
 }

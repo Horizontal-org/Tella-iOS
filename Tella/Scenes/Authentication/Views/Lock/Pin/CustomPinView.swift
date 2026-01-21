@@ -24,7 +24,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     var destination: Destination?
     var action : (() -> Void)?
     
-    var lockKeyboardNumbers: [PinKeyboardModel] = { return [
+    var lockKeyboardNumbers: [PinKeyboardModel] = { [
         PinKeyboardModel(text: "1", type: .number),
         PinKeyboardModel(text: "2", type: .number),
         PinKeyboardModel(text: "3", type: .number),

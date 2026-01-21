@@ -80,7 +80,7 @@ struct SettingsMainView: View {
     }
     
     var securitySettingsView: SecuritySettingsView {
-        let lockViewModel =  LockViewModel(unlockType: .update, appViewState: appViewState)
+        let lockViewModel =  LockViewModel(lockFlow: .update, appViewState: appViewState)
         
         return SecuritySettingsView(mainAppModel: appViewState.homeViewModel,
                                     settingsViewModel: settingsViewModel,

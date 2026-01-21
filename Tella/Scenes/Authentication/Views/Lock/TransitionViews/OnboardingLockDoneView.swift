@@ -12,11 +12,11 @@ struct OnboardingLockDoneView: View {
     
     var body: some View {
         
-        VStack(spacing: 50) {
+        VStack(spacing: .extraLarge) {
             Spacer()
             
-            OnboardingPageView(content: LockDoneContent())
-            VStack(spacing: 12) {
+            ImageTitleMessageView(content: LockDoneContent())
+            VStack(spacing: .small) {
                 
                 TellaButtonView<AnyView> (title: LocalizableLock.goToTella.localized.uppercased(),
                                           nextButtonAction: .action,
@@ -39,7 +39,7 @@ struct OnboardingLockDoneView: View {
                 }
             }
             Spacer()
-        }.padding(.horizontal,25)
+        }.padding(.horizontal,.medium)
     }
 }
 
