@@ -2374,7 +2374,6 @@
 				127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */,
 				12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */,
 				12D39B4C2F183F100065EACD /* OnboardingConnectionsView.swift */,
-				12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */,
 				12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */,
 			);
 			path = MainOnboarding;
@@ -2518,6 +2517,7 @@
 				126973F22E8DA59800FBA206 /* SuccessLockView.swift */,
 				12A148952720B2B400A1ADDC /* PasswordTextFieldView.swift */,
 				12A148972720B47100A1ADDC /* LockDescriptionView.swift */,
+				12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */,
 				12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */,
 			);
 			path = CommonView;
