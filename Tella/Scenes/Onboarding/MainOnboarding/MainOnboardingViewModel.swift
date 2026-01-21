@@ -13,18 +13,16 @@ import SwiftUI
 @MainActor
 final class MainOnboardingViewModel: ObservableObject {
     @Published var index: Int
-    @Published var isLockSucceeded = false
     @Published var lockViewModel: LockViewModel
     
     private let startIndex: Int = 0
-    private var cancellables = Set<AnyCancellable>()
+    private var subscribers = Set<AnyCancellable>()
     
     let pages: [OnboardingItem] = [
         .record(RecordContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
         // .nearbySharing(NearbySharingContent()),
-        .lock,
         .allDone
     ]
     
@@ -36,9 +34,9 @@ final class MainOnboardingViewModel: ObservableObject {
             .filter { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.isLockSucceeded = true
+                self?.goNext()
             }
-            .store(in: &cancellables)
+            .store(in: &subscribers)
     }
     
     // MARK: - States
@@ -48,11 +46,7 @@ final class MainOnboardingViewModel: ObservableObject {
     var currentPage: OnboardingItem {
         pages[safe: index] ?? .record(RecordContent())
     }
-    
-    var isOnLock: Bool {
-        if case .lock = currentPage { return true }
-        return false
-    }
+
     var isOnAllDone: Bool {
         if case .allDone = currentPage { return true }
         return false
@@ -60,7 +54,6 @@ final class MainOnboardingViewModel: ObservableObject {
     
     func canTapNext() -> Bool {
         switch currentPage {
-        case .lock:    return isLockSucceeded
         case .allDone: return false
         default:       return index < lastIndex
         }
@@ -68,14 +61,13 @@ final class MainOnboardingViewModel: ObservableObject {
     
     func canTapBack() -> Bool {
         switch currentPage {
-        case .lock:    return !isLockSucceeded || index > 0
         case .allDone: return true
         default:       return index > 0
         }
     }
     
     func shouldHideNext() -> Bool { !canTapNext() }
-    func shouldHideBack() -> Bool { (isOnLock && isLockSucceeded) || isOnAllDone }
+    func shouldHideBack() -> Bool { isOnAllDone }
     
     // MARK: - Navigation
     func goToPage(_ newIndex: Int) {
@@ -89,12 +81,12 @@ final class MainOnboardingViewModel: ObservableObject {
         switch page {
         case .record:
             return direction == .left
-        case .files, .connections, .nearbySharing:
+        case .files, .nearbySharing:
             return true
-        case .lock:
-            return isLockSucceeded ? (direction == .left) : (direction == .right)
-        case .allDone:
+        case .connections:
             return direction == .right
+        case .allDone:
+            return false
         }
     }
 }
@@ -108,7 +100,6 @@ enum OnboardingItem: Identifiable, Equatable {
     case files(any ImageTitleMessageContent)
     case connections(any ImageTitleMessageContent)
     case nearbySharing(any ImageTitleMessageContent)
-    case lock
     case allDone
     
     var id: String {
@@ -122,8 +113,6 @@ enum OnboardingItem: Identifiable, Equatable {
             return "connections"
         case .nearbySharing:
             return "nearbySharing"
-        case .lock:
-            return "lock"
         case .allDone:
             return "allDone"
         }

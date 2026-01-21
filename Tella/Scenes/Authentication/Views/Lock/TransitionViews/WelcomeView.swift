@@ -12,7 +12,7 @@ struct WelcomeView: View {
     var body: some View {
         NavigationContainerView {
             TransitionView(transitionViewData: WelcomeViewData()) {
-                let lockViewModel = LockViewModel(unlockType: .new, appViewState: appViewState)
+                let lockViewModel = LockViewModel(lockFlow: .new, appViewState: appViewState)
                 let mainOnboardingViewModel = MainOnboardingViewModel(lockViewModel: lockViewModel)
                 navigateTo(destination: MainOnboardingView(viewModel: mainOnboardingViewModel))
             }

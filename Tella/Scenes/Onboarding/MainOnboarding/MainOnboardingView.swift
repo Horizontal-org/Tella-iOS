@@ -13,21 +13,15 @@ import Combine
 struct MainOnboardingView: View {
     @StateObject var viewModel: MainOnboardingViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    private let bottomViewHeight = CGFloat(85.adjusted)
     
     var body: some View {
         VStack(spacing: 0) {
             tabView()
             bottomView()
-                .frame(height:bottomViewHeight)
+                .frame(height: .bottomViewHeight)
         }
         .containerStyle()
         .navigationBarHidden(true)
-        .onReceive(viewModel.lockViewModel.shouldDismiss
-            .filter { $0 }
-        ) { _ in
-            dismiss()
-        }
     }
     
     func tabView() -> some View {
@@ -56,14 +50,7 @@ struct MainOnboardingView: View {
             
         case .connections(let content), .nearbySharing(let content):
             OnboardingConnectionsView(content: content)
-            
-        case .lock:
-            if viewModel.isLockSucceeded {
-                OnboardingSuccessLoginView()
-            } else {
-                LockChoiceView(lockViewModel: viewModel.lockViewModel)
-            }
-            
+
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
         }
@@ -83,7 +70,18 @@ struct MainOnboardingView: View {
                 shouldHideBack: viewModel.shouldHideBack(),
                 nextAction: {
                     guard viewModel.canTapNext() else { return }
-                    viewModel.goNext()
+                    
+                    let page = viewModel.pages[viewModel.index]
+                    
+                    switch page {
+                    case .connections:
+                        self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
+                            LockChoiceOnboardingView(lockViewModel: viewModel.lockViewModel)
+                        }
+                    default:
+                        viewModel.goNext()
+                    }
+                    
                 },
                 backAction: {
                     if viewModel.canTapBack() {

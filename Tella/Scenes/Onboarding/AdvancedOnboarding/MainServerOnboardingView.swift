@@ -23,7 +23,7 @@ struct MainServerOnboardingView: View {
             ImageTitleMessageView(content: MainServerOnboardingContent())
             VStack(spacing: .small) {
                 
-                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainConnectServer.localized.uppercased(),
+                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainSetupServer.localized.uppercased(),
                                           nextButtonAction: .action,
                                           buttonType: .clear,
                                           isValid: .constant(true)) {
@@ -31,7 +31,7 @@ struct MainServerOnboardingView: View {
                     self.navigateTo(destination: destination)
                 }
                 
-                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainContinue.localized.uppercased(),
+                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainNoThanks.localized.uppercased(),
                                           nextButtonAction: .action,
                                           buttonType: .clear,
                                           isValid: .constant(true)) {
@@ -40,7 +40,7 @@ struct MainServerOnboardingView: View {
                 }
             }
             Spacer()
-        }.padding(.horizontal,25)
+        }.padding(.horizontal,.medium)
         
     }
 }

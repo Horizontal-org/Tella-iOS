@@ -22,9 +22,11 @@ struct FilesContent: ImageTitleMessageContent {
 struct ConnectionsContent: ImageTitleMessageContent {
     var imageName: ImageResource? = nil
     var title: String = LocalizableLock.onboardingConnectionsTitle.localized
-    var message: String =
-    LocalizableLock.onboardingConnectionspart1Expl.localized + "\n\n" +
-    LocalizableLock.onboardingConnectionspart2Expl.localized
+    var message: String {
+        LocalizableLock.onboardingConnectionspart1Expl.localized
+            .addTwolines +
+        LocalizableLock.onboardingConnectionspart2Expl.localized
+    }
 }
 
 struct NearbySharingContent: ImageTitleMessageContent {
@@ -34,9 +36,9 @@ struct NearbySharingContent: ImageTitleMessageContent {
 }
 
 struct SuccessLockContent: ImageTitleMessageContent {
-    var imageName: ImageResource? = .lockPhone
-    var title: String = LocalizableLock.onboardingLockSuccessTitle.localized
-    var message: String = LocalizableLock.onboardingLockSuccessExpl.localized
+    var imageName: ImageResource? = .settingsCheckedCircle
+    var title: String = LocalizableLock.lockSuccessTitle.localized
+    var message: String = LocalizableLock.lockSuccessExpl.localized
 }
 
 struct ServerConnectedContent: ImageTitleMessageContent {
@@ -52,7 +54,7 @@ struct LockDoneContent: ImageTitleMessageContent {
 }
 
 struct MainServerOnboardingContent: ImageTitleMessageContent {
-    var imageName: ImageResource? = .settingsServer
+    var imageName: ImageResource? = .onboardServer
     var title: String = LocalizableLock.onboardingServerMainTitle.localized
     var message: String = LocalizableLock.onboardingServerMainExpl.localized
 }
@@ -63,3 +65,13 @@ struct AdvancedCustomizationComplete: ImageTitleMessageContent {
     var message: String = LocalizableLock.onboardingServerDoneExpl.localized
 }
 
+
+struct LoseFilesWarningOnboardingContent: ImageTitleMessageContent {
+    var imageName: ImageResource? = .onboardWarning
+    var title: String = LocalizableLock.onboardingLoseFileWarningTitle.localized
+    var message: String {
+        LocalizableLock.onboardingLoseFileWarningPart1Expl.localized
+            .addTwolines +
+        LocalizableLock.onboardingLoseFileWarningPart2Expl.localized
+    }
+}

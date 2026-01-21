@@ -209,4 +209,13 @@ extension String {
     func url() -> URL? {
         return URL(string: self)
     }
+    
+    var addline: String {
+        return self + "\n"
+    }
+    
+    var addTwolines: String {
+        return self + "\n\n"
+    }
+
 }

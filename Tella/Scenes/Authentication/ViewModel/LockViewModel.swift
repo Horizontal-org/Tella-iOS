@@ -3,7 +3,7 @@
 //  Tella
 //
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,6 +12,13 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum LockType {
+    case pin
+    case password
+    case none
+}
+
+@MainActor
 class LockViewModel: ObservableObject {
     
     @Published var loginPassword : String = ""
@@ -22,9 +29,11 @@ class LockViewModel: ObservableObject {
     @Published var unlockAttempts : Int
     var maxAttempts : Int
     
-    private var cancellables = Set<AnyCancellable>()
+    private var subscribers = Set<AnyCancellable>()
     
-    var unlockType : UnlockType = .new
+    var lockFlow: LockFlow = .new
+    var lockType: LockType = .none
+    
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     var mainAppModel:MainAppModel
     var appViewState: AppViewState
@@ -33,7 +42,7 @@ class LockViewModel: ObservableObject {
     @Published var presentingLockChoice : Bool = false
     
     
-    var unlockKeyboardNumbers: [PinKeyboardModel] = { return [
+    var unlockKeyboardNumbers: [PinKeyboardModel] = { [
         PinKeyboardModel(text: "1", type: .number),
         PinKeyboardModel(text: "2", type: .number),
         PinKeyboardModel(text: "3", type: .number),
@@ -48,19 +57,19 @@ class LockViewModel: ObservableObject {
         PinKeyboardModel(text: "OK", type: .done)] }()
     
     var shouldShowErrorMessage : Bool {
-        return password != confirmPassword
+        password != confirmPassword
     }
     
     var shouldShowAttemptsWarning : Bool {
-        return maxAttempts - unlockAttempts <= 3 && mainAppModel.settings.showUnlockAttempts && mainAppModel.settings.deleteAfterFail != .off
+        maxAttempts - unlockAttempts <= 3 && mainAppModel.settings.showUnlockAttempts && mainAppModel.settings.deleteAfterFail != .off
     }
     
-    func remainingAttempts () -> Int {
-        return maxAttempts - unlockAttempts
+    func remainingAttempts() -> Int {
+        maxAttempts - unlockAttempts
     }
     
-    init(unlockType: UnlockType, appViewState:AppViewState) {
-        self.unlockType = unlockType
+    init(lockFlow: LockFlow, appViewState:AppViewState) {
+        self.lockFlow = lockFlow
         self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
         
@@ -75,17 +84,15 @@ class LockViewModel: ObservableObject {
         self.maxAttempts = mainAppModel.settings.deleteAfterFail.numberOfAttempts
     }
     
-
-    
     private func setupSettingsObservations() {
         mainAppModel.settings.$deleteAfterFail
             .map({ $0.numberOfAttempts })
             .assign(to: \.maxAttempts, on: self)
-            .store(in: &cancellables)
+            .store(in: &subscribers)
         
         mainAppModel.settings.$unlockAttempts
             .assign(to: \.unlockAttempts, on: self)
-            .store(in: &cancellables)
+            .store(in: &subscribers)
     }
     
     func login() {
@@ -94,31 +101,30 @@ class LockViewModel: ObservableObject {
         self.mainAppModel.vaultManager.login(password: self.loginPassword)
             .subscribe(on: DispatchQueue.global(qos: .userInteractive))
             .receive(on: DispatchQueue.main)
-            .sink { authorized in
-                
+            .sink { [weak self] authorized in
+                guard let self = self else { return }
+                self.isLoading = false
                 if authorized {
                     self.successLogin()
                 } else {
                     self.checkUnlockAttempts()
                 }
-                
-            }.store(in: &self.cancellables)
-        
+            }.store(in: &self.subscribers)
     }
     
     private func successLogin() {
         resetUnlockAttempts()
-        if  unlockType == .new {
+        if  lockFlow == .new {
             loadData()
         } else {
-            isLoading = false
             presentingLockChoice = true
-            presentingLockChoice = false
+            DispatchQueue.main.async() {
+                self.presentingLockChoice = false
+            }
         }
     }
     
     private func checkUnlockAttempts() {
-        isLoading = false
         shouldShowUnlockError = true
         increaseUnlockAttempts()
         
@@ -135,18 +141,18 @@ class LockViewModel: ObservableObject {
             .sink { recoverResult in
                 self.isLoading = false
                 self.appViewState.showMainView()
-            }.store(in: &self.cancellables)
+            }.store(in: &self.subscribers)
     }
     
     func initKeys(passwordTypeEnum:PasswordTypeEnum) {
         mainAppModel.vaultManager.initKeys(passwordTypeEnum,
-                                       password: password)
+                                           password: password)
     }
     
     func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
         mainAppModel.vaultManager.updateKeys(passwordTypeEnum,
-                                         newPassword: password,
-                                         oldPassword: loginPassword)
+                                             newPassword: password,
+                                             oldPassword: loginPassword)
     }
     
     func initUnlockData() {
@@ -170,25 +176,25 @@ class LockViewModel: ObservableObject {
         return String.init(format: LocalizableLock.unlockDeleterAfterFailRemainingAttempts.localized, self.remainingAttempts())
     }
     
-    func resetUnlockAttempts () -> Void {
+    func resetUnlockAttempts () {
         DispatchQueue.main.async {
             self.mainAppModel.settings.unlockAttempts = 0
             self.mainAppModel.saveSettings()
         }
     }
     
-    func increaseUnlockAttempts () -> Void {
+    func increaseUnlockAttempts () {
         mainAppModel.settings.unlockAttempts = mainAppModel.settings.unlockAttempts + 1
         mainAppModel.saveSettings()
     }
     
-    func removeFilesAndConnections () -> Void {
+    func removeFilesAndConnections () {
         mainAppModel.deleteAfterMaxAttempts()
     }
 }
 
 extension LockViewModel {
     static func stub() -> LockViewModel {
-        return LockViewModel(unlockType: .new, appViewState: AppViewState())
+        return LockViewModel(lockFlow: .new, appViewState: AppViewState())
     }
 }

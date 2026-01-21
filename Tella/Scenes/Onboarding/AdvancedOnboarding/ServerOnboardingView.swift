@@ -43,7 +43,7 @@ struct ServerOnboardingView: View {
     func handleSwipe(for page: ServerOnboardingItem, direction: SwipeDirection) -> Bool {
         switch page {
         case .main:
-            return viewModel.isConnectionSucceded ? (direction == .left)
+            return viewModel.isConnectionSucceeded ? (direction == .left)
             : false
         case .customizationDone:
             return false
@@ -54,7 +54,7 @@ struct ServerOnboardingView: View {
     func view(for page: ServerOnboardingItem) -> some View {
         switch page {
         case .main:
-            if viewModel.isConnectionSucceded {
+            if viewModel.isConnectionSucceeded {
                 ServerConnectedSuccessView()
             } else {
                 MainServerOnboardingView(appViewState: appViewState, serversViewModel: serversViewModel)
