@@ -12,7 +12,7 @@ import SwiftUI
 struct OnboardingConnectionsView: View {
     
     let content: any ImageTitleMessageContent
-
+    
     private var gridLayout: [GridItem] {
         [
             GridItem(.flexible()),
@@ -45,18 +45,36 @@ struct OnboardingConnectionsView: View {
         VStack(spacing: .medium) {
             ImageTitleMessageView(content: content)
             connectionsView
-        }.padding(.horizontal, .medium)
+        }
+        .padding(.horizontal, .medium)
     }
     
-    var connectionsView: some View {
-        LazyVGrid(columns: gridLayout, alignment: .center, spacing: .normal) {
-            ForEach(Self.connections, id: \.title) { connection in
-                connectionItem(connection: connection)
+    private var connectionsView: some View {
+        VStack(spacing: .medium) {
+            LazyVGrid(columns: gridLayout, alignment: .center, spacing: .normal) {
+                ForEach(Array(Self.connections.prefix(3)), id: \.title) { connection in
+                    connectionItem(connection: connection)
+                }
+            }
+            
+            HStack {
+                Spacer()
+                
+                if let firstItem = Self.connections[safe: 3] {
+                    connectionItem(connection: firstItem)
+                }
+                Spacer()
+                
+                if let secondItem = Self.connections[safe: 4] {
+                    connectionItem(connection: secondItem)
+                }
+                
+                Spacer()
             }
         }
     }
     
-    func connectionItem(connection: Connection) -> some View {
+    private func connectionItem(connection: Connection) -> some View {
         VStack {
             Image(connection.icon)
                 .frame(width: .mediumIconSize, height: .mediumIconSize)
