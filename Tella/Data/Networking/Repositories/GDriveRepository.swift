@@ -3,10 +3,9 @@
 //  Tella
 //
 //  Created by gus valbuena on 5/28/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
-
 
 import Foundation
 import GoogleSignIn
@@ -22,12 +21,11 @@ struct FileUploadDetails {
 protocol GDriveRepositoryProtocol {
     func handleSignIn() async throws
     func handleUrl(url: URL)
-    func getSharedDrives() -> AnyPublisher<[SharedDrive], APIError>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, APIError>
     func uploadFile(fileUploadDetails: FileUploadDetails) -> AnyPublisher<UploadProgressInfo, APIError>
     func pauseAllUploads()
     func resumeAllUploads()
-    func signOut() -> Void
+    func signOut()
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
@@ -62,41 +60,115 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
     }
     
+    private func hasRequiredScopes(_ user: GIDGoogleUser) -> Bool {
+        let requiredScopes = [GoogleAuthConstants.gDriveScopesFile]
+        guard let grantedScopes = user.grantedScopes else {
+            return false
+        }
+        return requiredScopes.allSatisfy { scope in
+            grantedScopes.contains(scope)
+        }
+    }
+    
+    private func ensureScopes(
+        for user: GIDGoogleUser,
+        presenting rootViewController: UIViewController,
+        continuation: CheckedContinuation<Void, Error>
+    ) {
+        if hasRequiredScopes(user) {
+            self.googleUser = user
+            continuation.resume(returning: ())
+            return
+        }
+        
+        user.addScopes(
+            [GoogleAuthConstants.gDriveScopesFile],
+            presenting: rootViewController
+        ) { [weak self] signInResult, error in
+            guard let self else {
+                continuation.resume(throwing: APIError.unexpectedResponse)
+                return
+            }
+            
+            if let error = error {
+                if let nsError = error as NSError?,
+                   nsError.code == GoggleDriveErrorCodes.scopesAlreadyGranted.rawValue {
+                    self.googleUser = user
+                    continuation.resume(returning: ())
+                } else {
+                    continuation.resume(throwing: APIError.driveApiError(error))
+                }
+                return
+            }
+            
+            self.googleUser = signInResult?.user ?? user
+            continuation.resume(returning: ())
+        }
+    }
+    
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            DispatchQueue.main.async {
-                guard let rootViewController = self.rootViewController else {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
                     return
                 }
-                GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
+                guard let rootViewController = self.rootViewController else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
+                    return
+                }
+                
+                GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [weak self] signInResult, error in
+                    guard let self else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+                    
                     if let error = error {
                         continuation.resume(throwing: APIError.driveApiError(error))
-                    } else {
-                        signInResult?.user.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
-                        self.googleUser = signInResult?.user
-                        continuation.resume(returning: ())
+                        return
                     }
+                    
+                    guard let user = signInResult?.user else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+                    
+                    self.ensureScopes(for: user, presenting: rootViewController, continuation: continuation)
                 }
             }
         }
     }
     
     private func restorePreviousSignIn() async throws {
-        try await withCheckedThrowingContinuation{ (continuation: CheckedContinuation<Void, Error>) in
-            DispatchQueue.main.async {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
+                    return
+                }
                 guard let rootViewController = self.rootViewController else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
                     return
                 }
                 
-                GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+                    guard let self else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+                    
                     if let error = error {
                         continuation.resume(throwing: error)
                         return
                     }
-                    user?.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
                     
-                    self.googleUser = user
-                    continuation.resume(returning: ())
+                    guard let user = user else {
+                        continuation.resume(throwing: APIError.unexpectedResponse)
+                        return
+                    }
+                    
+                    self.ensureScopes(for: user, presenting: rootViewController, continuation: continuation)
                 }
             }
         }
@@ -104,42 +176,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     
     func handleUrl(url: URL) {
         GIDSignIn.sharedInstance.handle(url)
-    }
-    
-    func getSharedDrives() -> AnyPublisher<[SharedDrive], APIError> {
-        Deferred {
-            Future { [weak self] promise in
-                guard let user = self?.googleUser else {
-                    return promise(.failure(APIError.noToken))
-                }
-                let driveService = GTLRDriveService()
-                driveService.authorizer = user.fetcherAuthorizer
-
-                let query = GTLRDriveQuery_DrivesList.query()
-
-                driveService.executeQuery(query) { ticket, response, error in
-                    if let error = error {
-                        debugLog("Error fetching drives: \(error.localizedDescription)")
-                        promise(.failure(.driveApiError(error)))
-                    }
-
-                    guard let driveList = response as? GTLRDrive_DriveList,
-                        let drives = driveList.drives
-                    else {
-                        return
-                    }
-
-                    let sharedDrives = drives.map { drive in
-                        SharedDrive(
-                            id: drive.identifier ?? "", name: drive.name ?? "",
-                            kind: drive.kind ?? "")
-                    }
-
-                    promise(.success(sharedDrives))
-                }
-            }
-        }
-        .eraseToAnyPublisher()
     }
     
     func createDriveFolder(
@@ -179,14 +215,14 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             promise(.failure(APIError.noToken))
             return
         }
-
+        
         let driveService = GTLRDriveService()
         driveService.authorizer = user.fetcherAuthorizer
-
+        
         let folder = GTLRDrive_File()
         folder.name = folderName
         folder.mimeType = GoogleAuthConstants.gDriveFolderMimeType
-
+        
         if let parentID = parentId {
             folder.parents = [parentID]
         }
@@ -194,9 +230,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         if let description = description {
             folder.descriptionProperty = description
         }
-
+        
         let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
-        query.supportsAllDrives = true
         
         driveService.executeQuery(query) { (ticket, file, error) in
             if let error = error {
@@ -204,12 +239,12 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 promise(.failure(.driveApiError(error)))
                 return
             }
-
+            
             guard let createdFile = file as? GTLRDrive_File else {
                 promise(.failure(APIError.unexpectedResponse))
                 return
             }
-
+            
             promise(.success(createdFile.identifier ?? ""))
         }
     }
@@ -230,7 +265,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             fileUploadDetails: fileUploadDetails,
                             promise: promise
                         )
-                                            
+                        
                         self.networkStatusSubject
                             .filter { !$0 }
                             .first()
@@ -295,7 +330,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             }
         }
     }
-
+    
     @MainActor
     private func uploadNewFile(
         fileUploadDetails: FileUploadDetails,
@@ -316,7 +351,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         uploadParameters.shouldUploadWithSingleRequest = false
         
         let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
-        query.supportsAllDrives = true
         
         return try await withCheckedThrowingContinuation { continuation in
             let ticket = driveService.executeQuery(query) { [weak self] (ticket, file, error) in
@@ -362,8 +396,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             let query = GTLRDriveQuery_FilesList.query()
             query.q = "name = '\(fileName)' and '\(folderId)' in parents and trashed = false"
             query.fields = "files(id, name)"
-            query.includeItemsFromAllDrives = true
-            query.supportsAllDrives = true
             
             driveService.executeQuery(query) { (_, response, error) in
                 if let error = error {
@@ -385,7 +417,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         uploadTasks.forEach { $0.value.cancel() }
         uploadTasks.removeAll()
     }
-
+    
     func resumeAllUploads() {
         isCancelled = false
     }

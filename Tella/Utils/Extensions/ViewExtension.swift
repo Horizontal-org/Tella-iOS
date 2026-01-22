@@ -129,16 +129,7 @@ extension View {
                                   backgroundColor: Styles.Colors.backgroundTab,
                                   tapToDismiss: tapToDismiss,
                                   content: {content})
-            .padding(.bottom, bottomInset)
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
-    }
-    
-    private var bottomInset: CGFloat {
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first
-            return window?.safeAreaInsets.bottom ?? 0
-        }
-        return 0
     }
 }
 
