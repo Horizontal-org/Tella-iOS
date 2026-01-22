@@ -29,17 +29,6 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
-
-"LockUnlock_LockSuccess_Title" = "Success";
-"LockUnlock_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
-"LockUnlock_LockSuccess_Link" = "Learn more about Tella’s lock.";
-
-
-
-"LockUnlock_ProtectLock_SheetTitle" = "Protect your lock";
-"LockUnlock_ProtectLock_SheetExpl" = "Make sure to remember your lock or save it somewhere safe like a password manager.";
-"LockUnlock_ProtectLock_SheetAction" = "Continue";
-
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_Subhead" = "Recent files";
@@ -452,7 +441,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettServer_DeleteUwaziConnection_SheetExpl" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
 "Settings_SettServer_Cancel_SheetAction" = "CANCEL";
 "Settings_SettServer_Delete_SheetAction" = "DELETE";
-
 "Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
 "Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
@@ -552,32 +540,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-
-
-"Onboarding_Record_Title" = "Record";
-"Onboarding_Record_Expl" = "Capture photos, videos and audio directly in Tella. ";
-"Onboarding_Record_Info" = "These files are saved in Tella, and cannot be seen from your phone’s regular gallery.";
-
-
-"Onboarding_Files_Title" = "Store files safely";
-"Onboarding_Files_Expl" = "Your Tella files are encrypted. As long as Tella is locked, no one else (not even the Tella team) can access your data.";
-"Onboarding_Files_Info" = "By default, your Tella files are stored only on your device, not online.";
-
-
-"Onboarding_Connections_Title" = "Share data";
-"Onboarding_Connections_part1_Expl" = "Send reports, forms and files to your organization, or back up files to a personal cloud.";
-"Onboarding_Connections_part2_Expl" = "Tella supports server Connections to:";
-
-"Onboarding_Connections_Dropbox" = "Dropbox";
-"Onboarding_Connections_GDrive" = "Google Drive";
-"Onboarding_Connections_Nextcloud" = "Nextcloud";
-"Onboarding_Connections_Uwazi" = "Uwazi";
-"Onboarding_Connections_TellaWeb" = "Tella Web";
-
 "Onboarding_NearbySharing_Title" = "Nearby Sharing";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
-
-
 "Onboarding_LockDone_Title" = "You’re all done!";
 "Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
 "Onboarding_Done_Action_GoToTella" = "Go to tella";
@@ -586,18 +550,34 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_ServerDone_Expl" = "You can always change your preferences in the Tella Settings.";
 "Onboarding_ServerMain_Title" = "Share data you collect";
 "Onboarding_ServerMain_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
-
-"Onboarding_ServerMain_Action_SetupServer" = "Set up server connection";
-"Onboarding_ServerMain_Action_NoThanks" = "No, thanks";
 "Onboarding_ServerConnected_Title" = "Connected to project";
 "Onboarding_ServerConnected_Expl" = "You have successfully connected to the server and will be able to share your data.";
-
-"Onboarding_LoseFileWarning_Title" = "Don’t lose your files";
-"Onboarding_LoseFileWarning_part1_Expl" = "Your lock is the only way to access your Tella files.";
-"Onboarding_LoseFileWarning_part2_Expl" = "If you forget your lock, there is currently no way to recover it. Your data inside Tella will be lost forever.";
-
-"Onboarding_LoseFileWarning_Action_Understand" = "I understand";
-
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
 "Settings_SettLang_Chinese_Expl" = "Chinese";
+"LockUnlock_LockSuccess_Title" = "Success";
+"LockUnlock_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
+"LockUnlock_LockSuccess_Link" = "Learn more about Tella’s lock.";
+"LockUnlock_ProtectLock_SheetTitle" = "Protect your lock";
+"LockUnlock_ProtectLock_SheetExpl" = "Make sure to remember your lock or save it somewhere safe like a password manager.";
+"LockUnlock_ProtectLock_SheetAction" = "Continue";
+"Onboarding_Record_Title" = "Record";
+"Onboarding_Record_Expl" = "Capture photos, videos and audio directly in Tella. ";
+"Onboarding_Record_Info" = "These files are saved in Tella, and cannot be seen from your phone’s regular gallery.";
+"Onboarding_Files_Title" = "Store files safely";
+"Onboarding_Files_Expl" = "Your Tella files are encrypted. As long as Tella is locked, no one else (not even the Tella team) can access your data.";
+"Onboarding_Files_Info" = "By default, your Tella files are stored only on your device, not online.";
+"Onboarding_Connections_Title" = "Share data";
+"Onboarding_Connections_part1_Expl" = "Send reports, forms and files to your organization, or back up files to a personal cloud.";
+"Onboarding_Connections_part2_Expl" = "Tella supports server Connections to:";
+"Onboarding_Connections_Dropbox" = "Dropbox";
+"Onboarding_Connections_GDrive" = "Google Drive";
+"Onboarding_Connections_Nextcloud" = "Nextcloud";
+"Onboarding_Connections_Uwazi" = "Uwazi";
+"Onboarding_Connections_TellaWeb" = "Tella Web";
+"Onboarding_ServerMain_Action_SetupServer" = "Set up server connection";
+"Onboarding_ServerMain_Action_NoThanks" = "No, thanks";
+"Onboarding_LoseFileWarning_Title" = "Don’t lose your files";
+"Onboarding_LoseFileWarning_part1_Expl" = "Your lock is the only way to access your Tella files.";
+"Onboarding_LoseFileWarning_part2_Expl" = "If you forget your lock, there is currently no way to recover it. Your data inside Tella will be lost forever.";
+"Onboarding_LoseFileWarning_Action_Understand" = "I understand";
