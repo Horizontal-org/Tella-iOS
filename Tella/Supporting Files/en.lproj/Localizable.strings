@@ -442,15 +442,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettServer_Cancel_SheetAction" = "CANCEL";
 "Settings_SettServer_Delete_SheetAction" = "DELETE";
 "Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
-
-
-"Setting_Server_GDrive_CreateNewFolder_SheetTitle" = "Create a new Google Drive folder";
-"Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
-"Setting_Server_GDrive_CreateNewFolder_SheetAction" = "Create new folder";
-"Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "Cancel";
-
-
-
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
 "Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
 "Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
@@ -590,3 +581,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_LoseFileWarning_part1_Expl" = "Your lock is the only way to access your Tella files.";
 "Onboarding_LoseFileWarning_part2_Expl" = "If you forget your lock, there is currently no way to recover it. Your data inside Tella will be lost forever.";
 "Onboarding_LoseFileWarning_Action_Understand" = "I understand";
+"Setting_Server_GDrive_CreateNewFolder_SheetTitle" = "Create a new Google Drive folder";
+"Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
+"Setting_Server_GDrive_CreateNewFolder_SheetAction" = "Create new folder";
+"Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "Cancel";
