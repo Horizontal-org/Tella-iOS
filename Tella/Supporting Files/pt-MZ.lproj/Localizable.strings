@@ -581,3 +581,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Onboarding_LoseFileWarning_part1_Expl" = "Your lock is the only way to access your Tella files.";
 "Onboarding_LoseFileWarning_part2_Expl" = "If you forget your lock, there is currently no way to recover it. Your data inside Tella will be lost forever.";
 "Onboarding_LoseFileWarning_Action_Understand" = "I understand";
+"Setting_Server_GDrive_CreateNewFolder_SheetTitle" = "Create a new Google Drive folder";
+"Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
+"Setting_Server_GDrive_CreateNewFolder_SheetAction" = "Criar uma nova pasta";
+"Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "Cancelar";
