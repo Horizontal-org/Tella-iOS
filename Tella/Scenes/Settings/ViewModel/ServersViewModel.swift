@@ -11,7 +11,9 @@ import Combine
 enum ServersSourceView {
     case onboarding
     case settings
+    case outbox
 }
+
 class ServersViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel

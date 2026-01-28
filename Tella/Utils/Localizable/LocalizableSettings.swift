@@ -136,6 +136,12 @@ enum LocalizableSettings: String, LocalizableDelegate {
     //GDrive
     
     case gDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_CreatePersonal_Desc"
+
+    case createNewFolderSheetTitle = "Setting_Server_GDrive_CreateNewFolder_SheetTitle"
+    case createNewFolderSheetExpl = "Setting_Server_GDrive_CreateNewFolder_SheetExpl"
+    case ceateNewFolder = "Setting_Server_GDrive_CreateNewFolder_SheetAction"
+    case ceateNewFolderCancel = "Setting_Server_GDrive_NewFolder_Cancel_SheetAction"
+
     case gDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
     case nextcloudSuccessMessage = "Setting_Server_Nextcloud_Success_Message"
     case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    

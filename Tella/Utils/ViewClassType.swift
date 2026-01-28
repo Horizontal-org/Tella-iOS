@@ -22,5 +22,7 @@ struct ViewClassType {
     static let dropboxReportMainView: AnyClass = UIHostingController<DropboxReportMainView>.self
     static let fileListView: AnyClass = UIHostingController<FileListView>.self
     static let serverOnboardingView: AnyClass = UIHostingController<ServerOnboardingView>.self
+    static let gdriveOutboxDetailsView: AnyClass = UIHostingController<GdriveOutboxDetailsView>.self
+
 }
 
