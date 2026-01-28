@@ -34,6 +34,8 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     @Published var toastMessage : String = ""
     
     @Published var shouldShowLoginView : Bool = false
+    @Published var shouldShowCreateFolder : Bool = false
+
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []

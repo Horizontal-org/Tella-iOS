@@ -59,6 +59,24 @@ extension TellaDataBase {
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
+
+    func updateGDriveServer(gDriveServer: GDriveServer) -> Result<Void, Error> {
+        do {
+            
+            let gDriveServerDict = gDriveServer.dictionary
+            let valuesToUpdate = gDriveServerDict.compactMap({ KeyValue(key: $0.key, value: $0.value) })
+            let condition = [KeyValue(key: D.cServerId, value: gDriveServer.id)]
+            
+            try statementBuilder.update(tableName: D.tGDriveServer,
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: condition)
+            
+            return .success
+        } catch let error {
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+    }
 }
 
 // GDrive Reports
