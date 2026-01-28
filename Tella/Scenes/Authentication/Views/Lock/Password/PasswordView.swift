@@ -2,14 +2,15 @@
 //  PasswordView.swift
 //  Tella
 //
-//   
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 
 import SwiftUI
 import UIKit
+import Combine
 
 enum NextButtonAction {
     case action
@@ -18,11 +19,11 @@ enum NextButtonAction {
 
 struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
     var shouldEnableBackButton : Bool = true
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State private var isValid : Bool = false
-
+    
     var lockViewData : T
     var nextButtonAction: NextButtonAction
     @Binding var fieldContent : String
@@ -50,12 +51,8 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
-                                       shouldShowError: .constant(false))
+                                      shouldShowError: .constant(false))
                 Spacer()
-                
-                if shouldShowErrorMessage {
-                    ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPasswordConfirmErrorPasswordsDoNotMatch.localized)
-                }
                 
                 BottomLockView(isValid: $isValid,
                                shouldEnableBackButton: shouldEnableBackButton,
@@ -64,8 +61,16 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                                nextAction: action, backAction: {
                     self.presentationMode.wrappedValue.dismiss()
                 })
-            }        
+            }
         }.navigationBarHidden(true)
+            .onChange(of: shouldShowErrorMessage) { newValue in
+                guard newValue else { return }
+                Toast.displayToast(message: LocalizableLock.lockPasswordConfirmErrorPasswordsDoNotMatch.localized)
+                shouldShowErrorMessage = false
+            }
+            .onChange(of: fieldContent) { _ in
+                shouldShowErrorMessage = false
+            }
     }
 }
 
