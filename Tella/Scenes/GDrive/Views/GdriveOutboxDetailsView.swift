@@ -27,13 +27,15 @@ struct GdriveOutboxDetailsView<T: GDriveServer>: View {
         let content = ConfirmBottomSheet(imageName: "gdrive.icon",
                                          titleText: LocalizableSettings.createNewFolderSheetTitle.localized,
                                          msgText: LocalizableSettings.createNewFolderSheetExpl.localized,
-                                         cancelText: LocalizableSettings.ceateNewFolderCancel.localized,
-                                         actionText: LocalizableSettings.ceateNewFolder.localized,
+                                         cancelText: LocalizableSettings.ceateNewFolderCancel.localized.uppercased(),
+                                         actionText: LocalizableSettings.ceateNewFolder.localized.uppercased(),
                                          shouldHideSheet: false,
                                          didConfirmAction: {
             self.dismiss {
                 showCreateDriveFolderView()
             }
+        }, didCancelAction: {
+            self.dismiss()
         })
         
         showBottomSheetView(content: content)
