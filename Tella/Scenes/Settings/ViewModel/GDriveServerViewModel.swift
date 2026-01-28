@@ -17,6 +17,7 @@ class GDriveServerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     var serverCreateFolderVM: ServerCreateFolderViewModel
     var serversSourceView: ServersSourceView
+    var currentServer: GDriveServer? = nil
     
     @Published var signInState: ViewModelState<Bool> = .loaded(false)
     
@@ -45,15 +46,28 @@ class GDriveServerViewModel: ObservableObject {
                     self.serverCreateFolderVM.createFolderState = .error(error.errorMessage)
                 }
             }, receiveValue: { folderId in
-                self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
-                self.serverCreateFolderVM.createFolderState = .loaded(true)
+                if let server = self.mainAppModel.tellaData?.getDriveServers().first {
+                    server.rootFolder = folderId
+                    server.rootFolderName = folderName
+                    self.updateCurrentServer(server: server)
+                } else {
+                    self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
+                    self.serverCreateFolderVM.createFolderState = .loaded(true)
+                }
             })
             .store(in: &cancellables)
+    }
+    
+    func updateCurrentServer(server: GDriveServer) {
+        _ = self.mainAppModel.tellaData?.database.updateGDriveServer(gDriveServer: server)
+        self.currentServer = server
+        self.serverCreateFolderVM.createFolderState = .loaded(true)
     }
     
     func addServer(rootFolder: String, rootFolderName: String) { //TODO:  Must check failure
         let server = GDriveServer(rootFolder: rootFolder, rootFolderName: rootFolderName)
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
+        currentServer = server
     }
     
     // AUTH

@@ -75,6 +75,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         presenting rootViewController: UIViewController,
         continuation: CheckedContinuation<Void, Error>
     ) {
+        
         if hasRequiredScopes(user) {
             self.googleUser = user
             continuation.resume(returning: ())
@@ -192,6 +193,15 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 Task {
                     do {
                         try await self.ensureSignedIn()
+                        if let parentId {
+                            do {
+                                try await self.validateUploadDestination(folderId: parentId)
+                            }
+                            catch (let error as APIError) {
+                                promise(.failure(error))
+                            }
+                        }
+                        
                         self.performCreateDriveFolder(
                             folderName: folderName,
                             parentId: parentId,
@@ -436,6 +446,47 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         uploadProgressInfo.error = APIError.unexpectedResponse
         promise(.failure(.unexpectedResponse))
     }
+    
+    private func validateUploadDestination(
+        folderId: String) async throws {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                
+                guard let user = googleUser else {
+                    continuation.resume(throwing: APIError.noToken)
+                    return
+                }
+                
+                let driveService = GTLRDriveService()
+                driveService.authorizer = user.fetcherAuthorizer
+                
+                let q = GTLRDriveQuery_FilesGet.query(withFileId: folderId)
+                q.supportsAllDrives = true
+                q.fields = "id,name,trashed,driveId"
+                
+                driveService.executeQuery(q) { _, file, error in
+                    if let error = error {
+                        continuation.resume(throwing: APIError.driveApiError(error))
+                        return
+                    }
+                    
+                    guard
+                        let folder = file as? GTLRDrive_File
+                    else {
+                        continuation.resume(throwing: APIError.unexpectedResponse )
+                        return
+                    }
+                    
+                    let isSharedDrive = (folder.driveId?.isEmpty == false)
+                    
+                    if isSharedDrive {
+                        continuation.resume(throwing: APIError.httpCode(HTTPErrorCodes.forbidden.rawValue))
+                        return
+                    }
+                    
+                    continuation.resume(returning: ())
+                }
+            }
+        }
 }
 
 struct UploadProgressWithFolderId {
