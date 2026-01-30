@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 9/3/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -45,7 +45,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
-                let scopeRequest = ScopeRequest(scopeType: .user, scopes: [DropboxAuthConstants.filesContentWrite], includeGrantedScopes: false)
+                let scopeRequest = ScopeRequest(scopeType: .user,
+                                                scopes: [DropboxAuthConstants.filesContentWrite,
+                                                         DropboxAuthConstants.filesContentRead],
+                                                includeGrantedScopes: false)
                 
                 DropboxClientsManager.authorizeFromControllerV2(
                     UIApplication.shared,
@@ -67,11 +70,19 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     func ensureSignedIn() async throws {
-        if let client = DropboxClientsManager.authorizedClient {
-            self.client = client
-        } else {
+        guard let client = DropboxClientsManager.authorizedClient else {
             signOut()
+            throw APIError.noToken
         }
+        do {
+            _ = try await client.files.listFolder(path: "").response()
+        } catch {
+            DropboxClientsManager.unlinkClients()
+            self.client = nil
+            throw APIError.noToken
+        }
+        
+        self.client = client
     }
     
     func signOut() {
