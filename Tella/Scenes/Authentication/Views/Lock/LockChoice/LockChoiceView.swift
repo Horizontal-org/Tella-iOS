@@ -67,66 +67,6 @@ struct LockChoiceView: View {
     }
 }
 
-struct LockButtonView<Destination:View> : View {
-    
-    var lockButtonProtocol : LockButtonProtocol
-    var destination : Destination
-    var presentationType : ViewPresentationType = .push
-    var action: (() -> ())?
-    
-    var body: some View {
-        
-        Button {
-            if let action {
-                action()
-            }
-            if presentationType == .present {
-                self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
-                    CustomNavigation() {
-                        destination
-                    }
-                }
-            } else {
-                navigateTo(destination: destination)
-            }
-            
-        } label: {
-            HStack(spacing: 20) {
-                
-                Image(lockButtonProtocol.imageName)
-                    .frame(width: 42, height: 42)
-                    .aspectRatio(contentMode: .fit)
-                
-                VStack(alignment:.leading, spacing: 3 ) {
-                    Text(lockButtonProtocol.title)
-                        .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                        .foregroundColor(.white)
-                    
-                    Text(lockButtonProtocol.description)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 13.5))
-                        .foregroundColor(.white)
-                }
-                Spacer()
-            } .padding(16)
-                .background( Color.white.opacity(0.16))
-                .cornerRadius(20)
-                .buttonStyle(LockButtonStyle())
-        }
-    }
-}
-
-struct LockButtonStyle : ButtonStyle {
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(configuration.isPressed ? Color.white.opacity(0.32) : Color.white.opacity(0.16))
-            .cornerRadius(20)
-            .overlay(
-                configuration.isPressed ? RoundedRectangle(cornerRadius: 20).stroke(Color.white.opacity(0.8), lineWidth: 3) :  RoundedRectangle(cornerRadius: 20).stroke(Color.clear, lineWidth: 0)
-            )
-    }
-}
-
 struct LockChoiceView_Previews: PreviewProvider {
     static var previews: some View {
         LockChoiceView(lockViewModel: LockViewModel.stub())

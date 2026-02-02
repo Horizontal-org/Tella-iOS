@@ -15,7 +15,7 @@ struct ServerConnectedSuccessView: View {
         VStack(spacing: .extraLarge) {
             Spacer()
             ImageTitleMessageView(content: ServerConnectedContent())
-            Image(.settingsCheckedCircle)
+            Image(.checkedCircle)
             Spacer()
         }.padding(.horizontal, .medium)
     }
