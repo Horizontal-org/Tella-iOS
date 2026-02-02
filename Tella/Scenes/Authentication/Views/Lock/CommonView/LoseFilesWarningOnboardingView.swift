@@ -24,7 +24,7 @@ struct LoseFilesWarningOnboardingView: View {
                     
                     ImageTitleMessageView(content: LoseFilesWarningOnboardingContent())
                     
-                    TellaButtonView<AnyView> (title: LocalizableLock.loseFileWarningUnderstand.localized.uppercased(),
+                    TellaButtonView(title: LocalizableLock.loseFileWarningUnderstand.localized.uppercased(),
                                               nextButtonAction: .action,
                                               buttonType: .clear,
                                               isValid: .constant(true)) {
