@@ -24,10 +24,15 @@ struct IconTextButton<Destination:View> : View {
     
     var buttonConfig : IconTextButtonConfig
     var destination : Destination
-    
+    var action: (() -> ())?
+
     var body: some View {
         
         Button {
+            if let action {
+                action()
+            } 
+
             navigateTo(destination: destination)
         } label: {
             HStack(spacing: 20) {

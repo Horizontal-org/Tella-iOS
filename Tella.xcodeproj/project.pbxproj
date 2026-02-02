@@ -25,7 +25,6 @@
 		0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */; };
 		0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7818267A53A700A2ACF2 /* PageView.swift */; };
 		0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* UwaziPages.swift */; };
-		1202C8A32DB985B80013E17D /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202C8A22DB985B80013E17D /* BackBottomView.swift */; };
 		1202D9582BF4CFF200EAFAB3 /* SelectValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */; };
 		1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDB298C5B9100D09073 /* ConnectionActionType.swift */; };
 		1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDD298D7C1300D09073 /* FileToUpload.swift */; };
@@ -232,7 +231,6 @@
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E52DBBA16900FD7762 /* RotateVideoView.swift */; };
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
-		126B70122DB1575D00742897 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B70112DB1575600742897 /* CustomText.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
 		126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
@@ -247,8 +245,6 @@
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FAACE2D4B956400F6BCD8 /* LocalizableNearbySharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */; };
-		126FAAD32D4B9D2100F6BCD8 /* NearbySharingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */; };
-		126FAAD32D4B9D2100F6BCD8 /* PeerToPeerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */; };
 		126FC6BE2F1E482900FC9316 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6BD2F1E482900FC9316 /* LinkView.swift */; };
 		126FC6C12F20111200FC9316 /* BottomButtonActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
@@ -340,6 +336,8 @@
 		128EE4EE2E8FD2DA00DF55C5 /* MainServerOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EE4ED2E8FD2D300DF55C5 /* MainServerOnboardingView.swift */; };
 		128EE4F02E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EE4EF2E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift */; };
 		128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FD0B327F774FB00B24915 /* RecentFile.swift */; };
+		128FE9632F3094080037E329 /* NearbySharingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FE9622F3094080037E329 /* NearbySharingMainView.swift */; };
+		128FE9652F3096F20037E329 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FE9642F3096F20037E329 /* CustomText.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
 		1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */; };
 		1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */; };
@@ -369,8 +367,8 @@
 		12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */; };
 		12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */; };
 		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
-		129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129919BD2E31143400A4417D /* NWConnectionExtension.swift */; };
 		129771862F0FE89200828857 /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = 129771852F0FE89200828857 /* Mantis */; };
+		129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129919BD2E31143400A4417D /* NWConnectionExtension.swift */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
@@ -782,7 +780,6 @@
 		0ECC7818267A53A700A2ACF2 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		0ECC781A267A542300A2ACF2 /* UwaziPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziPages.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
-		1202C8A22DB985B80013E17D /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
 		1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectValues.swift; sourceTree = "<group>"; };
 		1203CDDB298C5B9100D09073 /* ConnectionActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionActionType.swift; sourceTree = "<group>"; };
 		1203CDDD298D7C1300D09073 /* FileToUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToUpload.swift; sourceTree = "<group>"; };
@@ -827,7 +824,6 @@
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
 		1222363E2DD3DDC1006A9F01 /* RecipientPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientPrepareFileTransferVM.swift; sourceTree = "<group>"; };
-		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigation.swift; sourceTree = "<group>"; };
 		122389B2293630DA0058593B /* SaveSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSuccessView.swift; sourceTree = "<group>"; };
 		122389B6293635790058593B /* SetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
@@ -988,7 +984,6 @@
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126B20E52DBBA16900FD7762 /* RotateVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateVideoView.swift; sourceTree = "<group>"; };
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
-		126B70112DB1575600742897 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
 		126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingEvent.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
@@ -1002,8 +997,6 @@
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableNearbySharing.swift; sourceTree = "<group>"; };
-		126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingMainView.swift; sourceTree = "<group>"; };
-		126FAAD22D4B9D2100F6BCD8 /* PeerToPeerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerToPeerMainView.swift; sourceTree = "<group>"; };
 		126FC6BD2F1E482900FC9316 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonActionView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -1092,6 +1085,8 @@
 		128EE4ED2E8FD2D300DF55C5 /* MainServerOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainServerOnboardingView.swift; sourceTree = "<group>"; };
 		128EE4EF2E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedCustomizationCompleteView.swift; sourceTree = "<group>"; };
 		128FD0B327F774FB00B24915 /* RecentFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFile.swift; sourceTree = "<group>"; };
+		128FE9622F3094080037E329 /* NearbySharingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingMainView.swift; sourceTree = "<group>"; };
+		128FE9642F3096F20037E329 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
 		1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAddServerCardView.swift; sourceTree = "<group>"; };
 		1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsServerItemView.swift; sourceTree = "<group>"; };
@@ -1518,9 +1513,7 @@
 			files = (
 				129209032C9DB00500767760 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
-				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
 				12C454D82DAD24300085FCD6 /* X509 in Frameworks */,
-				12748A0D2D6F77C6001D52C6 /* OpenSSL in Frameworks */,
 				129771862F0FE89200828857 /* Mantis in Frameworks */,
 				BBA127E5791AFBEAC473625B /* libPods-Tella.a in Frameworks */,
 			);
@@ -2267,7 +2260,7 @@
 		126FAAD12D4B9CFE00F6BCD8 /* NearbySharing */ = {
 			isa = PBXGroup;
 			children = (
-				126FAAD22D4B9D2100F6BCD8 /* NearbySharingMainView.swift */,
+				128FE9622F3094080037E329 /* NearbySharingMainView.swift */,
 				1276B7372E1E56840024C38A /* FileTransfer */,
 				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
@@ -2281,7 +2274,6 @@
 		126FC6BF2F20108B00FC9316 /* BackNextButton */ = {
 			isa = PBXGroup;
 			children = (
-				12A148932720A89E00A1ADDC /* BottomLockView.swift */,
 				126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */,
 				12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */,
 				12DE98022F1ADB77004436CC /* NextBottomView.swift */,
@@ -2436,7 +2428,6 @@
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 				1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */,
 				127296722D70A46100CB9FF0 /* CertificateGenerator.swift */,
-				127296742D75FB0C00CB9FF0 /* CertificateManager.swift */,
 				12D39B502F1977700065EACD /* Device.swift */,
 			);
 			path = Utils;
@@ -2503,8 +2494,8 @@
 		127E81A42DB7C69A002AED4C /* Texts Styles */ = {
 			isa = PBXGroup;
 			children = (
+				128FE9642F3096F20037E329 /* CustomText.swift */,
 				127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */,
-				126B70112DB1575600742897 /* CustomText.swift */,
 			);
 			path = "Texts Styles";
 			sourceTree = "<group>";
@@ -3114,10 +3105,8 @@
 				12A6B6642D132E290002F74B /* CardFrame.swift */,
 				20A3BD482D5A495D009E5E12 /* CardItemView.swift */,
 				12A148932720A89E00A1ADDC /* NavigationBottomView.swift */,
-				1202C8A22DB985B80013E17D /* BackBottomView.swift */,
 				124852A12E7173BC00BDDC2D /* IconTextButton.swift */,
 				127E81A42DB7C69A002AED4C /* Texts Styles */,
-				126B70112DB1575600742897 /* CustomText.swift */,
 				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
 				126FC6BF2F20108B00FC9316 /* BackNextButton */,
 				126FC6BD2F1E482900FC9316 /* LinkView.swift */,
@@ -4023,7 +4012,6 @@
 			packageProductDependencies = (
 				129209022C9DB00500767760 /* NextcloudKit */,
 				12C454D72DAD24300085FCD6 /* X509 */,
-				12748A0C2D6F77C6001D52C6 /* OpenSSL */,
 				129771852F0FE89200828857 /* Mantis */,
 			);
 			productName = Tella;
@@ -4128,7 +4116,6 @@
 			packageReferences = (
 				129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
 				12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */,
-				12748A0B2D6F77C6001D52C6 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */,
 			);
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
@@ -4424,8 +4411,8 @@
 				1252FDE02E006E13002AF5E8 /* NearbySharingURLSessionDelegate.swift in Sources */,
 				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
 				123CBB062DEF99470030A9BD /* NearbySharingEndpoint.swift in Sources */,
-				123CBB062DEF99470030A9BD /* PeerToPeerEndpoints.swift in Sources */,
-				203DCBAE2D6DBE4B00B7BEED /* P2PSendFilesView.swift in Sources */,
+				123CBB062DEF99470030A9BD /* NearbySharingEndpoint.swift in Sources */,
+				203DCBAE2D6DBE4B00B7BEED /* SenderPrepareFileTransferView.swift in Sources */,
 				12D39B512F1977720065EACD /* Device.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
@@ -4508,7 +4495,7 @@
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
 				127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */,
 				20A8BBBE2D6F4857009D52AF /* AddFilePhotoVideoPickerView.swift in Sources */,
-				127BCA2C2E8522EB00902C59 /* OnboardingPageView.swift in Sources */,
+				127BCA2C2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift in Sources */,
 				127BCA2C2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
@@ -4677,7 +4664,6 @@
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */,
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
-				126FAAD32D4B9D2100F6BCD8 /* NearbySharingMainView.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
 				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
@@ -4705,6 +4691,7 @@
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				209AC6932C332F6000492356 /* PHAssetExtension.swift in Sources */,
 				12444EFA2E09D6F6006CB86A /* NearbySharingServerState.swift in Sources */,
+				128FE9652F3096F20037E329 /* CustomText.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
@@ -4759,10 +4746,10 @@
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
 				12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */,
+				128FE9632F3094080037E329 /* NearbySharingMainView.swift in Sources */,
 				E1E7C57F2AAB5DB500DDB07E /* UwaziSetting.swift in Sources */,
 				E1E7C57B2AAB54BE00DDB07E /* UwaziCommonProperty.swift in Sources */,
 				1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */,
-				126B70122DB1575D00742897 /* CustomText.swift in Sources */,
 				127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */,
 				20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
@@ -4817,7 +4804,6 @@
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				20FA030D2CD282C3001121F1 /* TrimMediaSliderView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
-				1202C8A32DB985B80013E17D /* BackBottomView.swift in Sources */,
 				15DCD93E2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				125C16062DAEF5430086D4F0 /* ManuallyVerificationView.swift in Sources */,
@@ -4847,7 +4833,6 @@
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
-				15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */,
 				124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
 				12FAC4572E2519F5007A4651 /* FileSendingView.swift in Sources */,
@@ -5471,20 +5456,20 @@
 				minimumVersion = 4.0.8;
 			};
 		};
-		12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-certificates.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
-			};
-		};
 		129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/guoyingtao/Mantis.git";
 			requirement = {
 				kind = exactVersion;
 				version = 2.28.0;
+			};
+		};
+		12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-certificates.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -5495,15 +5480,15 @@
 			package = 129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
 		};
-		12C454D72DAD24300085FCD6 /* X509 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */;
-			productName = X509;
-		};
 		129771852F0FE89200828857 /* Mantis */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */;
 			productName = Mantis;
+		};
+		12C454D72DAD24300085FCD6 /* X509 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 12C454D62DAD24300085FCD6 /* XCRemoteSwiftPackageReference "swift-certificates" */;
+			productName = X509;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
