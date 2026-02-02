@@ -49,21 +49,16 @@ struct LockChoiceView: View {
                     .foregroundColor(.white)
                 
                 VStack(spacing: 15) {
-
-                    IconTextButton(buttonConfig: PasswordLockButton(),
-                                   destination: LockPasswordView(lockViewModel:lockViewModel))
                     
-                                   destination: LockPinView(lockViewModel:lockViewModel))
-                    LockButtonView(lockButtonProtocol: PasswordLockButton(),
+                    IconTextButton(buttonConfig: PasswordLockButton(),
                                    destination: LoseFilesWarningOnboardingView(lockViewModel: lockViewModel)) {
                         lockViewModel.lockType = .password
                     }
                     
-                    LockButtonView(lockButtonProtocol: PINLockButton(),
+                    IconTextButton(buttonConfig: PINLockButton(),
                                    destination: LoseFilesWarningOnboardingView(lockViewModel: lockViewModel)) {
                         lockViewModel.lockType = .pin
                     }
-                    IconTextButton(buttonConfig: PINLockButton(),
                 }
                 Spacer()
             }
