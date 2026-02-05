@@ -568,8 +568,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
 "NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
-"NearbySharing_Wifi" = "Wi-Fi";
-"NearbySharing_ConnectManually" = "Connect Manually";
+"NearbySharing_ConnectManually" = "Connect manually";
 "NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
 "NearbySharing_IpAddress" = "IP address";
 "NearbySharing_Pin" = "PIN";
@@ -577,7 +576,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "NearbySharing_ShowDeviceInformation" = "Show your device information";
 "NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
 "NearbySharing_LocationAccess" = "Location access";
-"NearbySharing_WifiSettingsDesc"  = "To detect the Wi-Fi network, please enable location access in your device Settings.";
 "NearbySharing_Cancel" = "Cancel";
 "NearbySharing_Settings" = "Settings";
 "NearbySharing_NoConnection" = "No connection";
@@ -618,7 +616,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 
 "NearbySharing_StopSharing_SheetTitle" = "Stop sharing files?";
-"NearbySharing_StopSharing_SheetExpl" = "Nearby sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
+"NearbySharing_StopSharing_SheetExpl" = "Nearby Sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
 "NearbySharing_StopSharing_Continue_SheetAction" = "Continue";
 "NearbySharing_StopSharing_Stop_SheetAction" = "Stop";
 
@@ -637,7 +635,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "NearbySharing_Recipient_Receiving_AppBar" = "Receiving and encrypting files";
 "NearbySharing_StopReceiving_SheetTitle" = "Stop receiving files?";
-"NearbySharing_StopReceiving_SheetExpl" = "Nearby sharing will be stopped. You will not have access to files that were not fully transferred.";
+"NearbySharing_StopReceiving_SheetExpl" = "Nearby Sharing will be stopped. You will not have access to files that were not fully transferred.";
 
 
 "NearbySharing_Sender_Sending_AppBar" = "Sending files";
