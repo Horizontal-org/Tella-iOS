@@ -56,10 +56,15 @@ struct ManuallyVerificationView: View {
     }
     
     var infoView: some View {
-        participantInfoView(
+        
+        let verificationSenderString = LocalizableNearbySharing.verificationSenderPart1.localized.addTwolines + LocalizableNearbySharing.verificationSenderPart2.localized
+        
+        let verificationRecipientString = LocalizableNearbySharing.verificationRecipientPart1.localized.addTwolines + LocalizableNearbySharing.verificationRecipientPart2.localized
+        
+        return participantInfoView(
             text: viewModel.participant == .sender
-            ? LocalizableNearbySharing.verificationSender.localized
-            : LocalizableNearbySharing.verificationRecipient.localized
+            ? verificationSenderString
+            : verificationRecipientString
         )
     }
     
