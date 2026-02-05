@@ -138,7 +138,7 @@
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
 		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
-		124852A02E6EF9E000BDDC2D /* TipsToConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */; };
+		124852A02E6EF9E000BDDC2D /* NearbySharingHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248529F2E6EF9E000BDDC2D /* NearbySharingHelpView.swift */; };
 		124852A22E7173BC00BDDC2D /* IconTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124852A12E7173BC00BDDC2D /* IconTextButton.swift */; };
 		124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
@@ -391,6 +391,9 @@
 		12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */; };
 		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
 		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
+		12A6B9872F34ACB5005C0E70 /* AttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */; };
+		12A6B9892F34D166005C0E70 /* AttributedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B9882F34D164005C0E70 /* AttributedLabel.swift */; };
+		12A6B98B2F34D21B005C0E70 /* CustomAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */; };
 		12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */; };
 		12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */; };
 		12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */; };
@@ -433,6 +436,7 @@
 		12D39B4F2F194CA30065EACD /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */; };
 		12D39B512F1977720065EACD /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B502F1977700065EACD /* Device.swift */; };
 		12D39B542F198BD40065EACD /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B532F198B9E0065EACD /* OnboardingContent.swift */; };
+		12D47AF52F33B1BB002C4078 /* SameNetworkBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D47AF42F33B1BB002C4078 /* SameNetworkBottomSheet.swift */; };
 		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
@@ -590,9 +594,7 @@
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
-		20BA4FAF2D50DFEB006DD8B9 /* GetConnectedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */; };
 		20BA4FB12D522551006DD8B9 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA4FB02D522551006DD8B9 /* CardModifier.swift */; };
-		20BB11BB2D4D1AB5004B1BBF /* GetConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
 		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
 		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
@@ -894,7 +896,7 @@
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
-		1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsToConnectView.swift; sourceTree = "<group>"; };
+		1248529F2E6EF9E000BDDC2D /* NearbySharingHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingHelpView.swift; sourceTree = "<group>"; };
 		124852A12E7173BC00BDDC2D /* IconTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextButton.swift; sourceTree = "<group>"; };
 		124866FE2DFCCAA200EBE8F8 /* LocalURLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalURLRequest.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
@@ -1157,6 +1159,9 @@
 		12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoViewModel.swift; sourceTree = "<group>"; };
 		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
 		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
+		12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Extension.swift"; sourceTree = "<group>"; };
+		12A6B9882F34D164005C0E70 /* AttributedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedLabel.swift; sourceTree = "<group>"; };
+		12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAttributedText.swift; sourceTree = "<group>"; };
 		12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoseFilesWarningOnboardingView.swift; sourceTree = "<group>"; };
 		12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceOnboardingView.swift; sourceTree = "<group>"; };
 		12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
@@ -1199,6 +1204,7 @@
 		12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
 		12D39B502F1977700065EACD /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		12D39B532F198B9E0065EACD /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
+		12D47AF42F33B1BB002C4078 /* SameNetworkBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameNetworkBottomSheet.swift; sourceTree = "<group>"; };
 		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
@@ -1354,9 +1360,7 @@
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
-		20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetConnectedViewModel.swift; sourceTree = "<group>"; };
 		20BA4FB02D522551006DD8B9 /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
-		20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetConnectedView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
 		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
 		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
@@ -2157,6 +2161,7 @@
 				129919BD2E31143400A4417D /* NWConnectionExtension.swift */,
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
+				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2261,6 +2266,7 @@
 			isa = PBXGroup;
 			children = (
 				128FE9622F3094080037E329 /* NearbySharingMainView.swift */,
+				12D47AF42F33B1BB002C4078 /* SameNetworkBottomSheet.swift */,
 				1276B7372E1E56840024C38A /* FileTransfer */,
 				1202C8A02DB971BC0013E17D /* ManuallyVerification */,
 				2012D5442D5697B9000E0443 /* Recipient */,
@@ -2495,6 +2501,7 @@
 			isa = PBXGroup;
 			children = (
 				128FE9642F3096F20037E329 /* CustomText.swift */,
+				12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */,
 				127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */,
 			);
 			path = "Texts Styles";
@@ -3110,6 +3117,7 @@
 				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
 				126FC6BF2F20108B00FC9316 /* BackNextButton */,
 				126FC6BD2F1E482900FC9316 /* LinkView.swift */,
+				12A6B9882F34D164005C0E70 /* AttributedLabel.swift */,
 				12D39B522F198B150065EACD /* HeaderImageTitleDescriptionView */,
 			);
 			path = Components;
@@ -3461,9 +3469,7 @@
 		20BA4FAD2D50DFB2006DD8B9 /* GetConnected */ = {
 			isa = PBXGroup;
 			children = (
-				20BB11BA2D4D1AB5004B1BBF /* GetConnectedView.swift */,
-				1248529F2E6EF9E000BDDC2D /* TipsToConnectView.swift */,
-				20BA4FAE2D50DFEB006DD8B9 /* GetConnectedViewModel.swift */,
+				1248529F2E6EF9E000BDDC2D /* NearbySharingHelpView.swift */,
 			);
 			path = GetConnected;
 			sourceTree = "<group>";
@@ -4303,7 +4309,6 @@
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
-				20BB11BB2D4D1AB5004B1BBF /* GetConnectedView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingLockDoneView.swift in Sources */,
@@ -4462,6 +4467,7 @@
 				121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
 				12D39B4F2F194CA30065EACD /* CGFloat+Extension.swift in Sources */,
+				12A6B9872F34ACB5005C0E70 /* AttributedString+Extension.swift in Sources */,
 				D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */,
 				E17736422A84034A00FE01C0 /* UwaziTranslationRowDTO.swift in Sources */,
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
@@ -4515,6 +4521,7 @@
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
 				123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */,
+				12D47AF52F33B1BB002C4078 /* SameNetworkBottomSheet.swift in Sources */,
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */,
@@ -4573,7 +4580,6 @@
 				209107F32D538CF200808BCF /* SenderConnectToDeviceView.swift in Sources */,
 				128EE4E92E8FC3F000DF55C5 /* ServerOnboardingView.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
-				20BA4FAF2D50DFEB006DD8B9 /* GetConnectedViewModel.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
@@ -4767,6 +4773,7 @@
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
+				12A6B98B2F34D21B005C0E70 /* CustomAttributedText.swift in Sources */,
 				1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */,
 				CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */,
 				1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */,
@@ -4794,7 +4801,7 @@
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
 				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
-				124852A02E6EF9E000BDDC2D /* TipsToConnectView.swift in Sources */,
+				124852A02E6EF9E000BDDC2D /* NearbySharingHelpView.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				125D58AD2E1BE9A500365C40 /* ReceiverFileTransferVM.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
@@ -4930,6 +4937,7 @@
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
+				12A6B9892F34D166005C0E70 /* AttributedLabel.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */,
 				12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */,

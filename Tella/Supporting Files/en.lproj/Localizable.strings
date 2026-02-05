@@ -552,26 +552,18 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 
 
-"NearbySharing_AppBar" = "Nearby sharing";
+"NearbySharing" = "Nearby Sharing";
+"NearbySharing_Main_AppBar" = "Get started";
 
-"NearbySharing_Main_Subhead" = "How it works";
-"NearbySharing_Main_Expl" = "Share files with nearby devices without an Internet connection \
-  1. Both devices must be connected to the same Wifi network \
-  2. Make sure you trust the person you are sharing files with";
+"NearbySharing_Main_Subhead" = "Nearby Sharing";
+"NearbySharing_Main_Expl" = "Share files with nearby devices without needing an Internet connection.";
 
 "NearbySharing_Main_SendFiles" = "Send files";
 "NearbySharing_Main_ReceiveFiles" = "Receive files";
 
 
-"NearbySharing_Main_LearnMore" = "Learn more about nearby sharing";
-"NearbySharing_Getconnected" = "Get Connected";
-"NearbySharing_WifiConnection_Desc" = "Make sure both devices are connected to the same Wi-Fi network";
-"NearbySharing_WifiConnection_TipsToConnect_Txt" = "Tips to connect";
-"NearbySharing_WifiConnection_TipsToConnect_Desc" = " 1. The Wi-Fi network does not need to be connected to the internet.
- 2. You can create your own Wi-Fi network using your phone’s hotspot feature.
- 3. Disable any VPN connections.";
-"NearbySharing_CurrentWifi" = "Current Wifi Network";
-"NearbySharing_SameNetworkDescription" = "Yes, we are on the same Wi-Fi network";
+"NearbySharing_Main_LearnMore" = "Learn more about Nearby Sharing";
+
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
 "NearbySharing_ShowQrCode" = "Show this QR code for the\nsender to scan";
@@ -689,41 +681,36 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
 
 
-"NearbySharing_AppBar" = "Nearby sharing";
-
-"NearbySharing_Main_Subhead" = "How it works";
-"NearbySharing_Main_Expl" = "Share files with nearby devices without an Internet connection \
-  1. Both devices must be connected to the same Wifi network \
-  2. Make sure you trust the person you are sharing files with";
-
-"NearbySharing_Main_SendFiles" = "Send files";
-"NearbySharing_Main_ReceiveFiles" = "Receive files";
-"NearbySharing_Main_LearnMore" = "Learn more about nearby sharing";
-
-"NearbySharing_Getconnected_AppBar" = "Get connected";
-"NearbySharing_Getconnected_Subhead" = "Nearby Sharing";
-"NearbySharing_Getconnected_Expl" = "Share files directly with a device near you, with or without an Internet connection.
-
-To get started, join the same Wi-Fi network as the recipient. Nearby Sharing will work even if the Wi-Fi network is not connected to the Internet.";
-"NearbySharing_Getconnected_TipsToConnect" = "Tips to connect";
-"NearbySharing_Getconnected_TipsToConnect_Expl" = "Learn more about connecting to Wi-Fi for Nearby Sharing.";
-"NearbySharing_Getconnected_SameNetwork_Expl" = "Yes, we are on the same Wi-Fi network";
-
-"NearbySharing_TipsToConnect_SettingUp" = "Setting up";
-"NearbySharing_TipsToConnect_SettingUp_Expl" = "There are 2 ways to connect your devices through Wi-Fi:
-  1. Using a Wi-Fi router, such as at home or work
-  2. Setting up a Wi-Fi hotspot from a device, such as a phone, tablet, or computer
-    a. One user creates a hotspot connection by going to their device’s settings.
-    b. The other user connects to that hotspot.";
 
 
-"NearbySharing_TipsToConnect_Joining" = "Joining the same network";
-"NearbySharing_TipsToConnect_Joining_Expl" = "Once the Wi-Fi network is set up, go to your devices’ settings and verify that you are both on the same Wi-Fi network.";
+"NearbySharing_Help_AppBar" = "Nearby Sharing help";
+
+"NearbySharing_Help_ConnectDevice_Title" = "How do I connect to a device?";
+"NearbySharing_Help_ConnectDevice_Part1" = "There are 2 ways to connect your devices through Wi-Fi:";
+
+"NearbySharing_Help_ConnectDevice_Part2" = "Using a local network, such as the Wi-Fi at your home or work, or a public Wi-Fi network.";
+"NearbySharing_Help_ConnectDevice_Part3" = "Setting up a Hotspot on one device, and having the other device join it.";
 
 
-"NearbySharing_TipsToConnect_MoreTips" = "More tips";
-"NearbySharing_TipsToConnect_MoreTips_Expl" = "• The Wi-Fi network does not need to have internet access. As long as the Wi-Fi router or hotspot is powered on and functioning, it can be used for Nearby Sharing even without being online
-• Make sure to disable any active VPN connections.";
+
+"NearbySharing_Help_NeedInternet_Title" = "Do I need Internet access?";
+"NearbySharing_Help_NeedInternet_Expl" = "No. The Wi-Fi network does not need to have internet access. As long as the Wi-Fi router or hotspot is powered on and functioning, it can be used for Nearby Sharing even without being online";
+
+
+"NearbySharing_Help_MoreTips" = "More tips";
+"NearbySharing_Help_MoreTips_Part1" = "Make sure you trust the person you are sharing files with.";
+"NearbySharing_Help_MoreTips_Part2" = "Please disable any active VPN connections.";
+"NearbySharing_Help_MoreTips_Part3" = "Check out Tella’s documentation to learn more about Nearby Sharing.";
+
+
+"NearbySharing_Help_MoreTips_documentation" = "documentation";
+
+"NearbySharing_SameNetwork_SheetTitle" = "Are you both on the same Wi-Fi network?";
+"NearbySharing_SameNetwork_SheetExpl" = "Both devices must be connected to the same Wi-Fi network, using local Wi-Fi or setting up a Hotspot connection.";
+"NearbySharing_SameNetwork_Yes_SheetAction" = "Yes";
+"NearbySharing_SameNetwork_No_SheetAction" = "No";
+"NearbySharing_SameNetwork_DontShowAgain" = "Don’t show again";
+
 
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";

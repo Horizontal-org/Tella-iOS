@@ -24,7 +24,10 @@ struct NearbySharingMainView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizableNearbySharing.nearbySharingAppBar.localized)
+        NavigationHeaderView(title: LocalizableNearbySharing.nearbySharingMainAppBar.localized,
+                             rightButtonType: .help) {
+            navigateTo(destination: NearbySharingHelpView())
+        }
     }
     
     var contentView: some View {
@@ -43,24 +46,23 @@ struct NearbySharingMainView: View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.nearbySharingSubhead.localized,
             subtitle: LocalizableNearbySharing.nearbySharingExpl.localized,
-            imageIconName: "nearby-sharing.main",
-            subtitleTextAlignment: .leading)
+            imageIconName: "nearby-sharing.main")
     }
     
     var nearbySharingParticipantButtons: some View {
         VStack(spacing: 12) {
             
             TellaButtonView(title: LocalizableNearbySharing.sendFiles.localized.uppercased(),
-                                     nextButtonAction: .action,
-                                     isOverlay: participant == .sender,
-                                     isValid: .constant(true),
-                                     action: { participant = .sender }
+                            nextButtonAction: .action,
+                            isOverlay: participant == .sender,
+                            isValid: .constant(true),
+                            action: { participant = .sender }
             ).frame(height: 54)
             TellaButtonView(title: LocalizableNearbySharing.receiveFiles.localized.uppercased(),
-                                     nextButtonAction: .action,
-                                     isOverlay: participant == .recipient,
-                                     isValid: .constant(true),
-                                     action: {participant = .recipient}
+                            nextButtonAction: .action,
+                            isOverlay: participant == .recipient,
+                            isValid: .constant(true),
+                            action: {participant = .recipient}
             ).frame(height: 54)
         }
     }
@@ -78,15 +80,36 @@ struct NearbySharingMainView: View {
     
     var bottomView: some View {
         NavigationBottomView<AnyView>(shouldActivateNext: Binding(get: { participant != nil },
-                                                 set: { _ in }),
-                                nextButtonAction: .action,
-                                shouldHideBack: true,
-                                nextAction: {
-            guard let participant  else { return }
-            let wifiConnetionViewModel = GetConnectedViewModel(participant: participant, mainAppModel: mainAppModel)
-            navigateTo(destination: GetConnectedView(viewModel:wifiConnetionViewModel,
-                                                      mainAppModel: mainAppModel))
+                                                                  set: { _ in }),
+                                      nextButtonAction: .action,
+                                      shouldHideBack: true,
+                                      nextAction: {
+            if mainAppModel.settings.showSameWiFiNetworkAlert {
+                let view = SameNetworkBottomSheet(mainAppModel: mainAppModel,
+                                                  participant: participant) {
+                    showConnectToDeviceView()
+                }
+                self.showBottomSheetView(content: view)
+                
+            } else {
+                showConnectToDeviceView()
+            }
         })
+    }
+    
+    func showConnectToDeviceView() {
+        switch participant {
+        case .sender:
+            let senderConnectToDeviceViewModel = SenderConnectToDeviceViewModel(nearbySharingRepository:NearbySharingRepository(),
+                                                                                mainAppModel: mainAppModel)
+            navigateTo(destination: SenderConnectToDeviceView(viewModel:senderConnectToDeviceViewModel))
+        case .recipient:
+            let recipientConnectToDeviceViewModel = RecipientConnectToDeviceViewModel(certificateGenerator: CertificateGenerator(),
+                                                                                      mainAppModel: mainAppModel)
+            navigateTo(destination: RecipientConnectToDeviceView(viewModel: recipientConnectToDeviceViewModel))
+        case .none:
+            break
+        }
     }
 }
 

@@ -41,9 +41,7 @@ struct ConfirmBottomSheet : View {
             Spacer()
             
             buttonsView
-            
-        } .padding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 24))
-        
+        }
     }
     
     @ViewBuilder
@@ -58,7 +56,7 @@ struct ConfirmBottomSheet : View {
     }
     
     var buttonsView: some View {
-        HStack(alignment: .lastTextBaseline ){
+        HStack(alignment: .lastTextBaseline ) {
             Spacer()
             
             if let cancelText {
