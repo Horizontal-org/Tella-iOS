@@ -48,9 +48,12 @@ struct MainOnboardingView: View {
         case .files(let content):
             OnboardingInfoView(content: content, info: LocalizableLock.onboardingFilesInfo.localized)
             
-        case .connections(let content), .nearbySharing(let content):
+        case .connections(let content):
             OnboardingConnectionsView(content: content)
-
+            
+        case .nearbySharing(let content):
+            ImageTitleMessageView(content: content)
+            
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
         }
@@ -74,7 +77,7 @@ struct MainOnboardingView: View {
                     let page = viewModel.pages[viewModel.index]
                     
                     switch page {
-                    case .connections:
+                    case .nearbySharing:
                         self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
                             LockChoiceOnboardingView(lockViewModel: viewModel.lockViewModel)
                         }
