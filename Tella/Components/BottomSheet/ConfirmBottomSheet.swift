@@ -28,18 +28,14 @@ struct ConfirmBottomSheet : View {
     
     var contentView: some View {
         VStack(alignment: .leading) {
-            
             imageView
-            
             CustomText(self.titleText,
                        style: .heading2Style)
             Spacer()
                 .frame(height: 9)
-            
             CustomText(self.msgText,
                        style: .body1Style)
             Spacer()
-            
             buttonsView
         }
     }

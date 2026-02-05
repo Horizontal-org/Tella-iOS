@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -150,7 +150,7 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangRussian.localized
         case .portuguese:
             return LocalizableSettings.settLangPortuguese.localized
-        case .vietnamese: 
+        case .vietnamese:
             return LocalizableSettings.settLangVietnamese.localized
         case .bangla:
             return LocalizableSettings.settLangBangla.localized
@@ -193,8 +193,8 @@ enum Language: String, CaseIterable {
         return Locale(identifier: code)
     }
     
-     var isRTL: Bool {
+    var isRTL: Bool {
         layoutDirection == .rightToLeft
     }
-
+    
 }

@@ -53,7 +53,7 @@ struct SenderConnectToDeviceManuallyView: View {
     var topView: some View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.enterDeviceInformation.localized,
-            imageIconName: "device",
+            imageIconName: .device,
             subtitleTextAlignment: .leading)
     }
     

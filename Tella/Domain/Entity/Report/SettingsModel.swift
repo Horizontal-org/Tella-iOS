@@ -94,7 +94,7 @@ class SettingsModel: ObservableObject, Codable {
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
         shareFeedback = try container.decode(Bool.self, forKey: .shareFeedback)
         shouldMergeVaultFilesToDb = try container.decode(Bool.self, forKey: .shouldMergeVaultFilesToDb)
-        showSameWiFiNetworkAlert = try container.decode(Bool.self, forKey: .showSameWiFiNetworkAlert)
+        showSameWiFiNetworkAlert = try container.decodeIfPresent(Bool.self, forKey: .showSameWiFiNetworkAlert) ?? true
     }
     
     func encode(to encoder: Encoder) throws {
@@ -113,7 +113,5 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(shareFeedback, forKey: .shareFeedback)
         try container.encode(shouldMergeVaultFilesToDb, forKey: .shouldMergeVaultFilesToDb)
         try container.encode(showSameWiFiNetworkAlert, forKey: .showSameWiFiNetworkAlert)
-        
-        
     }
 }

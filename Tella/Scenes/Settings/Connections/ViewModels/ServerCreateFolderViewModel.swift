@@ -11,7 +11,7 @@ import Combine
 class ServerCreateFolderViewModel: ObservableObject {
     
     var headerViewSubtitleText: String = ""
-    var imageIconName: String = ""
+    var imageIconName: ImageResource
     
     // Create Folder
     @Published var createFolderState: ViewModelState<Bool> = .loaded(false)
@@ -21,7 +21,7 @@ class ServerCreateFolderViewModel: ObservableObject {
     @Published var shouldShowError : Bool = false
     @Published var errorMessage: String = ""
     
-    init(headerViewSubtitleText: String, imageIconName: String) {
+    init(headerViewSubtitleText: String, imageIconName: ImageResource) {
         self.headerViewSubtitleText = headerViewSubtitleText
         self.imageIconName = imageIconName
     }
