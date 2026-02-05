@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 6/26/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -33,7 +33,7 @@ struct DraftView: View  {
             serverListMenuView
             AddFilePhotoVideoPickerView(viewModel: viewModel.addFilesViewModel)
         }
-
+        
         .onReceive(viewModel.successSavingReportPublisher)  { successSavingReport in
             if successSavingReport {
                 handleSuccessSavingReport()
