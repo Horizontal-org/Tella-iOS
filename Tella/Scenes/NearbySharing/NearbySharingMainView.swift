@@ -46,7 +46,7 @@ struct NearbySharingMainView: View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.nearbySharingSubhead.localized,
             subtitle: LocalizableNearbySharing.nearbySharingExpl.localized,
-            imageIconName: "nearby-sharing.main")
+            imageIconName: .nearbySharingMain)
     }
     
     var nearbySharingParticipantButtons: some View {
@@ -85,8 +85,7 @@ struct NearbySharingMainView: View {
                                       shouldHideBack: true,
                                       nextAction: {
             if mainAppModel.settings.showSameWiFiNetworkAlert {
-                let view = SameNetworkBottomSheet(mainAppModel: mainAppModel,
-                                                  participant: participant) {
+                let view = SameNetworkBottomSheet(mainAppModel: mainAppModel) {
                     showConnectToDeviceView()
                 }
                 self.showBottomSheetView(content: view)

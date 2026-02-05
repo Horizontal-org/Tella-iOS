@@ -14,7 +14,7 @@ struct ServerConnectionHeaderView: View {
     
     var title: String
     var subtitle: String? = nil
-    var imageIconName: String
+    var imageIconName: ImageResource
     var subtitleTextAlignment: TextAlignment = .center
     var alignment: Alignment = .center
 
@@ -37,5 +37,5 @@ struct ServerConnectionHeaderView: View {
 }
 
 #Preview {
-    ServerConnectionHeaderView(title: "title", subtitle: "subtitle", imageIconName: "gdrive.icon")
+    ServerConnectionHeaderView(title: "title", subtitle: "subtitle", imageIconName: .gdriveIcon)
 }

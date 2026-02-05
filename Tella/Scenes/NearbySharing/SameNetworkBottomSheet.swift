@@ -13,8 +13,7 @@ struct SameNetworkBottomSheet: View {
     
     @State var isChecked: Bool = false
     @StateObject var mainAppModel: MainAppModel
-    var participant: NearbySharingParticipant?
-    var didConfirm: (() -> ())
+    var didConfirm: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {

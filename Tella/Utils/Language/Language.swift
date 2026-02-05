@@ -200,8 +200,8 @@ enum Language: String, CaseIterable {
         return Locale(identifier: code)
     }
     
-     var isRTL: Bool {
+    var isRTL: Bool {
         layoutDirection == .rightToLeft
     }
-
+    
 }

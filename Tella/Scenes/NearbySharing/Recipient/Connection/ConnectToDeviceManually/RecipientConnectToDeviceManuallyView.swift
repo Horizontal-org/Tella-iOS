@@ -50,7 +50,7 @@ struct RecipientConnectToDeviceManuallyView: View {
         ServerConnectionHeaderView(
             title: LocalizableNearbySharing.showDeviceInformation.localized,
             subtitle: LocalizableNearbySharing.sendInputDesc.localized,
-            imageIconName: "device",
+            imageIconName: .device,
             subtitleTextAlignment: .center)
     }
     

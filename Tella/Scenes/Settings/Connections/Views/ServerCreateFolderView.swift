@@ -80,6 +80,6 @@ struct ServerCreateFolderView: View {
 }
 struct ServerCreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(headerViewSubtitleText: "Connection", imageIconName: "nextcloud.icon"))
+        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(headerViewSubtitleText: "Connection", imageIconName: .nextcloudIcon))
     }
 }
