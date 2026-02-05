@@ -835,10 +835,11 @@ If the sequences do not match, the connection may not be secure and should be di
 "Onboarding_ServerConnections_Title" = "Server Connections";
 "Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
 "Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
-"Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
+"Onboarding_NearbySharing_Title" = "Share files nearby";
+"Onboarding_NearbySharing_Expl" = "With Nearby Sharing, send files to people near you, without needing an Internet connection.";
 "Onboarding_LockDone_Title" = "You’re all done!";
 "Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
+
 "Onboarding_Done_Action_GoToTella" = "Go to tella";
 "Onboarding_LockDone_Action_AdvancedSettings" = "Advanced settings";
 "Onboarding_ServerDone_Title" = "Advanced customization complete!";

@@ -22,7 +22,7 @@ final class MainOnboardingViewModel: ObservableObject {
         .record(RecordContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
-        // .nearbySharing(NearbySharingContent()),
+        .nearbySharing(NearbySharingContent()),
         .allDone
     ]
     
@@ -46,7 +46,7 @@ final class MainOnboardingViewModel: ObservableObject {
     var currentPage: OnboardingItem {
         pages[safe: index] ?? .record(RecordContent())
     }
-
+    
     var isOnAllDone: Bool {
         if case .allDone = currentPage { return true }
         return false
@@ -81,9 +81,9 @@ final class MainOnboardingViewModel: ObservableObject {
         switch page {
         case .record:
             return direction == .left
-        case .files, .nearbySharing:
+        case .files, .connections:
             return true
-        case .connections:
+        case .nearbySharing:
             return direction == .right
         case .allDone:
             return false
