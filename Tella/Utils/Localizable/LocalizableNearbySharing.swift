@@ -55,7 +55,6 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case ipAddress = "NearbySharing_IpAddress"
     case pin = "NearbySharing_Pin"
     case port = "NearbySharing_Port"
-    case publicKey = "NearbySharing_PublicKey"
     case showDeviceInformation = "NearbySharing_ShowDeviceInformation"
     case sendInputDesc = "NearbySharing_ConnectToDevice_SenderInputDesc"
     case locationAccess = "NearbySharing_LocationAccess"
@@ -83,10 +82,12 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
 
     case verificationAppBar = "NearbySharing_Verification_AppBar"
 
-    case verificationSender = "NearbySharing_Verification_Sender_Expl"
+    case verificationSenderPart1 = "NearbySharing_Verification_Sender_Part1_Expl"
+    case verificationSenderPart2 = "NearbySharing_Verification_Sender_Part2_Expl"
 
-    case verificationRecipient = "NearbySharing_Verification_Recipient_Expl"
- 
+    case verificationRecipientPart1 = "NearbySharing_Verification_Recipient_Part1_Expl"
+    case verificationRecipientPart2 = "NearbySharing_Verification_Recipient_Part2_Expl"
+
     case verificationConfirm = "NearbySharing_Verification_Action_Confirm"
     case verificationWaitingSender = "NearbySharing_Verification_Action_WaitingSender"
     case verificationWaitingRecipient = "NearbySharing_Verification_Action_WaitingRecipient"

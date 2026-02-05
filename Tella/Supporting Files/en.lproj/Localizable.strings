@@ -566,17 +566,16 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
-"NearbySharing_ShowQrCode" = "Show this QR code for the\nsender to scan";
+"NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_Wifi" = "Wi-Fi";
 "NearbySharing_ConnectManually" = "Connect Manually";
-"NearbySharing_EnterDevice_Information" = "Enter the recipient’s device\n information to find it on the network";
+"NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
 "NearbySharing_IpAddress" = "IP address";
 "NearbySharing_Pin" = "PIN";
 "NearbySharing_Port" = "Port";
- "NearbySharing_PublicKey" = "Public key";
 "NearbySharing_ShowDeviceInformation" = "Show your device information";
-"NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to\nconnect to your device.";
+"NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
 "NearbySharing_LocationAccess" = "Location access";
 "NearbySharing_WifiSettingsDesc"  = "To detect the Wi-Fi network, please enable location access in your device Settings.";
 "NearbySharing_Cancel" = "Cancel";
@@ -599,13 +598,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
 
-
-"NearbySharing_Verification_Sender_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the recipient’s device.\n2. You need to confirm the connection first.\n3. After that, the recipient will be able to confirm the connection and start receiving files";
-"NearbySharing_Verification_Sender_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
-
-
-"NearbySharing_Verification_Recipient_Part1_Expl" = "1. Make sure that this sequence matches what is shown on the sender’s device.\n2. The sender needs to confirm the connection first.\n3. After that, you will be able to confirm the connection and start sharing files";
-"NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequence on your device does not match the sequence on the sender’s device, the connection may not be secure and should be discarded.";
 
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
@@ -714,16 +706,16 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
-"NearbySharing_ShowQrCode" = "Show this QR code for the\nsender to scan";
+"NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect Manually";
-"NearbySharing_EnterDevice_Information" = "Enter the recipient’s device\n information to find it on the network";
+"NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
 "NearbySharing_IpAddress" = "IP address";
 "NearbySharing_Pin" = "PIN";
 "NearbySharing_Port" = "Port";
- "NearbySharing_PublicKey" = "Public key";
+
 "NearbySharing_ShowDeviceInformation" = "Show your device information";
-"NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to\nconnect to your device.";
+"NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
 "NearbySharing_LocationAccess" = "Location access";
 "NearbySharing_Cancel" = "Cancel";
 "NearbySharing_Settings" = "Settings";
@@ -746,15 +738,13 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
 
 "NearbySharing_Verification_AppBar" = "Verification";
-"NearbySharing_Verification_Sender_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.
 
-If the sequences do not match, the connection may not be secure and should be discarded.";
+"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.";
+"NearbySharing_Verification_Sender_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
 
 
-
-"NearbySharing_Verification_Recipient_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.
-
-If the sequences do not match, the connection may not be secure and should be discarded.";
+"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.";
+"NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
 
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
