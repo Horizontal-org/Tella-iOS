@@ -36,7 +36,7 @@ struct ConnectionsView: View {
         HStack(spacing: 12) {
             
             if homeViewModel.mainAppModel.settings.nearbySharing {
-                ConnectionsItemView(title: LocalizableNearbySharing.nearbySharingAppBar.localized,
+                ConnectionsItemView(title: LocalizableNearbySharing.nearbySharing.localized,
                                     image: "nearby-sharing.home",
                                     destination: nearbySharingMainView)
             }

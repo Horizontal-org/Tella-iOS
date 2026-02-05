@@ -11,33 +11,40 @@
 
 enum LocalizableNearbySharing: String, LocalizableDelegate {
 
-    case nearbySharingAppBar = "NearbySharing_AppBar"
+    case nearbySharingMainAppBar = "NearbySharing_Main_AppBar"
+    case nearbySharing = "NearbySharing"
     case nearbySharingSubhead = "NearbySharing_Main_Subhead"
     case nearbySharingExpl = "NearbySharing_Main_Expl"
-    
     case sendFiles = "NearbySharing_Main_SendFiles"
     case receiveFiles = "NearbySharing_Main_ReceiveFiles"
     
     case learnMore = "NearbySharing_Main_LearnMore"
-    
-    case getConnected = "NearbySharing_Getconnected_AppBar"
-    
-    
-    case getConnectedSubhead = "NearbySharing_Getconnected_Subhead"
-    case getconnectedExpl = "NearbySharing_Getconnected_Expl"
-    case tipsToConnect = "NearbySharing_Getconnected_TipsToConnect"
-    case tipsToConnectExpl = "NearbySharing_Getconnected_TipsToConnect_Expl"
-    case sameNetworkExpl = "NearbySharing_Getconnected_SameNetwork_Expl"
-    
-    case settingUp = "NearbySharing_TipsToConnect_SettingUp"
-    case settingUpExpl = "NearbySharing_TipsToConnect_SettingUp_Expl"
 
-    case joining = "NearbySharing_TipsToConnect_Joining"
-    case joiningExpl = "NearbySharing_TipsToConnect_Joining_Expl"
+    case sameNetworkSheetTitle = "NearbySharing_SameNetwork_SheetTitle"
+    case sameNetworkSheetExpl = "NearbySharing_SameNetwork_SheetExpl"
+    case sameNetworkYesAction = "NearbySharing_SameNetwork_Yes_SheetAction"
+    case sameNetworkNoAction = "NearbySharing_SameNetwork_No_SheetAction"
 
-    case moreTips = "NearbySharing_TipsToConnect_MoreTips"
-    case moreTipsExpl = "NearbySharing_TipsToConnect_MoreTips_Expl"
+    case dontShowAgain = "NearbySharing_SameNetwork_DontShowAgain"
 
+    
+    case helpAppBar = "NearbySharing_Help_AppBar"
+
+    
+    
+    case helpConnectDeviceTitle = "NearbySharing_Help_ConnectDevice_Title"
+    case helpConnectDevicePart1 = "NearbySharing_Help_ConnectDevice_Part1"
+    case helpConnectDevicePart2 = "NearbySharing_Help_ConnectDevice_Part2"
+    case helpConnectDevicePart3 = "NearbySharing_Help_ConnectDevice_Part3"
+
+    case helpNeedInternetTitle = "NearbySharing_Help_NeedInternet_Title"
+    case helpNeedInternetExpl = "NearbySharing_Help_NeedInternet_Expl"
+
+    case moreTips = "NearbySharing_Help_MoreTips"
+    case helpMoreTipsPart1 = "NearbySharing_Help_MoreTips_Part1"
+    case helpMoreTipsPart2 = "NearbySharing_Help_MoreTips_Part2"
+    case helpMoreTipsPart3 = "NearbySharing_Help_MoreTips_Part3"
+    case helpMoreTipsDocumentation = "NearbySharing_Help_MoreTips_documentation"
     
     case connectToDevice = "NearbySharing_ConnectToDevice"
     case scanCode = "NearbySharing_ScanCode"

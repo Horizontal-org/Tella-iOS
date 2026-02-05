@@ -19,17 +19,19 @@ enum RightButtonType {
     case more
     case text(text:String)
     case custom
+    case help
     case none
     
-    var imageName: String {
+    var imageName: ImageResource? {
         switch self {
-        case .save: return "reports.save"
-        case .validate: return "report.select-files"
-        case .reload: return "arrow.clockwise"
-        case .delete: return "delete-icon-bin"
-        case .editFile: return "edit.audio.cut"
-        case .more: return "files.more"
-        case .text, .custom, .none : return ""
+        case .save: return .reportsSave
+        case .validate: return .reportSelectFiles
+        case .reload: return .arrowClockwise
+        case .delete: return .deleteIconBin
+        case .editFile: return .editAudioCut
+        case .more: return .filesMore
+        case .help: return .nearbySharingHelp
+        case .text, .custom, .none : return nil
         }
     }
 }
