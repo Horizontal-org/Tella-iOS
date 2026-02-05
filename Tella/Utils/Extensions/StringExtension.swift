@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -88,9 +88,9 @@ extension String {
 }
 
 extension String {
-
+    
     func mimeType() -> String? {
-         if let type = UTType(filenameExtension: self) {
+        if let type = UTType(filenameExtension: self) {
             if let mimetype = type.preferredMIMEType {
                 return mimetype as String
             }
@@ -101,7 +101,7 @@ extension String {
     func getExtension() -> String {
         
         let unmanagedFileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, self as CFString, nil)?.takeRetainedValue()
-       guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
         else { return ""}
         
         return fileExtension as String
@@ -110,9 +110,9 @@ extension String {
     func fileExtensionFromMimeType() -> String? {
         UTType(mimeType: self)?.preferredFilenameExtension
     }
-
+    
     var tellaFileType: TellaFileType {
-
+        
         guard let type = UTType(mimeType: self) else {
             return .other
         }
@@ -150,11 +150,11 @@ extension String {
     }
     
     var isPDF: Bool {
-
+        
         guard let type = UTType(mimeType: self) else {
             return false
         }
-
+        
         return type.conforms(to: .pdf)
     }
 }
@@ -184,7 +184,7 @@ extension String {
             return [[:]]
         }
     }
-
+    
     
     func decode<T: Codable>(_ type: T.Type) throws -> T {
         let data = try? JSONSerialization.data(withJSONObject: self)
@@ -203,7 +203,7 @@ extension String {
             return nil
         }
     }
-
+    
     func convertIPAddressToBytes() throws -> [UInt8] {
         if let ipv4 = IPv4Address(self) {
             return Array(ipv4.rawValue)
@@ -223,12 +223,12 @@ extension String {
     func url() -> URL? {
         return URL(string: self)
     }
-
+    
     func asFileURL() -> URL? {
         guard !self.isEmpty else { return nil }
         return URL(fileURLWithPath: self)
     }
-
+    
     
     var addline: String {
         return self + "\n"
@@ -237,7 +237,23 @@ extension String {
     var addTwolines: String {
         return self + "\n\n"
     }
-
+    
+    func numbered(_ index: Int) -> String {
+        if LanguageManager.shared.currentLanguage.isRTL {
+            String(format: "%@ .%i ", self, index)
+        } else {
+            String(format: " %i. %@", index, self)
+        }
+    }
+    
+    func bulleted() -> String {
+        if LanguageManager.shared.currentLanguage.isRTL {
+            String(format: "%@ • ", self)
+            
+        } else {
+            String(format: " • %@", self)
+        }
+    }
 }
 
 

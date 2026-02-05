@@ -18,7 +18,7 @@ struct SwipeToDeleteActionView: View {
     @State private var offset:CGFloat = 0
     
     private var isRTL: Bool {
-        LanguageManager.shared.currentLanguage.layoutDirection == .rightToLeft
+        LanguageManager.shared.currentLanguage.isRTL
     }
     
     private func calculateOffset(from translation: CGFloat) -> CGFloat {
