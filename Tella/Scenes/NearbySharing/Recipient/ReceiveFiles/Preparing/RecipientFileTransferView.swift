@@ -58,10 +58,13 @@ struct RecipientFileTransferView: View {
             Spacer().frame(height: 100)
             ResizableImage("folders.icon").frame(width: 109, height: 109)
             
-            CustomText(String(format: LocalizableNearbySharing.senderRequestFilesNumberDesc.localized, viewModel.files.count), style: .heading1Style)
+            CustomText(String(format: LocalizableNearbySharing.senderRequestFilesNumberDesc.localized, viewModel.files.count),
+                       style: .heading1Style)
                 .padding(.bottom, 16)
             
-            CustomText(LocalizableNearbySharing.requestQuestion.localized, style: .body1Style)
+            CustomText(LocalizableNearbySharing.requestQuestion.localized,
+                       style: .body1Style,
+                       alignment: .center)
             
                 .padding(.bottom, 48)
             VStack(spacing: 16) {
