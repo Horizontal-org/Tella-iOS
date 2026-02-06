@@ -73,8 +73,8 @@ struct ServerOnboardingView: View {
                 PageDots(current: viewModel.index, total: viewModel.count)
             }
             
-            BottomLockView<AnyView>(
-                isValid: Binding(get: { viewModel.canGoNext }, set: { _ in }),
+             NavigationBottomView<AnyView>(
+                shouldActivateNext: Binding(get: { viewModel.canGoNext }, set: { _ in }),
                 nextButtonAction: .action,
                 shouldHideNext: viewModel.shouldHideNext,
                 shouldHideBack: true,

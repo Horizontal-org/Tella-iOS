@@ -82,10 +82,9 @@ struct OutboxDetailsView<T: Server>: View {
     private var buttonView :some View {
         VStack {
             Spacer()
-            TellaButtonView<AnyView> (title: outboxReportVM.uploadButtonTitle,
+            TellaButtonView(title: outboxReportVM.uploadButtonTitle,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
-                                      destination: nil,
                                       isValid: .constant(true)) {
                 outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 
@@ -157,7 +156,7 @@ struct OutboxDetailsView<T: Server>: View {
     
     private var itemsListView: some View {
         LazyVStack(spacing: 1) {
-            ForEach($outboxReportVM.progressFileItems, id: \.file.id) { file in
+            ForEach(outboxReportVM.progressFileItems, id: \.vaultFile.id) { file in
                 OutboxDetailsItemView(item: file)
                     .frame(height: 60)
             }

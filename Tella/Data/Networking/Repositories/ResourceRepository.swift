@@ -15,8 +15,8 @@ struct ResourceRepository: WebRepository {
     func getResourcesByProject(server: TellaServer) -> AnyPublisher<[Resource], APIError> {
         let apiResponse: APIResponse<[ProjectDTO]> = getAPIResponse(endpoint: API.getResourcesByProject(serverUrl: server.url ?? "", projectId: server.projectId ?? "", token: server.accessToken ?? ""))
         return apiResponse
-            .compactMap{$0.0.first?.toDomain() as? Project}
-            .map{$0.resources}
+            .compactMap{$0.response.first?.toDomain() as? Project}
+            .compactMap{$0.resources}
             .eraseToAnyPublisher()
     }
     
@@ -24,7 +24,7 @@ struct ResourceRepository: WebRepository {
         let apiResponse = getAPIResponseForBinaryData(endpoint: API.getResourceByFileName(serverUrl: server.url ?? "", fileName: fileName, token: server.accessToken ?? ""))
             
         return apiResponse
-            .compactMap { $0.0 }
+            .compactMap { $0.response }
             .eraseToAnyPublisher()
     }
 }
@@ -56,7 +56,7 @@ extension ResourceRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
         case .getResourcesByProject(_, let projectId, _):
             return "/resource/projects?projectId[]=\(projectId)"

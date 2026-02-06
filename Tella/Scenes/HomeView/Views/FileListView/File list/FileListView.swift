@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -93,8 +93,19 @@ struct FileListView: View {
         if !fileListViewModel.shouldHideNavigationBar {
             
             NavigationHeaderView(title: title,
+                                 backButtonAction: {backButtonAction()},
                                  rightButtonType: fileListViewModel.shouldShowSelectButton ? .validate : .none,
                                  rightButtonAction: { attachFiles()})
+        }
+    }
+    
+    private func backButtonAction() {
+        
+        switch fileListViewModel.fileListType {
+        case .nearbySharing:
+            popToRoot()
+        default:
+            self.presentationMode.wrappedValue.dismiss()
         }
     }
     

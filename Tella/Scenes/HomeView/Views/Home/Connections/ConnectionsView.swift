@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -14,16 +14,14 @@ struct ConnectionsView: View {
     
     var body: some View {
         
-        if homeViewModel.serverDataItemArray.count > 0 {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Connections")
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                
-                serversView
-            }
-            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Connections")
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                .foregroundColor(.white)
+            
+            serversView
         }
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
     }
     
     var serversView: some View {
@@ -34,7 +32,13 @@ struct ConnectionsView: View {
     
     @ViewBuilder
     var serverItems : some View {
-        HStack(spacing: 7) {
+        HStack(spacing: 12) {
+            
+            if homeViewModel.mainAppModel.settings.nearbySharing {
+                ConnectionsItemView(title: LocalizableNearbySharing.nearbySharing.localized,
+                                    image: "nearby-sharing.home",
+                                    destination: nearbySharingMainView)
+            }
             
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
@@ -69,6 +73,9 @@ struct ConnectionsView: View {
                                         destination: dropboxMainView)
                 }
             }
+            
+            addButton
+            
             Spacer()
         }.padding(.trailing, 17)
     }
@@ -86,7 +93,23 @@ struct ConnectionsView: View {
     }
     
     var dropboxMainView: DropboxReportMainView {
-        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.mainAppModel, dropboxRepository: DropboxRepository()))
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: homeViewModel.mainAppModel,
+                                                                     dropboxRepository: DropboxRepository()))
+    }
+    
+    var nearbySharingMainView: NearbySharingMainView {
+        NearbySharingMainView(mainAppModel: homeViewModel.mainAppModel)
+    }
+    
+    var addButton: some View {
+        Button {
+            // Show Connections View()
+            let viewModel = ServersViewModel(mainAppModel: homeViewModel.mainAppModel)
+            navigateTo(destination: ServersListView(serversViewModel: viewModel))
+        } label: {
+            Image("home.add")
+                .frame(width: 92,height: 92)
+        }
     }
 }
 

@@ -19,7 +19,6 @@ class DraftMainViewModel: ObservableObject {
     @Published var reportId : Int?
     @Published var title : String = ""
     @Published var description : String = ""
-    @Published var files :  Set <VaultFileDB> = []
     @Published var server :  Server?
     @Published var status : ReportStatus?
     @Published var apiID : String?
@@ -31,17 +30,12 @@ class DraftMainViewModel: ObservableObject {
     @Published var reportIsValid : Bool = false
     @Published var reportIsDraft : Bool = false
     
-    @Published var resultFile : [VaultFileDB]?
-    
-    @Published var showingImagePicker : Bool = false
-    @Published var showingImportDocumentPicker : Bool = false
-    @Published var showingFileList : Bool = false
-    @Published var showingRecordView : Bool = false
-    @Published var showingCamera : Bool = false
-    
     @Published var successSavingReport : Bool = false
     @Published var failureSavingReport : Bool = false
     
+    //MARK: -AddFilesViewModel
+    @Published var addFilesViewModel: AddFilesViewModel
+
     var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
     var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
     
@@ -64,27 +58,13 @@ class DraftMainViewModel: ObservableObject {
         return reportId == nil
     }
     
-    var addFileToDraftItems : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "report.camera-filled",
-                            content: LocalizableReport.cameraFilled.localized,
-                            type: ManageFileType.camera),
-        ListActionSheetItem(imageName: "report.mic-filled",
-                            content: LocalizableReport.micFilled.localized,
-                            type: ManageFileType.recorder),
-        ListActionSheetItem(imageName: "report.gallery",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "report.phone",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
-    
+
     init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         
         self.mainAppModel = reportsMainViewModel.mainAppModel
         self.reportsMainViewModel = reportsMainViewModel
-        
+        self.addFilesViewModel = AddFilesViewModel(mainAppModel: reportsMainViewModel.mainAppModel)
+
         self.validateReport()
         
         self.getServers()
@@ -97,7 +77,7 @@ class DraftMainViewModel: ObservableObject {
     }
 
     func validateReport() {
-        Publishers.CombineLatest4($server,$isValidTitle, $isValidDescription, $files)
+        Publishers.CombineLatest4($server,$isValidTitle, $isValidDescription, addFilesViewModel.$files)
             .map { server, isValidTitle, isValidDescription, files in
                 ((server != nil) && isValidTitle && (isValidDescription || !files.isEmpty))
             }

@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,6 +8,7 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
+import Network
 
 extension String {
     func getDate() -> Date? {
@@ -87,9 +88,9 @@ extension String {
 }
 
 extension String {
-
+    
     func mimeType() -> String? {
-         if let type = UTType(filenameExtension: self) {
+        if let type = UTType(filenameExtension: self) {
             if let mimetype = type.preferredMIMEType {
                 return mimetype as String
             }
@@ -100,16 +101,18 @@ extension String {
     func getExtension() -> String {
         
         let unmanagedFileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, self as CFString, nil)?.takeRetainedValue()
-       guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
         else { return ""}
         
         return fileExtension as String
     }
-
     
+    func fileExtensionFromMimeType() -> String? {
+        UTType(mimeType: self)?.preferredFilenameExtension
+    }
     
     var tellaFileType: TellaFileType {
-
+        
         guard let type = UTType(mimeType: self) else {
             return .other
         }
@@ -147,11 +150,11 @@ extension String {
     }
     
     var isPDF: Bool {
-
+        
         guard let type = UTType(mimeType: self) else {
             return false
         }
-
+        
         return type.conforms(to: .pdf)
     }
 }
@@ -181,10 +184,10 @@ extension String {
             return [[:]]
         }
     }
-
+    
     
     func decode<T: Codable>(_ type: T.Type) throws -> T {
-        let data = try JSONSerialization.data(withJSONObject: self)
+        let data = try? JSONSerialization.data(withJSONObject: self)
         return try JSONDecoder().decode (type, from: data)
     }
     
@@ -200,7 +203,18 @@ extension String {
             return nil
         }
     }
+    
+    func convertIPAddressToBytes() throws -> [UInt8] {
+        if let ipv4 = IPv4Address(self) {
+            return Array(ipv4.rawValue)
+        } else if let ipv6 = IPv6Address(self) {
+            return Array(ipv6.rawValue)
+        } else {
+            throw CertificateError.invalidIPAddress
+        }
+    }
 }
+
 extension String: @retroactive Identifiable {
     public var id: String { self }
 }
@@ -210,6 +224,12 @@ extension String {
         return URL(string: self)
     }
     
+    func asFileURL() -> URL? {
+        guard !self.isEmpty else { return nil }
+        return URL(fileURLWithPath: self)
+    }
+    
+    
     var addline: String {
         return self + "\n"
     }
@@ -217,5 +237,47 @@ extension String {
     var addTwolines: String {
         return self + "\n\n"
     }
+    
+    func numbered(_ index: Int) -> String {
+        if LanguageManager.shared.currentLanguage.isRTL {
+            String(format: "%@ .%i ", self, index)
+        } else {
+            String(format: " %i. %@", index, self)
+        }
+    }
+    
+    func bulleted() -> String {
+        if LanguageManager.shared.currentLanguage.isRTL {
+            String(format: "%@ • ", self)
+            
+        } else {
+            String(format: " • %@", self)
+        }
+    }
+}
 
+
+enum CertificateError: Error {
+    case invalidIPAddress
+}
+
+extension String {
+    func formatHash() -> String {
+        let trimmed = String(self.prefix(64))
+        let chunks = self.chunked(into: 4)
+        let lines = chunks.chunked(into: 4)
+        return lines.map { $0.joined(separator: " ") }.joined(separator: "\n")
+    }
+    
+    // Chunk String into substrings of fixed size
+    func chunked(into size: Int) -> [String] {
+        var result: [String] = []
+        var start = startIndex
+        while start < endIndex {
+            let end = index(start, offsetBy: size, limitedBy: endIndex) ?? endIndex
+            result.append(String(self[start..<end]))
+            start = end
+        }
+        return result
+    }
 }

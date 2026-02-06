@@ -28,4 +28,10 @@ extension FileManager {
         }
     }
     
+    class func tempDirectory(withFileName fileName: String) -> URL {
+        return self.default
+            .temporaryDirectory
+            .appendingPathComponent(fileName)
+    }
 }
+

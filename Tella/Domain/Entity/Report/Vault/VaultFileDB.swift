@@ -77,6 +77,16 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
     }
     
+    init(file: NearbySharingFile) {
+        self.id = UUID().uuidString
+        self.type = .file
+        self.name = file.fileName ?? ""
+        self.thumbnail = file.thumbnail
+        self.size = file.size ?? 0
+        self.mimeType = file.fileType
+        self.created = Date()
+    }
+
     init(vaultFile :VaultFile) {
         self.id = vaultFile.containerName
         self.type = vaultFile.type == .folder ? .directory : .file
