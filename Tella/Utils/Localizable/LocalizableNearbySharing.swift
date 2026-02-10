@@ -140,5 +140,7 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
 
     case viewFilesAction = "NearbySharing_Results_ViewFiles_Action"
     
+    case backToHomeAction = "NearbySharing_Results_BackToHome_Action"
+
     case connectionChangedToast = "NearbySharing_ConnectionChanged_Toast"
 }

@@ -663,6 +663,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "NearbySharing_Results_FailureFileReceived_Expl" = "0 files were received. %i file were not received.";
 
 "NearbySharing_Results_ViewFiles_Action" = "View files";
+"NearbySharing_Results_BackToHome_Action" = "Back to Home";
 
 
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
