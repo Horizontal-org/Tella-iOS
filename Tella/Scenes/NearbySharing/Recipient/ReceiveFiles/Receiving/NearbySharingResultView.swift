@@ -36,8 +36,9 @@ struct NearbySharingResultView: View {
         ResultView(imageName: viewModel.imageName,
                    title: viewModel.title,
                    subTitle: viewModel.subTitle,
-                   buttonTitle: viewModel.buttonTitle,
-                   buttonAction: buttonAction)
+                   showViewFilesButton: viewModel.showViewFilesButton,
+                   showBackToHomeButton: viewModel.showBackToHomeButton,
+                   viewFilesAction: buttonAction)
     }
     
 }

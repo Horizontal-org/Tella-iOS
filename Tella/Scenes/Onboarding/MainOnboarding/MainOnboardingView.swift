@@ -53,6 +53,7 @@ struct MainOnboardingView: View {
             
         case .nearbySharing(let content):
             ImageTitleMessageView(content: content)
+                .padding(.horizontal, .medium)
             
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)

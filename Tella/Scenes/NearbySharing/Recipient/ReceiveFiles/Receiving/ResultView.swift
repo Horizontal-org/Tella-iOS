@@ -11,12 +11,13 @@ import SwiftUI
 
 struct ResultView: View {
     
-    var imageName: String
+    var imageName: ImageResource
     var title: String
     var subTitle: String
-    var buttonTitle: String?
-    var buttonAction: (()->()) = { }
-
+    var showViewFilesButton: Bool
+    var showBackToHomeButton: Bool
+    var viewFilesAction: (()->()) = { }
+    
     var body: some View {
         ContainerView {
             
@@ -28,15 +29,23 @@ struct ResultView: View {
                 
                 Spacer()
                     .frame(height: 48)
-                if let buttonTitle {
-                    TellaButtonView(title: buttonTitle,
+                if showViewFilesButton {
+                    TellaButtonView(title: LocalizableNearbySharing.viewFilesAction.localized.uppercased(),
                                     nextButtonAction: .action,
                                     buttonType: .yellow,
                                     isValid: .constant(true)) {
-                        buttonAction()
+                        viewFilesAction()
                     }
                 }
                 
+                if showBackToHomeButton {
+                    TellaButtonView(title: LocalizableNearbySharing.backToHomeAction.localized.uppercased(),
+                                    nextButtonAction: .action,
+                                    buttonType: .clear,
+                                    isValid: .constant(true)) {
+                        popToRoot()
+                    }
+                }
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
@@ -63,6 +72,11 @@ struct ResultView: View {
     }
 }
 
-//#Preview {
-//    ResultView()
-//}
+#Preview {
+    ResultView(imageName: .checkedCircle,
+               title: "Title",
+               subTitle: LocalizableNearbySharing.successFilesReceivedExpl.localized,
+               showViewFilesButton: false, showBackToHomeButton: true) {
+        
+    }
+}

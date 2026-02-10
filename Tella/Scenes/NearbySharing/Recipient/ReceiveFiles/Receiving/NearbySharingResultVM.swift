@@ -49,8 +49,8 @@ final class NearbySharingResultVM: ObservableObject {
         transferredFiles.allSatisfy { $0.status != successStatus }
     }
     
-    var imageName: String {
-        allFilesTransferred ? "checked-circle" : "warning"
+    var imageName: ImageResource {
+        allFilesTransferred ? .checkedCircle : .warning
     }
     
     var title: String {
@@ -87,7 +87,12 @@ final class NearbySharingResultVM: ObservableObject {
         }
     }
     
-    var buttonTitle: String? {
-        (noFilesTransferred || participant == .sender) ? nil : LocalizableNearbySharing.viewFilesAction.localized
+    var showViewFilesButton: Bool {
+        (noFilesTransferred || participant == .sender) ? false : true
     }
+    
+    var showBackToHomeButton: Bool {
+        participant == .sender ? true : false
+    }
+    
 }
