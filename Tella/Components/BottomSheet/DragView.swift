@@ -32,14 +32,8 @@ public struct DragView<Content: View>: View {
     private var presentAnimation: Animation { .spring(response: 0.30, dampingFraction: 0.85) }
     private var dismissAnimation: Animation { .easeOut(duration: dismissDuration) }
     
-    // Safe bottom inset
-    private var bottomInset: CGFloat {
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first
-            return window?.safeAreaInsets.bottom ?? 0
-        }
-        return 0
-    }
+    private var bottomInset: CGFloat = 20
+    
     private var maxSheetHeight: CGFloat { UIScreen.main.bounds.height * maxHeightRatio }
     
     // MARK: Init
