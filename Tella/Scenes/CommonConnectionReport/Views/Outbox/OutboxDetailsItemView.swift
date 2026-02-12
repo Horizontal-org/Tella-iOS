@@ -8,7 +8,7 @@ import SwiftUI
 
 struct OutboxDetailsItemView: View {
     
-    @Binding var item : ProgressFileItemViewModel
+    @ObservedObject var item : ProgressFileItemViewModel
     
     var body: some View {
         
@@ -17,36 +17,41 @@ struct OutboxDetailsItemView: View {
                 .fill(Color.white.opacity(0.2))
                 .frame(width: 35, height: 35, alignment: .center)
                 .overlay(
-                    item.file.listImage
+                    item.vaultFile.listImage
                         .frame(width: 35, height: 35)
                         .cornerRadius(5)
                 )
             VStack(alignment: .leading, spacing: 0){
                 Spacer()
-                Text(item.file.name)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(Color.white)
-                    .lineLimit(1)
                 
+                CustomText(item.vaultFile.name,
+                           style: .subheading1Style)
+                .lineLimit(1)
+
                 Spacer()
                     .frame(height: 2)
                 
-                Text(item.progression)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 10))
-                    .foregroundColor(Color.white)
-                
+                CustomText(item.transferSummary,
+                           style: .body3Style)
+
                 Spacer()
                 
             }
             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 40))
             
             Spacer()
-        }    }
+
+            if let fileStatus = item.fileStatus,
+               let statusIcon = fileStatus.statusIcon {
+                Image(statusIcon)
+            }
+        }
+    }
 }
 
 
 struct ReportDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), progression: "0/4.5 MB") ))
+        OutboxDetailsItemView(item: ProgressFileItemViewModel(vaultFile: VaultFileDB.stub(), transferSummary: "0/4.5 MB") )
     }
 }

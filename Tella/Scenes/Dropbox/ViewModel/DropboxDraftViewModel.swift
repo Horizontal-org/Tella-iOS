@@ -32,7 +32,7 @@ class DropboxDraftViewModel: DraftMainViewModel {
         self.description = report.description ?? ""
         
         if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
-            self.files = Set(vaultFileResult)
+            addFilesViewModel.files = Set(vaultFileResult)
         }
         
         validateTitleAndDescription()
@@ -45,7 +45,7 @@ class DropboxDraftViewModel: DraftMainViewModel {
             description: description,
             status: status ?? .unknown,
             server: server as? DropboxServer,
-            vaultFiles: self.files.compactMap { DropboxReportFile( fileId: $0.id,
+            vaultFiles: addFilesViewModel.files.compactMap { DropboxReportFile( fileId: $0.id,
                                                                    status: .notSubmitted,
                                                                    bytesSent: 0,
                                                                    createdDate: Date(),
@@ -80,17 +80,5 @@ class DropboxDraftViewModel: DraftMainViewModel {
     
     private func getServer() {
         self.server = mainAppModel.tellaData?.getDropboxServers().first
-    }
-    
-    override func deleteFile(fileId: String?) {
-        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
-        files.remove(at: index)
-    }
-    
-    override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
-            self.files.insert(value)
-        }).store(in: &subscribers)
     }
 }

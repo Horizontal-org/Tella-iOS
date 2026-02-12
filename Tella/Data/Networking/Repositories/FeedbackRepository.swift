@@ -17,7 +17,7 @@ struct FeedbackRepository: WebRepository {
         
         let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(feedback.text))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? FeedbackAPI}
+            .compactMap{$0.response.toDomain() as? FeedbackAPI}
             .eraseToAnyPublisher()
     }
 }
@@ -48,7 +48,7 @@ extension FeedbackRepository.API: APIRequest {
         }
     }
     
-    var path: String {
+    var path: String? {
         switch self {
         case .submitFeedback:
             return FeedbackConstants.opinionsPath

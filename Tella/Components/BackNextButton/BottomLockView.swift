@@ -1,5 +1,5 @@
 //
-//  BottomLockView.swift
+//  NavigationBottomView.swift
 //  Tella
 //
 //
@@ -10,14 +10,14 @@
 
 import SwiftUI
 
-struct BottomLockView<Destination:View>:View {
+struct NavigationBottomView<Destination:View>:View {
     
-    @Binding  var isValid : Bool
+    @Binding  var shouldActivateNext : Bool
     var shouldEnableBackButton :  Bool  = true
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    var nextButtonAction: NextButtonAction
+    var nextButtonAction: NextButtonAction = .none
     var destination: Destination?
     var shouldHideNext : Bool = false
     var shouldHideBack: Bool = false
@@ -37,7 +37,7 @@ struct BottomLockView<Destination:View>:View {
             }
             Spacer()
             if !shouldHideNext {
-                BottomButtonActionView(title: LocalizableLock.actionNext.localized,isValid: isValid) {
+                BottomButtonActionView(title: LocalizableLock.actionNext.localized,isValid: shouldActivateNext) {
                     if nextButtonAction == .action {
                         self.nextAction?()
                     }
@@ -48,11 +48,24 @@ struct BottomLockView<Destination:View>:View {
             }
         }
     }
+    
+    func BottomButtonActionView(title:String,isValid:Bool, action: (() -> Void)?) -> some View {
+        Button {
+            UIApplication.shared.endEditing()
+            action?()
+        } label: {
+            Text(title)
+        }
+        .style(.link1Style)
+        .foregroundColor(isValid ? Color.white : Color.gray)
+        .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
+        .disabled(!isValid)
+    }
 }
 
 struct BottomLockView_Previews: PreviewProvider {
     static var previews: some View {
-        BottomLockView(isValid: .constant(true),
+        NavigationBottomView(shouldActivateNext: .constant(true),
                        nextButtonAction: .action,
                        destination: EmptyView(),
                        nextAction: {},

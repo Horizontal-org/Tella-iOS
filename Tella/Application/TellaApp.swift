@@ -2,7 +2,7 @@
 //  TellaApp.swift
 //  Tella
 //
-//  
+//
 //  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
@@ -26,6 +26,10 @@ struct TellaApp: App {
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
+                }.onReceive(appDelegate.$appWillTerminate) { willTerminate in
+                    if willTerminate {
+                        clearTmpDirectory()
+                    }
                 }
             
         }.onChange(of: scenePhase) { phase in
@@ -42,10 +46,9 @@ struct TellaApp: App {
             }
         }
     }
-
+    
     func saveData(lockApptype:LockApptype) {
-        
-        
+
         appViewState.homeViewModel.saveLockTimeoutStartDate()
         
         UploadService.shared.cancelTasksIfNeeded()
@@ -56,10 +59,11 @@ struct TellaApp: App {
         let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
         
         if shouldResetApp && !hasFileOnBackground {
+            appViewState.homeViewModel.nearbySharingServer?.resetFullServerState()
             
             appViewState.homeViewModel.shouldSaveCurrentData = true
             DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
-                appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
+                clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
             appViewState.homeViewModel.shouldSaveCurrentData = false
@@ -69,17 +73,23 @@ struct TellaApp: App {
         let  hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
-
+        
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
             UIApplication.getTopViewController()?.dismiss(animated: false)
-
+            
+            appViewState.homeViewModel.nearbySharingServer?.resetFullServerState()
+            
             DispatchQueue.main.async {
                 appViewState.resetApp()
             }
-            appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+            clearTmpDirectory()
         }
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
+    }
+    
+    func clearTmpDirectory() {
+        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
     }
 }
 

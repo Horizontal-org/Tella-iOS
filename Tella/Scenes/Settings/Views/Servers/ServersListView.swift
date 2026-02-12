@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -40,6 +40,8 @@ struct ServersListView: View {
             
             SettingsCardView<AnyView> (cardViewArray: serversView())
             
+            SettingsCardView(cardViewArray: [nearbySharingView.eraseToAnyView()])
+            
             Spacer()
         }.scrollOnOverflow()
     }
@@ -54,6 +56,14 @@ struct ServersListView: View {
             
         })
         return arrayView
+    }
+    
+    private var nearbySharingView: some View {
+        SettingToggleItem(title: LocalizableSettings.settNearbySharing.localized,
+                          description: LocalizableSettings.settNearbySharingExpl.localized,
+                          linkText:LocalizableSettings.settNearbySharingLearnMore.localized,
+                          link:TellaUrls.nearbySharingLearnMore,
+                          toggle: $serversViewModel.mainAppModel.settings.nearbySharing)
     }
     
     private func showServerActionBottomSheet(server:Server) {

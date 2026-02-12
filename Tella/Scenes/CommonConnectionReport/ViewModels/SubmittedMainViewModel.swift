@@ -10,6 +10,7 @@
 
 import Foundation
 
+
 class SubmittedMainViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
@@ -60,7 +61,7 @@ class SubmittedMainViewModel: ObservableObject {
         self.files = Array(vaultFileResult)
         
         // todo -> progress bar
-        progressFileItems = self.files.compactMap{ProgressFileItemViewModel(file: $0, progression:$0.size.getFormattedFileSize() + "/" + $0.size.getFormattedFileSize())}
+        progressFileItems = self.files.compactMap{ProgressFileItemViewModel(vaultFile: $0, transferSummary:$0.size.getFormattedFileSize() + "/" + $0.size.getFormattedFileSize())}
         let totalSize = self.files.reduce(0) { $0 + $1.size }
         
         if let date = report.createdDate {

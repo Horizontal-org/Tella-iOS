@@ -14,7 +14,6 @@ struct ConfirmBottomSheet : View {
     var discardText : String?
     var actionText = ""
     var destructive : Bool = false
-    var withDrag : Bool = true
     var shouldHideSheet : Bool = true
     
     var didConfirmAction : () -> ()
@@ -28,70 +27,72 @@ struct ConfirmBottomSheet : View {
     }
     
     var contentView: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            
-            if let imageName = imageName {
-                HStack() {
-                    Spacer()
-                    Image(imageName)
-                    Spacer()
-                }.frame(height: 90)
-            }
-            
-            Text(self.titleText)
-                .foregroundColor(.white)
-                .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(self.msgText)
-                .foregroundColor(.white)
-                .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
-                .lineLimit(nil)
-                .fixedSize(horizontal: false, vertical: true)
+        VStack(alignment: .leading) {
+            imageView
+            CustomText(self.titleText,
+                       style: .heading2Style)
             Spacer()
-            HStack(alignment: .lastTextBaseline ){
+                .frame(height: 9)
+            CustomText(self.msgText,
+                       style: .body1Style)
+            Spacer()
+            buttonsView
+        }
+    }
+    
+    @ViewBuilder
+    var imageView: some View {
+        if let imageName = imageName {
+            HStack() {
                 Spacer()
+                Image(imageName)
+                Spacer()
+            }.frame(height: 90)
+        }
+    }
+    
+    var buttonsView: some View {
+        HStack(alignment: .lastTextBaseline ) {
+            Spacer()
+            
+            if let cancelText {
                 
-                if let cancelText {
-                    Button(action: {
-                        didCancelAction?()
-                        if shouldHideSheet {
-                            sheetManager.hide()
-                        }
-                    }){
-                        Text(cancelText)
-                    }.buttonStyle(ButtonSheetStyle())
+                Button(action: {
+                    didCancelAction?()
+                    if shouldHideSheet {
+                        sheetManager.hide()
+                    }
                     
-                }
-                
-                if let discardText = discardText {
-                    Spacer()
-                        .frame(width: 10)
-                    
-                    Button(action: {
-                        didDiscardAction?()
-                        if shouldHideSheet {
-                            sheetManager.hide()
-                        }
-                        
-                    }){
-                        Text(discardText)
-                    }.buttonStyle(ButtonSheetStyle())
-                    
-                }
+                }){
+                    Text(cancelText)
+                }.buttonStyle(ButtonSheetStyle())
+            }
+            if let discardText = discardText {
                 Spacer()
                     .frame(width: 10)
                 
                 Button(action: {
-                    self.didConfirmAction()
+                    didDiscardAction?()
                     if shouldHideSheet {
                         sheetManager.hide()
                     }
+                    
                 }){
-                    Text(self.actionText.uppercased())
-                        .foregroundColor(destructive ? Color.red : Color.white)
+                    Text(discardText)
                 }.buttonStyle(ButtonSheetStyle())
             }
+            Spacer()
+                .frame(width: 10)
+            
+            Button(action: {
+                self.didConfirmAction()
+                if shouldHideSheet {
+                    sheetManager.hide()
+                }
+            }){
+                Text(self.actionText.uppercased())
+                    .foregroundColor(destructive ? Color.red : Color.white)
+            }.buttonStyle(ButtonSheetStyle())
         }
     }
 }
@@ -101,7 +102,7 @@ struct ButtonSheetStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .foregroundColor(configuration.isPressed ? Color.white.opacity(0.3) : Color.white)
-            .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
+            .style(.buttonSStyle)
             .padding()
     }
 }

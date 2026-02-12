@@ -21,7 +21,7 @@ struct SuccessAdvancedSettingsView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: "OK",
+                TellaButtonView(title: "OK",
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
@@ -37,7 +37,7 @@ struct SuccessAdvancedSettingsView: View {
     var topview: some View {
         
         VStack {
-            Image("settings.checked-circle")
+            Image("checked-circle")
             
             Spacer()
                 .frame(height: 16)

@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,13 +8,42 @@
 import Foundation
 import Combine
 
-typealias APIResponse<Value> = AnyPublisher<(Value,[AnyHashable:Any]?), APIError>
-typealias APIDataResponse = AnyPublisher<(Data,[AnyHashable:Any]?), APIError>
+typealias APIResponse<Value> = AnyPublisher<(APIResult<Value>), APIError>
+typealias APIDataResponse = AnyPublisher<(APIResult<Data>), APIError>
+
+class APIResult<Value> {
+    let response: Value
+    let headers: [AnyHashable: Any]?
+    
+    init(response: Value, headers: [AnyHashable : Any]?) {
+        self.response = response
+        self.headers = headers
+    }
+}
+
+struct ServerResponse {
+    let data: Data
+    let response: URLResponse
+}
 
 protocol WebRepository {}
 
 extension WebRepository {
-    private func fetchData(endpoint: any APIRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+    
+    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
+    where Value: Decodable {
+        performRemoteRequest(endpoint: endpoint)
+            .decodeJSONResponse()
+            .eraseToAnyPublisher()
+    }
+    
+    func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
+        performRemoteRequest(endpoint: endpoint)
+            .extractData()
+            .eraseToAnyPublisher()
+    }
+    
+    private func performRemoteRequest(endpoint: any APIRequest) -> AnyPublisher<ServerResponse, Error> {
         do {
             guard NetworkMonitor.shared.isConnected else {
                 return Fail(error: APIError.noInternetConnection)
@@ -24,8 +53,10 @@ extension WebRepository {
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
             request.curlRepresentation()
+            
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
+                .map({ ServerResponse(data: $0, response: $1)})
                 .mapError { $0 as Error }
                 .eraseToAnyPublisher()
         } catch {
@@ -33,27 +64,18 @@ extension WebRepository {
                 .eraseToAnyPublisher()
         }
     }
-
-    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
-    where Value: Decodable {
-        fetchData(endpoint: endpoint)
-            .requestJSON()
-            .eraseToAnyPublisher()
-    }
-
-    func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
-        fetchData(endpoint: endpoint)
-            .requestData()
-            .eraseToAnyPublisher()
-    }
+    
 }
+
 // MARK: - Helpers
-extension Publisher where Output == URLSession.DataTaskPublisher.Output {
-    func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
-        return requestData()
-            .tryMap({ (data, allHeaderFields) in
-                let decodedData : Value = try data.decoded()
-                return (decodedData, allHeaderFields)
+extension Publisher where Output == ServerResponse {
+    func decodeJSONResponse<Value>() -> APIResponse<Value> where Value: Decodable {
+        let apiDataResponse = extractData()
+        
+        return apiDataResponse
+            .tryMap({ response in
+                let decodedData : Value = try response.response.decoded()
+                return APIResult(response: decodedData, headers: response.headers)
             })
             .mapError{
                 if let error = $0 as? APIError {
@@ -61,24 +83,24 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 } else {
                     return APIError.unexpectedResponse
                 }
-
+                
             }
             .eraseToAnyPublisher()
     }
 }
 
-extension Publisher where Output == URLSession.DataTaskPublisher.Output {
-    func requestData() -> APIDataResponse {
+extension Publisher where Output == ServerResponse {
+    func extractData() -> APIDataResponse {
         return tryMap {
-            guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
+            guard let code = ($0.response as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }
-
+            
             guard HTTPCodes.success.contains(code) else {
                 debugLog("Error code: \(code)")
                 throw APIError.httpCode(code)
             }
-            return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
+            return APIResult(response: $0.data , headers:($0.response as? HTTPURLResponse)?.allHeaderFields)
         }
         .mapError{ error in
             if let error = error as? APIError {

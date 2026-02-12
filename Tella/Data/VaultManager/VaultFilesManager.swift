@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -62,6 +62,23 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+    func addVaultFile(importedFile:  ImportedFile) async -> VaultFileDB? {
+        
+        guard let fileDetails =  await getFileDetails(importedFile: importedFile),
+              let filePath = importedFile.urlFile,
+              let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
+        else {
+            return nil
+        }
+        
+        if isSaved {
+            self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
+            return fileDetails.file
+        } else {
+            return nil
+        }
+    }
+    
     private func updateImportedFilesURLs(_ importedFiles: inout [ImportedFile]) async {
         for index in importedFiles.indices {
             await updateURL(importedFile: &importedFiles[index])
@@ -80,7 +97,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 
                 importProgress.currentFile += 1
                 subject.send(.importProgress(importProgress:  importProgress))
-
+                
                 if self.shouldCancelImportAndEncryption.value {
                     break
                 }
@@ -175,7 +192,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         return subject.eraseToAnyPublisher()
     }
-
+    
     private func handleDatabaseAddition(fileDetails:VaultFileDetails,
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
         
@@ -256,6 +273,17 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return result
     }
     
+    func addFolderFile(name: String) -> Result<String?,Error>? {
+        let file = VaultFileDB(type: .directory, name: name)
+        let result = self.vaultDataBase.addVaultFile(file: file,parentId: nil)
+        switch result {
+        case .success:
+            return .success(file.id)
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
@@ -278,14 +306,21 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         guard let filePath = importedFile.urlFile  else {return nil}
         
-        let id = UUID().uuidString
+        let id = importedFile.fileId == nil ? UUID().uuidString : importedFile.fileId
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
         
         async let thumnail = await filePath.thumbnail()
         
-        let fileName = filePath.deletingPathExtension().lastPathComponent
-        let path = filePath.path
+        var fileName : String
+        
+        if let name = importedFile.fileName {
+            fileName = name
+        } else {
+            fileName = filePath.deletingPathExtension().lastPathComponent
+        }
+        
+        let path = filePath.relativePath
         let pathExtension = filePath.pathExtension
         
         var width : Double?
@@ -311,6 +346,20 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
+    private func getIncrementedName(name:String) -> String {
+        
+        var copyNumber = 0
+        
+        // Generate the new filename and check if it exists
+        var newFileName = name
+        while self.vaultFileExists(name: newFileName) == true {
+            copyNumber += 1
+            newFileName = name + "-" + "\(copyNumber)"
+        }
+        return newFileName
+    }
+    
+    
     func getFilesTotalSize(filePaths: [URL]) -> Int {
         
         var totalSizeArray : [Int] = []
@@ -331,7 +380,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     func vaultFileExists(name: String) -> Bool {
         return self.vaultDataBase.vaultFileExists(name: name)
     }
-
+    
     func getVaultFile(id: String?) -> VaultFileDB? {
         return self.vaultDataBase.getVaultFile(id: id)
     }
@@ -381,7 +430,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         let result = self.vaultDataBase.deleteVaultFile(ids: fileIds)
         shouldReloadFiles.send(true)
         return result
-
+        
     }
     
     @discardableResult

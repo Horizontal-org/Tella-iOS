@@ -18,9 +18,7 @@ struct RecordView: View {
     
     @State private var showingSaveSuccessView : Bool = false
     @State private var fileName : String = ""
-    
-    let modalHeight = 173.0
-    
+
     init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB? = nil,
          sourceView : SourceView,

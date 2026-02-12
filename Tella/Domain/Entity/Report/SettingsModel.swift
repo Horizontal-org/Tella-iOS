@@ -50,7 +50,11 @@ class SettingsModel: ObservableObject, Codable {
     ///  - on unlock it returns the saved value, if it doesn't exist it returns true,
     ///  - on lock it returns false
     @Published var shouldMergeVaultFilesToDb: Bool? = nil
-
+    
+    @Published var nearbySharing: Bool = true
+    
+    @Published var showSameWiFiNetworkAlert: Bool = true
+    
     enum CodingKeys: CodingKey {
         case offlineMode
         case quickDelete
@@ -65,6 +69,7 @@ class SettingsModel: ObservableObject, Codable {
         case preserveMetadata
         case shareFeedback
         case shouldMergeVaultFilesToDb
+        case showSameWiFiNetworkAlert
     }
     
     init() {
@@ -89,6 +94,7 @@ class SettingsModel: ObservableObject, Codable {
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
         shareFeedback = try container.decode(Bool.self, forKey: .shareFeedback)
         shouldMergeVaultFilesToDb = try container.decode(Bool.self, forKey: .shouldMergeVaultFilesToDb)
+        showSameWiFiNetworkAlert = try container.decodeIfPresent(Bool.self, forKey: .showSameWiFiNetworkAlert) ?? true
     }
     
     func encode(to encoder: Encoder) throws {
@@ -106,5 +112,6 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(preserveMetadata, forKey: .preserveMetadata)
         try container.encode(shareFeedback, forKey: .shareFeedback)
         try container.encode(shouldMergeVaultFilesToDb, forKey: .shouldMergeVaultFilesToDb)
+        try container.encode(showSameWiFiNetworkAlert, forKey: .showSameWiFiNetworkAlert)
     }
 }

@@ -58,5 +58,8 @@ class BoolResponse: DataModel, Codable {
         return BoolModel(success: success)
     }
 
+    init(success: Bool?) {
+        self.success = success
+    }
 }
 

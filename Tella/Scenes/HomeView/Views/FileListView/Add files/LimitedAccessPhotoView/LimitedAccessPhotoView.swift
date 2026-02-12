@@ -64,7 +64,7 @@ struct LimitedAccessPhotoView: View {
                 
                 DividerView()
                 
-                TellaButtonView<AnyView> (title: LocalizableVault.limitedPhotoLibraryImport.localized,
+                TellaButtonView(title: LocalizableVault.limitedPhotoLibraryImport.localized,
                                           nextButtonAction: .action,
                                           buttonType: .clear,
                                           isValid: $limitedAccessPhotoViewModel.shouldEnableButton) {

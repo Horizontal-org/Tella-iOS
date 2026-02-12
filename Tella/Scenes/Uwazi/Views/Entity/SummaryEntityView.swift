@@ -109,7 +109,7 @@ struct SummaryEntityView: View {
         HStack {
             
             
-            TellaButtonView<AnyView> (title: "SUBMIT LATER",
+            TellaButtonView(title: "SUBMIT LATER",
                                       nextButtonAction: .action,
                                       buttonType: .clear,
                                       isValid: .constant(true)) {
@@ -120,7 +120,7 @@ struct SummaryEntityView: View {
             
             Spacer()
             
-            TellaButtonView<AnyView> (title: "SUBMIT",
+            TellaButtonView(title: "SUBMIT",
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {

@@ -23,18 +23,18 @@ struct MainServerOnboardingView: View {
             ImageTitleMessageView(content: MainServerOnboardingContent())
             VStack(spacing: .small) {
                 
-                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainSetupServer.localized.uppercased(),
-                                          nextButtonAction: .action,
-                                          buttonType: .clear,
-                                          isValid: .constant(true)) {
+                TellaButtonView(title: LocalizableLock.onboardingServerMainSetupServer.localized.uppercased(),
+                                nextButtonAction: .action,
+                                buttonType: .clear,
+                                isValid: .constant(true)) {
                     let destination = ServerSelectionView(serversViewModel: serversViewModel)
                     self.navigateTo(destination: destination)
                 }
                 
-                TellaButtonView<AnyView> (title: LocalizableLock.onboardingServerMainNoThanks.localized.uppercased(),
-                                          nextButtonAction: .action,
-                                          buttonType: .clear,
-                                          isValid: .constant(true)) {
+                TellaButtonView(title: LocalizableLock.onboardingServerMainNoThanks.localized.uppercased(),
+                                nextButtonAction: .action,
+                                buttonType: .clear,
+                                isValid: .constant(true)) {
                     self.appViewState.resetToMain()
                     
                 }

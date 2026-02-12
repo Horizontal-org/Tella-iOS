@@ -6,14 +6,34 @@
 
 import Foundation
 
-class ProgressFileItemViewModel {
-    var file : VaultFileDB
-    @Published var progression : String
+class ProgressFileItemViewModel: ObservableObject {
     
-    init(file: VaultFileDB, progression: String) {
-        self.file = file
-        self.progression = progression
+    let vaultFile: VaultFileDB
+    
+    @Published var transferSummary: String
+    @Published var transferProgress: Double?
+    @Published var fileStatus: NearbySharingFileStatus?
+    
+    init(vaultFile: VaultFileDB,
+         transferSummary: String,
+         transferProgress: Double? = nil,
+         fileStatus: NearbySharingFileStatus? = nil) {
+        self.vaultFile = vaultFile
+        self.transferSummary = transferSummary
+        self.transferProgress = transferProgress
+        self.fileStatus = fileStatus
     }
 }
 
-
+extension NearbySharingFileStatus {
+    var statusIcon: String? {
+        switch self {
+        case .saving:
+            return "home.progress-circle"
+        case .saved:
+            return "report.submitted"
+        default:
+            return nil
+        }
+    }
+}

@@ -245,6 +245,17 @@ If you want to take a picture or a video, proceed in the following way:\
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Settings_Sett_Connections" = "Connections";
+
+"Settings_Sett_AddConnection" = "Add a Connection";
+"Settings_Sett_AddConnection_Expl" = "If you work with an organization, connect to its server to send files and data. You can also back up files to a personal cloud.";
+"Setting_Sett_AddConnection_LearnMore" = "Learn more";
+
+"Settings_Sett_NearbySharing" = "Nearby Sharing";
+"Settings_Sett_NearbySharing_Expl" = "Enable this feature to share files with devices near you, without an Internet connection.";
+"Setting_Sett_NearbySharing_LearnMore" = "Learn more";
+
+
+
 "Settings_Sett_Feedback" = "Feedback";
 "Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
 "Settings_SettSec_DeleteAfterFail_Off" = "Off";
@@ -539,11 +550,183 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
+
+
+"NearbySharing" = "Nearby Sharing";
+"NearbySharing_Main_AppBar" = "Get started";
+
+"NearbySharing_Main_Subhead" = "Nearby Sharing";
+"NearbySharing_Main_Expl" = "Share files with nearby devices without needing an Internet connection.";
+
+"NearbySharing_Main_SendFiles" = "Send files";
+"NearbySharing_Main_ReceiveFiles" = "Receive files";
+
+
+"NearbySharing_Main_LearnMore" = "Learn more about Nearby Sharing";
+
+"NearbySharing_ConnectToDevice" = "Connect to device";
+"NearbySharing_ScanCode" = "Scan the recipient’s QR code";
+"NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
+"NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
+"NearbySharing_ConnectManually" = "Connect manually";
+"NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
+"NearbySharing_IpAddress" = "IP address";
+"NearbySharing_Pin" = "PIN";
+"NearbySharing_Port" = "Port";
+"NearbySharing_ShowDeviceInformation" = "Show your device information";
+"NearbySharing_ConnectToDevice_SenderInputDesc" = "The sender needs to input the following to connect to your device.";
+"NearbySharing_LocationAccess" = "Location access";
+"NearbySharing_Cancel" = "Cancel";
+"NearbySharing_Settings" = "Settings";
+"NearbySharing_NoConnection" = "No connection";
+"NearbySharing_WaitingForSenderDesc" = "Waiting for the sender to share files";
+"NearbySharing_SenderRequest_NumberOfFiles_Desc" = "The sender is trying to send you %i files";
+"NearbySharing_RequestQuestion" = "Would you like to accept them?";
+"NearbySharing_Accept" = "Accept";
+"NearbySharing_Reject" = "Reject";
+"NearbySharing_InvalidIpAddress" = "Invalid IP address";
+"NearbySharing_InvalidPin" = "Invalid PIN";
+"NearbySharing_SelectFilesToSend" = "Select files to send";
+"NearbySharing_Title" = "Title";
+
+"NearbySharing_SuccessConnect_Toast" = "Success! Connected to device";
+"NearbySharing_ServerError_Toast" = "Server error";
+
+"NearbySharing_ConnectionFailed_SheetTitle" = "Connection failed";
+"NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
+"NearbySharing_ConnectionFailed_SheetAction" = "Try again";
+
+
+"NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
+"NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
+"NearbySharing_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";
+
+"NearbySharing_Verification_Action_Discard" = "Discard and start over";
+
+
+
+"NearbySharing_Sender_FilesRejected_Toast" = "Files rejected by recipient.";
+
+"NearbySharing_Recipient_FilesRejected_Toast" = "Sender's files rejected.";
+
+"NearbySharing_Sender_WaitingRecipient_Toast" = "Waiting for the recipient to accept files";
+
+
+
+
+
+"NearbySharing_StopSharing_SheetTitle" = "Stop sharing files?";
+"NearbySharing_StopSharing_SheetExpl" = "Nearby Sharing will be stopped. The recipient will not have access to files that were not fully transferred.";
+"NearbySharing_StopSharing_Continue_SheetAction" = "Continue";
+"NearbySharing_StopSharing_Stop_SheetAction" = "Stop";
+
+
+
+
+"NearbySharing_Sender_PercentageSent" = "%i%% sent";
+"NearbySharing_Sender_FilesSent" = "%i files, %@/%@ sent";
+"NearbySharing_Sender_FileSent" = "%i file, %@/%@ sent";
+
+
+"NearbySharing_Recipient_PercentageReceived" = "%i%% received";
+"NearbySharing_Recipient_FilesReceived" = "%i files, %@/%@ received";
+"NearbySharing_Recipient_FileReceived" = "%i file, %@/%@ Received";
+
+
+"NearbySharing_Recipient_Receiving_AppBar" = "Receiving and encrypting files";
+"NearbySharing_StopReceiving_SheetTitle" = "Stop receiving files?";
+"NearbySharing_StopReceiving_SheetExpl" = "Nearby Sharing will be stopped. You will not have access to files that were not fully transferred.";
+
+
+"NearbySharing_Sender_Sending_AppBar" = "Sending files";
+
+"NearbySharing_Results_AppBar" = "Results";
+
+"NearbySharing_Results_Success_Title" = "Success";
+
+"NearbySharing_Results_SuccessFilesReceived_Expl" = "You have successfully received %i files from the sender.";
+"NearbySharing_Results_SuccessFileReceived_Expl" = "You have successfully received %i file from the sender.";
+
+"NearbySharing_Results_SuccessFilesSent_Expl" = "You have successfully sent %i files to the recipient.";
+"NearbySharing_Results_SuccessFileSent_Expl" = "You have successfully sent %i file to the recipient.";
+
+"NearbySharing_Results_Failure_Title" = "Transfer interrupted";
+
+"NearbySharing_Results_PartialFailureFilesReceived_Expl" = "Only %i files were received. %i files were not received.";
+
+"NearbySharing_Results_FilesReceived_FilesNotReceived_Expl" = "Only %i files were received. %i files were not received.";
+"NearbySharing_Results_FileReceived_FilesNotReceived_Expl" = "Only %i file was received. %i files were not received.";
+"NearbySharing_Results_FilesReceived_FileNotReceived_Expl" = "Only %i files were received. %i file was not received.";
+"NearbySharing_Results_FileReceived_FileNotReceived_Expl" = "Only %i file was received. %i file was not received.";
+
+"NearbySharing_Results_FailureFilesReceived_Expl" = "0 files were received. %i files were not received.";
+"NearbySharing_Results_FailureFileReceived_Expl" = "0 files were received. %i file were not received.";
+
+"NearbySharing_Results_ViewFiles_Action" = "View files";
+"NearbySharing_Results_BackToHome_Action" = "Back to Home";
+
+
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
-"Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
+
+"NearbySharing_Help_AppBar" = "Nearby Sharing help";
+
+"NearbySharing_Help_ConnectDevice_Title" = "How do I connect to a device?";
+"NearbySharing_Help_ConnectDevice_Part1" = "There are 2 ways to connect your devices through Wi-Fi:";
+
+"NearbySharing_Help_ConnectDevice_Part2" = "Using a local network, such as the Wi-Fi at your home or work, or a public Wi-Fi network.";
+"NearbySharing_Help_ConnectDevice_Part3" = "Setting up a Hotspot on one device, and having the other device join it.";
+
+
+
+"NearbySharing_Help_NeedInternet_Title" = "Do I need Internet access?";
+"NearbySharing_Help_NeedInternet_Expl" = "No. The Wi-Fi network does not need to have internet access. As long as the Wi-Fi router or hotspot is powered on and functioning, it can be used for Nearby Sharing even without being online";
+
+
+"NearbySharing_Help_MoreTips" = "More tips";
+"NearbySharing_Help_MoreTips_Part1" = "Make sure you trust the person you are sharing files with.";
+"NearbySharing_Help_MoreTips_Part2" = "Please disable any active VPN connections.";
+"NearbySharing_Help_MoreTips_Part3" = "Check out Tella’s documentation to learn more about Nearby Sharing.";
+
+
+"NearbySharing_Help_MoreTips_documentation" = "documentation";
+
+"NearbySharing_SameNetwork_SheetTitle" = "Are you both on the same Wi-Fi network?";
+"NearbySharing_SameNetwork_SheetExpl" = "Both devices must be connected to the same Wi-Fi network, using local Wi-Fi or setting up a Hotspot connection.";
+"NearbySharing_SameNetwork_Yes_SheetAction" = "Yes";
+"NearbySharing_SameNetwork_No_SheetAction" = "No";
+"NearbySharing_SameNetwork_DontShowAgain" = "Don’t show again";
+
+
+
+
+
+
+"NearbySharing_Verification_AppBar" = "Verification";
+
+"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.";
+"NearbySharing_Verification_Sender_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
+
+
+"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.";
+"NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
+
+
+"NearbySharing_ConnectionChanged_Toast" = "Your Wi-Fi connection has changed. Please start over.";
+
+"Onboarding_Camera_Title" = "Camera";
+"Onboarding_Camera_Expl" = "Take photos and videos directly in Tella. These files are automatically encrypted and saved in Tella, and will not visible from your phone’s regular gallery.";
+"Onboarding_Recorder_Title" = "Recorder";
+"Onboarding_Recorder_Expl" = "Record interviews or sound directly in Tella. The audio files are automatically encrypted and saved in Tella, and will not be accessible from your phone’s regular storage.";
+"Onboarding_EncryptedFilesFolders_Title" = "Encrypted files & folders";
+"Onboarding_EncryptedFilesFolders_Expl" = "All files and folders in Tella are encrypted. As long as Tella is locked, your files and folders are encrypted and will remain inaccessible from outside of Tella.";
+"Onboarding_ServerConnections_Title" = "Server Connections";
+"Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
+"Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
+"Onboarding_NearbySharing_Title" = "Share files nearby";
+"Onboarding_NearbySharing_Expl" = "With Nearby Sharing, send files to people near you, without needing an Internet connection.";
 "Onboarding_LockDone_Title" = "You’re all done!";
 "Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
+
 "Onboarding_Done_Action_GoToTella" = "Go to tella";
 "Onboarding_LockDone_Action_AdvancedSettings" = "Advanced settings";
 "Onboarding_ServerDone_Title" = "Advanced customization complete!";

@@ -20,6 +20,7 @@ enum APIError: Swift.Error {
     case dropboxApiError(DropboxError)
     case errorOccured
     case nextcloudError(HTTPCode)
+    case cancelAuthenticationChallenge(String?)
 }
 
 
@@ -49,6 +50,9 @@ extension APIError: LocalizedError {
             return customDropboxErrorMessage(error: error)
         case .tooManyRequests:
             return LocalizableError.ncTooManyRequests.localized
+        case .cancelAuthenticationChallenge:
+            return "Cancelled"
+
         }
     }
     

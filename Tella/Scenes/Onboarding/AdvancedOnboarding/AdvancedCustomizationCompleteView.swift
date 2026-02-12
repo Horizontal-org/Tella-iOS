@@ -20,10 +20,10 @@ struct AdvancedCustomizationCompleteView: View {
             
             ImageTitleMessageView(content: AdvancedCustomizationComplete())
             
-            TellaButtonView<AnyView> (title: LocalizableLock.goToTella.localized.uppercased(),
-                                      nextButtonAction: .action,
-                                      buttonType: .yellow,
-                                      isValid: .constant(true)) {
+            TellaButtonView(title: LocalizableLock.goToTella.localized.uppercased(),
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            isValid: .constant(true)) {
                 self.appViewState.resetToMain()
             }
             Spacer()

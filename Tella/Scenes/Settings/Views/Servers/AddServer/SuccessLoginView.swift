@@ -26,7 +26,7 @@ struct SuccessLoginView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: type.successConnectionButtonContent,
+                TellaButtonView(title: type.successConnectionButtonContent,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
@@ -51,7 +51,7 @@ struct SuccessLoginView: View {
     var topview: some View {
         
         VStack {
-            Image("settings.checked-circle")
+            Image("checked-circle")
             
             Spacer()
                 .frame(height: 16)

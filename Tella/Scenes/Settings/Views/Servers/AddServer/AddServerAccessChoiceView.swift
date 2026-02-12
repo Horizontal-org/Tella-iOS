@@ -33,7 +33,7 @@ struct AddServerAccessChoiceView: View {
                     Spacer()
                         .frame(height: 12)
                     
-                    TellaButtonView (title: "NO",
+                    TellaButtonView(title: "NO",
                                      nextButtonAction: .destination,
                                      destination: TellaWebServerLoginView(),
                                      isValid: .constant(true))
@@ -42,7 +42,7 @@ struct AddServerAccessChoiceView: View {
                     
                 }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
                 
-                BottomLockView<AnyView>(isValid: .constant(true),
+                NavigationBottomView<AnyView>(shouldActivateNext: .constant(true),
                                         nextButtonAction: .action,
                                         shouldHideNext: true,
                                         backAction: {
