@@ -8,8 +8,7 @@ target 'Tella' do
 
   pod 'SQLCipher', ">= 4.5.2"
   pod 'ZIPFoundation'
-  pod 'Mantis', '~> 2.21.0'
-  pod 'GoogleSignIn'
+  pod 'GoogleSignIn', '~> 9.1'
   pod 'GoogleAPIClientForREST/Drive'
   pod 'SwiftyDropbox'
   

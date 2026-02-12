@@ -47,20 +47,6 @@ struct BottomLockView<Destination:View>:View {
                 }
             }
         }
-        .frame(height: 44)
-    }
-    
-    func BottomButtonActionView(title:String,isValid:Bool, action: (() -> Void)?) -> some View {
-        Button {
-            UIApplication.shared.endEditing()
-            action?()
-        } label: {
-            Text(title)
-        }
-        .font(.custom(Styles.Fonts.lightFontName, size: 16))
-        .foregroundColor(isValid ? Color.white : Color.gray)
-        .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
-        .disabled(!isValid)
     }
 }
 

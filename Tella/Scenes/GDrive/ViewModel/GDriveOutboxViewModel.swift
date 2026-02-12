@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 7/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -16,7 +16,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
-    
+
     override var shouldShowCancelUploadConfirmation : Bool {
         return true
     }
@@ -156,10 +156,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             break
         case .failure( let error):
             switch error {
+            case .httpCode(HTTPErrorCodes.forbidden.rawValue):
+                shouldShowCreateFolder = true
             default:
                 Toast.displayToast(message: error.errorMessage)
-                updateReportStatus(reportStatus: .submissionError)
             }
+            updateReportStatus(reportStatus: .submissionError)
         }
     }
     
@@ -198,6 +200,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             return
         }
         handleDeleteReport(deleteResult: deleteResult)
+    }
+    
+    
+    
+    func updateServer(server: GDriveServer) {
+        self.reportViewModel.server = server
     }
 
 }

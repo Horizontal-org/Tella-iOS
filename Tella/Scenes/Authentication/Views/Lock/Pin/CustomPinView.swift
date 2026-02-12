@@ -2,21 +2,22 @@
 //  CustomPinView.swift
 //  Tella
 //
-//  
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 
 import SwiftUI
+import Combine
 
 struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     
     var shouldEnableBackButton : Bool  = true
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isValid : Bool = false
-
+    
     var lockViewData : T
     var nextButtonAction: NextButtonAction
     @Binding var fieldContent : String
@@ -24,7 +25,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     var destination: Destination?
     var action : (() -> Void)?
     
-    var lockKeyboardNumbers: [PinKeyboardModel] = { return [
+    var lockKeyboardNumbers: [PinKeyboardModel] = { [
         PinKeyboardModel(text: "1", type: .number),
         PinKeyboardModel(text: "2", type: .number),
         PinKeyboardModel(text: "3", type: .number),
@@ -37,7 +38,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
         PinKeyboardModel(type: .empty),
         PinKeyboardModel(text: "0",  type: .number),
         PinKeyboardModel( imageName:"lock.backspace", type: .delete)]} ()
-
+    
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -60,17 +61,13 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                                       disabled: true)
                 
                 Spacer(minLength: 20)
-
+                
                 PinView(fieldContent: self.$fieldContent,
                         keyboardNumbers: lockKeyboardNumbers)
                 
                 Spacer()
                 
                 VStack {
-                    if shouldShowErrorMessage   {
-                        ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPinConfirmErrorPINsDoNotMatch.localized)
-                        Spacer()
-                    }
                     
                     BottomLockView(isValid: $isValid,
                                    shouldEnableBackButton: shouldEnableBackButton,
@@ -82,6 +79,14 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 }
             }
         }.navigationBarHidden(true)
+            .onChange(of: shouldShowErrorMessage) { newValue in
+                guard newValue else { return }
+                Toast.displayToast(message: LocalizableLock.lockPinConfirmErrorPINsDoNotMatch.localized)
+                shouldShowErrorMessage = false
+            }
+            .onChange(of: fieldContent) { _ in
+                shouldShowErrorMessage = false
+            }
     }
 }
 

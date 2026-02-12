@@ -15,10 +15,10 @@ struct AdvancedCustomizationCompleteView: View {
     
     var body: some View {
         
-        VStack(spacing: 50) {
+        VStack(spacing: .extraLarge) {
             Spacer()
             
-            OnboardingPageView(content: AdvancedCustomizationComplete())
+            ImageTitleMessageView(content: AdvancedCustomizationComplete())
             
             TellaButtonView<AnyView> (title: LocalizableLock.goToTella.localized.uppercased(),
                                       nextButtonAction: .action,
@@ -27,7 +27,7 @@ struct AdvancedCustomizationCompleteView: View {
                 self.appViewState.resetToMain()
             }
             Spacer()
-        }.padding(.horizontal,25)
+        }.padding(.horizontal,.medium)
     }
 }
 

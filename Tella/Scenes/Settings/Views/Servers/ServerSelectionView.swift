@@ -134,8 +134,7 @@ struct ServerSelectionView: View {
         gDriveServerVM.handleSignIn {
             DispatchQueue.main.async() {
                 navigateTo(
-                    destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
-                    title: LocalizableSettings.settServerGDrive.localized
+                    destination: CreateDriveFolderView(gDriveServerViewModel: gDriveServerVM)
                 )
             }
         }

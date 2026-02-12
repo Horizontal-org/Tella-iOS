@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 5/22/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,10 +17,8 @@ class GDriveServerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     var serverCreateFolderVM: ServerCreateFolderViewModel
     var serversSourceView: ServersSourceView
-
-    @Published var selectedDrive: SharedDrive? = nil
-    @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
-    @Published var isSharedDriveButtonValid: Bool = false
+    var currentServer: GDriveServer? = nil
+    
     @Published var signInState: ViewModelState<Bool> = .loaded(false)
     
     init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel,
@@ -28,28 +26,10 @@ class GDriveServerViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
         self.serversSourceView = serversSourceView
-
+        
         self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
-
+        
         self.serverCreateFolderVM.createFolderAction = createDriveFolder
-    }
-
-    func getSharedDrives() {
-        gDriveRepository.getSharedDrives()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: {completion in
-                switch completion {
-                case .finished:
-                    break
-                case.failure(let error):
-                    self.sharedDriveState = .error(error.errorMessage)
-                }
-            },
-            receiveValue: { [weak self] drives in
-                self?.sharedDriveState = .loaded(drives)
-                self?.isSharedDriveButtonValid = !drives.isEmpty
-            })
-            .store(in: &cancellables)
     }
     
     func createDriveFolder() {
@@ -66,19 +46,28 @@ class GDriveServerViewModel: ObservableObject {
                     self.serverCreateFolderVM.createFolderState = .error(error.errorMessage)
                 }
             }, receiveValue: { folderId in
-                self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
-                self.serverCreateFolderVM.createFolderState = .loaded(true)
+                if let server = self.mainAppModel.tellaData?.getDriveServers().first {
+                    server.rootFolder = folderId
+                    server.rootFolderName = folderName
+                    self.updateCurrentServer(server: server)
+                } else {
+                    self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
+                    self.serverCreateFolderVM.createFolderState = .loaded(true)
+                }
             })
             .store(in: &cancellables)
+    }
+    
+    func updateCurrentServer(server: GDriveServer) {
+        _ = self.mainAppModel.tellaData?.database.updateGDriveServer(gDriveServer: server)
+        self.currentServer = server
+        self.serverCreateFolderVM.createFolderState = .loaded(true)
     }
     
     func addServer(rootFolder: String, rootFolderName: String) { //TODO:  Must check failure
         let server = GDriveServer(rootFolder: rootFolder, rootFolderName: rootFolderName)
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
-    }
-    
-    func handleSelectedDrive(drive: SharedDrive) -> Void {
-        self.selectedDrive = drive
+        currentServer = server
     }
     
     // AUTH
@@ -94,7 +83,7 @@ class GDriveServerViewModel: ObservableObject {
             }
         }
     }
-
+    
     func handleUrl(url: URL) {
         gDriveRepository.handleUrl(url: url)
     }

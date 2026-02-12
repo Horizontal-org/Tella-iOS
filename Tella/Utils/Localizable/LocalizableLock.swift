@@ -19,21 +19,36 @@ enum LocalizableLock: String, LocalizableDelegate {
     case onboardingIntroSubhead = "Onboarding_Intro_Subhead"
     case onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted"
 
-    case onboardingCameraTitle = "Onboarding_Camera_Title"
-    case onboardingCameraExpl = "Onboarding_Camera_Expl"
+    case onboardingRecordTitle = "Onboarding_Record_Title"
+    case onboardingRecordExpl = "Onboarding_Record_Expl"
+    case onboardingRecordInfo = "Onboarding_Record_Info"
 
-    case onboardingRecorderTitle = "Onboarding_Recorder_Title"
-    case onboardingRecorderExpl = "Onboarding_Recorder_Expl"
-    case onboardingEncryptedFilesFoldersTitle = "Onboarding_EncryptedFilesFolders_Title"
-    case onboardingEncryptedFilesFoldersExpl = "Onboarding_EncryptedFilesFolders_Expl"
-    case onboardingServerConnectionsTitle = "Onboarding_ServerConnections_Title"
-    case onboardingServerConnectionspart1Expl = "Onboarding_ServerConnections_part1_Expl"
-    case onboardingServerConnectionspart2Expl = "Onboarding_ServerConnections_part2_Expl"
+    case onboardingFilesTitle = "Onboarding_Files_Title"
+    case onboardingFilesExpl = "Onboarding_Files_Expl"
+    case onboardingFilesInfo = "Onboarding_Files_Info"
+
+    case onboardingConnectionsTitle = "Onboarding_Connections_Title"
+    case onboardingConnectionspart1Expl = "Onboarding_Connections_part1_Expl"
+    case onboardingConnectionspart2Expl = "Onboarding_Connections_part2_Expl"
+
+    case onboardingConnectionsDropbox = "Onboarding_Connections_Dropbox"
+    case onboardingConnectionsGDrive = "Onboarding_Connections_GDrive"
+    case onboardingConnectionsNextcloud = "Onboarding_Connections_Nextcloud"
+    case onboardingConnectionsUwazi = "Onboarding_Connections_Uwazi"
+    case onboardingConnectionsTellaWeb = "Onboarding_Connections_TellaWeb"
+
     case onboardingNearbySharingTitle = "Onboarding_NearbySharing_Title"
     case onboardingNearbySharingExpl = "Onboarding_NearbySharing_Expl"
 
-    case onboardingLockSuccessTitle = "Onboarding_LockSuccess_Title"
-    case onboardingLockSuccessExpl = "Onboarding_LockSuccess_Expl"
+    case lockSuccessTitle = "LockUnlock_LockSuccess_Title"
+    case lockSuccessExpl = "LockUnlock_LockSuccess_Expl"
+    case lockSuccessLink = "LockUnlock_LockSuccess_Link"
+
+    
+    case protectLocksheetTitle = "LockUnlock_ProtectLock_SheetTitle"
+    case protectLocksheetExpl = "LockUnlock_ProtectLock_SheetExpl"
+    case protectLocksheetAction = "LockUnlock_ProtectLock_SheetAction"
+
     
     case onboardingLockDoneTitle = "Onboarding_LockDone_Title"
     case onboardingLockDoneExpl = "Onboarding_LockDone_Expl"
@@ -45,12 +60,20 @@ enum LocalizableLock: String, LocalizableDelegate {
 
     case onboardingServerMainTitle = "Onboarding_ServerMain_Title"
     case onboardingServerMainExpl = "Onboarding_ServerMain_Expl"
-    case onboardingServerMainConnectServer = "Onboarding_ServerMain_Action_ConnectServer"
-    case onboardingServerMainContinue = "Onboarding_ServerMain_Action_Continue"
+    case onboardingServerMainSetupServer = "Onboarding_ServerMain_Action_SetupServer"
+    case onboardingServerMainNoThanks = "Onboarding_ServerMain_Action_NoThanks"
 
     case onboardingServerConnectedTitle = "Onboarding_ServerConnected_Title"
     case onboardingServerConnectedExpl = "Onboarding_ServerConnected_Expl"
 
+    case onboardingLoseFileWarningTitle = "Onboarding_LoseFileWarning_Title"
+    case onboardingLoseFileWarningPart1Expl = "Onboarding_LoseFileWarning_part1_Expl"
+    case onboardingLoseFileWarningPart2Expl = "Onboarding_LoseFileWarning_part2_Expl"
+
+    
+    case loseFileWarningUnderstand = "Onboarding_LoseFileWarning_Action_Understand"
+
+    
     
     // Lock Select view
     case lockSelectSubhead = "LockUnlock_LockSelect_Subhead"

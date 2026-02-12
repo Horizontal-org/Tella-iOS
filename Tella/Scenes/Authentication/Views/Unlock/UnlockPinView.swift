@@ -83,7 +83,7 @@ struct UnlockPinView: View {
         if viewModel.shouldShowUnlockError {
             return  LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized
         } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+            return viewModel.lockFlow == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
         }
     }
     
@@ -102,7 +102,7 @@ struct UnlockPinView: View {
     
     private func successLogin() {
         viewModel.unlockAttempts = 0
-        if viewModel.unlockType == .new {
+        if viewModel.lockFlow == .new {
              isLoading = true
              initRoot()
         } else {

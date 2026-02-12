@@ -134,14 +134,14 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case UwaziSuccessMessage = "Setting_Server_Uwazi_Success_Message"
     
     //GDrive
-    case gDriveSelectTypeToolbar = "Setting_Server_GDrive_SelectType_AppBar"
-    case gDriveSelectTypeTitle = "Setting_Server_GDrive_SelectType_Subhead"
-    case gDriveSelectTypeDesc = "Setting_Server_GDrive_SelectType_Expl"
-    case gDriveSelectTypeShared = "Setting_Server_GDrive_SelectType_Shared"
-    case gDriveSelectTypePersonal = "Setting_Server_GDrive_SelectType_Personal"
-    case gDriveSelectTypeMoreInfo = "Setting_Server_GDrive_SelectType_MoreInfo"
-    case gDriveSelectSharedDriveToolbar = "Setting_Server_GDrive_SelectShared_Appbar"
+    
     case gDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_CreatePersonal_Desc"
+
+    case createNewFolderSheetTitle = "Setting_Server_GDrive_CreateNewFolder_SheetTitle"
+    case createNewFolderSheetExpl = "Setting_Server_GDrive_CreateNewFolder_SheetExpl"
+    case ceateNewFolder = "Setting_Server_GDrive_CreateNewFolder_SheetAction"
+    case ceateNewFolderCancel = "Setting_Server_GDrive_NewFolder_Cancel_SheetAction"
+
     case gDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
     case nextcloudSuccessMessage = "Setting_Server_Nextcloud_Success_Message"
     case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    

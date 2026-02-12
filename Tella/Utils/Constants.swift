@@ -14,12 +14,11 @@ struct TellaUrls {
     static let faq = "https://tella-app.org/faq"
     static let tutorial = "https://tella-app.org/get-started-ios/"
     static let connectionLearnMore = "https://tella-app.org/for-organizations"
-    
-    
+    static let appLock = "https://tella-app.org/features?_highlight=lock#app-lock"
 }
 
 struct GoogleAuthConstants {
-    static let gDriveScopes = "https://www.googleapis.com/auth/drive.file"
+    static let gDriveScopesFile = "https://www.googleapis.com/auth/drive.file"
     static let gDriveFolderMimeType = "application/vnd.google-apps.folder"
     static let GTLRErrorObjectDomain = "com.google.GTLRErrorObjectDomain"
     static let HTTPStatus = "com.google.HTTPStatus"
@@ -28,6 +27,6 @@ struct GoogleAuthConstants {
 
 struct DropboxAuthConstants {
     static let dropboxAppKey = "DropboxAppKey"
-    static let filesContentRead = "files.content.read"
     static let filesContentWrite = "files.content.write"
+    static let filesContentRead = "files.content.read"
 }

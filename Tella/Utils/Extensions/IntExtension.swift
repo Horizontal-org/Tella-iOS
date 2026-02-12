@@ -42,3 +42,8 @@ extension Int {
     var degreesToRadians: CGFloat { return CGFloat(self) * .pi / 180 }
 }
 
+extension Int {
+    var adjusted: CGFloat {
+        return CGFloat(self) * Device.ratio
+    }
+}

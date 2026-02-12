@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct LockConfirmPinView: View {
-
+    
     @ObservedObject var lockViewModel: LockViewModel
     @State var shouldShowErrorMessage : Bool = false
     
@@ -22,14 +22,33 @@ struct LockConfirmPinView: View {
                 if lockViewModel.shouldShowErrorMessage {
                     shouldShowErrorMessage = true
                 } else {
-                    lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+                    showProtectLocksheet()
                 }
             }
         }
     }
     
+    func showProtectLocksheet() {
+        let content = ConfirmBottomSheet(titleText: LocalizableLock.protectLocksheetTitle.localized,
+                                         msgText: LocalizableLock.protectLocksheetExpl.localized,
+                                         actionText: LocalizableLock.protectLocksheetAction.localized,
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss {
+                lockViewModel.lockFlow == .new ? self.lockWithPin() : self.updatePin()
+                
+            }
+            
+        })
+        
+        showBottomSheetView(content: content)
+    }
+    
     func lockWithPin() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
+        
+        self.navigateTo(destination: SuccessLockView())
+        
         lockViewModel.shouldDismiss.send(true)
     }
     

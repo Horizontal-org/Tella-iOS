@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */; };
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
 		0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingToggleItem.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
@@ -199,7 +198,7 @@
 		1268553E27D2572100385E18 /* FileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */; };
 		1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268553F27D2994500385E18 /* VaultFileStatus.swift */; };
 		1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
-		126973F32E8DA59800FBA206 /* OnboardingSuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */; };
+		126973F32E8DA59800FBA206 /* SuccessLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126973F22E8DA59800FBA206 /* SuccessLockView.swift */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E52DBBA16900FD7762 /* RotateVideoView.swift */; };
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
@@ -215,6 +214,8 @@
 		126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
+		126FC6BE2F1E482900FC9316 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6BD2F1E482900FC9316 /* LinkView.swift */; };
+		126FC6C12F20111200FC9316 /* BottomButtonActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
 		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
@@ -248,7 +249,7 @@
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		127BCA232E8520C100902C59 /* MainOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA222E8520C100902C59 /* MainOnboardingView.swift */; };
 		127BCA252E85216500902C59 /* MainOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */; };
-		127BCA2C2E8522EB00902C59 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */; };
+		127BCA2C2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */; };
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
@@ -319,6 +320,7 @@
 		12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */; };
 		12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */; };
 		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
+		129771862F0FE89200828857 /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = 129771852F0FE89200828857 /* Mantis */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
@@ -341,6 +343,9 @@
 		12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */; };
 		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
 		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
+		12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */; };
+		12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */; };
+		12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
@@ -373,18 +378,26 @@
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
+		12D39B492F1805220065EACD /* CardFrameBlack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B482F1805220065EACD /* CardFrameBlack.swift */; };
+		12D39B4D2F183F100065EACD /* OnboardingConnectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B4C2F183F100065EACD /* OnboardingConnectionsView.swift */; };
+		12D39B4F2F194CA30065EACD /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */; };
+		12D39B512F1977720065EACD /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B502F1977700065EACD /* Device.swift */; };
+		12D39B542F198BD40065EACD /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B532F198B9E0065EACD /* OnboardingContent.swift */; };
 		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
 		12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9212D11AADA008C206E /* QuickDeleteView.swift */; };
 		12D9A9242D11F78F008C206E /* LimitedAccessPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */; };
 		12D9A9262D121789008C206E /* CardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9252D121789008C206E /* CardButtonView.swift */; };
+		12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */; };
+		12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98022F1ADB77004436CC /* NextBottomView.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
 		12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
+		12E41E7A2F17EC810043BB3F /* OnboardingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
-		12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E971362E97A96A00A87531 /* OnboardingContent.swift */; };
+		12E971372E97A96C00A87531 /* ImageTitleMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E971362E97A96A00A87531 /* ImageTitleMessageContent.swift */; };
 		12E9713B2E97AEE500A87531 /* PageDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713A2E97AEE500A87531 /* PageDots.swift */; };
 		12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713C2E97C27700A87531 /* Collection+Extension.swift */; };
 		12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9713E2E97CC5B00A87531 /* ControlledPager.swift */; };
@@ -416,7 +429,6 @@
 		153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */; };
 		153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */; };
 		153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */; };
-		154B029C2C10FAD0007A5D2B /* DriveConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */; };
 		1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */; };
 		1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */; };
 		1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */; };
@@ -438,9 +450,6 @@
 		1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */; };
 		1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
-		15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */; };
-		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
-		15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A102BFBF0E50017F153 /* SharedDrive.swift */; };
 		15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A173432C78F64100E84F55 /* LocalizableError.swift */; };
 		15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */; };
 		15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */; };
@@ -518,8 +527,8 @@
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
 		20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */; };
 		20FA030D2CD282C3001121F1 /* TrimMediaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */; };
-		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
-		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		934B1C71DE9977A3BC472325 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C993ADB6B19E7EA5B83B95B5 /* libPods-Tella-TellaUITests.a */; };
+		BBA127E5791AFBEAC473625B /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B535530A1B803891A53389 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
 		CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */; };
 		CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */; };
@@ -593,6 +602,7 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */; };
 		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
+		DE678157A2299C9F4C7CA7FE /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC566A8F889B3BE5C0D33838 /* libPods-TellaTests.a */; };
 		E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */; };
 		E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */; };
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
@@ -739,7 +749,6 @@
 		1220A72D292EB11B000BC24C /* ReportFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFileGridView.swift; sourceTree = "<group>"; };
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
-		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigation.swift; sourceTree = "<group>"; };
 		122389B2293630DA0058593B /* SaveSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSuccessView.swift; sourceTree = "<group>"; };
 		122389B6293635790058593B /* SetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
@@ -868,7 +877,7 @@
 		126818C02A38B0C2004606BD /* FileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInformation.swift; sourceTree = "<group>"; };
 		126818C22A38B69E004606BD /* FileTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeHelper.swift; sourceTree = "<group>"; };
 		1268553F27D2994500385E18 /* VaultFileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileStatus.swift; sourceTree = "<group>"; };
-		126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessLoginView.swift; sourceTree = "<group>"; };
+		126973F22E8DA59800FBA206 /* SuccessLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLockView.swift; sourceTree = "<group>"; };
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126B20E52DBBA16900FD7762 /* RotateVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateVideoView.swift; sourceTree = "<group>"; };
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
@@ -883,6 +892,8 @@
 		126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftViewModel.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
+		126FC6BD2F1E482900FC9316 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
+		126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonActionView.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
 		127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDatabase.swift; sourceTree = "<group>"; };
@@ -913,7 +924,7 @@
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		127BCA222E8520C100902C59 /* MainOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOnboardingView.swift; sourceTree = "<group>"; };
 		127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOnboardingViewModel.swift; sourceTree = "<group>"; };
-		127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderImageTitleDescriptionView.swift; sourceTree = "<group>"; };
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
@@ -1024,6 +1035,9 @@
 		12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoViewModel.swift; sourceTree = "<group>"; };
 		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
 		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
+		12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoseFilesWarningOnboardingView.swift; sourceTree = "<group>"; };
+		12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceOnboardingView.swift; sourceTree = "<group>"; };
+		12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
@@ -1057,17 +1071,25 @@
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
+		12D39B482F1805220065EACD /* CardFrameBlack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrameBlack.swift; sourceTree = "<group>"; };
+		12D39B4C2F183F100065EACD /* OnboardingConnectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConnectionsView.swift; sourceTree = "<group>"; };
+		12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
+		12D39B502F1977700065EACD /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		12D39B532F198B9E0065EACD /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
 		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
 		12D9A9212D11AADA008C206E /* QuickDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDeleteView.swift; sourceTree = "<group>"; };
 		12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoView.swift; sourceTree = "<group>"; };
 		12D9A9252D121789008C206E /* CardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonView.swift; sourceTree = "<group>"; };
+		12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectedSuccessView.swift; sourceTree = "<group>"; };
+		12DE98022F1ADB77004436CC /* NextBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBottomView.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
+		12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfoView.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
-		12E971362E97A96A00A87531 /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
+		12E971362E97A96A00A87531 /* ImageTitleMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTitleMessageContent.swift; sourceTree = "<group>"; };
 		12E9713A2E97AEE500A87531 /* PageDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDots.swift; sourceTree = "<group>"; };
 		12E9713C2E97C27700A87531 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		12E9713E2E97CC5B00A87531 /* ControlledPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledPager.swift; sourceTree = "<group>"; };
@@ -1098,7 +1120,6 @@
 		153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityRelationshipItem.swift; sourceTree = "<group>"; };
 		153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxFileInfo.swift; sourceTree = "<group>"; };
 		153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDriveFolderView.swift; sourceTree = "<group>"; };
-		154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveConnectionType.swift; sourceTree = "<group>"; };
 		1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewModel.swift; sourceTree = "<group>"; };
 		1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportMainView.swift; sourceTree = "<group>"; };
 		1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDraftViewModel.swift; sourceTree = "<group>"; };
@@ -1120,9 +1141,6 @@
 		1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableDropbox.swift; sourceTree = "<group>"; };
 		1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReport.swift; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
-		15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDriveConnectionView.swift; sourceTree = "<group>"; };
-		15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSharedDrive.swift; sourceTree = "<group>"; };
-		15994A102BFBF0E50017F153 /* SharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDrive.swift; sourceTree = "<group>"; };
 		15A173432C78F64100E84F55 /* LocalizableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableError.swift; sourceTree = "<group>"; };
 		15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveViewModel.swift; sourceTree = "<group>"; };
 		15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipWidget.swift; sourceTree = "<group>"; };
@@ -1201,13 +1219,13 @@
 		20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNextcloudFolderView.swift; sourceTree = "<group>"; };
 		20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFileCancelBottomSheet.swift; sourceTree = "<group>"; };
 		20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimMediaSliderView.swift; sourceTree = "<group>"; };
-		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
+		37DC6845E48CFF0D7CABBD38 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		44B535530A1B803891A53389 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		50A0C923FDDA6F145D85AB08 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
-		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4A78C49EBFE1263E0D26D08 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
+		AEE93975E74FB9B628DB9FD3 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
+		C993ADB6B19E7EA5B83B95B5 /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplateVM.swift; sourceTree = "<group>"; };
 		CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatePicker.swift; sourceTree = "<group>"; };
@@ -1254,7 +1272,6 @@
 		CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDocuments.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		CE64FA282505542E00B03CEC /* AppViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewState.swift; sourceTree = "<group>"; };
-		D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
 		D50727BE2625561400BBC370 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		D50727C32625567900BBC370 /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		D50727CB2625573200BBC370 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -1324,7 +1341,8 @@
 		E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerLanguageProtocol.swift; sourceTree = "<group>"; };
 		E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateProtocol.swift; sourceTree = "<group>"; };
 		E1F6D7822AB17FB5000A9B64 /* UwaziValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziValue.swift; sourceTree = "<group>"; };
-		F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
+		EAD8B2C4C8F8B7B82AD5C390 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EC566A8F889B3BE5C0D33838 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1333,6 +1351,7 @@
 		F66E65CA23E32080000F93E5 /* TellaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65CE23E32080000F93E5 /* TellaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaUITests.swift; sourceTree = "<group>"; };
 		F66E65D023E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7351C824C3461E6D3BCC287 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1349,7 +1368,8 @@
 			files = (
 				129209032C9DB00500767760 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
-				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
+				129771862F0FE89200828857 /* Mantis in Frameworks */,
+				BBA127E5791AFBEAC473625B /* libPods-Tella.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1357,7 +1377,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */,
+				DE678157A2299C9F4C7CA7FE /* libPods-TellaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1365,7 +1385,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */,
+				934B1C71DE9977A3BC472325 /* libPods-Tella-TellaUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1925,6 +1945,7 @@
 				129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */,
 				12937FE12DC227A90019ECC4 /* AVPlayerItem+VideoRotation.swift */,
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
+				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2023,6 +2044,17 @@
 				20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		126FC6BF2F20108B00FC9316 /* BackNextButton */ = {
+			isa = PBXGroup;
+			children = (
+				12A148932720A89E00A1ADDC /* BottomLockView.swift */,
+				126FC6C02F20111200FC9316 /* BottomButtonActionView.swift */,
+				12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */,
+				12DE98022F1ADB77004436CC /* NextBottomView.swift */,
+			);
+			path = BackNextButton;
 			sourceTree = "<group>";
 		};
 		126FEE082AC4992800B99298 /* Models */ = {
@@ -2138,6 +2170,7 @@
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 				1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */,
+				12D39B502F1977700065EACD /* Device.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2171,9 +2204,9 @@
 		127BCA1F2E85208900902C59 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				12E971362E97A96A00A87531 /* OnboardingContent.swift */,
+				12E971362E97A96A00A87531 /* ImageTitleMessageContent.swift */,
+				12D39B532F198B9E0065EACD /* OnboardingContent.swift */,
 				12E9713A2E97AEE500A87531 /* PageDots.swift */,
-				127BCA2B2E8522EB00902C59 /* OnboardingPageView.swift */,
 				12E9713E2E97CC5B00A87531 /* ControlledPager.swift */,
 				128EE4EA2E8FC46D00DF55C5 /* MainOnboarding */,
 				128EE4E72E8FC3A100DF55C5 /* AdvancedOnboarding */,
@@ -2321,6 +2354,7 @@
 				128EE4EB2E8FC50500DF55C5 /* ServerOnboardingViewModel.swift */,
 				128EE4ED2E8FD2D300DF55C5 /* MainServerOnboardingView.swift */,
 				128EE4EF2E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift */,
+				12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */,
 			);
 			path = AdvancedOnboarding;
 			sourceTree = "<group>";
@@ -2330,7 +2364,9 @@
 			children = (
 				127BCA222E8520C100902C59 /* MainOnboardingView.swift */,
 				127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */,
-				126973F22E8DA59800FBA206 /* OnboardingSuccessLoginView.swift */,
+				12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */,
+				12D39B4C2F183F100065EACD /* OnboardingConnectionsView.swift */,
+				12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */,
 			);
 			path = MainOnboarding;
 			sourceTree = "<group>";
@@ -2470,9 +2506,10 @@
 		12A148902720A0E500A1ADDC /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
-				12A148932720A89E00A1ADDC /* BottomLockView.swift */,
+				126973F22E8DA59800FBA206 /* SuccessLockView.swift */,
 				12A148952720B2B400A1ADDC /* PasswordTextFieldView.swift */,
 				12A148972720B47100A1ADDC /* LockDescriptionView.swift */,
+				12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */,
 				12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */,
 			);
 			path = CommonView;
@@ -2555,7 +2592,6 @@
 				CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */,
 				CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */,
 				155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */,
-				154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2641,6 +2677,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		12D39B522F198B150065EACD /* HeaderImageTitleDescriptionView */ = {
+			isa = PBXGroup;
+			children = (
+				127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */,
+			);
+			path = HeaderImageTitleDescriptionView;
+			sourceTree = "<group>";
+		};
 		12D7D11D28E35FCE008121C8 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -2695,6 +2739,10 @@
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				12A6B6642D132E290002F74B /* CardFrame.swift */,
+				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
+				126FC6BF2F20108B00FC9316 /* BackNextButton */,
+				126FC6BD2F1E482900FC9316 /* LinkView.swift */,
+				12D39B522F198B150065EACD /* HeaderImageTitleDescriptionView */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2855,8 +2903,6 @@
 		15994A0A2BFBC6B10017F153 /* GDrive */ = {
 			isa = PBXGroup;
 			children = (
-				15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */,
-				15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */,
 				153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */,
 			);
 			path = GDrive;
@@ -2865,7 +2911,6 @@
 		15994A0F2BFBF0C70017F153 /* GDrive */ = {
 			isa = PBXGroup;
 			children = (
-				15994A102BFBF0E50017F153 /* SharedDrive.swift */,
 				15587A002C010F1E0071389E /* GDriveServer.swift */,
 				126E1AF22C3D7632000AE4CE /* GDriveReport.swift */,
 			);
@@ -3041,6 +3086,16 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		2E716D4C983AB2E95696A989 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				44B535530A1B803891A53389 /* libPods-Tella.a */,
+				C993ADB6B19E7EA5B83B95B5 /* libPods-Tella-TellaUITests.a */,
+				EC566A8F889B3BE5C0D33838 /* libPods-TellaTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4CE85B832408B1AF00CF24AF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -3052,25 +3107,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		64C49D17FF3E3ECD4A8833AE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */,
-				83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */,
-				C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		957DBB46FF2BBCC04C44542A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */,
-				D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */,
-				12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */,
-				6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */,
-				21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */,
-				F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */,
+				F7351C824C3461E6D3BCC287 /* Pods-Tella.debug.xcconfig */,
+				AEE93975E74FB9B628DB9FD3 /* Pods-Tella.release.xcconfig */,
+				50A0C923FDDA6F145D85AB08 /* Pods-Tella-TellaUITests.debug.xcconfig */,
+				37DC6845E48CFF0D7CABBD38 /* Pods-Tella-TellaUITests.release.xcconfig */,
+				EAD8B2C4C8F8B7B82AD5C390 /* Pods-TellaTests.debug.xcconfig */,
+				A4A78C49EBFE1263E0D26D08 /* Pods-TellaTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -3451,7 +3496,7 @@
 				F66E65AA23E3207D000F93E5 /* Products */,
 				957DBB46FF2BBCC04C44542A /* Pods */,
 				1291F4F427B541DD006A34D3 /* Recovered References */,
-				64C49D17FF3E3ECD4A8833AE /* Frameworks */,
+				2E716D4C983AB2E95696A989 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3540,12 +3585,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
 			buildPhases = (
-				36C5FA1BF18AC473E32B7C1A /* [CP] Check Pods Manifest.lock */,
+				B7D037F569FFD995A2C809E0 /* [CP] Check Pods Manifest.lock */,
 				F66E65A523E3207D000F93E5 /* Sources */,
 				F66E65A623E3207D000F93E5 /* Frameworks */,
 				F66E65A723E3207D000F93E5 /* Resources */,
 				D53B76EE2601CA0D0001CD34 /* Embed Frameworks */,
-				B87B7ACBFDD7CCADFA926C57 /* [CP] Copy Pods Resources */,
+				640290128FB0EAE6A9BA4F1F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3555,6 +3600,7 @@
 			name = Tella;
 			packageProductDependencies = (
 				129209022C9DB00500767760 /* NextcloudKit */,
+				129771852F0FE89200828857 /* Mantis */,
 			);
 			productName = Tella;
 			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
@@ -3564,7 +3610,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
 			buildPhases = (
-				77D93700BCAA439EA3118052 /* [CP] Check Pods Manifest.lock */,
+				6FA52E48DE6120CD9E552D38 /* [CP] Check Pods Manifest.lock */,
 				F66E65BB23E32080000F93E5 /* Sources */,
 				F66E65BC23E32080000F93E5 /* Frameworks */,
 				F66E65BD23E32080000F93E5 /* Resources */,
@@ -3583,12 +3629,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
 			buildPhases = (
-				E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */,
+				43186D9FB62EC8ABE0C600B9 /* [CP] Check Pods Manifest.lock */,
 				F66E65C623E32080000F93E5 /* Sources */,
 				F66E65C723E32080000F93E5 /* Frameworks */,
 				F66E65C823E32080000F93E5 /* Resources */,
-				7E2FC9F69C6C891AD531FCC3 /* [CP] Copy Pods Resources */,
-				66DDF99B941478715A1B734C /* [CP] Copy Pods Resources */,
+				94989E8B86C64F9F27E9DA82 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3658,6 +3703,7 @@
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
 				129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */,
 			);
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
 			projectDirPath = "";
@@ -3716,7 +3762,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		36C5FA1BF18AC473E32B7C1A /* [CP] Check Pods Manifest.lock */ = {
+		43186D9FB62EC8ABE0C600B9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3731,35 +3777,35 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tella-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Tella-TellaUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		66DDF99B941478715A1B734C /* [CP] Copy Pods Resources */ = {
+		640290128FB0EAE6A9BA4F1F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		77D93700BCAA439EA3118052 /* [CP] Check Pods Manifest.lock */ = {
+		6FA52E48DE6120CD9E552D38 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3781,7 +3827,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7E2FC9F69C6C891AD531FCC3 /* [CP] Copy Pods Resources */ = {
+		94989E8B86C64F9F27E9DA82 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3802,28 +3848,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B87B7ACBFDD7CCADFA926C57 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */ = {
+		B7D037F569FFD995A2C809E0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3838,7 +3863,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tella-TellaUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Tella-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3897,6 +3922,7 @@
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
+				12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
 				12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */,
 				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
@@ -3910,10 +3936,9 @@
 				12AFF1B82D3FACBC00C2455C /* NavigationHeaderTypes.swift in Sources */,
 				1291BDE02E9EB44800AA078F /* PopoverController.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
-				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */,
-				126973F32E8DA59800FBA206 /* OnboardingSuccessLoginView.swift in Sources */,
+				126973F32E8DA59800FBA206 /* SuccessLockView.swift in Sources */,
 				151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */,
 				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */,
@@ -3958,6 +3983,7 @@
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
+				12D39B512F1977720065EACD /* Device.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
@@ -3970,6 +3996,7 @@
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */,
 				125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */,
+				12D39B492F1805220065EACD /* CardFrameBlack.swift in Sources */,
 				1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */,
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
@@ -4000,6 +4027,7 @@
 				1244141927E35D120037D469 /* VaultFileImages.swift in Sources */,
 				121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
+				12D39B4F2F194CA30065EACD /* CGFloat+Extension.swift in Sources */,
 				D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */,
 				E17736422A84034A00FE01C0 /* UwaziTranslationRowDTO.swift in Sources */,
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
@@ -4030,7 +4058,7 @@
 				126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */,
 				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
-				127BCA2C2E8522EB00902C59 /* OnboardingPageView.swift in Sources */,
+				127BCA2C2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
@@ -4063,6 +4091,7 @@
 				15DCD93C2C9C78B2001339A7 /* DropboxOutboxViewModel.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
 				12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */,
+				12D39B4D2F183F100065EACD /* OnboardingConnectionsView.swift in Sources */,
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
@@ -4088,7 +4117,9 @@
 				153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
+				12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
+				12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
 				208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
@@ -4102,6 +4133,7 @@
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
 				1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */,
 				209AC67F2C2D660600492356 /* NextcloudServerViewModel.swift in Sources */,
+				126FC6BE2F1E482900FC9316 /* LinkView.swift in Sources */,
 				209AC68D2C332F0000492356 /* LocationManager.swift in Sources */,
 				1205F9C22BA1DE52003DB9ED /* ImportedFile.swift in Sources */,
 				122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */,
@@ -4151,6 +4183,7 @@
 				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
+				12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */,
 				1212677F2C0E77A2005F75A4 /* VaultFileItemViewModel.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
 				126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */,
@@ -4236,7 +4269,6 @@
 				125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */,
-				154B029C2C10FAD0007A5D2B /* DriveConnectionType.swift in Sources */,
 				20E4DA832C36E8CF00123843 /* ServerCreateFolderViewModel.swift in Sources */,
 				12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */,
 				1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */,
@@ -4326,7 +4358,6 @@
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
-				15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
 				12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
@@ -4351,6 +4382,7 @@
 				15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */,
 				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
+				126FC6C12F20111200FC9316 /* BottomButtonActionView.swift in Sources */,
 				12283FA0295C6FB100580EFE /* DataExtension.swift in Sources */,
 				1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */,
 				E177363E2A83CCE100FE01C0 /* UwaziSettingDTO.swift in Sources */,
@@ -4375,6 +4407,7 @@
 				125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				128C23732BEE1A8300539A65 /* SubmittedEntityViewModel.swift in Sources */,
+				12D39B542F198BD40065EACD /* OnboardingContent.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
@@ -4396,7 +4429,7 @@
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				129BC3A62CBE582A001C7323 /* FileHandleExtension.swift in Sources */,
-				12E971372E97A96C00A87531 /* OnboardingContent.swift in Sources */,
+				12E971372E97A96C00A87531 /* ImageTitleMessageContent.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
@@ -4414,9 +4447,9 @@
 				126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
-				15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */,
 				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
+				12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
@@ -4424,6 +4457,7 @@
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */,
+				12E41E7A2F17EC810043BB3F /* OnboardingInfoView.swift in Sources */,
 				E1E7C5712AAB2BAB00DDB07E /* UwaziLanguageRow.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
 				15587A012C010F1E0071389E /* GDriveServer.swift in Sources */,
@@ -4727,13 +4761,13 @@
 		};
 		F66E65D423E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */;
+			baseConfigurationReference = F7351C824C3461E6D3BCC287 /* Pods-Tella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 114;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -4744,7 +4778,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.17.1;
+				MARKETING_VERSION = 1.18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4755,14 +4789,14 @@
 		};
 		F66E65D523E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */;
+			baseConfigurationReference = AEE93975E74FB9B628DB9FD3 /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 114;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
@@ -4774,7 +4808,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.17.1;
+				MARKETING_VERSION = 1.18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4786,7 +4820,7 @@
 		};
 		F66E65D723E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */;
+			baseConfigurationReference = EAD8B2C4C8F8B7B82AD5C390 /* Pods-TellaTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4809,7 +4843,7 @@
 		};
 		F66E65D823E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */;
+			baseConfigurationReference = A4A78C49EBFE1263E0D26D08 /* Pods-TellaTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4832,7 +4866,7 @@
 		};
 		F66E65DA23E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */;
+			baseConfigurationReference = 50A0C923FDDA6F145D85AB08 /* Pods-Tella-TellaUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -4853,7 +4887,7 @@
 		};
 		F66E65DB23E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */;
+			baseConfigurationReference = 37DC6845E48CFF0D7CABBD38 /* Pods-Tella-TellaUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -4931,6 +4965,14 @@
 				minimumVersion = 4.0.8;
 			};
 		};
+		129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/guoyingtao/Mantis.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.28.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -4938,6 +4980,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
+		};
+		129771852F0FE89200828857 /* Mantis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 129771842F0FE89200828857 /* XCRemoteSwiftPackageReference "Mantis" */;
+			productName = Mantis;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

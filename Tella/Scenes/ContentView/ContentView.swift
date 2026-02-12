@@ -9,7 +9,7 @@ struct ContentView: View {
     var appViewState : AppViewState
     
     init(appViewState: AppViewState) {
-        self.lockViewModel = LockViewModel(unlockType: .new, appViewState: appViewState)
+        self.lockViewModel = LockViewModel(lockFlow: .new, appViewState: appViewState)
         self.appViewState = appViewState
     }
     var body: some View {
