@@ -14,6 +14,8 @@ public enum ContentType: String {
 
 public enum HTTPHeaderField: String {
     case contentType = "Content-Type"
+    case contentLength = "Content-Length"
+    case fileInfo = "X-File-Info"
     case authorization = "Authorization"
     case bearer = "Bearer "
     case cookie = "Cookie"

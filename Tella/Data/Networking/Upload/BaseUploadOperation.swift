@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -90,7 +90,7 @@ class BaseUploadOperation : Operation {
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)
                 }
-
+                
                 self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent:totalByteSent,
                                                                                             fileId: progressInfo.fileId,
                                                                                             status: progressInfo.status,
@@ -160,9 +160,9 @@ class BaseUploadOperation : Operation {
         
         // Check if all the files are submitted
         
-        guard let isNotFishUploading = self.reportVaultFiles?.filter({$0.status != .submitted}) else {return}
+        guard let filesNotSubmitted = self.reportVaultFiles?.filter({ $0.status != .submitted }) else { return }
         
-        if ((isNotFishUploading.isEmpty)) {
+        if filesNotSubmitted.isEmpty {
             self.updateReport(reportStatus: .submitted)
             
             if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
@@ -206,11 +206,11 @@ class BaseUploadOperation : Operation {
                 self.updateReport(reportStatus: ReportStatus.submissionInProgress)
                 
             } catch {
-                
+                debugLog("Create report request failed: \(error)")
+                self.updateReport(reportStatus: .submissionError)
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
     }
     
@@ -226,9 +226,9 @@ class BaseUploadOperation : Operation {
                     filesToUpload.forEach({ reportVaultFile in
                         
                         let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
-
+                        
                         guard let url else { return }
-
+                        
                         let fileToUpload = FileToUpload(idReport: apiID,
                                                         fileUrlPath: url,
                                                         accessToken: accessToken,
@@ -242,14 +242,8 @@ class BaseUploadOperation : Operation {
                         
                         self.filesToUpload.append(fileToUpload)
                         
-                        if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent{
-                            self.postReportFile(fileId: reportVaultFile.id)
-                            mainAppModel.vaultManager.deleteTmpFiles(files: [fileToUpload.fileUrlPath])
-                        } else {
-                            self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                        }
+                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                     })
-                    
                 }
                 
             }
@@ -274,78 +268,48 @@ class BaseUploadOperation : Operation {
                 taskType = .dataTask
                 uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .headReportFile))
             } catch {
-                
+                debugLog("HEAD report file request failed: \(error)")
+                self.updateReport(reportStatus: .submissionError)
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
     }
     
-    
-
     func putReportFile(fileId: String?, size:Int) {
-
+        
         if self.mainAppModel.networkMonitor.isConnected  {
-
+            
             guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
             
             if size != 0 {
-                 self.mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
+                self.mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
             }
-
+            
             let api = ReportRepository.API.putReportFile((fileToUpload))
-                
-                do {
-                    
-                    let request = try api.urlRequest()
-                    request.curlRepresentation()
-                    let fileURL = api.fileToUpload?.url
-                    
-                    let _ = fileURL?.startAccessingSecurityScopedResource()
-                    defer { fileURL?.stopAccessingSecurityScopedResource() }
-                    
-                    guard let fileURL else { return}
-
-                    guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL) else { return}
-                    task.resume()
-                    taskType = .uploadTask
-                    
-                    uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
-                    
-                } catch {
-                    
-                }
-        } else {
-            self.updateReport(reportStatus: .submissionPending)
-        }
-        
-    }
-    
-    func postReportFile(fileId: String?) {
-        
-        if self.mainAppModel.networkMonitor.isConnected {
-            
-            guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
-            
-            let api = ReportRepository.API.postReportFile((fileToUpload))
             
             do {
                 
                 let request = try api.urlRequest()
                 request.curlRepresentation()
-                guard let task = self.urlSession?.dataTask(with: request) else { return}
+                let fileURL = api.fileToUpload?.url
+                
+                let _ = fileURL?.startAccessingSecurityScopedResource()
+                defer { fileURL?.stopAccessingSecurityScopedResource() }
+                
+                guard let fileURL else { return}
+                
+                guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL) else { return}
                 task.resume()
-                taskType = .dataTask
+                taskType = .uploadTask
                 
-                uploadTasksDict[task] = UploadTask(task: task,  response: .progress(fileId: fileToUpload.fileId, type: .postReportFile))
-                
+                uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
             } catch {
-                
+                debugLog("PUT report file request failed: \(error)")
+                self.updateReport(reportStatus: .submissionError)
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
     }
     
@@ -388,9 +352,7 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                     } else {
                         
-                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
-                        
-                        postReportFile(fileId: fileId)
+                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
                         
                         if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
                             mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
@@ -401,11 +363,11 @@ class BaseUploadOperation : Operation {
                 } else {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
                 }
-
+                
             case .headReportFile:
-
+                
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
-
+                
                 if let _ = result.error {
                     // headReportFile
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -417,35 +379,12 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                         return
                     }
-
+                    
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
                     
-                    let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId})
-                    if fileToUpload?.fileSize == size {
-                        self.postReportFile(fileId: fileId)
-                    } else {
-                        self.putReportFile(fileId: fileId, size:size)
-                    }
+                    self.putReportFile(fileId: fileId, size:size)
                     
                 }
-                uploadTasksDict[task] = nil
-                
-            case .postReportFile:
-                
-                let result:UploadDecode<BoolResponse,BoolModel> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
-                
-                _ = result.domain?.success ?? false
-                
-                if let _ = result.error {
-                    self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                } else {
-                    //                    if success {
-                    self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
-                    //                    } else {
-                    //                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                    //                    }
-                }
-                
                 uploadTasksDict[task] = nil
                 
             default:

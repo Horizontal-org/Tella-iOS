@@ -45,7 +45,10 @@ public extension APIRequest {
     
     var decoder: JSONDecoder { JSONDecoder() }
     var fileToUpload: FileInfo? { nil }
-    var url: URL? { return  URL(string: baseURL + path) }
+    var url: URL? {
+        let encodedPath = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? path
+        return URL(string: baseURL + encodedPath)
+    }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
     var multipartBody: Data? { nil }
@@ -65,8 +68,12 @@ extension APIRequest {
         
         var request = URLRequest(url: url)
         
-        headers?.keys.forEach { key in
-            request.addValue(headers![key]!, forHTTPHeaderField: key)
+        if let headers {
+            headers.keys.forEach { key in
+                if let value = headers[key] {
+                    request.addValue(value, forHTTPHeaderField: key)
+                }
+            }
         }
         if let token {
             request.addValue(HTTPHeaderField.bearer.rawValue + token, forHTTPHeaderField: HTTPHeaderField.authorization.rawValue)

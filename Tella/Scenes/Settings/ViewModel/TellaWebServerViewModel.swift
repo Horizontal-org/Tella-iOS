@@ -12,9 +12,9 @@ class TellaWebServerViewModel: ServerViewModel {
     
     var mainAppModel : MainAppModel
     
-    // Server propreties
+    // Server properties
     @Published var name : String?
-    @Published var projectURL : String = "https://"
+    @Published var projectURL: String = "https://"
     @Published var activatedMetadata : Bool = false
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false

@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -10,9 +10,9 @@ import Combine
 class ReportRepository:NSObject, WebRepository {
     
     func sendReport(report:Report,mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?,APIError> {
-      return  UploadService.shared.addUploadReportOperation(report: report, mainAppModel: mainAppModel)
+        return  UploadService.shared.addUploadReportOperation(report: report, mainAppModel: mainAppModel)
     }
-
+    
     func pause(reportId : Int?) {
         UploadService.shared.pauseDownload(reportId: reportId)
     }
@@ -23,14 +23,11 @@ class ReportRepository:NSObject, WebRepository {
     
 }
 
-
 extension ReportRepository {
     enum API {
         case createReport((Report))
-        case putReportFile((FileToUpload))
-        case postReportFile((FileToUpload))
         case headReportFile((FileToUpload))
-
+        case putReportFile((FileToUpload))
     }
 }
 
@@ -42,7 +39,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport((let report)):
             return report.server?.accessToken
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file)), .headReportFile((let file)):
             return file.accessToken
         }
     }
@@ -50,7 +47,7 @@ extension ReportRepository.API: APIRequest {
     var keyValues: [Key : Value?]? {
         
         switch self {
-
+            
         case .createReport((let report)):
             return [
                 "title": report.title,
@@ -58,7 +55,7 @@ extension ReportRepository.API: APIRequest {
                 // "deviceInfo": {},
                 "projectId": report.server?.projectId
             ]
-
+            
         default:
             return nil
         }
@@ -66,13 +63,12 @@ extension ReportRepository.API: APIRequest {
     
     var baseURL: String {
         switch self {
-
+            
         case .createReport((let report)):
             return report.server?.url ?? ""
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file)), .headReportFile((let file)):
             return file.serverURL
-
         }
     }
     
@@ -83,36 +79,34 @@ extension ReportRepository.API: APIRequest {
             let projectId = report.server?.projectId ?? ""
             return "/project/\(projectId)"
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
-            return "/file/\(file.idReport)/\(file.fileName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
-
-            
+        case .putReportFile((let file)), .headReportFile((let file)):
+            return "/file/\(file.idReport)/\(file.fileName).\(file.fileExtension)"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
             
-        case .putReportFile:
-            return HTTPMethod.put
-            
-        case .postReportFile(_), .createReport(_):
+        case .createReport(_):
             return HTTPMethod.post
             
         case .headReportFile(_):
             return HTTPMethod.head
-
+            
+        case .putReportFile:
+            return HTTPMethod.put
+            
         }
     }
     
     var fileToUpload: FileInfo? {
         
         switch self {
-        case .putReportFile((let file)):
+        case .putReportFile(let file):
             
             let mimeType = MIMEType.mime(for: file.fileExtension)
             return FileInfo(withFileURL: file.fileUrlPath, mimeType:mimeType , fileName: "name", name: file.fileName, fileId: file.fileId)
-
+            
         default:
             return nil
         }
@@ -120,9 +114,15 @@ extension ReportRepository.API: APIRequest {
     
     var headers: [String: String]? {
         switch self {
-        case .putReportFile((_)):
-            return [HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue]
-
+        case .putReportFile(let file):
+            
+            var header : [String:String] = [HTTPHeaderField.contentLength.rawValue :String(file.fileSize)]
+            
+            if let mimeType = file.fileExtension.mimeType() {
+                header[HTTPHeaderField.contentType.rawValue] = mimeType
+            }
+            return header
+            
         default:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
