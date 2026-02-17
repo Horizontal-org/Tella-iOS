@@ -52,6 +52,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
         return requestData()
             .tryMap({ (data, allHeaderFields) in
+                if data.isEmpty, Value.self == EmptyResult.self {
+                    return (EmptyResult() as! Value, allHeaderFields)
+                }
                 let decodedData : Value = try data.decoded()
                 return (decodedData, allHeaderFields)
             })

@@ -27,15 +27,7 @@ enum UploadResponse {
 }
 
 enum UploadType {
-    case progress(fileId: String?,type: UploadReportType)
-    case createReport
-}
-
-enum UploadReportType {
-    case createReport
-    case putReportFile
-    case postReportFile
-    case headReportFile
+    case progress(fileId: String?)
 }
 
 class UploadDecode<T,T1>  {
