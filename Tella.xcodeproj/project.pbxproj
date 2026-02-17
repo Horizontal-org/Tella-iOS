@@ -56,6 +56,7 @@
 		1218EDFC2AFED7F700F672F7 /* FeedbackConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */; };
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
 		121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8212943A2F00056AC2A /* ReportRepository.swift */; };
+		121AD8242943A2F00056AC2B /* ReportUploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8232943A2F00056AC2B /* ReportUploadService.swift */; };
 		121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8252943D52B0056AC2A /* SubmitReportResult.swift */; };
 		121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */; };
 		121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */; };
@@ -738,6 +739,7 @@
 		1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackConstants.swift; sourceTree = "<group>"; };
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		121AD8212943A2F00056AC2A /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
+		121AD8232943A2F00056AC2B /* ReportUploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUploadService.swift; sourceTree = "<group>"; };
 		121AD8252943D52B0056AC2A /* SubmitReportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportResult.swift; sourceTree = "<group>"; };
 		121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
 		121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsResult.swift; sourceTree = "<group>"; };
@@ -2691,6 +2693,7 @@
 				15FE5D062CADC8230004AD35 /* Dropbox */,
 				12D7D11E28E36123008121C8 /* ServerRepository.swift */,
 				121AD8212943A2F00056AC2A /* ReportRepository.swift */,
+				121AD8232943A2F00056AC2B /* ReportUploadService.swift */,
 				E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */,
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
@@ -4451,6 +4454,7 @@
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
+				121AD8242943A2F00056AC2B /* ReportUploadService.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,

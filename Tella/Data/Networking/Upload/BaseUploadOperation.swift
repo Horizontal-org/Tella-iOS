@@ -8,12 +8,13 @@ import Foundation
 import Combine
 import UIKit
 
-class BaseUploadOperation : Operation, WebRepository {
+class BaseUploadOperation: Operation {
     
     public var report: Report?
-    public var urlSession : URLSession!
-    public var mainAppModel :MainAppModel!
+    public var urlSession: URLSession!
+    public var mainAppModel: MainAppModel!
     
+    let reportRepository = ReportRepository()
     
     public var reportVaultFiles: [ReportVaultFile]? = nil
     var initialResponse = CurrentValueSubject<UploadResponse?,APIError>(.initial)
@@ -208,21 +209,18 @@ class BaseUploadOperation : Operation, WebRepository {
         
         guard let report else { return }
         
-        let endpoint = ReportRepository.API.createReport(report)
-        
         updateReport(reportStatus: .submissionInProgress)
         
-        (getAPIResponse(endpoint: endpoint) as APIResponse<SubmitReportResult>)
+        reportRepository.createReport(report: report)
             .sink { [weak self] completion in
                 guard let self else { return }
                 if case .failure(let err) = completion {
                     self.initialResponse.send(.createReport(apiId: nil, reportStatus: .submissionError, error: err))
                 }
-            } receiveValue: { [weak self] (dto, _) in
+            } receiveValue: { [weak self] reportAPI in
                 guard let self else { return }
                 
-                let domain = dto.toDomain() as? ReportAPI
-                let apiID = domain?.id
+                let apiID = reportAPI.id
                 
                 let emptyFiles = self.report?.reportFiles?.isEmpty ?? true
                 let status = emptyFiles ? ReportStatus.submitted : ReportStatus.submissionInProgress
@@ -270,9 +268,7 @@ class BaseUploadOperation : Operation, WebRepository {
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
-        
     }
     
     func checkFileSizeOnServer(fileToUpload: FileToUpload) {
@@ -281,26 +277,14 @@ class BaseUploadOperation : Operation, WebRepository {
             return
         }
         
-        let endpoint = ReportRepository.API.headReportFile(fileToUpload)
-        
-        (getAPIResponse(endpoint: endpoint) as APIResponse<EmptyResult>)
+        reportRepository.headReportFile(fileToUpload: fileToUpload)
             .sink { [weak self] completion in
                 guard let self else { return }
                 if case .failure = completion {
                     self.initialResponse.send(.progress(progressInfo: .init(fileId: fileToUpload.fileId, status: .submissionError)))
                 }
-            } receiveValue: { [weak self] (_, headers) in
-                
+            } receiveValue: { [weak self] size in
                 guard let self else { return }
-                
-                guard
-                    let sizeValue = headers?["size"],
-                    let sizeString = sizeValue as? String,
-                    let size = Int(sizeString)
-                else {
-                    self.initialResponse.send(.progress(progressInfo: .init(fileId: fileToUpload.fileId, status: .submissionError)))
-                    return
-                }
                 
                 self.initialResponse.send(
                     .progress(
@@ -313,7 +297,7 @@ class BaseUploadOperation : Operation, WebRepository {
                     )
                 )
                 
-                self.putReportFile(fileId: fileToUpload.fileId, size: size) // upload via delegate session
+                self.putReportFile(fileId: fileToUpload.fileId, size: size)
             }
             .store(in: &apiCancellables)
     }

@@ -7,20 +7,33 @@
 import Foundation
 import Combine
 
-class ReportRepository:NSObject, WebRepository {
-    
-    func sendReport(report:Report,mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?,APIError> {
-        return  UploadService.shared.addUploadReportOperation(report: report, mainAppModel: mainAppModel)
+class ReportRepository: NSObject, WebRepository {
+
+    // MARK: - Report API (create report & head file)
+
+    /// Creates a report on the server and returns the domain model (ReportAPI) with response headers.
+    func createReport(report: Report) -> AnyPublisher<ReportAPI, APIError> {
+        let endpoint = ReportRepository.API.createReport(report)
+        return (getAPIResponse(endpoint: endpoint) as APIResponse<SubmitReportResult>)
+            .compactMap { dto, headers -> ReportAPI? in
+                guard let api = dto.toDomain() as? ReportAPI else { return nil }
+                return api
+            }
+            .eraseToAnyPublisher()
     }
-    
-    func pause(reportId : Int?) {
-        UploadService.shared.pauseDownload(reportId: reportId)
+
+    /// Checks file size on server via HEAD request.
+    func headReportFile(fileToUpload: FileToUpload) -> AnyPublisher<Int, APIError> {
+        let endpoint = ReportRepository.API.headReportFile(fileToUpload)
+        return (getAPIResponse(endpoint: endpoint) as APIResponse<EmptyResult>)
+            .compactMap { _, headers -> Int? in
+                guard let sizeValue = headers?["size"],
+                      let sizeString = sizeValue as? String,
+                      let size = Int(sizeString) else { return nil }
+                return size
+            }
+            .eraseToAnyPublisher()
     }
-    
-    func checkUploadReportOperation(reportId : Int?) -> CurrentValueSubject<UploadResponse?,APIError>? {
-        UploadService.shared.checkUploadReportOperation(reportId: reportId)
-    }
-    
 }
 
 extension ReportRepository {

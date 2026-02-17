@@ -7,8 +7,8 @@
 import SwiftUI
 import Combine
 
-class OutboxReportVM: OutboxMainViewModel<TellaServer> {    
-    var reportRepository = ReportRepository()
+class OutboxReportVM: OutboxMainViewModel<TellaServer> {
+    var reportUploadService = ReportUploadService()
     
     var reportIsNotAutoDelete: Bool {
         return !(reportViewModel.server?.autoDelete ?? true)
@@ -21,7 +21,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
         } else {
-            treat(uploadResponse:reportRepository.checkUploadReportOperation(reportId: self.reportViewModel.id))
+            treat(uploadResponse: reportUploadService.checkUploadReportOperation(reportId: self.reportViewModel.id))
         }
     }
     
@@ -97,7 +97,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     override func pauseSubmission() {
         if isSubmissionInProgress {
             self.updateReportStatus(reportStatus: .submissionPaused)
-            self.reportRepository.pause(reportId: self.reportViewModel.id)
+            self.reportUploadService.pause(reportId: self.reportViewModel.id)
         }
         
     }
@@ -109,7 +109,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
             guard let reportID = reportViewModel.id,
                   let report = self.mainAppModel.tellaData?.getReport(reportId:reportID) else { return }
 
-            treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
+            treat(uploadResponse: self.reportUploadService.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }
 
