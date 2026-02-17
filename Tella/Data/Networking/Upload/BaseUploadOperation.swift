@@ -19,7 +19,7 @@ class BaseUploadOperation : Operation, WebRepository {
     var initialResponse = CurrentValueSubject<UploadResponse?,APIError>(.initial)
     @Published var response = CurrentValueSubject<UploadResponse?,APIError>(.initial)
     
-    public var uploadTasksDict : [URLSessionTask: UploadTask] = [:]
+    public var uploadTasksDict : [URLSessionTask: String] = [:]
     
     var filesToUpload : [FileToUpload] = []
     var subscribers : Set<AnyCancellable> = []
@@ -40,9 +40,7 @@ class BaseUploadOperation : Operation, WebRepository {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         self.cancel()
         uploadTasksDict.removeAll()
-        // cancel publisher requests
         apiCancellables.removeAll()
-        
         updateReport(reportStatus: .submissionPaused)
         
     }
@@ -50,7 +48,6 @@ class BaseUploadOperation : Operation, WebRepository {
     func cancelSendingReport() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
-        // cancel publisher requests
         apiCancellables.removeAll()
         
         self.cancel()
@@ -62,18 +59,14 @@ class BaseUploadOperation : Operation, WebRepository {
         uploadTasksDict.removeAll()
         updateReport(reportStatus: .submissionPending)
         self.filesToUpload.removeAll()
-        // cancel publisher requests
         apiCancellables.removeAll()
-        
     }
     
     func autoPauseReport() {
         updateReport(reportStatus: .submissionAutoPaused)
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
-        // cancel publisher requests
         apiCancellables.removeAll()
-        
     }
     
     override func main() {
@@ -352,7 +345,7 @@ class BaseUploadOperation : Operation, WebRepository {
                 task.resume()
                 taskType = .uploadTask
                 
-                uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId))
+                uploadTasksDict[task] = fileToUpload.fileId 
             } catch {
                 debugLog("PUT report file request failed: \(error)")
                 self.updateReport(reportStatus: .submissionError)
@@ -365,32 +358,24 @@ class BaseUploadOperation : Operation, WebRepository {
     func update(responseFromDelegate: URLSessionTaskResponse) {
         
         guard let task = responseFromDelegate.task else { return }
-        let item = uploadTasksDict[task]
-        
-        switch item?.response {
+        let fileId = uploadTasksDict[task]
+        if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
+            let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
             
-        case .progress(let fileId):
-            if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
-                let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
-                
-                if let _ = result.error {
-                    self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                } else {
-                    
-                    self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
-                    
-                    if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
-                        mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
-                    }
-                }
-                uploadTasksDict[task] = nil
-                
+            if let _ = result.error {
+                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
             } else {
-                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
+                
+                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
+                
+                if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
+                    mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
+                }
             }
+            uploadTasksDict[task] = nil
             
-        default:
-            break
+        } else {
+            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
         }
     }
 }
