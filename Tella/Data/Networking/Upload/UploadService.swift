@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,7 +15,7 @@ class UploadService: NSObject {
     static var shared : UploadService = UploadService()
     
     fileprivate var activeOperations: [BaseUploadOperation] = []
-
+    
     var uploadQueue: OperationQueue!
     private var subscribers = Set<AnyCancellable>()
     
@@ -98,7 +98,7 @@ class UploadService: NSObject {
         if let nonAutoUploadOperation {
             cancelSendingReport(reportId: nonAutoUploadOperation.report?.id)
         }
-
+        
         if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
             operation.addFile(file:file)
         }
@@ -163,9 +163,8 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
         didSendBodyData bytesSent: Int64,
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64 ) {
-            
             let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
-            operation?.update(responseFromDelegate: URLSessionTaskResponse(current: Int(totalBytesSent), task: task as? URLSessionUploadTask))
+            operation?.didSend(bytesSent: Int(totalBytesSent), task: task as? URLSessionUploadTask)
         }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
@@ -179,24 +178,11 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        let operation = activeOperations.first{$0.uploadTasksDict[dataTask] != nil}
-        operation?.update(responseFromDelegate: URLSessionTaskResponse(task: dataTask , data: data, response: dataTask.response as? HTTPURLResponse))
-        operation?.uploadTasksDict.removeValue(forKey: dataTask)
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
-        if error == nil {
-            
-            operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: task.response as? HTTPURLResponse))
-            
-        } else if let _ = (error as? NSError)?.code {
-            operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
-            
-        } else {
-            operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
-            
-        }
+        let operation = activeOperations.first{ $0.uploadTasksDict[task] != nil }
+        operation?.didComplete(task: task, error: error)
     }
 }
 

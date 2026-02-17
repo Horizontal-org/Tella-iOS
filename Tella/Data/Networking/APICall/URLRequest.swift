@@ -41,6 +41,7 @@ extension WebRepository {
             .eraseToAnyPublisher()
     }
 
+    
     func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
         fetchData(endpoint: endpoint)
             .requestData()

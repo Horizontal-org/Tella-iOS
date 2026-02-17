@@ -345,7 +345,7 @@ class BaseUploadOperation : Operation, WebRepository {
                 task.resume()
                 taskType = .uploadTask
                 
-                uploadTasksDict[task] = fileToUpload.fileId 
+                uploadTasksDict[task] = fileToUpload.fileId
             } catch {
                 debugLog("PUT report file request failed: \(error)")
                 self.updateReport(reportStatus: .submissionError)
@@ -355,138 +355,26 @@ class BaseUploadOperation : Operation, WebRepository {
         }
     }
     
-    func update(responseFromDelegate: URLSessionTaskResponse) {
-        
-        guard let task = responseFromDelegate.task else { return }
+    func didSend(bytesSent: Int?, task: URLSessionTask?) {
+        guard let task else { return }
         let fileId = uploadTasksDict[task]
-        if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
-            let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
-            
-            if let _ = result.error {
-                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-            } else {
-                
-                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
-                
-                if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
-                    mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
-                }
-            }
-            uploadTasksDict[task] = nil
+        
+        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current: bytesSent, fileId: fileId, status: FileStatus.partialSubmitted)))
+    }
+    
+    func didComplete(task: URLSessionTask?, error: Error?) {
+        guard let task else { return }
+        let fileId = uploadTasksDict[task]
+        
+        if error != nil {
+            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
             
         } else {
-            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
-        }
-    }
-}
-
-extension BaseUploadOperation {
-    
-    func getAPIResponse<Value1, Value2> (response:HTTPURLResponse?, data: Data?, error: Error?) -> UploadDecode<Value1, Value2> where Value1: DataModel, Value2: DomainModel {
-        
-        let allHeaderFields = (response)?.allHeaderFields
-        
-        guard let code = (response)?.statusCode else {
-            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
-        }
-        guard HTTPCodes.success.contains(code) else {
-            debugLog("Error code: \(code)")
-            return UploadDecode(dto: nil, domain: nil, error: APIError.httpCode(code), headers: allHeaderFields)
-        }
-        
-        guard let data = data else {
-            return UploadDecode(dto: nil, domain: nil, error: nil, headers: allHeaderFields)
-        }
-        
-        let dataString = String(decoding:  data  , as: UTF8.self)
-        debugLog("Result:\(dataString)")
-        do {
-            let result : Value1 = try data.decoded()
-            let dtoResponse  =   result
-            let domainResponse  =   result.toDomain() as? Value2
+            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
             
-            return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil, headers: allHeaderFields)
-        }
-        catch {
-            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
-        }
-    }
-}
-
-public class AsyncOperation: Operation {
-    
-    // MARK: - AsyncOperation
-    
-    public enum State: String {
-        
-        case ready
-        case executing
-        case finished
-        
-        fileprivate var keyPath: String {
-            return "is" + rawValue.capitalized
-        }
-    }
-    
-    public var state = State.ready {
-        willSet {
-            willChangeValue(forKey: newValue.keyPath)
-            willChangeValue(forKey: state.keyPath)
-        }
-        didSet {
-            didChangeValue(forKey: oldValue.keyPath)
-            didChangeValue(forKey: state.keyPath)
-        }
-    }
-}
-
-public extension AsyncOperation {
-    
-    // MARK: - AsyncOperation+Addition
-    
-    override var isReady: Bool {
-        return super.isReady && state == .ready
-    }
-    
-    override var isExecuting: Bool {
-        return state == .executing
-    }
-    
-    override var isFinished: Bool {
-        return state == .finished
-    }
-    
-    override var isAsynchronous: Bool {
-        return true
-    }
-    
-    override func start() {
-        if isFinished {
-            return
-        }
-        
-        if isCancelled {
-            state = .finished
-            return
-        }
-        
-        main()
-        state = .executing
-    }
-    
-    override func cancel() {
-        super.cancel()
-        state = .finished
-    }
-}
-
-// subclass
-final class AsyncLongAndHightPriorityOperation: AsyncOperation {
-    
-    override func main() {
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.state = .finished
+            if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
+                mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
+            }
         }
     }
 }
