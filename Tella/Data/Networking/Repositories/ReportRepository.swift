@@ -8,9 +8,9 @@ import Foundation
 import Combine
 
 class ReportRepository: NSObject, WebRepository {
-
+    
     // MARK: - Report API (create report & head file)
-
+    
     /// Creates a report on the server and returns the domain model (ReportAPI) with response headers.
     func createReport(report: Report) -> AnyPublisher<ReportAPI, APIError> {
         let endpoint = ReportRepository.API.createReport(report)
@@ -21,7 +21,7 @@ class ReportRepository: NSObject, WebRepository {
             }
             .eraseToAnyPublisher()
     }
-
+    
     /// Checks file size on server via HEAD request.
     func headReportFile(fileToUpload: FileToUpload) -> AnyPublisher<Int, APIError> {
         let endpoint = ReportRepository.API.headReportFile(fileToUpload)
@@ -33,6 +33,27 @@ class ReportRepository: NSObject, WebRepository {
                 return size
             }
             .eraseToAnyPublisher()
+    }
+    
+    func makePutReportFileUploadTask(
+        fileToUpload: FileToUpload,
+        session: URLSession
+    ) throws -> URLSessionUploadTask {
+        
+        let api = ReportRepository.API.putReportFile(fileToUpload)
+        
+        let fileURL = fileToUpload.fileUrlPath
+        
+        let _ = fileURL.startAccessingSecurityScopedResource()
+        defer { fileURL.stopAccessingSecurityScopedResource() }
+        
+        let (_, task) = try makeUploadRequestAndTask(
+            endpoint: api,
+            fileURL: fileURL,
+            session: session
+        )
+        
+        return task
     }
 }
 
@@ -108,7 +129,6 @@ extension ReportRepository.API: APIRequest {
             
         case .putReportFile:
             return HTTPMethod.put
-            
         }
     }
     

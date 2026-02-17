@@ -302,40 +302,34 @@ class BaseUploadOperation: Operation {
             .store(in: &apiCancellables)
     }
     
-    func putReportFile(fileId: String?, size:Int) {
+    func putReportFile(fileId: String?, size: Int) {
         
-        if self.mainAppModel.networkMonitor.isConnected  {
+        guard mainAppModel.networkMonitor.isConnected else {
+            updateReport(reportStatus: .submissionPending)
+            return
+        }
+        
+        guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
+        
+        if size != 0 {
+            mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
+        }
+        
+        do {
+            guard let session = self.urlSession else { return }
             
-            guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
+            let task = try reportRepository.makePutReportFileUploadTask(
+                fileToUpload: fileToUpload,
+                session: session
+            )
             
-            if size != 0 {
-                self.mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
-            }
+            uploadTasksDict[task] = fileToUpload.fileId
+            taskType = .uploadTask
+            task.resume()
             
-            let api = ReportRepository.API.putReportFile((fileToUpload))
-            
-            do {
-                
-                let request = try api.urlRequest()
-                request.curlRepresentation()
-                let fileURL = api.fileToUpload?.url
-                
-                let _ = fileURL?.startAccessingSecurityScopedResource()
-                defer { fileURL?.stopAccessingSecurityScopedResource() }
-                
-                guard let fileURL else { return}
-                
-                guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL) else { return}
-                task.resume()
-                taskType = .uploadTask
-                
-                uploadTasksDict[task] = fileToUpload.fileId
-            } catch {
-                debugLog("PUT report file request failed: \(error)")
-                self.updateReport(reportStatus: .submissionError)
-            }
-        } else {
-            self.updateReport(reportStatus: .submissionPending)
+        } catch {
+            debugLog("PUT report file request failed: \(error)")
+            updateReport(reportStatus: .submissionError)
         }
     }
     
