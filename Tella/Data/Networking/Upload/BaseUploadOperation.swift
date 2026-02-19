@@ -351,6 +351,7 @@ class BaseUploadOperation: Operation {
     func didComplete(task: URLSessionTask?, error: Error?) {
         guard let task else { return }
         let fileId = uploadTasksDict[task]
+        uploadTasksDict.removeValue(forKey: task)
         
         if error != nil {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
