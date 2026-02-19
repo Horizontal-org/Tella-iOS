@@ -14,10 +14,18 @@ class UploadService: NSObject {
     
     static var shared : UploadService = UploadService()
     
-    fileprivate var activeOperations: [BaseUploadOperation] = []
+    private let operationsLock = NSLock()
+    private var _activeOperations: [BaseUploadOperation] = []
+    
+    /// Thread-safe access to active operations. URLSession delegate callbacks run on background threads.
+    private func withOperations<T>(_ block: (inout [BaseUploadOperation]) -> T) -> T {
+        operationsLock.withLock { block(&_activeOperations) }
+    }
     
     var uploadQueue: OperationQueue!
-    private var subscribers = Set<AnyCancellable>()
+    /// Toast subscriptions keyed by operation. Removed when upload finishes to prevent memory leak.
+    private var toastSubscriptions: [ObjectIdentifier: AnyCancellable] = [:]
+    private let toastSubscriptionsLock = NSLock()
     
     override init() {
         let queue = OperationQueue()
@@ -31,28 +39,33 @@ class UploadService: NSObject {
     }
     
     var hasFilesToUploadOnBackground: Bool {
-        let operations = activeOperations.filter({$0.uploadTasksDict.values.count != 0 && $0.taskType == .uploadTask})
-        return !operations.isEmpty
+        withOperations { operations in
+            !operations.filter { $0.uploadTasksDict.values.count != 0 && $0.taskType == .uploadTask }.isEmpty
+        }
     }
     
-    func pauseUpload(reportId:Int?) {
-        let operation = activeOperations.first(where: {$0.report?.id == reportId})
-        operation?.pauseSendingReport()
-        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
+    func pauseUpload(reportId: Int?) {
+        withOperations { operations in
+            let operation = operations.first(where: { $0.report?.id == reportId })
+            operation?.pauseSendingReport()
+            operations.removeAll(where: { $0.report?.id == reportId && (operation?.type != .autoUpload) })
+        }
     }
     
     func cancelTasksIfNeeded() {
-        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
-        operations.forEach { operation in
-            operation.pauseSendingReport()
+        withOperations { operations in
+            let toCancel = operations.filter { $0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask }
+            toCancel.forEach { $0.pauseSendingReport() }
+            operations.removeAll(where: { $0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask })
         }
-        activeOperations.removeAll(where:{$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
     }
     
     func cancelSendingReport(reportId:Int?) {
-        let operation = activeOperations.first(where: {$0.report?.id == reportId})
-        operation?.cancelSendingReport()
-        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
+        withOperations { operations in
+            let operation = operations.first(where: { $0.report?.id == reportId })
+            operation?.cancelSendingReport()
+            operations.removeAll(where: { $0.report?.id == reportId && (operation?.type != .autoUpload) })
+        }
     }
     
     func initAutoUpload(mainAppModel: MainAppModel ) {
@@ -65,15 +78,16 @@ class UploadService: NSObject {
             delegateQueue: nil)
         
         let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
-        activeOperations.append(operation)
+        withOperations { $0.append(operation) }
         uploadQueue.addOperation(operation)
         
         displayReportToast(operation: operation)
     }
     
     func checkUploadReportOperation(reportId:Int?) -> CurrentValueSubject<UploadResponse?,APIError>?  {
-        guard let operation = activeOperations.first(where: {$0.report?.id == reportId}) else { return nil}
-        return operation.response
+        withOperations { operations in
+            operations.first(where: { $0.report?.id == reportId })?.response
+        }
     }
     
     func addUploadReportOperation(report:Report, mainAppModel: MainAppModel ) -> CurrentValueSubject<UploadResponse?,APIError>  {
@@ -83,8 +97,8 @@ class UploadService: NSObject {
             delegate: self,
             delegateQueue: nil)
         
-        let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
-        activeOperations.append(operation)
+        let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .uploadReport)
+        withOperations { $0.append(operation) }
         uploadQueue.addOperation(operation)
         
         displayReportToast(operation: operation)
@@ -93,13 +107,12 @@ class UploadService: NSObject {
     }
     
     func addAutoUpload(file: VaultFileDB)  {
-        
-        let nonAutoUploadOperation = activeOperations.first(where: {$0.report?.currentUpload == true && $0.type != .autoUpload})
+        let nonAutoUploadOperation = withOperations { $0.first(where: { $0.report?.currentUpload == true && $0.type != .autoUpload }) }
         if let nonAutoUploadOperation {
             cancelSendingReport(reportId: nonAutoUploadOperation.report?.id)
         }
         
-        if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
+        if let operation: AutoUpload = withOperations({ $0.first(where: { $0.type == .autoUpload }) }) as? AutoUpload {
             operation.addFile(file:file)
         }
     }
@@ -115,19 +128,31 @@ class UploadService: NSObject {
                 delegateQueue: nil)
             
             let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .unsentReport)
-            activeOperations.append(operation)
+            withOperations { $0.append(operation) }
             uploadQueue.addOperation(operation)
             
             displayReportToast(operation:operation)
         }
     }
     
-    func displayReportToast(operation:BaseUploadOperation) {
-        
-        operation.response.sink(receiveCompletion: { completion in
-        }, receiveValue: { response in
-            self.handleReportResponse(response:response)
-        }).store(in: &subscribers)
+    func displayReportToast(operation: BaseUploadOperation) {
+        let operationId = ObjectIdentifier(operation)
+        let cancellable = operation.response.sink(receiveCompletion: { [weak self] _ in
+            self?.removeToastSubscription(operationId: operationId)
+        }, receiveValue: { [weak self] response in
+            self?.handleReportResponse(response: response)
+            if case .finish = response {
+                self?.removeToastSubscription(operationId: operationId)
+            }
+        })
+        toastSubscriptionsLock.withLock { toastSubscriptions[operationId] = cancellable }
+    }
+    
+    private func removeToastSubscription(operationId: ObjectIdentifier) {
+        toastSubscriptionsLock.withLock {
+            toastSubscriptions[operationId]?.cancel()
+            toastSubscriptions[operationId] = nil
+        }
     }
     
     func handleReportResponse(response: UploadResponse?) {
@@ -163,7 +188,7 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
         didSendBodyData bytesSent: Int64,
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64 ) {
-            let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
+            let operation = withOperations { $0.first { $0.uploadTasksDict[task] != nil } }
             operation?.didSend(bytesSent: Int(totalBytesSent), task: task as? URLSessionUploadTask)
         }
     
@@ -181,7 +206,7 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        let operation = activeOperations.first{ $0.uploadTasksDict[task] != nil }
+        let operation = withOperations { $0.first { $0.uploadTasksDict[task] != nil } }
         operation?.didComplete(task: task, error: error)
     }
 }
