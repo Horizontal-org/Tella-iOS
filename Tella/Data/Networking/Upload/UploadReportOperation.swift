@@ -10,8 +10,8 @@ import UIKit
 
 class UploadReportOperation: BaseUploadOperation {
     
-    init(report:Report, urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
-        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:type)
+    init(report: Report, urlSession: URLSession, mainAppModel: MainAppModel, reportRepository: ReportRepository, type: OperationType) {
+        super.init(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: reportRepository, type: type)
         self.report = report
         setupNetworkMonitor()
     }
@@ -22,18 +22,18 @@ class UploadReportOperation: BaseUploadOperation {
     }
     
     private func setupNetworkMonitor() {
-        self.mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
-            if self.report != nil {
-                if isConnected && self.report?.status == .submissionPending  {
-                    self.startUploadReportAndFiles()
-                } else if !isConnected && self.report?.status != .submissionPending {
-                    self.updateReport(reportStatus: .submissionPending)
-                    self.stopConnection()
-                    self.response.send(UploadResponse.initial)
-                    debugLog("No internet connection")
-                }
+        mainAppModel.networkMonitor.connectionDidChange.sink { [weak self] isConnected in
+            guard let self else { return }
+            guard let report = self.report else { return }
+            if isConnected && report.status == .submissionPending {
+                self.startUploadReportAndFiles()
+            } else if !isConnected && report.status != .submissionPending {
+                self.updateReport(reportStatus: .submissionPending)
+                self.stopConnection()
+                self.response.send(UploadResponse.initial)
+                debugLog("No internet connection")
             }
-        }).store(in: &subscribers)
+        }.store(in: &subscribers)
     }
     
     func startUploadReportAndFiles() {
@@ -55,22 +55,6 @@ class UploadReportOperation: BaseUploadOperation {
             self.updateReport(reportStatus: .submissionPending)
 
         }
-    }
-    
-    func prepareReportToSend(report:Report?) {
-        
-        var reportVaultFiles : [ReportVaultFile] = []
-
-        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
-
-        report?.reportFiles?.forEach({ reportFile in
-            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                reportVaultFiles.append(reportVaultFile)
-            }
-        })
-        
-        self.reportVaultFiles = reportVaultFiles
     }
     
 }

@@ -10,8 +10,8 @@ import Combine
 
 class AutoUpload: BaseUploadOperation {
     
-    override init(urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
-        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
+    override init(urlSession: URLSession, mainAppModel: MainAppModel, reportRepository: ReportRepository, type: OperationType) {
+        super.init(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: reportRepository, type: .autoUpload)
         
         setupNetworkMonitor()
     }
@@ -24,16 +24,16 @@ class AutoUpload: BaseUploadOperation {
     }
     
     private func setupNetworkMonitor() {
-        mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
-            if self.report != nil {
-                if isConnected && self.report?.status == .submissionPending  {
-                    self.checkReport()
-                } else if !isConnected && self.report?.status != .submissionPending {
-                    self.stopConnection()
-                    debugLog("No internet connection")
-                }
+        mainAppModel.networkMonitor.connectionDidChange.sink { [weak self] isConnected in
+            guard let self else { return }
+            guard let report = self.report else { return }
+            if isConnected && report.status == .submissionPending {
+                self.checkReport()
+            } else if !isConnected && report.status != .submissionPending {
+                self.stopConnection()
+                debugLog("No internet connection")
             }
-        }).store(in: &subscribers)
+        }.store(in: &subscribers)
     }
     
     
@@ -119,25 +119,10 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func prepareReportToSend(report:Report?) {
-
-        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
-        
+    override func prepareReportToSend(report: Report?) {
         self.report = report
-        
-        self.updateReport(reportStatus: .submissionInProgress)
-        
-        var reportVaultFiles : [ReportVaultFile] = []
-        
-        report?.reportFiles?.forEach({ reportFile in
-            
-            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                reportVaultFiles.append(reportVaultFile)
-            }
-        })
-        
-        self.reportVaultFiles = reportVaultFiles
+        updateReport(reportStatus: .submissionInProgress)
+        super.prepareReportToSend(report: report)
     }
     
     func handleResponse() {

@@ -14,11 +14,11 @@ class BaseUploadOperation: Operation {
     public var urlSession: URLSession!
     public var mainAppModel: MainAppModel!
     
-    let reportRepository = ReportRepository()
+    let reportRepository: ReportRepository
     
     public var reportVaultFiles: [ReportVaultFile]? = nil
     var initialResponse = CurrentValueSubject<UploadResponse?,APIError>(.initial)
-    @Published var response = CurrentValueSubject<UploadResponse?,APIError>(.initial)
+    var response = CurrentValueSubject<UploadResponse?,APIError>(.initial)
     
     public var uploadTasksDict : [URLSessionTask: String] = [:]
     
@@ -30,6 +30,7 @@ class BaseUploadOperation: Operation {
     public var apiCancellables: Set<AnyCancellable> = []
     
     override init() {
+        self.reportRepository = ReportRepository()
         super.init()
     }
     
@@ -74,10 +75,10 @@ class BaseUploadOperation: Operation {
         handleInialResponse()
     }
     
-    init(urlSession:URLSession, mainAppModel :MainAppModel, type: OperationType) {
-        
+    init(urlSession: URLSession, mainAppModel: MainAppModel, reportRepository: ReportRepository, type: OperationType) {
         self.urlSession = urlSession
         self.mainAppModel = mainAppModel
+        self.reportRepository = reportRepository
         self.type = type
         super.init()
     }
@@ -201,11 +202,32 @@ class BaseUploadOperation: Operation {
     
     // MARK: - CREATE REPORT (Publisher)
     
-    func sendReport() {
+    /// Builds reportVaultFiles from report and vault file manager. Override to add behavior (e.g. updateReport).
+    func prepareReportToSend(report: Report?) {
+        guard let report else { return }
+        
+        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap { $0.fileId } ?? [])
+        var reportVaultFiles: [ReportVaultFile] = []
+        
+        report.reportFiles?.forEach { reportFile in
+            if let vaultFile = vaultFileResult?.first(where: { reportFile.fileId == $0.id }) {
+                reportVaultFiles.append(ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile))
+            }
+        }
+        
+        self.reportVaultFiles = reportVaultFiles
+    }
+    
+    private func guardNetworkConnected() -> Bool {
         guard mainAppModel.networkMonitor.isConnected else {
             updateReport(reportStatus: .submissionPending)
-            return
+            return false
         }
+        return true
+    }
+    
+    func sendReport() {
+        guard guardNetworkConnected() else { return }
         
         guard let report else { return }
         
@@ -234,48 +256,38 @@ class BaseUploadOperation: Operation {
     }
     
     func uploadFiles() {
-        if self.mainAppModel.networkMonitor.isConnected {
-            
-            guard let apiID = self.report?.apiID, let accessToken = report?.server?.accessToken, let serverUrl = report?.server?.url else { return }
-            
-            if let filesToUpload = reportVaultFiles?.filter({$0.status != .submitted}) {
-                if filesToUpload.isEmpty {
-                    self.checkAllFilesAreUploaded()
-                } else {
-                    filesToUpload.forEach({ reportVaultFile in
-                        
-                        let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
-                        
-                        guard let url else { return }
-                        
-                        let fileToUpload = FileToUpload(idReport: apiID,
-                                                        fileUrlPath: url,
-                                                        accessToken: accessToken,
-                                                        serverURL: serverUrl,
-                                                        fileName: reportVaultFile.name,
-                                                        fileExtension: reportVaultFile.fileExtension,
-                                                        fileId: reportVaultFile.id,
-                                                        fileSize: reportVaultFile.size,
-                                                        bytesSent: reportVaultFile.bytesSent,
-                                                        uploadOnBackground: report?.server?.backgroundUpload ?? false)
-                        
-                        self.filesToUpload.append(fileToUpload)
-                        
-                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                    })
+        guard guardNetworkConnected() else { return }
+        
+        guard let apiID = self.report?.apiID, let accessToken = report?.server?.accessToken, let serverUrl = report?.server?.url else { return }
+        
+        if let filesToUpload = reportVaultFiles?.filter({ $0.status != .submitted }) {
+            if filesToUpload.isEmpty {
+                self.checkAllFilesAreUploaded()
+            } else {
+                filesToUpload.forEach { reportVaultFile in
+                    let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
+                    guard let url else { return }
+                    
+                    let fileToUpload = FileToUpload(idReport: apiID,
+                                                    fileUrlPath: url,
+                                                    accessToken: accessToken,
+                                                    serverURL: serverUrl,
+                                                    fileName: reportVaultFile.name,
+                                                    fileExtension: reportVaultFile.fileExtension,
+                                                    fileId: reportVaultFile.id,
+                                                    fileSize: reportVaultFile.size,
+                                                    bytesSent: reportVaultFile.bytesSent,
+                                                    uploadOnBackground: report?.server?.backgroundUpload ?? false)
+                    
+                    self.filesToUpload.append(fileToUpload)
+                    self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                 }
-                
             }
-        } else {
-            self.updateReport(reportStatus: .submissionPending)
         }
     }
     
     func checkFileSizeOnServer(fileToUpload: FileToUpload) {
-        guard mainAppModel.networkMonitor.isConnected else {
-            updateReport(reportStatus: .submissionPending)
-            return
-        }
+        guard guardNetworkConnected() else { return }
         
         reportRepository.headReportFile(fileToUpload: fileToUpload)
             .sink { [weak self] completion in
@@ -303,11 +315,7 @@ class BaseUploadOperation: Operation {
     }
     
     func putReportFile(fileId: String?, size: Int) {
-        
-        guard mainAppModel.networkMonitor.isConnected else {
-            updateReport(reportStatus: .submissionPending)
-            return
-        }
+        guard guardNetworkConnected() else { return }
         
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
         
