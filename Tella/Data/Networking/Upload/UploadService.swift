@@ -35,7 +35,7 @@ class UploadService: NSObject {
         return !operations.isEmpty
     }
     
-    func pauseDownload(reportId:Int?) {
+    func pauseUpload(reportId:Int?) {
         let operation = activeOperations.first(where: {$0.report?.id == reportId})
         operation?.pauseSendingReport()
         activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
@@ -60,11 +60,11 @@ class UploadService: NSObject {
         let autoUploadServer = mainAppModel.tellaData?.getAutoUploadServer()
         
         let urlSession = URLSession(
-            configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
+            configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: UploadConstants.backgroundSessionIdentifier) : .default ,
             delegate: self,
             delegateQueue: nil)
         
-        let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, type: .autoUpload)
+        let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
         
@@ -83,7 +83,7 @@ class UploadService: NSObject {
             delegate: self,
             delegateQueue: nil)
         
-        let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .uploadReport)
+        let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
         
@@ -110,11 +110,11 @@ class UploadService: NSObject {
         
         unsentReports.forEach { report in
             let urlSession = URLSession(
-                configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
+                configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: UploadConstants.backgroundSessionIdentifier) : .default ,
                 delegate: self,
                 delegateQueue: nil)
             
-            let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .unsentReport)
+            let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .unsentReport)
             activeOperations.append(operation)
             uploadQueue.addOperation(operation)
             
