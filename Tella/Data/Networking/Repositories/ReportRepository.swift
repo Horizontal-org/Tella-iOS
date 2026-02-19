@@ -7,7 +7,7 @@
 import Foundation
 import Combine
 
-class ReportRepository: NSObject, WebRepository {
+class ReportRepository: WebRepository {
     
     // MARK: - Report API (create report & head file)
     

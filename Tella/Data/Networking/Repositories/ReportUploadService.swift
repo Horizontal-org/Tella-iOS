@@ -6,17 +6,28 @@
 import Foundation
 import Combine
 
-class ReportUploadService {
+protocol ReportUploadServiceProtocol {
+    func sendReport(report: Report, mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?, APIError>
+    func pause(reportId: Int?)
+    func checkUploadReportOperation(reportId: Int?) -> CurrentValueSubject<UploadResponse?, APIError>?
+}
 
+class ReportUploadService: ReportUploadServiceProtocol {
+    private let uploadService: UploadService
+    
+    init(uploadService: UploadService = .shared) {
+        self.uploadService = uploadService
+    }
+    
     func sendReport(report: Report, mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?, APIError> {
-        return UploadService.shared.addUploadReportOperation(report: report, mainAppModel: mainAppModel)
+        uploadService.addUploadReportOperation(report: report, mainAppModel: mainAppModel)
     }
-
+    
     func pause(reportId: Int?) {
-        UploadService.shared.pauseDownload(reportId: reportId)
+        uploadService.pauseUpload(reportId: reportId)
     }
-
+    
     func checkUploadReportOperation(reportId: Int?) -> CurrentValueSubject<UploadResponse?, APIError>? {
-        UploadService.shared.checkUploadReportOperation(reportId: reportId)
+        uploadService.checkUploadReportOperation(reportId: reportId)
     }
 }

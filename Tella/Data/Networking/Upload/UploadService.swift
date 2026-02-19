@@ -79,7 +79,7 @@ class UploadService: NSObject {
     func addUploadReportOperation(report:Report, mainAppModel: MainAppModel ) -> CurrentValueSubject<UploadResponse?,APIError>  {
         
         let urlSession = URLSession(
-            configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
+            configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: UploadConstants.backgroundSessionIdentifier) : .default ,
             delegate: self,
             delegateQueue: nil)
         
