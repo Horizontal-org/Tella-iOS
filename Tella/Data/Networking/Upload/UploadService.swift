@@ -30,7 +30,7 @@ class UploadService: NSObject {
     
     private var backgroundSession: URLSession?
     private var defaultSession: URLSession?
-
+    
     func ensureSessions() {
         if defaultSession == nil {
             defaultSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
@@ -41,12 +41,12 @@ class UploadService: NSObject {
             backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         }
     }
-
+    
     func session(forBackground: Bool) -> URLSession {
         ensureSessions()
         return forBackground ? backgroundSession! : defaultSession!
     }
-
+    
     
     
     override init() {
@@ -93,9 +93,9 @@ class UploadService: NSObject {
     func initAutoUpload(mainAppModel: MainAppModel ) {
         
         let autoUploadServer = mainAppModel.tellaData?.getAutoUploadServer()
-
+        
         let urlSession = session(forBackground: autoUploadServer?.autoUpload ?? false)
-
+        
         let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
         withOperations { $0.append(operation) }
         uploadQueue.addOperation(operation)
@@ -110,9 +110,9 @@ class UploadService: NSObject {
     }
     
     func addUploadReportOperation(report:Report, mainAppModel: MainAppModel ) -> CurrentValueSubject<UploadResponse?,APIError>  {
-
+        
         let urlSession = session(forBackground: report.server?.backgroundUpload ?? false)
-
+        
         let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .uploadReport)
         withOperations { $0.append(operation) }
         uploadQueue.addOperation(operation)
@@ -138,9 +138,9 @@ class UploadService: NSObject {
         guard let unsentReports = mainAppModel.tellaData?.getUnsentReports() else { return }
         
         unsentReports.forEach { report in
-
+            
             let urlSession = session(forBackground: report.server?.backgroundUpload ?? false)
-
+            
             let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .unsentReport)
             withOperations { $0.append(operation) }
             uploadQueue.addOperation(operation)
@@ -208,10 +208,12 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .backgroundUploadsDidFinish, object: nil)
+            
             if let appDelegate = AppDelegate.instance,
-               let completionHandler = appDelegate.backgroundSessionCompletionHandler {
+               let completion = appDelegate.backgroundSessionCompletionHandler {
                 appDelegate.backgroundSessionCompletionHandler = nil
-                completionHandler()
+                completion()
             }
         }
     }
@@ -222,21 +224,21 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         let operation = withOperations { $0.first { $0.uploadTasksDict[task] != nil } }
         operation?.didComplete(task: task, error: error)
-
+        
         finalizeBackgroundUploadsIfNeeded(for: session)
     }
-
+    
     private func finalizeBackgroundUploadsIfNeeded(for session: URLSession) {
         guard session.configuration.identifier == UploadConstants.backgroundSessionIdentifier else { return }
-
+        
         session.getAllTasks { tasks in
             let active = tasks.filter { $0.state == .running || $0.state == .suspended }
-
+            
             guard active.isEmpty else { return }
-
+            
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .backgroundUploadsDidFinish, object: nil)
-
+                
                 if let appDelegate = AppDelegate.instance,
                    let completion = appDelegate.backgroundSessionCompletionHandler {
                     appDelegate.backgroundSessionCompletionHandler = nil
@@ -245,7 +247,6 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             }
         }
     }
-
 }
 
 
