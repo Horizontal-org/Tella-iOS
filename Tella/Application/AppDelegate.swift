@@ -24,13 +24,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     
-    func application(
+    func application (
         _ application: UIApplication,
-        handleEventsForBackgroundURLSession
-        handleEventsForBackgroundURLSessionidentifier: String,
+        handleEventsForBackgroundURLSession identifier: String,
         completionHandler: @escaping () -> Void) {
-            backgroundSessionCompletionHandler = completionHandler
             shouldHandleTimeout = true
+            backgroundSessionCompletionHandler = completionHandler
         }
 
     private func setupDropbox() {

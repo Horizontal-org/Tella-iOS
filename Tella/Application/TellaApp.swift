@@ -22,10 +22,8 @@ struct TellaApp: App {
             ContentView(appViewState: appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
                     appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
-                }.onReceive(appDelegate.$shouldHandleTimeout) { value in
-                    if value {
-                        self.saveData(lockApptype: .finishBackgroundTasks)
-                    }
+                }.onReceive(NotificationCenter.default.publisher(for: .backgroundUploadsDidFinish)) { _ in
+                    self.saveData(lockApptype: .finishBackgroundTasks)
                 }
             
         }.onChange(of: scenePhase) { phase in
@@ -66,7 +64,7 @@ struct TellaApp: App {
         }
     }
     func resetApp() {
-        let  hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
 

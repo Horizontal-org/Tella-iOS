@@ -34,3 +34,7 @@ struct DropboxAuthConstants {
 struct UploadConstants {
     static let backgroundSessionIdentifier = "org.wearehorizontal.tella"
 }
+
+extension Notification.Name {
+    static let backgroundUploadsDidFinish = Notification.Name("backgroundUploadsDidFinish")
+}
