@@ -27,6 +27,7 @@ class BaseUploadOperation: Operation {
     var type: OperationType!
     
     public var apiCancellables: Set<AnyCancellable> = []
+    private let serverVersion : Int = 1
     
     override init() {
         self.reportRepository = ReportRepository()
@@ -279,7 +280,14 @@ class BaseUploadOperation: Operation {
                                                     uploadOnBackground: report?.server?.backgroundUpload ?? false)
                     
                     self.filesToUpload.append(fileToUpload)
-                    self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+                    
+                    if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent {
+                        self.postReportFile(fileId: reportVaultFile.id)
+                        mainAppModel.vaultManager.deleteTmpFiles(files: [fileToUpload.fileUrlPath])
+                    } else {
+                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+                    }
+                    
                 }
             }
         }
@@ -313,8 +321,10 @@ class BaseUploadOperation: Operation {
             .store(in: &apiCancellables)
     }
     
-    func postFile(fileToUpload: FileToUpload) {
+    func postReportFile(fileId: String?) {
         guard guardNetworkConnected() else { return }
+        
+        guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
         
         reportRepository.postFile(fileToUpload: fileToUpload)
             .sink { [weak self] completion in
@@ -322,13 +332,13 @@ class BaseUploadOperation: Operation {
                 if case .failure = completion {
                     self.initialResponse.send(.progress(progressInfo: .init(fileId: fileToUpload.fileId, status: .submissionError)))
                 }
-            } receiveValue: { [weak self] size in
+            } receiveValue: { [weak self] result in
                 guard let self else { return }
-                
+                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
             }
             .store(in: &apiCancellables)
     }
-
+    
     func putReportFile(fileId: String?, size: Int) {
         guard guardNetworkConnected() else { return }
         
@@ -371,7 +381,12 @@ class BaseUploadOperation: Operation {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
             
         } else {
-            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
+            if serverVersion == 2 { //TODO: new API to be change after getting the response from API
+                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
+            } else {
+                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
+                self.postReportFile(fileId: fileId)
+            }
             
             if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
                 mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
