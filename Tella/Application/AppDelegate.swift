@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,18 +15,22 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     var backgroundSessionCompletionHandler: (() -> Void)?
     static private(set) var instance: AppDelegate! = nil
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
-        
+        UploadService.shared.ensureSessions()
         setupDropbox()
         configureGoogleSignIn()
         return true
     }
     
-    func application (_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-            backgroundSessionCompletionHandler = completionHandler
-        }
-
+    func application(_ application: UIApplication,
+                     handleEventsForBackgroundURLSession identifier: String,
+                     completionHandler: @escaping () -> Void) {
+        backgroundSessionCompletionHandler = completionHandler
+        UploadService.shared.ensureSessions()
+    }
+    
     private func setupDropbox() {
         guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
             debugLog("Dropbox App Key not found")
