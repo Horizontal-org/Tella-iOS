@@ -25,7 +25,6 @@ class BaseUploadOperation: Operation {
     var filesToUpload : [FileToUpload] = []
     var subscribers : Set<AnyCancellable> = []
     var type: OperationType!
-    var taskType: URLSessionTaskType = .dataTask
     
     public var apiCancellables: Set<AnyCancellable> = []
     
@@ -332,7 +331,6 @@ class BaseUploadOperation: Operation {
             )
             
             uploadTasksDict[task] = fileToUpload.fileId
-            taskType = .uploadTask
             task.resume()
             
         } catch {

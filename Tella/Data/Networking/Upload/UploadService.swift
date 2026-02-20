@@ -62,7 +62,7 @@ class UploadService: NSObject {
     
     var hasFilesToUploadOnBackground: Bool {
         withOperations { operations in
-            !operations.filter { $0.uploadTasksDict.values.count != 0 && $0.taskType == .uploadTask }.isEmpty
+            !operations.filter { $0.uploadTasksDict.values.count != 0 }.isEmpty
         }
     }
     
@@ -76,9 +76,9 @@ class UploadService: NSObject {
     
     func cancelTasksIfNeeded() {
         withOperations { operations in
-            let toCancel = operations.filter { $0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask }
+            let toCancel = operations.filter { $0.report?.server?.backgroundUpload == false }
             toCancel.forEach { $0.pauseSendingReport() }
-            operations.removeAll(where: { $0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask })
+            operations.removeAll(where: { $0.report?.server?.backgroundUpload == false })
         }
     }
     
@@ -208,8 +208,6 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .backgroundUploadsDidFinish, object: nil)
-            
             if let appDelegate = AppDelegate.instance,
                let completion = appDelegate.backgroundSessionCompletionHandler {
                 appDelegate.backgroundSessionCompletionHandler = nil

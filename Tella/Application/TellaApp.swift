@@ -2,7 +2,7 @@
 //  TellaApp.swift
 //  Tella
 //
-//  
+//
 //  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
@@ -16,6 +16,7 @@ struct TellaApp: App {
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let delayTimeInSecond = 1.0
+    @State private var pendingBackgroundSave = false
     
     var body: some Scene {
         WindowGroup {
@@ -32,54 +33,58 @@ struct TellaApp: App {
                 UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockApptype: .enterInBackground)
             case .active:
+                pendingBackgroundSave = false
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
+                pendingBackgroundSave = true
             default:
                 break
             }
         }
     }
-
-    func saveData(lockApptype:LockApptype) {
+    
+    func saveData(lockApptype: LockApptype) {
+        guard appViewState.homeViewModel.shouldResetApp() else { return }
         
+        UploadService.shared.cancelTasksIfNeeded()
+        appViewState.homeViewModel.appEnterInBackground = true
+        
+        if lockApptype == .enterInBackground {
+            if pendingBackgroundSave {
+                appViewState.homeViewModel.shouldSaveCurrentData = true
+            }
+            pendingBackgroundSave = false
+        }
+        
+        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        guard !hasFileOnBackground else { return }
         
         appViewState.homeViewModel.saveLockTimeoutStartDate()
         
-        UploadService.shared.cancelTasksIfNeeded()
-        
-        appViewState.homeViewModel.appEnterInBackground = true
-        
-        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
-        let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
-        
-        if shouldResetApp && !hasFileOnBackground {
-            
-            appViewState.homeViewModel.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
-                appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
-                appViewState.resetApp()
-            })
-            appViewState.homeViewModel.shouldSaveCurrentData = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
+            appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+            appViewState.resetApp()
         }
     }
+    
     func resetApp() {
+        
+        appViewState.homeViewModel.shouldSaveCurrentData = false
+        
         let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
-
+        
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
             UIApplication.getTopViewController()?.dismiss(animated: false)
-
-            DispatchQueue.main.async {
-                appViewState.resetApp()
-            }
+            DispatchQueue.main.async { appViewState.resetApp() }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
         }
+        
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
-    }
-}
+    }}
 
 enum LockApptype {
     case enterInBackground
