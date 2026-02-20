@@ -35,6 +35,17 @@ class ReportRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
+    func postFile(fileToUpload: FileToUpload) -> AnyPublisher<BoolModel, APIError> {
+        let endpoint = ReportRepository.API.postReportFile(fileToUpload)
+        return (getAPIResponse(endpoint: endpoint) as APIResponse<BoolResponse >)
+            .compactMap { dto, headers -> BoolModel? in
+                guard let api = dto.toDomain() as? BoolModel else { return nil }
+                return api
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    
     func makePutReportFileUploadTask(
         fileToUpload: FileToUpload,
         session: URLSession
@@ -62,6 +73,7 @@ extension ReportRepository {
         case createReport((Report))
         case headReportFile((FileToUpload))
         case putReportFile((FileToUpload))
+        case postReportFile((FileToUpload))
     }
 }
 
@@ -73,7 +85,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport((let report)):
             return report.server?.accessToken
             
-        case .putReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file)), .headReportFile((let file)), .postReportFile(let file):
             return file.accessToken
         }
     }
@@ -101,7 +113,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport((let report)):
             return report.server?.url ?? ""
             
-        case .putReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file)), .headReportFile((let file)), .postReportFile(let file):
             return file.serverURL
         }
     }
@@ -113,7 +125,7 @@ extension ReportRepository.API: APIRequest {
             let projectId = report.server?.projectId ?? ""
             return "/project/\(projectId)"
             
-        case .putReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file)), .headReportFile((let file)), .postReportFile(let file):
             return "/file/\(file.idReport)/\(file.fileName).\(file.fileExtension)"
         }
     }
@@ -121,7 +133,7 @@ extension ReportRepository.API: APIRequest {
     var httpMethod: HTTPMethod {
         switch self {
             
-        case .createReport(_):
+        case .createReport(_), .postReportFile(_):
             return HTTPMethod.post
             
         case .headReportFile(_):

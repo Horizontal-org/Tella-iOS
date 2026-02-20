@@ -313,6 +313,22 @@ class BaseUploadOperation: Operation {
             .store(in: &apiCancellables)
     }
     
+    func postFile(fileToUpload: FileToUpload) {
+        guard guardNetworkConnected() else { return }
+        
+        reportRepository.postFile(fileToUpload: fileToUpload)
+            .sink { [weak self] completion in
+                guard let self else { return }
+                if case .failure = completion {
+                    self.initialResponse.send(.progress(progressInfo: .init(fileId: fileToUpload.fileId, status: .submissionError)))
+                }
+            } receiveValue: { [weak self] size in
+                guard let self else { return }
+                
+            }
+            .store(in: &apiCancellables)
+    }
+
     func putReportFile(fileId: String?, size: Int) {
         guard guardNetworkConnected() else { return }
         
