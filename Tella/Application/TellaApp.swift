@@ -11,14 +11,17 @@ import SwiftUI
 
 @main
 struct TellaApp: App {
+
+    enum LockAppType {
+        case enterInBackground
+        case finishBackgroundTasks
+    }
     
     @StateObject private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     /// Delay before clearing tmp and resetting view state when app enters background.
-    /// Allows in-flight I/O and UI transitions to settle before cleanup.
     private let backgroundCleanupDelay: TimeInterval = 1.0
-    @State private var pendingBackgroundSave = false
     
     var body: some Scene {
         WindowGroup {
@@ -36,11 +39,9 @@ struct TellaApp: App {
                 UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockAppType: .enterInBackground)
             case .active:
-                pendingBackgroundSave = false
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
-                pendingBackgroundSave = true
             default:
                 break
             }
@@ -55,10 +56,7 @@ struct TellaApp: App {
         appViewState.homeViewModel.appEnterInBackground = true
         
         if lockAppType == .enterInBackground {
-            if pendingBackgroundSave {
-                appViewState.homeViewModel.shouldSaveCurrentData = true
-            }
-            pendingBackgroundSave = false
+            appViewState.homeViewModel.shouldSaveCurrentData = true
         }
         
         let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
@@ -88,9 +86,4 @@ struct TellaApp: App {
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
     }
-}
-
-enum LockAppType {
-    case enterInBackground
-    case finishBackgroundTasks
 }
