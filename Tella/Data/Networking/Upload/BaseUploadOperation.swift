@@ -335,27 +335,48 @@ class BaseUploadOperation: Operation {
     
     func putReportFile(fileId: String?, size: Int) {
         guard guardNetworkConnected() else { return }
-        
+        guard let session = self.urlSession else { return }
+        guard let fileId else { return }
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
+        let oldURL = fileToUpload.fileUrlPath
         
         if size != 0 {
-            mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
+            do {
+                let outputURL = try mainAppModel.vaultManager.extract(
+                    from: fileToUpload.fileUrlPath,
+                    offsetSize: size
+                )
+                fileToUpload.fileUrlPath = outputURL
+                
+                vaultManager.deleteFiles(files: [oldURL])
+                
+            } catch {
+                debugLog("extract failed")
+                initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
+                return
+            }
+        }
+        
+        let path = fileToUpload.fileUrlPath.path
+        
+        guard mainAppModel.vaultManager.fileExists(at: path),
+              mainAppModel.vaultManager.isReadableFile(at: path) else {
+            debugLog("Upload file missing/unreadable")
+            initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
+            return
         }
         
         do {
-            guard let session = self.urlSession else { return }
-            
             let task = try reportRepository.makePutReportFileUploadTask(
                 fileToUpload: fileToUpload,
                 session: session
             )
-            
-            uploadTasksDict[task] = fileToUpload.fileId
+            uploadTasksDict[task] = fileId
             task.resume()
-            
         } catch {
-            debugLog("PUT report file request failed: \(error)")
+            debugLog("PUT report file request failed")
             updateReport(reportStatus: .submissionError)
+            initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
         }
     }
     

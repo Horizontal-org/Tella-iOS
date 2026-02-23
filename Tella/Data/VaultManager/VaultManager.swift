@@ -182,34 +182,51 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return tmpFileURL
     }
-    
-    func extract(from inputFileURL: URL, offsetSize:Int)   {
-        
-        do {
-            
-            // Open the file in read-write mode
-            let fileHandle = try FileHandle(forUpdating: inputFileURL)
-            
-            // Move the file pointer to the start offset
-            try fileHandle.seek(toOffset: UInt64(offsetSize))
-            
-            // Read the content after the subrange
-            let remainingData = fileHandle.readDataToEndOfFile()
-            
-            try fileHandle.seek(toOffset: 0)
-            
-            // Write back the content after the subrange
-            fileHandle.write(remainingData)
-            
-            // Truncate the file to the new size
-            fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
-            
-            // Close the file handle
-            fileHandle.closeFile()
-            
-        } catch let error {
-            debugLog(error)
+
+    func extract(from inputFileURL: URL, offsetSize: Int) throws -> URL {
+
+        guard fileManager.fileExists(filePath: inputFileURL.path) else {
+            throw RuntimeError("Input file does not exist")
         }
+
+        guard offsetSize >= 0 else {
+            throw RuntimeError("Invalid offset (negative)")
+        }
+
+        guard let fileSize = fileManager.sizeOfFile(atPath: inputFileURL.path) else {
+            throw RuntimeError("Could not get input file size")
+        }
+
+        guard offsetSize <= fileSize else {
+            throw RuntimeError("Invalid offset (beyond EOF)")
+        }
+
+        let outputURL = createTempFileURL(pathExtension: inputFileURL.pathExtension)
+
+        if fileManager.fileExists(filePath: outputURL.path) {
+            fileManager.removeItem(at: outputURL)
+        }
+
+        _ = fileManager.createEmptyFile(atPath: outputURL)
+
+        let inputHandle = try FileHandle(forReadingFrom: inputFileURL)
+        defer { try? inputHandle.close() }
+
+        let outputHandle = try FileHandle(forWritingTo: outputURL)
+        defer { try? outputHandle.close() }
+
+        try inputHandle.seek(toOffset: UInt64(offsetSize))
+
+        let chunkSize = 1 * 1024 * 1024
+        while true {
+            if let data = try inputHandle.read(upToCount: chunkSize), !data.isEmpty {
+                try outputHandle.write(contentsOf: data)
+            } else {
+                break
+            }
+        }
+
+        return outputURL
     }
     
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL? {
@@ -310,6 +327,14 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         return url
     }
     
+    func fileExists(at filePath: String) -> Bool {
+        fileManager.fileExists(filePath: filePath)
+    }
+    
+    func isReadableFile(at filePath: String) -> Bool {
+        fileManager.isReadableFile(filePath: filePath)
+    }
+
 }
 
 //  VaultManager extension contains the methods used for authentication
