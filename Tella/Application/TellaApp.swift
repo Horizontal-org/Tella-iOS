@@ -11,7 +11,7 @@ import SwiftUI
 
 @main
 struct TellaApp: App {
-
+    
     enum LockAppType {
         case enterInBackground
         case finishBackgroundTasks
@@ -37,6 +37,7 @@ struct TellaApp: App {
             switch phase {
             case .background:
                 UIApplication.getTopViewController()?.dismiss(animated: false)
+                appViewState.homeViewModel.saveLockTimeoutStartDate()
                 self.saveData(lockAppType: .enterInBackground)
             case .active:
                 self.resetApp()
@@ -49,6 +50,7 @@ struct TellaApp: App {
     }
     
     func saveData(lockAppType: LockAppType) {
+        
         guard appViewState.homeViewModel.shouldResetApp() else { return }
         
         // Cancel foreground uploads and mark background entry; must run even when waiting for background uploads.
@@ -61,8 +63,6 @@ struct TellaApp: App {
         
         let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         guard !hasFileOnBackground else { return }
-        
-        appViewState.homeViewModel.saveLockTimeoutStartDate()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + backgroundCleanupDelay) {
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
