@@ -348,7 +348,7 @@ class BaseUploadOperation: Operation {
                 )
                 fileToUpload.fileUrlPath = outputURL
                 
-                vaultManager.deleteFiles(files: [oldURL])
+                mainAppModel.vaultManager.deleteFiles(files: [oldURL])
                 
             } catch {
                 debugLog("extract failed")
