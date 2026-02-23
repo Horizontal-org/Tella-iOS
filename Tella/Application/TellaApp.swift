@@ -30,7 +30,9 @@ struct TellaApp: App {
                     appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .backgroundUploadsDidFinish)) { _ in
-                    self.saveData(lockAppType: .finishBackgroundTasks)
+                    if UIApplication.shared.applicationState == .background {
+                        self.saveData(lockAppType: .finishBackgroundTasks)
+                    }
                 }
             
         }.onChange(of: scenePhase) { phase in

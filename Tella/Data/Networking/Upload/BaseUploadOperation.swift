@@ -281,13 +281,7 @@ class BaseUploadOperation: Operation {
                     
                     self.filesToUpload.append(fileToUpload)
                     
-                    if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent {
-                        self.postReportFile(fileId: reportVaultFile.id)
-                        mainAppModel.vaultManager.deleteTmpFiles(files: [fileToUpload.fileUrlPath])
-                    } else {
-                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                    }
-                    
+                    self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                 }
             }
         }
