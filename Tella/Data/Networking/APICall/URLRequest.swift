@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -33,39 +33,38 @@ extension WebRepository {
                 .eraseToAnyPublisher()
         }
     }
-
+    
     func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
     where Value: Decodable {
         fetchData(endpoint: endpoint)
             .requestJSON()
             .eraseToAnyPublisher()
     }
-
+    
     
     func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
         fetchData(endpoint: endpoint)
             .requestData()
             .eraseToAnyPublisher()
     }
-    
-    
+
     func makeUploadRequestAndTask(
         endpoint: any APIRequest,
         fileURL: URL,
         session: URLSession
     ) throws -> (request: URLRequest, task: URLSessionUploadTask) {
-
+        
         guard NetworkMonitor.shared.isConnected else {
             throw APIError.noInternetConnection
         }
-
+        
         let request = try endpoint.urlRequest()
         request.curlRepresentation()
-
+        
         let task = session.uploadTask(with: request, fromFile: fileURL)
         return (request, task)
     }
-
+    
 }
 // MARK: - Helpers
 extension Publisher where Output == URLSession.DataTaskPublisher.Output {
@@ -84,7 +83,6 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 } else {
                     return APIError.unexpectedResponse
                 }
-
             }
             .eraseToAnyPublisher()
     }
@@ -96,7 +94,6 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }
-
             guard HTTPCodes.success.contains(code) else {
                 debugLog("Error code: \(code)")
                 throw APIError.httpCode(code)

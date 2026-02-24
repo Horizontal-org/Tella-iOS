@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 9/14/23.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -24,7 +24,8 @@ extension TellaDataBase {
             cddl(D.cApiProjectId, D.text),
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
-            cddl(D.cAutoDelete, D.integer)
+            cddl(D.cAutoDelete, D.integer),
+            cddl(D.cVersion, D.text)
         ]
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -41,7 +42,9 @@ extension TellaDataBase {
                                KeyValue(key: D.cApiProjectId, value: server.projectId),
                                KeyValue(key: D.cSlug, value: server.slug),
                                KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
+                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
+                               KeyValue(key: D.cVersion, value:server.version)
+            ]
             
             let serverId = try statementBuilder.insertInto(tableName: D.tServer,
                                                            keyValue: valuesToAdd)
@@ -51,7 +54,15 @@ extension TellaDataBase {
             return .failure(error)
         }
     }
-
+    
+    func addVersionToTellaWebServer() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tServer, columnName: D.cVersion, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+    
     func getAutoUploadServer() -> TellaServer? {
         do {
             let serverCondition = [KeyValue(key: D.cAutoUpload, value: 1)]
@@ -77,7 +88,7 @@ extension TellaDataBase {
         } catch {
             debugLog("Error while fetching servers from \(D.tServer): \(error)")
         }
-
+        
         return servers
     }
     
@@ -101,19 +112,21 @@ extension TellaDataBase {
         let slug = dictionnary[D.cSlug] as? String
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
-
+        let version = dictionnary[D.cVersion] as? Int
+        
         return TellaServer(id:id,
-                      name: name,
-                      serverURL: url,
-                      username: username,
-                      password: password,
-                      accessToken: token,
-                      activatedMetadata: activatedMetadata == 0 ? false : true ,
-                      backgroundUpload: backgroundUpload == 0 ? false : true,
-                      projectId: apiProjectId,
-                      slug:slug,
-                      autoUpload: autoUpload == 0 ? false : true,
-                      autoDelete: autoDelete == 0 ? false : true
+                           name: name,
+                           serverURL: url,
+                           username: username,
+                           password: password,
+                           accessToken: token,
+                           activatedMetadata: activatedMetadata == 0 ? false : true ,
+                           backgroundUpload: backgroundUpload == 0 ? false : true,
+                           projectId: apiProjectId,
+                           slug:slug,
+                           autoUpload: autoUpload == 0 ? false : true,
+                           autoDelete: autoDelete == 0 ? false : true,
+                           version: version
         )
     }
     

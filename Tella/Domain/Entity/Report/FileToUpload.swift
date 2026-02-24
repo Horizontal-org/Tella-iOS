@@ -1,5 +1,5 @@
 //
-// Copyright © 2023 HORIZONTAL. 
+// Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,6 +7,7 @@
 import Foundation
 
 class FileToUpload {
+    
     var id : String
     var idReport : String
     var fileUrlPath : URL
@@ -18,8 +19,19 @@ class FileToUpload {
     var fileSize : Int
     var bytesSent : Int
     var uploadOnBackground : Bool
-
-    init(idReport: String, fileUrlPath: URL, accessToken: String, serverURL: String, fileName: String, fileExtension: String, fileId: String?, fileSize: Int, bytesSent:Int, uploadOnBackground : Bool = false) {
+    var version : String?
+    
+    init(idReport: String,
+         fileUrlPath: URL,
+         accessToken: String,
+         serverURL: String,
+         fileName: String,
+         fileExtension: String,
+         fileId: String?,
+         fileSize: Int,
+         bytesSent:Int,
+         uploadOnBackground : Bool = false,
+         version : String?) {
         self.id = UUID().uuidString
         self.idReport = idReport
         self.fileUrlPath = fileUrlPath
@@ -31,5 +43,6 @@ class FileToUpload {
         self.fileSize = fileSize
         self.bytesSent = bytesSent
         self.uploadOnBackground = uploadOnBackground
+        self.version = version
     }
 }

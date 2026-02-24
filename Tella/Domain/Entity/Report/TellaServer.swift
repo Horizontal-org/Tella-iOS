@@ -16,7 +16,7 @@ class TellaServer : WebServer {
     var autoUpload: Bool?
     var autoDelete: Bool?
     var accessToken: String?
-
+    var version: String?
     
     enum CodingKeys: String, CodingKey {
         case id = "c_server_id"
@@ -27,8 +27,9 @@ class TellaServer : WebServer {
         case autoUpload = "c_auto_upload"
         case autoDelete = "c_auto_delete"
         case accessToken = "c_access_token"
+        case version = "c_version"
     }
-
+    
     init(id: Int? = nil,
          name: String? = nil,
          serverURL: String? = nil,
@@ -41,7 +42,8 @@ class TellaServer : WebServer {
          slug: String? = nil,
          autoUpload: Bool,
          autoDelete: Bool,
-         serverType: ServerConnectionType? = .tella) {
+         serverType: ServerConnectionType? = .tella,
+         version: String? = nil) {
         
         self.activatedMetadata = activatedMetadata
         self.backgroundUpload = backgroundUpload
@@ -50,6 +52,8 @@ class TellaServer : WebServer {
         self.autoUpload = autoUpload
         self.autoDelete = autoDelete
         self.accessToken = accessToken
+        self.version = version
+        
         super.init(id: id,
                    name: name,
                    serverURL: serverURL,

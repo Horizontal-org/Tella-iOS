@@ -13,11 +13,11 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     var reportIsNotAutoDelete: Bool {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
-
+    
     override init(reportsViewModel : ReportsMainViewModel, reportId : Int?) {
-
+        
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
-
+        
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
         } else {
@@ -37,7 +37,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                 case .createReport(let apiId, let reportStatus, let error):
                     
                     if let _ = error {
-                        
+                        self.updateReportStatus(reportStatus: .submissionError)
                     } else {
                         
                         self.reportViewModel.apiID = apiId
@@ -87,7 +87,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     override func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.reportsViewModel.mainAppModel.tellaData?.getReport(reportId: reportId) {
-
+            
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
             self.reportViewModel = ReportViewModel(report: report, files: files)
@@ -108,20 +108,20 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
             
             guard let reportID = reportViewModel.id,
                   let report = self.mainAppModel.tellaData?.getReport(reportId:reportID) else { return }
-
+            
             treat(uploadResponse: self.reportUploadService.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }
-
+    
     // MARK: Update Local database
     
     override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
         self.objectWillChange.send()
-
+        
         guard let id = reportViewModel.id else { return  }
-
+        
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     

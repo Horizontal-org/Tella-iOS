@@ -258,7 +258,11 @@ class BaseUploadOperation: Operation {
     func uploadFiles() {
         guard guardNetworkConnected() else { return }
         
-        guard let apiID = self.report?.apiID, let accessToken = report?.server?.accessToken, let serverUrl = report?.server?.url else { return }
+        guard let apiID = self.report?.apiID,
+              let accessToken = report?.server?.accessToken,
+        let serverUrl = report?.server?.url
+        else { return }
+        let version = report?.server?.version
         
         if let filesToUpload = reportVaultFiles?.filter({ $0.status != .submitted }) {
             if filesToUpload.isEmpty {
@@ -277,7 +281,8 @@ class BaseUploadOperation: Operation {
                                                     fileId: reportVaultFile.id,
                                                     fileSize: reportVaultFile.size,
                                                     bytesSent: reportVaultFile.bytesSent,
-                                                    uploadOnBackground: report?.server?.backgroundUpload ?? false)
+                                                    uploadOnBackground: report?.server?.backgroundUpload ?? false,
+                                                    version: version)
                     
                     self.filesToUpload.append(fileToUpload)
                     
