@@ -27,8 +27,8 @@ class BaseUploadOperation: Operation {
     var type: OperationType!
     
     public var apiCancellables: Set<AnyCancellable> = []
-    private let serverVersion : Int = 1
-    
+    static let newServerVersion = "1.4.0"
+
     override init() {
         self.reportRepository = ReportRepository()
         super.init()
@@ -401,7 +401,10 @@ class BaseUploadOperation: Operation {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
             
         } else {
-            if serverVersion == 2 { //TODO: new API to be change after getting the response from API
+            
+            guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
+
+            if fileToUpload.version == BaseUploadOperation.newServerVersion {
                 self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
             } else {
                 self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
