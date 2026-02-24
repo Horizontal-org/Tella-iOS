@@ -112,7 +112,7 @@ extension TellaDataBase {
         let slug = dictionnary[D.cSlug] as? String
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
-        let version = dictionnary[D.cVersion] as? Int
+        let version = dictionnary[D.cVersion] as? String
         
         return TellaServer(id:id,
                            name: name,
