@@ -70,6 +70,9 @@ class ReportRepository: WebRepository {
 
 extension ReportRepository {
     enum API {
+        /// Server version from which the file PUT endpoint uses the v2 path (e.g. "1.4.0").
+        static let fileAPIv2MinimumVersion = "1.4.0"
+
         case createReport((Report))
         case headReportFile((FileToUpload))
         case putReportFile((FileToUpload))
@@ -125,8 +128,13 @@ extension ReportRepository.API: APIRequest {
             let projectId = report.server?.projectId ?? ""
             return "/project/\(projectId)"
             
-        case .putReportFile((let file)), .headReportFile((let file)), .postReportFile(let file):
+        case .headReportFile(let file), .postReportFile(let file):
             return "/file/\(file.idReport)/\(file.fileName).\(file.fileExtension)"
+            
+        case .putReportFile(let file):
+            let filePath = "\(file.idReport)/\(file.fileName).\(file.fileExtension)"
+            let prefix = file.version == Self.fileAPIv2MinimumVersion ? "/file/v2" : "/file"
+            return "\(prefix)/\(filePath)"
         }
     }
     
