@@ -39,8 +39,8 @@ class FileListViewModel: ObservableObject {
     @Published var showingImportDocumentPicker = false
     @Published var showingImagePicker = false
     @Published var vaultFiles : [VaultFileDB] = []
-    
-    
+    let toastMessage = PassthroughSubject<String, Never>()
+
     var mainAppModel: MainAppModel
     var filterType: FilterType
     var oldParentFile : VaultFileDB?
@@ -403,9 +403,17 @@ extension FileListViewModel {
         let deleteVaultFileResult = mainAppModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
         if case .success = deleteVaultFileResult {
             getFiles()
+            let msg = selectedFiles.count == 1
+                ? LocalizableVault.fileDeletedToast.localized
+                : LocalizableVault.filesDeletedToast.localized
+            showToast(msg)
         }
     }
     
+    private func showToast(_ message: String) {
+        toastMessage.send(message)
+    }
+
     func clearTmpDirectory() {
         mainAppModel.vaultManager.clearTmpDirectory()
     }

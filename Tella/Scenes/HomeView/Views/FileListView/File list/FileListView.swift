@@ -45,6 +45,9 @@ struct FileListView: View {
                 navigateTo(destination: fileDetailView)
             }
         }
+        .onReceive(fileListViewModel.toastMessage) { message in
+            Toast.displayToast(message: message)
+        }
         .onAppear(perform: {
             fileListViewModel.fileActionSource = .listView
         })

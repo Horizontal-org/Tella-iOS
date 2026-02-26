@@ -81,6 +81,10 @@
 "Vault_DeleteFile_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCEL";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
+
+"Vault_DeleteFile_FileDeleted_Toast" = "The file was deleted";
+"Vault_DeleteFile_FilesDeleted_Toast" = "The files were deleted";
+
 "Vault_SaveToDevice_SheetTitle" = "Save to device gallery?";
 "Vault_SaveToDevice_SheetExpl" = "This will make your files accessible from outside Tella, in your device’s gallery and by other apps.";
 "Vault_SaveToDevice_Save_SheetAction" = "Save to device";
