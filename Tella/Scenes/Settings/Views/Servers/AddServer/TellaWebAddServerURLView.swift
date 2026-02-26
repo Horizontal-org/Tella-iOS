@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,7 +12,7 @@ struct TellaWebAddServerURLView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var nextButtonAction: NextButtonAction = .action
     @StateObject var serverViewModel : TellaWebServerViewModel
-
+    
     init(mainAppModel:MainAppModel, server: TellaServer? = nil,
          serversSourceView: ServersSourceView) {
         _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: mainAppModel, currentServer: server, serversSourceView: serversSourceView))
@@ -28,13 +28,13 @@ struct TellaWebAddServerURLView: View {
                     Spacer()
                         .frame(height: 80)
                     
-                    Image("settings.server")
+                    Image(.settingsServer)
                     
                     
                     Spacer()
                         .frame(height: 24)
                     
-                    Text("Enter the project URL")
+                    Text(LocalizableSettings.serverProjectURL.localized)
                         .font(.custom(Styles.Fonts.regularFontName, size: 18))
                         .foregroundColor(.white)
                     
@@ -51,9 +51,12 @@ struct TellaWebAddServerURLView: View {
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        // serverViewModel.checkURL()
-                        navigateTo(destination: serverLoginView)
-                        
+                        Task { @MainActor in
+                            let exists = await serverViewModel.checkProjectExists()
+                            if !exists {
+                                navigateTo(destination: serverLoginView)
+                            }
+                        }
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()

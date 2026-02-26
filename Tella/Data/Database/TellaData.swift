@@ -365,6 +365,10 @@ class TellaData : ObservableObject {
     func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
         database.deleteFeedback(feedbackId: feedbackId)
     }
+    
+    func checkIfProjectExists(url: String, slug: String) -> Result<Bool, Error> {
+        database.checkIfProjectExists(url: url, slug: slug)
+    }
 }
 
 // MARK: - Extension for Uwazi Template methods

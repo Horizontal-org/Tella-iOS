@@ -116,7 +116,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case advancedSettings = "Setting_Server_AdvancedSettings"
     case serverUsername = "Setting_Server_Uwazi_Username"
     case serverPassword = "Setting_Server_Password"
-
+    case serverProjectURL = "Setting_Server_Project_URL"
+    case projectExistsError = "Setting_Server_Project_Exists_Error"
     // Uwazi
     case UwaziAccessServerTitle = "Setting_Server_Uwazi_Access_Title"
     case UwaziLogin = "Setting_Server_Uwazi_Login"

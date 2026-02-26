@@ -204,4 +204,18 @@ extension TellaDataBase {
         }
         
     }
+
+    func checkIfProjectExists(url: String, slug: String) -> Result<Bool, Error> {
+        do {
+            let condition = [
+                KeyValue(key: D.cURL, value: url),
+                KeyValue(key: D.cSlug, value: slug)
+            ]
+            let rows = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: condition)
+            return .success(!rows.isEmpty)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
 }

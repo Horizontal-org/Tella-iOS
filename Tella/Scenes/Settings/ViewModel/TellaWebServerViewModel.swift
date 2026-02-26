@@ -141,6 +141,37 @@ class TellaWebServerViewModel: ServerViewModel {
             autoDelete = server.autoDelete ?? false
         }
     }
+    
+    func checkProjectExists() async -> Bool {
+        guard let baseURL = projectURL.getBaseURL() else { return false }
+        guard let url = projectURL.url(),
+              let slug = url.pathComponents.filter({ $0 != "/" }).last,
+              !slug.isEmpty else {
+            return false
+        }
+        
+        let tellaData = mainAppModel.tellaData
+        
+        await MainActor.run { isLoading = true }
+        defer {
+            Task { @MainActor in isLoading = false }
+        }
+        
+        let result = await Task.detached {
+            tellaData?.checkIfProjectExists(url: baseURL, slug: slug)
+        }.value
+        
+        let exists: Bool
+        if case .success(let value) = result, value {
+            await MainActor.run {
+                shouldShowURLError = true
+                urlErrorMessage = LocalizableSettings.projectExistsError.localized
+            }
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension TellaWebServerViewModel {

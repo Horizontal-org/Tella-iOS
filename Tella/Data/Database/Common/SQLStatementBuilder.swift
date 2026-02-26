@@ -176,30 +176,30 @@ class SQLiteStatementBuilder {
             sql += " WHERE "
             
             if !andCondition.isEmpty {
-                let values = andConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND")
+                let values = andConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
                 sql += " (\(values))"
             }
             
             if (!andCondition.isEmpty && !andDifferentCondition.isEmpty) {
-                sql += " AND"
+                sql += " AND "
             }
             
             if !andDifferentCondition.isEmpty {
-                let values = andDifferentConditionPrimaryKeyColumnNames.map { "\($0) != :\($0)" }.joined(separator: " AND")
+                let values = andDifferentConditionPrimaryKeyColumnNames.map { "\($0) != :\($0)" }.joined(separator: " AND ")
                 sql += " (\(values))"
             }
             
             if (!andCondition.isEmpty || !andDifferentCondition.isEmpty) && !ordCondition.isEmpty {
-                sql += " AND"
+                sql += " AND "
             }
             
             if !ordCondition.isEmpty {
-                let values = ordConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " OR")
+                let values = ordConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " OR ")
                 sql += " (\(values))"
             }
             
             if (!andCondition.isEmpty || !andDifferentCondition.isEmpty || !ordCondition.isEmpty) && !inCondition.isEmpty {
-                sql += " AND"
+                sql += " AND "
             }
             
             for (index, condition) in inCondition.enumerated() {
@@ -210,12 +210,12 @@ class SQLiteStatementBuilder {
                 sql += " \(columnName) IN (\(values))"
                 
                 if index < inCondition.count - 1 {
-                    sql += "  AND"
+                    sql += "  AND "
                 }
             }
             
             if (!andCondition.isEmpty || !andDifferentCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty) && !notInCondition.isEmpty {
-                sql += " AND"
+                sql += " AND "
             }
             
             for (index, condition) in notInCondition.enumerated() {
@@ -226,7 +226,7 @@ class SQLiteStatementBuilder {
                 sql += " \(columnName) NOT IN (\(values))"
                 
                 if index < notInCondition.count - 1 {
-                    sql += "  AND"
+                    sql += "  AND "
                 }
             }
         }
