@@ -20,8 +20,10 @@ class NextcloudDraftViewModel: DraftMainViewModel {
          reportsMainViewModel: ReportsMainViewModel) {
         self.nextcloudRepository = repository
         super.init(reportId: reportID, reportsMainViewModel: reportsMainViewModel)
+        form.pauseTracking()
         self.getServer()
         self.fillReportVM()
+        form.markClean()
     }
 
     override func fillReportVM() {
@@ -64,8 +66,8 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     }
     
     override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
+        $resultFile.sink(receiveValue: { [weak self] value in
+            guard let self, let value else { return }
             self.files.insert(value)
         }).store(in: &subscribers)
     }

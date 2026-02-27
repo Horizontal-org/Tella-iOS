@@ -17,9 +17,11 @@ class DropboxDraftViewModel: DraftMainViewModel {
     init(DropboxRepository: DropboxRepositoryProtocol, reportId: Int?, reportsMainViewModel: ReportsMainViewModel) {
         self.dropboxRepository = DropboxRepository
         super.init(reportId: reportId, reportsMainViewModel: reportsMainViewModel)
-        
+
+        form.pauseTracking()
         self.getServer()
         self.fillReportVM()
+        form.markClean()
     }
 
     override func fillReportVM() {
@@ -88,8 +90,8 @@ class DropboxDraftViewModel: DraftMainViewModel {
     }
     
     override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
+        $resultFile.sink(receiveValue: { [weak self] value in
+            guard let self, let value else { return }
             self.files.insert(value)
         }).store(in: &subscribers)
     }

@@ -164,6 +164,7 @@
 		125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */; };
 		125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A12C38056300440014 /* EntityStatusExtension.swift */; };
 		125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A32C3805C600440014 /* ReportStatusExtension.swift */; };
+		F0A1B2C32F5E111100AA1101 /* FormChangeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C42F5E111100AA1101 /* FormChangeTracker.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -847,6 +848,7 @@
 		125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteConnectionStrings.swift; sourceTree = "<group>"; };
 		125C78A12C38056300440014 /* EntityStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatusExtension.swift; sourceTree = "<group>"; };
 		125C78A32C3805C600440014 /* ReportStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportStatusExtension.swift; sourceTree = "<group>"; };
+		F0A1B2C42F5E111100AA1101 /* FormChangeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormChangeTracker.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -2160,6 +2162,7 @@
 				1285BF412A3C64F7005D5D23 /* OpenXmlHelper */,
 				D5077A3F260D300600D72947 /* DebugLogging.swift */,
 				0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */,
+				F0A1B2C42F5E111100AA1101 /* FormChangeTracker.swift */,
 				125D231B271F119D00250FBB /* Validator.swift */,
 				6DD4C039240F547300491438 /* Utils.swift */,
 				CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */,
@@ -4008,6 +4011,7 @@
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
+				F0A1B2C32F5E111100AA1101 /* FormChangeTracker.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				12782B4A2B8400E500B5BC36 /* Cryptor.swift in Sources */,
