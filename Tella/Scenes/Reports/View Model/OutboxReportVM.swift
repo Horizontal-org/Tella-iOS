@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -28,9 +28,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
             .receive(on: DispatchQueue.main)
-            .sink { result in
-                
-            } receiveValue: { response in
+            .sink { result in } receiveValue: { response in
                 
                 switch response {
                     
@@ -39,7 +37,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                     if let _ = error {
                         self.updateReportStatus(reportStatus: .submissionError)
                     } else {
-                        
                         self.reportViewModel.apiID = apiId
                         self.reportViewModel.status = reportStatus
                         
@@ -51,9 +48,8 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                 case .progress(let progressInfo):
                     
                     if let _ = progressInfo.error {
-                        
+                        // handled by markReportAsSubmissionErrorIfNeeded
                     } else {
-                        
                         _ =  self.reportViewModel.files.compactMap { _ in
                             let file = self.reportViewModel.files.first(where: {$0.id == progressInfo.fileId})
                             file?.bytesSent = (progressInfo.bytesSent) ?? 0

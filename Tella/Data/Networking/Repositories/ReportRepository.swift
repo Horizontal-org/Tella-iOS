@@ -168,8 +168,19 @@ extension ReportRepository.API: APIRequest {
     var headers: [String: String]? {
         switch self {
         case .putReportFile(let file):
-            
-            var header : [String:String] = [HTTPHeaderField.contentLength.rawValue :String(file.fileSize)]
+
+            let start = max(0, min(file.bytesSent, file.fileSize))
+            let maxRemaining = max(0, file.fileSize - start)
+            let remaining = max(0, min(file.remainingBytesToSend, maxRemaining))
+
+            var header: [String: String] = [
+                HTTPHeaderField.contentLength.rawValue: String(remaining)
+            ]
+
+            if remaining > 0 {
+                let end = start + remaining - 1
+                header[HTTPHeaderField.contentRange.rawValue] = "bytes \(start)-\(end)/\(file.fileSize)"
+            }
             
             if let mimeType = file.fileExtension.mimeType() {
                 header[HTTPHeaderField.contentType.rawValue] = mimeType

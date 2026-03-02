@@ -67,12 +67,14 @@ class UploadService: NSObject {
     }
     
     func pauseUpload(reportId: Int?) {
+        guard let reportId else { return }
         withOperations { operations in
-            let operation = operations.first(where: { $0.report?.id == reportId })
-            operation?.pauseSendingReport()
-            operations.removeAll(where: { $0.report?.id == reportId && (operation?.type != .autoUpload) })
+            guard let operation = operations.first(where: { $0.report?.id == reportId}) else { return }
+            operation.pauseSendingReport()
+            operations.removeAll(where: { $0.report?.id == reportId && $0.type != .autoUpload })
         }
     }
+    
     
     func cancelTasksIfNeeded() {
         withOperations { operations in
@@ -109,7 +111,25 @@ class UploadService: NSObject {
         }
     }
     
-    func addUploadReportOperation(report:Report, mainAppModel: MainAppModel ) -> CurrentValueSubject<UploadResponse?,APIError>  {
+    func addUploadReportOperation(report: Report, mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?,APIError>  {
+        if let reportId = report.id,
+           let existingResponse = withOperations({ operations -> CurrentValueSubject<UploadResponse?, APIError>? in
+               let activeOperation = operations.first(where: {
+                   $0.report?.id == reportId &&
+                   !$0.isCancelled &&
+                   !$0.isFinished
+               })
+               
+               // Drop stale operations for the same report so resume can create a fresh one.
+               operations.removeAll(where: {
+                   $0.report?.id == reportId &&
+                   ($0.isCancelled || $0.isFinished)
+               })
+               
+               return activeOperation?.response
+           }) {
+            return existingResponse
+        }
         
         let urlSession = session(forBackground: report.server?.backgroundUpload ?? false)
         

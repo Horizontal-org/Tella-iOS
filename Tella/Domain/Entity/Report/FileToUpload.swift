@@ -18,6 +18,7 @@ class FileToUpload {
     var fileId : String?
     var fileSize : Int
     var bytesSent : Int
+    var remainingBytesToSend : Int
     var uploadOnBackground : Bool
     var version : String?
     
@@ -30,6 +31,7 @@ class FileToUpload {
          fileId: String?,
          fileSize: Int,
          bytesSent:Int,
+         remainingBytesToSend : Int,
          uploadOnBackground : Bool = false,
          version : String?) {
         self.id = UUID().uuidString
@@ -42,6 +44,7 @@ class FileToUpload {
         self.fileId = fileId
         self.fileSize = fileSize
         self.bytesSent = bytesSent
+        self.remainingBytesToSend = remainingBytesToSend
         self.uploadOnBackground = uploadOnBackground
         self.version = version
     }

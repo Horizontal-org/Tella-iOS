@@ -28,7 +28,7 @@ class BaseUploadOperation: Operation {
     
     public var apiCancellables: Set<AnyCancellable> = []
     static let newServerVersion = "1.4.0"
-
+    
     override init() {
         self.reportRepository = ReportRepository()
         super.init()
@@ -240,7 +240,7 @@ class BaseUploadOperation: Operation {
                     self.initialResponse.send(.createReport(apiId: nil, reportStatus: .submissionError, error: err))
                 }
             } receiveValue: { [weak self] reportAPI in
-                guard let self else { return }
+                guard let self, !self.isCancelled else { return }
                 
                 let apiID = reportAPI.id
                 
@@ -256,11 +256,11 @@ class BaseUploadOperation: Operation {
     }
     
     func uploadFiles() {
-        guard guardNetworkConnected() else { return }
+        guard !isCancelled, guardNetworkConnected() else { return }
         
         guard let apiID = self.report?.apiID,
               let accessToken = report?.server?.accessToken,
-        let serverUrl = report?.server?.url
+              let serverUrl = report?.server?.url
         else { return }
         let version = report?.server?.version
         
@@ -269,8 +269,11 @@ class BaseUploadOperation: Operation {
                 self.checkAllFilesAreUploaded()
             } else {
                 filesToUpload.forEach { reportVaultFile in
+                    guard !self.isCancelled else { return }
                     let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
                     guard let url else { return }
+                    let syncedBytesSent = max(0, min(reportVaultFile.bytesSent, reportVaultFile.size))
+                    let remainingBytes = max(0, reportVaultFile.size - syncedBytesSent)
                     
                     let fileToUpload = FileToUpload(idReport: apiID,
                                                     fileUrlPath: url,
@@ -280,7 +283,8 @@ class BaseUploadOperation: Operation {
                                                     fileExtension: reportVaultFile.fileExtension,
                                                     fileId: reportVaultFile.id,
                                                     fileSize: reportVaultFile.size,
-                                                    bytesSent: reportVaultFile.bytesSent,
+                                                    bytesSent: syncedBytesSent,
+                                                    remainingBytesToSend: remainingBytes,
                                                     uploadOnBackground: report?.server?.backgroundUpload ?? false,
                                                     version: version)
                     
@@ -302,7 +306,17 @@ class BaseUploadOperation: Operation {
                     self.initialResponse.send(.progress(progressInfo: .init(fileId: fileToUpload.fileId, status: .submissionError)))
                 }
             } receiveValue: { [weak self] size in
-                guard let self else { return }
+                guard let self, !self.isCancelled else { return }
+                
+                if size > fileToUpload.fileSize {
+                    debugLog("Server file size exceeds local file size")
+                    self.initialResponse.send(
+                        .progress(
+                            progressInfo: UploadProgressInfo(fileId: fileToUpload.fileId, status: .submissionError)
+                        )
+                    )
+                    return
+                }
                 
                 self.initialResponse.send(
                     .progress(
@@ -339,17 +353,46 @@ class BaseUploadOperation: Operation {
     }
     
     func putReportFile(fileId: String?, size: Int) {
+        guard !isCancelled else { return }
         guard guardNetworkConnected() else { return }
         guard let session = self.urlSession else { return }
         guard let fileId else { return }
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
         let oldURL = fileToUpload.fileUrlPath
         
-        if size != 0 {
+        if size > fileToUpload.fileSize {
+            debugLog("Invalid resume offset: server file larger than local file")
+            initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
+            return
+        }
+        
+        let syncedBytesSent = max(0, min(size, fileToUpload.fileSize))
+        fileToUpload.bytesSent = syncedBytesSent
+        fileToUpload.remainingBytesToSend = max(0, fileToUpload.fileSize - syncedBytesSent)
+        
+        if fileToUpload.remainingBytesToSend == 0 {
+            if fileToUpload.version == BaseUploadOperation.newServerVersion {
+                self.initialResponse.send(
+                    UploadResponse.progress(
+                        progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)
+                    )
+                )
+            } else {
+                self.initialResponse.send(
+                    UploadResponse.progress(
+                        progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)
+                    )
+                )
+                self.postReportFile(fileId: fileId)
+            }
+            return
+        }
+        
+        if syncedBytesSent > 0 {
             do {
                 let outputURL = try mainAppModel.vaultManager.extract(
                     from: fileToUpload.fileUrlPath,
-                    offsetSize: size
+                    offsetSize: syncedBytesSent
                 )
                 fileToUpload.fileUrlPath = outputURL
                 
@@ -403,7 +446,7 @@ class BaseUploadOperation: Operation {
         } else {
             
             guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
-
+            
             if fileToUpload.version == BaseUploadOperation.newServerVersion {
                 self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
             } else {

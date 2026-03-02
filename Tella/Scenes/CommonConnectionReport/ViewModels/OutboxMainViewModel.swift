@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 7/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -35,11 +35,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     @Published var shouldShowLoginView : Bool = false
     @Published var shouldShowCreateFolder : Bool = false
-
+    
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
-
+    
     var uploadButtonTitle: String {
         
         switch reportViewModel.status {
@@ -199,13 +199,13 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     func markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: [ReportVaultFile] = []) {
         
         let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
-
+        
         if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
             reportViewModel.status = .submissionError
             publishUpdates()
         }
     }
-
+    
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         updateCurrentFile(uploadProgressInfo: uploadProgressInfo)
