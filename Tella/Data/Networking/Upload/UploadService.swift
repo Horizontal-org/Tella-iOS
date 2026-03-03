@@ -112,23 +112,19 @@ class UploadService: NSObject {
     }
     
     func addUploadReportOperation(report: Report, mainAppModel: MainAppModel) -> CurrentValueSubject<UploadResponse?,APIError>  {
-        if let reportId = report.id,
-           let existingResponse = withOperations({ operations -> CurrentValueSubject<UploadResponse?, APIError>? in
-               let activeOperation = operations.first(where: {
-                   $0.report?.id == reportId &&
-                   !$0.isCancelled &&
-                   !$0.isFinished
-               })
-               
-               // Drop stale operations for the same report so resume can create a fresh one.
-               operations.removeAll(where: {
-                   $0.report?.id == reportId &&
-                   ($0.isCancelled || $0.isFinished)
-               })
-               
-               return activeOperation?.response
-           }) {
-            return existingResponse
+        if let reportId = report.id {
+            let existingResponse = withOperations { operations -> CurrentValueSubject<UploadResponse?, APIError>? in
+                // Drop stale operations for the same report so resume can create a fresh one.
+                operations.removeAll(where: {
+                    $0.report?.id == reportId &&
+                    ($0.isCancelled || $0.isFinished)
+                })
+                // Any remaining operation for this report is active; reuse its response to avoid duplicates.
+                return operations.first(where: { $0.report?.id == reportId })?.response
+            }
+            if let existingResponse {
+                return existingResponse
+            }
         }
         
         let urlSession = session(forBackground: report.server?.backgroundUpload ?? false)
