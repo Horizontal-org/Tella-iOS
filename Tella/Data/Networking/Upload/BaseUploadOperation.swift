@@ -98,19 +98,12 @@ class BaseUploadOperation: Operation {
                                                           bytesSent: progressInfo.bytesSent,
                                                           current: progressInfo.current)
                 
-                if let _ = progressInfo.error {
-                    self.updateReport(reportStatus: .submissionError)
-                }
                 
                 self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent:totalByteSent,
                                                                                             fileId: progressInfo.fileId,
                                                                                             status: progressInfo.status,
                                                                                             reportStatus: self.report?.status)))
-                
-                if progressInfo.status == .submitted {
-                    self.checkAllFilesAreUploaded()
-                }
-                
+                self.checkAllFilesAreUploaded()
                 
             case .createReport(let apiId, let reportStatus, let error):
                 self.updateReport(apiID:apiId, reportStatus: reportStatus)
@@ -171,13 +164,18 @@ class BaseUploadOperation: Operation {
         
         guard let reportVaultFiles = self.reportVaultFiles else { return }
         
-        let filesWithError = reportVaultFiles.filter { $0.status == .submissionError }
-        guard filesWithError.isEmpty else { return }
+        let filesAreUploaded = reportVaultFiles.filter { $0.status != .submissionError && $0.status != .submitted }
+        guard filesAreUploaded.isEmpty else { return }
         
         let filesNotSubmitted = reportVaultFiles.filter { $0.status != .submitted }
-        guard filesNotSubmitted.isEmpty else { return }
         
-        self.updateReport(reportStatus: .submitted)
+        let success = filesNotSubmitted.isEmpty
+        if success {
+            self.updateReport(reportStatus: .submitted)
+        } else {
+            self.updateReport(reportStatus: .submissionError)
+            return
+        }
         
         if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
             self.deleteCurrentAutoReport()
@@ -189,8 +187,6 @@ class BaseUploadOperation: Operation {
         self.report = nil
         self.cancel()
         self.filesToUpload.removeAll()
-        
-        
     }
     
     func deleteCurrentAutoReport() {
@@ -362,7 +358,6 @@ class BaseUploadOperation: Operation {
         guard let session = self.urlSession else { return }
         guard let fileId else { return }
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
-        let oldURL = fileToUpload.fileUrlPath
         
         if size > fileToUpload.fileSize {
             debugLog("Invalid resume offset: server file larger than local file")
@@ -392,7 +387,7 @@ class BaseUploadOperation: Operation {
             return
         }
         
-        var inputURL = fileToUpload.baseDecryptedURL ?? fileToUpload.fileUrlPath
+        var inputURL = fileToUpload.baseDecryptedURL
         // Re-load from vault if temp file was cleaned up (e.g. iOS temp cleanup between head and extract)
         if !mainAppModel.vaultManager.fileExists(at: inputURL.path),
            let reportVaultFile = reportVaultFiles?.first(where: { $0.id == fileId }),
@@ -411,7 +406,6 @@ class BaseUploadOperation: Operation {
                 
             } catch let error {
                 debugLog("extract failed: \(error.localizedDescription)")
-                updateReport(reportStatus: .submissionError)
                 initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
                 return
             }
@@ -435,7 +429,6 @@ class BaseUploadOperation: Operation {
             task.resume()
         } catch {
             debugLog("PUT report file request failed")
-            updateReport(reportStatus: .submissionError)
             initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
         }
     }
@@ -452,27 +445,33 @@ class BaseUploadOperation: Operation {
         let fileId = uploadTasksDict[task]
         uploadTasksDict.removeValue(forKey: task)
         
-        if error != nil {
+        let httpSuccess: Bool = {
+            guard error == nil else { return false }
+            guard let httpResponse = task.response as? HTTPURLResponse else { return false }
+            return HTTPCodes.success.contains(httpResponse.statusCode)
+        }()
+        
+        if !httpSuccess {
+            debugLog("Upload task failed or server error")
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-            
+            return
+        }
+        
+        guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
+        
+        if fileToUpload.version == BaseUploadOperation.newServerVersion {
+            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
         } else {
-            
-            guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
-            
-            if fileToUpload.version == BaseUploadOperation.newServerVersion {
-                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
-            } else {
-                self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
-                self.postReportFile(fileId: fileId)
-            }
-            
-            let current = fileToUpload.fileUrlPath
-            mainAppModel.vaultManager.deleteFiles(files: [current])
-
-            let base = fileToUpload.baseDecryptedURL
-            if base != fileToUpload.fileUrlPath {
-                mainAppModel.vaultManager.deleteFiles(files: [base])
-            }
+            self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
+            self.postReportFile(fileId: fileId)
+        }
+        
+        let current = fileToUpload.fileUrlPath
+        mainAppModel.vaultManager.deleteFiles(files: [current])
+        
+        let base = fileToUpload.baseDecryptedURL
+        if base != fileToUpload.fileUrlPath {
+            mainAppModel.vaultManager.deleteFiles(files: [base])
         }
     }
 }
