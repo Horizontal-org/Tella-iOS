@@ -27,18 +27,19 @@ class UploadReportOperation: BaseUploadOperation {
             guard let report = self.report else { return }
             if isConnected && report.status == .submissionPending {
                 self.startUploadReportAndFiles()
-            } else if !isConnected && report.status != .submissionPending {
-                self.updateReport(reportStatus: .submissionPending)
+            } else if !isConnected && report.status != .submissionPaused {
                 self.stopConnection()
                 self.response.send(UploadResponse.initial)
                 debugLog("No internet connection")
             }
         }.store(in: &subscribers)
     }
+
     
     func startUploadReportAndFiles() {
         guard let currentReport = report else { return }
-        
+        guard !isCancelled else { return }
+
         if mainAppModel.networkMonitor.isConnected {
             
             self.updateReport(reportStatus: .submissionInProgress)

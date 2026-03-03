@@ -169,25 +169,28 @@ class BaseUploadOperation: Operation {
     
     private func checkAllFilesAreUploaded() {
         
-        // Check if all the files are submitted
+        guard let reportVaultFiles = self.reportVaultFiles else { return }
         
-        guard let filesNotSubmitted = self.reportVaultFiles?.filter({ $0.status != .submitted }) else { return }
+        let filesWithError = reportVaultFiles.filter { $0.status == .submissionError }
+        guard filesWithError.isEmpty else { return }
         
-        if filesNotSubmitted.isEmpty {
-            self.updateReport(reportStatus: .submitted)
-            
-            if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
-                self.deleteCurrentAutoReport()
-                self.response.send(.finish(isAutoDelete: true, title: self.report?.title))
-            } else  {
-                self.response.send(.finish(isAutoDelete: false, title: self.report?.title))
-            }
-            
-            self.report = nil
-            self.cancel()
-            self.filesToUpload.removeAll()
-            
+        let filesNotSubmitted = reportVaultFiles.filter { $0.status != .submitted }
+        guard filesNotSubmitted.isEmpty else { return }
+        
+        self.updateReport(reportStatus: .submitted)
+        
+        if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
+            self.deleteCurrentAutoReport()
+            self.response.send(.finish(isAutoDelete: true, title: self.report?.title))
+        } else  {
+            self.response.send(.finish(isAutoDelete: false, title: self.report?.title))
         }
+        
+        self.report = nil
+        self.cancel()
+        self.filesToUpload.removeAll()
+        
+        
     }
     
     func deleteCurrentAutoReport() {
@@ -277,6 +280,7 @@ class BaseUploadOperation: Operation {
                     
                     let fileToUpload = FileToUpload(idReport: apiID,
                                                     fileUrlPath: url,
+                                                    baseDecryptedURL: url,
                                                     accessToken: accessToken,
                                                     serverURL: serverUrl,
                                                     fileName: reportVaultFile.name,
@@ -388,18 +392,26 @@ class BaseUploadOperation: Operation {
             return
         }
         
+        var inputURL = fileToUpload.baseDecryptedURL ?? fileToUpload.fileUrlPath
+        // Re-load from vault if temp file was cleaned up (e.g. iOS temp cleanup between head and extract)
+        if !mainAppModel.vaultManager.fileExists(at: inputURL.path),
+           let reportVaultFile = reportVaultFiles?.first(where: { $0.id == fileId }),
+           let reloadedURL = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile) {
+            inputURL = reloadedURL
+            fileToUpload.baseDecryptedURL = reloadedURL
+        }
+        
         if syncedBytesSent > 0 {
             do {
                 let outputURL = try mainAppModel.vaultManager.extract(
-                    from: fileToUpload.fileUrlPath,
+                    from: inputURL,
                     offsetSize: syncedBytesSent
                 )
                 fileToUpload.fileUrlPath = outputURL
                 
-                mainAppModel.vaultManager.deleteFiles(files: [oldURL])
-                
-            } catch {
-                debugLog("extract failed")
+            } catch let error {
+                debugLog("extract failed: \(error.localizedDescription)")
+                updateReport(reportStatus: .submissionError)
                 initialResponse.send(.progress(progressInfo: .init(fileId: fileId, status: .submissionError)))
                 return
             }
@@ -454,8 +466,12 @@ class BaseUploadOperation: Operation {
                 self.postReportFile(fileId: fileId)
             }
             
-            if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
-                mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
+            let current = fileToUpload.fileUrlPath
+            mainAppModel.vaultManager.deleteFiles(files: [current])
+
+            let base = fileToUpload.baseDecryptedURL
+            if base != fileToUpload.fileUrlPath {
+                mainAppModel.vaultManager.deleteFiles(files: [base])
             }
         }
     }

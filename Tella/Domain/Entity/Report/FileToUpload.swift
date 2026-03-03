@@ -11,6 +11,7 @@ class FileToUpload {
     var id : String
     var idReport : String
     var fileUrlPath : URL
+    var baseDecryptedURL: URL
     var accessToken : String
     var serverURL : String
     var fileName : String
@@ -24,6 +25,7 @@ class FileToUpload {
     
     init(idReport: String,
          fileUrlPath: URL,
+         baseDecryptedURL: URL,
          accessToken: String,
          serverURL: String,
          fileName: String,
@@ -37,6 +39,7 @@ class FileToUpload {
         self.id = UUID().uuidString
         self.idReport = idReport
         self.fileUrlPath = fileUrlPath
+        self.baseDecryptedURL = baseDecryptedURL
         self.accessToken = accessToken
         self.serverURL = serverURL
         self.fileName = fileName

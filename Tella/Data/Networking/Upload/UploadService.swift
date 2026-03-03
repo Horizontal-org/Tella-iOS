@@ -143,11 +143,6 @@ class UploadService: NSObject {
     }
     
     func addAutoUpload(file: VaultFileDB)  {
-        let nonAutoUploadOperation = withOperations { $0.first(where: { $0.report?.currentUpload == true && $0.type != .autoUpload }) }
-        if let nonAutoUploadOperation {
-            cancelSendingReport(reportId: nonAutoUploadOperation.report?.id)
-        }
-        
         if let operation: AutoUpload = withOperations({ $0.first(where: { $0.type == .autoUpload }) }) as? AutoUpload {
             operation.addFile(file:file)
         }
@@ -175,7 +170,9 @@ class UploadService: NSObject {
             self?.removeToastSubscription(operationId: operationId)
         }, receiveValue: { [weak self] response in
             self?.handleReportResponse(response: response)
-            if case .finish = response {
+            // AutoUpload is long-lived and emits .finish multiple times (once per report).
+            // Only remove subscription for single-use operations.
+            if case .finish = response, operation.type != .autoUpload {
                 self?.removeToastSubscription(operationId: operationId)
             }
         })

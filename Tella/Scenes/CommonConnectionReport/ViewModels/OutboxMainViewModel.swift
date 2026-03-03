@@ -120,7 +120,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             
             self.uploadedFiles = "\(filesCount), \(fileUploaded)"
             
-            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
+            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()), fileStatus: $0.status)}
             
             self.objectWillChange.send()
         }
@@ -185,6 +185,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         
         let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
         let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
+        let filesWithError = reportViewModel.files.filter({$0.status == .submissionError})
+        
+        // Do not show success if any file failed
+        guard filesWithError.isEmpty else { return }
+        
         if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
             
             updateReport(reportStatus: .submitted)
@@ -213,6 +218,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         guard  let file = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
         self.updateFile(file: file)
+        
+        // Update progressFileItem fileStatus
+        if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
+            currentItem.fileStatus = uploadProgressInfo.status
+        }
         
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
