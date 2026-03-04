@@ -13,6 +13,7 @@ class FeedbackViewModel : ObservableObject {
     var feedback : Feedback?
     
     @Published var feedbackContent : String = ""
+    @Published var feedbackContact : String = ""
     @Published var feedbackIsValid : Bool = false
     @Published var feedbackSentSuccessfully : Bool = false
     @Published var showOfflineToast : Bool = false
@@ -41,6 +42,7 @@ class FeedbackViewModel : ObservableObject {
     private func initFeedback() {
         let feedback = self.mainAppModel.tellaData?.getDraftFeedback()
         self.feedback = feedback
+        self.feedbackContact = self.feedback?.contact ?? ""
         self.feedbackContent = self.feedback?.text ?? ""
         feedbackIsValid = self.feedback?.text != nil
     }
@@ -59,10 +61,9 @@ class FeedbackViewModel : ObservableObject {
             return .failure(RuntimeError("Error"))
         }
         
-        let feedback = Feedback(id:self.feedback?.id, text: feedbackContent, status: status)
+        let feedback = Feedback(id:self.feedback?.id, contact: feedbackContact, text: feedbackContent, status: status)
         self.feedback = feedback
         return tellaData.updateFeedback(feedback: feedback)
-        
     }
     
     private func addFeedback(status:FeedbackStatus) -> Result<Bool, Error>? {
@@ -70,7 +71,9 @@ class FeedbackViewModel : ObservableObject {
             return .failure(RuntimeError("Error"))
         }
         
-        let feedback = Feedback(text: feedbackContent, status: status)
+        let feedback = Feedback(contact: feedbackContact,
+                                text: feedbackContent,
+                                status: status)
         let feedbackResult = tellaData.addFeedback(feedback: feedback)
         
         switch feedbackResult {
@@ -129,4 +132,9 @@ class FeedbackViewModel : ObservableObject {
         self.mainAppModel.tellaData?.deleteFeedback(feedbackId: feedbackId)
         initFeedback()
     }
+    
+    static func stub() -> FeedbackViewModel {
+        return FeedbackViewModel(mainAppModel: MainAppModel.stub())
+    }
+    
 }

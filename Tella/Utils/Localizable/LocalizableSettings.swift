@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,7 +17,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecurity = "Settings_Sett_Security"
     case settAbout = "Settings_Sett_About"
     case settFeedback = "Settings_Sett_Feedback"
-
+    
     // General
     case settGenAppBar = "Settings_SettGen_AppBar"
     case settGenLanguage = "Settings_SettGen_Language"
@@ -64,10 +64,10 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
     case settQuickDeleteFilesTooltip = "Settings_Sett_QuickDelete_Files_tooltip"
     case settQuickDeleteConnectionsTooltip = "Settings_Sett_QuickDelete_Connections_tooltip"
-
+    
     case settSecPreserveMetadata = "Settings_SettSec_PreserveMetadata"
     case settSecPreserveMetadataExpl = "Settings_SettSec_PreserveMetadata_Expl"
-
+    
     // LockTimeout
     case settLockTimeoutSheetTitle = "Settings_SettLockTimeout_SheetTitle"
     case settLockTimeoutSheetExpl = "Settings_SettLockTimeout_SheetExpl"
@@ -78,7 +78,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLockTimeoutOneHourSheetSelect = "Settings_SettLockTimeout_OneHour_SheetSelect"
     case settLockTimeoutCancelSheetAction = "Settings_SettLockTimeout_Cancel_SheetAction"
     case settLockTimeoutSaveSheetAction = "Settings_SettLockTimeout_Save_SheetAction"
-
+    
     // DeleteAfterFail
     case settDeleteAfterFailOffTitle = "Settings_SettSec_DeleteAfterFail_Off"
     case settDeleteAfterFailSheetTitle = "Settings_SettDeleteAfterFail_SheetTitle"
@@ -137,19 +137,19 @@ enum LocalizableSettings: String, LocalizableDelegate {
     //GDrive
     
     case gDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_CreatePersonal_Desc"
-
+    
     case createNewFolderSheetTitle = "Setting_Server_GDrive_CreateNewFolder_SheetTitle"
     case createNewFolderSheetExpl = "Setting_Server_GDrive_CreateNewFolder_SheetExpl"
     case ceateNewFolder = "Setting_Server_GDrive_CreateNewFolder_SheetAction"
     case ceateNewFolderCancel = "Setting_Server_GDrive_NewFolder_Cancel_SheetAction"
-
+    
     case gDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
     case nextcloudSuccessMessage = "Setting_Server_Nextcloud_Success_Message"
-    case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    
+    case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"
     case settCreateFolderPlaceholder = "Setting_Server_Foldername_Placeholder"
     case settCreateFolderTitle = "Setting_Server_Create_Folder_Title"
     case settCreateFolderError = "Setting_Server_Create_Folder_Error"
-
+    
     
     // About & Help
     
@@ -160,7 +160,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
     case settAboutPrivacyFaq = "Settings_SettAbout_FAQ"
     case settAboutPrivacyTutorial = "Settings_SettAbout_Tutorial"
-
+    
     
     // Feedback
     case settFeedbackAppBar = "Settings_SettFeedback_AppBar"
@@ -168,7 +168,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case enableFeedbackTitle = "Settings_SettFeedback_EnableFeedback_Title"
     case enableFeedbackExpl = "Settings_SettFeedback_EnableFeedback_Expl"
     case enableFeedbackLearnMore = "Settings_SettFeedback_EnableFeedback_LearnMore"
-    case selectFeedback = "Settings_SettFeedback_Select_Feedback"
+    case feedback = "Settings_SettFeedback_Feedback"
+    case contactPlaceholder = "Settings_SettFeedback_Contact_Placeholder"
+    
     case submit = "Settings_SettFeedback_Action_Submit"
     case offlineToast = "Settings_SettFeedback_Offline_Toast"
     case successSentToast = "Settings_SettFeedback_SuccessSent_Toast"
@@ -184,7 +186,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     //Dropbox
     case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
     case settServerDropbox = "Setting_SettServer_Dropbox"
- }
+}
 
 
 protocol LocalizableDelegate {

@@ -57,8 +57,8 @@ class TellaDataBase : DataBase {
                 createDropboxReportTable()
                 createDropboxReportsFileTable()
             case 8:
-                addVersionToTellaWebServer()
-                
+                addVersionColumnToTellaWebServer()
+                addContactColumnToFeedbackTable()
             default :
                 break
             }
@@ -643,15 +643,23 @@ extension TellaDataBase {
         
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cContact, D.text),
             cddl(D.ctext, D.text),
             cddl(D.cStatus, D.integer),
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
         ]
         statementBuilder.createTable(tableName: D.tFeedback, columns: columns)
-        
     }
     
+    func addContactColumnToFeedbackTable() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tFeedback, columnName: D.cContact, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+
     func getDraftFeedback() -> Feedback? {
         do {
             let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft.rawValue)]
@@ -680,7 +688,8 @@ extension TellaDataBase {
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
         do {
-            let valuesToAdd = [KeyValue(key: D.ctext, value: feedback.text),
+            let valuesToAdd = [KeyValue(key: D.cContact, value: feedback.contact),
+                               KeyValue(key: D.ctext, value: feedback.text),
                                KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
                                KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
@@ -700,6 +709,7 @@ extension TellaDataBase {
         do {
             
             let valuesToUpdate = [ KeyValue(key: D.ctext, value: feedback.text),
+                                   KeyValue(key: D.cContact, value: feedback.contact),
                                    KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             

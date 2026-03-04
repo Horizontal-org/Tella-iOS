@@ -55,7 +55,7 @@ extension TellaDataBase {
         }
     }
     
-    func addVersionToTellaWebServer() {
+    func addVersionColumnToTellaWebServer() {
         do {
             try statementBuilder.addColumnOn(tableName: D.tServer, columnName: D.cVersion, type: D.text)
         } catch let error {

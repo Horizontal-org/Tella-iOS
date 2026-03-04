@@ -9,20 +9,28 @@ import Foundation
 class Feedback: Codable {
     
     var id: Int?
+    var contact: String?
     var text: String?
     var status : FeedbackStatus?
     var createdAt, updatedAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
+        case contact = "c_contact"
         case text = "c_text"
         case status = "c_status"
         case createdAt = "c_created_date"
         case updatedAt = "c_updated_date"
     }
     
-    init(id: Int? = nil, text: String?, status: FeedbackStatus?, createdAt: Date? = nil, updatedAt: Date? = nil) {
+    init(id: Int? = nil,
+         contact: String?,
+         text: String?,
+         status: FeedbackStatus?,
+         createdAt: Date? = nil,
+         updatedAt: Date? = nil) {
         self.id = id
+        self.contact = contact
         self.text = text
         self.status = status
         self.createdAt = createdAt
@@ -30,10 +38,11 @@ class Feedback: Codable {
     }
     
     required init(from decoder: Decoder) throws {
-
+        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(Int.self, forKey: .id)
+        self.contact = try container.decodeIfPresent(String.self, forKey: .text)
         self.text = try container.decode(String.self, forKey: .text)
         
         let status = try container.decode(Int.self, forKey: .status)

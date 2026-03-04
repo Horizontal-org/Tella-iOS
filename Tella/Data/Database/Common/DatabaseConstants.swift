@@ -97,6 +97,7 @@ struct D {
     static let cType = "c_type"
     static let cUwaziEntityInstanceId = "c_uwazi_entity_instance_id"
     static let ctext = "c_text"
+    static let cContact = "c_contact"
     
     //resources
     static let cFilename = "c_filename"
