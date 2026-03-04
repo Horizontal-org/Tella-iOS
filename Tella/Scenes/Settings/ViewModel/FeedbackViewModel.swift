@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -57,12 +57,14 @@ class FeedbackViewModel : ObservableObject {
     }
     
     private func updateFeedback(status:FeedbackStatus)  -> Result<Bool, Error>? {
-        guard let tellaData else {
+        guard let tellaData, let feedback = self.feedback else {
             return .failure(RuntimeError("Error"))
         }
-        
-        let feedback = Feedback(id:self.feedback?.id, contact: feedbackContact, text: feedbackContent, status: status)
-        self.feedback = feedback
+
+        self.feedback?.contact = feedbackContact
+        self.feedback?.text = feedbackContent
+        self.feedback?.status = status
+        self.feedback?.updatedAt = Date()
         return tellaData.updateFeedback(feedback: feedback)
     }
     

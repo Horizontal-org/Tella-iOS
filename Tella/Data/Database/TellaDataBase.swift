@@ -688,12 +688,10 @@ extension TellaDataBase {
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
         do {
-            let valuesToAdd = [KeyValue(key: D.cContact, value: feedback.contact),
-                               KeyValue(key: D.ctext, value: feedback.text),
-                               KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
-                               KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
-            
+
+            let feedbackDictionary = feedback.dictionary
+            let valuesToAdd = feedbackDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+
             let idResult = try statementBuilder.insertInto(tableName: D.tFeedback,
                                                            keyValue: valuesToAdd)
             return .success(idResult)
@@ -707,12 +705,10 @@ extension TellaDataBase {
     func updateFeedback(feedback : Feedback) -> Result<Bool, Error> {
         
         do {
-            
-            let valuesToUpdate = [ KeyValue(key: D.ctext, value: feedback.text),
-                                   KeyValue(key: D.cContact, value: feedback.contact),
-                                   KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
-                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
-            
+
+            let feedbackDictionary = feedback.dictionary
+            let valuesToUpdate = feedbackDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+
             let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
             try statementBuilder.update(tableName: D.tFeedback,
                                         valuesToUpdate: valuesToUpdate,

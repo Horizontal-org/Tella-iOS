@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -27,8 +27,8 @@ class Feedback: Codable {
          contact: String?,
          text: String?,
          status: FeedbackStatus?,
-         createdAt: Date? = nil,
-         updatedAt: Date? = nil) {
+         createdAt: Date? = Date(),
+         updatedAt: Date? = Date()) {
         self.id = id
         self.contact = contact
         self.text = text
