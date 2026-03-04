@@ -42,7 +42,7 @@ class Feedback: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(Int.self, forKey: .id)
-        self.contact = try container.decodeIfPresent(String.self, forKey: .text)
+        self.contact = try container.decodeIfPresent(String.self, forKey: .contact)
         self.text = try container.decode(String.self, forKey: .text)
         
         let status = try container.decode(Int.self, forKey: .status)
@@ -53,5 +53,15 @@ class Feedback: Codable {
         
         let updatedAt = try container.decode(Double.self, forKey: .updatedAt)
         self.updatedAt = updatedAt.getDate()
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(contact, forKey: .contact)
+        try container.encodeIfPresent(text, forKey: .text)
+        try container.encodeIfPresent(status?.rawValue, forKey: .status)
+        try container.encode((createdAt ?? Date()).timeIntervalSince1970, forKey: .createdAt)
+        try container.encode((updatedAt ?? Date()).timeIntervalSince1970, forKey: .updatedAt)
     }
 }

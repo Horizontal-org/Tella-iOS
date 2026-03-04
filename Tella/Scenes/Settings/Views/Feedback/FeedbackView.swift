@@ -175,7 +175,9 @@ struct FeedbackView: View {
             ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
                                msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
                                cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
-                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(), didConfirmAction: {
+                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(),
+                               shouldHideSheet: false,
+                               didConfirmAction: {
                 feedbackViewModel.saveFeedbackDraft()
                 self.dismiss()
             }, didCancelAction: {

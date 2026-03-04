@@ -659,7 +659,7 @@ extension TellaDataBase {
             debugLog(error)
         }
     }
-
+    
     func getDraftFeedback() -> Feedback? {
         do {
             let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft.rawValue)]
@@ -688,10 +688,11 @@ extension TellaDataBase {
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
         do {
-
-            let feedbackDictionary = feedback.dictionary
-            let valuesToAdd = feedbackDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
-
+            let excludedKeys = [D.cId]
+            let valuesToAdd = feedback.dictionary
+                .filter { !excludedKeys.contains($0.key) }
+                .map { KeyValue(key: $0.key, value: $0.value) }
+            
             let idResult = try statementBuilder.insertInto(tableName: D.tFeedback,
                                                            keyValue: valuesToAdd)
             return .success(idResult)
@@ -703,12 +704,12 @@ extension TellaDataBase {
     }
     
     func updateFeedback(feedback : Feedback) -> Result<Bool, Error> {
-        
         do {
-
-            let feedbackDictionary = feedback.dictionary
-            let valuesToUpdate = feedbackDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
-
+            let excludedKeys = [D.cId, D.cCreatedDate]
+            let valuesToUpdate = feedback.dictionary
+                .filter { !excludedKeys.contains($0.key) }
+                .map { KeyValue(key: $0.key, value: $0.value) }
+            
             let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
             try statementBuilder.update(tableName: D.tFeedback,
                                         valuesToUpdate: valuesToUpdate,
