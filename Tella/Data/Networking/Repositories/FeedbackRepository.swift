@@ -14,7 +14,7 @@ struct FeedbackRepository: WebRepository {
         if !mainAppModel.networkMonitor.isConnected {
             FeedbackService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackToSend: feedback)
         }
-        let feedbackText = (feedback.contact ?? "") + " " + (feedback.text ?? "")
+        let feedbackText = "Contact: \(feedback.contact ?? "")\nMessage: \(feedback.text ?? "")"
         
         let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(feedbackText))
         return apiResponse
