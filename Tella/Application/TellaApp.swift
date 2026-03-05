@@ -83,6 +83,7 @@ struct TellaApp: App {
             UIApplication.getTopViewController()?.dismiss(animated: false)
             DispatchQueue.main.async { appViewState.resetApp() }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+            UploadService.shared.reset()
         }
         
         appViewState.homeViewModel.appEnterInBackground = false

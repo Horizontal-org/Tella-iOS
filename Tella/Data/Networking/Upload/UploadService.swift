@@ -39,6 +39,11 @@ class UploadService: NSObject {
             let config = URLSessionConfiguration.background(withIdentifier: UploadConstants.backgroundSessionIdentifier)
             config.sessionSendsLaunchEvents = true
             backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+            // Cancel any tasks from a previous run (e.g. app killed during upload).
+            // New operations will create fresh tasks
+            backgroundSession?.getAllTasks { tasks in
+                tasks.forEach { $0.cancel() }
+            }
         }
     }
     
@@ -56,8 +61,22 @@ class UploadService: NSObject {
         uploadQueue = queue
     }
     
-    static func reset() {
-        shared = UploadService()
+    func reset() {
+        // Cancel operations & clear list
+        withOperations { ops in
+            ops.forEach { $0.cancel() }
+            ops.removeAll()
+        }
+        
+        // Cancel toast subscriptions
+        toastSubscriptionsLock.withLock {
+            toastSubscriptions.values.forEach { $0.cancel() }
+            toastSubscriptions.removeAll()
+        }
+        
+        defaultSession = nil
+        backgroundSession = nil
+        
     }
     
     var hasFilesToUploadOnBackground: Bool {
@@ -144,22 +163,33 @@ class UploadService: NSObject {
         }
     }
     
-    func sendUnsentReports(mainAppModel:MainAppModel) {
-        
+    func sendUnsentReports(mainAppModel: MainAppModel) {
         guard let unsentReports = mainAppModel.tellaData?.getUnsentReports() else { return }
         
         unsentReports.forEach { report in
+            guard let reportId = report.id else { return }
+            
+            // if an operation already exists for this report, skip
+            let alreadyActive = withOperations { ops in
+                ops.contains(where: { $0.report?.id == reportId && !$0.isCancelled && !$0.isFinished })
+            }
+            guard !alreadyActive else { return }
             
             let urlSession = session(forBackground: report.server?.backgroundUpload ?? false)
             
-            let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .unsentReport)
+            let operation = UploadReportOperation(
+                report: report,
+                urlSession: urlSession,
+                mainAppModel: mainAppModel,
+                reportRepository: ReportRepository(),
+                type: .unsentReport
+            )
             withOperations { $0.append(operation) }
             uploadQueue.addOperation(operation)
             
-            displayReportToast(operation:operation)
+            displayReportToast(operation: operation)
         }
     }
-    
     func displayReportToast(operation: BaseUploadOperation) {
         let operationId = ObjectIdentifier(operation)
         let cancellable = operation.response.sink(receiveCompletion: { [weak self] _ in
