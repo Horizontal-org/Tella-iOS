@@ -38,6 +38,11 @@ class UploadService: NSObject {
         if backgroundSession == nil {
             let config = URLSessionConfiguration.background(withIdentifier: UploadConstants.backgroundSessionIdentifier)
             config.sessionSendsLaunchEvents = true
+            config.shouldUseExtendedBackgroundIdleMode = true
+            config.waitsForConnectivity = true
+            config.allowsConstrainedNetworkAccess = true
+            config.allowsExpensiveNetworkAccess = true
+            config.isDiscretionary = false
             backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
             // Cancel any tasks from a previous run (e.g. app killed during upload).
             // New operations will create fresh tasks
@@ -136,7 +141,8 @@ class UploadService: NSObject {
                 // Drop stale operations for the same report so resume can create a fresh one.
                 operations.removeAll(where: {
                     $0.report?.id == reportId &&
-                    ($0.isCancelled || $0.isFinished)
+                    ($0.isCancelled || $0.isFinished) &&
+                    $0.type != .autoUpload
                 })
                 // Any remaining operation for this report is active; reuse its response to avoid duplicates.
                 return operations.first(where: { $0.report?.id == reportId })?.response
@@ -159,7 +165,7 @@ class UploadService: NSObject {
     
     func addAutoUpload(file: VaultFileDB)  {
         if let operation: AutoUpload = withOperations({ $0.first(where: { $0.type == .autoUpload }) }) as? AutoUpload {
-            operation.addFile(file:file)
+            operation.addFile(file: file)
         }
     }
     
