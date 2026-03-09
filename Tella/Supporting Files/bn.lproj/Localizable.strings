@@ -280,7 +280,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_EnableFeedback_Title" = "প্রতিক্রিয়া শেয়ারিং সচল করুন";
 "Settings_SettFeedback_EnableFeedback_Expl" = "সতর্কতা: এই বৈশিষ্ট্যটি ব্যবহার করলে আপনি যে নেটওয়ার্কটিতে Tella ব্যবহার করেন তা পর্যবেক্ষণ করছেন এমন কারো কাছে প্রকাশ হতে পারে৷ আপনি যদি এই ঝুঁকির সাথে স্বাচ্ছন্দ্য বোধ করেন তবেই ব্যবহার করুন।";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
-"Settings_SettFeedback_Select_Feedback" = "মতামত";
 "Settings_SettFeedback_Action_Submit" = "জমা দিন";
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
 "Settings_SettFeedback_SuccessSent_Toast" = "আপনার মতামতের জন্য ধন্যবাদ!";
@@ -585,3 +584,10 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
 "Setting_Server_GDrive_CreateNewFolder_SheetAction" = "নতুন ফোল্ডার তৈরি করুন";
 "Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "বাতিল";
+"Vault_DeleteFile_FileDeleted_Toast" = "The file was deleted";
+"Vault_DeleteFile_FilesDeleted_Toast" = "The files were deleted";
+"Settings_SettFeedback_Feedback" = "Feedback (required)";
+"Settings_SettFeedback_Contact_Placeholder" = "Contact information (optional)";
+"Setting_Server_Project_URL" = "Enter the project URL";
+"Setting_Server_Project_Exists_Error" = "The project already exists";
+"Settings_SettLang_Mizo_Expl" = "Mizo";

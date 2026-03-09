@@ -81,10 +81,6 @@
 "Vault_DeleteFile_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCEL";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
-
-"Vault_DeleteFile_FileDeleted_Toast" = "The file was deleted";
-"Vault_DeleteFile_FilesDeleted_Toast" = "The files were deleted";
-
 "Vault_SaveToDevice_SheetTitle" = "Save to device gallery?";
 "Vault_SaveToDevice_SheetExpl" = "This will make your files accessible from outside Tella, in your device’s gallery and by other apps.";
 "Vault_SaveToDevice_Save_SheetAction" = "Save to device";
@@ -284,9 +280,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
 "Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk.";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
-"Settings_SettFeedback_Feedback" = "Feedback (required)";
-"Settings_SettFeedback_Contact_Placeholder" = "Contact information (optional)";
-
 "Settings_SettFeedback_Action_Submit" = "Submit";
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
 "Settings_SettFeedback_SuccessSent_Toast" = "Thanks for your feedback!";
@@ -471,8 +464,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_Server_URL" = "Enter the server URL";
-"Setting_Server_Project_URL" = "Enter the project URL";
-"Setting_Server_Project_Exists_Error" = "The project already exists";
 "Setting_Server_Password" = "Password";
 "Setting_Server_Foldername_Placeholder" = "Folder name";
 "Setting_Server_Create_Folder_Title" = "Create new folder";
@@ -563,8 +554,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
 "Settings_SettLang_Chinese_Expl" = "Chinese";
-"Settings_SettLang_Mizo_Expl" = "Mizo";
-
 "LockUnlock_LockSuccess_Title" = "Success";
 "LockUnlock_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
 "LockUnlock_LockSuccess_Link" = "Learn more about Tella’s lock.";
@@ -595,3 +584,10 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
 "Setting_Server_GDrive_CreateNewFolder_SheetAction" = "Create new folder";
 "Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "Cancel";
+"Vault_DeleteFile_FileDeleted_Toast" = "The file was deleted";
+"Vault_DeleteFile_FilesDeleted_Toast" = "The files were deleted";
+"Settings_SettFeedback_Feedback" = "Feedback (required)";
+"Settings_SettFeedback_Contact_Placeholder" = "Contact information (optional)";
+"Setting_Server_Project_URL" = "Enter the project URL";
+"Setting_Server_Project_Exists_Error" = "The project already exists";
+"Settings_SettLang_Mizo_Expl" = "Mizo";
