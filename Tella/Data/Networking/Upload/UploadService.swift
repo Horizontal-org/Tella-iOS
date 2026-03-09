@@ -39,7 +39,6 @@ class UploadService: NSObject {
             let config = URLSessionConfiguration.background(withIdentifier: UploadConstants.backgroundSessionIdentifier)
             config.sessionSendsLaunchEvents = true
             config.shouldUseExtendedBackgroundIdleMode = true
-            config.waitsForConnectivity = true
             config.allowsConstrainedNetworkAccess = true
             config.allowsExpensiveNetworkAccess = true
             config.isDiscretionary = false
@@ -56,9 +55,7 @@ class UploadService: NSObject {
         ensureSessions()
         return forBackground ? backgroundSession! : defaultSession!
     }
-    
-    
-    
+
     override init() {
         let queue = OperationQueue()
         queue.qualityOfService = .background
@@ -98,8 +95,7 @@ class UploadService: NSObject {
             operations.removeAll(where: { $0.report?.id == reportId && $0.type != .autoUpload })
         }
     }
-    
-    
+
     func cancelTasksIfNeeded() {
         withOperations { operations in
             let toCancel = operations.filter { $0.report?.server?.backgroundUpload == false }
@@ -120,8 +116,8 @@ class UploadService: NSObject {
         
         let autoUploadServer = mainAppModel.tellaData?.getAutoUploadServer()
         
-        let urlSession = session(forBackground: autoUploadServer?.autoUpload ?? false)
-        
+        let urlSession = session(forBackground: autoUploadServer?.backgroundUpload ?? false)
+
         let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: ReportRepository(), type: .autoUpload)
         withOperations { $0.append(operation) }
         uploadQueue.addOperation(operation)
