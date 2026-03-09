@@ -12,6 +12,10 @@ import ZIPFoundation
 import Photos
 
 extension URL {
+
+    var fileSize: Int? {
+        (try? resourceValues(forKeys: [.fileSizeKey]).fileSize)
+    }
     
     func resolution() -> CGSize? {
         switch self.fileType {

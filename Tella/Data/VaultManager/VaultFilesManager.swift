@@ -111,7 +111,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                     continue
                 }
                 
-                if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+                if let fileSize = filePath.fileSize {
                     fileDetail.file.size = fileSize
                 }
                 
@@ -171,7 +171,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 return
             }
             
-            if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+            if let fileSize = filePath.fileSize {
                 fileDetail.file.size = fileSize
             }
             
@@ -320,7 +320,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             fileName = filePath.deletingPathExtension().lastPathComponent
         }
         
-        let path = filePath.relativePath
         let pathExtension = filePath.pathExtension
         
         var width : Double?
@@ -332,7 +331,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         }
         
         let duration =  filePath.getDuration()
-        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+        let size = filePath.fileSize ?? 0
         
         let vaultFile = await VaultFileDB(id: id,
                                           type: .file,
@@ -369,7 +368,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             let _ = filePath.startAccessingSecurityScopedResource()
             defer { filePath.stopAccessingSecurityScopedResource() }
             
-            let size = FileManager.default.sizeOfFile(atPath: filePath.path) ?? 0
+            let size = filePath.fileSize ?? 0
             totalSizeArray.append(size)
         }
         
