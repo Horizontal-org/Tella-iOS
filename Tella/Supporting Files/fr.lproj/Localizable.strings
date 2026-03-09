@@ -280,7 +280,6 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Settings_SettFeedback_EnableFeedback_Title" = "Activer le partage du retour d'information";
 "Settings_SettFeedback_EnableFeedback_Expl" = "AVERTISSEMENT : l'utilisation de cette fonctionnalité peut révéler à quelqu'un qui observe le réseau que vous utilisez Tella. Ne l'utilisez que si vous ne craignez pas ce risque.";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "En apprendre davantage.";
-"Settings_SettFeedback_Select_Feedback" = "Retour d'information";
 "Settings_SettFeedback_Action_Submit" = "Envoyer";
 "Settings_SettFeedback_Offline_Toast" = "Vous n'êtes pas connecté à Internet. Vos commentaires seront envoyés automatiquement lorsque vous serez connecté.";
 "Settings_SettFeedback_SuccessSent_Toast" = "Merci pour votre retour!";
@@ -585,3 +584,9 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Setting_Server_GDrive_CreateNewFolder_SheetExpl" = "Tella no longer supports shared drives. To continue submitting reports to Google Drive, please create a new personal folder.";
 "Setting_Server_GDrive_CreateNewFolder_SheetAction" = "Créer un nouveau dossier";
 "Setting_Server_GDrive_NewFolder_Cancel_SheetAction" = "Annuler";
+"Vault_DeleteFile_FileDeleted_Toast" = "The file was deleted";
+"Vault_DeleteFile_FilesDeleted_Toast" = "The files were deleted";
+"Settings_SettFeedback_Feedback" = "Feedback (required)";
+"Settings_SettFeedback_Contact_Placeholder" = "Contact information (optional)";
+"Setting_Server_Project_URL" = "Enter the project URL";
+"Setting_Server_Project_Exists_Error" = "The project already exists";
