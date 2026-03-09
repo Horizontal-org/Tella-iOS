@@ -1017,6 +1017,7 @@
 		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
 		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
 		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
+		12967AF32F5F6FF100D9FC7E /* lus */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lus; path = lus.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BC2E2EC92900A4417D /* az */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = az; path = az.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
@@ -3708,6 +3709,7 @@
 				az,
 				zh_CN,
 				"zh-Hans",
+				lus,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4583,6 +4585,7 @@
 				129919BC2E2EC92900A4417D /* az */,
 				129FBF422EB4BBED00E4DA57 /* zh_CN */,
 				122E2F4A2EC50343004E42B3 /* zh-Hans */,
+				12967AF32F5F6FF100D9FC7E /* lus */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

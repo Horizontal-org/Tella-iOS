@@ -563,8 +563,6 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_Sett_QuickDelete_Files_tooltip" = "Delete all the files stored in Tella.";
 "Settings_Sett_QuickDelete_Connections_tooltip" = "Delete your Connections and all data associated with them.";
 "Settings_SettLang_Chinese_Expl" = "Chinese";
-"Settings_SettLang_Mizo_Expl" = "Mizo";
-
 "LockUnlock_LockSuccess_Title" = "Success";
 "LockUnlock_LockSuccess_Expl" = "Your lock is set up! You can change it anytime in the Tella Settings.";
 "LockUnlock_LockSuccess_Link" = "Learn more about Tella’s lock.";
