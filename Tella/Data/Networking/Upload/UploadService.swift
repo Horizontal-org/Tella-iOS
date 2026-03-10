@@ -33,7 +33,10 @@ class UploadService: NSObject {
     
     func ensureSessions() {
         if defaultSession == nil {
-            defaultSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+            let config = URLSessionConfiguration.default
+            config.allowsConstrainedNetworkAccess = true
+            config.allowsExpensiveNetworkAccess = true
+            defaultSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         }
         if backgroundSession == nil {
             let config = URLSessionConfiguration.background(withIdentifier: UploadConstants.backgroundSessionIdentifier)

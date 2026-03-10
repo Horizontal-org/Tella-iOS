@@ -23,6 +23,8 @@ extension WebRepository {
             let request = try endpoint.urlRequest()
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
+            configuration.allowsConstrainedNetworkAccess = true
+            configuration.allowsExpensiveNetworkAccess = true     
             request.curlRepresentation()
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
