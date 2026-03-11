@@ -20,22 +20,29 @@ class AutoUpload: BaseUploadOperation {
         handleResponse()
         super.main()
         startUploadReportAndFiles()
-
     }
 
     private func setupNetworkMonitor() {
-        mainAppModel.networkMonitor.connectionDidChange.sink { [weak self] isConnected in
-            guard let self else { return }
-            guard let report = self.report else { return }
-            if isConnected && report.status == .submissionPending && report.status != .submissionInProgress {
-                self.checkReport()
-            } else if !isConnected && report.status != .submissionAutoPaused {
-                self.stopConnection()
-                debugLog("No internet connection")
-            }
-        }.store(in: &subscribers)
-    }
+        mainAppModel.networkMonitor.connectionDidChange
+            .sink { [weak self] isConnected in
+                guard let self else { return }
+                guard let report = self.report else { return }
 
+                if isConnected {
+                    if report.status == .submissionPending {
+                        self.checkReport()
+                    }
+                } else {
+                    if report.status == .submissionInProgress {
+                        self.stopConnection()
+                        self.updateReport(reportStatus: .submissionPending)
+                        self.response.send(UploadResponse.initial)
+                        debugLog("No internet connection")
+                    }
+                }
+            }
+            .store(in: &subscribers)
+    }
     func startUploadReportAndFiles() {
         
         self.response.send(UploadResponse.initial)

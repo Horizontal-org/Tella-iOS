@@ -2200,6 +2200,15 @@
 			path = "Add files";
 			sourceTree = "<group>";
 		};
+		127A1CD72F618F2A00EEA99F /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				127A1CD32F618E5F00EEA99F /* TellaURLSessionConfigurationFactory.swift */,
+				127A1CD52F618E9100EEA99F /* NetworkSessionProvider.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
 		127B053F289C0A58008C047D /* Servers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2696,15 +2705,6 @@
 				127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */,
 			);
 			path = HeaderImageTitleDescriptionView;
-			sourceTree = "<group>";
-		};
-		127A1CD72F618F2A00EEA99F /* Session */ = {
-			isa = PBXGroup;
-			children = (
-				127A1CD32F618E5F00EEA99F /* TellaURLSessionConfigurationFactory.swift */,
-				127A1CD52F618E9100EEA99F /* NetworkSessionProvider.swift */,
-			);
-			path = Session;
 			sourceTree = "<group>";
 		};
 		12D7D11D28E35FCE008121C8 /* Repositories */ = {
@@ -4798,7 +4798,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 121;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -4827,7 +4827,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 121;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;

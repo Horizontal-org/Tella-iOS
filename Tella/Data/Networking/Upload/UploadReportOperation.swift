@@ -25,13 +25,20 @@ class UploadReportOperation: BaseUploadOperation {
         mainAppModel.networkMonitor.connectionDidChange.sink { [weak self] isConnected in
             guard let self else { return }
             guard let report = self.report else { return }
-            if isConnected && report.status == .submissionPending && report.status != .submissionInProgress {
-                self.startUploadReportAndFiles()
-            } else if !isConnected && report.status != .submissionPaused {
-                self.stopConnection()
-                self.response.send(UploadResponse.initial)
-                debugLog("No internet connection")
+            
+            if isConnected {
+                if report.status == .submissionPending {
+                    self.startUploadReportAndFiles()
+                }
+            } else {
+                if report.status == .submissionInProgress {
+                    self.stopConnection()
+                    self.updateReport(reportStatus: .submissionPending)
+                    self.response.send(UploadResponse.initial)
+                    debugLog("No internet connection")
+                }
             }
+
         }.store(in: &subscribers)
     }
 
