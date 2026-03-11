@@ -15,7 +15,7 @@ protocol ReportUploadServiceProtocol {
 class ReportUploadService: ReportUploadServiceProtocol {
     private let uploadService: UploadService
     
-    init(uploadService: UploadService = .shared) {
+    init(uploadService: UploadService) {
         self.uploadService = uploadService
     }
     

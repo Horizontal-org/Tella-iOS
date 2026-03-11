@@ -48,13 +48,16 @@ class MainAppModel: ObservableObject {
     @Published var shouldUpdateLanguage = true
     
     var networkMonitor : NetworkMonitor
+    let uploadService: UploadService
     
     private var cancellable: Set<AnyCancellable> = []
     
     //MARK: - init -
     
-    init(networkMonitor:NetworkMonitor) {
+    init(networkMonitor: NetworkMonitor) {
         self.networkMonitor = networkMonitor
+        self.uploadService = UploadService(sessionProvider: NetworkSessionProvider())
+        self.uploadService.ensureSessions()
         self.loadSettingsData()
         self.onSuccessLock()
     }
@@ -189,23 +192,23 @@ extension MainAppModel {
     
     func sendAutoReportFile(file: VaultFileDB) {
         if tellaData?.getAutoUploadServer() != nil {
-            UploadService.shared.addAutoUpload(file: file)
+            uploadService.addAutoUpload(file: file)
         }
     }
     
     func initAutoUpload() {
-        UploadService.shared.initAutoUpload(mainAppModel: self)
+        uploadService.initAutoUpload(mainAppModel: self)
     }
 
     func sendPendingFiles() {
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-        UploadService.shared.sendUnsentReports(mainAppModel: self)
+        uploadService.initAutoUpload(mainAppModel: self)
+        uploadService.sendUnsentReports(mainAppModel: self)
         FeedbackService.shared.addUnsentFeedbacksOperation(mainAppModel: self)
     }
     
     @discardableResult
     func deleteReport(reportId:Int?) -> Result<Void,Error>? {
-        UploadService.shared.cancelSendingReport(reportId: reportId)
+        uploadService.cancelSendingReport(reportId: reportId)
         return tellaData?.deleteReport(reportId: reportId)
     }
 }

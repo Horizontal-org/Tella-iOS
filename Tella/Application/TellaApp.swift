@@ -56,14 +56,14 @@ struct TellaApp: App {
         guard appViewState.homeViewModel.shouldResetApp() else { return }
         
         // Cancel foreground uploads and mark background entry; must run even when waiting for background uploads.
-        UploadService.shared.cancelTasksIfNeeded()
+        appViewState.homeViewModel.uploadService.cancelTasksIfNeeded()
         appViewState.homeViewModel.appEnterInBackground = true
         
         if lockAppType == .enterInBackground {
             appViewState.homeViewModel.shouldSaveCurrentData = true
         }
         
-        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        let hasFileOnBackground = appViewState.homeViewModel.uploadService.hasFilesToUploadOnBackground
         guard !hasFileOnBackground else { return }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + backgroundCleanupDelay) {
@@ -75,7 +75,7 @@ struct TellaApp: App {
     func resetApp() {
         appViewState.homeViewModel.shouldSaveCurrentData = false
         
-        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        let hasFileOnBackground = appViewState.homeViewModel.uploadService.hasFilesToUploadOnBackground
         let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
         
@@ -83,7 +83,7 @@ struct TellaApp: App {
             UIApplication.getTopViewController()?.dismiss(animated: false)
             DispatchQueue.main.async { appViewState.resetApp() }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
-            UploadService.shared.reset()
+            appViewState.homeViewModel.uploadService.reset()
         }
         
         appViewState.homeViewModel.appEnterInBackground = false

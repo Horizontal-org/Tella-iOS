@@ -21,12 +21,8 @@ extension WebRepository {
                     .eraseToAnyPublisher()
             }
             let request = try endpoint.urlRequest()
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
-            configuration.allowsConstrainedNetworkAccess = true
-            configuration.allowsExpensiveNetworkAccess = true     
             request.curlRepresentation()
-            return URLSession(configuration: configuration)
+            return NetworkSessionProvider().apiSession
                 .dataTaskPublisher(for: request)
                 .mapError { $0 as Error }
                 .eraseToAnyPublisher()

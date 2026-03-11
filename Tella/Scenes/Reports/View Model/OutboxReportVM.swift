@@ -8,14 +8,14 @@ import SwiftUI
 import Combine
 
 class OutboxReportVM: OutboxMainViewModel<TellaServer> {
-    var reportUploadService = ReportUploadService()
+    var reportUploadService: ReportUploadService
     
     var reportIsNotAutoDelete: Bool {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
     
     override init(reportsViewModel : ReportsMainViewModel, reportId : Int?) {
-        
+        reportUploadService = ReportUploadService(uploadService: reportsViewModel.mainAppModel.uploadService)
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
         if reportViewModel.status == .submissionScheduled {

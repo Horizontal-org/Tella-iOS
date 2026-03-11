@@ -11,9 +11,8 @@ import UIKit
 class UploadService: NSObject {
     
     // MARK: - Variables And Properties
-    
-    static var shared : UploadService = UploadService()
-    
+
+    private let sessionProvider: NetworkSessionProvider
     private let operationsLock = NSLock()
     private var _activeOperations: [BaseUploadOperation] = []
     
@@ -33,33 +32,24 @@ class UploadService: NSObject {
     
     func ensureSessions() {
         if defaultSession == nil {
-            let config = URLSessionConfiguration.default
-            config.allowsConstrainedNetworkAccess = true
-            config.allowsExpensiveNetworkAccess = true
-            defaultSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+            defaultSession = sessionProvider.makeDefaultUploadSession(delegate: self)
         }
         if backgroundSession == nil {
-            let config = URLSessionConfiguration.background(withIdentifier: UploadConstants.backgroundSessionIdentifier)
-            config.sessionSendsLaunchEvents = true
-            config.shouldUseExtendedBackgroundIdleMode = true
-            config.allowsConstrainedNetworkAccess = true
-            config.allowsExpensiveNetworkAccess = true
-            config.isDiscretionary = false
-            backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
-            // Cancel any tasks from a previous run (e.g. app killed during upload).
-            // New operations will create fresh tasks
+            backgroundSession = sessionProvider.makeBackgroundUploadSession(delegate: self)
             backgroundSession?.getAllTasks { tasks in
                 tasks.forEach { $0.cancel() }
             }
         }
     }
-    
+
     func session(forBackground: Bool) -> URLSession {
         ensureSessions()
         return forBackground ? backgroundSession! : defaultSession!
     }
 
-    override init() {
+    init(sessionProvider: NetworkSessionProvider) {
+        self.sessionProvider = sessionProvider
+        super.init()
         let queue = OperationQueue()
         queue.qualityOfService = .background
         queue.maxConcurrentOperationCount = 1
@@ -72,16 +62,14 @@ class UploadService: NSObject {
             ops.forEach { $0.cancel() }
             ops.removeAll()
         }
-        
+
         // Cancel toast subscriptions
         toastSubscriptionsLock.withLock {
             toastSubscriptions.values.forEach { $0.cancel() }
             toastSubscriptions.removeAll()
         }
-        
         defaultSession = nil
         backgroundSession = nil
-        
     }
     
     var hasFilesToUploadOnBackground: Bool {

@@ -18,7 +18,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
-        UploadService.shared.ensureSessions()
         setupDropbox()
         configureGoogleSignIn()
         return true
@@ -28,7 +27,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      handleEventsForBackgroundURLSession identifier: String,
                      completionHandler: @escaping () -> Void) {
         backgroundSessionCompletionHandler = completionHandler
-        UploadService.shared.ensureSessions()
     }
     
     private func setupDropbox() {

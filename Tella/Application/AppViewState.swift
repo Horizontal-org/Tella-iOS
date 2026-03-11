@@ -29,7 +29,7 @@ final class AppViewState: ObservableObject {
         self.resetApp()
         self.initLanguage()
     }
-    
+
     var currentView: MainViewEnum {
         return viewStack.last ?? .LOCK
     }
