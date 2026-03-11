@@ -45,7 +45,7 @@ extension WebRepository {
             .requestData()
             .eraseToAnyPublisher()
     }
-
+    
     func makeUploadRequestAndTask(
         endpoint: any APIRequest,
         fileURL: URL,
@@ -104,6 +104,8 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             }
             
             let nsError = error as NSError
+            
+            Toast.displayToast(message: "Code: \(nsError.code) \n domain: \(nsError.domain) \n localizedDescription: \(nsError.localizedDescription)", delay: 10.0)
             
             switch (nsError.code, nsError.domain) {
             case (NSURLErrorNotConnectedToInternet, _):
