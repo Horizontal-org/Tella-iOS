@@ -86,8 +86,6 @@ extension APIRequest {
         } else {
             request.httpBody = try body()
         }
-
-        request.timeoutInterval = TimeInterval(30)
         return request
     }
 } 

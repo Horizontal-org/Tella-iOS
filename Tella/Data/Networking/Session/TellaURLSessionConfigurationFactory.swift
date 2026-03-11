@@ -20,7 +20,8 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
 
     func makeDefault() -> URLSessionConfiguration {
         let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = false
+        config.waitsForConnectivity = true
+        config.timeoutIntervalForRequest = 30
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         return config
@@ -28,12 +29,12 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
 
     func makeBackground(identifier: String) -> URLSessionConfiguration {
         let config = URLSessionConfiguration.background(withIdentifier: identifier)
-        config.waitsForConnectivity = false
+        config.waitsForConnectivity = true
+        config.timeoutIntervalForRequest = 30
         config.sessionSendsLaunchEvents = true
         config.shouldUseExtendedBackgroundIdleMode = true
         config.isDiscretionary = false
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         return config
-    }
-}
+    }}
