@@ -1775,6 +1775,7 @@
 				125F9B962AD965520073748C /* Feedback */,
 				125AAD32295348D2002194D6 /* Upload */,
 				12D7D11D28E35FCE008121C8 /* Repositories */,
+				127A1CD72F618F2A00EEA99F /* Session */,
 				1217FCA428F9B19C00DD2D70 /* Models */,
 				1261AC9B2AFEDDA1005A8325 /* Constants */,
 			);
@@ -2685,8 +2686,6 @@
 				12D37A932721752B00E43BDB /* TellaApp.swift */,
 				CE64FA282505542E00B03CEC /* AppViewState.swift */,
 				1293547A294A454900735ED0 /* AppDelegate.swift */,
-				127A1CD32F618E5F00EEA99F /* TellaURLSessionConfigurationFactory.swift */,
-				127A1CD52F618E9100EEA99F /* NetworkSessionProvider.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -2697,6 +2696,15 @@
 				127BCA2B2E8522EB00902C59 /* HeaderImageTitleDescriptionView.swift */,
 			);
 			path = HeaderImageTitleDescriptionView;
+			sourceTree = "<group>";
+		};
+		127A1CD72F618F2A00EEA99F /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				127A1CD32F618E5F00EEA99F /* TellaURLSessionConfigurationFactory.swift */,
+				127A1CD52F618E9100EEA99F /* NetworkSessionProvider.swift */,
+			);
+			path = Session;
 			sourceTree = "<group>";
 		};
 		12D7D11D28E35FCE008121C8 /* Repositories */ = {

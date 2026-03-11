@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  NetworkSessionProvider.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 11/3/2026.
