@@ -86,7 +86,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             cddl(VaultD.cSize, VaultD.integer, true, 0),
             cddl(VaultD.cWidth, VaultD.real),
             cddl(VaultD.cHeight, VaultD.real),
-            cddl(VaultD.cHash, VaultD.text, defaultValue: "")
+            cddl(VaultD.cHash, VaultD.text)
         ]
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
@@ -107,8 +107,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         do {
             try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile,
                                              columnName: VaultD.cHash,
-                                             type: VaultD.text,
-                                             defaultValue: true)
+                                             type: VaultD.text)
         } catch let error {
             debugLog(error)
         }
