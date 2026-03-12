@@ -111,6 +111,16 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 let manager = self.mainAppModel.vaultFilesManager
             else {
                 markFailed(id: fileID)
+                checkAllFilesAreReceived()
+                return
+            }
+            
+            let computedHash = await file.url?.sha256Hash()
+            let recevedHashInprepareupload = file.file.sha256
+
+            guard recevedHashInprepareupload == computedHash  else {
+                markFailed(id: fileID)
+                checkAllFilesAreReceived()
                 return
             }
             
