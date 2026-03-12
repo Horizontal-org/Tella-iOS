@@ -20,7 +20,8 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     var mimeType : String?
     var width : Double?
     var height : Double?
-    
+    var hash : String?
+
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case type = "c_type"
@@ -32,7 +33,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         case mimeType = "c_mime_type"
         case width = "c_width"
         case height = "c_height"
-        
+        case hash = "c_hash"
     }
     
     static func == (lhs: VaultFileDB, rhs: VaultFileDB) -> Bool {
@@ -52,7 +53,8 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
          size: Int ,
          mimeType: String?,
          width: Double?,
-         height: Double?) {
+         height: Double?,
+         hash : String?) {
         
         self.id = id
         self.type = type
@@ -64,7 +66,8 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
         self.width = width
         self.height = height
-        
+        self.hash = hash
+
     }
     
     init(id: String = UUID().uuidString,
@@ -85,6 +88,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.size = file.size ?? 0
         self.mimeType = file.fileType
         self.created = Date()
+        self.hash = file.sha256
     }
 
     init(vaultFile :VaultFile) {
@@ -125,8 +129,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         
         width = try container.decode(Double.self, forKey: .width)
         height = try container.decode(Double.self, forKey: .height)
-        
-        
+        hash = try container.decode(String.self, forKey: .hash)
     }
     
     init(dictionnary: [String:Any])   {
@@ -154,9 +157,8 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         let width = dictionnary[CodingKeys.width.rawValue] as? Double
         let height = dictionnary[CodingKeys.height.rawValue] as? Double
         
-        
-        
-        
+        let hash = dictionnary[CodingKeys.hash.rawValue] as? String
+
         self.id = id ?? ""
         self.type = type
         self.thumbnail = thumbnail
@@ -167,8 +169,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.mimeType = mimeType
         self.width = width
         self.height = height
-        
-        
+        self.hash = hash
     }
 }
 

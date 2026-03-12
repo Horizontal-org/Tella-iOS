@@ -56,7 +56,8 @@ class UwaziVaultFile : VaultFileDB {
                    size: vaultFile.size,
                    mimeType: vaultFile.mimeType,
                    width: vaultFile.width,
-                   height: vaultFile.height)
+                   height: vaultFile.height,
+                   hash: vaultFile.hash)
         
         self.instanceId = uwaziFile.id
         self.status = uwaziFile.status

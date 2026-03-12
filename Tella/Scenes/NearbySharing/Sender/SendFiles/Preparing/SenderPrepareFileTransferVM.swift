@@ -59,48 +59,63 @@ class SenderPrepareFileTransferVM: ObservableObject {
     func prepareUpload() {
         self.viewState = .waiting
         session.title = title
-        var nearbySharingFileArray: [String: NearbySharingTransferredFile] = [:]
         let sessionId = session.sessionId
-        
-        let files: [NearbySharingFile] = addFilesViewModel.files.compactMap { file in
-            guard let id = file.id else {
-                return nil
-            }
-            
-            let nearbySharingFile = NearbySharingFile(
-                id: id,
-                fileName: file.name,
-                size: file.size,
-                fileType: file.mimeType,
-                thumbnail: file.thumbnail)
-            
-            nearbySharingFileArray[id] = NearbySharingTransferredFile(vaultFile: file)
-            return nearbySharingFile
-        }
-        
-        let prepareUploadRequest = PrepareUploadRequest(
-            title: title,
-            sessionID: sessionId,
-            files: files
-        )
-        
-        self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    self.handlePrepareUpload(completion: completion)
-                }, receiveValue: { response in
-                    
-                    nearbySharingFileArray.values.forEach { file in
-                        if let transmissionId = response.files?.first(where: { $0.id == file.file.id })?.transmissionID {
-                            file.transmissionId = transmissionId
-                        }
-                    }
-                    self.session.files = nearbySharingFileArray
-                    self.viewAction = .displaySendingFiles
+        let vaultManager = mainAppModel.vaultFilesManager?.vaultManager ?? mainAppModel.vaultManager
+
+        Task {
+            var nearbySharingFileArray: [String: NearbySharingTransferredFile] = [:]
+            var files: [NearbySharingFile] = []
+            for file in addFilesViewModel.files {
+                guard let id = file.id else {
+                    continue
                 }
+                var hash = file.hash
+
+                if hash == nil {
+                    let url = await vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
+                    if let url, let computedHash = await url.sha256Hash() {
+                        hash = computedHash
+                        file.hash = computedHash
+                        _ = mainAppModel.vaultFilesManager?.updateHashVaultFile(id: id, hash: computedHash)
+                    }
+                }
+
+                let nearbySharingFile = NearbySharingFile(
+                    id: id,
+                    fileName: file.name,
+                    size: file.size,
+                    sha256: hash,
+                    fileType: file.mimeType,
+                    thumbnail: file.thumbnail)
+
+                nearbySharingFileArray[id] = NearbySharingTransferredFile(vaultFile: file)
+                files.append(nearbySharingFile)
+            }
+
+            let prepareUploadRequest = PrepareUploadRequest(
+                title: title,
+                sessionID: sessionId,
+                files: files
             )
-            .store(in: &subscribers)
+
+            self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)
+                .receive(on: DispatchQueue.main)
+                .sink(
+                    receiveCompletion: { completion in
+                        self.handlePrepareUpload(completion: completion)
+                    }, receiveValue: { response in
+
+                        nearbySharingFileArray.values.forEach { file in
+                            if let transmissionId = response.files?.first(where: { $0.id == file.file.id })?.transmissionID {
+                                file.transmissionId = transmissionId
+                            }
+                        }
+                        self.session.files = nearbySharingFileArray
+                        self.viewAction = .displaySendingFiles
+                    }
+                )
+                .store(in: &subscribers)
+        }
     }
     
     private func handlePrepareUpload(completion:Subscribers.Completion<APIError>) {

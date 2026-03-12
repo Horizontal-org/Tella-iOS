@@ -333,6 +333,8 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         let duration =  filePath.getDuration()
         let size = filePath.fileSize ?? 0
         
+        let hash = await filePath.sha256Hash()
+
         let vaultFile = await VaultFileDB(id: id,
                                           type: .file,
                                           thumbnail: thumnail  ,
@@ -341,7 +343,8 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                           size: size,
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
-                                          height: height)
+                                          height: height,
+                                          hash: hash)
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
@@ -442,6 +445,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     func cancelImportAndEncryption() {
         self.shouldCancelImportAndEncryption.send(true)
+    }
+    
+    @discardableResult
+    func updateHashVaultFile(id: String, hash: String) -> Result<Bool,Error> {
+        let result = self.vaultDataBase.updateHashVaultFile(id: id, hash: hash)
+        return result
     }
 }
 

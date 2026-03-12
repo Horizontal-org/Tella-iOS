@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -18,7 +18,8 @@ protocol VaultDataBaseProtocol {
     func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB]
     @discardableResult
     func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error>
-    
+    @discardableResult
+    func updateHashVaultFile(id: String, hash: String) -> Result<Bool, Error>
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>
@@ -44,7 +45,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }
-
+    
     func checkVersions() {
         do {
             let oldVersion = try statementBuilder.getCurrentDatabaseVersion()
@@ -54,6 +55,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                 createTables()
             case 1:
                 addEncryptionUpdate()
+            case 2:
+                addHashColumn()
             default :
                 break
             }
@@ -82,7 +85,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             cddl(VaultD.cDuration, VaultD.real),
             cddl(VaultD.cSize, VaultD.integer, true, 0),
             cddl(VaultD.cWidth, VaultD.real),
-            cddl(VaultD.cHeight, VaultD.real)
+            cddl(VaultD.cHeight, VaultD.real),
+            cddl(VaultD.cHash, VaultD.text, defaultValue: "")
         ]
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
@@ -99,13 +103,24 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         }
     }
     
+    func addHashColumn() {
+        do {
+            try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile,
+                                             columnName: VaultD.cHash,
+                                             type: VaultD.text,
+                                             defaultValue: true)
+        } catch let error {
+            debugLog(error)
+        }
+        
+    }
     
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
         
         do {
             let parentId = parentId ?? VaultD.rootId
             let defaultThumbnail = UIImage().jpegData(compressionQuality: 1)
-
+            
             var valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                                KeyValue(key: VaultD.cParentId, value: parentId),
                                KeyValue(key: VaultD.cType, value: file.type.rawValue),
@@ -116,12 +131,13 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                KeyValue(key: VaultD.cDuration, value:file.duration ?? 0.0),
                                KeyValue(key: VaultD.cSize, value:file.size),
                                KeyValue(key: VaultD.cWidth, value:file.width ?? 0.0),
-                               KeyValue(key: VaultD.cHeight, value:file.height ?? 0.0)
+                               KeyValue(key: VaultD.cHeight, value:file.height ?? 0.0),
+                               KeyValue(key: VaultD.cHash, value:file.hash)
             ]
             // Set the encryptionUpdated field to true only if we have it in the database
             // this value is true because the new file to add is already encrypted with the new encryption
             let encryptionUpdatedColumnExist =  statementBuilder.columnExists(tableName: VaultD.tVaultFile,
-                                                                               column: VaultD.cEncryptionUpdated)
+                                                                              column: VaultD.cEncryptionUpdated)
             if encryptionUpdatedColumnExist {
                 valuesToAdd.append(KeyValue(key: VaultD.cEncryptionUpdated, value:true))
             }
@@ -188,7 +204,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             return nil
         }
     }
-
+    
     func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB] {
         do {
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
@@ -227,7 +243,26 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
         }
     }
-
+    
+    @discardableResult
+    func updateHashVaultFile(id: String, hash: String) -> Result<Bool, Error> {
+        
+        do {
+            
+            let valuesToUpdate = [KeyValue(key: VaultD.cHash, value: hash)]
+            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
+            
+            try statementBuilder.update(tableName: VaultD.tVaultFile,
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: vaultCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+            
+        }
+    }
+    
     func getVaultFiles(ids: [String]) -> [VaultFileDB] {
         do {
             
@@ -263,7 +298,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             debugLog(error)
             return []
         }
-
+        
     }
     
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error> {
@@ -292,11 +327,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
             let valuesToUpdate = [KeyValue(key: VaultD.cParentId, value: parentId)]
 
-//            let vaultCondition = fileIds.compactMap({KeyValue(key: VaultD.cId, value: $0, sqliteOperator: .or) })
-//            vaultCondition.first?.sqliteOperator = .empty
-            
             let vaultCondition = [KeyValues(key: VaultD.cId, value: fileIds)]
-
+            
             try statementBuilder.update(tableName: VaultD.tVaultFile,
                                         valuesToUpdate: valuesToUpdate,
                                         inCondition: vaultCondition)
