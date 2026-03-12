@@ -9,7 +9,7 @@
 
 struct RegisterRequest:Codable {
     var pin : String?
-    var nonce : String?  // "random-uuid-number"
+    var nonce : String?   
     
     init(pin: String? = nil, nonce: String? = nil) {
         self.pin = pin

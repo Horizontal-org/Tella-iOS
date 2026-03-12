@@ -13,11 +13,13 @@ import Foundation
 struct PrepareUploadRequest: Codable {
     let title, sessionID: String?
     let files: [NearbySharingFile]?
-    
+    let nonce: String?
+
     enum CodingKeys: String, CodingKey {
         case title
         case sessionID = "sessionId"
         case files
+        case nonce
     }
 }
 

@@ -65,8 +65,9 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         
         guard let connectionInfo  else { return }
         
-        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString)
-        
+        let nonce = UUID().uuidString
+        let registerRequest = RegisterRequest(pin: connectionInfo.pin, nonce: nonce)
+
         self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in

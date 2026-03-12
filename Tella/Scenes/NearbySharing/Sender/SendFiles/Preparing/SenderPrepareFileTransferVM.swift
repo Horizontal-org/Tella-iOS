@@ -95,7 +95,8 @@ class SenderPrepareFileTransferVM: ObservableObject {
             let prepareUploadRequest = PrepareUploadRequest(
                 title: title,
                 sessionID: sessionId,
-                files: files
+                files: files,
+                nonce: UUID().uuidString
             )
 
             self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)

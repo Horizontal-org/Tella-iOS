@@ -92,10 +92,10 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func register() {
-        
-        let registerRequest = RegisterRequest(pin:connectionInfo.pin, nonce: UUID().uuidString )
+        let nonce = UUID().uuidString
+        let registerRequest = RegisterRequest(pin: connectionInfo.pin, nonce: nonce)
         self.updateButtonsState(state: .waiting)
-        
+
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in

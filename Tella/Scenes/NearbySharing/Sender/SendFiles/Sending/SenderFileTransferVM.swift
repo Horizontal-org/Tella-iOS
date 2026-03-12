@@ -48,7 +48,8 @@ class SenderFileTransferVM: FileTransferVM {
                 let fileID = file.file.id
                 repository?.uploadFile(fileUploadRequest: FileUploadRequest(sessionID: session?.sessionId,
                                                                             transmissionID: file.transmissionId,
-                                                                            fileID: fileID),
+                                                                            fileID: fileID,
+                                                                            nonce: UUID().uuidString),
                                        fileURL: url)
                 .receive(on: DispatchQueue.main)
                 .sink { completion in
