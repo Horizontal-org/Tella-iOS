@@ -98,34 +98,33 @@ final class ReceiverFileTransferVM: FileTransferVM {
     
     private func handle(file: NearbySharingTransferredFile) async {
         guard let fileID = file.vaultFile.id else { return }
-        
+
         switch file.status {
         case .finished:
             if let transferred = transferredFiles.first(where: { $0.vaultFile.id == fileID }) {
                 transferred.status = .saving
                 self.updateStatus(with: transferred)
             }
-            
+
             guard
                 let parent = await ensureRootFolder(),
-                let manager = self.mainAppModel.vaultFilesManager
+                let manager = self.mainAppModel.vaultFilesManager,
+                let fileURL = file.url
             else {
-                markFailed(id: fileID)
-                checkAllFilesAreReceived()
+                markFailedAndCheckCompletion(id: fileID)
                 return
             }
-            
-            let computedHash = await file.url?.sha256Hash()
-            let recevedHashInprepareupload = file.file.sha256
 
-            guard recevedHashInprepareupload == computedHash  else {
-                markFailed(id: fileID)
-                checkAllFilesAreReceived()
+            let expectedHash = file.file.sha256
+            let computedHash = await fileURL.sha256Hash()
+
+            guard let expectedHash, let computedHash, expectedHash == computedHash else {
+                markFailedAndCheckCompletion(id: fileID)
                 return
             }
-            
+
             let imported = ImportedFile(
-                urlFile: file.url,
+                urlFile: fileURL,
                 parentId: parent.id,
                 shouldPreserveMetadata: true,
                 deleteOriginal: true,
@@ -133,22 +132,27 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 fileId: fileID,
                 fileName: file.vaultFile.name
             )
-            
+
             if await manager.addVaultFile(importedFile: imported) != nil {
                 markSaved(id: fileID)
             } else {
-                markFailed(id: fileID)
+                markFailedAndCheckCompletion(id: fileID)
+                return
             }
-            
+
             checkAllFilesAreReceived()
-            
+
         case .failed:
-            markFailed(id: fileID)
-            checkAllFilesAreReceived()
-            
+            markFailedAndCheckCompletion(id: fileID)
+
         default:
             self.updateProgress(with: file)
         }
+    }
+
+    private func markFailedAndCheckCompletion(id: String) {
+        markFailed(id: id)
+        checkAllFilesAreReceived()
     }
     
     // MARK: - UI helpers
