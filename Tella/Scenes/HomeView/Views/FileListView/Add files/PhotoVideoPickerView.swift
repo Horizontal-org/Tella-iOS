@@ -3,7 +3,7 @@
 //  Tella
 //
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -18,7 +18,7 @@ struct PhotoVideoPickerView: View {
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
     @State private var showingImagePickerSheet : Bool = false
-    private let delayTimeInSecond = 0.5
+    @State private var pendingImagePickerAssets: [PHAsset]? = nil
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
     
     @EnvironmentObject var sheetManager: SheetManager
@@ -50,16 +50,18 @@ struct PhotoVideoPickerView: View {
     var imagePickerView: some View {
         
         HStack{}
-            .sheet(isPresented: $showingImagePickerSheet, content: {
-                ImagePickerSheet { assets in
-                    self.showingImagePickerSheet = false
-                    
-                    if assets != nil  {
-                        if assets?.count != 0 && viewModel.shouldShowProgressView {
-                            showProgressView()
-                        }
-                        viewModel.handleAddingFile(assets)
+            .sheet(isPresented: $showingImagePickerSheet, onDismiss: {
+                if let assets = pendingImagePickerAssets {
+                    pendingImagePickerAssets = nil
+                    if assets.count != 0 && viewModel.shouldShowProgressView {
+                        showProgressView()
                     }
+                    viewModel.handleAddingFile(assets)
+                }
+            }, content: {
+                ImagePickerSheet { assets in
+                    pendingImagePickerAssets = assets
+                    showingImagePickerSheet = false
                 }
             })
     }
@@ -133,12 +135,12 @@ struct PhotoVideoPickerView: View {
     
     func showProgressView() {
         viewModel.progressFile = ProgressFile()
-        sheetManager.showBottomSheet(shouldHideOnTap: false,
-                                     content: {
-            ImportFilesProgressView(mainAppModel: viewModel.mainAppModel,
-                                    progress: viewModel.progressFile,
-                                    importFilesProgressProtocol: ImportFilesProgress())
-            
-        })
+        
+        let content = ImportFilesProgressView(mainAppModel: viewModel.mainAppModel,
+                                              progress: viewModel.progressFile,
+                                              importFilesProgressProtocol: ImportFilesProgress(),
+                                              onImportFinished: { self.dismiss() })
+        showBottomSheetView(content: content,
+                            tapToDismiss: false)
     }
 }

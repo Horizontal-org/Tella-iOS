@@ -100,7 +100,7 @@ struct CameraView: View {
                     Toast.displayToast(message: cameraViewModel.errorMessage)
                 }
             }
-
+        
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }
@@ -140,12 +140,16 @@ struct CameraView: View {
     }
     
     func showProgressView() {
-        sheetManager.showBottomSheet(shouldHideOnTap: false,
-                                     content: {
-            ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
-                                    progress: cameraViewModel.progressFile,
-                                    importFilesProgressProtocol: ImportFilesFromCameraProgress())
-        })
+        cameraViewModel.progressFile = ProgressFile()
+        
+        let content = ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
+                                progress: cameraViewModel.progressFile,
+                                importFilesProgressProtocol: ImportFilesFromCameraProgress(),
+                                onImportFinished: { self.dismiss() })
+        
+        showBottomSheetView(content: content,
+                            tapToDismiss: false)
+        
     }
 }
 

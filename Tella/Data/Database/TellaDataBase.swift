@@ -56,6 +56,9 @@ class TellaDataBase : DataBase {
                 createDropboxServerTable()
                 createDropboxReportTable()
                 createDropboxReportsFileTable()
+            case 8:
+                addVersionColumnToTellaWebServer()
+                addContactColumnToFeedbackTable()
             default :
                 break
             }
@@ -118,18 +121,18 @@ class TellaDataBase : DataBase {
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
     }
-
+    
     func checkFilesInConnections(ids: [String]) -> Bool {
         do {
             for vaultId in ids {
                 let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
                 let responseReportDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
-                                                                    andCondition: condition)
+                                                                          andCondition: condition)
                 if !responseReportDict.isEmpty {
                     return true
                 }
                 let responseUwaziDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstanceVaultFile,
-                                                                    andCondition: condition)
+                                                                         andCondition: condition)
                 if !responseUwaziDict.isEmpty {
                     return true
                 }
@@ -139,7 +142,7 @@ class TellaDataBase : DataBase {
         }
         return false
     }
-
+    
     /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
     /// It was a typo
     func renameUpdatedDateColumn() {
@@ -151,7 +154,7 @@ class TellaDataBase : DataBase {
             try statementBuilder.addColumnOn(tableName: D.tReportInstanceVaultFile, columnName: D.cUpdatedDate, type: D.float)
             try statementBuilder.updateColumnOn(tableName: D.tReportInstanceVaultFile, oldColumn: D.cUpatedDate, newColumn: D.cUpdatedDate)
             try statementBuilder.dropColumnOn(tableName: D.tReportInstanceVaultFile, columnName: D.cUpatedDate)
-
+            
         } catch let error {
             debugLog(error)
         }
@@ -356,7 +359,7 @@ class TellaDataBase : DataBase {
             
             let status = report.status
             keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
- 
+            
             if let serverId = report.server?.id {
                 keyValueArray.append(KeyValue(key: D.cServerId, value: serverId))
             }
@@ -460,7 +463,7 @@ class TellaDataBase : DataBase {
             if let status = reportFile.status {
                 keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
             }
-
+            
             if let status = reportFile.status {
                 keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
             }
@@ -487,17 +490,17 @@ class TellaDataBase : DataBase {
         do {
             // Get the vault file instance array where cVaultFileInstanceId equal to the old vault file ID
             var vaultFileInstanceIDs : [Int] = []
-
+            
             let condition = [KeyValue(key: D.cVaultFileInstanceId, value: oldId)]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
                                                                 andCondition: condition)
-
+            
             responseDict.forEach { dict in
                 if let id = dict[D.cId] as? Int {
                     vaultFileInstanceIDs.append(id)
                 }
             }
-
+            
             // Update the cVaultFileInstanceId value with the new vault file ID
             let valuesToUpdate = [KeyValue(key: D.cVaultFileInstanceId, value: newID)]
             
@@ -514,7 +517,7 @@ class TellaDataBase : DataBase {
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-
+    
     func addReportFile(fileId:String?, reportId:Int) -> Result<Int,Error> {
         
         do {
@@ -549,7 +552,7 @@ class TellaDataBase : DataBase {
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
             return .success
-
+            
         } catch let error {
             debugLog(error)
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
@@ -568,7 +571,7 @@ class TellaDataBase : DataBase {
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
             return .success
-
+            
         } catch let error {
             debugLog(error)
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
@@ -609,12 +612,12 @@ class TellaDataBase : DataBase {
     ///
     func getOutboxReports<T: Codable>(tableName: String) -> [T] {
         let outboxReportStatus : [ReportStatus] = [.finalized,
-                                  .submissionError,
-                                  .submissionPending,
-                                  .submissionPaused,
-                                  .submissionInProgress,
-                                  .submissionAutoPaused,
-                                  .submissionScheduled]
+                                                   .submissionError,
+                                                   .submissionPending,
+                                                   .submissionPaused,
+                                                   .submissionInProgress,
+                                                   .submissionAutoPaused,
+                                                   .submissionScheduled]
         do {
             let statusArray = outboxReportStatus.compactMap { $0.rawValue }
             
@@ -631,7 +634,7 @@ class TellaDataBase : DataBase {
             return []
         }
     }
-
+    
 }
 
 extension TellaDataBase {
@@ -640,13 +643,21 @@ extension TellaDataBase {
         
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cContact, D.text),
             cddl(D.ctext, D.text),
             cddl(D.cStatus, D.integer),
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
         ]
         statementBuilder.createTable(tableName: D.tFeedback, columns: columns)
-        
+    }
+    
+    func addContactColumnToFeedbackTable() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tFeedback, columnName: D.cContact, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
     }
     
     func getDraftFeedback() -> Feedback? {
@@ -677,10 +688,10 @@ extension TellaDataBase {
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
         do {
-            let valuesToAdd = [KeyValue(key: D.ctext, value: feedback.text),
-                               KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
-                               KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            let excludedKeys = [D.cId]
+            let valuesToAdd = feedback.dictionary
+                .filter { !excludedKeys.contains($0.key) }
+                .map { KeyValue(key: $0.key, value: $0.value) }
             
             let idResult = try statementBuilder.insertInto(tableName: D.tFeedback,
                                                            keyValue: valuesToAdd)
@@ -693,12 +704,11 @@ extension TellaDataBase {
     }
     
     func updateFeedback(feedback : Feedback) -> Result<Bool, Error> {
-        
         do {
-            
-            let valuesToUpdate = [ KeyValue(key: D.ctext, value: feedback.text),
-                                   KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
-                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            let excludedKeys = [D.cId, D.cCreatedDate]
+            let valuesToUpdate = feedback.dictionary
+                .filter { !excludedKeys.contains($0.key) }
+                .map { KeyValue(key: $0.key, value: $0.value) }
             
             let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
             try statementBuilder.update(tableName: D.tFeedback,
@@ -711,7 +721,7 @@ extension TellaDataBase {
             return .failure(error)
         }
     }
-
+    
     func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
         
         do {

@@ -19,8 +19,8 @@ class DraftReportVM: DraftMainViewModel {
     }
     
     override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
+        $resultFile.sink(receiveValue: { [weak self] value in
+            guard let self, let value else { return }
             self.files.insert(value)
             self.publishUpdates()
         }).store(in: &subscribers)

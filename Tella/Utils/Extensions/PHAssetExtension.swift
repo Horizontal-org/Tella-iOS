@@ -24,10 +24,13 @@ extension PHAsset {
     ///
     
     func getDataFromAsset() async throws -> Data? {
-        
+        let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+
         return try await withCheckedThrowingContinuation { continuation in
             
-            PHImageManager.default().requestImageDataAndOrientation(for: self, options: nil) { (data, uti, orientation, info) in
+            PHImageManager.default().requestImageDataAndOrientation(for: self, options: options) { (data, uti, orientation, info) in
                 if let data = data {
                     continuation.resume(returning: data)
                 } else if let error = info?[PHImageErrorKey] as? Error {
@@ -48,10 +51,13 @@ extension PHAsset {
     /// - Throws: An error if the URL could not be fetched.
     
     func getAVAssetUrl() async throws -> URL? {
-        
+        let options = PHVideoRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+
         return try await withCheckedThrowingContinuation { continuation in
             
-            PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
+            PHImageManager.default().requestAVAsset(forVideo: self, options: options) { avAsset, audioMix, info in
                 
                 if let url = (avAsset as? AVURLAsset)?.url {
                     continuation.resume(returning: url)
@@ -65,10 +71,13 @@ extension PHAsset {
     }
     
     func getAVAsset() async throws -> AVAsset? {
-        
+        let options = PHVideoRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+
         return try await withCheckedThrowingContinuation { continuation in
             
-            PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
+            PHImageManager.default().requestAVAsset(forVideo: self, options: options) { avAsset, audioMix, info in
                 
                 if let avAsset = (avAsset ) {
                     continuation.resume(returning: avAsset)
@@ -99,6 +108,8 @@ extension PHAsset {
         
         let options = PHImageRequestOptions()
         options.isSynchronous = true
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
         
         manager.requestImage(for: self, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: options) { img, info in
             if let img = img {

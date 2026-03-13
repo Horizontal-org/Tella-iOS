@@ -27,7 +27,7 @@ protocol VaultManagerInterface {
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
     func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
-    func extract(from inputFileURL: URL, offsetSize:Int)
+    func extract(from inputFileURL: URL, offsetSize: Int) throws -> URL
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
     func loadFileDataOld(fileName: String?) -> Data?
     func getDescriptionFileUrl(content:String,fileName:String) -> URL?
@@ -43,7 +43,9 @@ protocol VaultManagerInterface {
     func createTempFileURL(pathExtension: String) -> URL
     func createTempFileURL(fileName: String?) -> URL
     func createTempFileURL(fileName: String?, pathExtension: String?, withSubFolder:Bool) -> URL
-    
+    func fileExists(at path: String) -> Bool
+    func isReadableFile(at filePath: String) -> Bool
+
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])
     func deleteFiles(files: [URL])

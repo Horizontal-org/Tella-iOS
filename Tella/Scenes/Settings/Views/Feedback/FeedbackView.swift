@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,7 +12,7 @@ struct FeedbackView: View {
     @ObservedObject var feedbackViewModel : FeedbackViewModel
     @State var showSaveDraftSheet : Bool = false
     @EnvironmentObject var sheetManager : SheetManager
-
+    
     var body: some View {
         ContainerView {
             content
@@ -64,19 +64,17 @@ struct FeedbackView: View {
                             manageFeedbackView
                         }.background(Styles.Colors.backgroundMain)
                         
-                        
                             .onTapGesture {
                                 UIApplication.shared.endEditing()
                             }
                         
                         Spacer()
-                            .frame( minHeight: 40)
+                            .frame(height: 48)
                         
                         feedbackTextView
-                            .frame( height: 120)
                         
                         Spacer()
-                            .frame( minHeight: 20)
+                            .frame(minHeight: 20)
                         
                         submitButton
                         
@@ -134,11 +132,19 @@ struct FeedbackView: View {
     @ViewBuilder
     var feedbackTextView : some View {
         if $mainAppModel.settings.shareFeedback.wrappedValue {
+            VStack(spacing: 48) {
+                BorderedTextFieldView(placeholder: LocalizableSettings.contactPlaceholder.localized,
+                                      shouldShowTitle: true,
+                                      fieldContent: $feedbackViewModel.feedbackContact,
+                                      isValid: .constant(true))
+                
+                BorderedTextEditorView(placeholder: LocalizableSettings.feedback.localized,
+                                       shouldShowTitle: true,
+                                       fieldContent: $feedbackViewModel.feedbackContent,
+                                       isValid: $feedbackViewModel.feedbackIsValid)
+            }
+            .padding(.horizontal, 16)
             
-            BorderedTextEditorView(placeholder: LocalizableSettings.selectFeedback.localized,
-                                   shouldShowTitle: true,
-                                   fieldContent: $feedbackViewModel.feedbackContent,
-                                   isValid: $feedbackViewModel.feedbackIsValid)
         }
     }
     
@@ -169,7 +175,9 @@ struct FeedbackView: View {
             ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
                                msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
                                cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
-                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(), didConfirmAction: {
+                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(),
+                               shouldHideSheet: false,
+                               didConfirmAction: {
                 feedbackViewModel.saveFeedbackDraft()
                 self.dismiss()
             }, didCancelAction: {
@@ -195,7 +203,7 @@ struct FeedbackView: View {
         }
     }
 }
-//
-//#Preview {
-//    FeedbackView(mainAppModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
-//}
+
+#Preview {
+    FeedbackView(mainAppModel: MainAppModel.stub(),feedbackViewModel: FeedbackViewModel.stub())
+}

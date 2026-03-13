@@ -21,6 +21,8 @@ protocol FileManagerInterface {
     func removeItem(at path: URL)
     func removeItem(at path: String)
     func fileExists(filePath: String) -> Bool
+    func sizeOfFile(atPath path: String) -> Int?
+    func isReadableFile(filePath: String) -> Bool
 }
 
 class DefaultFileManager: FileManagerInterface {
@@ -144,5 +146,13 @@ class DefaultFileManager: FileManagerInterface {
     
     func fileExists(filePath: String) -> Bool {
         fileManager.fileExists(atPath: filePath)
+    }
+    
+    func isReadableFile(filePath: String) -> Bool {
+        fileManager.isReadableFile(atPath: filePath)
+    }
+
+    func sizeOfFile(atPath path: String) -> Int? {
+        fileManager.sizeOfFile(atPath: path)
     }
 }

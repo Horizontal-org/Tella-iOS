@@ -8,6 +8,7 @@
 //
 
 
+import Combine
 import Foundation
 import Photos
 
@@ -173,13 +174,15 @@ extension VaultFilesManager {
         exportSession.metadata = nil
         exportSession.metadataItemFilter = .forSharing()
 
-        self.shouldCancelVideoExport.sink(receiveValue: { shouldCancel in
-          if shouldCancel {
-              self.shouldCancelVideoExport.value = false
-              exportSession.cancelExport()
-          }
-        }).store(in: &self.cancellable)
-
+        self.shouldCancelVideoExport
+            .dropFirst()
+            .sink(receiveValue: { [weak self] shouldCancel in
+                guard shouldCancel else { return }
+                self?.shouldCancelVideoExport.value = false
+                exportSession.cancelExport()
+            })
+            .store(in: &self.cancellable)
+        
         await exportSession.export()
 
         if exportSession.status == .completed {
