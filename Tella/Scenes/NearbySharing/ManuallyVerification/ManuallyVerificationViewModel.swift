@@ -92,8 +92,9 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func register() {
-        let nonce = UUID().uuidString
-        let registerRequest = RegisterRequest(pin: connectionInfo.pin, nonce: nonce)
+
+        let registerRequest = RegisterRequest(pin: connectionInfo.pin,
+                                              nonce: UUID().uuidString)
         self.updateButtonsState(state: .waiting)
 
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)

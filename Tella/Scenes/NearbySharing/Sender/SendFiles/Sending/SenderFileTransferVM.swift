@@ -46,10 +46,11 @@ class SenderFileTransferVM: FileTransferVM {
             vaultfiles.forEach({ file in
                 guard let url = file.url else { return }
                 let fileID = file.file.id
-                repository?.uploadFile(fileUploadRequest: FileUploadRequest(sessionID: session?.sessionId,
-                                                                            transmissionID: file.transmissionId,
-                                                                            fileID: fileID,
-                                                                            nonce: UUID().uuidString),
+                let request = FileUploadRequest(sessionID: session?.sessionId,
+                                                transmissionID: file.transmissionId,
+                                                fileID: fileID,
+                                                nonce: UUID().uuidString)
+                repository?.uploadFile(fileUploadRequest: request,
                                        fileURL: url)
                 .receive(on: DispatchQueue.main)
                 .sink { completion in
