@@ -35,7 +35,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                 case .createReport(let apiId, let reportStatus, let error):
                     
                     if let _ = error {
-                        self.updateReportStatus(reportStatus: .submissionError)
+                        self.reportViewModel.status = reportStatus
                     } else {
                         self.reportViewModel.apiID = apiId
                         self.reportViewModel.status = reportStatus
@@ -73,6 +73,10 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.showSubmittedReport()
                         }
                     }
+                case .update(let reportStatus):
+                    self.reportViewModel.status = reportStatus
+                    self.publishUpdates()
+                    
                 default:
                     break
                 }
@@ -92,33 +96,18 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     override func pauseSubmission() {
         if isSubmissionInProgress {
-            self.updateReportStatus(reportStatus: .submissionPaused)
             self.reportUploadService.pause(reportId: self.reportViewModel.id)
         }
-        
     }
     
     override func submitReport() {
         if isSubmissionInProgress == false {
-            self.updateReportStatus(reportStatus: .submissionInProgress)
             
             guard let reportID = reportViewModel.id,
                   let report = self.mainAppModel.tellaData?.getReport(reportId:reportID) else { return }
             
             treat(uploadResponse: self.reportUploadService.sendReport(report: report, mainAppModel: mainAppModel))
         }
-    }
-    
-    // MARK: Update Local database
-    
-    override func updateReportStatus(reportStatus:ReportStatus) {
-        
-        self.reportViewModel.status = reportStatus
-        self.objectWillChange.send()
-        
-        guard let id = reportViewModel.id else { return  }
-        
-        mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     override func deleteReport() {

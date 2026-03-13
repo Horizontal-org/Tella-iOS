@@ -21,13 +21,13 @@ class AutoUpload: BaseUploadOperation {
         super.main()
         startUploadReportAndFiles()
     }
-
+    
     private func setupNetworkMonitor() {
         mainAppModel.networkMonitor.connectionDidChange
             .sink { [weak self] isConnected in
                 guard let self else { return }
                 guard let report = self.report else { return }
-
+                
                 if isConnected {
                     if report.status == .submissionPending {
                         self.checkReport()
@@ -36,7 +36,7 @@ class AutoUpload: BaseUploadOperation {
                     if report.status == .submissionInProgress {
                         self.stopConnection()
                         self.updateReport(reportStatus: .submissionPending)
-                        self.response.send(UploadResponse.initial)
+                        self.response.send(UploadResponse.update(reportStatus: .submissionPending))
                         debugLog("No internet connection")
                     }
                 }
@@ -46,7 +46,7 @@ class AutoUpload: BaseUploadOperation {
     func startUploadReportAndFiles() {
         
         self.response.send(UploadResponse.initial)
-
+        
         let currentReport = self.mainAppModel.tellaData?.getCurrentReport()
         
         if let currentReport  {
@@ -122,12 +122,15 @@ class AutoUpload: BaseUploadOperation {
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
+            self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+            
         }
     }
     
     override func prepareReportToSend(report: Report?) {
         self.report = report
         updateReport(reportStatus: .submissionInProgress)
+        self.response.send(UploadResponse.update(reportStatus: .submissionInProgress))
         super.prepareReportToSend(report: report)
     }
     

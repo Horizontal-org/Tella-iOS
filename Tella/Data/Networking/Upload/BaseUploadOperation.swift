@@ -44,6 +44,7 @@ class BaseUploadOperation: Operation {
         uploadTasksDict.removeAll()
         apiCancellables.removeAll()
         updateReport(reportStatus: .submissionPaused)
+        self.response.send(UploadResponse.update(reportStatus: .submissionPaused))
         
     }
     
@@ -59,16 +60,20 @@ class BaseUploadOperation: Operation {
     func stopConnection() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
-        updateReport(reportStatus: .submissionPending)
         self.filesToUpload.removeAll()
         apiCancellables.removeAll()
+        updateReport(reportStatus: .submissionPending)
+        self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+
     }
     
     func autoPauseReport() {
-        updateReport(reportStatus: .submissionAutoPaused)
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
         apiCancellables.removeAll()
+        updateReport(reportStatus: .submissionAutoPaused)
+        self.response.send(UploadResponse.update(reportStatus: .submissionAutoPaused))
+
     }
     
     override func main() {
@@ -115,6 +120,9 @@ class BaseUploadOperation: Operation {
                 break
             case .none:
                 break
+            case  .update(reportStatus: let reportStatus):
+                self.response.send(UploadResponse.update(reportStatus: reportStatus))
+                
             }
         }.store(in: &subscribers)
         
@@ -172,8 +180,11 @@ class BaseUploadOperation: Operation {
         let success = filesNotSubmitted.isEmpty
         if success {
             self.updateReport(reportStatus: .submitted)
+            self.response.send(UploadResponse.update(reportStatus: .submitted))
+            
         } else {
             self.updateReport(reportStatus: .submissionError)
+            self.response.send(UploadResponse.update(reportStatus: .submissionError))
             return
         }
         
@@ -220,6 +231,7 @@ class BaseUploadOperation: Operation {
     private func guardNetworkConnected() -> Bool {
         guard mainAppModel.networkMonitor.isConnected else {
             updateReport(reportStatus: .submissionPending)
+            self.response.send(UploadResponse.update(reportStatus: .submissionPending))
             return false
         }
         return true
@@ -231,6 +243,8 @@ class BaseUploadOperation: Operation {
         guard let report else { return }
         
         updateReport(reportStatus: .submissionInProgress)
+        self.response.send(UploadResponse.update(reportStatus: .submissionInProgress))
+        
         
         reportRepository.createReport(report: report)
             .sink { [weak self] completion in

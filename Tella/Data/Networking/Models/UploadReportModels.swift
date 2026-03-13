@@ -13,6 +13,7 @@ enum UploadResponse {
     case progress(progressInfo: UploadProgressInfo)
     case createReport(apiId: String?, reportStatus:ReportStatus?, error:APIError?)
     case finish(isAutoDelete:Bool, title:String?)
+    case update(reportStatus:ReportStatus?)
 }
 
 class UploadDecode<T,T1>  {
