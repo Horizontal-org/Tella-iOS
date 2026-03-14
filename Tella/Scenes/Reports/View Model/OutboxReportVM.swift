@@ -44,6 +44,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.showSubmittedReport()
                         }
                     }
+                    self.publishUpdates()
                     
                 case .progress(let progressInfo):
                     
@@ -63,8 +64,8 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.reportViewModel.status = reportStatus
                         }
                         
-                        self.markReportAsSubmissionErrorIfNeeded()
                     }
+                    self.checkAllFilesAreUploaded()
                 case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
                         if isAutoDelete {
@@ -118,4 +119,24 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         }
         handleDeleteReport(deleteResult: deleteResult)
     }
+    
+    override func checkAllFilesAreUploaded() {
+        
+        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
+        let filesWithError = reportViewModel.files.filter({$0.status == .submissionError})
+        
+        // Do not show success if any file failed
+        guard filesWithError.isEmpty else { return }
+        
+        if (filesAreNotSubmitted.isEmpty) {
+            
+            updateReport(reportStatus: .submitted)
+            showSubmittedReport()
+            deleteFilesAfterSubmission()
+            subscribers.removeAll()
+        }
+        
+        markReportAsSubmissionErrorIfNeeded()
+    }
+
 }

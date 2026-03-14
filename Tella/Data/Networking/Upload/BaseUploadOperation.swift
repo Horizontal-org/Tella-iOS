@@ -185,6 +185,7 @@ class BaseUploadOperation: Operation {
         } else {
             self.updateReport(reportStatus: .submissionError)
             self.response.send(UploadResponse.update(reportStatus: .submissionError))
+            self.cancelSendingReport()
             return
         }
         
