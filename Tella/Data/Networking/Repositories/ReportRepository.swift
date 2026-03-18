@@ -70,9 +70,6 @@ class ReportRepository: WebRepository {
 
 extension ReportRepository {
     enum API {
-        /// Server version from which the file PUT endpoint uses the v2 path (e.g. "1.4.0").
-        static let fileAPIv2MinimumVersion = "1.4.0"
-
         case createReport((Report))
         case headReportFile((FileToUpload))
         case putReportFile((FileToUpload))
@@ -133,7 +130,7 @@ extension ReportRepository.API: APIRequest {
             
         case .putReportFile(let file):
             let filePath = "\(file.idReport)/\(file.fileName).\(file.fileExtension)"
-            let useV2 = file.version?.isGreaterThanOrEqualToVersion(Self.fileAPIv2MinimumVersion) ?? false
+            let useV2 = file.version?.isGreaterThanOrEqualToVersion(TellaServer.fileAPIv2MinimumVersion) ?? false
             let prefix = useV2 ? "/file/v2" : "/file"
             return "\(prefix)/\(filePath)"
         }

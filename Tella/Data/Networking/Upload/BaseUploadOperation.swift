@@ -27,7 +27,6 @@ class BaseUploadOperation: Operation {
     var type: OperationType!
     
     public var apiCancellables: Set<AnyCancellable> = []
-    static let newServerVersion = "1.4.0"
     
     override init() {
         self.reportRepository = ReportRepository()
@@ -385,7 +384,7 @@ class BaseUploadOperation: Operation {
         fileToUpload.remainingBytesToSend = max(0, fileToUpload.fileSize - syncedBytesSent)
         
         if fileToUpload.remainingBytesToSend == 0 {
-            if fileToUpload.version == BaseUploadOperation.newServerVersion {
+            if fileToUpload.version?.isGreaterThanOrEqualToVersion(TellaServer.fileAPIv2MinimumVersion) ?? false {
                 self.initialResponse.send(
                     UploadResponse.progress(
                         progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)
@@ -474,7 +473,7 @@ class BaseUploadOperation: Operation {
         
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
         
-        if fileToUpload.version == BaseUploadOperation.newServerVersion {
+        if fileToUpload.version?.isGreaterThanOrEqualToVersion(TellaServer.fileAPIv2MinimumVersion) ?? false {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
         } else {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
