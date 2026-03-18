@@ -133,7 +133,10 @@ extension ReportRepository.API: APIRequest {
             
         case .putReportFile(let file):
             let filePath = "\(file.idReport)/\(file.fileName).\(file.fileExtension)"
-            let prefix = file.version == Self.fileAPIv2MinimumVersion ? "/file/v2" : "/file"
+            let prefix = file.version.isGreaterThanOrEqualToVersion(Self.fileAPIv2MinimumVersion)
+                ? "/file/v2"
+                : "/file"
+
             return "\(prefix)/\(filePath)"
         }
     }
