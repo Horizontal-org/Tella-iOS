@@ -211,6 +211,13 @@ actor NetworkManager {
             }
         }
         
+        parser.onBodyWriteError = { [weak self] error in
+            guard let self else { return }
+            Task {
+                await self.handleConnectionError(connection, error: error)
+            }
+        }
+        
         parser.onReceiveQueryParameters = { [weak self] in
             guard let self else { return }
             Task {

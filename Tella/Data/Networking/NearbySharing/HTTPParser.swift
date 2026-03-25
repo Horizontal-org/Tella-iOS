@@ -38,6 +38,7 @@ final class HTTPParser: @unchecked Sendable {
     }
     var onReceiveBody: ((Int) -> Void)?
     var onReceiveQueryParameters: (() -> Void)?
+    var onBodyWriteError: ((Error) -> Void)?
     
     var request: HTTPRequest {
         return HTTPRequest(
@@ -128,7 +129,7 @@ final class HTTPParser: @unchecked Sendable {
                     try instance.fileHandle?.write(contentsOf: buffer)
                     instance.onReceiveBody?(buffer.count)
                 } catch {
-                    debugLog("Write error: \(error)")
+                    instance.onBodyWriteError?(error)
                 }
             default:
                 break
@@ -202,7 +203,7 @@ final class HTTPParser: @unchecked Sendable {
             try Data().write(to: fileURL, options: .atomic)
             self.fileHandle = try FileHandle(forUpdating: fileURL)
         } catch {
-            debugLog("Failed to create temp file: \(error)")
+            onBodyWriteError?(error)
         }
     }
     

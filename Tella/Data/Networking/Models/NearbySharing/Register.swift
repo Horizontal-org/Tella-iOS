@@ -9,11 +9,13 @@
 
 struct RegisterRequest:Codable {
     var pin : String?
-    var nonce : String?   
+    var nonce : String?
+    var senderCertificateHash: String?
     
-    init(pin: String? = nil, nonce: String? = nil) {
+    init(pin: String? = nil, nonce: String? = nil, senderCertificateHash: String?) {
         self.pin = pin
         self.nonce = nonce
+        self.senderCertificateHash = senderCertificateHash
     }
 }
 

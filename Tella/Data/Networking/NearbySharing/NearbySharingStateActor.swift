@@ -118,6 +118,50 @@ actor NearbySharingStateActor {
         file.status = .finished
         state.session?.files[fileID] = file
     }
+
+    func finalizeUpload(from request: HTTPRequest) async throws -> NearbySharingTransferredFile {
+        let uploadRequest: FileUploadRequest
+
+        do {
+            uploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+        } catch {
+            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+
+        guard let fileID = uploadRequest.fileID, !fileID.isEmpty else {
+            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+        
+        guard let file = fileInfo(for: fileID) else {
+            throw ServerStatus(code: .notFound, message: .transferNotFound)
+        }
+
+        if file.status == .finished {
+            throw ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
+        }
+
+        guard let fileURL = file.url else {
+            throw ServerStatus(code: .notFound, message: .transferNotFound)
+        }
+
+        guard let expectedHash = file.file.sha256, !expectedHash.isEmpty else {
+            throw failUpload(fileID: fileID, fileURL: fileURL)
+        }
+
+        guard let computedHash = await fileURL.sha256Hash(),
+              computedHash.caseInsensitiveCompare(expectedHash) == .orderedSame else {
+            throw failUpload(fileID: fileID, fileURL: fileURL)
+        }
+
+        markUploadFinished(fileID: fileID)
+        return file
+    }
+        
+    private func failUpload(fileID: String, fileURL: URL) -> ServerStatus {
+        state.session?.files[fileID]?.status = .failed
+        fileURL.remove()
+        return ServerStatus(code: .notAcceptable, message: .fileHashMismatch)
+    }
     
     @discardableResult
     func beginUpload(fileID: String, fileType: String) -> URL? {

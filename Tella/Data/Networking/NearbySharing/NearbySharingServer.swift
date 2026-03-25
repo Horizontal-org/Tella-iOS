@@ -132,13 +132,20 @@ final class NearbySharingServer {
         }
     }
     
-    private func handleError(for request: HTTPRequest?, on connection: NWConnection) {
+    private func handleError(error: Error? = nil, for request: HTTPRequest?, on connection: NWConnection) {
         guard let req = request,
               let endpoint = NearbySharingEndpoint(rawValue: req.endpoint) else {
             return
         }
         
         if endpoint == .upload {
+            if let error, error.isInsufficientStorageError {
+                sendErrorResponse(
+                    ServerStatus(code: .insufficientStorage, message: .insufficientStorage),
+                    connection: connection,
+                    endpoint: .upload
+                )
+            }
             handleUploadFailure(connection: connection, request: req)
         } else {
             sendInternalServerError(connection: connection)
@@ -184,7 +191,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
     
     func networkManager(didFailWith error: Error?, context: ConnectionContext?) {
         guard let context else { return }
-        handleError(for: context.request, on: context.connection)
+        handleError(error: error, for: context.request, on: context.connection)
     }
     
     func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
@@ -367,75 +374,86 @@ extension NearbySharingServer: UploadHandler {
     func handleFileUploadRequest(on connection: NWConnection, request: HTTPRequest) async -> URL? {
         do {
             let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
-            
+
             // --- Validate query params ---
-            guard let fileID = uploadReq.fileID,
-                  let transmissionID = uploadReq.transmissionID,
-                  let sessionID = uploadReq.sessionID else {
-                let error = ServerStatus(code: .badRequest, message: .missingRequiredParameters)
-                sendErrorResponse(error, connection: connection)
+            guard let fileID = uploadReq.fileID, !fileID.isEmpty,
+                  let transmissionID = uploadReq.transmissionID, !transmissionID.isEmpty,
+                  let sessionID = uploadReq.sessionID, !sessionID.isEmpty else {
+                let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
                 return nil
             }
-            
+
             // --- Validate session ---
             let currentID = await state.currentSessionID()
             guard sessionID == currentID else {
                 let error = ServerStatus(code: .unauthorized, message: .invalidSessionID)
-                sendErrorResponse(error, connection: connection)
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
                 return nil
             }
-            
-            // --- Validate file + transmission, grab fileName for mutations ---
+
+            // --- Validate file + transmission ---
             guard let fileInfo = await state.fileInfo(for: fileID),
                   fileInfo.transmissionId == transmissionID,
                   let fileType = fileInfo.file.fileType else {
                 let error = ServerStatus(code: .forbidden, message: .invalidTransmissionID)
-                sendErrorResponse(error, connection: connection)
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
                 return nil
             }
-            
-            if fileInfo.status == .finished {
+
+            guard fileInfo.status != .finished else {
                 let error = ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
-                sendErrorResponse(error, connection: connection)
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
                 return nil
             }
-            
-            let url = await state.beginUpload(fileID: fileID, fileType: fileType)
+
+            // --- Validate available storage before creating/writing file ---
+            if let error = validateEnoughStorage(for: fileInfo.file) {
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
+                return nil
+            }
+
+            guard let url = await state.beginUpload(fileID: fileID, fileType: fileType) else {
+                let error = ServerStatus(code: .internalServerError, message: .serverError)
+                sendErrorResponse(error, connection: connection, endpoint: .upload)
+                return nil
+            }
+
             return url
-            
+
         } catch {
             debugLog("Error processing file upload request: \(error)")
-            let error = ServerStatus(code: .badRequest, message: .missingRequiredParameters)
-            sendErrorResponse(error, connection: connection)
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            sendErrorResponse(error, connection: connection, endpoint: .upload)
             return nil
         }
     }
     
+    
+    
     func handleReceivedCompleteRequest(on connection: NWConnection, request: HTTPRequest) {
-        
-        Task { do {
-            
-            let uploadReq: FileUploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
-            
-            guard let fileID = uploadReq.fileID else {
-                return
+        Task {
+            do {
+                let updatedFile = try await state.finalizeUpload(from: request)
+
+                eventPublisher.send(.fileTransferProgress(updatedFile))
+
+                let payload = BoolResponse(success: true)
+                sendSuccessResponse(connection: connection, payload: payload, endpoint: .upload)
+
+            } catch let status as ServerStatus {
+                sendErrorResponse(status, connection: connection, endpoint: .upload)
+
+            } catch {
+                sendErrorResponse(
+                    ServerStatus(code: .internalServerError, message: .serverError),
+                    connection: connection,
+                    endpoint: .upload
+                )
             }
-            
-            await state.markUploadFinished(fileID: fileID)
-            
-            if let fileInfo = await state.fileInfo(for: fileID) {
-                eventPublisher.send(.fileTransferProgress(fileInfo))
-            }
-            
-            let payload = BoolResponse(success: true)
-            sendSuccessResponse(connection: connection, payload: payload, endpoint: .upload)
-            
-        } catch {
-            debugLog("Error processing file upload request")
-        }
         }
     }
-    
+
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest) {
         guard let uploadReq: FileUploadRequest = try? request.queryParameters.decode(FileUploadRequest.self),
               let fileID = uploadReq.fileID else {
@@ -499,4 +517,25 @@ extension NearbySharingServer: CloseConnectionHandler {
 
 extension NearbySharingServer {
     static func stub() -> NearbySharingServer { NearbySharingServer() }
+}
+
+
+private extension NearbySharingServer {
+    func validateEnoughStorage(for file: NearbySharingFile) -> ServerStatus? {
+        guard let size = file.size, size > 0 else {
+            return ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+
+        let availableSpace = FileManager.default.availableDiskSpace
+
+        // Safety margin to avoid filling the device completely.
+        let safetyMargin: Int64 = 10 * 1024 * 1024 // 10 MB
+        let requiredSpace = (Int64(size) * 2) + safetyMargin 
+
+        guard availableSpace >= requiredSpace else {
+            return ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
+        }
+
+        return nil
+    }
 }

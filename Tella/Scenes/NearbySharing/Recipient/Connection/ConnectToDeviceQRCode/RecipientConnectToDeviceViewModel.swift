@@ -37,7 +37,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     private var networkChangeCancellable: AnyCancellable?
     
     // MARK: - Config
-    private let port: Int = 53317
+    private let port: Int = 53320
     
     // MARK: - Init
     init(certificateGenerator: CertificateGenerator, mainAppModel: MainAppModel) {

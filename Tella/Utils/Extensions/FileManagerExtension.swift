@@ -24,5 +24,16 @@ extension FileManager {
             .temporaryDirectory
             .appendingPathComponent(fileName)
     }
+    
+    /// Available free disk space in bytes
+    var availableDiskSpace: Int64 {
+        do {
+            let attrs = try attributesOfFileSystem(forPath: NSHomeDirectory())
+            return (attrs[.systemFreeSize] as? NSNumber)?.int64Value ?? 0
+        } catch {
+            return 0
+        }
+    }
+
 }
 
