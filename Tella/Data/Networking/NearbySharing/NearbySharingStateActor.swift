@@ -119,6 +119,46 @@ actor NearbySharingStateActor {
         state.session?.files[fileID] = file
     }
 
+    /// Validates the upload request, checks storage, and returns the temp file URL to write into (like `finalizeUpload` for the completion path).
+    func beginUploadFromRequest(_ request: HTTPRequest) throws -> URL {
+        let uploadRequest: FileUploadRequest
+        do {
+            uploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
+        } catch {
+            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+
+        guard let fileID = uploadRequest.fileID, !fileID.isEmpty,
+              let transmissionID = uploadRequest.transmissionID, !transmissionID.isEmpty,
+              let sessionID = uploadRequest.sessionID, !sessionID.isEmpty else {
+            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+
+        guard sessionID == currentSessionID() else {
+            throw ServerStatus(code: .unauthorized, message: .invalidSessionID)
+        }
+
+        guard let fileInfo = fileInfo(for: fileID),
+              fileInfo.transmissionId == transmissionID,
+              let fileType = fileInfo.file.fileType else {
+            throw ServerStatus(code: .forbidden, message: .invalidTransmissionID)
+        }
+
+        if fileInfo.status == .finished {
+            throw ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
+        }
+
+        if let storageError = validateEnoughStorage(for: fileInfo.file) {
+            throw storageError
+        }
+
+        guard let url = beginUpload(fileID: fileID, fileType: fileType) else {
+            throw ServerStatus(code: .internalServerError, message: .serverError)
+        }
+
+        return url
+    }
+
     func finalizeUpload(from request: HTTPRequest) async throws -> NearbySharingTransferredFile {
         let uploadRequest: FileUploadRequest
 
@@ -194,5 +234,22 @@ actor NearbySharingStateActor {
     func allTransfersCompleted() -> Bool {
         guard let files = state.session?.files else { return false }
         return files.values.first { $0.status == .transferring || $0.status == .queue } == nil
+    }
+
+    private func validateEnoughStorage(for file: NearbySharingFile) -> ServerStatus? {
+        guard let size = file.size, size > 0 else {
+            return ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+
+        let availableSpace = FileManager.default.availableDiskSpace
+
+        let safetyMargin: Int64 = 10 * 1024 * 1024
+        let requiredSpace = (Int64(size) * 2) + safetyMargin
+
+        guard availableSpace >= requiredSpace else {
+            return ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
+        }
+
+        return nil
     }
 }
