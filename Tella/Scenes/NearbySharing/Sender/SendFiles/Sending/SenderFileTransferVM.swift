@@ -49,7 +49,7 @@ class SenderFileTransferVM: FileTransferVM {
                 let request = FileUploadRequest(sessionID: session?.sessionId,
                                                 transmissionID: file.transmissionId,
                                                 fileID: fileID,
-                                                nonce: UUID().uuidString)
+                                                nonce: NearbySharingTransferNonce.make())
                 repository?.uploadFile(fileUploadRequest: request,
                                        fileURL: url)
                 .receive(on: DispatchQueue.main)

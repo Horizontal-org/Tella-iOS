@@ -9,6 +9,13 @@
 
 import Foundation
 
+// MARK: - Replay protection
+
+enum NearbySharingTransferNonce {
+    /// UUID v4 for `register`, `prepare-upload` and each `upload` request.
+    static func make() -> String { UUID().uuidString }
+}
+
 // MARK: - PrepareUpload
 struct PrepareUploadRequest: Codable {
     let title, sessionID: String?

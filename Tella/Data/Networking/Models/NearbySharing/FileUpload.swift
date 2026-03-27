@@ -21,4 +21,14 @@ struct FileUploadRequest: Codable {
         case fileID = "fileId"
         case nonce
     }
+
+    /// Query string for `PUT /api/v1/upload` 
+    var uploadURLQueryParameters: [String: String?] {
+        [
+            CodingKeys.sessionID.rawValue: sessionID,
+            CodingKeys.transmissionID.rawValue: transmissionID,
+            CodingKeys.fileID.rawValue: fileID,
+            CodingKeys.nonce.rawValue: nonce
+        ]
+    }
 }

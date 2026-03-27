@@ -96,7 +96,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 title: title,
                 sessionID: sessionId,
                 files: files,
-                nonce: UUID().uuidString
+                nonce: NearbySharingTransferNonce.make()
             )
 
             self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)

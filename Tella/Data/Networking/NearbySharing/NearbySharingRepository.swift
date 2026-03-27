@@ -108,7 +108,7 @@ extension NearbySharingRepository.API: APIRequest {
     var urlQueryParameters: [String: String?]? {
         switch self {
         case .uploadFile (_, let fileUploadRequest, _):
-            return fileUploadRequest.dictionary.compactMapValues { $0 as? String }
+            return fileUploadRequest.uploadURLQueryParameters.compactMapValues { $0 }
         default:
             return nil
         }

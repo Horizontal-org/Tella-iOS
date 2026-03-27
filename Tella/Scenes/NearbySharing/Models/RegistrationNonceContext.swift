@@ -28,7 +28,7 @@ extension RegistrationNonceContext {
         if let stored = context, stored.matches(connectionInfo) {
             return stored.nonce
         }
-        let nonce = UUID().uuidString
+        let nonce = NearbySharingTransferNonce.make()
         context = RegistrationNonceContext(
             ipAddress: connectionInfo.ipAddress,
             port: connectionInfo.port,
