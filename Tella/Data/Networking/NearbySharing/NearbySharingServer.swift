@@ -243,28 +243,34 @@ extension NearbySharingServer: RegisterHandler {
     }
     
     func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
-        // 1) existing session / rate limiting
+
         if await state.hasSession() {
             let error = ServerStatus(code: .conflict, message: .activeSessionAlreadyExists)
             sendErrorResponse(error, connection: connection)
-        }
-        if await state.tooManyAttempts() {
-            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-            sendErrorResponse(error, connection: connection)
             return
         }
-        
-        // 2) decode body
+
         guard let regReq = httpRequest.body.decodeJSON(RegisterRequest.self) else {
             let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
             sendErrorResponse(error, connection: connection)
             return
         }
+
+        guard let nonce = regReq.nonce, !nonce.isEmpty else {
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            sendErrorResponse(error, connection: connection)
+            return
+        }
         
-        // 3) verify PIN
+        if await state.hasReachedMaxAttempts(for: nonce) {
+            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
+            sendErrorResponse(error, connection: connection)
+            return
+        }
+        
         guard let pin = regReq.pin, await state.pinMatches(pin) else {
-            await state.incrementFailedAttempts()
-            if await state.tooManyAttempts() {
+            await state.recordRegisterPinFailure(for: nonce)
+            if await state.hasReachedMaxAttempts(for: nonce) {
                 let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
                 sendErrorResponse(error, connection: connection)
                 return
@@ -274,8 +280,7 @@ extension NearbySharingServer: RegisterHandler {
             return
         }
         
-        // 4) create session
-        let newSessionId = await state.createSessionAndReturnID()
+        let newSessionId = await state.createSessionAndReturnID(registrationNonce: nonce)
         
         // 5) response
         let payload = RegisterResponse(sessionId: newSessionId)
@@ -328,6 +333,11 @@ extension NearbySharingServer: PrepareUploadHandler {
             guard prepReq.sessionID == sessionID else {
                 let error = ServerStatus(code: .unauthorized, message: .invalidSessionID)
                 sendErrorResponse(error, connection: connection)
+                return
+            }
+            
+            if let nonceError = await state.addTransferNonce(prepReq.nonce) {
+                sendErrorResponse(nonceError.serverStatus, connection: connection, endpoint: .prepareUpload)
                 return
             }
             

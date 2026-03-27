@@ -20,6 +20,11 @@ actor NearbySharingStateActor {
     var pendingRegisterRequest: HTTPRequest?
     var pendingUploadConnection: NWConnection?
     
+    /// Wrong-PIN attempts per registration nonce
+    private var registerPinFailuresByNonce: [String: Int] = [:]
+    private let maxFailedAttempts = 3
+    private let transferNonceManager = NonceManager()
+    
     // MARK: - General
     
     func currentSessionID() -> String? { state.session?.sessionId }
@@ -31,6 +36,8 @@ actor NearbySharingStateActor {
         pendingRegisterRequest = nil
         pendingUploadConnection = nil
         pendingRegisterResponse = nil
+        registerPinFailuresByNonce.removeAll()
+        transferNonceManager.removeAll()
     }
     
     func removeTempFiles() {
@@ -46,11 +53,35 @@ actor NearbySharingStateActor {
     func isManualConnection() -> Bool { state.isUsingManualConnection }
     
     func hasSession() -> Bool { state.session != nil }
-    func tooManyAttempts() -> Bool { state.hasReachedMaxAttempts }
-    func incrementFailedAttempts() { state.incrementFailedAttempts() }
     
-    func createSessionAndReturnID() -> String {
-        let session = NearbySharingSession(sessionId: UUID().uuidString)
+    private func registerPinFailureCount(for nonce: String) -> Int {
+        registerPinFailuresByNonce[nonce, default: 0]
+    }
+
+    func hasReachedMaxAttempts(for nonce: String) -> Bool {
+        registerPinFailureCount(for: nonce) >= maxFailedAttempts
+    }
+    
+    func recordRegisterPinFailure(for nonce: String) {
+        registerPinFailuresByNonce[nonce, default: 0] += 1
+    }
+    
+    /// Registers a transfer nonce via `NonceManager.add`. Returns `nil` on success, otherwise an error for the HTTP response.
+    func addTransferNonce(_ nonce: String?) -> NonceManager.NonceError? {
+        guard let nonce else { return .zeroLength }
+        do {
+            try transferNonceManager.add(nonce)
+            return nil
+        } catch let error as NonceManager.NonceError {
+            return error
+        } catch {
+            return .zeroLength
+        }
+    }
+    
+    func createSessionAndReturnID(registrationNonce: String) -> String {
+        registerPinFailuresByNonce.removeValue(forKey: registrationNonce)
+        let session = NearbySharingSession(sessionId: UUID().uuidString, registrationNonce: registrationNonce)
         state.session = session
         return session.sessionId
     }
@@ -132,6 +163,10 @@ actor NearbySharingStateActor {
               let transmissionID = uploadRequest.transmissionID, !transmissionID.isEmpty,
               let sessionID = uploadRequest.sessionID, !sessionID.isEmpty else {
             throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+        }
+        
+        if let nonceError = addTransferNonce(uploadRequest.nonce) {
+            throw nonceError.serverStatus
         }
 
         guard sessionID == currentSessionID() else {

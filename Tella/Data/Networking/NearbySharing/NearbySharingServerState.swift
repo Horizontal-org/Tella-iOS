@@ -15,31 +15,17 @@ final class NearbySharingServerState {
     var session: NearbySharingSession?
     var isUsingManualConnection: Bool
     
-    private(set) var failedAttempts: Int
-    private let maxFailedAttempts = 3
-    
-    var hasReachedMaxAttempts: Bool {
-        return failedAttempts >= maxFailedAttempts
-    }
-    
     init(pin: String? = nil,
          session: NearbySharingSession? = nil,
-         failedAttempts: Int = 0,
          isUsingManualConnection: Bool = false) {
         self.pin = pin
         self.session = session
-        self.failedAttempts = failedAttempts
         self.isUsingManualConnection = isUsingManualConnection
-    }
-    
-    func incrementFailedAttempts() {
-        failedAttempts += 1
     }
     
     func reset() {
         pin = nil
         session = nil
-        failedAttempts = 0
         isUsingManualConnection = false
     }
 }
@@ -47,15 +33,18 @@ final class NearbySharingServerState {
 final class NearbySharingSession {
     
     let sessionId: String
+    let registrationNonce: String?
     var status: SessionStatus
     var title: String?
     var files: [String: NearbySharingTransferredFile]
     
     init(sessionId: String,
+         registrationNonce: String? = nil,
          status: SessionStatus = .waiting,
          files: [String: NearbySharingTransferredFile] = [:],
          title: String? = nil) {
         self.sessionId = sessionId
+        self.registrationNonce = registrationNonce
         self.status = status
         self.files = files
         self.title = title

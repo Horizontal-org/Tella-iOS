@@ -37,8 +37,8 @@ enum ServerMessage: String {
     case serverError = "Server error"
     case insufficientStorage = "Insufficient Storage"
     case transferNotFound = "Transfer not found"
-
-    
+    case nonceZeroLength = "nonce is of length zero"
+    case nonceReuse = "nonce has already been seen before"
 }
 
 struct ServerStatus : Error {
@@ -46,8 +46,9 @@ struct ServerStatus : Error {
     let message : ServerMessage
 }
 
+
 extension Error {
-    /// POSIX `ENOSPC` or Cocoa out-of-space from file APIs.
+    /// True if the error represents insufficient disk space (POSIX or Cocoa).
     var isInsufficientStorageError: Bool {
         let ns = self as NSError
         if ns.domain == NSPOSIXErrorDomain, ns.code == 28 { return true }
