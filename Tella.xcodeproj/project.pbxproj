@@ -298,6 +298,7 @@
 		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
 		128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */; };
 		128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* ConnectionInfo.swift */; };
+		128247A52D5F936000B7E63E /* RegistrationNonceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */; };
 		1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */; };
 		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
 		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
@@ -1055,6 +1056,7 @@
 		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		128247A32D5F935A00B7E63E /* ConnectionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionInfo.swift; sourceTree = "<group>"; };
+		128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationNonceContext.swift; sourceTree = "<group>"; };
 		1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareUpload.swift; sourceTree = "<group>"; };
 		1282C09F2D8AEA1A0033E4CA /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
@@ -2538,6 +2540,7 @@
 			children = (
 				200751D32D5B91F1000CC076 /* NearbySharingParticipant.swift */,
 				128247A32D5F935A00B7E63E /* ConnectionInfo.swift */,
+				128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4484,6 +4487,7 @@
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
 				1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */,
 				128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */,
+				128247A52D5F936000B7E63E /* RegistrationNonceContext.swift in Sources */,
 				125C16022DAE762F0086D4F0 /* SecKeyExtension.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,

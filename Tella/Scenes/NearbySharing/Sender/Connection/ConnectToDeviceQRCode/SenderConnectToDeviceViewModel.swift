@@ -27,6 +27,8 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     @Published var startScanning: Bool = true
     
     private var subscribers = Set<AnyCancellable>()
+    private var registrationNonceContext: RegistrationNonceContext?
+
     
     var mainAppModel: MainAppModel
     var nearbySharingRepository: NearbySharingRepository
@@ -65,8 +67,9 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         
         guard let connectionInfo  else { return }
 
+        let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
-                                              nonce: UUID().uuidString,
+                                              nonce: nonce,
                                               senderCertificateHash: "")
 
         self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
@@ -82,6 +85,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             }, receiveValue: { response in
                 if let sessionId = response.sessionId {
                     self.session = NearbySharingSession(sessionId: sessionId)
+                    self.registrationNonceContext = nil
                 }
             }).store(in: &self.subscribers)
     }

@@ -24,6 +24,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     @Published var confirmButtonTitle: String = ""
     
     private var serverEventsCancellable: AnyCancellable?
+    private var registrationNonceContext: RegistrationNonceContext?
     
     var participant: NearbySharingParticipant
     var nearbySharingRepository: NearbySharingRepository?
@@ -92,9 +93,9 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func register() {
-
+        let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
-                                              nonce: UUID().uuidString,
+                                              nonce: nonce,
                                               senderCertificateHash: "")
         self.updateButtonsState(state: .waiting)
 
@@ -109,13 +110,15 @@ class ManuallyVerificationViewModel: ObservableObject {
                 case .failure:
                     self.senderViewAction = .showBottomSheetError
                 }
-            }, receiveValue: { response in
+            }, receiveValue: { [weak self] response in
+                guard let self else { return }
                 if let sessionId = response.sessionId {
                     self.session = NearbySharingSession(sessionId: sessionId)
+                    self.registrationNonceContext = nil
                 }
             }).store(in: &self.subscribers)
     }
-    
+
     private func acceptRegisterRequest() {
         nearbySharingServer?.respondToRegistrationRequest(accept: true)
         self.updateButtonsState(state: .waiting)
