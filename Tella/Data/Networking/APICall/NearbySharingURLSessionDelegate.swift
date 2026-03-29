@@ -36,13 +36,27 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error {
-            let nsError = error as NSError
-            response.send(completion: .failure(APIError.httpCode(nsError.code)))
-        } else {
-            response.send(completion: .finished)
+    func urlSession(_ session: URLSession,
+                    task: URLSessionTask,
+                    didCompleteWithError error: Error?) {
+
+        if let error = error as? NSError {
+            response.send(completion: .failure(APIError.httpCode(error.code)))
+            return
         }
+
+        guard let httpResponse = task.response as? HTTPURLResponse else {
+            response.send(completion: .failure(APIError.unexpectedResponse))
+            return
+        }
+
+        let statusCode = httpResponse.statusCode
+
+        guard HTTPCodes.success.contains(statusCode) else {
+            response.send(completion: .failure(APIError.httpCode(statusCode)))
+            return
+        }
+        response.send(completion: .finished)
     }
     
     func urlSession(_ session: URLSession,
