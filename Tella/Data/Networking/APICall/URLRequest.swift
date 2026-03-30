@@ -65,118 +65,21 @@ extension WebRepository {
         }
     }
     
-    private func performLocalRequest(endpoint: any APIRequest) -> AnyPublisher<ServerResponse, Error> {
-        do {
-            
-            let request = try endpoint.urlRequest()
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
-            request.curlRepresentation()
-            let delegate = AuthenticationChallengeDelegate(
-                path:endpoint.path,
-                trustedPublicKeyHash: endpoint.trustedPublicKeyHash
-            )
-            
-            return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
-                .dataTaskPublisher(for: request)
-                .map({ ServerResponse(data: $0, response: $1)})
-                .mapError { $0 as Error }
-                .eraseToAnyPublisher()
-        } catch {
-            return Fail(error: APIError.invalidURL)
-                .eraseToAnyPublisher()
-        }
-    }
-    
-    func fetchServerPublicKeyHash(endpoint: any APIRequest) -> AnyPublisher<String, Error> {
-        do {
-            let request = try endpoint.urlRequest()
-            request.curlRepresentation()
-            
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
-            
-            var capturedServerHash: String?
-            
-            let delegate = AuthenticationChallengeDelegate(
-                path: endpoint.path,
-                trustedPublicKeyHash: endpoint.trustedPublicKeyHash,
-                onReceiveServerPublicKeyHash: { hash in
-                    capturedServerHash = hash
-                }
-            )
-            
-            return Future<String, Error> { promise in
-                let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
-                
-                let task = session.dataTask(with: request) { data, response, error in
-                    
-                    if let hash = capturedServerHash {
-                        promise(.success(hash))
-                    } else if let error {
-                        debugLog("Network error while fetching hash: \(error)")
-                        promise(.failure(error))
-                    } else {
-                        debugLog("Unexpected response: no error, no server hash")
-                        promise(.failure(APIError.unexpectedResponse))
-                    }
-                }
-                
-                task.resume()
-            }
-            .receive(on: DispatchQueue.main) // optional: push result to main thread
-            .eraseToAnyPublisher()
-            
-            return NetworkSessionProvider().apiSession
-        } catch {
-            debugLog("Failed to create URLRequest: \(error)")
-            return Fail(error: APIError.invalidURL)
-                .eraseToAnyPublisher()
-        }
-    }
-    
-    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
-    where Value: Decodable {
-        fetchData(endpoint: endpoint)
-            .requestJSON()
-            .eraseToAnyPublisher()
-    }
-    
-    func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
-        fetchData(endpoint: endpoint)
-            .requestData()
-            .eraseToAnyPublisher()
-    }
-
-    func makeUploadRequestAndTask(
-        endpoint: any APIRequest,
-        fileURL: URL,
-        session: URLSession
-    ) throws -> (request: URLRequest, task: URLSessionUploadTask) {
-        
-        guard NetworkMonitor.shared.isConnected else {
-            throw APIError.noInternetConnection
-        }
-        
-        let request = try endpoint.urlRequest()
-        request.curlRepresentation()
-        
-        let task = session.uploadTask(with: request, fromFile: fileURL)
-        return (request, task)
-    }
-    
 }
 
 // MARK: - Helpers
 extension Publisher where Output == ServerResponse {
-    func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
-        return requestData()
-            .tryMap({ (data, allHeaderFields) in
-                if data.isEmpty, Value.self == EmptyResult.self {
-                    return (EmptyResult() as! Value, allHeaderFields)
+    func decodeJSONResponse<Value>() -> APIResponse<Value> where Value: Decodable {
+        let apiDataResponse = extractData()
+        
+        return apiDataResponse
+            .tryMap({ response in
+                if response.response.isEmpty, Value.self == EmptyResult.self {
+                    return APIResult(response: EmptyResult() as! Value , headers: response.headers) //to do !!!!!
+
                 }
-                let decodedData : Value = try data.decoded()
-                return (decodedData, allHeaderFields)
+                let decodedData : Value = try response.response.decoded()
+                return APIResult(response: decodedData, headers: response.headers)
             })
             .mapError{
                 if let error = $0 as? APIError {
