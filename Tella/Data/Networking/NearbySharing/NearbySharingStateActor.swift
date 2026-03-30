@@ -194,42 +194,50 @@ actor NearbySharingStateActor {
         return url
     }
 
-    func finalizeUpload(from request: HTTPRequest) async throws -> NearbySharingTransferredFile {
+    func finalizeUpload(from request: HTTPRequest) async -> FinalizeUploadOutcome {
         let uploadRequest: FileUploadRequest
-
         do {
             uploadRequest = try request.queryParameters.decode(FileUploadRequest.self)
         } catch {
-            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            return .failure(ServerStatus(code: .badRequest, message: .invalidRequestFormat), file: nil)
         }
 
         guard let fileID = uploadRequest.fileID, !fileID.isEmpty else {
-            throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            return .failure(ServerStatus(code: .badRequest, message: .invalidRequestFormat), file: nil)
         }
-        
+
         guard let file = fileInfo(for: fileID) else {
-            throw ServerStatus(code: .notFound, message: .transferNotFound)
+            return .failure(ServerStatus(code: .notFound, message: .transferNotFound), file: nil)
         }
 
         if file.status == .finished {
-            throw ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
+            return .failure(
+                ServerStatus(code: .conflict, message: .transferAlreadyCompleted),
+                file: fileInfo(for: fileID)
+            )
         }
 
         guard let fileURL = file.url else {
-            throw ServerStatus(code: .notFound, message: .transferNotFound)
+            markUploadFailed(fileID: fileID)
+            return .failure(
+                ServerStatus(code: .notFound, message: .transferNotFound),
+                file: fileInfo(for: fileID)
+            )
         }
 
         guard let expectedHash = file.file.sha256, !expectedHash.isEmpty else {
-            throw failUpload(fileID: fileID, fileURL: fileURL)
+            let status = failUpload(fileID: fileID, fileURL: fileURL)
+            return .failure(status, file: fileInfo(for: fileID))
         }
 
         guard let computedHash = await fileURL.sha256Hash(),
               computedHash.caseInsensitiveCompare(expectedHash) == .orderedSame else {
-            throw failUpload(fileID: fileID, fileURL: fileURL)
+            let status = failUpload(fileID: fileID, fileURL: fileURL)
+            return .failure(status, file: fileInfo(for: fileID))
         }
 
         markUploadFinished(fileID: fileID)
-        return file
+        return .success(file)
     }
         
     private func failUpload(fileID: String, fileURL: URL) -> ServerStatus {

@@ -402,23 +402,16 @@ extension NearbySharingServer: UploadHandler {
     
     func handleReceivedCompleteRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
-            do {
-                let updatedFile = try await state.finalizeUpload(from: request)
-
-                eventPublisher.send(.fileTransferProgress(updatedFile))
-
+            switch await state.finalizeUpload(from: request) {
+            case .success(let file):
+                eventPublisher.send(.fileTransferProgress(file))
                 let payload = BoolResponse(success: true)
                 sendSuccessResponse(connection: connection, payload: payload, endpoint: .upload)
-
-            } catch let status as ServerStatus {
+            case .failure(let status, let file):
+                if let file {
+                    eventPublisher.send(.fileTransferProgress(file))
+                }
                 sendErrorResponse(status, connection: connection, endpoint: .upload)
-
-            } catch {
-                sendErrorResponse(
-                    ServerStatus(code: .internalServerError, message: .serverError),
-                    connection: connection,
-                    endpoint: .upload
-                )
             }
         }
     }

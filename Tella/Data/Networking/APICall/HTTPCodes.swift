@@ -22,6 +22,8 @@ enum HTTPErrorCodes: Int {
     case conflict = 409
     case tooManyRequests = 429
     case internalServerError = 500
+    case notAcceptable = 406
+    case insufficientStorage = 507
     case unknown
 }
 

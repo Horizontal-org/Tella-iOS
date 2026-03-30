@@ -115,14 +115,6 @@ final class ReceiverFileTransferVM: FileTransferVM {
                 return
             }
 
-            let expectedHash = file.file.sha256
-            let computedHash = await fileURL.sha256Hash()
-
-            guard let expectedHash, let computedHash, expectedHash == computedHash else {
-                markFailedAndCheckCompletion(id: fileID)
-                return
-            }
-
             let imported = ImportedFile(
                 urlFile: fileURL,
                 parentId: parent.id,

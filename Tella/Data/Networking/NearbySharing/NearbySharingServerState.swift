@@ -104,6 +104,12 @@ enum NearbySharingFileStatus: String, Codable {
     case saved
 }
 
+/// Result of completing an upload on the receiver: HTTP status plus an optional file snapshot for progress UI.
+enum FinalizeUploadOutcome {
+    case success(NearbySharingTransferredFile)
+    case failure(ServerStatus, file: NearbySharingTransferredFile?)
+}
+
 enum SessionStatus: String, Codable {
     case waiting
     case sending
