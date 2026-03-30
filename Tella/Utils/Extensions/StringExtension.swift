@@ -226,3 +226,9 @@ extension String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
+
+extension String {
+    func isGreaterThanOrEqualToVersion(_ version: String) -> Bool {
+        compare(version, options: .numeric) != .orderedAscending
+    }
+}

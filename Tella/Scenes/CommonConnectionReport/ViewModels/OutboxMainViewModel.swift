@@ -24,7 +24,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     @Published var isLoading : Bool = false
     var isSubmissionInProgress: Bool {
-        return reportViewModel.status == .submissionInProgress
+        return reportViewModel.status == .submissionInProgress || reportViewModel.status == .submissionPending
         
     }
     @Published var shouldShowSubmittedReportView : Bool = false
@@ -45,7 +45,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         switch reportViewModel.status {
         case .finalized:
             return LocalizableReport.submitOutbox.localized
-        case .submissionInProgress:
+        case .submissionInProgress, .submissionPending:
             return LocalizableReport.pauseOutbox.localized
         default:
             return LocalizableReport.resumeOutbox.localized

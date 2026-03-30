@@ -8,7 +8,10 @@
 import Foundation
 
 class TellaServer : WebServer {
-    
+
+    /// Server version from which the file PUT endpoint and upload flow use v2  (e.g. "1.4.0"). All versions >= this use v2.
+    static let fileAPIv2MinimumVersion = "1.4.0"
+
     var activatedMetadata : Bool?
     var backgroundUpload : Bool?
     var projectId : String?

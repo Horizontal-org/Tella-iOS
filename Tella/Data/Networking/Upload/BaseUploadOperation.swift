@@ -27,7 +27,6 @@ class BaseUploadOperation: Operation {
     var type: OperationType!
     
     public var apiCancellables: Set<AnyCancellable> = []
-    static let newServerVersion = "1.4.0"
     
     override init() {
         self.reportRepository = ReportRepository()
@@ -44,6 +43,7 @@ class BaseUploadOperation: Operation {
         uploadTasksDict.removeAll()
         apiCancellables.removeAll()
         updateReport(reportStatus: .submissionPaused)
+        self.response.send(UploadResponse.update(reportStatus: .submissionPaused))
         
     }
     
@@ -59,16 +59,20 @@ class BaseUploadOperation: Operation {
     func stopConnection() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
-        updateReport(reportStatus: .submissionPending)
         self.filesToUpload.removeAll()
         apiCancellables.removeAll()
+        updateReport(reportStatus: .submissionPending)
+        self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+
     }
     
     func autoPauseReport() {
-        updateReport(reportStatus: .submissionAutoPaused)
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
         apiCancellables.removeAll()
+        updateReport(reportStatus: .submissionAutoPaused)
+        self.response.send(UploadResponse.update(reportStatus: .submissionAutoPaused))
+
     }
     
     override func main() {
@@ -115,6 +119,9 @@ class BaseUploadOperation: Operation {
                 break
             case .none:
                 break
+            case  .update(reportStatus: let reportStatus):
+                self.response.send(UploadResponse.update(reportStatus: reportStatus))
+                
             }
         }.store(in: &subscribers)
         
@@ -172,8 +179,12 @@ class BaseUploadOperation: Operation {
         let success = filesNotSubmitted.isEmpty
         if success {
             self.updateReport(reportStatus: .submitted)
+            self.response.send(UploadResponse.update(reportStatus: .submitted))
+            
         } else {
             self.updateReport(reportStatus: .submissionError)
+            self.response.send(UploadResponse.update(reportStatus: .submissionError))
+            self.cancelSendingReport()
             return
         }
         
@@ -220,6 +231,7 @@ class BaseUploadOperation: Operation {
     private func guardNetworkConnected() -> Bool {
         guard mainAppModel.networkMonitor.isConnected else {
             updateReport(reportStatus: .submissionPending)
+            self.response.send(UploadResponse.update(reportStatus: .submissionPending))
             return false
         }
         return true
@@ -231,6 +243,8 @@ class BaseUploadOperation: Operation {
         guard let report else { return }
         
         updateReport(reportStatus: .submissionInProgress)
+        self.response.send(UploadResponse.update(reportStatus: .submissionInProgress))
+        
         
         reportRepository.createReport(report: report)
             .sink { [weak self] completion in
@@ -370,7 +384,7 @@ class BaseUploadOperation: Operation {
         fileToUpload.remainingBytesToSend = max(0, fileToUpload.fileSize - syncedBytesSent)
         
         if fileToUpload.remainingBytesToSend == 0 {
-            if fileToUpload.version == BaseUploadOperation.newServerVersion {
+            if fileToUpload.version?.isGreaterThanOrEqualToVersion(TellaServer.fileAPIv2MinimumVersion) ?? false {
                 self.initialResponse.send(
                     UploadResponse.progress(
                         progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)
@@ -459,7 +473,7 @@ class BaseUploadOperation: Operation {
         
         guard let fileToUpload = filesToUpload.first(where: { $0.fileId == fileId }) else { return }
         
-        if fileToUpload.version == BaseUploadOperation.newServerVersion {
+        if fileToUpload.version?.isGreaterThanOrEqualToVersion(TellaServer.fileAPIv2MinimumVersion) ?? false {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
         } else {
             self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))

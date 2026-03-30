@@ -34,23 +34,23 @@ class UploadReportOperation: BaseUploadOperation {
                 if report.status == .submissionInProgress {
                     self.stopConnection()
                     self.updateReport(reportStatus: .submissionPending)
-                    self.response.send(UploadResponse.initial)
+                    self.response.send(UploadResponse.update(reportStatus: .submissionPending))
                     debugLog("No internet connection")
                 }
             }
-
+            
         }.store(in: &subscribers)
     }
-
+    
     
     func startUploadReportAndFiles() {
         guard let currentReport = report else { return }
         guard !isCancelled else { return }
-
+        
         if mainAppModel.networkMonitor.isConnected {
             
             self.updateReport(reportStatus: .submissionInProgress)
-            
+            self.response.send(UploadResponse.update(reportStatus: .submissionInProgress))
             self.prepareReportToSend(report: currentReport)
             
             if currentReport.apiID != nil { // Has API ID
@@ -61,7 +61,8 @@ class UploadReportOperation: BaseUploadOperation {
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
-
+            self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+            
         }
     }
     
