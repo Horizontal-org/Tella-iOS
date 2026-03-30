@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 6/24/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -79,7 +79,7 @@ class DraftMainViewModel: ObservableObject {
             $description
                 .removeDuplicates()
                 .mapToVoid(),
-            $files
+            addFilesViewModel.$files
                 .removeDuplicates()
                 .mapToVoid(),
             $server
