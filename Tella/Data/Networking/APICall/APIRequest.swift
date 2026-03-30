@@ -13,7 +13,7 @@ public protocol APIRequest {
     var urlQueryParameters : [String : String?]? { get }
     
     var baseURL: String { get }
-    var path: String? { get }
+    var path: String { get }
     var httpMethod: HTTPMethod { get }
     var encoding: Encoding { get }
     var decoder: JSONDecoder { get }
