@@ -120,7 +120,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             
             self.uploadedFiles = "\(filesCount), \(fileUploaded)"
             
-            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()), fileStatus: $0.status)}
+            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(vaultFile: $0, transferSummary: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()), fileStatus: $0.status)}
             
             self.objectWillChange.send()
         }
@@ -220,7 +220,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         self.updateFile(file: file)
         
         // Update progressFileItem fileStatus
-        if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
+        if let currentItem = self.progressFileItems.first(where: {$0.vaultFile.id == uploadProgressInfo.fileId}) {
             currentItem.fileStatus = uploadProgressInfo.status
         }
         

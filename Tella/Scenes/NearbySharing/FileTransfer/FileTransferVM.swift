@@ -87,7 +87,7 @@ class FileTransferVM: ObservableObject {
                 
                 if let item = itemToUpdate {
                     item.transferSummary = newTransferSummary
-                    item.fileStatus = file.status
+                    item.nearbySharingFileStatus = file.status
                 }
             }
         }
@@ -100,7 +100,7 @@ class FileTransferVM: ObservableObject {
             
             if let item = itemToUpdate {
                 await MainActor.run {
-                    item.fileStatus = file.status
+                    item.nearbySharingFileStatus = file.status
                 }
             }
         }
@@ -118,8 +118,7 @@ class FileTransferVM: ObservableObject {
         return ProgressFileItemViewModel(
             vaultFile: file.vaultFile,
             transferSummary: summary,
-            transferProgress: 0,
-            fileStatus: file.status
+            nearbySharingFileStatus: file.status
         )
     }
     

@@ -41,7 +41,7 @@ struct OutboxDetailsItemView: View {
             
             Spacer()
 
-            if let fileStatus = item.fileStatus,
+            if let fileStatus = item.nearbySharingFileStatus,
                let statusIcon = fileStatus.statusIcon {
                 Image(statusIcon)
             }

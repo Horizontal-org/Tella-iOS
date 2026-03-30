@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -13,16 +13,17 @@ class ProgressFileItemViewModel: ObservableObject {
     
     @Published var transferSummary: String
     @Published var transferProgress: Double?
-    @Published var fileStatus: NearbySharingFileStatus?
+    @Published var fileStatus: FileStatus?
+    @Published var nearbySharingFileStatus: NearbySharingFileStatus?
     
     init(vaultFile: VaultFileDB,
          transferSummary: String,
-         transferProgress: Double? = nil,
-         fileStatus: NearbySharingFileStatus? = nil) {
+         fileStatus: FileStatus? = nil,
+         nearbySharingFileStatus: NearbySharingFileStatus? = nil) {
         self.vaultFile = vaultFile
         self.transferSummary = transferSummary
-        self.transferProgress = transferProgress
         self.fileStatus = fileStatus
+        self.nearbySharingFileStatus = nearbySharingFileStatus
     }
 }
 
