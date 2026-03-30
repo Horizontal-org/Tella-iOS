@@ -34,6 +34,15 @@ extension FileManager {
             return 0
         }
     }
+    
+    func sizeOfFile(atPath path: String) -> Int? {
+        do {
+            let attr = try FileManager.default.attributesOfItem(atPath: path)
+            return attr[FileAttributeKey.size] as? Int
+        } catch {
+            return nil
+        }
+    }
 
 }
 
