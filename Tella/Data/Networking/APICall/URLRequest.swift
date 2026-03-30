@@ -65,6 +65,22 @@ extension WebRepository {
         }
     }
     
+    func makeUploadRequestAndTask(
+        endpoint: any APIRequest,
+        fileURL: URL,
+        session: URLSession
+    ) throws -> (request: URLRequest, task: URLSessionUploadTask) {
+        
+        guard NetworkMonitor.shared.isConnected else {
+            throw APIError.noInternetConnection
+        }
+        
+        let request = try endpoint.urlRequest()
+        request.curlRepresentation()
+        
+        let task = session.uploadTask(with: request, fromFile: fileURL)
+        return (request, task)
+    }
 }
 
 // MARK: - Helpers
