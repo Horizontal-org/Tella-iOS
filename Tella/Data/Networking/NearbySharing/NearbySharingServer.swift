@@ -209,6 +209,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
                     connection: context.connection,
                     endpoint: endpoint
                 )
+                eventPublisher.send(.errorOccured)
                 return
             }
             processRequest(connection: context.connection, httpRequest: context.request)
