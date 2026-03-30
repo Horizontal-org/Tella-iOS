@@ -65,12 +65,12 @@ class DraftMainViewModel: ObservableObject {
     var isNewDraft: Bool {
         return reportId == nil
     }
-    
 
     init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         
         self.mainAppModel = reportsMainViewModel.mainAppModel
         self.reportsMainViewModel = reportsMainViewModel
+        self.addFilesViewModel = AddFilesViewModel(mainAppModel: reportsMainViewModel.mainAppModel)
 
         form.track([
             $title
