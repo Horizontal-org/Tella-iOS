@@ -15,8 +15,8 @@ class ReportRepository: WebRepository {
     func createReport(report: Report) -> AnyPublisher<ReportAPI, APIError> {
         let endpoint = ReportRepository.API.createReport(report)
         return (getAPIResponse(endpoint: endpoint) as APIResponse<SubmitReportResult>)
-            .compactMap { dto, headers -> ReportAPI? in
-                guard let api = dto.toDomain() as? ReportAPI else { return nil }
+            .compactMap { apiResponse -> ReportAPI? in
+                guard let api = apiResponse.response.toDomain() as? ReportAPI else { return nil }
                 return api
             }
             .eraseToAnyPublisher()
@@ -26,8 +26,8 @@ class ReportRepository: WebRepository {
     func headReportFile(fileToUpload: FileToUpload) -> AnyPublisher<Int, APIError> {
         let endpoint = ReportRepository.API.headReportFile(fileToUpload)
         return (getAPIResponse(endpoint: endpoint) as APIResponse<EmptyResult>)
-            .compactMap { _, headers -> Int? in
-                guard let sizeValue = headers?["size"],
+            .compactMap { apiResponse -> Int? in
+                guard let sizeValue = apiResponse.headers?["size"],
                       let sizeString = sizeValue as? String,
                       let size = Int(sizeString) else { return nil }
                 return size
@@ -38,8 +38,8 @@ class ReportRepository: WebRepository {
     func postFile(fileToUpload: FileToUpload) -> AnyPublisher<BoolModel, APIError> {
         let endpoint = ReportRepository.API.postReportFile(fileToUpload)
         return (getAPIResponse(endpoint: endpoint) as APIResponse<BoolResponse >)
-            .compactMap { dto, headers -> BoolModel? in
-                guard let api = dto.toDomain() as? BoolModel else { return nil }
+            .compactMap { apiResponse -> BoolModel? in
+                guard let api = apiResponse.response.toDomain() as? BoolModel else { return nil }
                 return api
             }
             .eraseToAnyPublisher()
