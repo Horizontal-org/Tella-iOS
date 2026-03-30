@@ -15,6 +15,7 @@ final class NearbySharingServer {
     
     let state = NearbySharingStateActor()
     private let networkManager = NetworkManager()
+    private let rateLimiter = NearbySharingRateLimiter()
     
     /// Single Combine publisher for all server events.
     var eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
@@ -29,6 +30,7 @@ final class NearbySharingServer {
     
     func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
         Task {
+            await rateLimiter.reset()
             await state.setPin(pin)
             await networkManager.startListening(port: port, clientIdentity: clientIdentity)
         }
@@ -195,7 +197,22 @@ extension NearbySharingServer: NetworkManagerDelegate {
     }
     
     func networkManager(didReceiveCompleteRequest context: ConnectionContext) {
-        processRequest(connection: context.connection, httpRequest: context.request)
+        Task {
+            let ip = NearbySharingClientIP.string(from: context.connection)
+            let route = context.request.endpoint
+            
+            let limited = await rateLimiter.isLimited(ip: ip, route: route)
+            if limited {
+                let endpoint = NearbySharingEndpoint(rawValue: route)
+                sendErrorResponse(
+                    ServerStatus(code: .tooManyRequests, message: .tooManyRequests),
+                    connection: context.connection,
+                    endpoint: endpoint
+                )
+                return
+            }
+            processRequest(connection: context.connection, httpRequest: context.request)
+        }
     }
     
     func networkManager(verifyParametersFor context: ConnectionContext) async -> URL? {
@@ -243,19 +260,19 @@ extension NearbySharingServer: RegisterHandler {
     }
     
     func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
-
+        
         if await state.hasSession() {
             let error = ServerStatus(code: .conflict, message: .activeSessionAlreadyExists)
             sendErrorResponse(error, connection: connection)
             return
         }
-
+        
         guard let regReq = httpRequest.body.decodeJSON(RegisterRequest.self) else {
             let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
             sendErrorResponse(error, connection: connection)
             return
         }
-
+        
         guard let nonce = regReq.nonce, !nonce.isEmpty else {
             let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
             sendErrorResponse(error, connection: connection)
@@ -415,7 +432,7 @@ extension NearbySharingServer: UploadHandler {
             }
         }
     }
-
+    
     func processProgress(connection: NWConnection, bytesReceived: Int, for request: HTTPRequest) {
         guard let uploadReq: FileUploadRequest = try? request.queryParameters.decode(FileUploadRequest.self),
               let fileID = uploadReq.fileID else {

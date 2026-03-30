@@ -135,7 +135,6 @@
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
 		12444EFA2E09D6F6006CB86A /* NearbySharingServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */; };
-		12AAB1122E5FACE0007300CE /* NonceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAB1112E5FACE0007300CE /* NonceManager.swift */; };
 		1244945E2DD61256002B4A9B /* FileTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945D2DD61256002B4A9B /* FileTransferView.swift */; };
 		124494602DD61267002B4A9B /* SenderFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */; };
 		124543D42E9D41160031E568 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124543D32E9D41140031E568 /* RoundedCorner.swift */; };
@@ -406,6 +405,7 @@
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12A9ECD72D9F3FC800711BA4 /* SenderPrepareFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
+		12AAB1122E5FACE0007300CE /* NonceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAB1112E5FACE0007300CE /* NonceManager.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
 		12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */; };
@@ -430,6 +430,7 @@
 		12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B972C3413AC006363F0 /* CommonReportListView.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */; };
+		12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -900,7 +901,6 @@
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
 		12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingServerState.swift; sourceTree = "<group>"; };
-		12AAB1112E5FACE0007300CE /* NonceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceManager.swift; sourceTree = "<group>"; };
 		1244945D2DD61256002B4A9B /* FileTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferView.swift; sourceTree = "<group>"; };
 		1244945F2DD6125F002B4A9B /* SenderFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderFileTransferVM.swift; sourceTree = "<group>"; };
 		124543D32E9D41140031E568 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
@@ -1148,7 +1148,6 @@
 		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
 		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
 		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
-		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
 		12967AF32F5F6FF100D9FC7E /* lus */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lus; path = lus.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BC2E2EC92900A4417D /* az */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = az; path = az.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
@@ -1183,6 +1182,7 @@
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderPrepareFileTransferVM.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		12AAB1112E5FACE0007300CE /* NonceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceManager.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
 		12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
@@ -1207,6 +1207,7 @@
 		12B84B972C3413AC006363F0 /* CommonReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonReportListView.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageOrientation.swift; sourceTree = "<group>"; };
+		12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRateLimiter.swift; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1983,6 +1984,7 @@
 			isa = PBXGroup;
 			children = (
 				12E41E752F1536030043BB3F /* HTTPResponseBuilder.swift */,
+				12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */,
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
 				121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */,
@@ -4898,6 +4900,7 @@
 				CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */,
 				15F64CA22B6D797C008A57AA /* SectionMessage.swift in Sources */,
 				E18BD4332AA0C39A00EE62E2 /* UwaziLanguage.swift in Sources */,
+				12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */,
 				1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				128EE4F02E8FD83100DF55C5 /* AdvancedCustomizationCompleteView.swift in Sources */,
