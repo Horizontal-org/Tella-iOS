@@ -9,12 +9,12 @@ import SwiftUI
 struct ImportFilesProgressView: View {
     
     var mainAppModel : MainAppModel
-    @EnvironmentObject var sheetManager: SheetManager
     @ObservedObject var progress : ProgressFile
     @State var shouldShowCancelImportView : Bool = false
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     var modalHeight : CGFloat = 215
+    var onImportFinished: (() -> Void)? = nil
     
     var body: some View {
         
@@ -31,9 +31,9 @@ struct ImportFilesProgressView: View {
         } .onReceive( progress.$isFinishing) { isFinishing in
             if isFinishing {
                 DispatchQueue.main.async {
-                    sheetManager.hide()
                     progress.isFinishing = false
                     shouldShowCancelImportView = false
+                    onImportFinished?()
                 }
             }
         }

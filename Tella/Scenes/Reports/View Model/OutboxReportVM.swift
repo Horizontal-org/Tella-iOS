@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,39 +7,36 @@
 import SwiftUI
 import Combine
 
-class OutboxReportVM: OutboxMainViewModel<TellaServer> {    
-    var reportRepository = ReportRepository()
+class OutboxReportVM: OutboxMainViewModel<TellaServer> {
+    var reportUploadService: ReportUploadService
     
     var reportIsNotAutoDelete: Bool {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
-
+    
     override init(reportsViewModel : ReportsMainViewModel, reportId : Int?) {
-
+        reportUploadService = ReportUploadService(uploadService: reportsViewModel.mainAppModel.uploadService)
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
-
+        
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
         } else {
-            treat(uploadResponse:reportRepository.checkUploadReportOperation(reportId: self.reportViewModel.id))
+            treat(uploadResponse: reportUploadService.checkUploadReportOperation(reportId: self.reportViewModel.id))
         }
     }
     
     private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
             .receive(on: DispatchQueue.main)
-            .sink { result in
-                
-            } receiveValue: { response in
+            .sink { result in } receiveValue: { response in
                 
                 switch response {
                     
                 case .createReport(let apiId, let reportStatus, let error):
                     
                     if let _ = error {
-                        
+                        self.reportViewModel.status = reportStatus
                     } else {
-                        
                         self.reportViewModel.apiID = apiId
                         self.reportViewModel.status = reportStatus
                         
@@ -47,13 +44,13 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.showSubmittedReport()
                         }
                     }
+                    self.publishUpdates()
                     
                 case .progress(let progressInfo):
                     
                     if let _ = progressInfo.error {
-                        
+                        // handled by markReportAsSubmissionErrorIfNeeded
                     } else {
-                        
                         _ =  self.reportViewModel.files.compactMap { _ in
                             let file = self.reportViewModel.files.first(where: {$0.id == progressInfo.fileId})
                             file?.bytesSent = (progressInfo.bytesSent) ?? 0
@@ -67,7 +64,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.reportViewModel.status = reportStatus
                         }
                         
-                        self.markReportAsSubmissionErrorIfNeeded()
                     }
                 case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
@@ -77,6 +73,10 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                             self.showSubmittedReport()
                         }
                     }
+                case .update(let reportStatus):
+                    self.reportViewModel.status = reportStatus
+                    self.publishUpdates()
+                    
                 default:
                     break
                 }
@@ -87,7 +87,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     override func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.reportsViewModel.mainAppModel.tellaData?.getReport(reportId: reportId) {
-
+            
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
             self.reportViewModel = ReportViewModel(report: report, files: files)
@@ -96,33 +96,18 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     override func pauseSubmission() {
         if isSubmissionInProgress {
-            self.updateReportStatus(reportStatus: .submissionPaused)
-            self.reportRepository.pause(reportId: self.reportViewModel.id)
+            self.reportUploadService.pause(reportId: self.reportViewModel.id)
         }
-        
     }
     
     override func submitReport() {
         if isSubmissionInProgress == false {
-            self.updateReportStatus(reportStatus: .submissionInProgress)
             
             guard let reportID = reportViewModel.id,
                   let report = self.mainAppModel.tellaData?.getReport(reportId:reportID) else { return }
-
-            treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
+            
+            treat(uploadResponse: self.reportUploadService.sendReport(report: report, mainAppModel: mainAppModel))
         }
-    }
-
-    // MARK: Update Local database
-    
-    override func updateReportStatus(reportStatus:ReportStatus) {
-        
-        self.reportViewModel.status = reportStatus
-        self.objectWillChange.send()
-
-        guard let id = reportViewModel.id else { return  }
-
-        mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     override func deleteReport() {

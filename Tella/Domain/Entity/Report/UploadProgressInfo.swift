@@ -22,7 +22,7 @@ class UploadProgressInfo {
     var reportStatus: ReportStatus?
     var finishUploading : Bool = false
     var sessionId: String?
-
+    
     init(fileId: String? = nil, status: FileStatus) {
         self.fileId = fileId
         self.status = status
@@ -39,10 +39,9 @@ class UploadProgressInfo {
         self.bytesSent = bytesSent
         self.fileId = fileId
         self.status = status
-        self.status = status
         self.reportStatus = reportStatus
         self.current = current
+        self.error = error
         self.sessionId = sessionId
-
     }
 }

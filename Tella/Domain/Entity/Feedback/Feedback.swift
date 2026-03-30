@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -9,20 +9,28 @@ import Foundation
 class Feedback: Codable {
     
     var id: Int?
+    var contact: String?
     var text: String?
     var status : FeedbackStatus?
     var createdAt, updatedAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
+        case contact = "c_contact"
         case text = "c_text"
         case status = "c_status"
         case createdAt = "c_created_date"
         case updatedAt = "c_updated_date"
     }
     
-    init(id: Int? = nil, text: String?, status: FeedbackStatus?, createdAt: Date? = nil, updatedAt: Date? = nil) {
+    init(id: Int? = nil,
+         contact: String?,
+         text: String?,
+         status: FeedbackStatus?,
+         createdAt: Date? = Date(),
+         updatedAt: Date? = Date()) {
         self.id = id
+        self.contact = contact
         self.text = text
         self.status = status
         self.createdAt = createdAt
@@ -30,10 +38,11 @@ class Feedback: Codable {
     }
     
     required init(from decoder: Decoder) throws {
-
+        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(Int.self, forKey: .id)
+        self.contact = try container.decodeIfPresent(String.self, forKey: .contact)
         self.text = try container.decode(String.self, forKey: .text)
         
         let status = try container.decode(Int.self, forKey: .status)
@@ -44,5 +53,15 @@ class Feedback: Codable {
         
         let updatedAt = try container.decode(Double.self, forKey: .updatedAt)
         self.updatedAt = updatedAt.getDate()
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(contact, forKey: .contact)
+        try container.encodeIfPresent(text, forKey: .text)
+        try container.encodeIfPresent(status?.rawValue, forKey: .status)
+        try container.encode((createdAt ?? Date()).timeIntervalSince1970, forKey: .createdAt)
+        try container.encode((updatedAt ?? Date()).timeIntervalSince1970, forKey: .updatedAt)
     }
 }

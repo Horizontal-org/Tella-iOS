@@ -10,8 +10,8 @@ import Combine
 
 class AutoUpload: BaseUploadOperation {
     
-    override init(urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
-        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
+    override init(urlSession: URLSession, mainAppModel: MainAppModel, reportRepository: ReportRepository, type: OperationType) {
+        super.init(urlSession: urlSession, mainAppModel: mainAppModel, reportRepository: reportRepository, type: .autoUpload)
         
         setupNetworkMonitor()
     }
@@ -20,27 +20,33 @@ class AutoUpload: BaseUploadOperation {
         handleResponse()
         super.main()
         startUploadReportAndFiles()
-
     }
     
     private func setupNetworkMonitor() {
-        mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
-            if self.report != nil {
-                if isConnected && self.report?.status == .submissionPending  {
-                    self.checkReport()
-                } else if !isConnected && self.report?.status != .submissionPending {
-                    self.stopConnection()
-                    debugLog("No internet connection")
+        mainAppModel.networkMonitor.connectionDidChange
+            .sink { [weak self] isConnected in
+                guard let self else { return }
+                guard let report = self.report else { return }
+                
+                if isConnected {
+                    if report.status == .submissionPending {
+                        self.checkReport()
+                    }
+                } else {
+                    if report.status == .submissionInProgress {
+                        self.stopConnection()
+                        self.updateReport(reportStatus: .submissionPending)
+                        self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+                        debugLog("No internet connection")
+                    }
                 }
             }
-        }).store(in: &subscribers)
+            .store(in: &subscribers)
     }
-    
-    
     func startUploadReportAndFiles() {
         
         self.response.send(UploadResponse.initial)
-
+        
         let currentReport = self.mainAppModel.tellaData?.getCurrentReport()
         
         if let currentReport  {
@@ -116,28 +122,16 @@ class AutoUpload: BaseUploadOperation {
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)
+            self.response.send(UploadResponse.update(reportStatus: .submissionPending))
+            
         }
     }
     
-    func prepareReportToSend(report:Report?) {
-
-        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
-        
+    override func prepareReportToSend(report: Report?) {
         self.report = report
-        
-        self.updateReport(reportStatus: .submissionInProgress)
-        
-        var reportVaultFiles : [ReportVaultFile] = []
-        
-        report?.reportFiles?.forEach({ reportFile in
-            
-            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                reportVaultFiles.append(reportVaultFile)
-            }
-        })
-        
-        self.reportVaultFiles = reportVaultFiles
+        updateReport(reportStatus: .submissionInProgress)
+        self.response.send(UploadResponse.update(reportStatus: .submissionInProgress))
+        super.prepareReportToSend(report: report)
     }
     
     func handleResponse() {

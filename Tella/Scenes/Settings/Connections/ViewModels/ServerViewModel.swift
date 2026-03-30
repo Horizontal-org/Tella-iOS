@@ -10,24 +10,24 @@
 import Combine
 
 class ServerViewModel: ObservableObject {
-    @Published var username : String = ""
-    @Published var password : String = ""
-    @Published var isLoading : Bool = false
+    @Published var username: String = ""
+    @Published var password: String = ""
+    @Published var isLoading: Bool = false
     func checkURL() {}
     func login() {}
-    // Server propreties
-    @Published var serverURL : String = "https://"
+    // Server properties
+    @Published var serverURL: String = "https://"
     
     // Add URL
-    @Published var validURL : Bool = false
-    @Published var shouldShowURLError : Bool = false
-    @Published var urlErrorMessage : String = ""
+    @Published var validURL: Bool = false
+    @Published var shouldShowURLError: Bool = false
+    @Published var urlErrorMessage: String = ""
     // ServerCheck
     @Published var checkServerState: ViewModelState<Bool> = .loaded(false)
     
     // Login
-    @Published var validUsername : Bool = false
-    @Published var validPassword : Bool = false
+    @Published var validUsername: Bool = false
+    @Published var validPassword: Bool = false
     @Published var shouldShowLoginError : Bool = false
     @Published var validCredentials : Bool = false
     @Published var loginErrorMessage : String = ""

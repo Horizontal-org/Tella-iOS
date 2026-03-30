@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -33,6 +33,7 @@ enum Language: String, CaseIterable {
     case ndau = "sn-ZW"
     case azerbaijani = "az"
     case chinese = "zh-Hans"
+    case mizo = "lus"
     
     var code : String {
         switch self {
@@ -76,6 +77,8 @@ enum Language: String, CaseIterable {
             return "az"
         case .chinese:
             return "zh-Hans"
+        case .mizo:
+            return "lus"
         }
     }
     
@@ -121,6 +124,8 @@ enum Language: String, CaseIterable {
             return "Azərbaycanca"
         case .chinese:
             return "简体中文"
+        case .mizo:
+            return "Mizo tawng"
         }
     }
     
@@ -150,7 +155,7 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangRussian.localized
         case .portuguese:
             return LocalizableSettings.settLangPortuguese.localized
-        case .vietnamese: 
+        case .vietnamese:
             return LocalizableSettings.settLangVietnamese.localized
         case .bangla:
             return LocalizableSettings.settLangBangla.localized
@@ -166,6 +171,8 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangAzerbaijani.localized
         case .chinese:
             return LocalizableSettings.settLangChinese.localized
+        case .mizo:
+            return LocalizableSettings.settLangMizo.localized
         }
     }
     

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 7/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -24,7 +24,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     @Published var isLoading : Bool = false
     var isSubmissionInProgress: Bool {
-        return reportViewModel.status == .submissionInProgress
+        return reportViewModel.status == .submissionInProgress || reportViewModel.status == .submissionPending
         
     }
     @Published var shouldShowSubmittedReportView : Bool = false
@@ -35,17 +35,17 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     @Published var shouldShowLoginView : Bool = false
     @Published var shouldShowCreateFolder : Bool = false
-
+    
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
-
+    
     var uploadButtonTitle: String {
         
         switch reportViewModel.status {
         case .finalized:
             return LocalizableReport.submitOutbox.localized
-        case .submissionInProgress:
+        case .submissionInProgress, .submissionPending:
             return LocalizableReport.pauseOutbox.localized
         default:
             return LocalizableReport.resumeOutbox.localized
@@ -120,7 +120,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             
             self.uploadedFiles = "\(filesCount), \(fileUploaded)"
             
-            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
+            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()), fileStatus: $0.status)}
             
             self.objectWillChange.send()
         }
@@ -185,6 +185,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         
         let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
         let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
+        let filesWithError = reportViewModel.files.filter({$0.status == .submissionError})
+        
+        // Do not show success if any file failed
+        guard filesWithError.isEmpty else { return }
+        
         if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
             
             updateReport(reportStatus: .submitted)
@@ -199,13 +204,13 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     func markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: [ReportVaultFile] = []) {
         
         let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
-
+        
         if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
             reportViewModel.status = .submissionError
             publishUpdates()
         }
     }
-
+    
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         updateCurrentFile(uploadProgressInfo: uploadProgressInfo)
@@ -213,6 +218,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         guard  let file = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
         self.updateFile(file: file)
+        
+        // Update progressFileItem fileStatus
+        if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
+            currentItem.fileStatus = uploadProgressInfo.status
+        }
         
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}

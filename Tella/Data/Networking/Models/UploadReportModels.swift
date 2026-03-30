@@ -8,34 +8,12 @@ import Foundation
 import UIKit
 import Combine
 
-
-class UploadTask {
-    var task: URLSessionTask
-    var response: UploadType
-    
-    init(task: URLSessionTask, response: UploadType) {
-        self.task = task
-        self.response = response
-    }
-}
-
 enum UploadResponse {
     case initial
     case progress(progressInfo: UploadProgressInfo)
     case createReport(apiId: String?, reportStatus:ReportStatus?, error:APIError?)
     case finish(isAutoDelete:Bool, title:String?)
-}
-
-enum UploadType {
-    case progress(fileId: String?,type: UploadReportType)
-    case createReport
-}
-
-enum UploadReportType {
-    case createReport
-    case putReportFile
-    case postReportFile
-    case headReportFile
+    case update(reportStatus:ReportStatus?)
 }
 
 class UploadDecode<T,T1>  {
@@ -56,10 +34,4 @@ enum OperationType{
     case autoUpload
     case uploadReport
     case unsentReport
-}
-
-
-enum URLSessionTaskType {
-    case dataTask
-    case uploadTask
 }

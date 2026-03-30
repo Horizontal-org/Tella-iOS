@@ -220,7 +220,11 @@ struct DraftView: View  {
     
     private func backAction() {
         UIApplication.shared.endEditing()
-        showSaveReportConfirmationView()
+        if viewModel.form.hasChanges {
+            showSaveReportConfirmationView()
+        } else {
+            dismissViews()
+        }
     }
     
     private func showSaveReportConfirmationView() {

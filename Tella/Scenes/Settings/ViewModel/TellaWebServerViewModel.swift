@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,16 +12,16 @@ class TellaWebServerViewModel: ServerViewModel {
     
     var mainAppModel : MainAppModel
     
-    // Server propreties
+    // Server properties
     @Published var name : String?
-    @Published var projectURL : String = "https://"
+    @Published var projectURL: String = "https://"
     @Published var activatedMetadata : Bool = false
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false
     @Published var autoDelete : Bool = false
     
     var subscribers = Set<AnyCancellable>()
-
+    
     var currentServer : TellaServer?
     
     var isAutoUploadServerExist: Bool {
@@ -37,19 +37,19 @@ class TellaWebServerViewModel: ServerViewModel {
         fillReportVM()
     }
     
-    func addServer(token: String, project: ProjectAPI) {
+    func addServer(token: String, project: ProjectAPI, version: String?) {
         let server = TellaServer(name: project.name,
-                            serverURL: projectURL.getBaseURL(),
-                            username: username,
-                            password: password,
-                            accessToken: token,
-                            activatedMetadata: activatedMetadata,
-                            backgroundUpload: backgroundUpload,
-                            projectId: project.id,
-                            slug: project.slug,
-                            autoUpload: autoUpload,
-                            autoDelete: autoDelete)
-        
+                                 serverURL: projectURL.getBaseURL(),
+                                 username: username,
+                                 password: password,
+                                 accessToken: token,
+                                 activatedMetadata: activatedMetadata,
+                                 backgroundUpload: backgroundUpload,
+                                 projectId: project.id,
+                                 slug: project.slug,
+                                 autoUpload: autoUpload,
+                                 autoDelete: autoDelete,
+                                 version: version)
         
         let addServerResult = mainAppModel.tellaData?.addServer(server: server)
         
@@ -57,24 +57,23 @@ class TellaWebServerViewModel: ServerViewModel {
             server.id = id
             self.currentServer = server
         }
-        
     }
     
     func updateServer() {
- 
-            guard let currentServer = self.currentServer else { return  }
-            currentServer.backgroundUpload = backgroundUpload
-            currentServer.activatedMetadata = activatedMetadata
-            currentServer.autoUpload = autoUpload
-            currentServer.autoDelete = autoDelete
-
-            mainAppModel.tellaData?.updateServer(server: currentServer)
-     }
-
+        
+        guard let currentServer = self.currentServer else { return  }
+        currentServer.backgroundUpload = backgroundUpload
+        currentServer.activatedMetadata = activatedMetadata
+        currentServer.autoUpload = autoUpload
+        currentServer.autoDelete = autoDelete
+        
+        mainAppModel.tellaData?.updateServer(server: currentServer)
+    }
+    
     override func login() {
         
         guard let baseURL = projectURL.getBaseURL() else { return }
-
+        
         isLoading = true
         
         ServerRepository().login(username: username, password: password, serverURL: baseURL)
@@ -87,24 +86,24 @@ class TellaWebServerViewModel: ServerViewModel {
                         self.shouldShowLoginError = true
                         self.loginErrorMessage = error.errorMessage
                         self.isLoading = false
-
+                        
                     case .finished:
                         break
-                        
                     }
                 },
                 receiveValue: { result in
-                    self.getProjetSlug(token: result.accessToken)
+                    self.getProjetSlug(token: result.accessToken, version: result.version)
                 }
             )
             .store(in: &subscribers)
     }
     
-    
-    func getProjetSlug(token: String) {
+    func getProjetSlug(token: String?, version: String?) {
         
-//        isLoading = true
-
+        guard let token else {
+            self.isLoading = false
+            return
+        }
         ServerRepository().getProjetDetails(projectURL: projectURL, token: token)
             .receive(on: DispatchQueue.main)
             .sink(
@@ -122,13 +121,13 @@ class TellaWebServerViewModel: ServerViewModel {
                     }
                 },
                 receiveValue: { project in
-                    self.addServer(token: token,project: project)
+                    self.addServer(token: token,
+                                   project: project,
+                                   version: version)
                 }
             )
             .store(in: &subscribers)
-
     }
-    
     
     func fillReportVM() {
         if let server = self.currentServer {
@@ -143,6 +142,36 @@ class TellaWebServerViewModel: ServerViewModel {
         }
     }
     
+    func checkProjectExists() async -> Bool {
+        guard let baseURL = projectURL.getBaseURL() else { return false }
+        guard let url = projectURL.url(),
+              let slug = url.pathComponents.filter({ $0 != "/" }).last,
+              !slug.isEmpty else {
+            return false
+        }
+        
+        let tellaData = mainAppModel.tellaData
+        
+        await MainActor.run { isLoading = true }
+        defer {
+            Task { @MainActor in isLoading = false }
+        }
+        
+        let result = await Task.detached {
+            tellaData?.checkIfProjectExists(url: baseURL, slug: slug)
+        }.value
+        
+        let exists: Bool
+        if case .success(let value) = result, value {
+            await MainActor.run {
+                shouldShowURLError = true
+                urlErrorMessage = LocalizableSettings.projectExistsError.localized
+            }
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension TellaWebServerViewModel {

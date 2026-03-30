@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 7/11/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -30,7 +30,7 @@ class SubmittedMainViewModel: ObservableObject {
     @Published var shouldShowToast : Bool = false
     @Published var toastMessage : String = ""
     @Published var shouldShowMainView : Bool = false
-
+    
     var reportHasFile: Bool {
         return !files.isEmpty
     }
@@ -44,14 +44,14 @@ class SubmittedMainViewModel: ObservableObject {
         self.reportsMainViewModel = reportsMainViewModel
         fillReportVM(reportId: reportId)
     }
-
+    
     func fillReportVM(reportId: Int?) {
         
         guard let reportId else {return}
         self.id = reportId
-
+        
         guard let report else {return}
-
+        
         self.id = report.id
         self.title = report.title ?? ""
         self.description = report.description ?? ""
@@ -59,8 +59,13 @@ class SubmittedMainViewModel: ObservableObject {
         let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? []) ?? []
         self.files = Array(vaultFileResult)
         
-        // todo -> progress bar
-        progressFileItems = self.files.compactMap{ProgressFileItemViewModel(file: $0, progression:$0.size.getFormattedFileSize() + "/" + $0.size.getFormattedFileSize())}
+        progressFileItems = self.files.compactMap { vaultFile in
+            let reportFile = report.reportFiles?.first(where: { $0.fileId == vaultFile.id })
+            let bytesSent = reportFile?.bytesSent ?? vaultFile.size
+            let progression = "\(bytesSent.getFormattedFileSize())/\(vaultFile.size.getFormattedFileSize())"
+            let fileStatus = reportFile?.status ?? .unknown
+            return ProgressFileItemViewModel(file: vaultFile, progression: progression, fileStatus: fileStatus)
+        }
         let totalSize = self.files.reduce(0) { $0 + $1.size }
         
         if let date = report.createdDate {
@@ -73,9 +78,9 @@ class SubmittedMainViewModel: ObservableObject {
         self.uploadedFiles = "\(fileNumber) \(fileString), \(totalSize.getFormattedFileSize())"
         
     }
-
+    
     func deleteReport() {}
-
+    
     func handleDeleteReport(deleteResult:Result<Void,Error>) {
         switch deleteResult {
         case .success:
@@ -92,5 +97,5 @@ class SubmittedMainViewModel: ObservableObject {
             self.shouldShowMainView = true
         }
     }
-
+    
 }

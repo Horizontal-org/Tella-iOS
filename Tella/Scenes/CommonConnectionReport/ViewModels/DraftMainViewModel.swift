@@ -11,9 +11,11 @@
 import Foundation
 import Combine
 
+@MainActor
 class DraftMainViewModel: ObservableObject {
     var mainAppModel: MainAppModel
     @Published var reportsMainViewModel: ReportsMainViewModel
+    let form = FormChangeTracker()
 
     // Report
     @Published var reportId : Int?
@@ -39,7 +41,13 @@ class DraftMainViewModel: ObservableObject {
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
     
-    @Published var successSavingReport : Bool = false
+    @Published var successSavingReport : Bool = false {
+        didSet {
+            if successSavingReport {
+                form.markClean()
+            }
+        }
+    }
     @Published var failureSavingReport : Bool = false
     
     var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
@@ -84,6 +92,23 @@ class DraftMainViewModel: ObservableObject {
         
         self.mainAppModel = reportsMainViewModel.mainAppModel
         self.reportsMainViewModel = reportsMainViewModel
+
+        form.track([
+            $title
+                .removeDuplicates()
+                .mapToVoid(),
+            $description
+                .removeDuplicates()
+                .mapToVoid(),
+            $files
+                .removeDuplicates()
+                .mapToVoid(),
+            $server
+                .removeDuplicates()
+                .mapToVoid()
+        ])
+
+        form.pauseTracking()
         
         self.validateReport()
         
@@ -94,6 +119,8 @@ class DraftMainViewModel: ObservableObject {
         self.bindVaultFileTaken()
         
         fillReportVM()
+
+        form.markClean()
     }
 
     func validateReport() {
@@ -101,12 +128,18 @@ class DraftMainViewModel: ObservableObject {
             .map { server, isValidTitle, isValidDescription, files in
                 ((server != nil) && isValidTitle && (isValidDescription || !files.isEmpty))
             }
-            .assign(to: \.reportIsValid, on: self)
+            .sink { [weak self] isValid in
+                guard let self else { return }
+                self.reportIsValid = isValid
+            }
             .store(in: &subscribers)
         
         $isValidTitle
             .map { $0 == true }
-            .assign(to: \.reportIsDraft, on: self)
+            .sink { [weak self] isDraft in
+                guard let self else { return }
+                self.reportIsDraft = isDraft
+            }
             .store(in: &subscribers)
     }
     

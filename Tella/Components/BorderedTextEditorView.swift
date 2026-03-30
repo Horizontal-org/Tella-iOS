@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -10,10 +10,10 @@ struct BorderedTextEditorView: View {
     
     var placeholder : String
     var shouldShowTitle : Bool = false
-
+    
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-
+    
     @State private var textEditorHeight : CGFloat = 120
     
     var body: some View {
@@ -51,7 +51,6 @@ struct BorderedTextEditorView: View {
             RoundedRectangle(cornerRadius: 6)
                 .stroke(.white.opacity(0.64), lineWidth: 0.8)
         )
-        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
     }
     
     var textEditor : some View {
