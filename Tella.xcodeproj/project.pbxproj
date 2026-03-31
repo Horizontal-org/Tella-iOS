@@ -228,6 +228,7 @@
 		1268553E27D2572100385E18 /* FileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */; };
 		1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268553F27D2994500385E18 /* VaultFileStatus.swift */; };
 		1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
+		1268BFC52F7C8A1500753C71 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268BFC42F7C8A1500753C71 /* NearbySharingTransferLimits.swift */; };
 		126973F32E8DA59800FBA206 /* SuccessLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126973F22E8DA59800FBA206 /* SuccessLockView.swift */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126B20E62DBBA16B00FD7762 /* RotateVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E52DBBA16900FD7762 /* RotateVideoView.swift */; };
@@ -991,6 +992,7 @@
 		126818C02A38B0C2004606BD /* FileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInformation.swift; sourceTree = "<group>"; };
 		126818C22A38B69E004606BD /* FileTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeHelper.swift; sourceTree = "<group>"; };
 		1268553F27D2994500385E18 /* VaultFileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileStatus.swift; sourceTree = "<group>"; };
+		1268BFC42F7C8A1500753C71 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		126973F22E8DA59800FBA206 /* SuccessLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLockView.swift; sourceTree = "<group>"; };
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126B20E52DBBA16900FD7762 /* RotateVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateVideoView.swift; sourceTree = "<group>"; };
@@ -1986,6 +1988,7 @@
 				12E41E752F1536030043BB3F /* HTTPResponseBuilder.swift */,
 				12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */,
 				1253927F2D897A8F00F96BA2 /* NearbySharingRepository.swift */,
+				1268BFC42F7C8A1500753C71 /* NearbySharingTransferLimits.swift */,
 				12505B1D2D899BD100483E34 /* NearbySharingServer.swift */,
 				121AFF922E4CA9D6007300AD /* NearbySharingStateActor.swift */,
 				12444EF92E09D6F3006CB86A /* NearbySharingServerState.swift */,
@@ -4929,6 +4932,7 @@
 				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
+				1268BFC52F7C8A1500753C71 /* NearbySharingTransferLimits.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */,
 				125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */,

@@ -22,7 +22,9 @@ final class HTTPParser: @unchecked Sendable {
     private var pausedData: Data?
     private var queryParameters: [String:String] = [:]
     private var headers: Headers?
-    
+    var maxOctetStreamBodyBytes: Int64?
+    private var octetStreamBodyBytesWritten: Int64 = 0
+
     var bodyFullyReceived: Bool = false
     var parserIsPaused: Bool = false
     
@@ -124,9 +126,16 @@ final class HTTPParser: @unchecked Sendable {
                 let value = String(decoding: buffer, as: UTF8.self)
                 instance.body += value
             case .octetStream:
+                if let max = instance.maxOctetStreamBodyBytes {
+                    let chunk = Int64(buffer.count)
+                    if instance.octetStreamBodyBytesWritten + chunk > max {
+                        return Int32(HPE_USER.rawValue)
+                    }
+                }
                 do {
                     try instance.fileHandle?.seekToEnd()
                     try instance.fileHandle?.write(contentsOf: buffer)
+                    instance.octetStreamBodyBytesWritten += Int64(buffer.count)
                     instance.onReceiveBody?(buffer.count)
                 } catch {
                     instance.onBodyWriteError?(error)
@@ -175,7 +184,11 @@ final class HTTPParser: @unchecked Sendable {
             return
         }
         
-        if result != HPE_OK  {
+        if result != HPE_OK {
+            // Only `on_body` returns `HPE_USER` — octet-stream body exceeded `maxOctetStreamBodyBytes`.
+            if result == HPE_USER {
+                throw HTTPStatusCode.payloadTooLarge
+            }
             throw RuntimeError("Parse error")
         }
     }
@@ -193,6 +206,9 @@ final class HTTPParser: @unchecked Sendable {
         pausedData = nil
         
         if result != HPE_OK {
+            if result == HPE_USER {
+                throw HTTPStatusCode.payloadTooLarge
+            }
             throw RuntimeError("Resume parse error")
         }
     }

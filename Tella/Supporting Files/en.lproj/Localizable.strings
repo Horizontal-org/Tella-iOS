@@ -605,6 +605,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 
 "NearbySharing_Sender_FilesRejected_Toast" = "Files rejected by recipient.";
+"NearbySharing_Sender_TransferContentTooLarge_Toast" = "Transfer is too large. Remove some files or shrink file sizes and try again.";
 
 "NearbySharing_Recipient_FilesRejected_Toast" = "Sender's files rejected.";
 

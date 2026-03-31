@@ -224,6 +224,7 @@ actor NetworkManager {
                 if let context = await self.updateContext(for: connection, with: parser.request),
                    let url = await self.delegate?.networkManager(verifyParametersFor: context) {
                     parser.fileURL = url
+                    parser.maxOctetStreamBodyBytes = NearbySharingTransferConfig.standard.maxFileSizeBytes
                     do {
                         try parser.resumeParsing()
                         _ = await self.updateContext(for: connection, with: parser.request)

@@ -61,7 +61,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
         session.title = title
         let sessionId = session.sessionId
         let vaultManager = mainAppModel.vaultFilesManager?.vaultManager ?? mainAppModel.vaultManager
-
+        
         Task {
             var nearbySharingFileArray: [String: NearbySharingTransferredFile] = [:]
             var files: [NearbySharingFile] = []
@@ -70,7 +70,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
                     continue
                 }
                 var hash = file.hash
-
+                
                 if hash == nil {
                     let url = await vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
                     if let url, let computedHash = await url.sha256Hash() {
@@ -79,7 +79,7 @@ class SenderPrepareFileTransferVM: ObservableObject {
                         _ = mainAppModel.vaultFilesManager?.updateHashVaultFile(id: id, hash: computedHash)
                     }
                 }
-
+                
                 let nearbySharingFile = NearbySharingFile(
                     id: id,
                     fileName: file.name,
@@ -87,25 +87,33 @@ class SenderPrepareFileTransferVM: ObservableObject {
                     sha256: hash,
                     fileType: file.mimeType,
                     thumbnail: file.thumbnail)
-
+                
                 nearbySharingFileArray[id] = NearbySharingTransferredFile(vaultFile: file)
                 files.append(nearbySharingFile)
             }
-
+            
             let prepareUploadRequest = PrepareUploadRequest(
                 title: title,
                 sessionID: sessionId,
                 files: files,
                 nonce: NearbySharingTransferNonce.make()
             )
-
+            
+            if NearbySharingTransferLimits.validatePrepareFiles(files, config: .standard) != nil {
+                await MainActor.run {
+                    self.viewState = .prepareFiles
+                    self.viewAction = .showToast(message: LocalizableNearbySharing.senderTransferContentTooLarge.localized)
+                }
+                return
+            }
+            
             self.nearbySharingRepository.prepareUpload(prepareUpload: prepareUploadRequest)
                 .receive(on: DispatchQueue.main)
                 .sink(
                     receiveCompletion: { completion in
                         self.handlePrepareUpload(completion: completion)
                     }, receiveValue: { response in
-
+                        
                         nearbySharingFileArray.values.forEach { file in
                             if let transmissionId = response.files?.first(where: { $0.id == file.file.id })?.transmissionID {
                                 file.transmissionId = transmissionId
@@ -129,6 +137,9 @@ class SenderPrepareFileTransferVM: ObservableObject {
             case .httpCode(HTTPErrorCodes.forbidden.rawValue):
                 self.viewState = .prepareFiles
                 self.viewAction = .showToast(message:LocalizableNearbySharing.senderFilesRejected.localized)
+            case .httpCode(HTTPStatusCode.payloadTooLarge.rawValue):
+                self.viewState = .prepareFiles
+                self.viewAction = .showToast(message: LocalizableNearbySharing.senderTransferContentTooLarge.localized)
             default:
                 self.viewAction = .errorOccured
             }

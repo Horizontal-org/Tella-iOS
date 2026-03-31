@@ -19,6 +19,7 @@ enum HTTPStatusCode: Int, Error {
     case conflict = 409
     case notAcceptable = 406
     case tooManyRequests = 429
+    case payloadTooLarge = 413
     case insufficientStorage = 507
 }
 
@@ -36,6 +37,7 @@ enum ServerMessage: String {
     case sessionAlreadyClosed = "Session already closed"
     case serverError = "Server error"
     case insufficientStorage = "Insufficient Storage"
+    case contentTooLarge = "Content too large"
     case transferNotFound = "Transfer not found"
     case nonceZeroLength = "nonce is of length zero"
     case nonceReuse = "nonce has already been seen before"
@@ -46,7 +48,6 @@ struct ServerStatus : Error {
     let message : ServerMessage
 }
 
-
 extension Error {
     /// True if the error represents insufficient disk space (POSIX or Cocoa).
     var isInsufficientStorageError: Bool {
@@ -54,5 +55,10 @@ extension Error {
         if ns.domain == NSPOSIXErrorDomain, ns.code == 28 { return true }
         if ns.domain == NSCocoaErrorDomain, ns.code == NSFileWriteOutOfSpaceError { return true }
         return false
+    }
+
+    /// True when incoming upload body exceeded `NearbySharingTransferConfig.standard.maxFileSizeBytes`.
+    var isNearbySharingContentTooLargeError: Bool {
+        (self as? HTTPStatusCode) == .payloadTooLarge
     }
 }

@@ -147,6 +147,12 @@ final class NearbySharingServer {
                     connection: connection,
                     endpoint: .upload
                 )
+            } else if let error, error.isNearbySharingContentTooLargeError {
+                sendErrorResponse(
+                    ServerStatus(code: .payloadTooLarge, message: .contentTooLarge),
+                    connection: connection,
+                    endpoint: .upload
+                )
             }
             handleUploadFailure(connection: connection, request: req)
         } else {
@@ -356,6 +362,11 @@ extension NearbySharingServer: PrepareUploadHandler {
             
             if let nonceError = await state.addTransferNonce(prepReq.nonce) {
                 sendErrorResponse(nonceError.serverStatus, connection: connection, endpoint: .prepareUpload)
+                return
+            }
+            
+            if let limitError = NearbySharingTransferLimits.validatePrepareFiles(prepReq.files, config: .standard) {
+                sendErrorResponse(limitError, connection: connection, endpoint: .prepareUpload)
                 return
             }
             
