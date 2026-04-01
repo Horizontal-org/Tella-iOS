@@ -63,14 +63,25 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     }
     
     func addVaultFile(importedFile:  ImportedFile) async -> VaultFileDB? {
-        
-        guard let fileDetails =  await getFileDetails(importedFile: importedFile),
-              let filePath = importedFile.urlFile,
-              let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
+
+        guard var fileDetails = await getFileDetails(importedFile: importedFile),
+              let filePath = await getModifiedURL(importedFile: fileDetails.importedFile)
         else {
             return nil
         }
-        
+
+        if let fileSize = filePath.fileSize {
+            fileDetails.file.size = fileSize
+        }
+        if let contentHash = await filePath.sha256Hash() {
+            fileDetails.file.hash = contentHash
+        }
+
+        guard let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
+        else {
+            return nil
+        }
+
         if isSaved {
             self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
             return fileDetails.file
@@ -113,6 +124,10 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 
                 if let fileSize = filePath.fileSize {
                     fileDetail.file.size = fileSize
+                }
+                
+                if let contentHash = await filePath.sha256Hash() {
+                    fileDetail.file.hash = contentHash
                 }
                 
                 if self.shouldCancelImportAndEncryption.value {
@@ -173,6 +188,10 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             if let fileSize = filePath.fileSize {
                 fileDetail.file.size = fileSize
+            }
+            
+            if let contentHash = await filePath.sha256Hash() {
+                fileDetail.file.hash = contentHash
             }
             
             guard
@@ -332,8 +351,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         let duration =  filePath.getDuration()
         let size = filePath.fileSize ?? 0
-        
-        let hash = await filePath.sha256Hash()
 
         let vaultFile = await VaultFileDB(id: id,
                                           type: .file,
@@ -344,7 +361,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
                                           height: height,
-                                          hash: hash)
+                                          hash: nil)
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
