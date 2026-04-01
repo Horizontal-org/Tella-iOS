@@ -13,8 +13,8 @@ struct NearbySharingTransferConfig: Sendable {
     let maxFileSizeBytes: Int64
     let maxFileCount: Int
 
-    private static let defaultMaxFileSizeBytes: Int64 = 3_000_000
-    private static let defaultMaxFileCount: Int = 5
+    private static let defaultMaxFileSizeBytes: Int64 = 3_000_000_000
+    private static let defaultMaxFileCount: Int = 1000
 
     static let standard = NearbySharingTransferConfig(
         maxFileSizeBytes: defaultMaxFileSizeBytes,

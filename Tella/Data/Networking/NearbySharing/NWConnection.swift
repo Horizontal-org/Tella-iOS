@@ -24,7 +24,7 @@ protocol NetworkManagerDelegate: AnyObject {
     func networkManager(verifyParametersFor context: ConnectionContext) async -> URL?
     func networkManager(didReceive progress: Int, for context: ConnectionContext)
     func networkManagerDidStartListening()
-    func networkManager(didFailWith error: Error?, context: ConnectionContext?)
+    func networkManager(didFailWith error: Error?, context: ConnectionContext?) async -> Bool
     func networkManager(didFailWithListener error: Error?)
 }
 
@@ -42,7 +42,7 @@ actor NetworkManager {
         label: "org.wearehorizontal.tella.nearbysharing.listener",
         qos: .userInitiated
     )
-
+    
     // MARK: - Delegate
     
     func setDelegate(_ delegate: NetworkManagerDelegate?) {
@@ -87,13 +87,18 @@ actor NetworkManager {
     
     func sendData(to connection: NWConnection, data: Data) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            connection.send(content: data, completion: .contentProcessed { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: ())
+            connection.send(
+                content: data,
+                contentContext: .finalMessage,
+                isComplete: true,
+                completion: .contentProcessed { error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(returning: ())
+                    }
                 }
-            })
+            )
         }
     }
     
@@ -241,9 +246,12 @@ actor NetworkManager {
     
     private func handleConnectionError(_ connection: NWConnection, error: Error?) async {
         let ctx = await self.connectionContext(for: connection)
-        self.delegate?.networkManager(didFailWith: error, context: ctx)
+        let handled = await self.delegate?.networkManager(didFailWith: error, context: ctx) ?? false
         await self.connections.remove(for: connection.id)
-        connection.cancel()
+        
+        if !handled {
+            connection.cancel()
+        }
     }
     
     private func connectionContext(for connection: NWConnection) async -> ConnectionContext? {

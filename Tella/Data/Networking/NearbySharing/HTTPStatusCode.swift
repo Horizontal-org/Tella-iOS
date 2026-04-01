@@ -56,7 +56,7 @@ extension Error {
         if ns.domain == NSCocoaErrorDomain, ns.code == NSFileWriteOutOfSpaceError { return true }
         return false
     }
-
+    
     /// True when incoming upload body exceeded `NearbySharingTransferConfig.standard.maxFileSizeBytes`.
     var isNearbySharingContentTooLargeError: Bool {
         (self as? HTTPStatusCode) == .payloadTooLarge
