@@ -335,15 +335,13 @@ extension NearbySharingServer: RegisterHandler {
         if accept {
             await acceptRegisterRequest(connection: connection, httpRequest: request)
         } else {
-            discardRegisterRequest(connection: connection)
+            await discardRegisterRequest(connection: connection)
         }
     }
     
-    private func discardRegisterRequest(connection: NWConnection) {
-        Task {
-            let error = ServerStatus(code: .forbidden, message: .rejected)
-            await sendErrorResponse(error, connection: connection)
-        }
+    private func discardRegisterRequest(connection: NWConnection) async {
+        let error = ServerStatus(code: .forbidden, message: .rejected)
+        await sendErrorResponse(error, connection: connection)
     }
 }
 

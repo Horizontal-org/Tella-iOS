@@ -82,7 +82,12 @@ actor NetworkManager {
     }
     
     func cleanConnections() {
-        Task { await connections.removeAll() }
+        Task {
+            for conn in await connections.allConnections() {
+                conn.cancel()
+            }
+            await connections.removeAll()
+        }
     }
     
     func sendData(to connection: NWConnection, data: Data) async throws {
