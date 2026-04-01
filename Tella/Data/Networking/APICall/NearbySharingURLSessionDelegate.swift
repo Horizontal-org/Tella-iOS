@@ -21,7 +21,7 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         self.trustedCertificateHash = trustedCertificateHash
         self.onReceiveServerCertificateHash = onReceiveServerCertificateHash
     }
-
+    
     func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
         response.send(NearbySharingUploadResponse.didCreateTask(task: task))
     }
@@ -39,19 +39,19 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?) {
-
+        
         if let error = error as? NSError {
             response.send(completion: .failure(APIError.httpCode(error.code)))
             return
         }
-
+        
         guard let httpResponse = task.response as? HTTPURLResponse else {
             response.send(completion: .failure(APIError.unexpectedResponse))
             return
         }
-
+        
         let statusCode = httpResponse.statusCode
-
+        
         guard HTTPCodes.success.contains(statusCode) else {
             response.send(completion: .failure(APIError.httpCode(statusCode)))
             return
@@ -59,56 +59,56 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         response.send(completion: .finished)
     }
     
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        var disposition: URLSession.AuthChallengeDisposition = .cancelAuthenticationChallenge
+        var credential: URLCredential?
+        
+        defer {
+            completionHandler(disposition, credential)
+        }
         
         let protectionSpace = challenge.protectionSpace
-        let host = protectionSpace.host
         
         guard let serverTrust = protectionSpace.serverTrust else {
-            debugLog("Missing serverTrust for host")
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            debugLog("Missing serverTrust")
             return
         }
         
         guard let certificateData = extractCertificateData(from: serverTrust) else {
-            debugLog("Failed to extract certificate data from serverTrust for host")
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            debugLog("Failed to extract certificate data")
             return
         }
         
         let serverCertificateHash = certificateData.sha256()
         
-        // No trusted public key hash: potentially first connection
+        // First-contact flow allowed only for ping
         guard let trustedHash = trustedCertificateHash else {
-            if path == NearbySharingEndpoint.ping.rawValue {
-                let credential = URLCredential(trust: serverTrust)
-                completionHandler(.useCredential, credential)
-                onReceiveServerCertificateHash?(serverCertificateHash)
-            } else {
-                debugLog("No trusted hash and path is non-nil; canceling authentication.")
-                completionHandler(.cancelAuthenticationChallenge, nil)
+            guard path == NearbySharingEndpoint.ping.rawValue else {
+                debugLog("No trusted hash for non-ping request")
+                return
             }
+            
+            disposition = .useCredential
+            credential = URLCredential(trust: serverTrust)
+            onReceiveServerCertificateHash?(serverCertificateHash)
             return
         }
-        
-        // Compare hashes
         guard trustedHash == serverCertificateHash else {
-            debugLog("Public key hash mismatch")
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            debugLog("Certificate hash mismatch")
             return
         }
-        
-        let credential = URLCredential(trust: serverTrust)
-        completionHandler(.useCredential, credential)
+        disposition = .useCredential
+        credential = URLCredential(trust: serverTrust)
     }
     
-    func extractCertificateData(from trust: SecTrust) -> Data? {
+    private func extractCertificateData(from trust: SecTrust) -> Data? {
         guard let certificate = SecTrustGetCertificateAtIndex(trust, 0) else {
             return nil
         }
-        let certificateData = SecCertificateCopyData(certificate)
-        return Data(certificateData as Data)
+        return SecCertificateCopyData(certificate) as Data
     }
 }
