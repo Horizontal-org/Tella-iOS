@@ -7,6 +7,7 @@
 import UIKit
 import SystemConfiguration.CaptiveNetwork
 import Network
+import Darwin.POSIX
 
 class DiskStatus: NSObject {
     
@@ -62,41 +63,54 @@ class DiskStatus: NSObject {
 
 extension UIDevice {
     
-    func getIPAddress(for type: NWInterface.InterfaceType?) -> String? {
+    /// Returns IPv4 addresses for Wi-Fi (`en0`) and Personal Hotspot (`bridge100`)
+    func wifiAndHotspotIPv4Addresses() -> [String] {
+        let allowedInterfaces: Set<String> = ["en0", "bridge100"]
         
+        var result = Set<String>()
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
         
-        guard getifaddrs(&ifaddr) == 0 else { return nil }
+        guard getifaddrs(&ifaddr) == 0, let first = ifaddr else {
+            return []
+        }
         defer { freeifaddrs(ifaddr) }
         
-        var ptr = ifaddr
-        while ptr != nil {
-            defer { ptr = ptr?.pointee.ifa_next }
+        var ptr: UnsafeMutablePointer<ifaddrs>? = first
+        
+        while let current = ptr {
+            let interface = current.pointee
+            defer { ptr = interface.ifa_next }
             
-            let interface = ptr?.pointee
-            let addrFamily = interface?.ifa_addr.pointee.sa_family
+            guard let nameC = interface.ifa_name else { continue }
+            let name = String(cString: nameC)
             
-            if addrFamily == UInt8(AF_INET), let name = interface?.ifa_name {
-                let interfaceName = String(cString: name)
-                
-                if (type == .wifi && interfaceName == "en0") || (type == .cellular && interfaceName == "bridge100") {
-                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    
-                    getnameinfo(
-                        interface?.ifa_addr,
-                        socklen_t((interface?.ifa_addr.pointee.sa_len)!),
-                        &hostname,
-                        socklen_t(hostname.count),
-                        nil,
-                        0,
-                        NI_NUMERICHOST
-                    )
-                    
-                    return String(cString: hostname)
-                }
-            }
+            // Only Wi-Fi + Hotspot
+            guard allowedInterfaces.contains(name) else { continue }
+            
+            let flags = interface.ifa_flags
+            guard (flags & UInt32(IFF_UP)) != 0,
+                  (flags & UInt32(IFF_LOOPBACK)) == 0 else { continue }
+            
+            guard let addr = interface.ifa_addr,
+                  addr.pointee.sa_family == UInt8(AF_INET) else { continue }
+            
+            var host = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+            
+            let resultCode = getnameinfo(
+                addr,
+                socklen_t(MemoryLayout<sockaddr_in>.size),
+                &host,
+                socklen_t(host.count),
+                nil,
+                0,
+                NI_NUMERICHOST
+            )
+            
+            guard resultCode == 0 else { continue }
+            
+            result.insert(String(cString: host))
         }
         
-        return nil
+        return Array(result)
     }
 }

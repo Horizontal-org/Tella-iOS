@@ -18,21 +18,25 @@ class CertificateGenerator {
     
     // MARK: - Main Function
     
-    func generateP12Certificate(ipAddress: String) -> (identity: SecIdentity, certificateHash: String)? {
-        
+    func generateP12Certificate(ipAddresses: [String]) -> (identity: SecIdentity, certificateHash: String)? {
+        guard !ipAddresses.isEmpty else {
+            debugLog("No IP addresses for certificate SAN")
+            return nil
+        }
+
         // Generate RSA private key
         guard let privateKey = generateRSAKey() else {
             debugLog("RSA key generation failed")
             return nil
         }
-        
+
         guard let publicKey = privateKey.getPublicKey() else {
             debugLog("Failed to extract public key from private key")
             return nil
         }
-        
+
         // Generate certificate
-        guard let certificate = generateSelfSignedCertificate(ipAddress: ipAddress, privateKey: privateKey, publicKey: publicKey) else {
+        guard let certificate = generateSelfSignedCertificate(ipAddresses: ipAddresses, privateKey: privateKey, publicKey: publicKey) else {
             debugLog("Failed to create certificate")
             return nil
         }
@@ -71,15 +75,15 @@ class CertificateGenerator {
     
     // MARK: - Certificate Generation
     
-    private func generateSelfSignedCertificate(ipAddress: String,
+    private func generateSelfSignedCertificate(ipAddresses: [String],
                                                privateKey: SecKey,
                                                publicKey: SecKey) -> SecCertificate? {
         do {
             let notBefore = Date()
             let notAfter = notBefore.addYear()
-            
+
             let name = try buildDistinguishedName()
-            let sanExtension = try createSANExtension(ipAddress: ipAddress)
+            let sanExtension = try createSANExtension(ipAddresses: ipAddresses)
             
             var extensions = Certificate.Extensions()
             try extensions.append(sanExtension)
@@ -114,37 +118,26 @@ class CertificateGenerator {
         }
     }
     
-    private func createSANExtension(ipAddress: String) throws -> Certificate.Extension {
-        
-        let ipBytes = try ipAddress.convertIPAddressToBytes()
-        let sanValue = createSANExtensionValue(ipBytes: ipBytes)
-        
+    private func createSANExtension(ipAddresses: [String]) throws -> Certificate.Extension {
+        var inner = [UInt8]()
+        for ip in ipAddresses {
+            let ipBytes = try ip.convertIPAddressToBytes()
+            inner.append(0x87)
+            inner.append(UInt8(ipBytes.count))
+            inner.append(contentsOf: ipBytes)
+        }
+
+        let sequenceLength = inner.count
+        var sanValue = [UInt8]()
+        sanValue.append(0x30)
+        sanValue.append(UInt8(sequenceLength))
+        sanValue.append(contentsOf: inner)
+
         return Certificate.Extension(
             oid: [2, 5, 29, 17], // Subject Alternative Name
             critical: false,
             value: sanValue[...]
         )
-    }
-    
-    // Helper to create the SAN extension value
-    private func createSANExtensionValue(ipBytes: [UInt8]) -> [UInt8] {
-        // This creates a minimal SubjectAlternativeName extension containing just the IP address
-        // Structure: SEQUENCE -> [7] IMPLICIT OCTET STRING (ipBytes)
-        var bytes = [UInt8]()
-        
-        // Add the IP address (tag 7, context-specific)
-        bytes.append(0x87)  // Context-specific tag 7 in constructed form
-        bytes.append(UInt8(ipBytes.count))
-        bytes.append(contentsOf: ipBytes)
-        
-        // Wrap in SEQUENCE
-        let sequenceLength = bytes.count
-        var result = [UInt8]()
-        result.append(0x30)  // SEQUENCE tag
-        result.append(UInt8(sequenceLength))
-        result.append(contentsOf: bytes)
-        
-        return result
     }
     
     private func createSecCertificate(from certificate: Certificate) -> SecCertificate? {

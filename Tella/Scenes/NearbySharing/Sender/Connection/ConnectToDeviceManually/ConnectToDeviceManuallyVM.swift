@@ -56,7 +56,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     func getHash() {
         
         guard let port = Int(port) else { return }
-        let connectionInfo = ConnectionInfo(ipAddress: ipAddress, port: port, certificateHash: nil, pin: pin)
+        let connectionInfo = ConnectionInfo(ipAddresses: [ipAddress], port: port, certificateHash: nil, pin: pin)
         self.connectionInfo = connectionInfo
         
         self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)

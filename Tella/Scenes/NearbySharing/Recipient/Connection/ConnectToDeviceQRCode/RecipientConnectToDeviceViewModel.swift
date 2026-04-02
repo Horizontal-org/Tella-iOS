@@ -86,14 +86,14 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     private func generateConnectionInfo() {
         DispatchQueue.main.async {
-            let interfaceType = self.mainAppModel.networkMonitor.interfaceTypeValue
+            let ipAddresses = UIDevice.current.wifiAndHotspotIPv4Addresses()
             
-            guard let ipAddress = UIDevice.current.getIPAddress(for: interfaceType) else {
+            guard !ipAddresses.isEmpty else {
                 self.viewAction = .errorOccured
                 return
             }
             
-            guard let certificateData = self.certificateGenerator.generateP12Certificate(ipAddress: ipAddress) else {
+            guard let certificateData = self.certificateGenerator.generateP12Certificate(ipAddresses: ipAddresses) else {
                 self.viewAction = .errorOccured
                 return
             }
@@ -103,7 +103,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             let pin = "\(Int.randomSixDigitPIN)"
             
             let connectionInfo = ConnectionInfo(
-                ipAddress: ipAddress,
+                ipAddresses: ipAddresses,
                 port: self.port,
                 certificateHash: certificateHash,
                 pin: pin

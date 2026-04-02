@@ -56,7 +56,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
     func initParameters() {
         guard let connectionInfo else { return }
         self.pin = connectionInfo.pin
-        self.ipAddress = connectionInfo.ipAddress
+        self.ipAddress = connectionInfo.ipAddresses.joined(separator: ", ")
         self.port = "\(connectionInfo.port)"
     }
     

@@ -10,7 +10,7 @@
 import Foundation
 
 struct RegistrationNonceContext: Equatable {
-    let ipAddress: String
+    let ipAddresses: [String]
     let port: Int
     let pin: String
     let nonce: String
@@ -18,11 +18,11 @@ struct RegistrationNonceContext: Equatable {
 
 extension RegistrationNonceContext {
     func matches(_ connectionInfo: ConnectionInfo) -> Bool {
-        ipAddress == connectionInfo.ipAddress &&
-            port == connectionInfo.port &&
-            pin == connectionInfo.pin
+        ipAddresses == connectionInfo.ipAddresses &&
+        port == connectionInfo.port &&
+        pin == connectionInfo.pin
     }
-
+    
     /// Reuses the nonce for the same target until `context` is cleared after a successful registration.
     static func nonce(for connectionInfo: ConnectionInfo, context: inout RegistrationNonceContext?) -> String {
         if let stored = context, stored.matches(connectionInfo) {
@@ -30,7 +30,7 @@ extension RegistrationNonceContext {
         }
         let nonce = NearbySharingTransferNonce.make()
         context = RegistrationNonceContext(
-            ipAddress: connectionInfo.ipAddress,
+            ipAddresses: connectionInfo.ipAddresses,
             port: connectionInfo.port,
             pin: connectionInfo.pin,
             nonce: nonce
