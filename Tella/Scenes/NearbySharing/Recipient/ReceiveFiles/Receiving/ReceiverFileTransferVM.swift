@@ -55,9 +55,11 @@ final class ReceiverFileTransferVM: FileTransferVM {
         Task { [weak self] in
             guard let self, let server = self.nearbySharingServer else { return }
             if let session = await server.state.currentSession() {
-                self.transferredFiles = Array(session.files.values)
-                self.initProgress(session: session)
-                self.listenToServer()
+                await MainActor.run {
+                    self.transferredFiles = Array(session.files.values)
+                    self.initProgress(session: session)
+                    self.listenToServer()
+                }
             }
         }
     }
