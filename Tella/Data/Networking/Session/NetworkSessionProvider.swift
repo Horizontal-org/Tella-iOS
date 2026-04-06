@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 11/3/2026.
-//  Copyright © 2026 HORIZONTAL. All rights reserved.
+//  Copyright © 2026 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 

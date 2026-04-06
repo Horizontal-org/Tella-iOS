@@ -15,51 +15,50 @@ class NearbySharingRepository: NSObject, WebRepository {
     private var connectionInfo:ConnectionInfo?
     private var uploadTasks : [URLSessionTask] = []
     
+    /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
     func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
         let hosts = connectionInfo.ipAddresses
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
-        return getHashAttempt(connectionInfo: connectionInfo, hosts: hosts, index: 0)
+        let originalActiveHost = connectionInfo.activeHost
+        return attemptSequentialHosts(
+            connectionInfo: connectionInfo,
+            hosts: hosts,
+            index: 0,
+            originalActiveHost: originalActiveHost
+        ) { info in
+            self.fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: info))
+        }
     }
     
-    private func getHashAttempt(
-        connectionInfo: ConnectionInfo,
-        hosts: [String],
-        index: Int
-    ) -> AnyPublisher<String, Error> {
-        guard index < hosts.count else {
+    /// Tries each IP in order using `activeHost`; keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
+    func register(connectionInfo: ConnectionInfo, registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
+        let hosts = connectionInfo.ipAddresses
+        guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
-        
-        let host = hosts[index]
-        let perHost = ConnectionInfo(
-            ipAddresses: [host],
-            port: connectionInfo.port,
-            certificateHash: connectionInfo.certificateHash,
-            pin: connectionInfo.pin
-        )
-        perHost.activeHost = host
-        
-        return fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: perHost))
-            .handleEvents(receiveOutput: { [weak self] _ in
-                connectionInfo.activeHost = host
-                self?.connectionInfo = connectionInfo
-            })
-            .catch { [weak self] error -> AnyPublisher<String, Error> in
-                guard let self else {
-                    return Fail(error: error).eraseToAnyPublisher()
-                }
-                if self.shouldRetryAfterPingFailure(error), index + 1 < hosts.count {
-                    return self.getHashAttempt(connectionInfo: connectionInfo, hosts: hosts, index: index + 1)
-                }
-                return Fail(error: error).eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
+        let originalActiveHost = connectionInfo.activeHost
+        return attemptSequentialHosts(
+            connectionInfo: connectionInfo,
+            hosts: hosts,
+            index: 0,
+            originalActiveHost: originalActiveHost
+        ) { info in
+            let apiResponse: APIResponse<RegisterResponse> = self.getLocalAPIResponse(
+                endpoint: API.register(connectionInfo: info, registerRequest: registerRequest)
+            )
+            return apiResponse
+                .compactMap { $0.response }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
+        .mapError { ($0 as? APIError) ?? APIError.unexpectedResponse }
+        .eraseToAnyPublisher()
     }
     
-    /// Same policy as register: retry next `ip_address` on transport / reachability failures, not on application-level HTTP errors.
-    private func shouldRetryAfterPingFailure(_ error: Error) -> Bool {
+    /// Retries the next `ip_address` on transport / reachability-style failures, not on application-level HTTP errors.
+    private func shouldRetryWithNextIPAddress(_ error: Error) -> Bool {
         if let apiError = error as? APIError {
             switch apiError {
             case .badServer, .unexpectedResponse:
@@ -72,44 +71,38 @@ class NearbySharingRepository: NSObject, WebRepository {
         return nsError.domain == NSURLErrorDomain
     }
     
-    func register(connectionInfo: ConnectionInfo, registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
-        let hosts = connectionInfo.ipAddresses
-        guard !hosts.isEmpty else {
-            return Fail(error: APIError.badServer).eraseToAnyPublisher()
-        }
-        return registerAttempt(connectionInfo: connectionInfo, hosts: hosts, index: 0, registerRequest: registerRequest)
-    }
-    
-    private func registerAttempt(
+    /// `baseURL` uses `ConnectionInfo.requestHost`, which prefers `activeHost`. Each attempt sets `activeHost` to the candidate IP; on total failure it is restored to `originalActiveHost`.
+    private func attemptSequentialHosts<Output>(
         connectionInfo: ConnectionInfo,
         hosts: [String],
         index: Int,
-        registerRequest: RegisterRequest
-    ) -> AnyPublisher<RegisterResponse, APIError> {
+        originalActiveHost: String?,
+        publisherForPerHost: @escaping (ConnectionInfo) -> AnyPublisher<Output, Error>
+    ) -> AnyPublisher<Output, Error> {
         guard index < hosts.count else {
+            connectionInfo.activeHost = originalActiveHost
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
-        
         let host = hosts[index]
-        let perHost = ConnectionInfo(ipAddresses: [host], port: connectionInfo.port, certificateHash: connectionInfo.certificateHash, pin: connectionInfo.pin)
-        perHost.activeHost = host
-        
-        let apiResponse: APIResponse<RegisterResponse> = getLocalAPIResponse(
-            endpoint: API.register(connectionInfo: perHost, registerRequest: registerRequest)
-        )
-        return apiResponse
-            .compactMap { $0.response }
+        connectionInfo.activeHost = host
+        return publisherForPerHost(connectionInfo)
             .handleEvents(receiveOutput: { [weak self] _ in
-                connectionInfo.activeHost = host
                 self?.connectionInfo = connectionInfo
             })
-            .catch { [weak self] error -> AnyPublisher<RegisterResponse, APIError> in
+            .catch { [weak self] error -> AnyPublisher<Output, Error> in
                 guard let self else {
                     return Fail(error: error).eraseToAnyPublisher()
                 }
-                if self.shouldRetryAfterPingFailure(error), index + 1 < hosts.count {
-                    return self.registerAttempt(connectionInfo: connectionInfo, hosts: hosts, index: index + 1, registerRequest: registerRequest)
+                if self.shouldRetryWithNextIPAddress(error), index + 1 < hosts.count {
+                    return self.attemptSequentialHosts(
+                        connectionInfo: connectionInfo,
+                        hosts: hosts,
+                        index: index + 1,
+                        originalActiveHost: originalActiveHost,
+                        publisherForPerHost: publisherForPerHost
+                    )
                 }
+                connectionInfo.activeHost = originalActiveHost
                 return Fail(error: error).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

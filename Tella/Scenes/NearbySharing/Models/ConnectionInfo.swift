@@ -10,34 +10,34 @@
 import Foundation
 
 class ConnectionInfo: Codable, Equatable {
-
+    
     var ipAddresses: [String]
     var port: Int
     var certificateHash: String?
     var pin: String
-
+    
     /// After a successful register against one of `ipAddresses`, HTTPS calls use this host. Not part of the QR JSON.
     var activeHost: String?
-
+    
     var requestHost: String {
         if let activeHost, !activeHost.isEmpty { return activeHost }
         return ipAddresses.first ?? ""
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case ipAddresses = "ip_address"
         case port
         case certificateHash = "certificate_hash"
         case pin
     }
-
+    
     init(ipAddresses: [String], port: Int, certificateHash: String?, pin: String) {
         self.ipAddresses = ipAddresses
         self.port = port
         self.certificateHash = certificateHash
         self.pin = pin
     }
-
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         port = try container.decode(Int.self, forKey: .port)
@@ -45,7 +45,7 @@ class ConnectionInfo: Codable, Equatable {
         pin = try container.decode(String.self, forKey: .pin)
         ipAddresses = try container.decode([String].self, forKey: .ipAddresses)
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(ipAddresses, forKey: .ipAddresses)
@@ -53,12 +53,12 @@ class ConnectionInfo: Codable, Equatable {
         try container.encodeIfPresent(certificateHash, forKey: .certificateHash)
         try container.encode(pin, forKey: .pin)
     }
-
+    
     static func == (lhs: ConnectionInfo, rhs: ConnectionInfo) -> Bool {
         lhs.ipAddresses == rhs.ipAddresses
-            && lhs.port == rhs.port
-            && lhs.pin == rhs.pin
-            && lhs.certificateHash == rhs.certificateHash
+        && lhs.port == rhs.port
+        && lhs.pin == rhs.pin
+        && lhs.certificateHash == rhs.certificateHash
     }
 }
 
