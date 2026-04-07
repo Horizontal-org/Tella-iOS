@@ -53,9 +53,4 @@ final class FileDetailsViewModel: ObservableObject {
             self.documentIsReady = true
         }
     }
-    
-    func deleteTmpFile() {
-        guard let url = self.urlDocument else {return}
-        mainAppModel?.vaultManager.deleteFiles(files: [url])
-    }
 }

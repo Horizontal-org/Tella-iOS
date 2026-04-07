@@ -57,7 +57,6 @@ final class ServerOnboardingViewModel: ObservableObject {
     // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
-    var canGoBack: Bool { index > 0 }
     var canGoNext: Bool { index < lastIndex }
     
     var currentPage: ServerOnboardingItem {
@@ -87,10 +86,6 @@ final class ServerOnboardingViewModel: ObservableObject {
     
     func goNext() {
         goToPage(index + 1)
-    }
-    
-    func goBack() {
-        goToPage(index - 1)
     }
 }
 

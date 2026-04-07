@@ -414,10 +414,6 @@ extension FileListViewModel {
     private func showToast(_ message: String) {
         toastMessage.send(message)
     }
-
-    func clearTmpDirectory() {
-        mainAppModel.vaultManager.clearTmpDirectory()
-    }
     
     func getDataToShare() -> [Any] {
         mainAppModel.vaultManager.loadVaultFilesToURL(files: selectedFiles)

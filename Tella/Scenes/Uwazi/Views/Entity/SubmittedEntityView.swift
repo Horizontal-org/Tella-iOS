@@ -116,9 +116,6 @@ struct SubmittedEntityView: View {
             }
         }
     }
-    private func dismissViews() {
-        self.popTo(ViewClassType.uwaziView)
-    }
 }
 
 #Preview {

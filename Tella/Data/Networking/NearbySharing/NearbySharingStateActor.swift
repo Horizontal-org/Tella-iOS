@@ -273,11 +273,6 @@ actor NearbySharingStateActor {
     func markUploadFailed(fileID: String) {
         state.session?.files[fileID]?.status = .failed
     }
-    
-    func allTransfersCompleted() -> Bool {
-        guard let files = state.session?.files else { return false }
-        return files.values.first { $0.status == .transferring || $0.status == .queue } == nil
-    }
 
     private func validateEnoughStorage(for file: NearbySharingFile) -> ServerStatus? {
         guard let size = file.size, size > 0 else {

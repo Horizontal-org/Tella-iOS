@@ -34,14 +34,6 @@ final class AppViewState: ObservableObject {
         return viewStack.last ?? .LOCK
     }
 
-    func navigateBack() {
-        viewStack.removeLast()
-    }
-
-    func navigate(to view: MainViewEnum) {
-        viewStack.append(view)
-    }
-
     func resetToLock() {
         viewStack = [.LOCK]
     }

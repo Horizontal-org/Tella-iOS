@@ -365,20 +365,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
-    private func getIncrementedName(name:String) -> String {
-        
-        var copyNumber = 0
-        
-        // Generate the new filename and check if it exists
-        var newFileName = name
-        while self.vaultFileExists(name: newFileName) == true {
-            copyNumber += 1
-            newFileName = name + "-" + "\(copyNumber)"
-        }
-        return newFileName
-    }
-    
-    
     func getFilesTotalSize(filePaths: [URL]) -> Int {
         
         var totalSizeArray : [Int] = []
