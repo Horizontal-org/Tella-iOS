@@ -118,6 +118,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         applyProtection(to: tmpFileURL)
         
         guard let fileId = vaultFile.id else {
+            securelyDeleteTempFile(at: tmpFileURL)
             return nil
         }
         
