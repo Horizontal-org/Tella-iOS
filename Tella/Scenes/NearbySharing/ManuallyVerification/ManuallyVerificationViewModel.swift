@@ -95,8 +95,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     private func register() {
         let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
-                                              nonce: nonce,
-                                              senderCertificateHash: "")
+                                              nonce: nonce)
         self.updateButtonsState(state: .waiting)
 
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)

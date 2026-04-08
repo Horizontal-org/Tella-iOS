@@ -69,8 +69,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
 
         let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
-                                              nonce: nonce,
-                                              senderCertificateHash: "")
+                                              nonce: nonce)
 
         self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
