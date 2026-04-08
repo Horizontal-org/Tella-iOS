@@ -62,10 +62,8 @@ class DiskStatus: NSObject {
 }
 
 extension UIDevice {
-    
-    /// Returns IPv4 addresses for Wi-Fi (`en0`) and Personal Hotspot (`bridge100`)
-    func wifiAndHotspotIPv4Addresses() -> [String] {
-        let allowedInterfaces: Set<String> = ["en0", "bridge100"]
+
+    func ipAddresses() -> [String] {
         
         var result = Set<String>()
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
@@ -80,13 +78,7 @@ extension UIDevice {
         while let current = ptr {
             let interface = current.pointee
             defer { ptr = interface.ifa_next }
-            
-            guard let nameC = interface.ifa_name else { continue }
-            let name = String(cString: nameC)
-            
-            // Only Wi-Fi + Hotspot
-            guard allowedInterfaces.contains(name) else { continue }
-            
+
             let flags = interface.ifa_flags
             guard (flags & UInt32(IFF_UP)) != 0,
                   (flags & UInt32(IFF_LOOPBACK)) == 0 else { continue }

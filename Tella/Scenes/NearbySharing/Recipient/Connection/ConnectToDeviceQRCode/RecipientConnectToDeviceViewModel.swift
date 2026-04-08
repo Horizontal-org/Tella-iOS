@@ -86,7 +86,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     
     private func generateConnectionInfo() {
         DispatchQueue.main.async {
-            let ipAddresses = UIDevice.current.wifiAndHotspotIPv4Addresses()
+            let ipAddresses = UIDevice.current.ipAddresses()
             
             guard !ipAddresses.isEmpty else {
                 self.viewAction = .errorOccured
