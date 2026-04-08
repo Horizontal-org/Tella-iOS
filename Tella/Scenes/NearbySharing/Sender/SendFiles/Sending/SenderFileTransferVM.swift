@@ -39,45 +39,60 @@ class SenderFileTransferVM: FileTransferVM {
             
             guard let vaultfiles = session?.files.values else { return }
             
+            let stagingFolderName = "nearby-sharing-\(session?.sessionId ?? UUID().uuidString)"
+            
             for file in vaultfiles {
-                file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file.vaultFile, withSubFolder: true)
+                file.url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(
+                    file: file.vaultFile,
+                    withSubFolder: true,
+                    subFolderName: stagingFolderName
+                )
             }
             
-            vaultfiles.forEach({ file in
+            vaultfiles.forEach { file in
                 guard let url = file.url else { return }
                 let fileID = file.file.id
-                let request = FileUploadRequest(sessionID: session?.sessionId,
-                                                transmissionID: file.transmissionId,
-                                                fileID: fileID,
-                                                nonce: NearbySharingTransferNonce.make())
-                repository?.uploadFile(fileUploadRequest: request,
-                                       fileURL: url)
-                .receive(on: DispatchQueue.main)
-                .sink { completion in
-                    
-                    guard let fileID,  let progressFile = self.session?.files[fileID] else {return}
-
-                    switch completion {
-                    case .finished:
-                         progressFile.status = .finished
-                    case .failure:
-                        progressFile.status = .failed
+                let request = FileUploadRequest(
+                    sessionID: session?.sessionId,
+                    transmissionID: file.transmissionId,
+                    fileID: fileID,
+                    nonce: NearbySharingTransferNonce.make()
+                )
+                
+                repository?.uploadFile(fileUploadRequest: request, fileURL: url)
+                    .receive(on: DispatchQueue.main)
+                    .sink { completion in
+                        
+                        guard let fileID,
+                              let progressFile = self.session?.files[fileID] else { return }
+                        
+                        if let tempURL = progressFile.url {
+                            self.mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
+                            progressFile.url = nil
+                        }
+                        
+                        switch completion {
+                        case .finished:
+                            progressFile.status = .finished
+                        case .failure:
+                            progressFile.status = .failed
+                        }
+                        
+                        self.session?.files[fileID] = progressFile
+                        self.checkAllFilesAreReceived()
+                        
+                    } receiveValue: { progress in
+                        guard let fileID,
+                              let progressFile = self.session?.files[fileID] else { return }
+                        
+                        progressFile.bytesReceived += progress
+                        self.session?.files[fileID] = progressFile
+                        self.updateProgress(with: progressFile)
                     }
-
-                    self.session?.files[fileID] = progressFile
-
-                    self.checkAllFilesAreReceived()
-
-                } receiveValue: { progress in
-                    guard let fileID,  let progressFile = self.session?.files[fileID] else {return}
-                    progressFile.bytesReceived += progress
-                    self.session?.files[fileID] = progressFile
-                    self.updateProgress(with: progressFile)
-                }.store(in: &subscribers)
-            })
+                    .store(in: &subscribers)
+            }
         }
     }
-    
     private func checkAllFilesAreReceived()  {
         guard let files = session?.files else { return  }
         let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})

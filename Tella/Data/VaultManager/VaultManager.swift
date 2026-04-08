@@ -31,6 +31,9 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
         guard let vaultFileId else { return false }
         debugLog("\(filePath)", space: .files)
+        defer {
+            deleteTmpFiles(files: [filePath])
+        }
         
         let outputFileURL = containerURL(for: vaultFileId)
         
@@ -44,7 +47,6 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             return nil
         }
         
-        deleteTmpFiles(files: [filePath])
         return true
     }
     
@@ -80,37 +82,72 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     }
     
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
-        loadVaultFileToURL(file: vaultFile,withSubFolder: false)
+        loadVaultFileToURL(file: vaultFile, withSubFolder: false)
     }
     
-    func loadVaultFileToURLAsync(file: ReportVaultFile,withSubFolder: Bool = false) async -> URL? {
+    func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool) -> URL? {
+        loadVaultFileToURL(file: vaultFile, withSubFolder: withSubFolder, subFolderName: nil)
+    }
+    
+    func loadVaultFileToURLAsync(file: ReportVaultFile,
+                                 withSubFolder: Bool = false,
+                                 subFolderName: String? = nil
+    ) async -> URL? {
+        
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
-                let result = self.loadVaultFileToURL(file: file, withSubFolder: withSubFolder)
+                let result = self.loadVaultFileToURL(
+                    file: file,
+                    withSubFolder: withSubFolder,
+                    subFolderName: subFolderName
+                )
+                continuation.resume(returning: result)
+            }
+        }
+    }
+    func loadVaultFileToURLAsync(
+        file: VaultFileDB,
+        withSubFolder: Bool = false,
+        subFolderName: String? = nil
+    ) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.loadVaultFileToURL(
+                    file: file,
+                    withSubFolder: withSubFolder,
+                    subFolderName: subFolderName
+                )
                 continuation.resume(returning: result)
             }
         }
     }
     
-    func loadVaultFileToURLAsync(file: VaultFileDB,withSubFolder: Bool = false) async -> URL? {
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let result = self.loadVaultFileToURL(file: file, withSubFolder: withSubFolder)
-                continuation.resume(returning: result)
-            }
-        }
+    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
+        await loadVaultFileToURLAsync(file: file, withSubFolder: false, subFolderName: nil)
     }
     
+    func loadVaultFileToURLAsync(file: VaultFileDB) async -> URL? {
+        await loadVaultFileToURLAsync(file: file, withSubFolder: false, subFolderName: nil)
+    }
     
-    func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool = false) -> URL? {
+    func loadVaultFileToURL(
+        file vaultFile: VaultFileDB,
+        withSubFolder: Bool = false,
+        subFolderName: String? = nil
+    ) -> URL? {
         
-        let tmpFileURL = createTempFileURL(fileName: vaultFile.name ,pathExtension: vaultFile.fileExtension, withSubFolder: withSubFolder)
+        let tmpFileURL = createTempFileURL(
+            fileName: vaultFile.name,
+            pathExtension: vaultFile.fileExtension,
+            withSubFolder: withSubFolder,
+            subFolderName: subFolderName
+        )
         
-        if withSubFolder {
+        if withSubFolder || subFolderName != nil {
             fileManager.createDirectory(atPath: tmpFileURL.deletingLastPathComponent())
         }
         
-        guard (fileManager.createEmptyFile(atPath: tmpFileURL)) else {
+        guard fileManager.createEmptyFile(atPath: tmpFileURL) else {
             debugLog("File not created.")
             return nil
         }
@@ -131,7 +168,6 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         
         return tmpFileURL
     }
-    
     func getDescriptionFileUrl(content: String, fileName: String) -> URL? {
         let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
         
@@ -270,14 +306,39 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func createTempFileURL(fileName: String?) -> URL {
         self.createTempFileURL(fileName: fileName, pathExtension: nil)
     }
-    
-    func createTempFileURL(fileName: String? , pathExtension: String?, withSubFolder: Bool = false) -> URL {
+    //    
+    //    func createTempFileURL(fileName: String? , pathExtension: String?, withSubFolder: Bool = false) -> URL {
+    //        let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
+    //        let subFolder = withSubFolder ? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))" : ""
+    //        
+    //        let pathComponent = withSubFolder ? subFolder + "/" + fileName : fileName
+    //        
+    //        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(pathComponent).appendingPathExtension(pathExtension ?? "")
+    //    }
+    func createTempFileURL(
+        fileName: String?,
+        pathExtension: String?,
+        withSubFolder: Bool = false,
+        subFolderName: String? = nil
+    ) -> URL {
+        
         let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
-        let subFolder = withSubFolder ? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))" : ""
         
-        let pathComponent = withSubFolder ? subFolder + "/" + fileName : fileName
+        let subFolder: String
         
-        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(pathComponent).appendingPathExtension(pathExtension ?? "")
+        if let subFolderName, !subFolderName.isEmpty {
+            subFolder = subFolderName
+        } else if withSubFolder {
+            subFolder = "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
+        } else {
+            subFolder = ""
+        }
+        
+        let pathComponent = subFolder.isEmpty ? fileName : "\(subFolder)/\(fileName)"
+        
+        return URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent(pathComponent)
+            .appendingPathExtension(pathExtension ?? "")
     }
     
     func deleteAllVaultFilesFromDevice() {
@@ -369,7 +430,28 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             securelyDeleteTempFile(at: url)
         }
     }
-
+    
+    func deleteTmpFilesWithParents(files: [URL]) {
+        let tempRoot = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).standardizedFileURL
+        files.forEach { url in
+            guard isInsideTemporaryDirectory(url) else { return }
+            securelyDeleteTempFile(at: url)
+            let parent = url.deletingLastPathComponent().standardizedFileURL
+            guard parent.path.hasPrefix(tempRoot.path + "/") else { return }
+            do {
+                let contents = try FileManager.default.contentsOfDirectory(
+                    at: parent,
+                    includingPropertiesForKeys: nil
+                )
+                if contents.isEmpty {
+                    try FileManager.default.removeItem(at: parent)
+                }
+            } catch {
+                debugLog("Failed to remove temp parent directory \(parent.path): \(error)")
+            }
+        }
+    }
+    
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
     }

@@ -131,9 +131,9 @@ final class PlayerViewModel: ObservableObject {
         self.player.replaceCurrentItem(with: nil)
         
         guard let file = file else { return }
-       
+        
         Task {
-            guard let videoURL = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)  else {return}
+            guard let videoURL = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file) else { return }
             self.currentVideoURL = videoURL
             let playerItem = AVPlayerItem(url:videoURL)
             self.player.replaceCurrentItem(with: playerItem)

@@ -13,7 +13,8 @@ struct FileDetailsView: View {
     
     @StateObject var viewModel : FileDetailsViewModel
     @State private var isEditFilePresented = false
-    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     init(  mainAppModel: MainAppModel, currentFile: VaultFileDB?, fileListViewModel: FileListViewModel) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(mainAppModel: mainAppModel, currentFile: currentFile))
         self.fileListViewModel = fileListViewModel
@@ -115,6 +116,10 @@ struct FileDetailsView: View {
                 .if(file.tellaFileType != .video, transform: { view in
                     VStack {
                         NavigationHeaderView(title: file.name,
+                                             backButtonAction: {
+                            viewModel.cleanupDecryptedTempFile()
+                            presentationMode.wrappedValue.dismiss()
+                        },
                                              middleButtonType: fileListViewModel.shouldAddEditView ? .editFile : .none,
                                              middleButtonAction: {showEditView()},
                                              rightButtonType: .custom,

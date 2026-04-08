@@ -57,13 +57,13 @@ struct DownloadedResources: View {
     private func showResourceBottomSheet() {
         sheetManager.showBottomSheet() {
             ActionListBottomSheet(items: ResourceActionItems, headerTitle: viewModel.selectedResource?.title ?? "", action: { item in
-                    let type = item.type as? ResourceActionType
-                    if type == .delete {
-                        showDeleteResourceConfirmationView()
-                    } else {
-                        navigateToPDFView()
-                    }
-                })
+                let type = item.type as? ResourceActionType
+                if type == .delete {
+                    showDeleteResourceConfirmationView()
+                } else {
+                    navigateToPDFView()
+                }
+            })
         }
     }
     
@@ -81,7 +81,9 @@ struct DownloadedResources: View {
     
     private func navigateToPDFView() {
         if let file = viewModel.openResource() {
-            navigateTo(destination: ResourcePDFView(file: file, resourceTitle: viewModel.selectedResource?.title ?? ""))
+            navigateTo(destination: ResourcePDFView(file: file,
+                                                    resourceTitle: viewModel.selectedResource?.title ?? "",
+                                                    mainAppModel: viewModel.mainAppModel))
         }
         sheetManager.hide()
     }

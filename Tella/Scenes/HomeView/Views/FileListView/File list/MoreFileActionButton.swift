@@ -24,7 +24,7 @@ struct MoreFileActionButton: View {
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
     @State var fileData: Data?
-
+    
     var body: some View {
         ZStack{
             switch moreButtonType {
@@ -55,7 +55,7 @@ struct MoreFileActionButton: View {
                 .frame(width: 35, height: 35)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
-            
+        
     }
     
     private func showFileActionSheet() {
@@ -228,16 +228,19 @@ struct MoreFileActionButton: View {
     }
     
     func showDocumentPickerView() {
+        let items = fileListViewModel.getDataToShare()
+        let tempURLs = items.compactMap { $0 as? URL }
         self.present(style: .pageSheet) {
             DocumentPickerView(documentPickerType: .forExport,
-                               URLs: fileListViewModel.mainAppModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
+                               URLs: tempURLs) { _ in
             }.edgesIgnoringSafeArea(.all)
         }
     }
     
     func showActivityViewController() {
+        let items = fileListViewModel.getDataToShare()
         self.present(style: .pageSheet) {
-            ActivityViewController(fileData: fileListViewModel.getDataToShare())
+            ActivityViewController(fileData: items, onDismiss: {})
                 .edgesIgnoringSafeArea(.all)
         }
     }

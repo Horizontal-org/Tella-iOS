@@ -12,7 +12,7 @@ import Foundation
 import Combine
 
 class ResourcesViewModel: ObservableObject {
-    private var mainAppModel: MainAppModel
+    let mainAppModel: MainAppModel
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var downloadedResources: [ResourceCardViewModel] = []
     @Published var isLoadingList: Bool = false
@@ -21,18 +21,18 @@ class ResourcesViewModel: ObservableObject {
     
     var onShowResourceBottomSheet: (() -> Void)?
     var selectedResource: DownloadedResource?
-
+    
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.servers = mainAppModel.tellaData?.getTellaServers() ?? []
         self.getAvailableForDownloadResources()
         self.getDownloadedResources()
     }
-
+    
     func getAvailableForDownloadResources() {
         self.isLoadingList = true
         self.availableResources = []
-
+        
         fetchAvailableResources()
             .receive(on: DispatchQueue.main)
             .sink(
@@ -63,7 +63,7 @@ class ResourcesViewModel: ObservableObject {
                     }
                 }
         }
-
+        
         return Publishers.MergeMany(publishers)
             .collect()
             .map { $0.flatMap { $0 } } 
@@ -91,14 +91,14 @@ class ResourcesViewModel: ObservableObject {
         let newResources = resources.filter { !downloadedIds.contains($0.id) }
         self.availableResources.append(contentsOf: newResources)
     }
-
+    
     func downloadResource(serverId: Int?, resource: Resource) {
         guard let selectedServer = servers.first(where: { $0.id == serverId }) else {
             Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
             return
         }
         toggleIsLoadingResource(id: resource.id)
-
+        
         fetchResourceFromServer(server: selectedServer, resource: resource) {
             result in
             switch result {
@@ -121,7 +121,7 @@ class ResourcesViewModel: ObservableObject {
         }
         self.toggleIsLoadingResource(id: resource.id)
     }
-
+    
     func fetchResourceFromServer(
         server: TellaServer, resource: Resource,
         completion: @escaping (Result<Data, APIError>) -> Void
@@ -154,7 +154,7 @@ class ResourcesViewModel: ObservableObject {
                 toggleIsLoadingResource(id: resource.id)
                 return
             }
-
+            
             if resourceIsSaved {
                 DispatchQueue.main.async {
                     self.getDownloadedResources()
@@ -165,7 +165,7 @@ class ResourcesViewModel: ObservableObject {
             debugLog(error)
         }
     }
-
+    
     
     func getDownloadedResources() {
         self.downloadedResources = fetchDownloadedResources()
@@ -175,7 +175,7 @@ class ResourcesViewModel: ObservableObject {
         guard let resources = self.mainAppModel.tellaData?.getResources() else {
             return []
         }
-
+        
         return resources.map { resource in
             return ResourceCardViewModel(
                 resource: resource,

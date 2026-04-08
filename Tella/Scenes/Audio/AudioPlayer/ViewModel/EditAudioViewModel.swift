@@ -34,7 +34,7 @@ class EditAudioViewModel: EditMediaViewModel {
     func initFileURL() {
         if let fileExtension = file?.fileExtension {
             let url = mainAppModel.vaultManager.saveDataToTempFile(data: self.currentData,
-                                                               pathExtension: fileExtension)
+                                                                   pathExtension: fileExtension)
             self.fileURL = url
         }
     }
@@ -102,5 +102,13 @@ class EditAudioViewModel: EditMediaViewModel {
     private func seekAudio(to position: Double, shouldPlay: Bool = true) {
         audioPlayerManager.audioPlayer.seekAudio(to: position)
         shouldPlay ? onPlay() : onPause()
+    }
+    
+    override func onDisappear() {
+        super.onDisappear()
+        if let url = fileURL {
+            mainAppModel.vaultManager.deleteTmpFiles(files: [url])
+            fileURL = nil
+        }
     }
 }

@@ -16,20 +16,21 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
-
+    private var currentDecryptedUploadURL: URL?
+    
     override var shouldShowCancelUploadConfirmation : Bool {
         return true
     }
-
+    
     init(reportsViewModel: ReportsMainViewModel,
          reportId : Int?,
          repository: GDriveRepositoryProtocol) {
         
         self.gDriveRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
-
+        
         self.initSubmission()
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
@@ -43,7 +44,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             updateReportStatus(reportStatus: .submissionPaused)
         }
     }
-
+    
     override func initVaultFile(reportId: Int?) {
         
         guard
@@ -105,7 +106,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
         
         Task {
-            guard let fileUrl = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: fileToUpload, withSubFolder: false) else {
+            guard let fileUrl = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: fileToUpload) else {
                 await MainActor.run {
                     uploadQueue.removeFirst()
                     uploadNextFile(folderId: folderId)
@@ -119,6 +120,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                                                       folderId: folderId)
             
             await MainActor.run {
+                self.currentDecryptedUploadURL = fileUrl
                 currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
                     .receive(on: DispatchQueue.main)
                     .sink(
@@ -135,6 +137,10 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
+        if let url = currentDecryptedUploadURL {
+            mainAppModel.vaultManager.deleteTmpFiles(files: [url])
+            currentDecryptedUploadURL = nil
+        }
         switch completion {
         case .finished:
             if !self.uploadQueue.isEmpty {
@@ -170,24 +176,28 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             updateReportStatus(reportStatus: .submissionPaused)
             gDriveRepository.pauseAllUploads()
             currentUploadCancellable = nil
+            if let url = currentDecryptedUploadURL {
+                mainAppModel.vaultManager.deleteTmpFiles(files: [url])
+                currentDecryptedUploadURL = nil
+            }
         }
     }
     
     override func updateReportStatus(reportStatus: ReportStatus) {
         self.reportViewModel.status = reportStatus
         self.objectWillChange.send()
-
+        
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)
     }
-
+    
     private func updateReportFolderId(folderId: String) {
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveFolderId(reportId: id, folderId: folderId)
     }
-
+    
     override func updateFile(file: ReportVaultFile) {
         guard let file = ReportFile(reportVaultFile: file) else { return }
         mainAppModel.tellaData?.updateDriveFile(file: file)
@@ -207,5 +217,5 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     func updateServer(server: GDriveServer) {
         self.reportViewModel.server = server
     }
-
+    
 }

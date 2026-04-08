@@ -72,11 +72,13 @@ class SenderPrepareFileTransferVM: ObservableObject {
                 var hash = file.hash
                 
                 if hash == nil {
-                    let url = await vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
-                    if let url, let computedHash = await url.sha256Hash() {
-                        hash = computedHash
-                        file.hash = computedHash
-                        _ = mainAppModel.vaultFilesManager?.updateHashVaultFile(id: id, hash: computedHash)
+                    if let url = await vaultManager.loadVaultFileToURLAsync(file: file) {
+                        defer { vaultManager.deleteTmpFiles(files: [url]) }
+                        if let computedHash = await url.sha256Hash() {
+                            hash = computedHash
+                            file.hash = computedHash
+                            _ = mainAppModel.vaultFilesManager?.updateHashVaultFile(id: id, hash: computedHash)
+                        }
                     }
                 }
                 
