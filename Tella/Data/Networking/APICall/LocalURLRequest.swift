@@ -29,7 +29,6 @@ extension WebRepository {
         do {
             
             let request = try endpoint.urlRequest()
-            let configuration = URLSessionConfiguration.default
             request.curlRepresentation()
             
             let delegate = NearbySharingURLSessionDelegate(
@@ -43,15 +42,12 @@ extension WebRepository {
             let _ = fileURL.startAccessingSecurityScopedResource()
             defer { fileURL.stopAccessingSecurityScopedResource() }
             
-            let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+            let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
             let task = session.uploadTask(with: request, fromFile: fileURL)
             
             task.resume()
             
             return delegate.response.eraseToAnyPublisher()
-            
-            
-            
         } catch {
             return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
@@ -62,15 +58,13 @@ extension WebRepository {
         do {
             
             let request = try endpoint.urlRequest()
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
             request.curlRepresentation()
             let delegate = NearbySharingURLSessionDelegate(
                 path:endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
             
-            return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+            return NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
                 .dataTaskPublisher(for: request)
                 .map({ ServerResponse(data: $0, response: $1)})
                 .mapError { $0 as Error }
@@ -85,10 +79,7 @@ extension WebRepository {
         do {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
-            
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
-            
+
             var capturedServerHash: String?
             
             let delegate = NearbySharingURLSessionDelegate(
@@ -100,7 +91,8 @@ extension WebRepository {
             )
             
             return Future<String, Error> { promise in
-                let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+                let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+
                 
                 let task = session.dataTask(with: request) { data, response, error in
                     

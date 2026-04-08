@@ -42,7 +42,7 @@ extension WebRepository {
             .extractData()
             .eraseToAnyPublisher()
     }
-    
+
     private func performRemoteRequest(endpoint: any APIRequest) -> AnyPublisher<ServerResponse, Error> {
         do {
             guard NetworkMonitor.shared.isConnected else {
@@ -50,11 +50,8 @@ extension WebRepository {
                     .eraseToAnyPublisher()
             }
             let request = try endpoint.urlRequest()
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = false
             request.curlRepresentation()
-            
-            return URLSession(configuration: configuration)
+            return NetworkSessionProvider().apiSession
                 .dataTaskPublisher(for: request)
                 .map({ ServerResponse(data: $0, response: $1)})
                 .mapError { $0 as Error }
@@ -92,7 +89,7 @@ extension Publisher where Output == ServerResponse {
             .tryMap({ response in
                 if response.response.isEmpty, Value.self == EmptyResult.self {
                     return APIResult(response: EmptyResult() as! Value , headers: response.headers) //to do !!!!!
-
+                    
                 }
                 let decodedData : Value = try response.response.decoded()
                 return APIResult(response: decodedData, headers: response.headers)

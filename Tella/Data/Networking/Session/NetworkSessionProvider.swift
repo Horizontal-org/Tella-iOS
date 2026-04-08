@@ -19,6 +19,15 @@ final class NetworkSessionProvider {
         URLSession(configuration: configurationFactory.makeDefault())
     }()
     
+    
+    func makeNearbySharingSession(delegate: URLSessionDelegate) -> URLSession {
+        URLSession(
+            configuration: configurationFactory.makeNearbySharing(),
+            delegate: delegate,
+            delegateQueue: nil
+        )
+    }
+
     init() {}
     
     func makeDefaultUploadSession(delegate: URLSessionDelegate) -> URLSession {
