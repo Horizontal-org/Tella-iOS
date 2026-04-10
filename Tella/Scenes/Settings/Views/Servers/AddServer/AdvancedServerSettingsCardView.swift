@@ -36,7 +36,8 @@ struct AdvancedServerSettingsCardView: View {
     func backgroundUploadView() -> some View {
         
         SettingToggleItem(title: LocalizableSettings.backgroundUploadTitle.localized,
-                          description: LocalizableSettings.backgroundUploadExpl.localized,
+                          description: LocalizableSettings.backgroundUploadExpl1.localized
+                          + "\n\n" + LocalizableSettings.backgroundUploadExpl2.localized,
                           toggle: $serverViewModel.backgroundUpload,
                           onChange: {
             serverViewModel.mainAppModel.saveSettings()

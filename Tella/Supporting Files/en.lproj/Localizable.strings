@@ -549,7 +549,8 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_ShareVerification_Title" = "Share verification information";
 "Setting_Server_ShareVerification_Expl" = "Include information about your device and location when sending reports, to make your files verifiable. ";
 "Setting_Server_BackgroundUpload_Title" = "Background upload";
-"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\n\nWARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_BackgroundUpload_Expl1" = "Continue uploading reports while doing other tasks or if you exit Tella.";
+"Setting_Server_BackgroundUpload_Expl2" = "WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
 "Setting_Server_AutoReport_Title" = "Auto-report";
 "Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
 "Setting_Server_AutoDelete_Title" = "Auto-delete";
