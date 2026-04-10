@@ -19,7 +19,7 @@ struct SettingsAddServerCardView: View {
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(Color.white).padding(.bottom, -5)
                     
-                    Text("If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.")
+                    Text(LocalizableSettings.settConnectionsExpl.localized)
                         .foregroundColor(Color.white)
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 }

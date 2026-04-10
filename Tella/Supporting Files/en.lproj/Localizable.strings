@@ -245,6 +245,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Settings_Sett_Connections" = "Connections";
+"Settings_Sett_Connections_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
 "Settings_Sett_Feedback" = "Feedback";
 "Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
 "Settings_SettSec_DeleteAfterFail_Off" = "Off";
@@ -350,7 +351,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from Tella";
 "Vault_DeleteFolders_SheetTitle" = "Delete folders?";
 "Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from Tella";
-"vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
+"Vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
 "Settings_SettLang_Portuguese_Expl" = "Portuguese";
 "Settings_SettLang_Russian_Expl" = "Russian";
 "BackgroundActivities_SheetTitle" = "Background activities";
@@ -534,6 +535,18 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibrary_Select_Expl" = "Select from these photos and videos to import them to Tella.";
 "Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
 "Setting_Server_AdvancedSettings" = "Advanced settings";
+"Setting_Server_TellaWeb_Login_Subhead" = "Log in to access the project";
+"Setting_Server_Edit_Connection_Title" = "Edit connection";
+"Setting_Server_Display_Name" = "Server name";
+"Setting_Server_Display_ServerURL" = "Server URL";
+"Setting_Server_ShareVerification_Title" = "Share verification information";
+"Setting_Server_ShareVerification_Expl" = "Include information about your device and location when sending reports, to make your files verifiable. ";
+"Setting_Server_BackgroundUpload_Title" = "Background upload";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\n\nWARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_AutoReport_Title" = "Auto-report";
+"Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
+"Setting_Server_AutoDelete_Title" = "Auto-delete";
+"Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
 "Settings_SettLang_Indonesian_Expl" = "Indonesian";
 "Settings_SettLang_PortugueseMozambique_Expl" = "Portuguese Mozambique";
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";

@@ -113,7 +113,7 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityRelationshipAddMoreTitle = "Uwazi_Entity_Relationship_AddMore_title"
     case uwaziEntityRelationshipSingleConnection = "Uwazi_Entity_Relationship_SingleConnection"
     case uwaziEntityRelationshipMultipleConnections = "Uwazi_Entity_Relationship_MultipleConnections"
-    case uwaziRelationshipListExpl = "Search for or select the entities you want to connect to this property."
+    case uwaziRelationshipListExpl = "Uwazi_Relationship_List_Expl"
     case uwaziRelationshipSearchTitle = "Uwazi_Relationship_SearchBar_Title"
 }
 
