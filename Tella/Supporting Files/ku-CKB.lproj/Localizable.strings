@@ -604,3 +604,14 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_Project_URL" = "Enter the project URL";
 "Setting_Server_Project_Exists_Error" = "The project already exists";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
+
+"Common_Action_OK" = "OK";
+"Common_Error_OpeningApp" = "Error opening the app";
+"BackgroundActivities_Empty_Expl" = "There are currently no ongoing activities in the background.";
+"Recorder_LegacyRecordButton" = "RECORD";
+"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "SUBMIT LATER";
+"Setting_Server_Uwazi_LoginGenericError" = "Something went wrong!!";
+"Setting_Server_Uwazi_TwoFactorAuthFailed" = "Two-factor authentication failed.";
+"Settings_TellaWeb_AdvancedSettingsComplete_Title" = "Advanced settings complete";
+"Settings_TellaWeb_AdvancedSettingsComplete_Expl" = "You can always change your Reports preferences in the Tella Settings. ";
+"Setting_Server_TellaWeb_HasCredentials_Question" = "Do you have a username and password?";

@@ -26,7 +26,7 @@ struct OfflineFeedbackToast: View {
                     Button  {
                         self.dismiss()
                     } label: {
-                        Text("OK")
+                        Text(LocalizableCommon.commonActionOk.localized)
                             .font(.custom(Styles.Fonts.boldFontName, size: 14))
                             .foregroundColor(Styles.Colors.yellow)
                     }

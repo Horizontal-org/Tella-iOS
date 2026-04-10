@@ -56,7 +56,7 @@ struct SuccessLoginView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text("Connected to project")
+            Text(LocalizableLock.onboardingServerConnectedTitle.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
@@ -64,7 +64,7 @@ struct SuccessLoginView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text("You have successfully connected to the server and will be able to share your data.")
+            Text(LocalizableLock.onboardingServerConnectedExpl.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)

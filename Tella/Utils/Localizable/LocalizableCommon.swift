@@ -8,5 +8,8 @@ import Foundation
 
 enum LocalizableCommon: String, LocalizableDelegate {
     case commonError = "Common_Error"
+    case commonActionOk = "Common_Action_OK"
+    case commonYes = "Common_Action_Yes"
+    case commonNo = "Common_Action_No"
 }
 
