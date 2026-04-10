@@ -591,3 +591,31 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Setting_Server_Project_URL" = "Enter the project URL";
 "Setting_Server_Project_Exists_Error" = "The project already exists";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
+"Recorder_LegacyRecordButton" = "RECORD";
+"Common_Action_OK" = "Valider";
+"Common_Error_OpeningApp" = "Error opening the app";
+"Common_Action_Yes" = "OUI";
+"Common_Action_No" = "NON";
+"Settings_Sett_Connections_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
+"Setting_Server_Uwazi_LoginGenericError" = "Something went wrong!!";
+"Setting_Server_Uwazi_TwoFactorAuthFailed" = "Two-factor authentication failed.";
+"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "SUBMIT LATER";
+"Vault_DeleteFoldersSingleFile_SheetExpl" = "%i dossiers et 1 fichier qu'ils contiennent seront définitivement supprimés de Tella";
+"BackgroundActivities_Empty_Expl" = "There are currently no ongoing activities in the background.";
+"Setting_Server_TellaWeb_Login_Subhead" = "Identifiez-vous pour accéder au projet";
+"Setting_Server_Edit_Connection_Title" = "Modifier la connexion";
+"Setting_Server_Display_Name" = "Nom du serveur";
+"Setting_Server_Display_ServerURL" = "URL du serveur";
+"Setting_Server_ShareVerification_Title" = "Partager les informations de vérification";
+"Setting_Server_ShareVerification_Expl" = "Incluez des informations sur votre appareil et votre emplacement lors de l'envoi de rapports, pour rendre vos fichiers vérifiables.";
+"Setting_Server_BackgroundUpload_Title" = "Téléversement en arrière-plan";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\
+\
+WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_AutoReport_Title" = "Rapport automatique";
+"Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
+"Setting_Server_AutoDelete_Title" = "Suppression automatique";
+"Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
+"Settings_TellaWeb_AdvancedSettingsComplete_Title" = "Paramètres avancés terminés";
+"Settings_TellaWeb_AdvancedSettingsComplete_Expl" = "Vous pouvez toujours modifier vos préférences de Rapports dans les paramètres de Tella.";
+"Setting_Server_TellaWeb_HasCredentials_Question" = "Avez-vous un nom d'utilisateur et un mot de passe ?";

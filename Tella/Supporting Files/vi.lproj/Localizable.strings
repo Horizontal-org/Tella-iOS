@@ -591,3 +591,31 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_Project_URL" = "Enter the project URL";
 "Setting_Server_Project_Exists_Error" = "The project already exists";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
+"Recorder_LegacyRecordButton" = "RECORD";
+"Common_Action_OK" = "OK";
+"Common_Error_OpeningApp" = "Error opening the app";
+"Common_Action_Yes" = "YES";
+"Common_Action_No" = "NO";
+"Settings_Sett_Connections_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
+"Setting_Server_Uwazi_LoginGenericError" = "Something went wrong!!";
+"Setting_Server_Uwazi_TwoFactorAuthFailed" = "Two-factor authentication failed.";
+"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "SUBMIT LATER";
+"Vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
+"BackgroundActivities_Empty_Expl" = "There are currently no ongoing activities in the background.";
+"Setting_Server_TellaWeb_Login_Subhead" = "Đăng ngập để truy cập vào dự án";
+"Setting_Server_Edit_Connection_Title" = "Chỉnh sửa kết nối";
+"Setting_Server_Display_Name" = "Tên máy chủ";
+"Setting_Server_Display_ServerURL" = "URL máy chủ";
+"Setting_Server_ShareVerification_Title" = "Chia sẻ thông tin xác minh";
+"Setting_Server_ShareVerification_Expl" = "Bao gồm thông tin về thiết bị và vị trí của bạn khi gửi báo cáo, để làm cho các tệp của bạn có thể xác minh được.";
+"Setting_Server_BackgroundUpload_Title" = "Tải nền lên";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\
+\
+WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_AutoReport_Title" = "Báo cáo tự động";
+"Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
+"Setting_Server_AutoDelete_Title" = "Tự động xóa";
+"Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
+"Settings_TellaWeb_AdvancedSettingsComplete_Title" = "Hoàn tất cài đặt nâng cao";
+"Settings_TellaWeb_AdvancedSettingsComplete_Expl" = "Bạn luôn có thể thay đổi tùy chọn Báo cáo trong phần Cài đặt của Tella.";
+"Setting_Server_TellaWeb_HasCredentials_Question" = "Bạn có tên người dùng và mật khẩu không?";
