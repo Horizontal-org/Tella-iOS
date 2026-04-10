@@ -591,7 +591,7 @@
 "Setting_Server_Project_URL" = "输入项目 URL";
 "Setting_Server_Project_Exists_Error" = "项目已存在";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
-"Recorder_LegacyRecordButton" = "RECORD";
+"Recorder_LegacyRecordButton" = "录音";
 "Common_Action_OK" = "确定";
 "Common_Error_OpeningApp" = "Error opening the app";
 "Common_Action_Yes" = "是";
@@ -599,7 +599,7 @@
 "Settings_Sett_Connections_Expl" = "如果您和某个组织合作，请连接到其服务器以发送文件和数据。您的组织应为您提供服务器详细信息。";
 "Setting_Server_Uwazi_LoginGenericError" = "Something went wrong!!";
 "Setting_Server_Uwazi_TwoFactorAuthFailed" = "Two-factor authentication failed.";
-"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "SUBMIT LATER";
+"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "稍后提交";
 "Vault_DeleteFoldersSingleFile_SheetExpl" = "%i 文件夹及其中的 1 个文件将从 Tella 永久删除。";
 "BackgroundActivities_Empty_Expl" = "目前后台没有正在进行的活动。";
 "Setting_Server_TellaWeb_Login_Subhead" = "登录以访问项目";
@@ -613,11 +613,11 @@
 \
 WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
 "Setting_Server_AutoReport_Title" = "自动报告";
-"Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
+"Setting_Server_AutoReport_Expl" = "每当您在 Tella 中拍摄照片、录制视频或音频时，系统将自动生成一份包含该文件的报告，并将其上传到此项目。";
 "Setting_Server_AutoDelete_Title" = "自动删除";
-"Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
+"Setting_Server_AutoDelete_Expl" = "一旦作为报告上传到此项目，文件将自动从设备上删除。";
 "Settings_TellaWeb_AdvancedSettingsComplete_Title" = "高级设置完成";
 "Settings_TellaWeb_AdvancedSettingsComplete_Expl" = "您随时可以在 Tella 设置中更改报告偏好设置。";
 "Setting_Server_TellaWeb_HasCredentials_Question" = "您有用户名和密码吗？";
-"Setting_Server_BackgroundUpload_Expl1" = "Continue uploading reports while doing other tasks or if you exit Tella.";
-"Setting_Server_BackgroundUpload_Expl2" = "WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_BackgroundUpload_Expl1" = "在执行其他任务或退出 Tella 时，可继续上传报告。";
+"Setting_Server_BackgroundUpload_Expl2" = "警告：如果启用，Tela 将保持解锁状态，直到所有报告上传完毕。";
