@@ -591,3 +591,33 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_Project_URL" = "Enter the project URL";
 "Setting_Server_Project_Exists_Error" = "The project already exists";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
+"Recorder_LegacyRecordButton" = "RECORD";
+"Common_Action_OK" = "حسنًا";
+"Common_Error_OpeningApp" = "Error opening the app";
+"Common_Action_Yes" = "YES";
+"Common_Action_No" = "NO";
+"Settings_Sett_Connections_Expl" = "If you work with an organization, connect to its server to send files and data. Your organization should provide you with the server details.";
+"Setting_Server_Uwazi_LoginGenericError" = "Something went wrong!!";
+"Setting_Server_Uwazi_TwoFactorAuthFailed" = "Two-factor authentication failed.";
+"Uwazi_Entity_SummaryDetail_SubmitLater_Action" = "SUBMIT LATER";
+"Vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
+"BackgroundActivities_Empty_Expl" = "لا توجد حالياً أي أنشطة جارية في الخلفية.";
+"Setting_Server_TellaWeb_Login_Subhead" = "تسجيل الدخول للوصول إلى المشروع";
+"Setting_Server_Edit_Connection_Title" = "تعديل الاتصال";
+"Setting_Server_Display_Name" = "اسم الخادم";
+"Setting_Server_Display_ServerURL" = "عنوان الخادم";
+"Setting_Server_ShareVerification_Title" = "مشاركة معلومات التحقق";
+"Setting_Server_ShareVerification_Expl" = " لجعل ملفاتك قابلة للتحقق، عند إرسال تقارير، ضمّن معلومات حول جهازك وموقعك  ";
+"Setting_Server_BackgroundUpload_Title" = "تحميل في الخلفية";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\
+\
+WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_AutoReport_Title" = "التقرير التلقائي";
+"Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
+"Setting_Server_AutoDelete_Title" = "الحذف التلقائي";
+"Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
+"Settings_TellaWeb_AdvancedSettingsComplete_Title" = "اكتملت الإعدادات المتقدمة";
+"Settings_TellaWeb_AdvancedSettingsComplete_Expl" = "يمكنك دائمًا تغيير تفضيلات تقاريرك في قسم الإعدادات بتطبيق تيلا Tella.";
+"Setting_Server_TellaWeb_HasCredentials_Question" = "هل لديك اسم مستخدم وكلمة سر؟";
+"Setting_Server_BackgroundUpload_Expl1" = "Continue uploading reports while doing other tasks or if you exit Tella.";
+"Setting_Server_BackgroundUpload_Expl2" = "WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
