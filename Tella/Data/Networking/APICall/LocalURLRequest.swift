@@ -42,7 +42,7 @@ extension WebRepository {
             let _ = fileURL.startAccessingSecurityScopedResource()
             defer { fileURL.stopAccessingSecurityScopedResource() }
             
-            let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+            let session = NetworkSessionProvider().makeDefaultUploadSession(delegate: delegate)
             let task = session.uploadTask(with: request, fromFile: fileURL)
             
             task.resume()
@@ -64,7 +64,7 @@ extension WebRepository {
                 trustedCertificateHash: endpoint.trustedPublicKeyHash
             )
             
-            return NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+            return NetworkSessionProvider().makeDefaultUploadSession(delegate: delegate)
                 .dataTaskPublisher(for: request)
                 .map({ ServerResponse(data: $0, response: $1)})
                 .mapError { $0 as Error }
@@ -91,7 +91,7 @@ extension WebRepository {
             )
             
             return Future<String, Error> { promise in
-                let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+                let session = NetworkSessionProvider().makeDefaultUploadSession(delegate: delegate)
 
                 
                 let task = session.dataTask(with: request) { data, response, error in

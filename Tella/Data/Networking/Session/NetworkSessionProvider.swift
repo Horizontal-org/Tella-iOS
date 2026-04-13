@@ -18,15 +18,6 @@ final class NetworkSessionProvider {
     private(set) lazy var apiSession: URLSession = {
         URLSession(configuration: configurationFactory.makeDefault())
     }()
-    
-    
-    func makeNearbySharingSession(delegate: URLSessionDelegate) -> URLSession {
-        URLSession(
-            configuration: configurationFactory.makeNearbySharing(),
-            delegate: delegate,
-            delegateQueue: nil
-        )
-    }
 
     init() {}
     
