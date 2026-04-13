@@ -48,7 +48,7 @@ struct TextfieldView : View {
         case .code, .pin, .port:
             return .numberPad
         case .ipAddress:
-            return .decimalPad
+            return .numbersAndPunctuation
         default:
             return . default
         }
