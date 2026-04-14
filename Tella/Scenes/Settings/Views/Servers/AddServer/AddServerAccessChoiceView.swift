@@ -19,21 +19,21 @@ struct AddServerAccessChoiceView: View {
                 VStack(spacing: 0) {
                     Spacer()
                     
-                    TopServerView(title: "Do you have a username and password?")
+                    TopServerView(title: LocalizableSettings.tellaWebHasCredentialsQuestion.localized)
                         .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
                     
                     Spacer()
                         .frame(height: 40)
                     
-                    TellaButtonView(title: "YES",
+                    TellaButtonView(title: LocalizableCommon.commonYes.localized,
                                     nextButtonAction: .destination,
-                                    destination: TellaWebServerLoginView(serverViewModel: serverViewModel)
+                                    destination: TellaWebServerLoginView(serverViewModel: serverViewModel),
                                     isValid: .constant(true) )
                     
                     Spacer()
                         .frame(height: 12)
                     
-                    TellaButtonView (title: "NO",
+                    TellaButtonView (title: LocalizableCommon.commonNo.localized,
                                      nextButtonAction: .destination,
                                      destination: TellaWebServerLoginView(),
                                      isValid: .constant(true))

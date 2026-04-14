@@ -70,7 +70,7 @@ enum DeleteConfirmation {
 
     private func folderMessageForMultipleFolders(_ folderCount: Int, _ totalFiles: Int) -> String {
         if totalFiles == 1 {
-            return String(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, totalFiles)
+            return String(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, folderCount)
         }
         return String(format: LocalizableVault.deleteFoldersSheetExpl.localized, folderCount, totalFiles)
     }

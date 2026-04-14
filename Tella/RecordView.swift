@@ -17,7 +17,7 @@ struct RecordView: View {
     
     var body: some View {
         return Group {
-            bigText("RECORD", false)
+            bigText(LocalizableRecorder.legacyRecordButton.localized, false)
             back
         }
     }

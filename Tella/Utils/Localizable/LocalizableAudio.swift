@@ -8,6 +8,8 @@ import Foundation
 
 enum LocalizableRecorder: String, LocalizableDelegate {
     
+    case legacyRecordButton = "Recorder_LegacyRecordButton"
+    
     case tabBar = "Recorder_TabBar"
     
     case appBar = "Recorder_AppBar"

@@ -25,8 +25,8 @@ struct AdvancedServerSettingsCardView: View {
     
     func shareInfoView(shareInfo : Bool) -> some View {
         
-        SettingToggleItem(title: "Share verification information",
-                          description: "Include information about your device and location when sending reports, to make your files verifiable. ",
+        SettingToggleItem(title: LocalizableSettings.shareVerificationTitle.localized,
+                          description: LocalizableSettings.shareVerificationExpl.localized,
                           toggle: $serverViewModel.activatedMetadata,
                           onChange: {
             serverViewModel.mainAppModel.saveSettings()
@@ -35,8 +35,9 @@ struct AdvancedServerSettingsCardView: View {
     
     func backgroundUploadView() -> some View {
         
-        SettingToggleItem(title: "Background upload",
-                          description: "Continue uploading reports while doing other tasks or if you exit Tella.\n\nWARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.",
+        SettingToggleItem(title: LocalizableSettings.backgroundUploadTitle.localized,
+                          description: LocalizableSettings.backgroundUploadExpl1.localized
+                          + "\n\n" + LocalizableSettings.backgroundUploadExpl2.localized,
                           toggle: $serverViewModel.backgroundUpload,
                           onChange: {
             serverViewModel.mainAppModel.saveSettings()
@@ -45,8 +46,8 @@ struct AdvancedServerSettingsCardView: View {
     
     func autoUploadView() -> some View {
         
-        SettingToggleItem(title: "Auto-report",
-                          description: "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.",
+        SettingToggleItem(title: LocalizableSettings.autoReportTitle.localized,
+                          description: LocalizableSettings.autoReportExpl.localized,
                           toggle: $serverViewModel.autoUpload,
                           isDisabled: serverViewModel.isAutoUploadServerExist,
                           onChange: {
@@ -57,8 +58,8 @@ struct AdvancedServerSettingsCardView: View {
     
     func autoDeleteView() -> some View {
         
-        SettingToggleItem(title: "Auto-delete",
-                          description: "Automatically delete files from your device once they are uploaded to this project as a report.",
+        SettingToggleItem(title: LocalizableSettings.autoDeleteTitle.localized,
+                          description: LocalizableSettings.autoDeleteExpl.localized,
                           toggle: $serverViewModel.autoDelete,
                           onChange: {
             serverViewModel.mainAppModel.saveSettings()

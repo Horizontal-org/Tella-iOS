@@ -21,7 +21,7 @@ struct SuccessAdvancedSettingsView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: "OK",
+                TellaButtonView<AnyView> (title: LocalizableCommon.commonActionOk.localized,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
@@ -42,7 +42,7 @@ struct SuccessAdvancedSettingsView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text("Advanced settings complete")
+            Text(LocalizableSettings.tellaWebAdvancedSettingsCompleteTitle.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
@@ -50,7 +50,7 @@ struct SuccessAdvancedSettingsView: View {
             Spacer()
                 .frame(height: 16)
             
-            Text("You can always change your Reports preferences in the Tella Settings. ")
+            Text(LocalizableSettings.tellaWebAdvancedSettingsCompleteExpl.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
