@@ -13,6 +13,10 @@ protocol URLSessionConfigurationFactoryProtocol {
     /// Configuration for API calls and foreground uploads
     func makeDefault() -> URLSessionConfiguration
 
+    /// Configuration for HTTPS to a peer on the local network (nearby sharing).
+    /// Disallows cellular so routing stays on Wi‑Fi / Ethernet and matches LAN peers.
+    func makeNearbySharingLocal() -> URLSessionConfiguration
+
     /// Configuration for background uploads.
     func makeBackground(identifier: String) -> URLSessionConfiguration
     
@@ -24,6 +28,16 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 60
+        config.allowsConstrainedNetworkAccess = true
+        config.allowsExpensiveNetworkAccess = true
+        return config
+    }
+
+    func makeNearbySharingLocal() -> URLSessionConfiguration {
+        let config = URLSessionConfiguration.ephemeral
+        config.waitsForConnectivity = true
+        config.timeoutIntervalForRequest = 60
+        config.allowsCellularAccess = false
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         return config
