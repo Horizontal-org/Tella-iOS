@@ -138,8 +138,8 @@ struct EntityInstanceItemView: View {
         sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
-                                      cancelText: LocalizableUwazi.noSheetAction.localized,
-                                      actionText: LocalizableUwazi.yesSheetAction.localized) {
+                                      cancelText: LocalizableCommon.commonNo.localized,
+                                      actionText: LocalizableCommon.commonYes.localized) {
                 cardViewModel.deleteAction()
             }
         }

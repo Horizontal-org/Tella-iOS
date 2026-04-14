@@ -37,7 +37,7 @@ struct BackgroundActivitiesView: View {
                 .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .foregroundColor(.white)
             
-            Text(viewModel.items.count > 0 ? LocalizableBackgroundActivities.sheetExpl.localized : "There are currently no ongoing activities in the background.")
+            Text(viewModel.items.count > 0 ? LocalizableBackgroundActivities.sheetExpl.localized : LocalizableBackgroundActivities.sheetEmptyExpl.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 13))
                 .foregroundColor(.white)
         }

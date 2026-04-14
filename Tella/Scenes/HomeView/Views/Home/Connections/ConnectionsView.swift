@@ -16,7 +16,7 @@ struct ConnectionsView: View {
         
         if homeViewModel.serverDataItemArray.count > 0 {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Connections")
+                Text(LocalizableSettings.settConnections.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                 

@@ -241,7 +241,7 @@ class UwaziServerViewModel: ServerViewModel {
         } else {
             self.shouldShowLoginError = true
             // TODO: More appropiate message here
-            self.loginErrorMessage = "Something went wrong!!"
+            self.loginErrorMessage = LocalizableSettings.uwaziLoginGenericError.localized
         }
     }
 
@@ -277,7 +277,7 @@ class UwaziServerViewModel: ServerViewModel {
                 let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
                 switch httpError {
                 case .unauthorized:
-                    self.codeErrorMessage = "Two-factor authentication failed."
+                    self.codeErrorMessage = LocalizableSettings.uwaziTwoFactorAuthFailed.localized
                 default:
                     self.codeErrorMessage = error.errorMessage
                 }

@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FileGroupsView: View {
     
-    var mainAppModel: MainAppModel
+    @ObservedObject var mainAppModel: MainAppModel
     
     var shouldShowFilesTitle : Bool
     
@@ -25,7 +25,7 @@ struct FileGroupsView: View {
                 }
                 
                 LazyVGrid(columns: columns, spacing: 18) {
-                    ForEach(homeFileItems, id: \.self) { homeFileItem in
+                    ForEach(homeFileItems, id: \.filterType) { homeFileItem in
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName,
                                       destination: FileListView(mainAppModel: mainAppModel,

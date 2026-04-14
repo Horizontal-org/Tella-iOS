@@ -43,15 +43,15 @@ struct EditSettingsServerView: View {
     }
     
     var serverNameView: some View {
-        EditServerDisplayItem(title: "Server name", description: serverViewModel.name)
+        EditServerDisplayItem(title: LocalizableSettings.serverDisplayName.localized, description: serverViewModel.name)
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: serverViewModel.projectURL)
+        EditServerDisplayItem(title: LocalizableSettings.serverDisplayServerURL.localized, description: serverViewModel.projectURL)
     }
     
     var serverUsernameView: some View {
-        EditServerDisplayItem(title: "Username", description: serverViewModel.username)
+        EditServerDisplayItem(title: LocalizableSettings.serverUsername.localized, description: serverViewModel.username)
     }
     
     var editServerHeaderView : some View {
@@ -63,7 +63,7 @@ struct EditSettingsServerView: View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text("Edit connection")
+            Text(LocalizableSettings.editConnectionTitle.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             

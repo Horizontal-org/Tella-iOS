@@ -15,10 +15,10 @@ struct DocumentExporterConfirmationView: View {
 
     
     var body: some View {
-        ConfirmBottomSheet(titleText: "Save to device gallery?",
-                           msgText: "This will make your files accessible from outside Tella, in your device’s gallery and by other apps.",
-                           cancelText: "CANCEL",
-                           actionText: "SAVE",
+        ConfirmBottomSheet(titleText: LocalizableVault.saveToDeviceSheetTitle.localized,
+                           msgText: LocalizableVault.saveToDeviceSheetExpl.localized,
+                           cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
+                           actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized,
 //                           modalHeight: 180,
                            isPresented: $showingSaveConfirmationSheet,
                            didConfirmAction: {

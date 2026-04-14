@@ -26,7 +26,7 @@ struct TellaWebServerLoginView: View {
                         
                         Spacer()
                         
-                        TopServerView(title: "Log in to access the project")
+                        TopServerView(title: LocalizableSettings.tellaWebLoginSubhead.localized)
                         
                         Spacer()
                             .frame(height: 40)
@@ -35,7 +35,7 @@ struct TellaWebServerLoginView: View {
                                       isValid: $serverViewModel.validUsername,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
                                       fieldType: .username,
-                                      placeholder : "Username",
+                                      placeholder : LocalizableSettings.serverUsername.localized,
                                       shouldShowTitle: true)
                         .frame(height: 65)
                         
@@ -47,14 +47,14 @@ struct TellaWebServerLoginView: View {
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
                                       errorMessage: serverViewModel.loginErrorMessage,
                                       fieldType: .password,
-                                      placeholder : "Password",
+                                      placeholder : LocalizableSettings.serverPassword.localized,
                                       shouldShowTitle: true)
                         .frame(height: 65)
                         
                         Spacer()
                             .frame(height: 32)
                         
-                        TellaButtonView<AnyView>(title: "LOG IN",
+                        TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
