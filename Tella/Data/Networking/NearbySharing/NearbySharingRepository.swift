@@ -9,6 +9,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class NearbySharingRepository: NSObject, WebRepository {
     
@@ -17,7 +18,7 @@ class NearbySharingRepository: NSObject, WebRepository {
     
     /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
     func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
-        let hosts = connectionInfo.ipAddresses
+        let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
@@ -34,7 +35,7 @@ class NearbySharingRepository: NSObject, WebRepository {
     
     /// Tries each IP in order using `activeHost`; keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
     func register(connectionInfo: ConnectionInfo, registerRequest: RegisterRequest) -> AnyPublisher<RegisterResponse, APIError> {
-        let hosts = connectionInfo.ipAddresses
+        let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
@@ -276,5 +277,33 @@ extension NearbySharingRepository.API: APIRequest {
         default:
             return nil
         }
+    }
+}
+
+// MARK: - IPv4 subnet host selection
+/// Only QR IPs whose three-octet prefix matches a local IPv4. Returns an empty list when no local IPs are found or none of the QR IPs match.
+private enum NearbySharingIPAddressPreference {
+    static func hostsToTry(from qrIPAddresses: [String]) -> [String] {
+        let localSubnets = Set(
+            UIDevice.current.ipAddresses()
+                .compactMap { ipv4ThreeOctetPrefix(for: $0) }
+        )
+        return qrIPAddresses.filter { ip in
+            guard let prefix = ipv4ThreeOctetPrefix(for: ip) else { return false }
+            return localSubnets.contains(prefix)
+        }
+    }
+    
+    /// e.g. `192.168.88.2` → `192.168.88`. Non–dotted-quad strings return `nil` (IPv6 not supported here).
+    private static func ipv4ThreeOctetPrefix(for address: String) -> String? {
+        let parts = address.split(separator: ".", omittingEmptySubsequences: false)
+        guard parts.count == 4 else { return nil }
+        
+        let octets = parts.compactMap { Int($0) }
+        guard octets.count == 4,
+              octets.allSatisfy({ (0...255).contains($0) }) else {
+            return nil
+        }
+        return parts.dropLast().joined(separator: ".")
     }
 }
