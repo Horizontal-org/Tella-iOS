@@ -370,8 +370,8 @@ extension NearbySharingServer: PrepareUploadHandler {
                 return
             }
             
-            if let limitError = NearbySharingTransferLimits.validatePrepareFiles(prepReq.files, config: .standard) {
-                await sendErrorResponse(limitError, connection: connection, endpoint: .prepareUpload)
+            if let validationError = await state.validateRecipientPrepareUpload(prepReq.files) {
+                await sendErrorResponse(validationError, connection: connection, endpoint: .prepareUpload)
                 return
             }
             

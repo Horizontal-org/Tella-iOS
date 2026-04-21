@@ -109,6 +109,12 @@ actor NearbySharingStateActor {
     }
     
     // MARK: - Prepare Upload
+
+    /// Recipient: `NearbySharingTransferLimits.validatePrepareFiles` plus free disk for the full declared batch (prepare-upload).
+    func validateRecipientPrepareUpload(_ files: [NearbySharingFile]?) -> ServerStatus? {
+        if let error = NearbySharingTransferLimits.validatePrepareFiles(files, config: .standard) { return error }
+        return NearbySharingTransferStorageValidation.validateBatchStorageAgainstLocalDisk(files)
+    }
     
     func storePrepareUpload(_ request: PrepareUploadRequest) {
         state.session?.title = request.title
@@ -278,16 +284,6 @@ actor NearbySharingStateActor {
         guard let size = file.size, size > 0 else {
             return ServerStatus(code: .badRequest, message: .invalidRequestFormat)
         }
-
-        let availableSpace = FileManager.default.availableDiskSpace
-
-        let safetyMargin: Int64 = 10 * 1024 * 1024
-        let requiredSpace = (Int64(size) * 2) + safetyMargin
-
-        guard availableSpace >= requiredSpace else {
-            return ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
-        }
-
-        return nil
+        return NearbySharingTransferStorageValidation.validateStorage(forContentSizeBytes: Int64(size))
     }
 }

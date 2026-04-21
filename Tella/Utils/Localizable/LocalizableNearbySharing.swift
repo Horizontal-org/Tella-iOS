@@ -96,6 +96,9 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     
     case senderFilesRejected = "NearbySharing_Sender_FilesRejected_Toast"
     case senderTransferContentTooLarge = "NearbySharing_Sender_TransferContentTooLarge_Toast"
+    case transferFailedSheetTitle = "NearbySharing_Sender_TransferFailed_SheetTitle"
+    case recipientInsufficientStorageSheetExpl = "NearbySharing_Sender_RecipientInsufficientStorage_SheetExpl"
+    case insufficientStorageSheetAction = "NearbySharing_Sender_InsufficientStorage_SheetAction"
 
     case recipientFilesRejected = "NearbySharing_Recipient_FilesRejected_Toast"
     case senderWaitingRecipient = "NearbySharing_Sender_WaitingRecipient_Toast"

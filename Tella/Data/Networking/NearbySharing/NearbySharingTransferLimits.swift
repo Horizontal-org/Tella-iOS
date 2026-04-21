@@ -24,7 +24,7 @@ struct NearbySharingTransferConfig: Sendable {
 
 enum NearbySharingTransferLimits {
 
-    /// `nil` if valid; otherwise a `ServerStatus` to return to the client (413 or 400).
+    /// `nil` if valid; otherwise a `ServerStatus` (413 or 400)
     static func validatePrepareFiles(_ files: [NearbySharingFile]?, config: NearbySharingTransferConfig) -> ServerStatus? {
         guard let files, !files.isEmpty else {
             return ServerStatus(code: .badRequest, message: .invalidRequestFormat)

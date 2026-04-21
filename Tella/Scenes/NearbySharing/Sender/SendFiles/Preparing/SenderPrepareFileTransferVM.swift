@@ -14,6 +14,7 @@ enum SenderPrepareFileTransferAction {
     case showToast(message: String)
     case displaySendingFiles
     case errorOccured
+    case showRecipientInsufficientStorageSheet
     case none
 }
 
@@ -142,6 +143,9 @@ class SenderPrepareFileTransferVM: ObservableObject {
             case .httpCode(HTTPStatusCode.payloadTooLarge.rawValue):
                 self.viewState = .prepareFiles
                 self.viewAction = .showToast(message: LocalizableNearbySharing.senderTransferContentTooLarge.localized)
+            case .httpCode(HTTPStatusCode.insufficientStorage.rawValue):
+                self.viewState = .prepareFiles
+                self.viewAction = .showRecipientInsufficientStorageSheet
             default:
                 self.viewAction = .errorOccured
             }

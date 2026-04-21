@@ -13,6 +13,7 @@ import Combine
 struct SenderPrepareFileTransferView: View {
     
     @ObservedObject var viewModel: SenderPrepareFileTransferVM
+    @State private var isInsufficientStorageSheetPresented = false
     
     var body: some View {
         ZStack {
@@ -98,11 +99,30 @@ struct SenderPrepareFileTransferView: View {
             self.navigateTo(destination: FileSendingView(viewModel: viewModel))
         case .showToast(let message):
             Toast.displayToast(message: message)
+        case .showRecipientInsufficientStorageSheet:
+            viewModel.viewAction = .none
+            showRecipientInsufficientStorageBottomSheet()
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         default:
             break
         }
+    }
+    
+    private func showRecipientInsufficientStorageBottomSheet() {
+        isInsufficientStorageSheetPresented = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.transferFailedSheetTitle.localized,
+            msgText: LocalizableNearbySharing.recipientInsufficientStorageSheetExpl.localized,
+            actionText: LocalizableNearbySharing.insufficientStorageSheetAction.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    self.isInsufficientStorageSheetPresented = false
+                }
+            }
+        )
+        self.showBottomSheetView(content: content, isPresented: $isInsufficientStorageSheetPresented)
     }
 }
