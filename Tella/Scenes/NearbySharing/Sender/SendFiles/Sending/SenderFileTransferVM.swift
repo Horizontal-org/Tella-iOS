@@ -14,7 +14,7 @@ class SenderFileTransferVM: FileTransferVM {
     
     var repository: NearbySharingRepository?
     var session: NearbySharingSession?
-    private var subscribers = Set<AnyCancellable>()
+    private var activeUploadCancellable: AnyCancellable?
     
     init(mainAppModel: MainAppModel,
          repository: NearbySharingRepository,
@@ -31,17 +31,18 @@ class SenderFileTransferVM: FileTransferVM {
         initProgress(session: session)
         submitReport()
     }
+    
     // MARK: - Public Methods
     
     func submitReport() {
-        
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
+            guard let repository = self.repository, let session = self.session else { return }
             
-            guard let vaultfiles = session?.files.values else { return }
+            let stagingFolderName = "nearby-sharing-\(session.sessionId)"
+            let filesOrdered = self.transferredFiles
             
-            let stagingFolderName = "nearby-sharing-\(session?.sessionId ?? UUID().uuidString)"
-            
-            for file in vaultfiles {
+            for file in filesOrdered {
                 file.url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(
                     file: file.vaultFile,
                     withSubFolder: true,
@@ -49,50 +50,62 @@ class SenderFileTransferVM: FileTransferVM {
                 )
             }
             
-            vaultfiles.forEach { file in
-                guard let url = file.url else { return }
-                let fileID = file.file.id
+            for file in filesOrdered {
+                guard let url = file.url, let fileID = file.file.id else { continue }
+                
                 let request = FileUploadRequest(
-                    sessionID: session?.sessionId,
+                    sessionID: session.sessionId,
                     transmissionID: file.transmissionId,
                     fileID: fileID,
                     nonce: NearbySharingTransferNonce.make()
                 )
                 
-                repository?.uploadFile(fileUploadRequest: request, fileURL: url)
-                    .receive(on: DispatchQueue.main)
-                    .sink { completion in
-                        
-                        guard let fileID,
-                              let progressFile = self.session?.files[fileID] else { return }
-                        
-                        if let tempURL = progressFile.url {
-                            self.mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
-                            progressFile.url = nil
+                await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                    self.activeUploadCancellable?.cancel()
+                    self.activeUploadCancellable = repository.uploadFile(fileUploadRequest: request, fileURL: url)
+                        .receive(on: DispatchQueue.main)
+                        .sink { [weak self] completion in
+                            guard let self else {
+                                continuation.resume()
+                                return
+                            }
+                            self.activeUploadCancellable = nil
+                            
+                            guard let progressFile = self.session?.files[fileID] else {
+                                continuation.resume()
+                                return
+                            }
+                            
+                            if let tempURL = progressFile.url {
+                                self.mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
+                                progressFile.url = nil
+                            }
+                            
+                            switch completion {
+                            case .finished:
+                                progressFile.status = .finished
+                            case .failure:
+                                progressFile.status = .failed
+                            }
+                            self.session?.files[fileID] = progressFile
+                            
+                            continuation.resume()
+                        } receiveValue: { [weak self] progress in
+                            guard let self,
+                                  let progressFile = self.session?.files[fileID] else { return }
+                            progressFile.bytesReceived += progress
+                            self.session?.files[fileID] = progressFile
+                            self.updateProgress(with: progressFile)
                         }
-                        
-                        switch completion {
-                        case .finished:
-                            progressFile.status = .finished
-                        case .failure:
-                            progressFile.status = .failed
-                        }
-                        
-                        self.session?.files[fileID] = progressFile
-                        self.checkAllFilesAreReceived()
-                        
-                    } receiveValue: { progress in
-                        guard let fileID,
-                              let progressFile = self.session?.files[fileID] else { return }
-                        
-                        progressFile.bytesReceived += progress
-                        self.session?.files[fileID] = progressFile
-                        self.updateProgress(with: progressFile)
-                    }
-                    .store(in: &subscribers)
+                }
+            }
+            
+            await MainActor.run { [weak self] in
+                self?.checkAllFilesAreReceived()
             }
         }
     }
+    
     private func checkAllFilesAreReceived()  {
         guard let files = session?.files else { return  }
         let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
@@ -104,6 +117,8 @@ class SenderFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
+        activeUploadCancellable?.cancel()
+        activeUploadCancellable = nil
         repository?.cancelUpload()
     }
     

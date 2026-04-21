@@ -113,7 +113,7 @@ actor NearbySharingStateActor {
     /// Recipient: `NearbySharingTransferLimits.validatePrepareFiles` plus free disk for the full declared batch (prepare-upload).
     func validateRecipientPrepareUpload(_ files: [NearbySharingFile]?) -> ServerStatus? {
         if let error = NearbySharingTransferLimits.validatePrepareFiles(files, config: .standard) { return error }
-        return NearbySharingTransferStorageValidation.validateBatchStorageAgainstLocalDisk(files)
+        return NearbySharingTransferStorageValidation.validateStorageAgainstLocalDisk(files)
     }
     
     func storePrepareUpload(_ request: PrepareUploadRequest) {

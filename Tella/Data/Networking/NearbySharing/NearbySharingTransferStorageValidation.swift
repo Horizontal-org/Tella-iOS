@@ -10,33 +10,44 @@
 import Foundation
 
 enum NearbySharingTransferStorageValidation {
-
+    
     // MARK: - Tunables
-
-    /// Extra bytes beyond the “declared content” model (I/O buffers, filesystem metadata, etc.)
+    
+    // Extra bytes beyond the declared payload
     private static let diskSafetyMarginBytes: Int64 = 10 * 1024 * 1024
-
-    /// Per-call multiplier applied to **declared** payload size before comparing to `availableDiskSpace`.
-    /// We use `2` to mirror the single-upload path (`beginUpload`): room for a temp copy + safety margin while a file is in flight.
+    
+    // Use 2 for a temp copy + payload size
     private static let declaredContentDiskMultiplier: Int64 = 2
-
-    static func validateStorage(forContentSizeBytes total: Int64) -> ServerStatus? {
-        let requiredSpace = (total * declaredContentDiskMultiplier) + diskSafetyMarginBytes
+    
+    // MARK: - Single file (recipient upload)
+    
+    // Requires 2 × declaredSize + margin free space : temp + finalize behavior for one file
+    static func validateStorage(forContentSizeBytes declaredSize: Int64) -> ServerStatus? {
+        let requiredSpace = (declaredSize * declaredContentDiskMultiplier) + diskSafetyMarginBytes
         guard FileManager.default.availableDiskSpace >= requiredSpace else {
             return ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
         }
         return nil
     }
-
-    static func validateBatchStorageAgainstLocalDisk(_ files: [NearbySharingFile]?) -> ServerStatus? {
+    
+    // MARK: - Prepare upload (recipient)
+    
+    static func validateStorageAgainstLocalDisk(_ files: [NearbySharingFile]?) -> ServerStatus? {
         guard let files, !files.isEmpty else { return nil }
-        var totalSize: Int64 = 0
+        var totalDeclared: Int64 = 0
+        var maxDeclared: Int64 = 0
         for file in files {
             guard let size = file.size, size >= 0 else {
                 return ServerStatus(code: .badRequest, message: .invalidRequestFormat)
             }
-            totalSize += Int64(size)
+            let s = Int64(size)
+            totalDeclared += s
+            maxDeclared = max(maxDeclared, s)
         }
-        return validateStorage(forContentSizeBytes: totalSize)
+        let requiredSpace = totalDeclared + maxDeclared + diskSafetyMarginBytes
+        guard FileManager.default.availableDiskSpace >= requiredSpace else {
+            return ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
+        }
+        return nil
     }
 }
