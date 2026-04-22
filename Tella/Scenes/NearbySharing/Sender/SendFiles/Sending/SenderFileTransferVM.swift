@@ -41,6 +41,7 @@ class SenderFileTransferVM: FileTransferVM {
             
             let stagingFolderName = "nearby-sharing-\(session.sessionId)"
             let filesOrdered = self.transferredFiles
+            var stopRemainingUploads = false
             
             for file in filesOrdered {
                 file.url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(
@@ -51,6 +52,9 @@ class SenderFileTransferVM: FileTransferVM {
             }
             
             for file in filesOrdered {
+                if stopRemainingUploads {
+                    break
+                }
                 guard let url = file.url, let fileID = file.file.id else { continue }
                 
                 let request = FileUploadRequest(
@@ -69,18 +73,31 @@ class SenderFileTransferVM: FileTransferVM {
                                 continuation.resume()
                                 return
                             }
+
+                            var isInsufficientStorage = false
+                            if case .failure(let apiError) = completion,
+                               case .httpCode(let code) = apiError,
+                               code == HTTPStatusCode.insufficientStorage.rawValue {
+                                isInsufficientStorage = true
+                            }
+
+                            if isInsufficientStorage {
+                                stopRemainingUploads = true
+                                self.repository?.cancelUpload()
+                            }
+
                             self.activeUploadCancellable = nil
-                            
+
                             guard let progressFile = self.session?.files[fileID] else {
                                 continuation.resume()
                                 return
                             }
-                            
+
                             if let tempURL = progressFile.url {
                                 self.mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
                                 progressFile.url = nil
                             }
-                            
+
                             switch completion {
                             case .finished:
                                 progressFile.status = .finished
@@ -88,7 +105,7 @@ class SenderFileTransferVM: FileTransferVM {
                                 progressFile.status = .failed
                             }
                             self.session?.files[fileID] = progressFile
-                            
+
                             continuation.resume()
                         } receiveValue: { [weak self] progress in
                             guard let self,
@@ -101,7 +118,15 @@ class SenderFileTransferVM: FileTransferVM {
             }
             
             await MainActor.run { [weak self] in
-                self?.checkAllFilesAreReceived()
+                guard let self else { return }
+                if stopRemainingUploads, let session = self.session {
+                    for key in session.files.keys {
+                        guard var fileEntry = session.files[key], fileEntry.status != .finished else { continue }
+                        fileEntry.status = .failed
+                        session.files[key] = fileEntry
+                    }
+                }
+                self.checkAllFilesAreReceived()
             }
         }
     }

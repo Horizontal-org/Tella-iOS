@@ -231,8 +231,11 @@ actor NetworkManager {
         parser.onReceiveQueryParameters = { [weak self] in
             guard let self else { return }
             Task {
-                if let context = await self.updateContext(for: connection, with: parser.request),
-                   let url = await self.delegate?.networkManager(verifyParametersFor: context) {
+                guard let context = await self.updateContext(for: connection, with: parser.request) else {
+                    await self.handleConnectionError(connection, error: nil)
+                    return
+                }
+                if let url = await self.delegate?.networkManager(verifyParametersFor: context) {
                     parser.fileURL = url
                     parser.maxOctetStreamBodyBytes = NearbySharingTransferConfig.standard.maxFileSizeBytes
                     do {
@@ -242,6 +245,8 @@ actor NetworkManager {
                     } catch {
                         await self.handleConnectionError(connection, error: error)
                     }
+                } else {
+                    await self.handleConnectionError(connection, error: nil)
                 }
             }
         }

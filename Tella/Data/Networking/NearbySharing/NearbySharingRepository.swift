@@ -161,7 +161,8 @@ class NearbySharingRepository: NSObject, WebRepository {
     }
     
     func cancelUpload() {
-        _ = uploadTasks.compactMap({$0.cancel()})
+        uploadTasks.forEach { $0.cancel() }
+        uploadTasks.removeAll()
     }
 }
 

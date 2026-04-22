@@ -29,7 +29,28 @@ actor NearbySharingStateActor {
     
     func currentSessionID() -> String? { state.session?.sessionId }
     func currentSession() -> NearbySharingSession? { state.session }
-    
+
+    func failSessionDueToInsufficientStorage() -> [NearbySharingTransferredFile] {
+        state.session?.insufficientStorageLatchActive = true
+        state.session?.status = .finishedWithErrors
+        
+        guard let files = state.session?.files else { return [] }
+        
+        var updated: [NearbySharingTransferredFile] = []
+        
+        for (fileID, file) in files {
+            switch file.status {
+            case .queue, .transferring, .saving:
+                file.status = .failed
+                state.session?.files[fileID] = file
+                updated.append(file)
+            case .saved, .failed, .finished:
+                break
+            }
+        }
+        
+        return updated
+    }
     func resetConnectionState() {
         state.reset()
         pendingRegisterConnection = nil
@@ -170,10 +191,6 @@ actor NearbySharingStateActor {
               let sessionID = uploadRequest.sessionID, !sessionID.isEmpty else {
             throw ServerStatus(code: .badRequest, message: .invalidRequestFormat)
         }
-        
-        if let nonceError = addTransferNonce(uploadRequest.nonce) {
-            throw nonceError.serverStatus
-        }
 
         guard sessionID == currentSessionID() else {
             throw ServerStatus(code: .unauthorized, message: .invalidSessionID)
@@ -187,6 +204,14 @@ actor NearbySharingStateActor {
 
         if fileInfo.status == .finished {
             throw ServerStatus(code: .conflict, message: .transferAlreadyCompleted)
+        }
+        
+        if state.session?.insufficientStorageLatchActive == true {
+            throw ServerStatus(code: .insufficientStorage, message: .insufficientStorage)
+        }
+
+        if let nonceError = addTransferNonce(uploadRequest.nonce) {
+            throw nonceError.serverStatus
         }
 
         if let storageError = validateEnoughStorage(for: fileInfo.file) {

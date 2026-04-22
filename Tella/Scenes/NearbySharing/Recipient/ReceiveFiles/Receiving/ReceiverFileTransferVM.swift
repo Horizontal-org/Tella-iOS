@@ -68,13 +68,19 @@ final class ReceiverFileTransferVM: FileTransferVM {
         uploadEventsCancellable = nearbySharingServer?.eventPublisher
             .sink(receiveValue: { [weak self] event in
                 guard let self else { return }
-                
                 switch event {
                 case .fileTransferProgress(let file):
                     Task { await self.handle(file: file) }
+
                 case .connectionClosed, .errorOccured:
-                    _ = self.transferredFiles.filter{ $0.status != .saved}.compactMap({$0.status = .failed})
-                    checkAllFilesAreReceived()
+                    self.transferredFiles
+                        .filter { $0.status != .saved && $0.status != .failed }
+                        .forEach {
+                            $0.status = .failed
+                            self.updateStatus(with: $0)
+                        }
+                    self.checkAllFilesAreReceived()
+
                 default:
                     break
                 }

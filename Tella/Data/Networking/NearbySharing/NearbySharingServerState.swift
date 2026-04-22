@@ -37,6 +37,7 @@ final class NearbySharingSession {
     var status: SessionStatus
     var title: String?
     var files: [String: NearbySharingTransferredFile]
+    var insufficientStorageLatchActive: Bool = false
     
     init(sessionId: String,
          registrationNonce: String? = nil,

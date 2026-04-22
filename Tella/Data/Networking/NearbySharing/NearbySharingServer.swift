@@ -143,7 +143,6 @@ final class NearbySharingServer {
               let endpoint = NearbySharingEndpoint(rawValue: req.endpoint) else {
             return false
         }
-        
         if endpoint == .upload {
             let status: ServerStatus
             
@@ -156,7 +155,7 @@ final class NearbySharingServer {
             }
             
             await sendErrorResponse(status, connection: connection, endpoint: .upload)
-            handleUploadFailure(connection: connection, request: req)
+            handleUploadFailure(connection: connection, request: req, error: error)
             return true
         }
         
@@ -422,6 +421,11 @@ extension NearbySharingServer: UploadHandler {
             return try await state.beginUploadFromRequest(request)
         } catch let status as ServerStatus {
             await sendErrorResponse(status, connection: connection, endpoint: .upload)
+            if status.code == .insufficientStorage {
+                let updatedFiles = await state.failSessionDueToInsufficientStorage()
+                updatedFiles.forEach { eventPublisher.send(.fileTransferProgress($0)) }
+                await networkManager.cleanConnections()
+            }
             return nil
         } catch {
             debugLog("Error processing file upload request: \(error)")
@@ -465,14 +469,25 @@ extension NearbySharingServer: UploadHandler {
         }
     }
     
-    func handleUploadFailure(connection: NWConnection, request: HTTPRequest?) {
-        guard
-            let req = request,
-            let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
-            let fileID = uploadReq.fileID
-        else { return }
-        
+    func handleUploadFailure(connection: NWConnection, request: HTTPRequest?, error: Error?) {
         Task {
+            if let error, error.isInsufficientStorageError {
+                let updatedFiles = await state.failSessionDueToInsufficientStorage()
+                
+                updatedFiles.forEach {
+                    eventPublisher.send(.fileTransferProgress($0))
+                }
+                
+                await networkManager.cleanConnections()
+                return
+            }
+            
+            guard
+                let req = request,
+                let uploadReq: FileUploadRequest = try? req.queryParameters.decode(FileUploadRequest.self),
+                let fileID = uploadReq.fileID
+            else { return }
+            
             await state.markUploadFailed(fileID: fileID)
             
             if let fileInfo = await state.fileInfo(for: fileID) {

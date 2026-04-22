@@ -24,7 +24,8 @@ final class HTTPParser: @unchecked Sendable {
     private var headers: Headers?
     var maxOctetStreamBodyBytes: Int64?
     private var octetStreamBodyBytesWritten: Int64 = 0
-
+    private var bodyWriteError: Error?
+    
     var bodyFullyReceived: Bool = false
     var parserIsPaused: Bool = false
     
@@ -138,7 +139,9 @@ final class HTTPParser: @unchecked Sendable {
                     instance.octetStreamBodyBytesWritten += Int64(buffer.count)
                     instance.onReceiveBody?(buffer.count)
                 } catch {
+                    instance.bodyWriteError = error
                     instance.onBodyWriteError?(error)
+                    return Int32(HPE_USER.rawValue)
                 }
             default:
                 break
@@ -185,11 +188,15 @@ final class HTTPParser: @unchecked Sendable {
         }
         
         if result != HPE_OK {
-            // Only `on_body` returns `HPE_USER` — octet-stream body exceeded `maxOctetStreamBodyBytes`.
             if result == HPE_USER {
+                if let bodyWriteError = bodyWriteError {
+                    throw bodyWriteError
+                }
                 throw HTTPStatusCode.payloadTooLarge
             }
-            throw RuntimeError("Parse error")
+            
+            let message = parserErrorMessage(for: result)
+            throw RuntimeError("Parse error: \(message)")
         }
     }
     
@@ -207,9 +214,14 @@ final class HTTPParser: @unchecked Sendable {
         
         if result != HPE_OK {
             if result == HPE_USER {
+                if let bodyWriteError = bodyWriteError {
+                    throw bodyWriteError
+                }
                 throw HTTPStatusCode.payloadTooLarge
             }
-            throw RuntimeError("Resume parse error")
+            
+            let message = parserErrorMessage(for: result)
+            throw RuntimeError("Parse error: \(message)")
         }
     }
     
@@ -235,8 +247,13 @@ final class HTTPParser: @unchecked Sendable {
     deinit {
         closeFile()
     }
+    
+    private func parserErrorMessage(for result: llhttp_errno_t) -> String {
+        let name = String(cString: llhttp_errno_name(result))
+        let reason = llhttp_get_error_reason(&parser).map { String(cString: $0) } ?? "unknown"
+        return "\(name) - \(reason)"
+    }
 }
-
 
 extension ContentType {
     static func detect(from raw: String?) -> ContentType? {

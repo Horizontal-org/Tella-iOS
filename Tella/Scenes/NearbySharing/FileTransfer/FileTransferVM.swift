@@ -12,6 +12,7 @@ import Combine
 enum TransferViewAction: Equatable {
     case none
     case shouldShowResults
+    case showRecipientInsufficientStorageSheet
 }
 
 class FileTransferVM: ObservableObject {
