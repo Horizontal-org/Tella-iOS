@@ -77,10 +77,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         
         
         template.entityRow?.properties.forEach {
-            
-            dump($0)
-            
-            
+
             var prompt : any UwaziEntryPrompt
             
             switch UwaziEntityPropertyType(rawValue: $0.type ?? "") {
