@@ -14,8 +14,14 @@ class SenderFileTransferVM: FileTransferVM {
     
     var repository: NearbySharingRepository?
     var session: NearbySharingSession?
-    private var activeUploadCancellable: AnyCancellable?
     
+    private var activeUploadCancellable: AnyCancellable?
+    private var closeConnectionCancellable: AnyCancellable?
+    private var submitReportTask: Task<Void, Never>?
+    private var didCancelTransfer = false
+    private var didShowResults = false
+    private var uploadContinuation: CheckedContinuation<Bool, Never>?
+
     init(mainAppModel: MainAppModel,
          repository: NearbySharingRepository,
          session: NearbySharingSession) {
@@ -27,15 +33,30 @@ class SenderFileTransferVM: FileTransferVM {
                    title: LocalizableNearbySharing.senderSendingAppBar.localized,
                    bottomSheetTitle: LocalizableNearbySharing.stopSharingTitle.localized,
                    bottomSheetMessage: LocalizableNearbySharing.stopSharingSheetExpl.localized)
+        
         transferredFiles = Array(session.files.values)
         initProgress(session: session)
         submitReport()
     }
     
+    deinit {
+        submitReportTask?.cancel()
+        activeUploadCancellable?.cancel()
+        closeConnectionCancellable?.cancel()
+        resumeUploadContinuation(false)
+    }
+    
     // MARK: - Public Methods
     
     func submitReport() {
-        Task { [weak self] in
+        submitReportTask?.cancel()
+        activeUploadCancellable?.cancel()
+        resumeUploadContinuation(false)
+        
+        didCancelTransfer = false
+        didShowResults = false
+        
+        submitReportTask = Task { [weak self] in
             guard let self,
                   let repository = self.repository,
                   let session = self.session else { return }
@@ -45,10 +66,14 @@ class SenderFileTransferVM: FileTransferVM {
             
             await self.prepareFilesForUpload(filesOrdered, stagingFolderName: stagingFolderName)
             
+            guard !Task.isCancelled else { return }
+            
             var shouldStopRemainingUploads = false
             
             for file in filesOrdered {
-                if shouldStopRemainingUploads { break }
+                if Task.isCancelled || shouldStopRemainingUploads {
+                    break
+                }
                 
                 guard let fileURL = file.url,
                       let fileID = file.file.id else {
@@ -69,6 +94,10 @@ class SenderFileTransferVM: FileTransferVM {
                     fileID: fileID
                 )
                 
+                if Task.isCancelled {
+                    break
+                }
+                
                 if shouldStop {
                     shouldStopRemainingUploads = true
                 }
@@ -77,11 +106,16 @@ class SenderFileTransferVM: FileTransferVM {
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 
+                if self.didCancelTransfer {
+                    self.showResultsIfNeeded()
+                    return
+                }
+                
                 if shouldStopRemainingUploads, let session = self.session {
                     self.failRemainingPendingFiles(in: session)
                 }
                 
-                self.checkAllFilesAreReceived()
+                self.showResultsIfNeeded()
             }
         }
     }
@@ -89,9 +123,25 @@ class SenderFileTransferVM: FileTransferVM {
     // MARK: - Overrides
     
     override func stopTask() {
+        didCancelTransfer = true
+        
+        closeConnection()
+        
+        submitReportTask?.cancel()
+        submitReportTask = nil
+        
         activeUploadCancellable?.cancel()
         activeUploadCancellable = nil
+        
+        resumeUploadContinuation(false)
+        
         repository?.cancelUpload()
+        
+        if let session = session {
+            failRemainingPendingFiles(in: session)
+        }
+        
+        showResultsIfNeeded()
     }
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
@@ -113,6 +163,8 @@ class SenderFileTransferVM: FileTransferVM {
     
     private func prepareFilesForUpload(_ files: [NearbySharingTransferredFile], stagingFolderName: String) async {
         for file in files {
+            if Task.isCancelled { return }
+            
             file.url = await mainAppModel.vaultManager.loadVaultFileToURLAsync(
                 file: file.vaultFile,
                 withSubFolder: true,
@@ -129,6 +181,10 @@ class SenderFileTransferVM: FileTransferVM {
     ) async -> Bool {
         await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
             activeUploadCancellable?.cancel()
+            activeUploadCancellable = nil
+            resumeUploadContinuation(false)
+            
+            uploadContinuation = continuation
             
             activeUploadCancellable = repository.uploadFile(
                 fileUploadRequest: request,
@@ -136,8 +192,12 @@ class SenderFileTransferVM: FileTransferVM {
             )
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                guard let self else {
-                    continuation.resume(returning: false)
+                guard let self else { return }
+                
+                self.activeUploadCancellable = nil
+                
+                if self.submitReportTask?.isCancelled == true || self.didCancelTransfer {
+                    self.resumeUploadContinuation(false)
                     return
                 }
                 
@@ -147,12 +207,13 @@ class SenderFileTransferVM: FileTransferVM {
                     self.repository?.cancelUpload()
                 }
                 
-                self.activeUploadCancellable = nil
                 self.finalizeUpload(for: fileID, completion: completion)
+                self.resumeUploadContinuation(shouldStopRemainingUploads)
                 
-                continuation.resume(returning: shouldStopRemainingUploads)
             } receiveValue: { [weak self] progress in
                 guard let self,
+                      self.submitReportTask?.isCancelled != true,
+                      !self.didCancelTransfer,
                       let progressFile = self.session?.files[fileID] else { return }
                 
                 progressFile.bytesReceived += progress
@@ -160,6 +221,11 @@ class SenderFileTransferVM: FileTransferVM {
                 self.updateProgress(with: progressFile)
             }
         }
+    }
+    
+    private func resumeUploadContinuation(_ value: Bool) {
+        uploadContinuation?.resume(returning: value)
+        uploadContinuation = nil
     }
     
     private func shouldStopRemainingUploads(
@@ -174,7 +240,6 @@ class SenderFileTransferVM: FileTransferVM {
             if code == HTTPStatusCode.insufficientStorage.rawValue {
                 return true
             }
-            // URLSession / transport errors are negative.
             return code < 0
             
         case .unexpectedResponse, .badServer, .noInternetConnection:
@@ -226,15 +291,33 @@ class SenderFileTransferVM: FileTransferVM {
         }
     }
     
-    private func checkAllFilesAreReceived() {
-        guard let files = session?.files else { return }
+    private func showResultsIfNeeded() {
+        guard !didShowResults, let files = session?.files else { return }
         
         let unfinishedFiles = files.filter {
             $0.value.status == .transferring || $0.value.status == .queue
         }
         
-        if unfinishedFiles.isEmpty {
-            viewAction = .shouldShowResults
+        guard unfinishedFiles.isEmpty else { return }
+        
+        didShowResults = true
+        viewAction = .shouldShowResults
+    }
+    
+    private func closeConnection() {
+        guard let repository = repository,
+              let sessionID = session?.sessionId else {
+            return
         }
+        
+        let request = CloseConnectionRequest(sessionID: sessionID)
+        
+        closeConnectionCancellable?.cancel()
+        closeConnectionCancellable = repository.closeConnection(closeConnectionRequest: request)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { _ in }
+            )
     }
 }
