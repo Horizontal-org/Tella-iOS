@@ -36,26 +36,24 @@ class SenderFileTransferVM: FileTransferVM {
     
     func submitReport() {
         Task { [weak self] in
-            guard let self else { return }
-            guard let repository = self.repository, let session = self.session else { return }
+            guard let self,
+                  let repository = self.repository,
+                  let session = self.session else { return }
             
             let stagingFolderName = "nearby-sharing-\(session.sessionId)"
             let filesOrdered = self.transferredFiles
-            var stopRemainingUploads = false
+            
+            await self.prepareFilesForUpload(filesOrdered, stagingFolderName: stagingFolderName)
+            
+            var shouldStopRemainingUploads = false
             
             for file in filesOrdered {
-                file.url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(
-                    file: file.vaultFile,
-                    withSubFolder: true,
-                    subFolderName: stagingFolderName
-                )
-            }
-            
-            for file in filesOrdered {
-                if stopRemainingUploads {
-                    break
+                if shouldStopRemainingUploads { break }
+                
+                guard let fileURL = file.url,
+                      let fileID = file.file.id else {
+                    continue
                 }
-                guard let url = file.url, let fileID = file.file.id else { continue }
                 
                 let request = FileUploadRequest(
                     sessionID: session.sessionId,
@@ -64,78 +62,27 @@ class SenderFileTransferVM: FileTransferVM {
                     nonce: NearbySharingTransferNonce.make()
                 )
                 
-                await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                    self.activeUploadCancellable?.cancel()
-                    self.activeUploadCancellable = repository.uploadFile(fileUploadRequest: request, fileURL: url)
-                        .receive(on: DispatchQueue.main)
-                        .sink { [weak self] completion in
-                            guard let self else {
-                                continuation.resume()
-                                return
-                            }
-
-                            var isInsufficientStorage = false
-                            if case .failure(let apiError) = completion,
-                               case .httpCode(let code) = apiError,
-                               code == HTTPStatusCode.insufficientStorage.rawValue {
-                                isInsufficientStorage = true
-                            }
-
-                            if isInsufficientStorage {
-                                stopRemainingUploads = true
-                                self.repository?.cancelUpload()
-                            }
-
-                            self.activeUploadCancellable = nil
-
-                            guard let progressFile = self.session?.files[fileID] else {
-                                continuation.resume()
-                                return
-                            }
-
-                            if let tempURL = progressFile.url {
-                                self.mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
-                                progressFile.url = nil
-                            }
-
-                            switch completion {
-                            case .finished:
-                                progressFile.status = .finished
-                            case .failure:
-                                progressFile.status = .failed
-                            }
-                            self.session?.files[fileID] = progressFile
-
-                            continuation.resume()
-                        } receiveValue: { [weak self] progress in
-                            guard let self,
-                                  let progressFile = self.session?.files[fileID] else { return }
-                            progressFile.bytesReceived += progress
-                            self.session?.files[fileID] = progressFile
-                            self.updateProgress(with: progressFile)
-                        }
+                let shouldStop = await self.uploadSingleFile(
+                    repository: repository,
+                    request: request,
+                    fileURL: fileURL,
+                    fileID: fileID
+                )
+                
+                if shouldStop {
+                    shouldStopRemainingUploads = true
                 }
             }
             
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                if stopRemainingUploads, let session = self.session {
-                    for key in session.files.keys {
-                        guard var fileEntry = session.files[key], fileEntry.status != .finished else { continue }
-                        fileEntry.status = .failed
-                        session.files[key] = fileEntry
-                    }
+                
+                if shouldStopRemainingUploads, let session = self.session {
+                    self.failRemainingPendingFiles(in: session)
                 }
+                
                 self.checkAllFilesAreReceived()
             }
-        }
-    }
-    
-    private func checkAllFilesAreReceived()  {
-        guard let files = session?.files else { return  }
-        let filesAreNotfinishReceiving = files.filter({$0.value.status == .transferring || $0.value.status == .queue})
-        if (filesAreNotfinishReceiving.isEmpty) {
-            self.viewAction = .shouldShowResults
         }
     }
     
@@ -146,8 +93,6 @@ class SenderFileTransferVM: FileTransferVM {
         activeUploadCancellable = nil
         repository?.cancelUpload()
     }
-    
-    // MARK: - Helpers
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
         let template = transferredFiles.count > 1
@@ -161,6 +106,135 @@ class SenderFileTransferVM: FileTransferVM {
     }
     
     override func formatPercentage(_ percent: Int) -> String {
-        return String(format: LocalizableNearbySharing.recipientPercentageReceived.localized, percent)
+        String(format: LocalizableNearbySharing.recipientPercentageReceived.localized, percent)
+    }
+    
+    // MARK: - Helpers
+    
+    private func prepareFilesForUpload(_ files: [NearbySharingTransferredFile], stagingFolderName: String) async {
+        for file in files {
+            file.url = await mainAppModel.vaultManager.loadVaultFileToURLAsync(
+                file: file.vaultFile,
+                withSubFolder: true,
+                subFolderName: stagingFolderName
+            )
+        }
+    }
+    
+    private func uploadSingleFile(
+        repository: NearbySharingRepository,
+        request: FileUploadRequest,
+        fileURL: URL,
+        fileID: String
+    ) async -> Bool {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
+            activeUploadCancellable?.cancel()
+            
+            activeUploadCancellable = repository.uploadFile(
+                fileUploadRequest: request,
+                fileURL: fileURL
+            )
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let self else {
+                    continuation.resume(returning: false)
+                    return
+                }
+                
+                let shouldStopRemainingUploads = self.shouldStopRemainingUploads(for: completion)
+                
+                if shouldStopRemainingUploads {
+                    self.repository?.cancelUpload()
+                }
+                
+                self.activeUploadCancellable = nil
+                self.finalizeUpload(for: fileID, completion: completion)
+                
+                continuation.resume(returning: shouldStopRemainingUploads)
+            } receiveValue: { [weak self] progress in
+                guard let self,
+                      let progressFile = self.session?.files[fileID] else { return }
+                
+                progressFile.bytesReceived += progress
+                self.session?.files[fileID] = progressFile
+                self.updateProgress(with: progressFile)
+            }
+        }
+    }
+    
+    private func shouldStopRemainingUploads(
+        for completion: Subscribers.Completion<APIError>
+    ) -> Bool {
+        guard case .failure(let apiError) = completion else {
+            return false
+        }
+        
+        switch apiError {
+        case .httpCode(let code):
+            if code == HTTPStatusCode.insufficientStorage.rawValue {
+                return true
+            }
+            // URLSession / transport errors are negative.
+            return code < 0
+            
+        case .unexpectedResponse, .badServer, .noInternetConnection:
+            return true
+            
+        default:
+            return false
+        }
+    }
+    
+    private func finalizeUpload(
+        for fileID: String,
+        completion: Subscribers.Completion<APIError>
+    ) {
+        guard let progressFile = session?.files[fileID] else { return }
+        
+        cleanupTemporaryFile(for: progressFile)
+        
+        switch completion {
+        case .finished:
+            progressFile.status = .finished
+        case .failure:
+            progressFile.status = .failed
+        }
+        
+        session?.files[fileID] = progressFile
+        updateStatus(with: progressFile)
+        updateProgress(with: progressFile)
+    }
+    
+    private func cleanupTemporaryFile(for file: NearbySharingTransferredFile) {
+        guard let tempURL = file.url else { return }
+        
+        mainAppModel.vaultManager.deleteTmpFilesWithParents(files: [tempURL])
+        file.url = nil
+    }
+    
+    private func failRemainingPendingFiles(in session: NearbySharingSession) {
+        for key in session.files.keys {
+            guard let fileEntry = session.files[key],
+                  fileEntry.status != .finished else {
+                continue
+            }
+            
+            fileEntry.status = .failed
+            session.files[key] = fileEntry
+            updateStatus(with: fileEntry)
+            updateProgress(with: fileEntry)
+        }
+    }
+    
+    private func checkAllFilesAreReceived() {
+        guard let files = session?.files else { return }
+        
+        let unfinishedFiles = files.filter {
+            $0.value.status == .transferring || $0.value.status == .queue
+        }
+        
+        if unfinishedFiles.isEmpty {
+            viewAction = .shouldShowResults
+        }
     }
 }
