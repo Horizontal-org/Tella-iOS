@@ -14,6 +14,7 @@ struct SenderPrepareFileTransferView: View {
     
     @ObservedObject var viewModel: SenderPrepareFileTransferVM
     @State private var isInsufficientStorageSheetPresented = false
+    @State private var isExitConfirmationSheetPresented = false
     
     var body: some View {
         ZStack {
@@ -84,8 +85,7 @@ struct SenderPrepareFileTransferView: View {
     fileprivate var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableNearbySharing.sendFiles.localized,
                              backButtonAction: {
-            self.popTo(ViewClassType.nearbySharingMainView)
-            self.viewModel.closeConnection()
+            showExitNearbySharingConfirmation()
         })
     }
     
@@ -108,6 +108,30 @@ struct SenderPrepareFileTransferView: View {
         default:
             break
         }
+    }
+    
+    private func showExitNearbySharingConfirmation() {
+        isExitConfirmationSheetPresented = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.exitProgressSheetTitle.localized,
+            msgText: LocalizableNearbySharing.exitProgressSheetExpl.localized,
+            cancelText: LocalizableNearbySharing.cancel.localized.uppercased(),
+            actionText: LocalizableNearbySharing.exitProgressExitAction.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    self.isExitConfirmationSheetPresented = false
+                    self.popTo(ViewClassType.nearbySharingMainView)
+                    self.viewModel.closeConnection()
+                }
+            },
+            didCancelAction: {
+                self.dismiss {
+                    self.isExitConfirmationSheetPresented = false
+                }
+            }
+        )
+        self.showBottomSheetView(content: content, isPresented: $isExitConfirmationSheetPresented)
     }
     
     private func showRecipientInsufficientStorageBottomSheet() {

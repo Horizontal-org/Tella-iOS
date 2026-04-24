@@ -657,6 +657,9 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_InvalidIpAddress" = "Invalid IP address";
 "NearbySharing_InvalidPin" = "Invalid PIN";
 "NearbySharing_SelectFilesToSend" = "Select files to send";
+"NearbySharing_ExitProgress_SheetTitle" = "Exit nearby sharing?";
+"NearbySharing_ExitProgress_SheetExpl" = "Your progress will be lost.";
+"NearbySharing_ExitProgress_Exit_Action" = "Exit";
 "NearbySharing_Title" = "Title";
 "NearbySharing_SuccessConnect_Toast" = "Success! Connected to device";
 "NearbySharing_ServerError_Toast" = "Server error";
