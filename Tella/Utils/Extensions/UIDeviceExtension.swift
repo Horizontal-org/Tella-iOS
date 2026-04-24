@@ -63,14 +63,34 @@ class DiskStatus: NSObject {
 
 extension UIDevice {
 
+    /// Excludes cellular (`pdp_ip*`), VPN/tunnel (`utun*`, `ipsec*`), and AWDL
     func ipAddresses() -> [String] {
+        let filtered = Self.collectIPv4Addresses { Self.nearbySharingInterfacePriority(interfaceName: $0) }
+        if !filtered.isEmpty {
+            return filtered
+        }
+        return Self.collectIPv4Addresses { _ in 0 }
+    }
+
+    private static func nearbySharingInterfacePriority(interfaceName: String) -> Int? {
+        let name = interfaceName.lowercased()
+        if name.hasPrefix("pdp_ip") { return nil }
+        if name.hasPrefix("utun") { return nil }
+        if name.hasPrefix("awdl") { return nil }
+        if name.hasPrefix("ipsec") { return nil }
+        if name.hasPrefix("en") { return 0 }
+        if name.hasPrefix("bridge") { return 1 }
+        return 2
+    }
+
+    private static func collectIPv4Addresses(interfacePriority: (String) -> Int?) -> [String] {
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0, let first = ifaddr else {
             return []
         }
         defer { freeifaddrs(ifaddr) }
 
-        var ips = Set<String>()
+        var bestScoreByIP: [String: Int] = [:]
         var ptr: UnsafeMutablePointer<ifaddrs>? = first
 
         while let current = ptr {
@@ -84,6 +104,9 @@ extension UIDevice {
             guard let addr = interface.ifa_addr,
                   addr.pointee.sa_family == UInt8(AF_INET) else { continue }
 
+            let interfaceName = String(cString: interface.ifa_name)
+            guard let score = interfacePriority(interfaceName) else { continue }
+
             var host = [CChar](repeating: 0, count: Int(NI_MAXHOST))
             let resultCode = getnameinfo(
                 addr,
@@ -96,9 +119,19 @@ extension UIDevice {
             )
             guard resultCode == 0 else { continue }
 
-            ips.insert(String(cString: host))
+            let ip = String(cString: host)
+            if let existing = bestScoreByIP[ip] {
+                bestScoreByIP[ip] = min(existing, score)
+            } else {
+                bestScoreByIP[ip] = score
+            }
         }
 
-        return ips.sorted()
+        return bestScoreByIP.keys.sorted { lhs, rhs in
+            let sl = bestScoreByIP[lhs]!
+            let sr = bestScoreByIP[rhs]!
+            if sl != sr { return sl < sr }
+            return lhs < rhs
+        }
     }
 }
