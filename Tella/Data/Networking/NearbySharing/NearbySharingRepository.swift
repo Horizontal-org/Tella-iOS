@@ -282,17 +282,27 @@ extension NearbySharingRepository.API: APIRequest {
 }
 
 // MARK: - IPv4 subnet host selection
-/// Only QR IPs whose three-octet prefix matches a local IPv4. Returns an empty list when no local IPs are found or none of the QR IPs match.
+/// Prioritizes QR IPs whose three-octet prefix matches a local IPv4, while still returning all valid QR IPv4s as fallback.
 private enum NearbySharingIPAddressPreference {
     static func hostsToTry(from qrIPAddresses: [String]) -> [String] {
         let localSubnets = Set(
             UIDevice.current.ipAddresses()
                 .compactMap { ipv4ThreeOctetPrefix(for: $0) }
         )
-        return qrIPAddresses.filter { ip in
-            guard let prefix = ipv4ThreeOctetPrefix(for: ip) else { return false }
-            return localSubnets.contains(prefix)
+        
+        var preferredHosts: [String] = []
+        var fallbackHosts: [String] = []
+        
+        for ip in qrIPAddresses {
+            guard let prefix = ipv4ThreeOctetPrefix(for: ip) else { continue }
+            if localSubnets.contains(prefix) {
+                preferredHosts.append(ip)
+            } else {
+                fallbackHosts.append(ip)
+            }
         }
+        
+        return preferredHosts + fallbackHosts
     }
     
     /// e.g. `192.168.88.2` → `192.168.88`. Non–dotted-quad strings return `nil` (IPv6 not supported here).
