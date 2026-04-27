@@ -985,6 +985,7 @@
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
 		126684442B18B78200561650 /* BackgroundActivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityStatus.swift; sourceTree = "<group>"; };
+		1266F32D2F9F6DE00020A81E /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1267D7772D2ED4730059D50F /* AVCapturePhotoSettingsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoSettingsExtension.swift; sourceTree = "<group>"; };
 		126818BE2A376A0E004606BD /* OOXMLContentTypeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOXMLContentTypeParser.swift; sourceTree = "<group>"; };
 		126818C02A38B0C2004606BD /* FileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInformation.swift; sourceTree = "<group>"; };
@@ -4148,6 +4149,7 @@
 				zh_CN,
 				"zh-Hans",
 				lus,
+				uk,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -5101,6 +5103,7 @@
 				129FBF422EB4BBED00E4DA57 /* zh_CN */,
 				122E2F4A2EC50343004E42B3 /* zh-Hans */,
 				12967AF32F5F6FF100D9FC7E /* lus */,
+				1266F32D2F9F6DE00020A81E /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
