@@ -7,6 +7,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import Security
 
 class VaultManager : VaultManagerInterface, ObservableObject{
     
@@ -490,7 +491,6 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         do {
             let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
             let fileSize = (attrs[.size] as? NSNumber)?.uint64Value ?? 0
-            
             guard fileSize > 0 else { return true }
             
             let handle = try FileHandle(forWritingTo: url)
@@ -499,12 +499,15 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             try handle.seek(toOffset: 0)
             
             let chunkSize = 64 * 1024
-            let zeroChunk = Data(repeating: 0, count: chunkSize)
+            var randomChunk = Data(count: chunkSize)
+            defer { randomChunk.secureWipe() }
             
             var remaining = fileSize
+            
             while remaining > 0 {
                 let writeCount = Int(min(UInt64(chunkSize), remaining))
-                try handle.write(contentsOf: zeroChunk.prefix(writeCount))
+                try fillWithSecureRandomBytes(&randomChunk, count: writeCount)
+                try handle.write(contentsOf: randomChunk.prefix(writeCount))
                 remaining -= UInt64(writeCount)
             }
             
@@ -513,6 +516,17 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         } catch {
             debugLog("wipeFileContents failed for \(url.lastPathComponent): \(error)")
             return false
+        }
+    }
+    
+    private func fillWithSecureRandomBytes(_ buffer: inout Data, count: Int) throws {
+        try buffer.withUnsafeMutableBytes { mutableBytes in
+            guard let baseAddress = mutableBytes.baseAddress, count > 0 else { return }
+            
+            let status = SecRandomCopyBytes(kSecRandomDefault, count, baseAddress)
+            guard status == errSecSuccess else {
+                throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+            }
         }
     }
     /// Temp only delete path: overwrite first, then remove.

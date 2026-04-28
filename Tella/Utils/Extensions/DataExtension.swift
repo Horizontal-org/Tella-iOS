@@ -10,6 +10,7 @@ import Combine
 import CoreLocation
 import CommonCrypto
 import Crypto
+import Darwin
 
 extension Data {
     
@@ -44,6 +45,19 @@ extension Data {
         
         // Return the new copy of data
         return self
+    }
+
+
+    mutating func secureWipe() {
+        guard !isEmpty else { return }
+
+        self.withUnsafeMutableBytes { raw in
+            guard let base = raw.baseAddress, raw.count > 0 else { return }
+
+            _ = memset_s(base, raw.count, 0, raw.count)
+        }
+
+        self.removeAll(keepingCapacity: false)
     }
     
     /// This function takes the image data and metadata as parameter and returns the image data with metadata
@@ -104,3 +118,4 @@ extension Data {
         return hashBytes.map { String(format: "%02x", $0) }.joined()
     }
 }
+
