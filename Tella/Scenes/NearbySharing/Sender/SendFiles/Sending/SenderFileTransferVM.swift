@@ -311,12 +311,14 @@ class SenderFileTransferVM: FileTransferVM {
     }
 
     private func showResultsView() {
-        
-        self.didShowResults = true
-        self.viewAction = .shouldShowResults
+        DispatchQueue.main.async { [weak self] in
+            guard let self, !self.didShowResults else { return }
 
+            self.didShowResults = true
+            self.viewAction = .shouldShowResults
+        }
     }
-        
+    
     private func closeConnection() {
         guard let repository = repository,
               let sessionID = session?.sessionId else {
