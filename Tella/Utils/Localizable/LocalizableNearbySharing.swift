@@ -43,7 +43,6 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case moreTips = "NearbySharing_Help_MoreTips"
     case helpMoreTipsPart1 = "NearbySharing_Help_MoreTips_Part1"
     case helpMoreTipsPart2 = "NearbySharing_Help_MoreTips_Part2"
-    case helpMoreTipsPart3 = "NearbySharing_Help_MoreTips_Part3"
     case helpMoreTipsDocumentation = "NearbySharing_Help_MoreTips_documentation"
     
     case connectToDevice = "NearbySharing_ConnectToDevice"

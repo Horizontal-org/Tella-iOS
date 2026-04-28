@@ -61,9 +61,9 @@ struct NearbySharingHelpView: View {
     
     func connectDeviceView() -> some View {
         
-        let subtitle = LocalizableNearbySharing.helpConnectDevicePart1.localized.numbered(1).addline +
-        LocalizableNearbySharing.helpConnectDevicePart2.localized.numbered(2).addline +
-        LocalizableNearbySharing.helpConnectDevicePart3.localized.numbered(3)
+        let subtitle = LocalizableNearbySharing.helpConnectDevicePart1.localized.addline +
+        LocalizableNearbySharing.helpConnectDevicePart2.localized.numbered(1).addline +
+        LocalizableNearbySharing.helpConnectDevicePart3.localized.numbered(2)
         
         return titleSubtitleView(title: LocalizableNearbySharing.helpConnectDeviceTitle.localized,
                                  subtitleString: subtitle)
@@ -78,8 +78,7 @@ struct NearbySharingHelpView: View {
         
         let subtitle =
         NSAttributedString(string: LocalizableNearbySharing.helpMoreTipsPart1.localized.bulleted().addline) +
-        NSAttributedString(string: LocalizableNearbySharing.helpMoreTipsPart2.localized.bulleted().addline) +
-        helpMoreTipsPart3()
+        helpMoreTipsPart2()
         
         return titleSubtitleView(
             title: LocalizableNearbySharing.moreTips.localized,
@@ -87,8 +86,8 @@ struct NearbySharingHelpView: View {
         )
     }
     
-    func helpMoreTipsPart3() -> NSAttributedString {
-        let text = LocalizableNearbySharing.helpMoreTipsPart3.localized.bulleted()
+    func helpMoreTipsPart2() -> NSAttributedString {
+        let text = LocalizableNearbySharing.helpMoreTipsPart2.localized.bulleted()
         let linkText = LocalizableNearbySharing.helpMoreTipsDocumentation.localized
         let url = TellaUrls.nearbySharingLearnMore.url()
         
