@@ -106,16 +106,11 @@ class SenderFileTransferVM: FileTransferVM {
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 
-                if self.didCancelTransfer {
+                if self.didCancelTransfer || shouldStopRemainingUploads {
+                    self.failTransferAndShowResults()
+                } else {
                     self.showResultsIfNeeded()
-                    return
                 }
-                
-                if shouldStopRemainingUploads, let session = self.session {
-                    self.failRemainingPendingFiles(in: session)
-                }
-                
-                self.showResultsIfNeeded()
             }
         }
     }
@@ -124,26 +119,7 @@ class SenderFileTransferVM: FileTransferVM {
     
     override func stopTask() {
         didCancelTransfer = true
-        
-        // 1. Stop local work immediately
-        submitReportTask?.cancel()
-        submitReportTask = nil
-        
-        activeUploadCancellable?.cancel()
-        activeUploadCancellable = nil
-        
-        repository?.cancelUpload()
-        
-        resumeUploadContinuation(false)
-        
-        // 2. Update UI state immediately
-        if let session = session {
-            failRemainingPendingFiles(in: session)
-        }
-        
-        showResultsView()
-        
-        // 3. Notify the receiver best-effort AFTER UI is released
+        failTransferAndShowResults(forceShowResults: true)
         closeConnection()
     }
     
@@ -206,12 +182,13 @@ class SenderFileTransferVM: FileTransferVM {
                 
                 let shouldStopRemainingUploads = self.shouldStopRemainingUploads(for: completion)
                 
-                if shouldStopRemainingUploads {
-                    self.repository?.cancelUpload()
-                }
-                
                 self.finalizeUpload(for: fileID, completion: completion)
-                self.resumeUploadContinuation(shouldStopRemainingUploads)
+                
+                if shouldStopRemainingUploads {
+                    self.failTransferAndShowResults()
+                } else {
+                    self.resumeUploadContinuation(false)
+                }
                 
             } receiveValue: { [weak self] progress in
                 guard let self,
@@ -299,21 +276,23 @@ class SenderFileTransferVM: FileTransferVM {
             guard let self,
                   !self.didShowResults,
                   let files = self.session?.files else { return }
-
+            
             let unfinishedFiles = files.filter {
                 $0.value.status == .transferring || $0.value.status == .queue
             }
-
+            
             guard unfinishedFiles.isEmpty else { return }
-
-            showResultsView()
+            
+            self.showResultsView()
         }
     }
-
-    private func showResultsView() {
+    
+    private func showResultsView(force: Bool = false) {
         DispatchQueue.main.async { [weak self] in
-            guard let self, !self.didShowResults else { return }
-
+            guard let self else { return }
+            
+            guard force || !self.didShowResults else { return }
+            
             self.didShowResults = true
             self.viewAction = .shouldShowResults
         }
@@ -336,5 +315,22 @@ class SenderFileTransferVM: FileTransferVM {
                 },
                 receiveValue: { _ in }
             )
+    }
+    
+    private func failTransferAndShowResults(forceShowResults: Bool = false) {
+        submitReportTask?.cancel()
+        submitReportTask = nil
+        
+        activeUploadCancellable?.cancel()
+        activeUploadCancellable = nil
+        
+        repository?.cancelUpload()
+        resumeUploadContinuation(true)
+        
+        if let session = session {
+            failRemainingPendingFiles(in: session)
+        }
+        
+        showResultsView(force: forceShowResults)
     }
 }
