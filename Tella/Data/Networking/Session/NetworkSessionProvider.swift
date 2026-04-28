@@ -29,6 +29,14 @@ final class NetworkSessionProvider {
         )
     }
 
+    func makeNearbySharingUploadSession(delegate: URLSessionDelegate) -> URLSession {
+        URLSession(
+            configuration: configurationFactory.makeNearbySharingUploadLocal(),
+            delegate: delegate,
+            delegateQueue: nil
+        )
+    }
+    
     func makeNearbySharingSession(delegate: URLSessionDelegate) -> URLSession {
         URLSession(
             configuration: configurationFactory.makeNearbySharingLocal(),
@@ -36,7 +44,7 @@ final class NetworkSessionProvider {
             delegateQueue: nil
         )
     }
-    
+
     func makeBackgroundUploadSession(delegate: URLSessionDelegate) -> URLSession {
         URLSession(
             configuration: configurationFactory.makeBackground(identifier: UploadConstants.backgroundSessionIdentifier),

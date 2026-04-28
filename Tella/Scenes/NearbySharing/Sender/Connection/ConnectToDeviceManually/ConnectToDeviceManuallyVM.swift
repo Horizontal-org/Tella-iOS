@@ -33,7 +33,8 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     @Published var shouldShowPinError: Bool = false
     
     @Published var viewState: SenderConnectToDeviceViewAction = .none
-    
+    @Published var isLoading : Bool = false
+
     private var subscribers = Set<AnyCancellable>()
     var connectionInfo : ConnectionInfo?
     
@@ -54,14 +55,16 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     }
     
     func getHash() {
-        
+        guard !isLoading else { return }
         guard let port = Int(port) else { return }
+        isLoading = true
         let connectionInfo = ConnectionInfo(ipAddresses: [ipAddress], port: port, certificateHash: nil, pin: pin)
         self.connectionInfo = connectionInfo
         
         self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
+                self?.isLoading = false
                 debugLog(completion)
                 if case .failure = completion {
                     self?.viewState = .showBottomSheetError
