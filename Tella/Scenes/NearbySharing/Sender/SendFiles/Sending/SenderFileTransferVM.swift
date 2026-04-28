@@ -21,7 +21,7 @@ class SenderFileTransferVM: FileTransferVM {
     private var didCancelTransfer = false
     private var didShowResults = false
     private var uploadContinuation: CheckedContinuation<Bool, Never>?
-
+    
     init(mainAppModel: MainAppModel,
          repository: NearbySharingRepository,
          session: NearbySharingSession) {
@@ -125,23 +125,26 @@ class SenderFileTransferVM: FileTransferVM {
     override func stopTask() {
         didCancelTransfer = true
         
-        closeConnection()
-        
+        // 1. Stop local work immediately
         submitReportTask?.cancel()
         submitReportTask = nil
         
         activeUploadCancellable?.cancel()
         activeUploadCancellable = nil
         
-        resumeUploadContinuation(false)
-        
         repository?.cancelUpload()
         
+        resumeUploadContinuation(false)
+        
+        // 2. Update UI state immediately
         if let session = session {
             failRemainingPendingFiles(in: session)
         }
         
-        showResultsIfNeeded()
+        showResultsView()
+        
+        // 3. Notify the receiver best-effort AFTER UI is released
+        closeConnection()
     }
     
     override func makeTransferredSummary(receivedBytes: Int, totalBytes: Int) -> String {
@@ -292,18 +295,28 @@ class SenderFileTransferVM: FileTransferVM {
     }
     
     private func showResultsIfNeeded() {
-        guard !didShowResults, let files = session?.files else { return }
-        
-        let unfinishedFiles = files.filter {
-            $0.value.status == .transferring || $0.value.status == .queue
+        DispatchQueue.main.async { [weak self] in
+            guard let self,
+                  !self.didShowResults,
+                  let files = self.session?.files else { return }
+
+            let unfinishedFiles = files.filter {
+                $0.value.status == .transferring || $0.value.status == .queue
+            }
+
+            guard unfinishedFiles.isEmpty else { return }
+
+            showResultsView()
         }
-        
-        guard unfinishedFiles.isEmpty else { return }
-        
-        didShowResults = true
-        viewAction = .shouldShowResults
     }
-    
+
+    private func showResultsView() {
+        
+        self.didShowResults = true
+        self.viewAction = .shouldShowResults
+
+    }
+        
     private func closeConnection() {
         guard let repository = repository,
               let sessionID = session?.sessionId else {
@@ -316,7 +329,9 @@ class SenderFileTransferVM: FileTransferVM {
         closeConnectionCancellable = repository.closeConnection(closeConnectionRequest: request)
             .receive(on: DispatchQueue.main)
             .sink(
-                receiveCompletion: { _ in },
+                receiveCompletion: { [weak self] _ in
+                    self?.closeConnectionCancellable = nil
+                },
                 receiveValue: { _ in }
             )
     }
