@@ -25,6 +25,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     @Published var scannedCode: String? = nil
     @Published var viewState: SenderConnectToDeviceViewAction = .none
     @Published var startScanning: Bool = true
+    @Published var isLoading: Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     private var registrationNonceContext: RegistrationNonceContext?
@@ -64,8 +65,13 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     }
     
     func register(connectionInfo:ConnectionInfo?) {
+        guard !isLoading else { return }
+        isLoading = true
         
-        guard let connectionInfo  else { return }
+        guard let connectionInfo  else {
+            isLoading = false
+            return
+        }
 
         let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
@@ -73,18 +79,19 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
 
         self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.isLoading = false
                 switch completion {
                 case .finished:
-                    self.viewState = .showSendFiles
-                    self.viewState = .showToast(message: LocalizableNearbySharing.successConnectToast.localized)
+                    self?.viewState = .showSendFiles
+                    self?.viewState = .showToast(message: LocalizableNearbySharing.successConnectToast.localized)
                 case .failure:
-                    self.viewState = .showBottomSheetError
+                    self?.viewState = .showBottomSheetError
                 }
-            }, receiveValue: { response in
+            }, receiveValue: { [weak self] response in
                 if let sessionId = response.sessionId {
-                    self.session = NearbySharingSession(sessionId: sessionId)
-                    self.registrationNonceContext = nil
+                    self?.session = NearbySharingSession(sessionId: sessionId)
+                    self?.registrationNonceContext = nil
                 }
             }).store(in: &self.subscribers)
     }

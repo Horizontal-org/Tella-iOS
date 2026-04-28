@@ -17,13 +17,19 @@ struct SenderConnectToDeviceView: View {
     @State var startScanning = PassthroughSubject<Bool, Never>()
     
     var body: some View {
-        ContainerViewWithHeader {
-            navigationBarView
-        } content: {
-            contentView
-        }
-        .onReceive(viewModel.$viewState) { state in
-            handleViewState(state: state)
+        ZStack {
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
+            }
+            .onReceive(viewModel.$viewState) { state in
+                handleViewState(state: state)
+            }
+            
+            if viewModel.isLoading {
+                CircularActivityIndicatory()
+            }
         }
     }
     
