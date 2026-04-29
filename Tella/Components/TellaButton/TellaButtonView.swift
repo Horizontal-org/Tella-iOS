@@ -82,7 +82,8 @@ struct TellaButtonView<Destination:View> : View {
             }
         } label: {
             CustomText(title,
-                       style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle)
+                       style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle,
+                       color: isValid ? buttonStyle.foregroundColor : buttonStyle.disabledForegroundColor)
             .frame(maxWidth:.infinity)
             .contentShape(Rectangle())
             .padding(.horizontal, 16)

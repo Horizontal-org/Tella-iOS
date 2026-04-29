@@ -31,7 +31,7 @@ struct ClearButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Color.white.opacity(0.16)
     var disabledBackgroundColor = Color.white.opacity(0.16)
     var pressedBackgroundColor = Color.white.opacity(0.32)
-    var overlayColor = Color.white.opacity(0.64)
+    var overlayColor = Color.white.opacity(0.80)
     var foregroundColor = Color.white
     var disabledForegroundColor = Color.white.opacity(0.38)
 }
@@ -40,7 +40,7 @@ struct YellowButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Styles.Colors.yellow
     var disabledBackgroundColor = Styles.Colors.disabledYellow
     var pressedBackgroundColor = Color(UIColor(hexValue: 0xe0ad6a))
-    var overlayColor = Color.white.opacity(0.64)
+    var overlayColor = Color.black.opacity(0.80)
     var foregroundColor = Color.black
     var disabledForegroundColor = Color.black.opacity(0.38)
 }
