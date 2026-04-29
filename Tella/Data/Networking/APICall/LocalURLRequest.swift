@@ -42,7 +42,7 @@ extension WebRepository {
             let _ = fileURL.startAccessingSecurityScopedResource()
             defer { fileURL.stopAccessingSecurityScopedResource() }
             
-            let session = NetworkSessionProvider().makeNearbySharingUploadSession(delegate: delegate)
+            let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
             let task = session.uploadTask(with: request, fromFile: fileURL)
             
             task.resume()
