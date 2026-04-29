@@ -737,3 +737,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Onboarding_ServerConnections_part1_Expl" = "Si trabajas con una organización, envía formularios, informes y archivos directamente desde Tella a tu organización. También puedes realizar copias de seguridad de sus archivos en una nube personal.";
 "Onboarding_ServerConnections_part2_Expl" = "Tella iOS incluye Conexiones con Dropbox, Google Drive, Nextcloud, Uwazi y Tella Web.";
 "Settings_SettLang_Ukrainian_Expl" = "Ukrainian";
+"NearbySharing_ExitProgress_SheetTitle" = "Exit nearby sharing?";
+"NearbySharing_ExitProgress_SheetExpl" = "Your progress will be lost.";
+"NearbySharing_ExitProgress_Exit_Action" = "Salir";
