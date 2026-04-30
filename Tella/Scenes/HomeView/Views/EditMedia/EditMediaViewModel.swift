@@ -106,10 +106,9 @@ class EditMediaViewModel: ObservableObject {
     
     func addEditedFile(urlFile:URL) {
         let importedFiles = ImportedFile(urlFile: urlFile,
-                                         parentId: rootFile?.id ,
-                                         fileSource: FileSource.files)
+                                         parentId: rootFile?.id,
+                                         fileSource: .editFile)
         mainAppModel.addVaultFile(importedFiles: [importedFiles])
-        mainAppModel.vaultManager.deleteTmpFiles(files: [urlFile])
     }
     
     func undo() {

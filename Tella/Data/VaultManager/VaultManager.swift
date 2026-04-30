@@ -323,14 +323,14 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         subFolderName: String? = nil
     ) -> URL {
         
-        let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
+        let fileName = fileName ?? UUID().uuidString
         
         let subFolder: String
         
         if let subFolderName, !subFolderName.isEmpty {
             subFolder = subFolderName
         } else if withSubFolder {
-            subFolder = "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
+            subFolder = UUID().uuidString
         } else {
             subFolder = ""
         }
