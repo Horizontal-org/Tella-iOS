@@ -657,9 +657,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_InvalidIpAddress" = "Invalid IP address";
 "NearbySharing_InvalidPin" = "Invalid PIN";
 "NearbySharing_SelectFilesToSend" = "Select files to send";
-"NearbySharing_ExitProgress_SheetTitle" = "Exit nearby sharing?";
-"NearbySharing_ExitProgress_SheetExpl" = "Your progress will be lost.";
-"NearbySharing_ExitProgress_Exit_Action" = "Exit";
 "NearbySharing_Title" = "Title";
 "NearbySharing_SuccessConnect_Toast" = "Success! Connected to device";
 "NearbySharing_ServerError_Toast" = "Server error";
@@ -739,3 +736,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
 "Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
 "Settings_SettLang_Ukrainian_Expl" = "Ukrainian";
+"NearbySharing_ExitProgress_SheetTitle" = "Exit nearby sharing?";
+"NearbySharing_ExitProgress_SheetExpl" = "Your progress will be lost.";
+"NearbySharing_ExitProgress_Exit_Action" = "Exit";

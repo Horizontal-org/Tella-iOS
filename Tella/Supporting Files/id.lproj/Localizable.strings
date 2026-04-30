@@ -712,9 +712,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_Help_NeedInternet_Title" = "Do I need Internet access?";
 "NearbySharing_Help_NeedInternet_Expl" = "No. The Wi-Fi network does not need to have internet access. As long as the Wi-Fi router or hotspot is powered on and functioning, it can be used for Nearby Sharing even without being online";
 "NearbySharing_Help_MoreTips" = "More tips";
-"NearbySharing_Help_MoreTips_Part1" = "Make sure you trust the person you are sharing files with.";
-"NearbySharing_Help_MoreTips_Part2" = "Please disable any active VPN connections.";
-"NearbySharing_Help_MoreTips_Part3" = "Check out Tella’s documentation to learn more about Nearby Sharing.";
+"NearbySharing_Help_MoreTips_Part1" = "Please disable any active VPN connections.";
+"NearbySharing_Help_MoreTips_Part2" = "Check out Tella’s documentation to learn more about Nearby Sharing.";
 "NearbySharing_Help_MoreTips_documentation" = "documentation";
 "NearbySharing_SameNetwork_SheetTitle" = "Are you both on the same Wi-Fi network?";
 "NearbySharing_SameNetwork_SheetExpl" = "Both devices must be connected to the same Wi-Fi network, using local Wi-Fi or setting up a Hotspot connection.";
@@ -737,3 +736,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
 "Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
 "Settings_SettLang_Ukrainian_Expl" = "Ukrainian";
+"NearbySharing_ExitProgress_SheetTitle" = "Exit nearby sharing?";
+"NearbySharing_ExitProgress_SheetExpl" = "Your progress will be lost.";
+"NearbySharing_ExitProgress_Exit_Action" = "Keluar";
