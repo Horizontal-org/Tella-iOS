@@ -69,6 +69,7 @@ class SettingsModel: ObservableObject, Codable {
         case preserveMetadata
         case shareFeedback
         case shouldMergeVaultFilesToDb
+        case nearbySharing
         case showSameWiFiNetworkAlert
     }
     
@@ -94,6 +95,7 @@ class SettingsModel: ObservableObject, Codable {
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
         shareFeedback = try container.decode(Bool.self, forKey: .shareFeedback)
         shouldMergeVaultFilesToDb = try container.decode(Bool.self, forKey: .shouldMergeVaultFilesToDb)
+        nearbySharing = try container.decodeIfPresent(Bool.self, forKey: .nearbySharing) ?? true
         showSameWiFiNetworkAlert = try container.decodeIfPresent(Bool.self, forKey: .showSameWiFiNetworkAlert) ?? true
     }
     
@@ -112,6 +114,7 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(preserveMetadata, forKey: .preserveMetadata)
         try container.encode(shareFeedback, forKey: .shareFeedback)
         try container.encode(shouldMergeVaultFilesToDb, forKey: .shouldMergeVaultFilesToDb)
+        try container.encode(nearbySharing, forKey: .nearbySharing)
         try container.encode(showSameWiFiNetworkAlert, forKey: .showSameWiFiNetworkAlert)
     }
 }

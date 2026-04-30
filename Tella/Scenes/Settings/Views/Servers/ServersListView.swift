@@ -61,9 +61,12 @@ struct ServersListView: View {
     private var nearbySharingView: some View {
         SettingToggleItem(title: LocalizableSettings.settNearbySharing.localized,
                           description: LocalizableSettings.settNearbySharingExpl.localized,
-                          linkText:LocalizableSettings.settNearbySharingLearnMore.localized,
-                          link:TellaUrls.nearbySharingLearnMore,
-                          toggle: $serversViewModel.mainAppModel.settings.nearbySharing)
+                          linkText: LocalizableSettings.settNearbySharingLearnMore.localized,
+                          link: TellaUrls.nearbySharingLearnMore,
+                          toggle: $serversViewModel.mainAppModel.settings.nearbySharing,
+                          onChange: {
+                              serversViewModel.mainAppModel.saveSettings()
+                          })
     }
     
     private func showServerActionBottomSheet(server:Server) {
