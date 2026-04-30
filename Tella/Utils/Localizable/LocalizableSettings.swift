@@ -50,6 +50,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangAzerbaijani = "Settings_SettLang_Azerbaijani_Expl"
     case settLangChinese = "Settings_SettLang_Chinese_Expl"
     case settLangMizo = "Settings_SettLang_Mizo_Expl"
+    case settLangUkrainian = "Settings_SettLang_Ukrainian_Expl"
 
     // Security
     
@@ -207,6 +208,14 @@ enum LocalizableSettings: String, LocalizableDelegate {
     //Dropbox
     case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
     case settServerDropbox = "Setting_SettServer_Dropbox"
+
+    case settAddConnection = "Settings_Sett_AddConnection"
+    case settAddConnectionExpl = "Settings_Sett_AddConnection_Expl"
+    case settAddConnectionLearnMore = "Setting_Sett_AddConnection_LearnMore"
+
+    case settNearbySharing = "Settings_Sett_NearbySharing"
+    case settNearbySharingExpl = "Settings_Sett_NearbySharing_Expl"
+    case settNearbySharingLearnMore = "Setting_Sett_NearbySharing_LearnMore"
 }
 
 

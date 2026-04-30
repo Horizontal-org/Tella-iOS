@@ -1,0 +1,89 @@
+//
+//  PrepareUploadRequest.swift
+//  Tella
+//
+//  Created by Dhekra Rouatbi on 19/3/2025.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
+//
+
+import Foundation
+
+// MARK: - Replay protection
+
+enum NearbySharingTransferNonce {
+    /// UUID v4 for `register`, `prepare-upload` and each `upload` request.
+    static func make() -> String { UUID().uuidString }
+}
+
+// MARK: - PrepareUpload
+struct PrepareUploadRequest: Codable {
+    let title, sessionID: String?
+    let files: [NearbySharingFile]?
+    let nonce: String?
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case sessionID = "sessionId"
+        case files
+        case nonce
+    }
+}
+
+// MARK: - NearbySharingFile
+class NearbySharingFile: Codable {
+    var id, fileName: String?
+    var size: Int?
+    var fileType, sha256: String?
+    var thumbnail: Data?
+    init(id: String?,
+         fileName: String?,
+         size: Int?,
+         sha256: String?,
+         fileType: String?,
+         thumbnail: Data?) {
+        self.id = id
+        self.fileName = fileName
+        self.size = size
+        self.sha256 = sha256
+        self.fileType = fileType
+        self.thumbnail = thumbnail
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.id, forKey: .id)
+        try container.encodeIfPresent(self.fileName, forKey: .fileName)
+        try container.encodeIfPresent(self.size, forKey: .size)
+        try container.encodeIfPresent(self.sha256, forKey: .sha256)
+        try container.encodeIfPresent(self.fileType, forKey: .fileType)
+        try container.encodeIfPresent(self.thumbnail?.base64EncodedString(), forKey: .thumbnail)
+    }
+}
+
+extension NearbySharingFile {
+    convenience init(vaultFile: VaultFileDB) {
+        self.init(id: vaultFile.id,
+                  fileName: vaultFile.name,
+                  size: vaultFile.size,
+                  sha256: vaultFile.hash,
+                  fileType: vaultFile.mimeType,
+                  thumbnail: vaultFile.thumbnail)
+    }
+}
+
+// MARK: - PrepareUploadResponse
+struct PrepareUploadResponse: Codable {
+    var files: [NearbySharingFileResponse]?
+    
+}
+
+struct NearbySharingFileResponse: Codable {
+    let id: String?
+    let transmissionID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case transmissionID = "transmissionId"
+    }
+}

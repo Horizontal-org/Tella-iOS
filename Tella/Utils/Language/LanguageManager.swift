@@ -28,11 +28,6 @@ class LanguageManager {
         }
     }
     
-    func getSystemLanguage() -> Language {
-        guard let languageString =  getSystemLanguageString() else { return Language.systemLanguage }
-        return Language(rawValue: languageString) ?? Language.systemLanguage
-    }
-    
     func getSystemLanguageString() -> String? {
         
         if let preferredLanguage = NSLocale.preferredLanguages.first?.split(separator: "-")  {

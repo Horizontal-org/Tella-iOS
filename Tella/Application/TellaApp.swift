@@ -33,6 +33,10 @@ struct TellaApp: App {
                     if UIApplication.shared.applicationState == .background {
                         self.saveData(lockAppType: .finishBackgroundTasks)
                     }
+                }.onReceive(appDelegate.$appWillTerminate) { willTerminate in
+                    if willTerminate {
+                        clearTmpDirectory()
+                    }
                 }
             
         }.onChange(of: scenePhase) { phase in
@@ -88,5 +92,9 @@ struct TellaApp: App {
         
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
+    }
+    
+    func clearTmpDirectory() {
+        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
     }
 }

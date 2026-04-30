@@ -13,7 +13,6 @@ struct ImportFilesProgressView: View {
     @State var shouldShowCancelImportView : Bool = false
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
-    var modalHeight : CGFloat = 215
     var onImportFinished: (() -> Void)? = nil
     
     var body: some View {

@@ -36,7 +36,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
         self.description = report.description ?? ""
         
         if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
-            self.files = Set(vaultFileResult)
+            addFilesViewModel.files = Set(vaultFileResult)
         }
         
         validateTitleAndDescription()
@@ -44,7 +44,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     
     override func saveReport() {
         
-        let reportFiles = self.files.compactMap {NextcloudReportFile(fileId: $0.id,
+        let reportFiles = addFilesViewModel.files.compactMap {NextcloudReportFile(fileId: $0.id,
                                                             status: .notSubmitted,
                                                             bytesSent: 0,
                                                             createdDate: Date(),
@@ -59,19 +59,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
         
         reportId == nil ? addReport(report: report) : updateReport(report: report)
     }
-    
-    override func deleteFile(fileId: String?) {
-        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
-        files.remove(at: index)
-    }
-    
-    override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { [weak self] value in
-            guard let self, let value else { return }
-            self.files.insert(value)
-        }).store(in: &subscribers)
-    }
-    
+        
     private func addReport(report: NextcloudReport) {
         let reportId = mainAppModel.tellaData?.addNextcloudReport(report: report)
         

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 4/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -117,9 +117,11 @@ struct NavigationHeaderView: View {
                     .frame(height:25,alignment:.trailing)
                 
             default:
-                Image(rightButtonType.imageName)
-                    .opacity(isRightButtonEnabled ? 1 : 0.4)
-                    .padding()
+                if let imageName = rightButtonType.imageName {
+                    Image(imageName)
+                        .opacity(isRightButtonEnabled ? 1 : 0.4)
+                        .padding(EdgeInsets(vertical: 20, horizontal: 10))
+                }
             }
         }.disabled(!isRightButtonEnabled)
     }

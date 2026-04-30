@@ -23,7 +23,7 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var rotateState: ViewModelState<Bool> = .loaded(false)
     @Published var videoSize: CGSize = .zero
     @Published var videoIsReady = false
-
+    
     var videoPlayerSize : CGSize {
         let angle = abs(Int(rotationAngle)) % 360
         let isRotated = angle == 90 || angle == 270
@@ -74,7 +74,7 @@ class EditVideoViewModel: EditMediaViewModel {
         Task {
             guard let file else { return }
             if fileURL == nil {
-                fileURL =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: false)
+                fileURL = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file)
             }
             guard let fileURL else { return }
             DispatchQueue.main.async {

@@ -29,10 +29,10 @@ struct CreateEntityView: View {
                 contentView
             }
             
-            photoVideoPickerView
+            AddFilePhotoVideoPickerView(viewModel: entityViewModel.addFilesViewModel)
         }
-        .overlay(cameraView)
-        .overlay(recordView)
+        .overlay(AddFileCameraView(viewModel: entityViewModel.addFilesViewModel))
+        .overlay(AddFileRecordView(viewModel: entityViewModel.addFilesViewModel))
         .onReceive(entityViewModel.$shouldHideView, perform: { shouldHideView in
             if shouldHideView {
                 dismissViews()
@@ -85,30 +85,7 @@ struct CreateEntityView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-    
-    var cameraView : some View {
-        entityViewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addReportFile,
-                   showingCameraView: $entityViewModel.showingCamera,
-                   resultFile: $entityViewModel.resultFile,
-                   mainAppModel: entityViewModel.mainAppModel) : nil
-    }
-    
-    var recordView : some View {
-        entityViewModel.showingRecordView ?
-        RecordView(mainAppModel: entityViewModel.mainAppModel,
-                   sourceView: .addReportFile,
-                   showingRecoredrView: $entityViewModel.showingRecordView,
-                   resultFile: $entityViewModel.resultFile) : nil
-    }
-    
-    var photoVideoPickerView : some View {
-        PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
-                             showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
-                             mainAppModel: entityViewModel.mainAppModel,
-                             resultFile: $entityViewModel.resultFile)
-    }
-    
+        
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,

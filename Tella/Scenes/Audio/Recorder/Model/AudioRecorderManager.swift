@@ -18,5 +18,4 @@ protocol AudioRecorderManager {
     func discardRecord(audioChunks:[AVURLAsset]?)
     
     func playRecord()
-    func pauseRecord()
 }

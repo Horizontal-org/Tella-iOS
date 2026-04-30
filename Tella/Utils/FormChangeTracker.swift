@@ -37,10 +37,6 @@ final class FormChangeTracker: ObservableObject {
     func pauseTracking() {
         isTrackingEnabled = false
     }
-
-    func resumeTracking() {
-        isTrackingEnabled = true
-    }
 }
 
 extension Publisher {

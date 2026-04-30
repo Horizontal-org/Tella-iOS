@@ -1,0 +1,119 @@
+//
+//  NearbySharingServerState.swift
+//  Tella
+//
+//  Created by Dhekra Rouatbi on 23/6/2025.
+//  Copyright © 2025 HORIZONTAL.
+//  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
+//
+
+import Foundation
+
+final class NearbySharingServerState {
+    
+    var pin: String?
+    var session: NearbySharingSession?
+    var isUsingManualConnection: Bool
+    
+    init(pin: String? = nil,
+         session: NearbySharingSession? = nil,
+         isUsingManualConnection: Bool = false) {
+        self.pin = pin
+        self.session = session
+        self.isUsingManualConnection = isUsingManualConnection
+    }
+    
+    func reset() {
+        pin = nil
+        session = nil
+        isUsingManualConnection = false
+    }
+}
+
+final class NearbySharingSession {
+    
+    let sessionId: String
+    let registrationNonce: String?
+    var status: SessionStatus
+    var title: String?
+    var files: [String: NearbySharingTransferredFile]
+    var insufficientStorageLatchActive: Bool = false
+    
+    init(sessionId: String,
+         registrationNonce: String? = nil,
+         status: SessionStatus = .waiting,
+         files: [String: NearbySharingTransferredFile] = [:],
+         title: String? = nil) {
+        self.sessionId = sessionId
+        self.registrationNonce = registrationNonce
+        self.status = status
+        self.files = files
+        self.title = title
+    }
+    
+    var isActive: Bool {
+        return status == .waiting || status == .sending
+    }
+    
+    var hasFiles: Bool {
+        return !files.isEmpty
+    }
+}
+
+final class NearbySharingTransferredFile: Codable {
+    
+    var file: NearbySharingFile
+    var vaultFile: VaultFileDB
+    var status: NearbySharingFileStatus
+    var transmissionId: String?
+    var url: URL?
+    var bytesReceived: Int = 0
+    
+    init(file: NearbySharingFile,
+         status: NearbySharingFileStatus = .queue,
+         transmissionId: String? = nil,
+         url: URL? = nil,
+         bytesReceived: Int = 0) {
+        self.file = file
+        self.vaultFile =  VaultFileDB(file: file)
+        self.status = status
+        self.transmissionId = transmissionId
+        self.url = url
+        self.bytesReceived = bytesReceived
+    }
+    
+    init(vaultFile: VaultFileDB,
+         status: NearbySharingFileStatus = .queue,
+         transmissionId: String? = nil,
+         url: URL? = nil,
+         bytesReceived: Int64 = 0) {
+        self.vaultFile = vaultFile
+        self.file = NearbySharingFile(vaultFile: vaultFile)
+        self.status = status
+        self.transmissionId = transmissionId
+        self.url = url
+        self.bytesReceived = Int(bytesReceived)
+    }
+}
+
+enum NearbySharingFileStatus: String, Codable {
+    case queue
+    case transferring
+    case saving
+    case failed
+    case finished
+    case saved
+}
+
+/// Result of completing an upload on the receiver: HTTP status plus an optional file snapshot for progress UI.
+enum FinalizeUploadOutcome {
+    case success(NearbySharingTransferredFile)
+    case failure(ServerStatus, file: NearbySharingTransferredFile?)
+}
+
+enum SessionStatus: String, Codable {
+    case waiting
+    case sending
+    case finished
+    case finishedWithErrors
+}

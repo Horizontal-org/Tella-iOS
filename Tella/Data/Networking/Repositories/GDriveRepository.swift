@@ -436,17 +436,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         GIDSignIn.sharedInstance.signOut()
     }
     
-    private func handleSubmissionError(uploadProgressInfo: UploadProgressInfo, promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void) {
-        uploadProgressInfo.status = .submissionError
-        if !networkMonitor.isConnected {
-            uploadProgressInfo.error = APIError.noInternetConnection
-            promise(.failure(.noInternetConnection))
-            return
-        }
-        uploadProgressInfo.error = APIError.unexpectedResponse
-        promise(.failure(.unexpectedResponse))
-    }
-    
     private func validateUploadDestination(
         folderId: String) async throws {
             try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in

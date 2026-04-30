@@ -18,24 +18,21 @@ extension SQLiteStatementBuilder  {
         var fetchColumnInfo = true
         var columnCount: CInt = 0
         var columnNames = [String]()
-        var columnTypes = [CInt]()
         var result = sqlite3_step(stmt)
         while result == SQLITE_ROW {
             
             if fetchColumnInfo {
                 columnCount = sqlite3_column_count(stmt)
                 for index in 0..<columnCount {
-                    
                     let name = sqlite3_column_name(stmt, index)
                     columnNames.append(String(validatingUTF8: name!)!)
-                    columnTypes.append(sqlite3_column_type(stmt, index))
                 }
                 fetchColumnInfo = false
             }
             var row = [String: Any]()
             for index in 0..<columnCount {
                 let key = columnNames[Int(index)]
-                let type = columnTypes[Int(index)]
+                let type = sqlite3_column_type(stmt, index)
                 if let val = getColumnValue(index: index, type: type, stmt: stmt) {
                     row[key] = val
                 }

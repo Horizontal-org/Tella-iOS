@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -10,8 +10,13 @@ import UIKit
 import QuickLook
 import ZIPFoundation
 import Photos
+import Crypto
 
 extension URL {
+    
+    var fileSize: Int? {
+        (try? resourceValues(forKeys: [.fileSizeKey]).fileSize)
+    }
     
     func resolution() -> CGSize? {
         switch self.fileType {
@@ -243,12 +248,60 @@ extension URL {
             throw RuntimeError(LocalizableError.commonError.localized)
         }
     }
-
+    
     func createURL(name: String) -> URL {
         return self.deletingLastPathComponent().appendingPathComponent(name)
     }
     
     func open() {
         UIApplication.shared.open(self, options: [:], completionHandler: nil)
+    }
+    
+    func remove() {
+        let fileManager = FileManager.default
+        let accessed = self.startAccessingSecurityScopedResource()
+        defer {
+            if accessed {
+                self.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        if fileManager.fileExists(atPath: self.path) {
+            do {
+                try fileManager.removeItem(at: self)
+            } catch {
+                debugLog("Error removing item: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func sha256Hash() -> String? {
+        guard let inputStream = InputStream(url: self) else { return nil }
+        inputStream.open()
+        defer { inputStream.close() }
+        
+        var hasher = SHA256()
+        let bufferSize = 1024 * 1024 // 1 MB buffer
+        var buffer = [UInt8](repeating: 0, count: bufferSize)
+        
+        while true {
+            let read = inputStream.read(&buffer, maxLength: bufferSize)
+            if read < 0 { return nil }
+            if read == 0 { break }
+            
+            buffer.withUnsafeBytes { rawBuffer in
+                if let baseAddress = rawBuffer.baseAddress {
+                    hasher.update(bufferPointer: UnsafeRawBufferPointer(start: baseAddress, count: read))
+                }
+            }
+        }
+        let digest = hasher.finalize()
+        return digest.map { String(format: "%02x", $0) }.joined()
+    }
+    
+    func sha256Hash() async -> String? {
+        await Task.detached(priority: .utility) { [self] in
+            self.sha256Hash()
+        }.value
     }
 }

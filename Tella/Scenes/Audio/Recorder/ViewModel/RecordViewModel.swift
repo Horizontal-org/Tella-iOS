@@ -182,11 +182,6 @@ class RecordViewModel: ObservableObject {
         self.audioBackend.playRecord()
     }
     
-    func onStopRecord() {
-        self.audioBackend.pauseRecord()
-    }
-    
-    
     fileprivate func updateView() {
         self.objectWillChange.send()
     }

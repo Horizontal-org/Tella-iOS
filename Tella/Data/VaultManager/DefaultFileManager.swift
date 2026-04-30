@@ -79,45 +79,56 @@ class DefaultFileManager: FileManagerInterface {
 
     func createFile(atPath path: URL, contents data: Data?) -> Bool {
         debugLog("creating \(path.path)")
+
         do {
             let _ = path.startAccessingSecurityScopedResource()
             defer { path.stopAccessingSecurityScopedResource() }
 
-            try data?.write(to: path)
-        } catch let error {
+            let parent = path.deletingLastPathComponent()
+            try fileManager.createDirectory(
+                at: parent,
+                withIntermediateDirectories: true,
+                attributes: [.protectionKey: FileProtectionType.complete]
+            )
+
+            return fileManager.createFile(
+                atPath: path.path,
+                contents: data,
+                attributes: [.protectionKey: FileProtectionType.complete]
+            )
+        } catch {
             debugLog(error)
             return false
         }
-        return true
     }
-    
+
     func createEmptyFile(atPath path: URL) -> Bool {
-        debugLog("creating \(path.path)")
-        do {
-            let _ = path.startAccessingSecurityScopedResource()
-            defer { path.stopAccessingSecurityScopedResource() }
-
-            try Data().write(to: path)
-
-        } catch let error {
-            debugLog(error)
-            return false
-        }
-        return true
+        createFile(atPath: path, contents: nil)
     }
-
     
-    func createDirectory(atPath path:URL) {
+    func createDirectory(atPath path: URL) {
         do {
-            try fileManager.createDirectory(at: path, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(
+                at: path,
+                withIntermediateDirectories: true,
+                attributes: [
+                    .protectionKey: FileProtectionType.complete
+                ]
+            )
         } catch let error {
             debugLog(error)
         }
     }
-
+    
     func copyItem(at srcURL: URL, to dstURL: URL) throws {
         debugLog("copying from \(srcURL.path) \(dstURL.path)")
+
         try fileManager.copyItem(at: srcURL, to: dstURL)
+
+        try fileManager.setAttributes(
+            [.protectionKey: FileProtectionType.complete],
+            ofItemAtPath: dstURL.path
+        )
     }
     
     func removeContainerDirectory(fileName: [String], paths: String) {

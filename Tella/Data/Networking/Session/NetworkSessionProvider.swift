@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 11/3/2026.
-//  Copyright © 2026 HORIZONTAL. All rights reserved.
+//  Copyright © 2026 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -18,7 +18,7 @@ final class NetworkSessionProvider {
     private(set) lazy var apiSession: URLSession = {
         URLSession(configuration: configurationFactory.makeDefault())
     }()
-    
+
     init() {}
     
     func makeDefaultUploadSession(delegate: URLSessionDelegate) -> URLSession {
@@ -28,7 +28,15 @@ final class NetworkSessionProvider {
             delegateQueue: nil
         )
     }
-    
+
+    func makeNearbySharingSession(delegate: URLSessionDelegate) -> URLSession {
+        URLSession(
+            configuration: configurationFactory.makeNearbySharingLocal(),
+            delegate: delegate,
+            delegateQueue: nil
+        )
+    }
+
     func makeBackgroundUploadSession(delegate: URLSessionDelegate) -> URLSession {
         URLSession(
             configuration: configurationFactory.makeBackground(identifier: UploadConstants.backgroundSessionIdentifier),

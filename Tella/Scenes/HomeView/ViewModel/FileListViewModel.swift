@@ -22,6 +22,7 @@ enum FileListType {
     case recordList
     case fileList
     case selectFiles
+    case nearbySharing
 }
 
 class FileListViewModel: ObservableObject {
@@ -136,7 +137,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var shouldHideAddFileButton: Bool {
-        return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles
+        return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles || fileListType == .nearbySharing
     }
     
     var shouldShowSelectButton: Bool {
@@ -314,7 +315,7 @@ class FileListViewModel: ObservableObject {
             viewType = .list
         case .selectFiles:
             selectingFiles = true
-        case .fileList:
+        default:
             break
         }
     }
@@ -412,10 +413,6 @@ extension FileListViewModel {
     
     private func showToast(_ message: String) {
         toastMessage.send(message)
-    }
-
-    func clearTmpDirectory() {
-        mainAppModel.vaultManager.clearTmpDirectory()
     }
     
     func getDataToShare() -> [Any] {
