@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 9/19/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -14,6 +14,7 @@ import Combine
 class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     let dropboxRepository: DropboxRepositoryProtocol
     private var currentReport : DropboxReport?
+    private var decryptedStagingFileURLs: [URL] = []
     
     override var shouldShowCancelUploadConfirmation: Bool {
         return true
@@ -74,7 +75,25 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
             updateReport(reportStatus: .submissionPaused)
+            deleteDecryptedStagingFiles()
         }
+    }
+    
+    override func handleSubmitReportCompletion(completion: Subscribers.Completion<APIError>) {
+        if case .failure = completion {
+            deleteDecryptedStagingFiles()
+        }
+        super.handleSubmitReportCompletion(completion: completion)
+    }
+    
+    override func deleteFilesAfterSubmission() {
+        deleteDecryptedStagingFiles()
+    }
+    
+    private func deleteDecryptedStagingFiles() {
+        let urls = decryptedStagingFileURLs
+        decryptedStagingFileURLs.removeAll()
+        mainAppModel.vaultManager.deleteTmpFilesWithParents(files: urls)
     }
     
     override func updateReport() {
@@ -88,7 +107,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     }
     
     private func processUploadReportResponse(response:DropboxUploadResponse) {
-       
+        
         switch response {
             
         case .initial:
@@ -110,9 +129,17 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         let files = reportViewModel.files.filter { $0.status != .submitted }
         var dropboxFiles: [DropboxFileInfo] = []
+        decryptedStagingFileURLs.removeAll()
+        
+        let stagingFolder = "dropbox-\(UUID().uuidString)"
         
         for file in files {
-            if let url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true) {
+            if let url = await mainAppModel.vaultManager.loadVaultFileToURLAsync(
+                file: file,
+                withSubFolder: true,
+                subFolderName: stagingFolder
+            ) {
+                decryptedStagingFileURLs.append(url)
                 let dropboxFile = DropboxFileInfo(url: url,
                                                   fileName: url.lastPathComponent,
                                                   fileId: file.id ?? "",
@@ -124,7 +151,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
         return dropboxFiles
     }
-
+    
     override func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
         
         if let reportStatus {

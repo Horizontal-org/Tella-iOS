@@ -13,6 +13,7 @@ import SwiftUI
 struct ResourcePDFView: View {
     var file: URL
     var resourceTitle: String
+    let mainAppModel: MainAppModel
     @State private var navigationBarHidden = false
     @State private var dragOffset: CGFloat = 0
     
@@ -26,6 +27,9 @@ struct ResourcePDFView: View {
                     navigationBarHidden = value.translation.height < 0
                 })
         }
+        .onDisappear {
+            mainAppModel.vaultManager.deleteTmpFiles(files: [file])
+        }
     }
     
     var navigationBarView: some View {
@@ -34,5 +38,7 @@ struct ResourcePDFView: View {
 }
 
 #Preview {
-    ResourcePDFView(file: URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp.pdf"), resourceTitle: "resource title")
+    ResourcePDFView(file: URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp.pdf"),
+                    resourceTitle: "resource title",
+                    mainAppModel: MainAppModel.stub())
 }

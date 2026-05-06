@@ -29,6 +29,18 @@ extension Array {
         }
         return items
     }
-    
-    
+}
+
+extension Array {
+    // Chunk Array into subarrays of fixed size
+    func chunked(into size: Int) -> [[Element]] {
+        var result: [[Element]] = []
+        var index = 0
+        while index < count {
+            let chunk = Array(self[index..<Swift.min(index + size, count)])
+            result.append(chunk)
+            index += size
+        }
+        return result
+    }
 }

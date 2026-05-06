@@ -20,8 +20,7 @@ struct SaveAudioConfirmationView: View {
                            msgText: LocalizableRecorder.saveRecordingSheetExpl.localized,
                            cancelText: LocalizableRecorder.saveRecordingCancelSheetAction.localized,
                            discardText: LocalizableRecorder.saveRecordingDiscardSheetAction .localized,
-                           actionText: LocalizableRecorder.saveRecordingSaveSheetAction.localized,
-                           withDrag: false) {
+                           actionText: LocalizableRecorder.saveRecordingSaveSheetAction.localized) {
             
             sheetManager.hide()
             

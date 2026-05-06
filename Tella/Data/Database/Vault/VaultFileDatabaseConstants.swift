@@ -13,7 +13,7 @@ struct VaultD {
     
     /* DATABASE VERSION */
     
-    static let databaseVersion = 2
+    static let databaseVersion = 3
     
     /* DEFAULT TYPES FOR DATABASE */
     static let integer = " INTEGER "

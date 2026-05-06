@@ -36,7 +36,7 @@ struct NearbySharingContent: ImageTitleMessageContent {
 }
 
 struct SuccessLockContent: ImageTitleMessageContent {
-    var imageName: ImageResource? = .settingsCheckedCircle
+    var imageName: ImageResource? = .checkedCircle
     var title: String = LocalizableLock.lockSuccessTitle.localized
     var message: String = LocalizableLock.lockSuccessExpl.localized
 }

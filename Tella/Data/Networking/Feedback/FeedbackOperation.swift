@@ -42,7 +42,7 @@ class FeedbackOperation:Operation, WebRepository {
             let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(text))
             
             apiResponse
-                .compactMap{$0.0.toDomain() as? FeedbackAPI}
+                .compactMap{$0.response.toDomain() as? FeedbackAPI}
                 .sink { result in
                     self.handleFeedbackResult(result:result, feedbackId:feedbackId)
                 } receiveValue: { feedbackAPI in

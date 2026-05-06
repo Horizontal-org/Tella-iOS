@@ -48,9 +48,13 @@ struct MainOnboardingView: View {
         case .files(let content):
             OnboardingInfoView(content: content, info: LocalizableLock.onboardingFilesInfo.localized)
             
-        case .connections(let content), .nearbySharing(let content):
+        case .connections(let content):
             OnboardingConnectionsView(content: content)
-
+            
+        case .nearbySharing(let content):
+            ImageTitleMessageView(content: content)
+                .padding(.horizontal, .medium)
+            
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
         }
@@ -63,8 +67,8 @@ struct MainOnboardingView: View {
             PageDots(current: viewModel.index, total: viewModel.count)
                 .padding(.smallMedium)
             
-            BottomLockView<AnyView>(
-                isValid: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
+            NavigationBottomView<AnyView>(
+                shouldActivateNext: Binding(get: { viewModel.canTapNext() }, set: { _ in }),
                 nextButtonAction: .action,
                 shouldHideNext: viewModel.shouldHideNext(),
                 shouldHideBack: viewModel.shouldHideBack(),
@@ -74,7 +78,7 @@ struct MainOnboardingView: View {
                     let page = viewModel.pages[viewModel.index]
                     
                     switch page {
-                    case .connections:
+                    case .nearbySharing:
                         self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
                             LockChoiceOnboardingView(lockViewModel: viewModel.lockViewModel)
                         }

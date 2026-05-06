@@ -33,8 +33,9 @@ struct SelectingFilesHeaderView: View {
     }
     
     func showActivityViewController() {
+        let items = fileListViewModel.getDataToShare()
         self.present(style: .pageSheet) {
-            ActivityViewController(fileData: fileListViewModel.getDataToShare())
+            ActivityViewController(fileData: items, onDismiss: {})
                 .edgesIgnoringSafeArea(.all)
         }
     }

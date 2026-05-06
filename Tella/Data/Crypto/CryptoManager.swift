@@ -413,22 +413,3 @@ extension CryptoManager: CryptoManagerInterface {
         }
     }
 }
-
-
-extension SecKey {
-    func getString() -> String? {
-        guard let data = getData() else {
-            return nil
-        }
-        return data.base64EncodedString()
-    }
-    
-    func getData() -> Data? {
-        var error:Unmanaged<CFError>?
-        guard let cfdata = SecKeyCopyExternalRepresentation(self, &error) else {
-            return nil
-        }
-        let data:Data = cfdata as Data
-        return data
-    }
-}

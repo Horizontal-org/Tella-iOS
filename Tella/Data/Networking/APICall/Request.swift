@@ -10,6 +10,7 @@ import Foundation
 public enum ContentType: String {
     case json = "application/json"
     case data = "multipart/form-data"
+    case octetStream = "application/octet-stream"
 }
 
 public enum HTTPHeaderField: String {
@@ -22,6 +23,7 @@ public enum HTTPHeaderField: String {
     case xRequestedWith = "X-Requested-With"
     case tellaPlatform = "X-Tella-Platform"
     case ByPassCaptchaHeader = "Bypass-Captcha"
+    case connection = "Connection"
 }
 
 public enum XRequestedWithValue: String {

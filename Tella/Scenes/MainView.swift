@@ -67,7 +67,7 @@ struct MainView: View  {
     var tabbarContentView: some View {
         
         TabView(selection: $mainAppModel.selectedTab) {
-            HomeView(viewModel: self.homeViewModel)
+            HomeView(viewModel: self.homeViewModel, mainAppModel: mainAppModel)
                 .tabItem {
                     Image("tab.home")
                     Text(LocalizableHome.tabBar.localized)

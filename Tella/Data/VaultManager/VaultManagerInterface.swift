@@ -8,7 +8,7 @@ import Foundation
 import Combine
 
 protocol VaultManagerInterface {
-
+    
     var key : String? { get }
     var shouldCancelImportAndEncryption : CurrentValueSubject<Bool,Never> { get set }
     var onSuccessLock : PassthroughSubject<String,Never> { get set }
@@ -31,9 +31,12 @@ protocol VaultManagerInterface {
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
     func loadFileDataOld(fileName: String?) -> Data?
     func getDescriptionFileUrl(content:String,fileName:String) -> URL?
-    func loadVaultFileToURLAsync(file: ReportVaultFile, withSubFolder: Bool) async -> URL?
-    func loadVaultFileToURLAsync(file: VaultFileDB, withSubFolder: Bool) async -> URL?
-
+    func loadVaultFileToURLAsync(file: ReportVaultFile, withSubFolder: Bool, subFolderName: String?) async -> URL?
+    func loadVaultFileToURLAsync(file: VaultFileDB, withSubFolder: Bool, subFolderName: String?) async -> URL?
+    
+    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL?
+    func loadVaultFileToURLAsync(file: VaultFileDB) async -> URL?
+    
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL?
@@ -42,14 +45,16 @@ protocol VaultManagerInterface {
     
     func createTempFileURL(pathExtension: String) -> URL
     func createTempFileURL(fileName: String?) -> URL
-    func createTempFileURL(fileName: String?, pathExtension: String?, withSubFolder:Bool) -> URL
+    func createTempFileURL(fileName: String?, pathExtension: String?, withSubFolder:Bool, subFolderName: String?) -> URL
     func fileExists(at path: String) -> Bool
     func isReadableFile(at filePath: String) -> Bool
-
+    
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])
     func deleteFiles(files: [URL])
     func deleteTmpFiles(files: [URL])
+    func deleteTmpFilesWithParents(files: [URL])
+    func isInsideTemporaryDirectory(_ url: URL) -> Bool
     func clearTmpDirectory()
     func deleteContainerDirectory()
     func deleteRootFile()

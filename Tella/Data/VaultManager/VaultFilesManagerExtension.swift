@@ -3,11 +3,12 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 13/6/2024.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
 
+import AVFoundation
 import Combine
 import Foundation
 import Photos
@@ -91,9 +92,11 @@ extension VaultFilesManager {
                 vaultManager?.deleteTmpFiles(files: [urlFile])
                 return tempFileurl
             case .video:
-                guard let tmpFileURL = vaultManager?.createTempFileURL(pathExtension: urlFile.pathExtension) else {return nil}
-                guard let tmpFileURL = await returnVideoURLWithoutMetadata(inputputURL: urlFile, outputURL: tmpFileURL) else {return nil}
-                return tmpFileURL
+                guard let outURL = vaultManager?.createTempFileURL(pathExtension: urlFile.pathExtension) else { return nil }
+                guard let exportURL = await returnVideoURLWithoutMetadata(inputputURL: urlFile, outputURL: outURL) else { return nil }
+                // Original is no longer needed once export succeeds
+                vaultManager?.deleteTmpFiles(files: [urlFile])
+                return exportURL
             default:
                 return urlFile
             }
@@ -132,10 +135,12 @@ extension VaultFilesManager {
                 throw RuntimeError("Error creating temp file URL")
             }
             
-            guard let tmpFileURL = await returnVideoURLWithoutMetadata(inputputURL: url, outputURL: tmpFileURLOutput, phasset: importedFile.asset) else {
+            guard let exportURL = await returnVideoURLWithoutMetadata(inputputURL: url, outputURL: tmpFileURLOutput, phasset: importedFile.asset) else {
                 return nil
             }
-            return tmpFileURL
+            // Copy under `url` is done once export completes
+            vaultManager?.deleteTmpFiles(files: [url])
+            return exportURL
             
         } else {
             return url
@@ -165,8 +170,14 @@ extension VaultFilesManager {
      */
 
     func returnVideoURLWithoutMetadata(inputputURL: URL? = nil, outputURL: URL, phasset:PHAsset? = nil) async -> URL? {
-       
+        
         guard let asset = await getAVAsset(inputputURL:inputputURL, phasset: phasset) else {return nil}
+        
+        // AVAssetExportSession fails with Cannot Save (-11823) if `outputURL` already exists.
+        if let vaultManager,
+           vaultManager.fileExists(at: outputURL.path) {
+            vaultManager.deleteTmpFiles(files: [outputURL])
+        }
         
         guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
         exportSession.outputURL = outputURL
@@ -206,6 +217,4 @@ extension VaultFilesManager {
             return nil
         }
     }
-
-
 }

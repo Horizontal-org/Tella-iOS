@@ -32,6 +32,14 @@ final class FileDetailsViewModel: ObservableObject {
         loadDocument()
     }
     
+    /// Securely removes the decrypted QuickLook temp file when leaving the screen or reloading.
+    func cleanupDecryptedTempFile() {
+        if let url = urlDocument {
+            mainAppModel?.vaultManager.deleteTmpFiles(files: [url])
+            urlDocument = nil
+        }
+    }
+    
     func loadDocument() {
         
         documentIsReady = false
@@ -52,10 +60,5 @@ final class FileDetailsViewModel: ObservableObject {
             
             self.documentIsReady = true
         }
-    }
-    
-    func deleteTmpFile() {
-        guard let url = self.urlDocument else {return}
-        mainAppModel?.vaultManager.deleteFiles(files: [url])
     }
 }
