@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -7,6 +7,7 @@
 import Foundation
 import LocalAuthentication
 import CommonCrypto
+import Security
 
 enum CryptoOperationEnum {
     case encrypt
@@ -15,7 +16,7 @@ enum CryptoOperationEnum {
 
 protocol CryptoManagerInterface {
     func encrypt(_ data: Data) -> Data?
-    func decrypt(_ data: Data) -> Data?    
+    func decrypt(_ data: Data) -> Data?
     func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
     func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
 }
@@ -24,17 +25,6 @@ enum KeyEnum {
     case META_PRIVATE
     case PUBLIC
     case PRIVATE
-
-    public func toKeyFileEnum() -> KeyFileEnum? {
-        switch (self) {
-        case .META_PRIVATE:
-            return nil
-        case .PUBLIC:
-            return .PUBLIC
-        case .PRIVATE:
-            return .PRIVATE
-        }
-    }
 }
 
 enum KeyFileEnum: String {
@@ -42,182 +32,518 @@ enum KeyFileEnum: String {
     case PRIVATE = "priv-key.txt"
 }
 
+final class CryptoManager {
 
-class CryptoManager {
-    
-    static let shared = CryptoManager(cryptoFileManager: CryptoFileManager())
+    static let shared = CryptoManager(
+        cryptoFileManager: CryptoFileManager()
+    )
+
     private let cryptoFileManager: CryptoFileManagerProtocol
-    
-    private static let metaPrivateKeyTagPrefix = "org.horizontal.tella.ios"
-    private static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
+    private let cryptoKeychainStore: CryptoKeychainStoring
 
-    @UserDefaultsProperty(key: "keyID")
-    private var keyID: String?
+    private(set) var unlockedDatabaseKey: String?
+    private(set) var vaultPrivateKey: SecKey?
 
-    private func metaPrivateKeyTag(_ keyID: String) -> String {
-        return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
-    }
-    
-     var metaPrivateKey: SecKey?
-    
     @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.tellaPassword)
-     var passwordType: PasswordTypeEnum
+    var passwordType: PasswordTypeEnum
 
-    init(cryptoFileManager: CryptoFileManagerProtocol) {
+    init(
+        cryptoFileManager: CryptoFileManagerProtocol,
+        cryptoKeychainStore: CryptoKeychainStoring = CryptoKeychainStore()
+    ) {
         self.cryptoFileManager = cryptoFileManager
+        self.cryptoKeychainStore = cryptoKeychainStore
     }
-    
-//    var metaPrivateKeyExists: Bool {
-//        return recoverMetaPrivateKey() != nil
-//    }
+}
 
-    // Returns the options for the given key
-    private func getOptions(_ type: KeyEnum) -> [String: Any] {
-        switch (type) {
-        case .META_PRIVATE:
-            return [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
-                kSecAttrKeySizeInBits as String : 256,
-                kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave]
-        case .PUBLIC:
-            return [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
-                kSecAttrKeySizeInBits as String : 256]
-        case .PRIVATE:
-            return [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
-                kSecAttrKeySizeInBits as String : 256]
-        }
-    }
-    
-    // Retrieves the meta private key from the secure enclave.
-    // Returns nil on failure or if the key doesn't exist yet.
-    private func recoverMetaPrivateKey(password:String?) -> SecKey? {
-        guard let keyID = keyID else { return nil }
-        let query = metaPrivateKeyQuery(keyID,password: password)
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess else {
-            debugLog("Error: \(SecCopyErrorMessageString(status, nil) ?? "" as CFString)", space: .crypto)
+// MARK: - Constants
+
+private extension CryptoManager {
+
+    static let metaPrivateKeyTagPrefix = "org.horizontal.tella.ios"
+    static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
+    static let vaultKeysRootPath = "\(NSHomeDirectory())/Documents/keys"
+    static let keyIDUserDefaultsKey = "keyID"
+
+    static let cryptoKeychainMigrationCompletedUserDefaultsKey =
+        "cryptoKeychainMigrationCompleted"
+}
+
+// MARK: - Public CryptoManagerInterface
+
+extension CryptoManager: CryptoManagerInterface {
+
+    func encrypt(_ data: Data) -> Data? {
+        guard let publicKey = recoverKey(.PUBLIC) else {
+            debugLog("Failed to recover public key", space: .crypto)
             return nil
         }
-        let key = item as! SecKey
-        return key
+
+        return encrypt(data, using: publicKey)
     }
-    
-    // Query used to recover the meta private key
-    private func metaPrivateKeyQuery(_ keyID: String, password:String?) -> [String: Any] {
-       
-        let context = LAContext()
-        if let password = password   {
-            context.setCredential(Data(password.utf8), type: .applicationPassword)
+
+    func decrypt(_ data: Data) -> Data? {
+        guard let vaultPrivateKey else {
+            debugLog("Vault private key is not unlocked", space: .crypto)
+            return nil
         }
 
+        return decrypt(data, using: vaultPrivateKey)
+    }
+
+    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
+        performFileCrypto(
+            inputFileURL: inputFileURL,
+            outputFileURL: outputFileURL,
+            operation: .encrypt
+        )
+    }
+
+    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
+        performFileCrypto(
+            inputFileURL: inputFileURL,
+            outputFileURL: outputFileURL,
+            operation: .decrypt
+        )
+    }
+}
+
+// MARK: - Unlock
+
+extension CryptoManager {
+
+    func unlockAndMigrateIfNeeded(password: String?) async -> String? {
+        guard let privateKey = recoverKey(.PRIVATE, password: password),
+              let keyString = privateKey.getString() else {
+            return nil
+        }
+
+        await MainActor.run {
+            self.unlockedDatabaseKey = keyString
+        }
+
+        await migrateLegacyKeysToKeychainIfNeededAsync(
+            password: password,
+            vaultKey: privateKey
+        )
+
+        return keyString
+    }
+
+    func recoverKey(_ type: KeyEnum, password: String? = nil) -> SecKey? {
+        if type == .META_PRIVATE {
+            return recoverMetaPrivateKey(password: password)
+        }
+
+        guard let keyID = resolvedKeyID else {
+            debugLog("keyID not found", space: .crypto)
+            return nil
+        }
+
+        guard var keyData = recoverStoredKeyData(type, keyID: keyID) else {
+            debugLog("key data not found", space: .crypto)
+            return nil
+        }
+
+        if type == .PRIVATE {
+            guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
+                debugLog("meta private key not recovered", space: .crypto)
+                return nil
+            }
+
+            guard let decryptedData = decrypt(keyData, using: metaPrivateKey) else {
+                debugLog("private key data not decrypted", space: .crypto)
+                return nil
+            }
+
+            keyData = decryptedData
+        }
+
+        guard let key = makeSecKey(from: keyData, type: type) else {
+            return nil
+        }
+
+        if type == .PRIVATE {
+            vaultPrivateKey = key
+        }
+
+        return key
+    }
+
+    func keysInitialized() -> Bool {
+        guard let keyID = resolvedKeyID else { return false }
+
+        if cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID) != nil,
+           cryptoKeychainStore.recoverPublicKey(keyID: keyID) != nil {
+            return true
+        }
+
+        return cryptoFileManager.keyFileExists(.PRIVATE)
+    }
+}
+
+// MARK: - Key Initialisation / Update
+
+extension CryptoManager {
+
+    func initKeys(_ type: PasswordTypeEnum, password: String) throws {
+        debugLog("Creating new crypto keys", space: .crypto)
+
+        let privateKey = try createVaultPrivateKey()
+        let newKeyID = try saveNewKeyPair(
+            privateKey,
+            passwordType: type,
+            password: password
+        )
+
+        guard let metaPrivateKey = recoverMetaPrivateKey(password: password),
+              verifyKeychainVaultMatches(
+                vaultKey: privateKey,
+                metaPrivateKey: metaPrivateKey,
+                keyID: newKeyID
+              ) else {
+            rollbackKeychainVaultMaterial(keyID: newKeyID, deleteKeyID: true)
+            throw RuntimeError("Fresh key setup verification failed")
+        }
+
+        vaultPrivateKey = privateKey
+        passwordType = type
+        markCryptoKeychainMigrationComplete()
+    }
+
+    func updateKeys(
+        _ privateKey: SecKey,
+        _ type: PasswordTypeEnum,
+        newPassword: String,
+        oldPassword: String
+    ) throws {
+        guard let oldKeyID = resolvedKeyID else {
+            throw RuntimeError("Could not find old key ID")
+        }
+
+        let newKeyID = try saveNewKeyPair(
+            privateKey,
+            passwordType: type,
+            password: newPassword
+        )
+
+        guard let newMetaPrivateKey = recoverMetaPrivateKey(password: newPassword),
+              verifyKeychainVaultMatches(
+                vaultKey: privateKey,
+                metaPrivateKey: newMetaPrivateKey,
+                keyID: newKeyID
+              ) else {
+            rollbackKeychainVaultMaterial(keyID: newKeyID, deleteKeyID: true)
+            throw RuntimeError("Updated key setup verification failed")
+        }
+
+        passwordType = type
+        vaultPrivateKey = privateKey
+
+        _ = deleteMetaKeypair(oldKeyID, password: oldPassword)
+        markCryptoKeychainMigrationComplete()
+    }
+
+    @discardableResult
+    func saveNewKeyPair(
+        _ privateKey: SecKey,
+        passwordType: PasswordTypeEnum,
+        password: String
+    ) throws -> String {
+        let newKeyID = UUID().uuidString
+        let appTag = metaPrivateKeyTag(newKeyID)
+
+        let metaPrivateKey = try createMetaPrivateKey(
+            passwordType,
+            appTag: appTag,
+            password: password
+        )
+
+        do {
+            try writeEncryptedVaultKeypairToKeychain(
+                privateKey: privateKey,
+                metaPrivateKey: metaPrivateKey,
+                keyID: newKeyID
+            )
+
+            persistVaultKeyID(newKeyID)
+            return newKeyID
+
+        } catch {
+            _ = deleteMetaKeypair(newKeyID, password: password)
+            rollbackKeychainVaultMaterial(keyID: newKeyID, deleteKeyID: true)
+            throw error
+        }
+    }
+}
+
+// MARK: - Migration
+
+extension CryptoManager {
+
+    func migrateLegacyKeysToKeychainIfNeededAsync(
+        password: String?,
+        vaultKey: SecKey
+    ) async {
+        await Task.detached(priority: .utility) {
+            self.migrateLegacyKeysToKeychainIfNeeded(
+                password: password,
+                vaultKey: vaultKey
+            )
+        }.value
+    }
+
+    func migrateLegacyKeysToKeychainIfNeeded(
+        password: String?,
+        vaultKey: SecKey
+    ) {
+        guard let keyID = resolvedKeyID else {
+            debugLog("Migration skipped: keyID not found", space: .crypto)
+            return
+        }
+
+        if isCryptoKeychainMigrationMarkedComplete {
+            deleteLegacyKeyFilesIfPresent(keyID: keyID)
+            return
+        }
+
+        guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
+            debugLog("Migration skipped: meta private key unavailable", space: .crypto)
+            return
+        }
+
+        let hasFullKeychain =
+            cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID) != nil &&
+            cryptoKeychainStore.recoverPublicKey(keyID: keyID) != nil
+
+        if hasFullKeychain,
+           verifyKeychainVaultMatches(
+            vaultKey: vaultKey,
+            metaPrivateKey: metaPrivateKey,
+            keyID: keyID
+           ) {
+            markCryptoKeychainMigrationComplete()
+            deleteLegacyKeyFilesIfPresent(keyID: keyID)
+            return
+        }
+
+        guard cryptoFileManager.keyFileExists(.PRIVATE) else {
+            debugLog("Migration skipped: no legacy private key file", space: .crypto)
+            return
+        }
+
+        do {
+            try writeEncryptedVaultKeypairToKeychain(
+                privateKey: vaultKey,
+                metaPrivateKey: metaPrivateKey,
+                keyID: keyID
+            )
+
+            guard verifyKeychainVaultMatches(
+                vaultKey: vaultKey,
+                metaPrivateKey: metaPrivateKey,
+                keyID: keyID
+            ) else {
+                rollbackKeychainVaultMaterial(keyID: keyID, deleteKeyID: false)
+                debugLog("Migration failed: verification failed", space: .crypto)
+                return
+            }
+
+            markCryptoKeychainMigrationComplete()
+            deleteLegacyKeyFilesIfPresent(keyID: keyID)
+
+        } catch {
+            rollbackKeychainVaultMaterial(keyID: keyID, deleteKeyID: false)
+            debugLog("Migration failed: \(error)", space: .crypto)
+        }
+    }
+
+    func deleteLegacyKeyFilesIfPresent(keyID: String) {
+        guard legacyPrivateKeyFileExists(keyID: keyID) else { return }
+
+        cryptoFileManager.deleteKeyFolder(keyID)
+        debugLog("Deleted legacy key files for keyID \(keyID)", space: .crypto)
+    }
+
+    private var isCryptoKeychainMigrationMarkedComplete: Bool {
+        UserDefaults.standard.bool(
+            forKey: Self.cryptoKeychainMigrationCompletedUserDefaultsKey
+        )
+    }
+
+    private func markCryptoKeychainMigrationComplete() {
+        UserDefaults.standard.set(
+            true,
+            forKey: Self.cryptoKeychainMigrationCompletedUserDefaultsKey
+        )
+    }
+
+    private func rollbackKeychainVaultMaterial(
+        keyID: String,
+        deleteKeyID: Bool
+    ) {
+        _ = cryptoKeychainStore.deleteEncryptedPrivateKey(keyID: keyID)
+        _ = cryptoKeychainStore.deletePublicKey(keyID: keyID)
+
+        if deleteKeyID {
+            _ = cryptoKeychainStore.deleteKeyID()
+            UserDefaults.standard.removeObject(forKey: Self.keyIDUserDefaultsKey)
+        }
+    }
+}
+
+// MARK: - Keychain Write / Verify
+
+private extension CryptoManager {
+
+    func writeEncryptedVaultKeypairToKeychain(
+        privateKey: SecKey,
+        metaPrivateKey: SecKey,
+        keyID: String
+    ) throws {
+        let privateData = try externalRepresentation(
+            of: privateKey,
+            errorMessage: "Failed to export vault private key"
+        )
+
+        let metaPublicKey = try createMetaPublicKey(from: metaPrivateKey)
+
+        guard let encryptedPrivateData = encrypt(privateData, using: metaPublicKey) else {
+            throw RuntimeError("Failed to encrypt vault private key")
+        }
+
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+            throw RuntimeError("Failed to create vault public key")
+        }
+
+        let publicData = try externalRepresentation(
+            of: publicKey,
+            errorMessage: "Failed to export vault public key"
+        )
+
+        guard cryptoKeychainStore.saveEncryptedPrivateKey(
+            encryptedPrivateData,
+            keyID: keyID
+        ) else {
+            throw RuntimeError("Failed to save encrypted private key in Keychain")
+        }
+
+        guard cryptoKeychainStore.savePublicKey(publicData, keyID: keyID) else {
+            _ = cryptoKeychainStore.deleteEncryptedPrivateKey(keyID: keyID)
+            throw RuntimeError("Failed to save public key in Keychain")
+        }
+
+        guard cryptoKeychainStore.saveKeyID(keyID) else {
+            _ = cryptoKeychainStore.deleteEncryptedPrivateKey(keyID: keyID)
+            _ = cryptoKeychainStore.deletePublicKey(keyID: keyID)
+            throw RuntimeError("Failed to save keyID in Keychain")
+        }
+
+        UserDefaults.standard.set(keyID, forKey: Self.keyIDUserDefaultsKey)
+    }
+
+    func verifyKeychainVaultMatches(
+        vaultKey: SecKey,
+        metaPrivateKey: SecKey,
+        keyID: String
+    ) -> Bool {
+        guard let encryptedPrivateData =
+                cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID),
+              let decryptedPrivateData = decrypt(
+                encryptedPrivateData,
+                using: metaPrivateKey
+              ) else {
+            return false
+        }
+
+        guard let recoveredPrivateKey = makeSecKey(
+            from: decryptedPrivateData,
+            type: .PRIVATE
+        ) else {
+            return false
+        }
+
+        guard let originalPrivateData = SecKeyCopyExternalRepresentation(vaultKey, nil) as Data?,
+              let recoveredPrivateData = SecKeyCopyExternalRepresentation(recoveredPrivateKey, nil) as Data?,
+              originalPrivateData == recoveredPrivateData else {
+            return false
+        }
+
+        guard let originalPublicKey = SecKeyCopyPublicKey(vaultKey),
+              let originalPublicData = SecKeyCopyExternalRepresentation(originalPublicKey, nil) as Data?,
+              let storedPublicData = cryptoKeychainStore.recoverPublicKey(keyID: keyID),
+              originalPublicData == storedPublicData else {
+            return false
+        }
+
+        return true
+    }
+}
+
+// MARK: - Meta Private Key
+
+private extension CryptoManager {
+
+    func recoverMetaPrivateKey(password: String?) -> SecKey? {
+        guard let keyID = resolvedKeyID else {
+            debugLog("keyID not found", space: .crypto)
+            return nil
+        }
+
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(
+            metaPrivateKeyQuery(keyID: keyID, password: password) as CFDictionary,
+            &item
+        )
+
+        guard status == errSecSuccess else {
+            debugLog(
+                "Failed to recover meta private key: \(status.securityMessage)",
+                space: .crypto
+            )
+            return nil
+        }
+
+        return item as! SecKey
+    }
+
+    func metaPrivateKeyQuery(
+        keyID: String,
+        password: String?
+    ) -> [String: Any] {
+        let context = LAContext()
+        
+        if let password {
+            context.setCredential(Data(password.utf8), type: .applicationPassword)
+        }
+        
         return [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecReturnRef as String: true,
             kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-            kSecUseAuthenticationContext as String : context
+            kSecUseAuthenticationContext as String: context
         ]
     }
-
-    // Retrieves a key from a file: meta public, regular public, or regular private.
-    // When retrieving the regular private, the user is prompted for their authentication.
-    func recoverKey(_ type: KeyEnum, password:String? = nil) -> SecKey? {
-        guard let keyFileType = type.toKeyFileEnum() else {
-            return recoverMetaPrivateKey(password: password)
-        }
-        guard var data = cryptoFileManager.recoverKeyData(keyFileType) else {
-            debugLog("key not found")
-            return nil
-        }
-        if type == .PRIVATE {
-            // Decrypts the regular private key
-            guard let metaPrivateKey = recoverKey(.META_PRIVATE,password:password) else {
-                debugLog("meta private key not recovered")
-                return nil
-            }
-            guard let decryptedData = decrypt(data, metaPrivateKey) else {
-                debugLog("data not decrypted")
-                return nil
-            }
-            data = decryptedData
-        }
-        let options: [String: Any] = getOptions(type)
-        var error: Unmanaged<CFError>?
-        guard let key = SecKeyCreateWithData(data as CFData, options as CFDictionary, &error) else {
-            debugLog("Error: \(error?.takeRetainedValue().localizedDescription ?? "")", space: .crypto)
-            return nil
-        }
-        if type == .PRIVATE {
-            self.metaPrivateKey = key
-        }
-        
-        return key
-    }
     
-    @discardableResult
-    func deleteMetaKeypair(_ keyID: String, password:String) -> Bool {
-        let query = metaPrivateKeyQuery(keyID,password: password)
-        let status = SecItemDelete(query as CFDictionary)
-        if status != errSecSuccess {
-            debugLog("Failed to delete meta private key in enclave")
-            return false
-        }
-        return true
-    }
-
-    // Generates meta public key from meta private key.
-    private func createMetaPublicKey(_ privateKey: SecKey) throws -> SecKey {
-        debugLog("Saving meta public")
-        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
-            throw RuntimeError("Failed to generate meta public key")
-        }
-        return publicKey
-    }
-    
-    // Retrieves the regular public key, encrypts the regular private key, and saves both.
-    private func saveKeypair(_ privateKey: SecKey, _ metaPrivateKey: SecKey, _ keyID: String) throws {
-        var error: Unmanaged<CFError>?
-        guard let privateData = SecKeyCopyExternalRepresentation(privateKey, &error) as Data? else {
-            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
-            throw RuntimeError(msg)
-        }
-        let metaPublicKey = try createMetaPublicKey(metaPrivateKey)
-        guard let privateEncryptedData = encrypt(privateData, metaPublicKey) else {
-            throw RuntimeError("Error: Could not encrypt private key")
-        }
-        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
-            throw RuntimeError("Failed to generate public key")
-        }
-        guard let publicData = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
-            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
-            throw RuntimeError(msg)
-        }
-        try cryptoFileManager.initKeyFolder(keyID)
-        guard cryptoFileManager.saveKeyData(privateEncryptedData, .PRIVATE, keyID) else {
-            cryptoFileManager.deleteKeyFolder(keyID)
-            throw RuntimeError("Failed to save encrypted private key")
-        }
-        guard cryptoFileManager.saveKeyData(publicData, .PUBLIC, keyID) else {
-            cryptoFileManager.deleteKeyFolder(keyID)
-            throw RuntimeError("Failed to save public key")
-        }
-    }
-    
-    // Generates the meta private key with the appropriate authentication
-    private func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String, password:String) throws -> SecKey {
-        // .privateKeyUsage needed so it is accessible
+    func createMetaPrivateKey(
+        _ type: PasswordTypeEnum,
+        appTag: String,
+        password: String
+    ) throws -> SecKey {
         let context = LAContext()
-         context.setCredential(Data(password.utf8), type: .applicationPassword)
+        context.setCredential(Data(password.utf8), type: .applicationPassword)
 
-        let access = SecAccessControlCreateWithFlags(
-                kCFAllocatorDefault,
-                kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-                [.privateKeyUsage, type.toFlag()],
-                nil)!
+        guard let access = SecAccessControlCreateWithFlags(
+            kCFAllocatorDefault,
+            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            [.privateKeyUsage, type.toFlag()],
+            nil
+        ) else {
+            throw RuntimeError("Failed to create SecAccessControl")
+        }
+
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecAttrKeySizeInBits as String: 256,
@@ -227,189 +553,299 @@ class CryptoManager {
                 kSecAttrApplicationTag as String: appTag,
                 kSecAttrAccessControl as String: access
             ],
-            kSecUseAuthenticationContext as String : context,
+            kSecUseAuthenticationContext as String: context
         ]
+
         var error: Unmanaged<CFError>?
-        guard let metaPrivateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
-            throw RuntimeError(msg)
+
+        guard let key = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
+            throw RuntimeError(
+                error?.takeRetainedValue().localizedDescription
+                ?? "Failed to create meta private key"
+            )
         }
-        return metaPrivateKey
+
+        return key
     }
-    
-    // Generates a new regular private key. Returns nil on failure.
-    private func createPrivateKey() throws -> SecKey {
+
+    func createMetaPublicKey(from privateKey: SecKey) throws -> SecKey {
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+            throw RuntimeError("Failed to create meta public key")
+        }
+
+        return publicKey
+    }
+
+    @discardableResult
+    func deleteMetaKeypair(_ keyID: String, password: String) -> Bool {
+        let status = SecItemDelete(
+            metaPrivateKeyQuery(keyID: keyID, password: password) as CFDictionary
+        )
+
+        if status != errSecSuccess && status != errSecItemNotFound {
+            debugLog("Failed to delete meta private key: \(status.securityMessage)", space: .crypto)
+            return false
+        }
+
+        return true
+    }
+}
+
+// MARK: - Vault Key Creation / Recovery Helpers
+
+private extension CryptoManager {
+
+    func createVaultPrivateKey() throws -> SecKey {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecAttrKeySizeInBits as String: 256
         ]
+
         var error: Unmanaged<CFError>?
-        guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            debugLog("Creating private key failed")
-            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
-            throw RuntimeError(msg)
+
+        guard let privateKey = SecKeyCreateRandomKey(
+            attributes as CFDictionary,
+            &error
+        ) else {
+            throw RuntimeError(
+                error?.takeRetainedValue().localizedDescription
+                ?? "Failed to create vault private key"
+            )
         }
+
         return privateKey
     }
-    
-    // Checks if both private keys are properly initialized
-    func keysInitialized() -> Bool {
-        cryptoFileManager.keyFileExists(.PRIVATE)
-    }
-    
-    func initKeys(_ type: PasswordTypeEnum, password:String) throws {
-        debugLog("Creating all-new keys")
-        let privateKey = try createPrivateKey()
-        try keyHelper(privateKey, type, password: password)
-        self.passwordType = type
-    }
-    
-    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum, newPassword:String, oldPassword:String) throws {
-        guard let keyID = keyID else {
-            throw RuntimeError("Could not find key ID")
-        }
-        try keyHelper(privateKey, type, password: newPassword)
-        self.passwordType = type
-        deleteMetaKeypair(keyID, password:oldPassword)
-    }
-    
-    func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {
-        let newKeyID = UUID().uuidString
-        let newAppTag = metaPrivateKeyTag(newKeyID)
-        let metaPrivateKey = try createMetaPrivateKey(type, newAppTag, password: password)
-        try saveKeypair(privateKey, metaPrivateKey, newKeyID)
 
-        if let keyID = keyID {
-            cryptoFileManager.deleteKeyFolder(keyID)
-        }
-        keyID = newKeyID
-    }
-    
-    // Uses the given public key to encrypt the data. Returns nil on failure.
-    private func encrypt(_ data: Data, _ publicKey: SecKey) -> Data? {
-        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, CryptoManager.algorithm) else {
-            debugLog("Algorithm is not supported", space: .crypto)
+    func recoverStoredKeyData(_ type: KeyEnum, keyID: String) -> Data? {
+        switch type {
+        case .PRIVATE:
+            return cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID)
+                ?? cryptoFileManager.recoverKeyData(.PRIVATE)
+
+        case .PUBLIC:
+            return cryptoKeychainStore.recoverPublicKey(keyID: keyID)
+                ?? cryptoFileManager.recoverKeyData(.PUBLIC)
+
+        case .META_PRIVATE:
             return nil
         }
+    }
+
+    func makeSecKey(from data: Data, type: KeyEnum) -> SecKey? {
         var error: Unmanaged<CFError>?
-        guard let cipherText = SecKeyCreateEncryptedData(publicKey, CryptoManager.algorithm, data as CFData, &error) as Data? else {
-            debugLog("Error: Failed to produce cipher text. \(error!.takeRetainedValue().localizedDescription)", space: .crypto)
+
+        guard let key = SecKeyCreateWithData(
+            data as CFData,
+            keyOptions(for: type) as CFDictionary,
+            &error
+        ) else {
+            debugLog(
+                "Failed to create SecKey: \(error?.takeRetainedValue().localizedDescription ?? "")",
+                space: .crypto
+            )
             return nil
         }
-        return cipherText
+
+        return key
     }
-    
-    // Uses the given private key to decrypt the data. Returns nil on failure.
-    private func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
-        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, CryptoManager.algorithm) else {
-            debugLog("Algorithm is not supported")
-            return nil
+
+    func keyOptions(for type: KeyEnum) -> [String: Any] {
+        switch type {
+        case .META_PRIVATE:
+            return [
+                kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+                kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
+                kSecAttrKeySizeInBits as String: 256,
+                kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave
+            ]
+
+        case .PUBLIC:
+            return [
+                kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+                kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
+                kSecAttrKeySizeInBits as String: 256
+            ]
+
+        case .PRIVATE:
+            return [
+                kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+                kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
+                kSecAttrKeySizeInBits as String: 256
+            ]
         }
+    }
+
+    func externalRepresentation(
+        of key: SecKey,
+        errorMessage: String
+    ) throws -> Data {
         var error: Unmanaged<CFError>?
-        guard let clearText = SecKeyCreateDecryptedData(privateKey, CryptoManager.algorithm, data as CFData, &error) as Data? else {
-            debugLog("Decryption failed: \(error!.takeRetainedValue().localizedDescription)", space: .crypto)
-            return nil
+
+        guard let data = SecKeyCopyExternalRepresentation(
+            key,
+            &error
+        ) as Data? else {
+            throw RuntimeError(
+                error?.takeRetainedValue().localizedDescription
+                ?? errorMessage
+            )
         }
-        return clearText
-    }
 
-    /// Encrypt the content of an input file to an output file using the encryption key data
-    /// - Parameters:
-    ///   - inputFileURL: It represents the URL of the file to be encrypted.
-    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
-    ///   - encryptionKeyData: It represents the secret key data used for encryption.
-    /// - Throws,  An error if the file encryption fails.
-    private func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, encryptionKeyData: Data) throws {
-        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
-        try fileCryptor.cryptFile()
-    }
-
-    /// Decrypt the content of an input file to an output file using the decryption key data
-    /// - Parameters:
-    ///   - inputFileURL: It represents the URL of the file to be decrypted.
-    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
-    ///   - decryptionKeyData: It represents the secret key data used for decryption.
-    /// - Throws,  An error if the file decryption fails.
-    private func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, decryptionKeyData: Data) throws {
-        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: decryptionKeyData, cryptoOperation: .decrypt)
-        try fileCryptor.cryptFile()
+        return data
     }
 }
 
-extension CryptoManager: CryptoManagerInterface {
-    
-    func encrypt(_ data: Data) -> Data? {
-        guard let publicKey = recoverKey(.PUBLIC) else {
-            debugLog("Failed to recover public key", space: .crypto)
-            return nil
+// MARK: - Key ID
+
+private extension CryptoManager {
+
+    var resolvedKeyID: String? {
+        let keychainID = cryptoKeychainStore.recoverKeyID()
+        let defaultsID = UserDefaults.standard.string(forKey: Self.keyIDUserDefaultsKey)
+
+        guard let keychainID,
+              let defaultsID,
+              keychainID != defaultsID else {
+            return keychainID ?? defaultsID
         }
-        return encrypt(data, publicKey)
-    }
-    
-    func decrypt(_ data: Data) -> Data? {
-        
-        guard let metaPrivateKey = self.metaPrivateKey else {
-            debugLog("Failed to recover private key", space: .crypto)
-            return nil
+
+        let keychainLegacyExists = legacyPrivateKeyFileExists(keyID: keychainID)
+        let defaultsLegacyExists = legacyPrivateKeyFileExists(keyID: defaultsID)
+
+        if defaultsLegacyExists && !keychainLegacyExists {
+            return defaultsID
         }
-        return decrypt(data, metaPrivateKey)
+
+        if keychainLegacyExists && !defaultsLegacyExists {
+            return keychainID
+        }
+
+        return defaultsID
     }
 
-    /// Encrypt the content of an input file to an output file
-    /// - Parameters:
-    ///   - inputFileURL: It represents the URL of the file to be encrypted.
-    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
-    /// - Returns: A boolean value (bool). true indicates successful file encryption in OutputFileURL,
-    ///            and false indicates failure of encryption, recovering public key or converting the publicKey to data .
-    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
+    func legacyPrivateKeyFileExists(keyID: String) -> Bool {
+        let path = "\(Self.vaultKeysRootPath)/\(keyID)/\(KeyFileEnum.PRIVATE.rawValue)"
+        return FileManager.default.fileExists(atPath: path)
+    }
+
+    func persistVaultKeyID(_ keyID: String) {
+        _ = cryptoKeychainStore.saveKeyID(keyID)
+        UserDefaults.standard.set(keyID, forKey: Self.keyIDUserDefaultsKey)
+    }
+
+    func metaPrivateKeyTag(_ keyID: String) -> String {
+        "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
+    }
+}
+
+// MARK: - SecKey Encryption / Decryption
+
+private extension CryptoManager {
+
+    func encrypt(_ data: Data, using publicKey: SecKey) -> Data? {
+        guard SecKeyIsAlgorithmSupported(
+            publicKey,
+            .encrypt,
+            Self.algorithm
+        ) else {
+            debugLog("Algorithm is not supported for encryption", space: .crypto)
+            return nil
+        }
+
+        var error: Unmanaged<CFError>?
+
+        guard let encryptedData = SecKeyCreateEncryptedData(
+            publicKey,
+            Self.algorithm,
+            data as CFData,
+            &error
+        ) as Data? else {
+            debugLog(
+                "Encryption failed: \(error?.takeRetainedValue().localizedDescription ?? "")",
+                space: .crypto
+            )
+            return nil
+        }
+
+        return encryptedData
+    }
+
+    func decrypt(_ data: Data, using privateKey: SecKey) -> Data? {
+        guard SecKeyIsAlgorithmSupported(
+            privateKey,
+            .decrypt,
+            Self.algorithm
+        ) else {
+            debugLog("Algorithm is not supported for decryption", space: .crypto)
+            return nil
+        }
+
+        var error: Unmanaged<CFError>?
+
+        guard let decryptedData = SecKeyCreateDecryptedData(
+            privateKey,
+            Self.algorithm,
+            data as CFData,
+            &error
+        ) as Data? else {
+            debugLog(
+                "Decryption failed: \(error?.takeRetainedValue().localizedDescription ?? "")",
+                space: .crypto
+            )
+            return nil
+        }
+
+        return decryptedData
+    }
+}
+
+// MARK: - File Crypto
+
+private extension CryptoManager {
+
+    func performFileCrypto(
+        inputFileURL: URL,
+        outputFileURL: URL,
+        operation: CryptoOperationEnum
+    ) -> Bool {
         do {
-            
-            guard let publicKey = recoverKey(.PUBLIC) else {
-                debugLog("Failed to recover public key", space: .crypto)
-                return false
+            let keyData: Data?
+
+            switch operation {
+            case .encrypt:
+                keyData = recoverKey(.PUBLIC)?.getData()
+
+            case .decrypt:
+                keyData = vaultPrivateKey?.getData()
             }
-            
-            guard let encryptionKeyData = publicKey.getData() else {
-                debugLog("Failed to recover private key data", space: .crypto)
+
+            guard let keyData else {
+                debugLog("Failed to export key data for file crypto", space: .crypto)
                 return false
             }
 
-            try encryptFile(at: inputFileURL, outputTo: outputFileURL,encryptionKeyData: encryptionKeyData)
+            let fileCryptor = try FileCryptor(
+                inputFileURL: inputFileURL,
+                outputFileURL: outputFileURL,
+                encryptionKeyData: keyData,
+                cryptoOperation: operation
+            )
 
+            try fileCryptor.cryptFile()
             return true
-        }
-        catch let encryptionError {
-            debugLog("Error encrypt\(encryptionError)", space: .crypto)
+
+        } catch {
+            debugLog("File crypto failed: \(error)", space: .crypto)
             return false
         }
     }
-    
-    /// Decrypt the content of an input file to an output file
-    /// - Parameters:
-    ///   - inputFileURL: It represents the URL of the file to be decrypted.
-    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
-    /// - Returns: A boolean value (bool). true indicates successful file decryption in OutputFileURL, and false indicates failure.
-    ///            and false indicates failure of decryption, recovering metaPrivateKey  or converting the metaPrivateKey to data .
-    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
-        do {
-            
-            guard let metaPrivateKey = self.metaPrivateKey else {
-                debugLog("Failed to recover private key", space: .crypto)
-                return false
-            }
-            
-            guard let decryptionKeyData = metaPrivateKey.getData() else {
-                debugLog("Failed to recover private key data", space: .crypto)
-                return false
-            }
+}
 
-            try decryptFile(at: inputFileURL, outputTo: outputFileURL, decryptionKeyData: decryptionKeyData)
-            return true
-            
-        }
-        catch let decryptionError {
-            debugLog("Error decrypt\(decryptionError)", space: .crypto)
-            return false
-        }
+// MARK: - OSStatus Helper
+
+private extension OSStatus {
+
+    var securityMessage: String {
+        SecCopyErrorMessageString(self, nil) as String? ?? "\(self)"
     }
 }

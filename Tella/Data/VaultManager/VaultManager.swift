@@ -26,7 +26,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     var onSuccessLock = PassthroughSubject<String,Never>()
     
     var key: String? {
-        return cryptoManager.metaPrivateKey?.getString()
+        return cryptoManager.unlockedDatabaseKey
     }
     
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
@@ -563,25 +563,28 @@ extension VaultManager {
         return self.cryptoManager.keysInitialized()
     }
     
-    func login(password:String?) -> AnyPublisher<Bool,Never> {
-        
-        return Deferred {
-            Future <Bool,Never> {  [weak self] promise in
+    func login(password: String?) -> AnyPublisher<Bool, Never> {
+        Deferred {
+            Future<Bool, Never> { [weak self] promise in
                 guard let self = self else { return }
-                
-                do {
-                    guard let _ = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
-                    promise(.success(true))
-                }
-                catch let error {
-                    debugLog(error)
-                    promise(.success(false))
-                    
+
+                Task {
+                    guard let keyString = await self.cryptoManager.unlockAndMigrateIfNeeded(
+                        password: password
+                    ) else {
+                        promise(.success(false))
+                        return
+                    }
+
+                    await MainActor.run {
+                        self.onSuccessLock.send(keyString)
+                        promise(.success(true))
+                    }
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
-    
     private func recoverKey( password:String? = nil) throws -> SecKey?  {
         return cryptoManager.recoverKey(.PRIVATE, password: password)
     }

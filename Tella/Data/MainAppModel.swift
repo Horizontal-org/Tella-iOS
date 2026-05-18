@@ -63,12 +63,18 @@ class MainAppModel: ObservableObject {
         self.onSuccessLock()
     }
     
-    func loadData() -> AnyPublisher<Bool,Never> {
+    func loadData() -> AnyPublisher<Bool, Never> {
         return Deferred {
-            Future <Bool,Never> {  [weak self] promise in
-                guard let self = self else { return }
+            Future<Bool, Never> { [weak self] promise in
+                guard let self else { return }
 
-                self.initDataSource()
+                guard let key = self.vaultManager.key else {
+                    debugLog("Missing unlocked database key", space: .crypto)
+                    promise(.success(false))
+                    return
+                }
+
+                self.initDataSource(key: key)
 
                 if self.settings.shouldMergeVaultFilesToDb ?? true {
                     self.mergeFileToDatabase()
@@ -79,35 +85,50 @@ class MainAppModel: ObservableObject {
                 promise(.success(true))
                 self.sendPendingFiles()
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
-
     private func onSuccessLock() {
-        vaultManager.onSuccessLock.sink(receiveValue: { key in
-            self.settings.shouldMergeVaultFilesToDb = false
-            self.saveSettings()
-            self.initDataSource()
-            self.initAutoUpload()
-        }).store(in: &cancellable)
+        vaultManager.onSuccessLock
+            .sink(receiveValue: { [weak self] keyString in
+                guard let self else { return }
+                self.settings.shouldMergeVaultFilesToDb = false
+                self.saveSettings()
+
+                self.initDataSource(key: keyString)
+                self.initAutoUpload()
+            })
+            .store(in: &cancellable)
     }
 
-    private func initDataSource() {
+    private func initDataSource(key: String) {
         do {
             try self.vaultManager.initialize()
 
-            let vaultDatabase = try VaultDatabase(key: self.vaultManager.key)
-            let tellaDataBase = try TellaDataBase(key: self.vaultManager.key)
+            let vaultDatabase = try VaultDatabase(key: key)
+            let tellaDataBase = try TellaDataBase(key: key)
 
-            self.vaultFilesManager = try VaultFilesManager(vaultDataBase: vaultDatabase, vaultManager: self.vaultManager)
-            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
-            self.tellaData = try TellaData(database: tellaDataBase, vaultManager: self.vaultManager)
-            
+            self.vaultFilesManager = try VaultFilesManager(
+                vaultDataBase: vaultDatabase,
+                vaultManager: self.vaultManager
+            )
+
+            encryptionService = EncryptionService(
+                vaultFilesManager: self.vaultFilesManager,
+                mainAppModel: self
+            )
+
+            self.tellaData = try TellaData(
+                database: tellaDataBase,
+                vaultManager: self.vaultManager
+            )
+
             self.nearbySharingServer = NearbySharingServer()
+
         } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
-
     private func mergeFileToDatabase() {
         let files = self.vaultManager.getFilesToMergeToDatabase()
         self.saveFiles(files: files)
