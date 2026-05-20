@@ -15,7 +15,7 @@ struct D {
     
     /* DATABASE VERSION */
     
-    static let databaseVersion = 9
+    static let databaseVersion = 10
     
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
@@ -58,6 +58,7 @@ struct D {
     
     static let cAccessToken = "c_access_token"
     static let cVersion = "c_version"
+    static let cHideProjectURL = "c_hide_project_url"
     static let cActivatedMetadata = "c_activated_metadata"
     static let cBackgroundUpload = "c_background_upload"
     

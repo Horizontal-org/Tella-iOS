@@ -26,10 +26,7 @@ struct EditSettingsServerView: View {
                 editServerHeaderView
                 
                 ScrollView {
-                    SettingsCardView(cardViewArray:[serverNameView.eraseToAnyView(),
-                                                    serverURLView.eraseToAnyView(),
-                                                    serverUsernameView.eraseToAnyView()
-                                                   ])
+                    SettingsCardView(cardViewArray: connectionDetailsViews)
                     
                     AdvancedServerSettingsCardView(serverViewModel: serverViewModel)
 
@@ -40,6 +37,15 @@ struct EditSettingsServerView: View {
                 bottomView
             }
         }
+    }
+    
+    private var connectionDetailsViews: [AnyView] {
+        var views: [AnyView] = [serverNameView.eraseToAnyView()]
+        if !serverViewModel.hideProjectURL {
+            views.append(serverURLView.eraseToAnyView())
+        }
+        views.append(serverUsernameView.eraseToAnyView())
+        return views
     }
     
     var serverNameView: some View {

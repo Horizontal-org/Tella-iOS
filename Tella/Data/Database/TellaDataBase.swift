@@ -59,6 +59,9 @@ class TellaDataBase : DataBase {
             case 8:
                 addVersionColumnToTellaWebServer()
                 addContactColumnToFeedbackTable()
+                fallthrough
+            case 9:
+                addHideProjectURLColumnToTellaWebServer()
             default :
                 break
             }

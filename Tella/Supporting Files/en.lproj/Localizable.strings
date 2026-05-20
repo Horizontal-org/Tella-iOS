@@ -590,6 +590,11 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettFeedback_Contact_Placeholder" = "Contact information (optional)";
 "Setting_Server_Project_URL" = "Enter the project URL";
 "Setting_Server_Project_Exists_Error" = "The project already exists";
+"Setting_Server_ShowProjectURL_SheetTitle" = "Show project URL in settings?";
+"Setting_Server_ShowProjectURL_SheetExpl" = "For increased security, you can hide the project URL in the Tella settings.";
+"Setting_Server_ShowProjectURL_SheetWarning" = "WARNING: This setting is permanent. To change it, you will have to delete this Connection and start over.";
+"Setting_Server_HideURL_Action" = "HIDE URL";
+"Setting_Server_ShowURL_Action" = "SHOW URL";
 "Settings_SettLang_Mizo_Expl" = "Mizo";
 "Recorder_LegacyRecordButton" = "RECORD";
 "Common_Action_OK" = "OK";
