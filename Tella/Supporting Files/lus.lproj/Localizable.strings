@@ -739,3 +739,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ExitProgress_SheetTitle" = "Nearby sharing aṭanga chhuah tûr em ni?";
 "NearbySharing_ExitProgress_SheetExpl" = "I thil tih laite a bo vang.";
 "NearbySharing_ExitProgress_Exit_Action" = "Chhuak rawh";
+"Setting_Server_ShowProjectURL_SheetTitle" = "Show project URL in settings?";
+"Setting_Server_ShowProjectURL_SheetExpl" = "For increased security, you can hide the project URL in the Tella settings.";
+"Setting_Server_ShowProjectURL_SheetWarning" = "WARNING: This setting is permanent. To change it, you will have to delete this Connection and start over.";
+"Setting_Server_HideURL_Action" = "HIDE URL";
+"Setting_Server_ShowURL_Action" = "SHOW URL";
