@@ -94,11 +94,6 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         queuePlayer.playAudio(playerItems: playerItems)
     }
     
-    
-    func pauseRecord() {
-        queuePlayer.pauseAudio()
-    }
-    
     fileprivate func getFileURL(fileName:String? = nil) -> URL? {
         let pathURL = URL(fileURLWithPath:NSTemporaryDirectory())
         let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"

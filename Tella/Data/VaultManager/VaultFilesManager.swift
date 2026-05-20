@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -62,6 +62,34 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+    func addVaultFile(importedFile:  ImportedFile) async -> VaultFileDB? {
+
+        guard var fileDetails = await getFileDetails(importedFile: importedFile),
+              let filePath = await getModifiedURL(importedFile: fileDetails.importedFile)
+        else {
+            return nil
+        }
+
+        if let fileSize = filePath.fileSize {
+            fileDetails.file.size = fileSize
+        }
+        if let contentHash = await filePath.sha256Hash() {
+            fileDetails.file.hash = contentHash
+        }
+
+        guard let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
+        else {
+            return nil
+        }
+
+        if isSaved {
+            self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
+            return fileDetails.file
+        } else {
+            return nil
+        }
+    }
+    
     private func updateImportedFilesURLs(_ importedFiles: inout [ImportedFile]) async {
         for index in importedFiles.indices {
             await updateURL(importedFile: &importedFiles[index])
@@ -80,7 +108,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 
                 importProgress.currentFile += 1
                 subject.send(.importProgress(importProgress:  importProgress))
-
+                
                 if self.shouldCancelImportAndEncryption.value {
                     break
                 }
@@ -94,8 +122,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                     continue
                 }
                 
-                if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+                if let fileSize = filePath.fileSize {
                     fileDetail.file.size = fileSize
+                }
+                
+                if let contentHash = await filePath.sha256Hash() {
+                    fileDetail.file.hash = contentHash
                 }
                 
                 if self.shouldCancelImportAndEncryption.value {
@@ -154,8 +186,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 return
             }
             
-            if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+            if let fileSize = filePath.fileSize {
                 fileDetail.file.size = fileSize
+            }
+            
+            if let contentHash = await filePath.sha256Hash() {
+                fileDetail.file.hash = contentHash
             }
             
             guard
@@ -175,7 +211,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         return subject.eraseToAnyPublisher()
     }
-
+    
     private func handleDatabaseAddition(fileDetails:VaultFileDetails,
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
         
@@ -256,6 +292,17 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return result
     }
     
+    func addFolderFile(name: String) -> Result<String?,Error>? {
+        let file = VaultFileDB(type: .directory, name: name)
+        let result = self.vaultDataBase.addVaultFile(file: file,parentId: nil)
+        switch result {
+        case .success:
+            return .success(file.id)
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
@@ -278,14 +325,20 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         guard let filePath = importedFile.urlFile  else {return nil}
         
-        let id = UUID().uuidString
+        let id = importedFile.fileId == nil ? UUID().uuidString : importedFile.fileId
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
         
         async let thumnail = await filePath.thumbnail()
         
-        let fileName = filePath.deletingPathExtension().lastPathComponent
-        let path = filePath.path
+        var fileName : String
+        
+        if let name = importedFile.fileName {
+            fileName = name
+        } else {
+            fileName = filePath.deletingPathExtension().lastPathComponent
+        }
+        
         let pathExtension = filePath.pathExtension
         
         var width : Double?
@@ -297,8 +350,8 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         }
         
         let duration =  filePath.getDuration()
-        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-        
+        let size = filePath.fileSize ?? 0
+
         let vaultFile = await VaultFileDB(id: id,
                                           type: .file,
                                           thumbnail: thumnail  ,
@@ -307,7 +360,8 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                           size: size,
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
-                                          height: height)
+                                          height: height,
+                                          hash: nil)
         return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
@@ -320,7 +374,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             let _ = filePath.startAccessingSecurityScopedResource()
             defer { filePath.stopAccessingSecurityScopedResource() }
             
-            let size = FileManager.default.sizeOfFile(atPath: filePath.path) ?? 0
+            let size = filePath.fileSize ?? 0
             totalSizeArray.append(size)
         }
         
@@ -331,7 +385,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     func vaultFileExists(name: String) -> Bool {
         return self.vaultDataBase.vaultFileExists(name: name)
     }
-
+    
     func getVaultFile(id: String?) -> VaultFileDB? {
         return self.vaultDataBase.getVaultFile(id: id)
     }
@@ -381,7 +435,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         let result = self.vaultDataBase.deleteVaultFile(ids: fileIds)
         shouldReloadFiles.send(true)
         return result
-
+        
     }
     
     @discardableResult
@@ -394,6 +448,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     func cancelImportAndEncryption() {
         self.shouldCancelImportAndEncryption.send(true)
+    }
+    
+    @discardableResult
+    func updateHashVaultFile(id: String, hash: String) -> Result<Bool,Error> {
+        let result = self.vaultDataBase.updateHashVaultFile(id: id, hash: hash)
+        return result
     }
 }
 

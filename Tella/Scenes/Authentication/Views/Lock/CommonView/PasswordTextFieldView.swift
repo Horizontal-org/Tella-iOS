@@ -36,11 +36,6 @@ struct PasswordTextFieldView : View {
                                                onCommit: onCommit)
         }
     }
-    private func validateField(value:String) {
-        self.isValid = value.passwordValidator()
-        self.shouldShowError = false
-        
-    }
 }
 
 @available(iOS 15.0, *)

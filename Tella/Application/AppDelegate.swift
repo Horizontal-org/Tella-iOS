@@ -14,21 +14,29 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     var backgroundSessionCompletionHandler: (() -> Void)?
     static private(set) var instance: AppDelegate! = nil
-    
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    @Published var shouldHandleTimeout : Bool = false
+    @Published var appWillTerminate : Bool = false
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
         setupDropbox()
         configureGoogleSignIn()
         return true
     }
     
-    func application(_ application: UIApplication,
-                     handleEventsForBackgroundURLSession identifier: String,
-                     completionHandler: @escaping () -> Void) {
-        backgroundSessionCompletionHandler = completionHandler
+    func applicationWillTerminate(_ application: UIApplication) {
+        appWillTerminate = true
     }
     
+    func application(
+        _ application: UIApplication,
+        handleEventsForBackgroundURLSession
+        handleEventsForBackgroundURLSessionidentifier: String,
+        completionHandler: @escaping () -> Void) {
+            backgroundSessionCompletionHandler = completionHandler
+            shouldHandleTimeout = true
+        }
+
     private func setupDropbox() {
         guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
             debugLog("Dropbox App Key not found")

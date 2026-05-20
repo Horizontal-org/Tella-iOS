@@ -65,9 +65,13 @@ class DocumentCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentP
 struct ActivityViewController: UIViewControllerRepresentable {
     var fileData: [Any]
     var applicationActivities: [UIActivity]? = nil
+    var onDismiss: (() -> Void)? = nil
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: fileData, applicationActivities: applicationActivities)
+        controller.completionWithItemsHandler = { _, _, _, _ in
+            onDismiss?()
+        }
         return controller
     }
     

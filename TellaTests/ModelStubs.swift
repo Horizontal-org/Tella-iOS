@@ -17,7 +17,8 @@ extension VaultFileDB {
                                size: 20,
                                mimeType: "application/pdf",
                                width: 12.0,
-                               height: 13.0)
+                               height: 13.0,
+                               hash: "hash")
         return file
     }
 

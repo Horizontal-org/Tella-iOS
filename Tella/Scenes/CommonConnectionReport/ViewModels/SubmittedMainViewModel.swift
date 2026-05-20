@@ -10,6 +10,7 @@
 
 import Foundation
 
+
 class SubmittedMainViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
@@ -64,7 +65,9 @@ class SubmittedMainViewModel: ObservableObject {
             let bytesSent = reportFile?.bytesSent ?? vaultFile.size
             let progression = "\(bytesSent.getFormattedFileSize())/\(vaultFile.size.getFormattedFileSize())"
             let fileStatus = reportFile?.status ?? .unknown
-            return ProgressFileItemViewModel(file: vaultFile, progression: progression, fileStatus: fileStatus)
+            return ProgressFileItemViewModel(vaultFile: vaultFile,
+                                             transferSummary: progression,
+                                             fileStatus: fileStatus)
         }
         let totalSize = self.files.reduce(0) { $0 + $1.size }
         

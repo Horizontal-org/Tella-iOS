@@ -17,6 +17,8 @@ struct ImportedFile {
     var shouldPreserveMetadata : Bool = false
     var deleteOriginal : Bool = false
     var fileSource : FileSource
+    var fileId : String?
+    var fileName : String?
 }
 
 enum FileSource {

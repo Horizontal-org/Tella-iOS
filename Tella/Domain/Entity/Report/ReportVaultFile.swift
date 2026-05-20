@@ -31,7 +31,8 @@ class ReportVaultFile : VaultFileDB {
                    size: vaultFile.size,
                    mimeType: vaultFile.mimeType,
                    width: vaultFile.width,
-                   height: vaultFile.height)
+                   height: vaultFile.height,
+                   hash: vaultFile.hash)
         
         self.instanceId = reportFile.id
         self.status = reportFile.status

@@ -25,7 +25,8 @@ extension TellaDataBase {
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
             cddl(D.cAutoDelete, D.integer),
-            cddl(D.cVersion, D.text)
+            cddl(D.cVersion, D.text),
+            cddl(D.cHideProjectURL, D.integer)
         ]
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -43,7 +44,8 @@ extension TellaDataBase {
                                KeyValue(key: D.cSlug, value: server.slug),
                                KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                                KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                               KeyValue(key: D.cVersion, value:server.version)
+                               KeyValue(key: D.cVersion, value:server.version),
+                               KeyValue(key: D.cHideProjectURL, value: server.hideProjectURL == true ? 1 : 0)
             ]
             
             let serverId = try statementBuilder.insertInto(tableName: D.tServer,
@@ -58,6 +60,14 @@ extension TellaDataBase {
     func addVersionColumnToTellaWebServer() {
         do {
             try statementBuilder.addColumnOn(tableName: D.tServer, columnName: D.cVersion, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+    
+    func addHideProjectURLColumnToTellaWebServer() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tServer, columnName: D.cHideProjectURL, type: D.integer)
         } catch let error {
             debugLog(error)
         }
@@ -113,6 +123,7 @@ extension TellaDataBase {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let version = dictionnary[D.cVersion] as? String
+        let hideProjectURL = dictionnary[D.cHideProjectURL] as? Int
         
         return TellaServer(id:id,
                            name: name,
@@ -126,7 +137,8 @@ extension TellaDataBase {
                            slug:slug,
                            autoUpload: autoUpload == 0 ? false : true,
                            autoDelete: autoDelete == 0 ? false : true,
-                           version: version
+                           version: version,
+                           hideProjectURL: hideProjectURL == 1
         )
     }
     

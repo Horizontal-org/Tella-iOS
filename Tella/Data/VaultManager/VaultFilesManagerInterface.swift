@@ -26,5 +26,7 @@ protocol VaultFilesManagerInterface {
     func deleteAllVaultFiles() -> Result<Bool, Error>?
     func deleteVaultFile(vaultFiles: [VaultFileDB]) -> Result<Bool, Error>?
     func cancelImportAndEncryption()
+    @discardableResult
+    func updateHashVaultFile(id: String, hash: String) -> Result<Bool,Error>
 }
 

@@ -50,6 +50,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangAzerbaijani = "Settings_SettLang_Azerbaijani_Expl"
     case settLangChinese = "Settings_SettLang_Chinese_Expl"
     case settLangMizo = "Settings_SettLang_Mizo_Expl"
+    case settLangUkrainian = "Settings_SettLang_Ukrainian_Expl"
 
     // Security
     
@@ -121,6 +122,11 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case serverPassword = "Setting_Server_Password"
     case serverProjectURL = "Setting_Server_Project_URL"
     case projectExistsError = "Setting_Server_Project_Exists_Error"
+    case showProjectURLSheetTitle = "Setting_Server_ShowProjectURL_SheetTitle"
+    case showProjectURLSheetExpl = "Setting_Server_ShowProjectURL_SheetExpl"
+    case showProjectURLSheetWarning = "Setting_Server_ShowProjectURL_SheetWarning"
+    case hideURLAction = "Setting_Server_HideURL_Action"
+    case showURLAction = "Setting_Server_ShowURL_Action"
     case tellaWebLoginSubhead = "Setting_Server_TellaWeb_Login_Subhead"
     case tellaWebHasCredentialsQuestion = "Setting_Server_TellaWeb_HasCredentials_Question"
     case tellaWebAdvancedSettingsCompleteTitle = "Settings_TellaWeb_AdvancedSettingsComplete_Title"
@@ -207,6 +213,14 @@ enum LocalizableSettings: String, LocalizableDelegate {
     //Dropbox
     case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
     case settServerDropbox = "Setting_SettServer_Dropbox"
+
+    case settAddConnection = "Settings_Sett_AddConnection"
+    case settAddConnectionExpl = "Settings_Sett_AddConnection_Expl"
+    case settAddConnectionLearnMore = "Setting_Sett_AddConnection_LearnMore"
+
+    case settNearbySharing = "Settings_Sett_NearbySharing"
+    case settNearbySharingExpl = "Settings_Sett_NearbySharing_Expl"
+    case settNearbySharingLearnMore = "Setting_Sett_NearbySharing_LearnMore"
 }
 
 

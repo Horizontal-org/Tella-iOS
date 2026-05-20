@@ -109,7 +109,7 @@ struct SummaryEntityView: View {
         HStack {
             
             
-            TellaButtonView<AnyView> (title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitLaterAction.localized,
+            TellaButtonView(title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitLaterAction.localized,
                                       nextButtonAction: .action,
                                       buttonType: .clear,
                                       isValid: .constant(true)) {
@@ -120,7 +120,7 @@ struct SummaryEntityView: View {
             
             Spacer()
             
-            TellaButtonView<AnyView> (title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized,
+            TellaButtonView(title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {

@@ -81,7 +81,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         let files = reportViewModel.files.filter({ $0.status != .submitted})
         
         for file in files {
-            file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true)
+            file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true, subFolderName: nil)
         }
         
         let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()

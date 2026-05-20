@@ -28,7 +28,7 @@ class EditImageViewModel: ObservableObject {
         self.currenFile = fileListViewModel.currentSelectedVaultFile
     }
     
-    func getEditedImageData(_ image: UIImage) -> Data?{
+    func getEditedImageData(_ image: UIImage) -> Data? {
         switch self.currenFile?.fileExtension.uppercased() {
         case FileExtension.heic.rawValue.uppercased():
             return image.heic

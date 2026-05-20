@@ -17,7 +17,7 @@ struct AddFileYellowButton: View {
                 Button(action: {
                     self.action()
                 }) {
-                    Image("home.add")
+                    Image("file.add")
                 }
             }
         }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 16))

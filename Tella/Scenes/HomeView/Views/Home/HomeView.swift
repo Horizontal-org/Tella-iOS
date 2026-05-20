@@ -12,6 +12,8 @@ struct HomeView: View {
     
     @ObservedObject var viewModel: HomeViewModel
 
+    @ObservedObject var mainAppModel: MainAppModel
+
     var body: some View {
         
         ContainerViewWithHeader {
@@ -35,17 +37,17 @@ struct HomeView: View {
                     Spacer()
                         .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
                     
-                    if viewModel.mainAppModel.settings.showRecentFiles {
+                    if mainAppModel.settings.showRecentFiles {
                         Spacer()
                             .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
-                        RecentFilesListView(mainAppModel: viewModel.mainAppModel,
+                        RecentFilesListView(mainAppModel: mainAppModel,
                                             recentFiles: $viewModel.recentFiles)
                     }
                     
                     Spacer()
                         .frame(height: 30)
                     
-                    FileGroupsView(mainAppModel: viewModel.mainAppModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
+                    FileGroupsView(mainAppModel: mainAppModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
                 }
             }
             
@@ -57,14 +59,14 @@ struct HomeView: View {
     
     @ViewBuilder
     var quickDeleteView: some View {
-        if viewModel.mainAppModel.settings.quickDelete {
+        if mainAppModel.settings.quickDelete {
             SwipeToDeleteActionView(completion: {
-                if(viewModel.mainAppModel.settings.deleteVault) {
+                if mainAppModel.settings.deleteVault {
                     // removes files and folders
                     viewModel.deleteAllVaultFiles()
                 }
                 
-                if(viewModel.mainAppModel.settings.deleteServerSettings) {
+                if mainAppModel.settings.deleteServerSettings {
                     // remove servers connections
                     viewModel.deleteAllServersConnection()
                 }
@@ -79,7 +81,7 @@ struct HomeView: View {
         HStack(spacing: 0) {
             
             Button() {
-                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: viewModel.mainAppModel))
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: mainAppModel))
             } label: {
                 Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
                     .padding()

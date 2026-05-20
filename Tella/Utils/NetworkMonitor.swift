@@ -28,6 +28,7 @@ class NetworkMonitor: ObservableObject {
         }
         monitor.start(queue: queue)
     }
+    
     deinit {
         stopNetworkMonitoring()
     }

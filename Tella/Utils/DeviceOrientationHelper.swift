@@ -61,8 +61,4 @@ class DeviceOrientationHelper:ObservableObject {
             }
         }
     }
-    
-    public func stopDeviceOrientationNotifier() {
-        motionManager.stopAccelerometerUpdates()
-    }
 }

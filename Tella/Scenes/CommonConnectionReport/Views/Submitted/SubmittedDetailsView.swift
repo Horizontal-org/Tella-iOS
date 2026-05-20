@@ -33,11 +33,6 @@ struct SubmittedDetailsView: View {
                 Toast.displayToast(message: submittedReportVM.toastMessage)
             }
         }
-        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
-            if value {
-                dismissViews()
-            }
-        })
     }
     
     var navigationBarView: some View {
@@ -115,7 +110,7 @@ struct SubmittedDetailsView: View {
     
     private var itemsListView: some View {
         LazyVStack(spacing: 1) {
-            ForEach($submittedReportVM.progressFileItems, id: \.file.id) { file in
+            ForEach($submittedReportVM.progressFileItems, id: \.vaultFile.id) { file in
                 SubmittedDetailsItemView(item: file)
                     .frame(height: 60)
             }

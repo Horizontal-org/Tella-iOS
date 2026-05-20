@@ -48,17 +48,17 @@ struct TellaWebAddServerURLView: View {
                                   fieldType: .url)
                     Spacer()
                     
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
-                                            nextButtonAction: .action,
-                                            nextAction: {
+                    NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validURL,
+                                                  nextButtonAction: .action,
+                                                  nextAction: {
                         Task { @MainActor in
                             let exists = await serverViewModel.checkProjectExists()
                             if !exists {
-                                navigateTo(destination: serverLoginView)
+                                showProjectURLBottomSheet()
                             }
                         }
                     },
-                                            backAction: {
+                                                  backAction: {
                         self.presentationMode.wrappedValue.dismiss()
                     })
                     
@@ -75,6 +75,31 @@ struct TellaWebAddServerURLView: View {
     
     private var serverLoginView: some View {
         TellaWebServerLoginView(serverViewModel: serverViewModel)
+    }
+    
+    private func showProjectURLBottomSheet() {
+        let messageText = LocalizableSettings.showProjectURLSheetExpl.localized.addTwolines +
+        LocalizableSettings.showProjectURLSheetWarning.localized
+        
+        let content = TwoActionBottomSheet(
+            titleText: LocalizableSettings.showProjectURLSheetTitle.localized,
+            messageText: messageText ,
+            primaryButtonText: LocalizableSettings.showURLAction.localized,
+            secondaryButtonText: LocalizableSettings.hideURLAction.localized,
+            didTapPrimaryAction: {
+                serverViewModel.hideProjectURL = false
+                self.dismiss {
+                    navigateTo(destination: serverLoginView)
+                }
+            },
+            didTapSecondaryAction: {
+                serverViewModel.hideProjectURL = true
+                self.dismiss {
+                    navigateTo(destination: serverLoginView)
+                }
+            }
+        )
+        showBottomSheetView(content: content, tapToDismiss: false)
     }
 }
 

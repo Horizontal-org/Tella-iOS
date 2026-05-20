@@ -27,7 +27,7 @@ class GDriveServerViewModel: ObservableObject {
         self.gDriveRepository = repository
         self.serversSourceView = serversSourceView
         
-        self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
+        self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized, imageIconName: .gdriveIcon)
         
         self.serverCreateFolderVM.createFolderAction = createDriveFolder
     }

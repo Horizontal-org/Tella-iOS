@@ -69,7 +69,7 @@ struct ServerCreateFolderView: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: $isValid,
+        NavigationBottomView<AnyView>(shouldActivateNext: $isValid,
                                 nextButtonAction: .action,
                                 shouldHideNext: createFolderViewModel.createFolderState == .loading,
                                 shouldHideBack: false,
@@ -80,6 +80,6 @@ struct ServerCreateFolderView: View {
 }
 struct ServerCreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(headerViewSubtitleText: "Connection", imageIconName: "nextcloud.icon"))
+        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(headerViewSubtitleText: "Connection", imageIconName: .nextcloudIcon))
     }
 }

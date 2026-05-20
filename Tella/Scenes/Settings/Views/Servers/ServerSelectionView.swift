@@ -74,7 +74,7 @@ struct ServerSelectionView: View {
     fileprivate func buttonViews() -> some View {
         return Group {
             ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
-                TellaButtonView<AnyView>(
+                TellaButtonView(
                     title: connection.title,
                     nextButtonAction: .action,
                     isOverlay: serversViewModel.selectedServerType == connection.type,
@@ -89,8 +89,8 @@ struct ServerSelectionView: View {
         }
     }
     
-    fileprivate func bottomView() -> BottomLockView<AnyView> {
-        return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
+    fileprivate func bottomView() -> NavigationBottomView<AnyView> {
+        return NavigationBottomView<AnyView>(shouldActivateNext: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
                                        shouldHideBack: serversViewModel.serversSourceView == .settings,
                                        nextAction: {
@@ -149,7 +149,7 @@ struct ServerSelectionView: View {
             SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
             SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
             ForEach(serversViewModel.unavailableServers, id: \.serverType) { server in
-                TellaButtonView<AnyView>(
+                TellaButtonView(
                     title: server.serverType?.serverTitle ?? "",
                     nextButtonAction: .action,
                     isValid: .constant(false)
@@ -197,7 +197,7 @@ struct ServerSelectionView: View {
             } label: {
                 Text(LocalizableSettings.settServerSelectionPart1Message.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.yellow)
+                    .foregroundColor(Styles.Colors.yellow)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
