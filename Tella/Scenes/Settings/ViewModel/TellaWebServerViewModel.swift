@@ -19,6 +19,7 @@ class TellaWebServerViewModel: ServerViewModel {
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false
     @Published var autoDelete : Bool = false
+    @Published var hideProjectURL : Bool = false
     
     var subscribers = Set<AnyCancellable>()
     
@@ -49,7 +50,8 @@ class TellaWebServerViewModel: ServerViewModel {
                                  slug: project.slug,
                                  autoUpload: autoUpload,
                                  autoDelete: autoDelete,
-                                 version: version)
+                                 version: version,
+                                 hideProjectURL: hideProjectURL)
         
         let addServerResult = mainAppModel.tellaData?.addServer(server: server)
         
@@ -139,6 +141,7 @@ class TellaWebServerViewModel: ServerViewModel {
             backgroundUpload = server.backgroundUpload ?? false
             autoUpload = server.autoUpload ?? false
             autoDelete = server.autoDelete ?? false
+            hideProjectURL = server.hideProjectURL ?? false
         }
     }
     

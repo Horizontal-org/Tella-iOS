@@ -292,6 +292,7 @@
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
+		127FF42B2FBDECE500DB34EC /* TwoActionBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
 		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
 		1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */; };
@@ -1051,6 +1052,7 @@
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
+		127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoActionBottomSheet.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
 		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		1282479E2D5F50A600B7E63E /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
@@ -1605,6 +1607,7 @@
 			children = (
 				0E78B3A52656B03500F9BDBC /* DragView.swift */,
 				0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */,
+				127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -4797,6 +4800,7 @@
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
 				209AC6782C2D5C9800492356 /* AddServerURLView.swift in Sources */,
+				127FF42B2FBDECE500DB34EC /* TwoActionBottomSheet.swift in Sources */,
 				1256A33929490A7A00FE2B5C /* FileInfos.swift in Sources */,
 				121C5D7929422DF400A64123 /* DomainModel.swift in Sources */,
 				125F9B932AD92FC00073748C /* Feedback.swift in Sources */,
