@@ -22,14 +22,14 @@ protocol CryptoManagerInterface {
 }
 
 enum KeyEnum {
-    case META_PRIVATE
-    case PUBLIC
-    case PRIVATE
+    case metaPrivate
+    case `public`
+    case `private`
 }
 
 enum KeyFileEnum: String {
-    case PUBLIC = "pub-key.txt"
-    case PRIVATE = "priv-key.txt"
+    case publicKey = "pub-key.txt"
+    case privateKey = "priv-key.txt"
 }
 
 final class CryptoManager {
@@ -64,9 +64,7 @@ private extension CryptoManager {
     static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     static let vaultKeysRootPath = "\(NSHomeDirectory())/Documents/keys"
     static let keyIDUserDefaultsKey = "keyID"
-
-    static let cryptoKeychainMigrationCompletedUserDefaultsKey =
-        "cryptoKeychainMigrationCompleted"
+    static let cryptoKeychainMigrationCompletedUserDefaultsKey = "cryptoKeychainMigrationCompleted"
 }
 
 // MARK: - Public CryptoManagerInterface
@@ -74,7 +72,7 @@ private extension CryptoManager {
 extension CryptoManager: CryptoManagerInterface {
 
     func encrypt(_ data: Data) -> Data? {
-        guard let publicKey = recoverKey(.PUBLIC) else {
+        guard let publicKey = recoverKey(.public) else {
             debugLog("Failed to recover public key", space: .crypto)
             return nil
         }
@@ -111,75 +109,47 @@ extension CryptoManager: CryptoManagerInterface {
 // MARK: - Unlock
 
 extension CryptoManager {
-
+    
     func unlockAndMigrateIfNeeded(password: String?) async -> String? {
-        guard let privateKey = recoverKey(.PRIVATE, password: password),
+        guard let privateKey = recoverKey(.private, password: password),
               let keyString = privateKey.getString() else {
             return nil
         }
-
+        
         await MainActor.run {
             self.unlockedDatabaseKey = keyString
         }
-
+        
         await migrateLegacyKeysToKeychainIfNeededAsync(
             password: password,
             vaultKey: privateKey
         )
-
+        
         return keyString
     }
-
+    
     func recoverKey(_ type: KeyEnum, password: String? = nil) -> SecKey? {
-        if type == .META_PRIVATE {
+        switch type {
+        case .metaPrivate:
             return recoverMetaPrivateKey(password: password)
+            
+        case .public, .private:
+            return recoverVaultKey(type, password: password)
         }
-
-        guard let keyID = resolvedKeyID else {
-            debugLog("keyID not found", space: .crypto)
-            return nil
-        }
-
-        guard var keyData = recoverStoredKeyData(type, keyID: keyID) else {
-            debugLog("key data not found", space: .crypto)
-            return nil
-        }
-
-        if type == .PRIVATE {
-            guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
-                debugLog("meta private key not recovered", space: .crypto)
-                return nil
-            }
-
-            guard let decryptedData = decrypt(keyData, using: metaPrivateKey) else {
-                debugLog("private key data not decrypted", space: .crypto)
-                return nil
-            }
-
-            keyData = decryptedData
-        }
-
-        guard let key = makeSecKey(from: keyData, type: type) else {
-            return nil
-        }
-
-        if type == .PRIVATE {
-            vaultPrivateKey = key
-        }
-
-        return key
     }
-
+    
     func keysInitialized() -> Bool {
-        guard let keyID = resolvedKeyID else { return false }
-
-        if cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID) != nil,
-           cryptoKeychainStore.recoverPublicKey(keyID: keyID) != nil {
+        guard let keyID = resolvedKeyID else {
+            return false
+        }
+        
+        if hasCompleteKeychainVaultMaterial(keyID: keyID) {
             return true
         }
-
-        return cryptoFileManager.keyFileExists(.PRIVATE)
+        
+        return cryptoFileManager.keyFileExists(.privateKey)
     }
+    
 }
 
 // MARK: - Key Initialisation / Update
@@ -302,21 +272,17 @@ extension CryptoManager {
             return
         }
 
-        if isCryptoKeychainMigrationMarkedComplete {
-            deleteLegacyKeyFilesIfPresent(keyID: keyID)
-            return
-        }
-
         guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
             debugLog("Migration skipped: meta private key unavailable", space: .crypto)
             return
         }
 
-        let hasFullKeychain =
-            cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID) != nil &&
-            cryptoKeychainStore.recoverPublicKey(keyID: keyID) != nil
+        if isCryptoKeychainMigrationMarkedComplete {
+            deleteLegacyKeyFilesIfPresent(keyID: keyID)
+            return
+        }
 
-        if hasFullKeychain,
+        if hasCompleteKeychainVaultMaterial(keyID: keyID),
            verifyKeychainVaultMatches(
             vaultKey: vaultKey,
             metaPrivateKey: metaPrivateKey,
@@ -327,7 +293,7 @@ extension CryptoManager {
             return
         }
 
-        guard cryptoFileManager.keyFileExists(.PRIVATE) else {
+        guard cryptoFileManager.keyFileExists(.privateKey) else {
             debugLog("Migration skipped: no legacy private key file", space: .crypto)
             return
         }
@@ -364,21 +330,31 @@ extension CryptoManager {
         cryptoFileManager.deleteKeyFolder(keyID)
         debugLog("Deleted legacy key files for keyID \(keyID)", space: .crypto)
     }
+}
 
-    private var isCryptoKeychainMigrationMarkedComplete: Bool {
+// MARK: - Migration Helpers
+
+private extension CryptoManager {
+
+    var isCryptoKeychainMigrationMarkedComplete: Bool {
         UserDefaults.standard.bool(
             forKey: Self.cryptoKeychainMigrationCompletedUserDefaultsKey
         )
     }
 
-    private func markCryptoKeychainMigrationComplete() {
+    func markCryptoKeychainMigrationComplete() {
         UserDefaults.standard.set(
             true,
             forKey: Self.cryptoKeychainMigrationCompletedUserDefaultsKey
         )
     }
 
-    private func rollbackKeychainVaultMaterial(
+    func hasCompleteKeychainVaultMaterial(keyID: String) -> Bool {
+        cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID) != nil &&
+        cryptoKeychainStore.recoverPublicKey(keyID: keyID) != nil
+    }
+
+    func rollbackKeychainVaultMaterial(
         keyID: String,
         deleteKeyID: Bool
     ) {
@@ -447,30 +423,20 @@ private extension CryptoManager {
         metaPrivateKey: SecKey,
         keyID: String
     ) -> Bool {
-        guard let encryptedPrivateData =
-                cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID),
-              let decryptedPrivateData = decrypt(
-                encryptedPrivateData,
-                using: metaPrivateKey
-              ) else {
+        guard let encryptedPrivateData = cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID),
+              let decryptedPrivateData = decrypt(encryptedPrivateData, using: metaPrivateKey),
+              let recoveredPrivateKey = makeSecKey(from: decryptedPrivateData, type: .private) else {
             return false
         }
 
-        guard let recoveredPrivateKey = makeSecKey(
-            from: decryptedPrivateData,
-            type: .PRIVATE
-        ) else {
-            return false
-        }
-
-        guard let originalPrivateData = SecKeyCopyExternalRepresentation(vaultKey, nil) as Data?,
-              let recoveredPrivateData = SecKeyCopyExternalRepresentation(recoveredPrivateKey, nil) as Data?,
+        guard let originalPrivateData = externalRepresentationOrNil(vaultKey),
+              let recoveredPrivateData = externalRepresentationOrNil(recoveredPrivateKey),
               originalPrivateData == recoveredPrivateData else {
             return false
         }
 
         guard let originalPublicKey = SecKeyCopyPublicKey(vaultKey),
-              let originalPublicData = SecKeyCopyExternalRepresentation(originalPublicKey, nil) as Data?,
+              let originalPublicData = externalRepresentationOrNil(originalPublicKey),
               let storedPublicData = cryptoKeychainStore.recoverPublicKey(keyID: keyID),
               originalPublicData == storedPublicData else {
             return false
@@ -504,6 +470,19 @@ private extension CryptoManager {
             return nil
         }
 
+        guard let item else {
+            debugLog(
+                "Meta private key reference missing after keychain lookup",
+                space: .crypto
+            )
+            return nil
+        }
+
+        guard CFGetTypeID(item) == SecKeyGetTypeID() else {
+            debugLog("Keychain item is not a SecKey", space: .crypto)
+            return nil
+        }
+
         return item as! SecKey
     }
 
@@ -512,11 +491,11 @@ private extension CryptoManager {
         password: String?
     ) -> [String: Any] {
         let context = LAContext()
-        
+
         if let password {
             context.setCredential(Data(password.utf8), type: .applicationPassword)
         }
-        
+
         return [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
@@ -526,7 +505,7 @@ private extension CryptoManager {
             kSecUseAuthenticationContext as String: context
         ]
     }
-    
+
     func createMetaPrivateKey(
         _ type: PasswordTypeEnum,
         appTag: String,
@@ -582,8 +561,11 @@ private extension CryptoManager {
             metaPrivateKeyQuery(keyID: keyID, password: password) as CFDictionary
         )
 
-        if status != errSecSuccess && status != errSecItemNotFound {
-            debugLog("Failed to delete meta private key: \(status.securityMessage)", space: .crypto)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            debugLog(
+                "Failed to delete meta private key: \(status.securityMessage)",
+                space: .crypto
+            )
             return false
         }
 
@@ -594,6 +576,42 @@ private extension CryptoManager {
 // MARK: - Vault Key Creation / Recovery Helpers
 
 private extension CryptoManager {
+
+    func recoverVaultKey(_ type: KeyEnum, password: String?) -> SecKey? {
+        guard let keyID = resolvedKeyID else {
+            debugLog("keyID not found", space: .crypto)
+            return nil
+        }
+
+        guard var keyData = recoverStoredKeyData(type, keyID: keyID) else {
+            debugLog("key data not found", space: .crypto)
+            return nil
+        }
+
+        if type == .private {
+            guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
+                debugLog("meta private key not recovered", space: .crypto)
+                return nil
+            }
+
+            guard let decryptedData = decrypt(keyData, using: metaPrivateKey) else {
+                debugLog("private key data not decrypted", space: .crypto)
+                return nil
+            }
+
+            keyData = decryptedData
+        }
+
+        guard let key = makeSecKey(from: keyData, type: type) else {
+            return nil
+        }
+
+        if type == .private {
+            vaultPrivateKey = key
+        }
+
+        return key
+    }
 
     func createVaultPrivateKey() throws -> SecKey {
         let attributes: [String: Any] = [
@@ -618,15 +636,15 @@ private extension CryptoManager {
 
     func recoverStoredKeyData(_ type: KeyEnum, keyID: String) -> Data? {
         switch type {
-        case .PRIVATE:
+        case .private:
             return cryptoKeychainStore.recoverEncryptedPrivateKey(keyID: keyID)
-                ?? cryptoFileManager.recoverKeyData(.PRIVATE)
+                ?? cryptoFileManager.recoverKeyData(.privateKey)
 
-        case .PUBLIC:
+        case .public:
             return cryptoKeychainStore.recoverPublicKey(keyID: keyID)
-                ?? cryptoFileManager.recoverKeyData(.PUBLIC)
+                ?? cryptoFileManager.recoverKeyData(.publicKey)
 
-        case .META_PRIVATE:
+        case .metaPrivate:
             return nil
         }
     }
@@ -651,7 +669,7 @@ private extension CryptoManager {
 
     func keyOptions(for type: KeyEnum) -> [String: Any] {
         switch type {
-        case .META_PRIVATE:
+        case .metaPrivate:
             return [
                 kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
                 kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
@@ -659,14 +677,14 @@ private extension CryptoManager {
                 kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave
             ]
 
-        case .PUBLIC:
+        case .public:
             return [
                 kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
                 kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
                 kSecAttrKeySizeInBits as String: 256
             ]
 
-        case .PRIVATE:
+        case .private:
             return [
                 kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
                 kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
@@ -693,6 +711,10 @@ private extension CryptoManager {
 
         return data
     }
+
+    func externalRepresentationOrNil(_ key: SecKey) -> Data? {
+        SecKeyCopyExternalRepresentation(key, nil) as Data?
+    }
 }
 
 // MARK: - Key ID
@@ -703,12 +725,17 @@ private extension CryptoManager {
         let keychainID = cryptoKeychainStore.recoverKeyID()
         let defaultsID = UserDefaults.standard.string(forKey: Self.keyIDUserDefaultsKey)
 
-        guard let keychainID,
-              let defaultsID,
-              keychainID != defaultsID else {
-            return keychainID ?? defaultsID
+        if let keychainID, let defaultsID, keychainID != defaultsID {
+            return preferredKeyID(
+                keychainID: keychainID,
+                defaultsID: defaultsID
+            )
         }
 
+        return keychainID ?? defaultsID
+    }
+
+    func preferredKeyID(keychainID: String, defaultsID: String) -> String {
         let keychainLegacyExists = legacyPrivateKeyFileExists(keyID: keychainID)
         let defaultsLegacyExists = legacyPrivateKeyFileExists(keyID: defaultsID)
 
@@ -720,11 +747,11 @@ private extension CryptoManager {
             return keychainID
         }
 
-        return defaultsID
+        return keychainID
     }
 
     func legacyPrivateKeyFileExists(keyID: String) -> Bool {
-        let path = "\(Self.vaultKeysRootPath)/\(keyID)/\(KeyFileEnum.PRIVATE.rawValue)"
+        let path = "\(Self.vaultKeysRootPath)/\(keyID)/\(KeyFileEnum.privateKey.rawValue)"
         return FileManager.default.fileExists(atPath: path)
     }
 
@@ -809,17 +836,7 @@ private extension CryptoManager {
         operation: CryptoOperationEnum
     ) -> Bool {
         do {
-            let keyData: Data?
-
-            switch operation {
-            case .encrypt:
-                keyData = recoverKey(.PUBLIC)?.getData()
-
-            case .decrypt:
-                keyData = vaultPrivateKey?.getData()
-            }
-
-            guard let keyData else {
+            guard let keyData = fileCryptoKeyData(for: operation) else {
                 debugLog("Failed to export key data for file crypto", space: .crypto)
                 return false
             }
@@ -839,6 +856,16 @@ private extension CryptoManager {
             return false
         }
     }
+
+    func fileCryptoKeyData(for operation: CryptoOperationEnum) -> Data? {
+        switch operation {
+        case .encrypt:
+            return recoverKey(.public)?.getData()
+
+        case .decrypt:
+            return vaultPrivateKey?.getData()
+        }
+    }
 }
 
 // MARK: - OSStatus Helper
@@ -848,4 +875,19 @@ private extension OSStatus {
     var securityMessage: String {
         SecCopyErrorMessageString(self, nil) as String? ?? "\(self)"
     }
+}
+
+// MARK: - Backward Compatibility Aliases
+
+extension KeyEnum {
+
+    static var META_PRIVATE: KeyEnum { .metaPrivate }
+    static var PUBLIC: KeyEnum { .public }
+    static var PRIVATE: KeyEnum { .private }
+}
+
+extension KeyFileEnum {
+
+    static var PUBLIC: KeyFileEnum { .publicKey }
+    static var PRIVATE: KeyFileEnum { .privateKey }
 }

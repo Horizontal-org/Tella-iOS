@@ -29,49 +29,57 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
 
     private enum Constants {
         static let service = "org.horizontal.tella.ios.crypto"
-        static let keyIDAccount = "keyID"
     }
 
-    private enum Account {
-        static func encryptedPrivateKey(_ keyID: String) -> String {
-            "priv-key.\(keyID)"
-        }
+    private enum KeychainItem {
+        case encryptedPrivateKey(String)
+        case publicKey(String)
+        case keyID
 
-        static func publicKey(_ keyID: String) -> String {
-            "pub-key.\(keyID)"
+        var account: String {
+            switch self {
+            case .encryptedPrivateKey(let keyID):
+                return "priv-key.\(keyID)"
+
+            case .publicKey(let keyID):
+                return "pub-key.\(keyID)"
+
+            case .keyID:
+                return "keyID"
+            }
         }
     }
 
     func saveEncryptedPrivateKey(_ data: Data, keyID: String) -> Bool {
-        save(data, account: Account.encryptedPrivateKey(keyID))
+        save(data, item: .encryptedPrivateKey(keyID))
     }
 
     func recoverEncryptedPrivateKey(keyID: String) -> Data? {
-        recover(account: Account.encryptedPrivateKey(keyID))
+        recover(item: .encryptedPrivateKey(keyID))
     }
 
     func deleteEncryptedPrivateKey(keyID: String) -> Bool {
-        delete(account: Account.encryptedPrivateKey(keyID))
+        delete(item: .encryptedPrivateKey(keyID))
     }
 
     func savePublicKey(_ data: Data, keyID: String) -> Bool {
-        save(data, account: Account.publicKey(keyID))
+        save(data, item: .publicKey(keyID))
     }
 
     func recoverPublicKey(keyID: String) -> Data? {
-        recover(account: Account.publicKey(keyID))
+        recover(item: .publicKey(keyID))
     }
 
     func deletePublicKey(keyID: String) -> Bool {
-        delete(account: Account.publicKey(keyID))
+        delete(item: .publicKey(keyID))
     }
 
     func saveKeyID(_ keyID: String) -> Bool {
-        save(Data(keyID.utf8), account: Constants.keyIDAccount)
+        save(Data(keyID.utf8), item: .keyID)
     }
 
     func recoverKeyID() -> String? {
-        guard let data = recover(account: Constants.keyIDAccount) else {
+        guard let data = recover(item: .keyID) else {
             return nil
         }
 
@@ -79,33 +87,30 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
     }
 
     func deleteKeyID() -> Bool {
-        delete(account: Constants.keyIDAccount)
+        delete(item: .keyID)
     }
 }
 
-// MARK: - Generic Keychain Helpers
+// MARK: - Keychain Helpers
 
 private extension CryptoKeychainStore {
 
-    func baseQuery(account: String) -> [String: Any] {
+    private func baseQuery(for item: KeychainItem) -> [String: Any] {
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: Constants.service,
-            kSecAttrAccount as String: account,
-            kSecAttrSynchronizable as String: false
+            kSecAttrAccount as String: item.account,
+            kSecAttrSynchronizable as String: false,
+            kSecUseDataProtectionKeychain as String: true
         ]
     }
 
-    func save(_ data: Data, account: String) -> Bool {
-        let query = baseQuery(account: account)
-
-        let updateAttributes: [String: Any] = [
-            kSecValueData as String: data
-        ]
+    private func save(_ data: Data, item: KeychainItem) -> Bool {
+        let query = baseQuery(for: item)
 
         let updateStatus = SecItemUpdate(
             query as CFDictionary,
-            updateAttributes as CFDictionary
+            [kSecValueData as String: data] as CFDictionary
         )
 
         if updateStatus == errSecSuccess {
@@ -113,7 +118,10 @@ private extension CryptoKeychainStore {
         }
 
         guard updateStatus == errSecItemNotFound else {
-            debugLog("Keychain update failed: \(updateStatus)", space: .crypto)
+            debugLog(
+                "Keychain update failed for \(item.account): \(updateStatus.securityMessage)",
+                space: .crypto
+            )
             return false
         }
 
@@ -125,29 +133,56 @@ private extension CryptoKeychainStore {
         let addStatus = SecItemAdd(attributes as CFDictionary, nil)
 
         if addStatus != errSecSuccess {
-            debugLog("Keychain add failed: \(addStatus)", space: .crypto)
+            debugLog(
+                "Keychain add failed for \(item.account): \(addStatus.securityMessage)",
+                space: .crypto
+            )
         }
 
         return addStatus == errSecSuccess
     }
 
-    func recover(account: String) -> Data? {
-        var query = baseQuery(account: account)
+    private func recover(item: KeychainItem) -> Data? {
+        var query = baseQuery(for: item)
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
 
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        var itemRef: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &itemRef)
 
         guard status == errSecSuccess else {
+            if status != errSecItemNotFound {
+                debugLog(
+                    "Keychain recover failed for \(item.account): \(status.securityMessage)",
+                    space: .crypto
+                )
+            }
             return nil
         }
 
-        return item as? Data
+        return itemRef as? Data
     }
 
-    func delete(account: String) -> Bool {
-        let status = SecItemDelete(baseQuery(account: account) as CFDictionary)
-        return status == errSecSuccess || status == errSecItemNotFound
+    private func delete(item: KeychainItem) -> Bool {
+        let status = SecItemDelete(baseQuery(for: item) as CFDictionary)
+
+        if status != errSecSuccess && status != errSecItemNotFound {
+            debugLog(
+                "Keychain delete failed for \(item.account): \(status.securityMessage)",
+                space: .crypto
+            )
+            return false
+        }
+
+        return true
+    }
+}
+
+// MARK: - OSStatus Helper
+
+private extension OSStatus {
+
+    var securityMessage: String {
+        SecCopyErrorMessageString(self, nil) as String? ?? "\(self)"
     }
 }
