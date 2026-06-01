@@ -12,82 +12,68 @@ import Security
 
 protocol CryptoKeychainStoring: AnyObject {
 
-    func saveEncryptedPrivateKey(_ data: Data, keyID: String) -> Bool
-    func recoverEncryptedPrivateKey(keyID: String) -> Data?
-    func deleteEncryptedPrivateKey(keyID: String) -> Bool
+    func saveEncryptedPrivateKey(_ data: Data) -> Bool
+    func recoverEncryptedPrivateKey() -> Data?
+    func deleteEncryptedPrivateKey() -> Bool
 
-    func savePublicKey(_ data: Data, keyID: String) -> Bool
-    func recoverPublicKey(keyID: String) -> Data?
-    func deletePublicKey(keyID: String) -> Bool
+    func savePublicKey(_ data: Data) -> Bool
+    func recoverPublicKey() -> Data?
+    func deletePublicKey() -> Bool
 
-    func saveKeyID(_ keyID: String) -> Bool
-    func recoverKeyID() -> String?
-    func deleteKeyID() -> Bool
+    func deleteVaultKeyMaterial() -> Bool
 }
 
 final class CryptoKeychainStore: CryptoKeychainStoring {
 
     private enum Constants {
         static let service = "org.horizontal.tella.ios.crypto"
+        static let encryptedPrivateKeyAccount = "priv-key"
+        static let publicKeyAccount = "pub-key"
     }
 
     private enum KeychainItem {
-        case encryptedPrivateKey(String)
-        case publicKey(String)
-        case keyID
+        case encryptedPrivateKey
+        case publicKey
 
         var account: String {
             switch self {
-            case .encryptedPrivateKey(let keyID):
-                return "priv-key.\(keyID)"
+            case .encryptedPrivateKey:
+                return Constants.encryptedPrivateKeyAccount
 
-            case .publicKey(let keyID):
-                return "pub-key.\(keyID)"
-
-            case .keyID:
-                return "keyID"
+            case .publicKey:
+                return Constants.publicKeyAccount
             }
         }
     }
 
-    func saveEncryptedPrivateKey(_ data: Data, keyID: String) -> Bool {
-        save(data, item: .encryptedPrivateKey(keyID))
+    func saveEncryptedPrivateKey(_ data: Data) -> Bool {
+        save(data, item: .encryptedPrivateKey)
     }
 
-    func recoverEncryptedPrivateKey(keyID: String) -> Data? {
-        recover(item: .encryptedPrivateKey(keyID))
+    func recoverEncryptedPrivateKey() -> Data? {
+        recover(item: .encryptedPrivateKey)
     }
 
-    func deleteEncryptedPrivateKey(keyID: String) -> Bool {
-        delete(item: .encryptedPrivateKey(keyID))
+    func deleteEncryptedPrivateKey() -> Bool {
+        delete(item: .encryptedPrivateKey)
     }
 
-    func savePublicKey(_ data: Data, keyID: String) -> Bool {
-        save(data, item: .publicKey(keyID))
+    func savePublicKey(_ data: Data) -> Bool {
+        save(data, item: .publicKey)
     }
 
-    func recoverPublicKey(keyID: String) -> Data? {
-        recover(item: .publicKey(keyID))
+    func recoverPublicKey() -> Data? {
+        recover(item: .publicKey)
     }
 
-    func deletePublicKey(keyID: String) -> Bool {
-        delete(item: .publicKey(keyID))
+    func deletePublicKey() -> Bool {
+        delete(item: .publicKey)
     }
 
-    func saveKeyID(_ keyID: String) -> Bool {
-        save(Data(keyID.utf8), item: .keyID)
-    }
-
-    func recoverKeyID() -> String? {
-        guard let data = recover(item: .keyID) else {
-            return nil
-        }
-
-        return String(data: data, encoding: .utf8)
-    }
-
-    func deleteKeyID() -> Bool {
-        delete(item: .keyID)
+    func deleteVaultKeyMaterial() -> Bool {
+        let privateKeyDeleted = deleteEncryptedPrivateKey()
+        let publicKeyDeleted = deletePublicKey()
+        return privateKeyDeleted && publicKeyDeleted
     }
 }
 
