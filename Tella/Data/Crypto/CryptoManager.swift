@@ -61,11 +61,15 @@ private extension CryptoManager {
     /// Secure Enclave meta key for Keychain-backed vault keys.
     static let keychainMetaPrivateKeyTag = "org.horizontal.tella.ios"
     
+    /// ECIES algorithm used to encrypt and decrypt vault key material with EC key pairs (e.g. meta key wrapping).
     static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
     
     /// Folder name under `Documents/keys/` for file-based vault keys.
     static let keyIDUserDefaultsKey = "keyID"
+    
+    /// Set after vault keys are stored in Keychain (new installs or file-based migration). When true, keys are read from Keychain instead of `Documents/keys/`.
     static let vaultKeysMigratedToKeychainUserDefaultsKey = "cryptoKeychainMigrationCompleted"
+   
     /// Set after the first successful vault setup. Cleared when the app is deleted.
     static let vaultSetupCompletedUserDefaultsKey = "vaultSetupCompleted"
 }
