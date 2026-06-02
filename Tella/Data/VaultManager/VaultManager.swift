@@ -12,7 +12,7 @@ import Security
 class VaultManager : VaultManagerInterface, ObservableObject{
     
     
-    private let cryptoManager: CryptoManager = CryptoManager.shared
+    private let cryptoManager: CryptoManager
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
     private let containerPath: String = "Containers"
@@ -24,6 +24,14 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     var onSuccessLock = PassthroughSubject<String,Never>()
+
+    init(
+        cryptoManager: CryptoManager = CryptoManager(
+            cryptoFileManager: CryptoFileManager()
+        )
+    ) {
+        self.cryptoManager = cryptoManager
+    }
     
     var key: String? {
         return cryptoManager.unlockedDatabaseKey

@@ -35,11 +35,7 @@ enum KeyFileEnum: String {
 }
 
 final class CryptoManager {
-    
-    static let shared = CryptoManager(
-        cryptoFileManager: CryptoFileManager()
-    )
-    
+
     private let cryptoFileManager: CryptoFileManagerProtocol
     private let cryptoKeychainStore: CryptoKeychainStoring
     
@@ -556,13 +552,13 @@ private extension CryptoManager {
             )
             return nil
         }
-        
-        guard CFGetTypeID(item) == SecKeyGetTypeID() else {
+
+        guard let key = item as? SecKey else {
             debugLog("Keychain item is not a SecKey", space: .crypto)
             return nil
         }
-        
-        return item as! SecKey
+
+        return key
     }
     
     func metaPrivateKeyQuery(tag: String, password: String) -> [String: Any] {
