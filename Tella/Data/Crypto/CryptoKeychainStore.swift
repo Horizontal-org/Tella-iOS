@@ -16,10 +16,6 @@ protocol CryptoKeychainStoring: AnyObject {
     func recoverEncryptedPrivateKey() -> Data?
     func deleteEncryptedPrivateKey() -> Bool
     
-    func savePublicKey(_ data: Data) -> Bool
-    func recoverPublicKey() -> Data?
-    func deletePublicKey() -> Bool
-    
     func deleteVaultKeyMaterial() -> Bool
 }
 
@@ -28,19 +24,15 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
     private enum Constants {
         static let service = "org.horizontal.tella.ios.crypto"
         static let encryptedPrivateKeyAccount = "priv-key"
-        static let publicKeyAccount = "pub-key"
     }
     
     private enum KeychainItem {
         case encryptedPrivateKey
-        case publicKey
         
         var account: String {
             switch self {
             case .encryptedPrivateKey:
                 return Constants.encryptedPrivateKeyAccount
-            case .publicKey:
-                return Constants.publicKeyAccount
             }
         }
     }
@@ -57,22 +49,8 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         delete(item: .encryptedPrivateKey)
     }
     
-    func savePublicKey(_ data: Data) -> Bool {
-        save(data, item: .publicKey)
-    }
-    
-    func recoverPublicKey() -> Data? {
-        recover(item: .publicKey)
-    }
-    
-    func deletePublicKey() -> Bool {
-        delete(item: .publicKey)
-    }
-    
     func deleteVaultKeyMaterial() -> Bool {
-        let privateKeyDeleted = deleteEncryptedPrivateKey()
-        let publicKeyDeleted = deletePublicKey()
-        return privateKeyDeleted && publicKeyDeleted
+        deleteEncryptedPrivateKey()
     }
 }
 

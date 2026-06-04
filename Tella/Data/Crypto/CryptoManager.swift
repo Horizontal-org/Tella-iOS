@@ -35,7 +35,7 @@ enum KeyFileEnum: String {
 }
 
 final class CryptoManager {
-
+    
     private let cryptoFileManager: CryptoFileManagerProtocol
     private let cryptoKeychainStore: CryptoKeychainStoring
     
@@ -69,7 +69,7 @@ private extension CryptoManager {
     
     /// Set after vault keys are stored in Keychain (new installs or file-based migration). When true, keys are read from Keychain instead of `Documents/keys/`.
     static let vaultKeysMigratedToKeychainUserDefaultsKey = "cryptoKeychainMigrationCompleted"
-   
+    
     /// Set after the first successful vault setup. Cleared when the app is deleted.
     static let vaultSetupCompletedUserDefaultsKey = "vaultSetupCompleted"
 }
@@ -79,8 +79,8 @@ private extension CryptoManager {
 extension CryptoManager: CryptoManagerInterface {
     
     func encrypt(_ data: Data) -> Data? {
-        guard let publicKey = recoverKey(.public) else {
-            debugLog("Failed to recover public key", space: .crypto)
+        guard let publicKey = recoverVaultPublicKey() else {
+            debugLog("Vault public key is not available", space: .crypto)
             return nil
         }
         
@@ -139,9 +139,10 @@ extension CryptoManager {
         switch type {
         case .metaPrivate:
             return recoverMetaPrivateKey(password: password)
-            
-        case .public, .private:
-            return recoverVaultKey(type, password: password)
+        case .public:
+            return recoverVaultPublicKey()
+        case .private:
+            return recoverVaultPrivateKey(password: password)
         }
     }
     
@@ -397,8 +398,7 @@ private extension CryptoManager {
     }
     
     func hasCompleteKeychainVaultMaterial() -> Bool {
-        cryptoKeychainStore.recoverEncryptedPrivateKey() != nil &&
-        cryptoKeychainStore.recoverPublicKey() != nil
+        cryptoKeychainStore.recoverEncryptedPrivateKey() != nil
     }
     
     func rollbackKeychainVaultMaterial(password: String) {
@@ -434,22 +434,8 @@ private extension CryptoManager {
             throw RuntimeError("Failed to encrypt vault private key")
         }
         
-        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
-            throw RuntimeError("Failed to create vault public key")
-        }
-        
-        let publicData = try externalRepresentation(
-            of: publicKey,
-            errorMessage: "Failed to export vault public key"
-        )
-        
         guard cryptoKeychainStore.saveEncryptedPrivateKey(encryptedPrivateData) else {
             throw RuntimeError("Failed to save encrypted private key in Keychain")
-        }
-        
-        guard cryptoKeychainStore.savePublicKey(publicData) else {
-            _ = cryptoKeychainStore.deleteEncryptedPrivateKey()
-            throw RuntimeError("Failed to save public key in Keychain")
         }
     }
     
@@ -469,10 +455,7 @@ private extension CryptoManager {
             return false
         }
         
-        guard let originalPublicKey = SecKeyCopyPublicKey(vaultKey),
-              let originalPublicData = externalRepresentationOrNil(originalPublicKey),
-              let storedPublicData = cryptoKeychainStore.recoverPublicKey(),
-              originalPublicData == storedPublicData else {
+        guard SecKeyCopyPublicKey(recoveredPrivateKey) != nil else {
             return false
         }
         
@@ -556,13 +539,13 @@ private extension CryptoManager {
             )
             return nil
         }
-
-        guard let key = item as? SecKey else {
-            debugLog("Keychain item is not a SecKey", space: .crypto)
-            return nil
-        }
-
-        return key
+        
+        //        guard let key = item as! SecKey else {
+        //            debugLog("Keychain item is not a SecKey", space: .crypto)
+        //            return nil
+        //        }
+        
+        return item as! SecKey
     }
     
     func metaPrivateKeyQuery(tag: String, password: String) -> [String: Any] {
@@ -675,34 +658,38 @@ private extension CryptoManager {
 
 private extension CryptoManager {
     
-    func recoverVaultKey(_ type: KeyEnum, password: String?) -> SecKey? {
-        guard var keyData = recoverStoredKeyData(type) else {
+    func recoverVaultPublicKey() -> SecKey? {
+        guard let vaultPrivateKey,
+              let publicKey = SecKeyCopyPublicKey(vaultPrivateKey) else {
+            return nil
+        }
+        
+        return publicKey
+    }
+    
+    func recoverVaultPrivateKey(password: String?) -> SecKey? {
+        guard var keyData = recoverStoredPrivateKeyData() else {
             debugLog("key data not found", space: .crypto)
             return nil
         }
         
-        if type == .private {
-            guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
-                debugLog("meta private key not recovered", space: .crypto)
-                return nil
-            }
-            
-            guard let decryptedData = decrypt(keyData, using: metaPrivateKey) else {
-                debugLog("private key data not decrypted", space: .crypto)
-                return nil
-            }
-            
-            keyData = decryptedData
-        }
-        
-        guard let key = makeSecKey(from: keyData, type: type) else {
+        guard let metaPrivateKey = recoverMetaPrivateKey(password: password) else {
+            debugLog("meta private key not recovered", space: .crypto)
             return nil
         }
         
-        if type == .private {
-            vaultPrivateKey = key
+        guard let decryptedData = decrypt(keyData, using: metaPrivateKey) else {
+            debugLog("private key data not decrypted", space: .crypto)
+            return nil
         }
         
+        keyData = decryptedData
+        
+        guard let key = makeSecKey(from: keyData, type: .private) else {
+            return nil
+        }
+        
+        vaultPrivateKey = key
         return key
     }
     
@@ -727,36 +714,16 @@ private extension CryptoManager {
         return privateKey
     }
     
-    func recoverStoredKeyData(_ type: KeyEnum) -> Data? {
+    func recoverStoredPrivateKeyData() -> Data? {
         if shouldReadVaultKeysFromFiles() {
-            switch type {
-            case .private:
-                return cryptoFileManager.recoverKeyData(.privateKey)
-            case .public:
-                return cryptoFileManager.recoverKeyData(.publicKey)
-            case .metaPrivate:
-                return nil
-            }
+            return cryptoFileManager.recoverKeyData(.privateKey)
         }
         
-        switch type {
-        case .private:
-            if let data = cryptoKeychainStore.recoverEncryptedPrivateKey() {
-                return data
-            }
-            
-            return cryptoFileManager.recoverKeyData(.privateKey)
-            
-        case .public:
-            if let data = cryptoKeychainStore.recoverPublicKey() {
-                return data
-            }
-            
-            return cryptoFileManager.recoverKeyData(.publicKey)
-            
-        case .metaPrivate:
-            return nil
+        if let data = cryptoKeychainStore.recoverEncryptedPrivateKey() {
+            return data
         }
+        
+        return cryptoFileManager.recoverKeyData(.privateKey)
     }
     
     func makeSecKey(from data: Data, type: KeyEnum) -> SecKey? {
@@ -922,7 +889,7 @@ private extension CryptoManager {
     func fileCryptoKeyData(for operation: CryptoOperationEnum) -> Data? {
         switch operation {
         case .encrypt:
-            return recoverKey(.public)?.getData()
+            return recoverVaultPublicKey()?.getData()
             
         case .decrypt:
             return vaultPrivateKey?.getData()
