@@ -439,8 +439,6 @@
 		12C06B722FD1D90B00066675 /* SecKeyOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B712FD1D90900066675 /* SecKeyOptions.swift */; };
 		12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */; };
 		12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B832FD1D91200066675 /* VaultSecKey.swift */; };
-		12C06B852FD1D91400066676 /* CryptoManager+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */; };
-		12C06B862FD1D91500066676 /* CryptoManager+VaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -1224,8 +1222,6 @@
 		12C06B712FD1D90900066675 /* SecKeyOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyOptions.swift; sourceTree = "<group>"; };
 		12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclaveMetaKeyStore.swift; sourceTree = "<group>"; };
 		12C06B832FD1D91200066675 /* VaultSecKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSecKey.swift; sourceTree = "<group>"; };
-		12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoManager+Migration.swift"; sourceTree = "<group>"; };
-		12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoManager+VaultKeys.swift"; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1718,8 +1714,6 @@
 			isa = PBXGroup;
 			children = (
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
-				12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */,
-				12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */,
 				12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */,
 				1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */,
 				12C06B832FD1D91200066675 /* VaultSecKey.swift */,
@@ -4400,8 +4394,6 @@
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
-				12C06B852FD1D91400066676 /* CryptoManager+Migration.swift in Sources */,
-				12C06B862FD1D91500066676 /* CryptoManager+VaultKeys.swift in Sources */,
 				12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */,
 				12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,

@@ -23,18 +23,14 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
-    var onSuccessLock = PassthroughSubject<String,Never>()
-
+    var onSuccessLock = PassthroughSubject<Void,Never>()
+    
     init(
         cryptoManager: CryptoManager = CryptoManager(
             cryptoFileManager: CryptoFileManager()
         )
     ) {
         self.cryptoManager = cryptoManager
-    }
-    
-    var key: String? {
-        return cryptoManager.unlockedDatabaseKey
     }
     
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
@@ -315,13 +311,13 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func createTempFileURL(fileName: String?) -> URL {
         self.createTempFileURL(fileName: fileName, pathExtension: nil)
     }
-    //    
+    //
     //    func createTempFileURL(fileName: String? , pathExtension: String?, withSubFolder: Bool = false) -> URL {
     //        let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
     //        let subFolder = withSubFolder ? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))" : ""
-    //        
+    //
     //        let pathComponent = withSubFolder ? subFolder + "/" + fileName : fileName
-    //        
+    //
     //        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(pathComponent).appendingPathExtension(pathExtension ?? "")
     //    }
     func createTempFileURL(
@@ -575,17 +571,19 @@ extension VaultManager {
         Deferred {
             Future<Bool, Never> { [weak self] promise in
                 guard let self = self else { return }
-
+                
                 Task {
-                    guard let keyString = await self.cryptoManager.unlockAndMigrateIfNeeded(
+                    let unlocked = await self.cryptoManager.unlockAndMigrateIfNeeded(
                         password: password
-                    ) else {
+                    )
+                    
+                    guard unlocked else {
                         promise(.success(false))
                         return
                     }
-
+                    
                     await MainActor.run {
-                        self.onSuccessLock.send(keyString)
+                        self.onSuccessLock.send(())
                         promise(.success(true))
                     }
                 }
@@ -596,25 +594,19 @@ extension VaultManager {
     func initKeys(_ type: PasswordTypeEnum, password:String) {
         do {
             try cryptoManager.initKeys(type, password: password)
-            guard let key = cryptoManager.recoverVaultPrivateKey(password: password)?.getString() else { return }
-            onSuccessLock.send(key)
+            onSuccessLock.send(())
         }
         catch let error {
             debugLog(error)
         }
     }
     
-    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)  {
-        do {
-            try cryptoManager.updateKeys(
-                type,
-                newPassword: newPassword,
-                oldPassword: oldPassword
-            )
-        }
-        catch let error {
-            debugLog(error)
-        }
+    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String) throws {
+        try cryptoManager.updateKeys(
+            type,
+            newPassword: newPassword,
+            oldPassword: oldPassword
+        )
     }
     
     func getPasswordType() -> PasswordTypeEnum {
@@ -623,6 +615,14 @@ extension VaultManager {
     
     func initialize() throws {
         fileManager.createDirectory(atPath: containerURL)
+    }
+    
+    func lock() {
+        cryptoManager.lock()
+    }
+    
+    func withVaultDerivedSQLCipherKey<T>(_ body: (String) throws -> T) throws -> T {
+        try cryptoManager.withVaultDerivedSQLCipherKey(body)
     }
 }
 

@@ -55,7 +55,9 @@ struct ConfirmLockPasswordView: View {
     }
     
     func updatePassword() {
-        lockViewModel.updateKeys(passwordTypeEnum: .tellaPassword)
+        guard lockViewModel.updateKeys(passwordTypeEnum: .tellaPassword) else {
+            return
+        }
         lockViewModel.shouldDismiss.send(true)
     }
 }
