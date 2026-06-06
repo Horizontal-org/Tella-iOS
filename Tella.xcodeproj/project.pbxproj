@@ -435,6 +435,12 @@
 		12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */; };
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
+		12C06B702FD1D00000066675 /* OSStatus+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */; };
+		12C06B722FD1D90B00066675 /* SecKeyOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B712FD1D90900066675 /* SecKeyOptions.swift */; };
+		12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */; };
+		12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B832FD1D91200066675 /* VaultSecKey.swift */; };
+		12C06B852FD1D91400066676 /* CryptoManager+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */; };
+		12C06B862FD1D91500066676 /* CryptoManager+VaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -1214,6 +1220,12 @@
 		12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRateLimiter.swift; sourceTree = "<group>"; };
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
+		12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSStatus+Security.swift"; sourceTree = "<group>"; };
+		12C06B712FD1D90900066675 /* SecKeyOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyOptions.swift; sourceTree = "<group>"; };
+		12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclaveMetaKeyStore.swift; sourceTree = "<group>"; };
+		12C06B832FD1D91200066675 /* VaultSecKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSecKey.swift; sourceTree = "<group>"; };
+		12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoManager+Migration.swift"; sourceTree = "<group>"; };
+		12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CryptoManager+VaultKeys.swift"; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1706,7 +1718,12 @@
 			isa = PBXGroup;
 			children = (
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
+				12C06B852FD1D91400066675 /* CryptoManager+Migration.swift */,
+				12C06B862FD1D91500066675 /* CryptoManager+VaultKeys.swift */,
+				12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */,
 				1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */,
+				12C06B832FD1D91200066675 /* VaultSecKey.swift */,
+				12C06B712FD1D90900066675 /* SecKeyOptions.swift */,
 				12782B492B8400E500B5BC36 /* Cryptor.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
@@ -2187,6 +2204,7 @@
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
+				12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4382,6 +4400,10 @@
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
+				12C06B852FD1D91400066676 /* CryptoManager+Migration.swift in Sources */,
+				12C06B862FD1D91500066676 /* CryptoManager+VaultKeys.swift in Sources */,
+				12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */,
+				12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
@@ -4513,6 +4535,7 @@
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
 				126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */,
+				12C06B722FD1D90B00066675 /* SecKeyOptions.swift in Sources */,
 				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* NavigationBottomView.swift in Sources */,
@@ -4673,6 +4696,7 @@
 				1254E2732C6FDCFB004C6280 /* ConnectionEmptyView.swift in Sources */,
 				155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */,
 				20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */,
+				12C06B702FD1D00000066675 /* OSStatus+Security.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */,

@@ -593,14 +593,10 @@ extension VaultManager {
         }
         .eraseToAnyPublisher()
     }
-    private func recoverKey( password:String? = nil) throws -> SecKey?  {
-        return cryptoManager.recoverKey(.PRIVATE, password: password)
-    }
-    
     func initKeys(_ type: PasswordTypeEnum, password:String) {
         do {
             try cryptoManager.initKeys(type, password: password)
-            guard let key = try self.recoverKey(password: password)?.getString() else { return }
+            guard let key = cryptoManager.recoverVaultPrivateKey(password: password)?.getString() else { return }
             onSuccessLock.send(key)
         }
         catch let error {
@@ -610,8 +606,11 @@ extension VaultManager {
     
     func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)  {
         do {
-            guard let privateKey = try self.recoverKey(password: oldPassword) else { return }
-            try cryptoManager.updateKeys(privateKey, type, newPassword:newPassword, oldPassword: oldPassword)
+            try cryptoManager.updateKeys(
+                type,
+                newPassword: newPassword,
+                oldPassword: oldPassword
+            )
         }
         catch let error {
             debugLog(error)

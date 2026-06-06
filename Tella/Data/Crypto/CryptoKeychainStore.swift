@@ -140,12 +140,3 @@ private extension CryptoKeychainStore {
         return true
     }
 }
-
-// MARK: - OSStatus Helper
-
-private extension OSStatus {
-    
-    var securityMessage: String {
-        SecCopyErrorMessageString(self, nil) as String? ?? "\(self)"
-    }
-}
