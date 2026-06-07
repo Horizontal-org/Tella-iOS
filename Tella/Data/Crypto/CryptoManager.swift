@@ -185,7 +185,10 @@ extension CryptoManager {
         do {
             // Clear leftover key material from a failed or partial setup before creating a new keyID.
             if let existingKeyID = keyID {
-                _ = deleteMetaKeypair(keyID: existingKeyID, password: password)
+                _ = metaKeyStore.delete(
+                    tag: metaKeyStore.metaKeyTag(for: existingKeyID),
+                    password: password
+                )
                 cryptoFileManager.deleteKeyFolder(existingKeyID)
             }
             
@@ -196,10 +199,10 @@ extension CryptoManager {
             }
             
             let vaultPrivateKey = try createVaultPrivateKey()
-            let metaPrivateKey = try createMetaPrivateKey(
-                type,
-                password: password,
-                keyID: keyID
+            let metaPrivateKey = try metaKeyStore.create(
+                passwordType: type,
+                tag: metaKeyStore.metaKeyTag(for: keyID),
+                password: password
             )
             try writeEncryptedVaultKeypairToKeychain(
                 privateKey: vaultPrivateKey,
@@ -247,10 +250,10 @@ extension CryptoManager {
         let newKeyID = makeKeyID()
         
         do {
-            let metaPrivateKey = try createMetaPrivateKey(
-                type,
-                password: newPassword,
-                keyID: newKeyID
+            let metaPrivateKey = try metaKeyStore.create(
+                passwordType: type,
+                tag: metaKeyStore.metaKeyTag(for: newKeyID),
+                password: newPassword
             )
             
             try writeEncryptedVaultKeypairToKeychain(
@@ -266,14 +269,20 @@ extension CryptoManager {
             }
             
             setKeyID(newKeyID)
-            _ = deleteMetaKeypair(keyID: oldKeyID, password: oldPassword)
+            _ = metaKeyStore.delete(
+                tag: metaKeyStore.metaKeyTag(for: oldKeyID),
+                password: oldPassword
+            )
             
             passwordType = type
             markVaultKeysMigratedToKeychain()
             markVaultSetupCompleted()
             
         } catch {
-            _ = deleteMetaKeypair(keyID: newKeyID, password: newPassword)
+            _ = metaKeyStore.delete(
+                tag: metaKeyStore.metaKeyTag(for: newKeyID),
+                password: newPassword
+            )
             storeUnlockedVaultPrivateKey(vaultPrivateKey)
             throw error
         }
@@ -290,44 +299,7 @@ extension CryptoManager {
             return nil
         }
         
-        if let keyID {
-            if let metaPrivateKey = metaKeyStore.recover(
-                tag: metaPrivateKeyTag(for: keyID),
-                password: password
-            ) {
-                return metaPrivateKey
-            }
-        }
-        
-        // Legacy installs created before keyID-based tags were tracked.
-        return metaKeyStore.recover(
-            tag: SecureEnclaveMetaKeyStore.keychainTag,
-            password: password
-        )
-    }
-    
-    func createMetaPrivateKey(
-        _ type: PasswordTypeEnum,
-        password: String,
-        keyID: String
-    ) throws -> SecKey {
-        try metaKeyStore.create(
-            passwordType: type,
-            tag: metaPrivateKeyTag(for: keyID),
-            password: password
-        )
-    }
-    
-    @discardableResult
-    func deleteMetaKeypair(keyID: String, password: String) -> Bool {
-        metaKeyStore.delete(
-            tag: metaPrivateKeyTag(for: keyID),
-            password: password
-        )
-    }
-    
-    func metaPrivateKeyTag(for keyID: String) -> String {
-        metaKeyStore.metaKeyTag(for: keyID)
+        return metaKeyStore.recoverMetaPrivateKey(keyID: keyID, password: password)
     }
 }
 
@@ -448,10 +420,10 @@ extension CryptoManager {
             if let existingMetaPrivateKey = recoverMetaPrivateKey(password: password) {
                 metaPrivateKey = existingMetaPrivateKey
             } else {
-                metaPrivateKey = try createMetaPrivateKey(
-                    passwordType,
-                    password: password,
-                    keyID: keyID
+                metaPrivateKey = try metaKeyStore.create(
+                    passwordType: passwordType,
+                    tag: metaKeyStore.metaKeyTag(for: keyID),
+                    password: password
                 )
             }
             
@@ -532,7 +504,10 @@ extension CryptoManager {
     func rollbackKeychainVaultMaterial(password: String) {
         _ = cryptoKeychainStore.deleteVaultKeyMaterial()
         if let keyID {
-            _ = deleteMetaKeypair(keyID: keyID, password: password)
+            _ = metaKeyStore.delete(
+                tag: metaKeyStore.metaKeyTag(for: keyID),
+                password: password
+            )
         }
     }
     

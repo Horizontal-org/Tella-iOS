@@ -11,7 +11,7 @@ import LocalAuthentication
 import Security
 
 protocol SecureEnclaveMetaKeyStoring: AnyObject {
-    func recover(tag: String, password: String) -> SecKey?
+    func recoverMetaPrivateKey(keyID: String?, password: String) -> SecKey?
     func create(
         passwordType: PasswordTypeEnum,
         tag: String,
@@ -23,39 +23,27 @@ protocol SecureEnclaveMetaKeyStoring: AnyObject {
 }
 
 final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
-
+    
     static let keychainTag = "org.horizontal.tella.ios"
-
+    
     func metaKeyTag(for keyID: String) -> String {
         "\(Self.keychainTag).\(keyID)"
     }
-
-    func recover(tag: String, password: String) -> SecKey? {
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(
-            lookupQuery(tag: tag, password: password) as CFDictionary,
-            &item
-        )
-
-        guard status == errSecSuccess, let item else {
-            if status != errSecItemNotFound {
-                debugLog(
-                    "Failed to recover meta private key for tag \(tag): \(status.securityMessage)",
-                    space: .crypto
-                )
-            }
+    
+    func recoverMetaPrivateKey(keyID: String?, password: String) -> SecKey? {
+        guard !password.isEmpty, let keyID else {
             return nil
         }
-
-        return secKeyReference(from: item)
+        
+        return recover(tag: metaKeyTag(for: keyID), password: password)
     }
-
+    
     @discardableResult
     func delete(tag: String, password: String) -> Bool {
         let status = SecItemDelete(
             lookupQuery(tag: tag, password: password) as CFDictionary
         )
-
+        
         guard status == errSecSuccess || status == errSecItemNotFound else {
             debugLog(
                 "Failed to delete meta private key for tag \(tag): \(status.securityMessage)",
@@ -63,17 +51,17 @@ final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
             )
             return false
         }
-
+        
         return true
     }
-
+    
     func create(
         passwordType: PasswordTypeEnum,
         tag: String,
         password: String
     ) throws -> SecKey {
         let context = authenticationContext(password: password)
-
+        
         guard let access = SecAccessControlCreateWithFlags(
             kCFAllocatorDefault,
             kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
@@ -82,7 +70,7 @@ final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
         ) else {
             throw RuntimeError("Failed to create SecAccessControl")
         }
-
+        
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecAttrKeySizeInBits as String: 256,
@@ -94,16 +82,16 @@ final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
             ],
             kSecUseAuthenticationContext as String: context
         ]
-
+        
         var error: Unmanaged<CFError>?
-
+        
         guard let key = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
             throw RuntimeError(
                 error?.takeRetainedValue().localizedDescription
                 ?? "Failed to create meta private key"
             )
         }
-
+        
         return key
     }
 }
@@ -111,12 +99,32 @@ final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
 // MARK: - Keychain query
 
 private extension SecureEnclaveMetaKeyStore {
-
+    
+    func recover(tag: String, password: String) -> SecKey? {
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(
+            lookupQuery(tag: tag, password: password) as CFDictionary,
+            &item
+        )
+        
+        guard status == errSecSuccess, let item else {
+            if status != errSecItemNotFound {
+                debugLog(
+                    "Failed to recover meta private key for tag \(tag): \(status.securityMessage)",
+                    space: .crypto
+                )
+            }
+            return nil
+        }
+        
+        return secKeyReference(from: item)
+    }
+    
     /// Keychain lookup uses `kSecReturnRef` + `kSecClassKey`, so the returned ref is a `SecKey`.
     func secKeyReference(from item: CFTypeRef) -> SecKey {
         item as! SecKey
     }
-
+    
     func lookupQuery(tag: String, password: String) -> [String: Any] {
         [
             kSecClass as String: kSecClassKey,
@@ -127,7 +135,7 @@ private extension SecureEnclaveMetaKeyStore {
             kSecUseAuthenticationContext as String: authenticationContext(password: password)
         ]
     }
-
+    
     func authenticationContext(password: String) -> LAContext {
         let context = LAContext()
         context.setCredential(Data(password.utf8), type: .applicationPassword)
