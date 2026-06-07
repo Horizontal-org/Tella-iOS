@@ -182,31 +182,37 @@ extension CryptoManager {
     func initKeys(_ type: PasswordTypeEnum, password: String) throws {
         debugLog("Creating new crypto keys", space: .crypto)
         
-        let privateKey = try createVaultPrivateKey()
-        storeUnlockedVaultPrivateKey(privateKey)
-        
         do {
+            // Clear leftover key material from a failed or partial setup before creating a new keyID.
+            if let existingKeyID = keyID {
+                _ = deleteMetaKeypair(keyID: existingKeyID, password: password)
+                cryptoFileManager.deleteKeyFolder(existingKeyID)
+            }
             
-            _ = deleteKeychainMetaKeypair(password: password)
+            setKeyID(makeKeyID())
             
-            try saveVaultKeyPairToKeychain(
-                passwordType: type,
-                password: password
+            guard let keyID else {
+                throw RuntimeError("Missing key ID")
+            }
+            
+            let vaultPrivateKey = try createVaultPrivateKey()
+            let metaPrivateKey = try createMetaPrivateKey(
+                type,
+                password: password,
+                keyID: keyID
+            )
+            try writeEncryptedVaultKeypairToKeychain(
+                privateKey: vaultPrivateKey,
+                metaPrivateKey: metaPrivateKey
             )
             
-            guard let metaPrivateKey = recoverKeychainMetaPrivateKey(password: password),
-                  verifyKeychainVaultMatches(
-                    vaultKey: privateKey,
-                    metaPrivateKey: metaPrivateKey
-                  ) else {
-                rollbackKeychainVaultMaterial(password: password)
+            guard recoverVaultPrivateKey(password: password) != nil else {
                 throw RuntimeError("Fresh key setup verification failed")
             }
             
             passwordType = type
             markVaultKeysMigratedToKeychain()
             markVaultSetupCompleted()
-            clearKeyID()
             
         } catch {
             rollbackKeychainVaultMaterial(password: password)
@@ -220,66 +226,55 @@ extension CryptoManager {
         newPassword: String,
         oldPassword: String
     ) throws {
-        guard recoverMetaPrivateKey(password: oldPassword) != nil else {
-            throw RuntimeError("Could not recover old meta private key")
+        guard !newPassword.isEmpty else {
+            throw RuntimeError("New password is empty")
         }
         
-        guard let oldVaultPrivateKey = recoverVaultPrivateKey(password: oldPassword) else {
+        guard !oldPassword.isEmpty else {
+            throw RuntimeError("Old password is empty")
+        }
+        
+        guard let oldKeyID = keyID else {
+            throw RuntimeError("Could not find key ID")
+        }
+        
+        guard let vaultPrivateKey = recoverVaultPrivateKey(password: oldPassword) else {
             throw RuntimeError("Could not recover vault private key")
         }
         
-        storeUnlockedVaultPrivateKey(oldVaultPrivateKey)
+        storeUnlockedVaultPrivateKey(vaultPrivateKey)
+        
+        let newKeyID = makeKeyID()
         
         do {
-            
-            try saveVaultKeyPairToKeychain(
-                passwordType: type,
-                password: newPassword
+            let metaPrivateKey = try createMetaPrivateKey(
+                type,
+                password: newPassword,
+                keyID: newKeyID
             )
             
-            guard let keychainMetaPrivateKey = recoverKeychainMetaPrivateKey(password: newPassword),
-                  verifyKeychainVaultMatches(
-                    vaultKey: oldVaultPrivateKey,
-                    metaPrivateKey: keychainMetaPrivateKey
-                  ) else {
-                rollbackKeychainVaultMaterial(password: newPassword)
+            try writeEncryptedVaultKeypairToKeychain(
+                privateKey: vaultPrivateKey,
+                metaPrivateKey: metaPrivateKey
+            )
+            
+            guard verifyKeychainVaultMatches(
+                vaultKey: vaultPrivateKey,
+                metaPrivateKey: metaPrivateKey
+            ) else {
                 throw RuntimeError("Updated key setup verification failed")
             }
             
-            _ = deleteKeychainMetaKeypair(password: oldPassword)
+            setKeyID(newKeyID)
+            _ = deleteMetaKeypair(keyID: oldKeyID, password: oldPassword)
             
             passwordType = type
             markVaultKeysMigratedToKeychain()
             markVaultSetupCompleted()
-            clearKeyID()
             
         } catch {
-            rollbackKeychainVaultMaterial(password: newPassword)
-            clearUnlockedState()
-            throw error
-        }
-    }
-    
-    func saveVaultKeyPairToKeychain(
-        passwordType: PasswordTypeEnum,
-        password: String
-    ) throws {
-        guard let privateKey = unlockedVaultPrivateKey else {
-            throw RuntimeError("Vault private key is not available")
-        }
-        
-        let metaPrivateKey = try createKeychainMetaPrivateKey(
-            passwordType,
-            password: password
-        )
-        
-        do {
-            try writeEncryptedVaultKeypairToKeychain(
-                privateKey: privateKey,
-                metaPrivateKey: metaPrivateKey
-            )
-        } catch {
-            rollbackKeychainVaultMaterial(password: password)
+            _ = deleteMetaKeypair(keyID: newKeyID, password: newPassword)
+            storeUnlockedVaultPrivateKey(vaultPrivateKey)
             throw error
         }
     }
@@ -291,78 +286,48 @@ extension CryptoManager {
 extension CryptoManager {
     
     func recoverMetaPrivateKey(password: String?) -> SecKey? {
-        if shouldReadVaultKeysFromFiles(),
-           let keyID,
-           let fileBasedMetaPrivateKey = recoverFileBasedMetaPrivateKey(
-            keyID: keyID,
-            password: password
-           ) {
-            return fileBasedMetaPrivateKey
-        }
-        
-        if let keychainMetaPrivateKey = recoverKeychainMetaPrivateKey(password: password) {
-            return keychainMetaPrivateKey
-        }
-        
-        guard let keyID else {
-            return nil
-        }
-        
-        return recoverFileBasedMetaPrivateKey(
-            keyID: keyID,
-            password: password
-        )
-    }
-    
-    func recoverKeychainMetaPrivateKey(password: String?) -> SecKey? {
         guard let password, !password.isEmpty else {
-            debugLog("Keychain meta private key recovery requires a password", space: .crypto)
             return nil
         }
         
+        if let keyID {
+            if let metaPrivateKey = metaKeyStore.recover(
+                tag: metaPrivateKeyTag(for: keyID),
+                password: password
+            ) {
+                return metaPrivateKey
+            }
+        }
+        
+        // Legacy installs created before keyID-based tags were tracked.
         return metaKeyStore.recover(
             tag: SecureEnclaveMetaKeyStore.keychainTag,
             password: password
         )
     }
     
-    func recoverFileBasedMetaPrivateKey(keyID: String, password: String?) -> SecKey? {
-        guard let password, !password.isEmpty else {
-            debugLog("File-based meta private key recovery requires a password", space: .crypto)
-            return nil
-        }
-        
-        return metaKeyStore.recover(
-            tag: metaKeyStore.fileBasedTag(keyID: keyID),
-            password: password
-        )
-    }
-    
-    func createKeychainMetaPrivateKey(
+    func createMetaPrivateKey(
         _ type: PasswordTypeEnum,
-        password: String
+        password: String,
+        keyID: String
     ) throws -> SecKey {
         try metaKeyStore.create(
             passwordType: type,
-            tag: SecureEnclaveMetaKeyStore.keychainTag,
+            tag: metaPrivateKeyTag(for: keyID),
             password: password
         )
     }
     
     @discardableResult
-    func deleteKeychainMetaKeypair(password: String) -> Bool {
+    func deleteMetaKeypair(keyID: String, password: String) -> Bool {
         metaKeyStore.delete(
-            tag: SecureEnclaveMetaKeyStore.keychainTag,
+            tag: metaPrivateKeyTag(for: keyID),
             password: password
         )
     }
     
-    @discardableResult
-    func deleteFileBasedMetaKeypair(keyID: String, password: String) -> Bool {
-        metaKeyStore.delete(
-            tag: metaKeyStore.fileBasedTag(keyID: keyID),
-            password: password
-        )
+    func metaPrivateKeyTag(for keyID: String) -> String {
+        metaKeyStore.metaKeyTag(for: keyID)
     }
 }
 
@@ -448,22 +413,16 @@ extension CryptoManager {
         
         if isVaultKeysMigratedToKeychain,
            hasCompleteKeychainVaultMaterial(),
-           let keychainMetaPrivateKey = recoverKeychainMetaPrivateKey(password: password),
-           verifyKeychainVaultMatches(
-            vaultKey: vaultKey,
-            metaPrivateKey: keychainMetaPrivateKey
-           ) {
+           let metaPrivateKey = recoverMetaPrivateKey(password: password),
+           verifyKeychainVaultMatches(vaultKey: vaultKey, metaPrivateKey: metaPrivateKey) {
             markVaultSetupCompleted()
             deleteVaultKeyFilesIfPresent()
             return
         }
         
         if hasCompleteKeychainVaultMaterial(),
-           let keychainMetaPrivateKey = recoverKeychainMetaPrivateKey(password: password),
-           verifyKeychainVaultMatches(
-            vaultKey: vaultKey,
-            metaPrivateKey: keychainMetaPrivateKey
-           ) {
+           let metaPrivateKey = recoverMetaPrivateKey(password: password),
+           verifyKeychainVaultMatches(vaultKey: vaultKey, metaPrivateKey: metaPrivateKey) {
             markVaultKeysMigratedToKeychain()
             markVaultSetupCompleted()
             deleteVaultKeyFilesIfPresent()
@@ -476,25 +435,34 @@ extension CryptoManager {
         }
         
         do {
-            let keychainMetaPrivateKey: SecKey
+            if keyID == nil {
+                setKeyID(makeKeyID())
+            }
             
-            if let existingKeychainMetaPrivateKey = recoverKeychainMetaPrivateKey(password: password) {
-                keychainMetaPrivateKey = existingKeychainMetaPrivateKey
+            guard let keyID else {
+                throw RuntimeError("Missing key ID")
+            }
+            
+            let metaPrivateKey: SecKey
+            
+            if let existingMetaPrivateKey = recoverMetaPrivateKey(password: password) {
+                metaPrivateKey = existingMetaPrivateKey
             } else {
-                keychainMetaPrivateKey = try createKeychainMetaPrivateKey(
+                metaPrivateKey = try createMetaPrivateKey(
                     passwordType,
-                    password: password
+                    password: password,
+                    keyID: keyID
                 )
             }
             
             try writeEncryptedVaultKeypairToKeychain(
                 privateKey: vaultKey,
-                metaPrivateKey: keychainMetaPrivateKey
+                metaPrivateKey: metaPrivateKey
             )
             
             guard verifyKeychainVaultMatches(
                 vaultKey: vaultKey,
-                metaPrivateKey: keychainMetaPrivateKey
+                metaPrivateKey: metaPrivateKey
             ) else {
                 rollbackKeychainVaultMaterial(password: password)
                 debugLog("Migration failed: verification failed", space: .crypto)
@@ -517,7 +485,6 @@ extension CryptoManager {
         }
         
         cryptoFileManager.deleteKeyFolder(keyID)
-        clearKeyID()
         debugLog("Deleted file-based vault keys for keyID \(keyID)", space: .crypto)
     }
 }
@@ -564,7 +531,17 @@ extension CryptoManager {
     
     func rollbackKeychainVaultMaterial(password: String) {
         _ = cryptoKeychainStore.deleteVaultKeyMaterial()
-        _ = deleteKeychainMetaKeypair(password: password)
+        if let keyID {
+            _ = deleteMetaKeypair(keyID: keyID, password: password)
+        }
+    }
+    
+    func makeKeyID() -> String {
+        UUID().uuidString
+    }
+    
+    func setKeyID(_ keyID: String) {
+        UserDefaults.standard.set(keyID, forKey: Self.keyIDUserDefaultsKey)
     }
     
     var keyID: String? {

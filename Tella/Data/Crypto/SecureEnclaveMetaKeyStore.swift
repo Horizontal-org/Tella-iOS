@@ -19,14 +19,14 @@ protocol SecureEnclaveMetaKeyStoring: AnyObject {
     ) throws -> SecKey
     @discardableResult
     func delete(tag: String, password: String) -> Bool
-    func fileBasedTag(keyID: String) -> String
+    func metaKeyTag(for keyID: String) -> String
 }
 
 final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
 
     static let keychainTag = "org.horizontal.tella.ios"
 
-    func fileBasedTag(keyID: String) -> String {
+    func metaKeyTag(for keyID: String) -> String {
         "\(Self.keychainTag).\(keyID)"
     }
 
