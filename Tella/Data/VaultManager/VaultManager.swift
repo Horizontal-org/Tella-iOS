@@ -12,7 +12,7 @@ import Security
 class VaultManager : VaultManagerInterface, ObservableObject{
     
     
-    private let cryptoManager: VaultCryptoManaging
+    private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
     private let containerPath: String = "Containers"
@@ -23,14 +23,10 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
-    var onSuccessLock = PassthroughSubject<Void,Never>()
+    var onSuccessLock = PassthroughSubject<String,Never>()
     
-    init(
-        cryptoManager: VaultCryptoManaging = CryptoManager(
-            cryptoFileManager: CryptoFileManager()
-        )
-    ) {
-        self.cryptoManager = cryptoManager
+    var key: String? {
+        return cryptoManager.metaPrivateKey?.getString()
     }
     
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
@@ -311,13 +307,13 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func createTempFileURL(fileName: String?) -> URL {
         self.createTempFileURL(fileName: fileName, pathExtension: nil)
     }
-    //
+    //    
     //    func createTempFileURL(fileName: String? , pathExtension: String?, withSubFolder: Bool = false) -> URL {
     //        let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
     //        let subFolder = withSubFolder ? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))" : ""
-    //
+    //        
     //        let pathComponent = withSubFolder ? subFolder + "/" + fileName : fileName
-    //
+    //        
     //        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(pathComponent).appendingPathExtension(pathExtension ?? "")
     //    }
     func createTempFileURL(
@@ -567,46 +563,48 @@ extension VaultManager {
         return self.cryptoManager.keysInitialized()
     }
     
-    func login(password: String?) -> AnyPublisher<Bool, Never> {
-        Deferred {
-            Future<Bool, Never> { [weak self] promise in
+    func login(password:String?) -> AnyPublisher<Bool,Never> {
+        
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
                 guard let self = self else { return }
                 
-                Task {
-                    let unlocked = await self.cryptoManager.unlockAndMigrateIfNeeded(
-                        password: password
-                    )
+                do {
+                    guard let _ = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
+                    promise(.success(true))
+                }
+                catch let error {
+                    debugLog(error)
+                    promise(.success(false))
                     
-                    guard unlocked else {
-                        promise(.success(false))
-                        return
-                    }
-                    
-                    await MainActor.run {
-                        self.onSuccessLock.send(())
-                        promise(.success(true))
-                    }
                 }
             }
-        }
-        .eraseToAnyPublisher()
+        }.eraseToAnyPublisher()
     }
+    
+    private func recoverKey( password:String? = nil) throws -> SecKey?  {
+        return cryptoManager.recoverKey(.PRIVATE, password: password)
+    }
+    
     func initKeys(_ type: PasswordTypeEnum, password:String) {
         do {
             try cryptoManager.initKeys(type, password: password)
-            onSuccessLock.send(())
+            guard let key = try self.recoverKey(password: password)?.getString() else { return }
+            onSuccessLock.send(key)
         }
         catch let error {
             debugLog(error)
         }
     }
     
-    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String) throws {
-        try cryptoManager.updateKeys(
-            type,
-            newPassword: newPassword,
-            oldPassword: oldPassword
-        )
+    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)  {
+        do {
+            guard let privateKey = try self.recoverKey(password: oldPassword) else { return }
+            try cryptoManager.updateKeys(privateKey, type, newPassword:newPassword, oldPassword: oldPassword)
+        }
+        catch let error {
+            debugLog(error)
+        }
     }
     
     func getPasswordType() -> PasswordTypeEnum {
@@ -615,14 +613,6 @@ extension VaultManager {
     
     func initialize() throws {
         fileManager.createDirectory(atPath: containerURL)
-    }
-    
-    func lock() {
-        cryptoManager.lock()
-    }
-    
-    func withVaultDerivedSQLCipherKey<T>(_ body: (String) throws -> T) throws -> T {
-        try cryptoManager.withVaultDerivedSQLCipherKey(body)
     }
 }
 

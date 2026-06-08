@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 HORIZONTAL.
+//  Copyright © 2023 HORIZONTAL. 
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -8,19 +8,18 @@ import Foundation
 import Combine
 
 protocol VaultManagerInterface {
-
+    
+    var key : String? { get }
     var shouldCancelImportAndEncryption : CurrentValueSubject<Bool,Never> { get set }
-    var onSuccessLock : PassthroughSubject<Void,Never> { get set }
+    var onSuccessLock : PassthroughSubject<String,Never> { get set }
     func rootIsExist() -> Bool
     
     func keysInitialized() -> Bool
     func login(password:String?) -> AnyPublisher<Bool,Never>
     func initKeys(_ type: PasswordTypeEnum, password:String)
-    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String) throws
+    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)
     func getPasswordType() -> PasswordTypeEnum
     func initialize() throws
-    func lock()
-    func withVaultDerivedSQLCipherKey<T>(_ body: (String) throws -> T) throws -> T
     
     func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
     func loadFileData(file vaultFile: VaultFileDB) -> Data?

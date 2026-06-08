@@ -21,29 +21,6 @@ struct UserDefaultsProperty<T> {
 }
 
 @propertyWrapper
-struct BoolUserDefaultsProperty {
-    let key: String
-    let defaultValue: Bool
-
-    init(_ key: String, defaultValue: Bool = false) {
-        self.key = key
-        self.defaultValue = defaultValue
-    }
-
-    var wrappedValue: Bool {
-        get {
-            guard UserDefaults.standard.object(forKey: key) != nil else {
-                return defaultValue
-            }
-            return UserDefaults.standard.bool(forKey: key)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: key)
-        }
-    }
-}
-
-@propertyWrapper
 struct RawValueUserDefaultsProperty<T: RawRepresentable> {
     let key: String
     let defaultValue: T
