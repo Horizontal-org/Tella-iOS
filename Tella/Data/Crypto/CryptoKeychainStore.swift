@@ -22,19 +22,31 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         static let service = "org.horizontal.tella.ios.crypto"
         static let encryptedPrivateKeyAccount = "priv-key"
     }
-
-    private var baseQuery: [String: Any] {
-        [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: Constants.service,
-            kSecAttrAccount as String: Constants.encryptedPrivateKeyAccount,
-            kSecAttrSynchronizable as String: false,
-            kSecUseDataProtectionKeychain as String: true
-        ]
-    }
-
+    
     func saveEncryptedPrivateKey(_ data: Data) -> Bool {
-        let query = baseQuery
+        saveEncryptedPrivateKey(
+            data,
+            service: Constants.service,
+            account: Constants.encryptedPrivateKeyAccount
+        )
+    }
+    
+    func recoverEncryptedPrivateKey() -> Data? {
+        recoverEncryptedPrivateKey(
+            service: Constants.service,
+            account: Constants.encryptedPrivateKeyAccount
+        )
+    }
+    
+    func deleteEncryptedPrivateKey() -> Bool {
+        deleteEncryptedPrivateKey(
+            service: Constants.service,
+            account: Constants.encryptedPrivateKeyAccount
+        )
+    }
+    
+    func saveEncryptedPrivateKey(_ data: Data, service: String, account: String) -> Bool {
+        let query = baseQuery(service: service, account: account)
         
         let updateStatus = SecItemUpdate(
             query as CFDictionary,
@@ -47,7 +59,7 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         
         guard updateStatus == errSecItemNotFound else {
             debugLog(
-                "Keychain update failed for \(Constants.encryptedPrivateKeyAccount): \(updateStatus.securityMessage)",
+                "Keychain update failed for \(account): \(updateStatus.securityMessage)",
                 space: .crypto
             )
             return false
@@ -62,7 +74,7 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         
         if addStatus != errSecSuccess {
             debugLog(
-                "Keychain add failed for \(Constants.encryptedPrivateKeyAccount): \(addStatus.securityMessage)",
+                "Keychain add failed for \(account): \(addStatus.securityMessage)",
                 space: .crypto
             )
         }
@@ -70,8 +82,8 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         return addStatus == errSecSuccess
     }
     
-    func recoverEncryptedPrivateKey() -> Data? {
-        var query = baseQuery
+    func recoverEncryptedPrivateKey(service: String, account: String) -> Data? {
+        var query = baseQuery(service: service, account: account)
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         
@@ -81,7 +93,7 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         guard status == errSecSuccess else {
             if status != errSecItemNotFound {
                 debugLog(
-                    "Keychain recover failed for \(Constants.encryptedPrivateKeyAccount): \(status.securityMessage)",
+                    "Keychain recover failed for \(account): \(status.securityMessage)",
                     space: .crypto
                 )
             }
@@ -91,17 +103,29 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         return itemRef as? Data
     }
     
-    func deleteEncryptedPrivateKey() -> Bool {
-        let status = SecItemDelete(baseQuery as CFDictionary)
+    func deleteEncryptedPrivateKey(service: String, account: String) -> Bool {
+        let status = SecItemDelete(
+            baseQuery(service: service, account: account) as CFDictionary
+        )
         
         if status != errSecSuccess && status != errSecItemNotFound {
             debugLog(
-                "Keychain delete failed for \(Constants.encryptedPrivateKeyAccount): \(status.securityMessage)",
+                "Keychain delete failed for \(account): \(status.securityMessage)",
                 space: .crypto
             )
             return false
         }
         
         return true
+    }
+    
+    private func baseQuery(service: String, account: String) -> [String: Any] {
+        [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+            kSecAttrSynchronizable as String: false,
+            kSecUseDataProtectionKeychain as String: true
+        ]
     }
 }

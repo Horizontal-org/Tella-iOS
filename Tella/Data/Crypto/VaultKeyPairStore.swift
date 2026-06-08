@@ -22,10 +22,10 @@ protocol VaultKeyPairStoring: AnyObject {
 }
 
 final class VaultKeyPairStore: VaultKeyPairStoring {
-
+    
     private let cryptoKeychainStore: CryptoKeychainStoring
     private let metaKeyStore: SecureEnclaveMetaKeyStoring
-
+    
     init(
         cryptoKeychainStore: CryptoKeychainStoring,
         metaKeyStore: SecureEnclaveMetaKeyStoring
@@ -33,7 +33,7 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         self.cryptoKeychainStore = cryptoKeychainStore
         self.metaKeyStore = metaKeyStore
     }
-
+    
     func writeEncryptedVaultKeypair(
         privateKey: SecKey,
         metaPrivateKey: SecKey
@@ -44,20 +44,20 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         defer {
             privateData.secureWipe()
         }
-
+        
         guard let metaPublicKey = metaPrivateKey.getPublicKey() else {
             throw RuntimeError("Failed to create meta public key")
         }
-
+        
         guard let encryptedPrivateData = metaPublicKey.eciesEncrypt(privateData) else {
             throw RuntimeError("Failed to encrypt vault private key")
         }
-
+        
         guard cryptoKeychainStore.saveEncryptedPrivateKey(encryptedPrivateData) else {
             throw RuntimeError("Failed to save encrypted private key in Keychain")
         }
     }
-
+    
     func verifyKeychainVaultMatches(
         vaultKey: SecKey,
         metaPrivateKey: SecKey
@@ -65,14 +65,14 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         guard let encryptedPrivateData = cryptoKeychainStore.recoverEncryptedPrivateKey() else {
             return false
         }
-
+        
         guard var decryptedPrivateData = metaPrivateKey.eciesDecrypt(encryptedPrivateData) else {
             return false
         }
         defer {
             decryptedPrivateData.secureWipe()
         }
-
+        
         guard let recoveredPrivateKey = SecKey.makeKey(
             from: decryptedPrivateData,
             options: [
@@ -83,7 +83,7 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         ) else {
             return false
         }
-
+        
         guard var originalPrivateData = vaultKey.getData(),
               var recoveredPrivateData = recoveredPrivateKey.getData() else {
             return false
@@ -92,14 +92,14 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
             originalPrivateData.secureWipe()
             recoveredPrivateData.secureWipe()
         }
-
+        
         guard originalPrivateData == recoveredPrivateData else {
             return false
         }
-
+        
         return recoveredPrivateKey.getPublicKey() != nil
     }
-
+    
     func rollback(password: String, keyID: String?) {
         _ = cryptoKeychainStore.deleteEncryptedPrivateKey()
         if let keyID {
