@@ -119,7 +119,7 @@ final class VaultKeyMigrator: VaultKeyMigrating {
             } else {
                 metaPrivateKey = try metaKeyStore.create(
                     passwordType: passwordType,
-                    tag: metaKeyStore.metaKeyTag(for: keyID),
+                    keyID: keyID,
                     password: password
                 )
             }

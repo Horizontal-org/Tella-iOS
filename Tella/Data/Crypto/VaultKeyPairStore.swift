@@ -104,7 +104,7 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         _ = cryptoKeychainStore.deleteEncryptedPrivateKey()
         if let keyID {
             _ = metaKeyStore.delete(
-                tag: metaKeyStore.metaKeyTag(for: keyID),
+                keyID: keyID,
                 password: password
             )
         }

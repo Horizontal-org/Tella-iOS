@@ -103,7 +103,7 @@ final class VaultKeyStore: VaultKeyStoring {
         do {
             if let existingKeyID = keyID {
                 _ = metaKeyStore.delete(
-                    tag: metaKeyStore.metaKeyTag(for: existingKeyID),
+                    keyID: existingKeyID,
                     password: password
                 )
                 cryptoFileManager.deleteKeysRootFolder()
@@ -118,7 +118,7 @@ final class VaultKeyStore: VaultKeyStoring {
             let vaultPrivateKey = try SecKey.createECPrivateKey()
             let metaPrivateKey = try metaKeyStore.create(
                 passwordType: type,
-                tag: metaKeyStore.metaKeyTag(for: keyID),
+                keyID: keyID,
                 password: password
             )
 
@@ -169,7 +169,7 @@ final class VaultKeyStore: VaultKeyStoring {
         do {
             let metaPrivateKey = try metaKeyStore.create(
                 passwordType: type,
-                tag: metaKeyStore.metaKeyTag(for: newKeyID),
+                keyID: newKeyID,
                 password: newPassword
             )
 
@@ -187,7 +187,7 @@ final class VaultKeyStore: VaultKeyStoring {
 
             keyID = newKeyID
             _ = metaKeyStore.delete(
-                tag: metaKeyStore.metaKeyTag(for: oldKeyID),
+                keyID: oldKeyID,
                 password: oldPassword
             )
 
@@ -197,7 +197,7 @@ final class VaultKeyStore: VaultKeyStoring {
 
         } catch {
             _ = metaKeyStore.delete(
-                tag: metaKeyStore.metaKeyTag(for: newKeyID),
+                keyID: newKeyID,
                 password: newPassword
             )
             throw error

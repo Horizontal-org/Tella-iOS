@@ -14,48 +14,66 @@ protocol SecureEnclaveMetaKeyStoring: AnyObject {
     func recoverMetaPrivateKey(keyID: String?, password: String) -> SecKey?
     func create(
         passwordType: PasswordTypeEnum,
-        tag: String,
+        keyID: String,
         password: String
     ) throws -> SecKey
     @discardableResult
-    func delete(tag: String, password: String) -> Bool
-    func metaKeyTag(for keyID: String) -> String
+    func delete(keyID: String, password: String) -> Bool
 }
 
 final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
     
-    static let keychainTag = "org.horizontal.tella.ios"
-    
-    func metaKeyTag(for keyID: String) -> String {
-        "\(Self.keychainTag).\(keyID)"
+    private enum Constants {
+        static let keychainTag = "org.horizontal.tella.ios"
     }
     
-    func recoverMetaPrivateKey(keyID: String?, password: String) -> SecKey? {
+    func recoverMetaPrivateKey(
+        keyID: String?,
+        password: String
+    ) -> SecKey? {
         guard !password.isEmpty, let keyID else {
             return nil
         }
         
-        return recover(tag: metaKeyTag(for: keyID), password: password)
-    }
-    
-    @discardableResult
-    func delete(tag: String, password: String) -> Bool {
-        let status = SecItemDelete(
-            lookupQuery(tag: tag, password: password) as CFDictionary
+        return recover(
+            tag: metaKeyTag(for: keyID, keychainTag: Constants.keychainTag),
+            password: password
         )
-        
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            debugLog(
-                "Failed to delete meta private key for tag \(tag): \(status.securityMessage)",
-                space: .crypto
-            )
-            return false
-        }
-        
-        return true
     }
     
     func create(
+        passwordType: PasswordTypeEnum,
+        keyID: String,
+        password: String
+    ) throws -> SecKey {
+        try createWithTag(
+            passwordType: passwordType,
+            tag: metaKeyTag(for: keyID, keychainTag: Constants.keychainTag),
+            password: password
+        )
+    }
+    
+    @discardableResult
+    func delete(
+        keyID: String,
+        password: String
+    ) -> Bool {
+        deleteWithTag(
+            tag: metaKeyTag(for: keyID, keychainTag: Constants.keychainTag),
+            password: password
+        )
+    }
+}
+
+// MARK: - Keychain query
+
+private extension SecureEnclaveMetaKeyStore {
+    
+    func metaKeyTag(for keyID: String, keychainTag: String) -> String {
+        "\(keychainTag).\(keyID)"
+    }
+    
+    func createWithTag(
         passwordType: PasswordTypeEnum,
         tag: String,
         password: String
@@ -94,11 +112,6 @@ final class SecureEnclaveMetaKeyStore: SecureEnclaveMetaKeyStoring {
         
         return key
     }
-}
-
-// MARK: - Keychain query
-
-private extension SecureEnclaveMetaKeyStore {
     
     func recover(tag: String, password: String) -> SecKey? {
         var item: CFTypeRef?
@@ -118,6 +131,23 @@ private extension SecureEnclaveMetaKeyStore {
         }
         
         return secKeyReference(from: item)
+    }
+    
+    @discardableResult
+    func deleteWithTag(tag: String, password: String) -> Bool {
+        let status = SecItemDelete(
+            lookupQuery(tag: tag, password: password) as CFDictionary
+        )
+        
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            debugLog(
+                "Failed to delete meta private key for tag \(tag): \(status.securityMessage)",
+                space: .crypto
+            )
+            return false
+        }
+        
+        return true
     }
     
     /// Keychain lookup uses `kSecReturnRef` + `kSecClassKey`, so the returned ref is a `SecKey`.
