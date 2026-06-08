@@ -271,6 +271,8 @@
 		1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */; };
 		1276B7392E1E56F10024C38A /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B7382E1E56F00024C38A /* ProgressViewModel.swift */; };
 		1276B73F2E1EA8F10024C38A /* FileReceivingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */; };
+		1276D1092FB246E800F492EC /* CryptoKeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */; };
+		12KCS0022FD1D91900066677 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12KCS0012FD1D91900066677 /* KeychainStore.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -434,6 +436,7 @@
 		12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */; };
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
+		12C06B702FD1D00000066675 /* OSStatus+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -481,6 +484,10 @@
 		12FAC45D2E265BF7007A4651 /* NearbySharingResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */; };
+		12VKM0022FD1D91400066677 /* VaultKeyMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */; };
+		12VKP0022FD1D91400066677 /* VaultKeyPairStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */; };
+		12VKS0022FD1D91600066677 /* VaultKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKS0012FD1D91600066677 /* VaultKeyStore.swift */; };
+		12VUK0022FD1D91800066677 /* VaultUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */; };
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
@@ -1034,6 +1041,8 @@
 		1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportFile.swift; sourceTree = "<group>"; };
 		1276B7382E1E56F00024C38A /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReceivingView.swift; sourceTree = "<group>"; };
+		1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKeychainStore.swift; sourceTree = "<group>"; };
+		12KCS0012FD1D91900066677 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -1212,6 +1221,7 @@
 		12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRateLimiter.swift; sourceTree = "<group>"; };
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
+		12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSStatus+Security.swift"; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1257,6 +1267,10 @@
 		12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingResultVM.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebAddServerURLView.swift; sourceTree = "<group>"; };
+		12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyMigrator.swift; sourceTree = "<group>"; };
+		12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyPairStore.swift; sourceTree = "<group>"; };
+		12VKS0012FD1D91600066677 /* VaultKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyStore.swift; sourceTree = "<group>"; };
+		12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultUserDefaultsKey.swift; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionHeaderView.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
@@ -1704,6 +1718,12 @@
 			isa = PBXGroup;
 			children = (
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
+				12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */,
+				12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */,
+				12VKS0012FD1D91600066677 /* VaultKeyStore.swift */,
+				12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */,
+				1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */,
+				12KCS0012FD1D91900066677 /* KeychainStore.swift */,
 				12782B492B8400E500B5BC36 /* Cryptor.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
@@ -2184,6 +2204,7 @@
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
+				12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4375,9 +4396,15 @@
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */,
 				1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */,
+				1276D1092FB246E800F492EC /* CryptoKeychainStore.swift in Sources */,
+				12KCS0022FD1D91900066677 /* KeychainStore.swift in Sources */,
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
+				12VKM0022FD1D91400066677 /* VaultKeyMigrator.swift in Sources */,
+				12VKP0022FD1D91400066677 /* VaultKeyPairStore.swift in Sources */,
+				12VKS0022FD1D91600066677 /* VaultKeyStore.swift in Sources */,
+				12VUK0022FD1D91800066677 /* VaultUserDefaultsKey.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
@@ -4669,6 +4696,7 @@
 				1254E2732C6FDCFB004C6280 /* ConnectionEmptyView.swift in Sources */,
 				155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */,
 				20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */,
+				12C06B702FD1D00000066675 /* OSStatus+Security.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */,
