@@ -19,33 +19,30 @@ protocol VaultKeyMigrating: AnyObject {
 }
 
 final class VaultKeyMigrator: VaultKeyMigrating {
-
+    
     private let cryptoFileManager: CryptoFileManagerProtocol
-    private let cryptoKeychainStore: CryptoKeychainStoring
-    private let metaKeyStore: SecureEnclaveMetaKeyStoring
+    private let keychainStore: VaultKeychainStoring
     private let vaultKeyPairStore: VaultKeyPairStoring
-
+    
     @UserDefaultsProperty(key: VaultUserDefaultsKey.keyID)
     private var keyID: String?
-
+    
     @BoolUserDefaultsProperty(VaultUserDefaultsKey.vaultSetupCompleted)
     private var vaultSetupCompleted
-
+    
     @BoolUserDefaultsProperty(VaultUserDefaultsKey.cryptoKeychainMigrationCompleted)
     private var vaultKeysMigratedToKeychain
-
+    
     init(
         cryptoFileManager: CryptoFileManagerProtocol,
-        cryptoKeychainStore: CryptoKeychainStoring,
-        metaKeyStore: SecureEnclaveMetaKeyStoring,
+        keychainStore: VaultKeychainStoring,
         vaultKeyPairStore: VaultKeyPairStoring
     ) {
         self.cryptoFileManager = cryptoFileManager
-        self.cryptoKeychainStore = cryptoKeychainStore
-        self.metaKeyStore = metaKeyStore
+        self.keychainStore = keychainStore
         self.vaultKeyPairStore = vaultKeyPairStore
     }
-
+    
     func migrateIfNeededAsync(
         password: String?,
         vaultKey: SecKey,
@@ -59,11 +56,11 @@ final class VaultKeyMigrator: VaultKeyMigrating {
             )
         }.value
     }
-
+    
     func hasCompleteKeychainVaultMaterial() -> Bool {
-        cryptoKeychainStore.recoverEncryptedPrivateKey() != nil
+        keychainStore.recoverEncryptedPrivateKey() != nil
     }
-
+    
     private func migrateIfNeeded(
         password: String?,
         vaultKey: SecKey,
@@ -73,62 +70,62 @@ final class VaultKeyMigrator: VaultKeyMigrating {
             debugLog("Migration skipped: password unavailable", space: .crypto)
             return
         }
-
+        
         if vaultKeysMigratedToKeychain,
            hasCompleteKeychainVaultMaterial(),
            let metaPrivateKey = recoverMetaPrivateKey(password: password),
            vaultKeyPairStore.verifyKeychainVaultMatches(
-               vaultKey: vaultKey,
-               metaPrivateKey: metaPrivateKey
+            vaultKey: vaultKey,
+            metaPrivateKey: metaPrivateKey
            ) {
             vaultSetupCompleted = true
             deleteVaultKeyFilesIfPresent()
             return
         }
-
+        
         if hasCompleteKeychainVaultMaterial(),
            let metaPrivateKey = recoverMetaPrivateKey(password: password),
            vaultKeyPairStore.verifyKeychainVaultMatches(
-               vaultKey: vaultKey,
-               metaPrivateKey: metaPrivateKey
+            vaultKey: vaultKey,
+            metaPrivateKey: metaPrivateKey
            ) {
             vaultKeysMigratedToKeychain = true
             vaultSetupCompleted = true
             deleteVaultKeyFilesIfPresent()
             return
         }
-
+        
         guard cryptoFileManager.keyFileExists(.privateKey) else {
             debugLog("Migration skipped: no file-based vault keys", space: .crypto)
             return
         }
-
+        
         do {
             if keyID == nil {
                 keyID = makeKeyID()
             }
-
+            
             guard let keyID else {
                 throw RuntimeError("Missing key ID")
             }
-
+            
             let metaPrivateKey: SecKey
-
+            
             if let existingMetaPrivateKey = recoverMetaPrivateKey(password: password) {
                 metaPrivateKey = existingMetaPrivateKey
             } else {
-                metaPrivateKey = try metaKeyStore.create(
+                metaPrivateKey = try keychainStore.create(
                     passwordType: passwordType,
                     keyID: keyID,
                     password: password
                 )
             }
-
+            
             try vaultKeyPairStore.writeEncryptedVaultKeypair(
                 privateKey: vaultKey,
                 metaPrivateKey: metaPrivateKey
             )
-
+            
             guard vaultKeyPairStore.verifyKeychainVaultMatches(
                 vaultKey: vaultKey,
                 metaPrivateKey: metaPrivateKey
@@ -137,29 +134,29 @@ final class VaultKeyMigrator: VaultKeyMigrating {
                 debugLog("Migration failed: verification failed", space: .crypto)
                 return
             }
-
+            
             vaultKeysMigratedToKeychain = true
             vaultSetupCompleted = true
             deleteVaultKeyFilesIfPresent()
-
+            
         } catch {
             vaultKeyPairStore.rollback(password: password, keyID: keyID)
             debugLog("Migration failed: \(error)", space: .crypto)
         }
     }
-
+    
     private func recoverMetaPrivateKey(password: String) -> SecKey? {
-        metaKeyStore.recoverMetaPrivateKey(
+        keychainStore.recoverMetaPrivateKey(
             keyID: keyID,
             password: password
         )
     }
-
+    
     private func deleteVaultKeyFilesIfPresent() {
         cryptoFileManager.deleteKeysRootFolder()
         debugLog("Deleted file-based vault keys folder", space: .crypto)
     }
-
+    
     private func makeKeyID() -> String {
         UUID().uuidString
     }

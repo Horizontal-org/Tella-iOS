@@ -23,14 +23,12 @@ final class CryptoManager {
     
     init(
         cryptoFileManager: CryptoFileManagerProtocol,
-        cryptoKeychainStore: CryptoKeychainStoring = CryptoKeychainStore(),
-        metaKeyStore: SecureEnclaveMetaKeyStoring = SecureEnclaveMetaKeyStore(),
+        keychainStore: VaultKeychainStoring = CryptoKeychainStore(),
         vaultKeyStore: VaultKeyStoring? = nil
     ) {
         self.vaultKeyStore = vaultKeyStore ?? VaultKeyStore(
             cryptoFileManager: cryptoFileManager,
-            cryptoKeychainStore: cryptoKeychainStore,
-            metaKeyStore: metaKeyStore
+            keychainStore: keychainStore
         )
     }
     

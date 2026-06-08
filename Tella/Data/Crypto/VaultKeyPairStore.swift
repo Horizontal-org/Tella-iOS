@@ -23,15 +23,10 @@ protocol VaultKeyPairStoring: AnyObject {
 
 final class VaultKeyPairStore: VaultKeyPairStoring {
     
-    private let cryptoKeychainStore: CryptoKeychainStoring
-    private let metaKeyStore: SecureEnclaveMetaKeyStoring
+    private let keychainStore: VaultKeychainStoring
     
-    init(
-        cryptoKeychainStore: CryptoKeychainStoring,
-        metaKeyStore: SecureEnclaveMetaKeyStoring
-    ) {
-        self.cryptoKeychainStore = cryptoKeychainStore
-        self.metaKeyStore = metaKeyStore
+    init(keychainStore: VaultKeychainStoring) {
+        self.keychainStore = keychainStore
     }
     
     func writeEncryptedVaultKeypair(
@@ -53,7 +48,7 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
             throw RuntimeError("Failed to encrypt vault private key")
         }
         
-        guard cryptoKeychainStore.saveEncryptedPrivateKey(encryptedPrivateData) else {
+        guard keychainStore.saveEncryptedPrivateKey(encryptedPrivateData) else {
             throw RuntimeError("Failed to save encrypted private key in Keychain")
         }
     }
@@ -62,7 +57,7 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
         vaultKey: SecKey,
         metaPrivateKey: SecKey
     ) -> Bool {
-        guard let encryptedPrivateData = cryptoKeychainStore.recoverEncryptedPrivateKey() else {
+        guard let encryptedPrivateData = keychainStore.recoverEncryptedPrivateKey() else {
             return false
         }
         
@@ -101,9 +96,9 @@ final class VaultKeyPairStore: VaultKeyPairStoring {
     }
     
     func rollback(password: String, keyID: String?) {
-        _ = cryptoKeychainStore.deleteEncryptedPrivateKey()
+        _ = keychainStore.deleteEncryptedPrivateKey()
         if let keyID {
-            _ = metaKeyStore.delete(
+            _ = keychainStore.delete(
                 keyID: keyID,
                 password: password
             )

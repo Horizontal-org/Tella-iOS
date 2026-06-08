@@ -16,15 +16,35 @@ protocol CryptoKeychainStoring: AnyObject {
     func deleteEncryptedPrivateKey() -> Bool
 }
 
-final class CryptoKeychainStore: CryptoKeychainStoring {
+protocol SecureEnclaveMetaKeyStoring: AnyObject {
+    func recoverMetaPrivateKey(keyID: String?, password: String) -> SecKey?
+    func create(
+        passwordType: PasswordTypeEnum,
+        keyID: String,
+        password: String
+    ) throws -> SecKey
+    @discardableResult
+    func delete(keyID: String, password: String) -> Bool
+}
+
+typealias VaultKeychainStoring = CryptoKeychainStoring & SecureEnclaveMetaKeyStoring
+
+final class CryptoKeychainStore: VaultKeychainStoring {
     
     private enum Constants {
         static let service = "org.horizontal.tella.ios.crypto"
         static let encryptedPrivateKeyAccount = "priv-key"
+        static let keychainTag = "org.horizontal.tella.ios"
+    }
+    
+    private let keychainStore: KeychainStore
+    
+    init(keychainStore: KeychainStore = KeychainStore()) {
+        self.keychainStore = keychainStore
     }
     
     func saveEncryptedPrivateKey(_ data: Data) -> Bool {
-        saveEncryptedPrivateKey(
+        keychainStore.saveGenericPassword(
             data,
             service: Constants.service,
             account: Constants.encryptedPrivateKeyAccount
@@ -32,100 +52,57 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
     }
     
     func recoverEncryptedPrivateKey() -> Data? {
-        recoverEncryptedPrivateKey(
+        keychainStore.recoverGenericPassword(
             service: Constants.service,
             account: Constants.encryptedPrivateKeyAccount
         )
     }
     
     func deleteEncryptedPrivateKey() -> Bool {
-        deleteEncryptedPrivateKey(
+        keychainStore.deleteGenericPassword(
             service: Constants.service,
             account: Constants.encryptedPrivateKeyAccount
         )
     }
     
-    func saveEncryptedPrivateKey(_ data: Data, service: String, account: String) -> Bool {
-        let query = baseQuery(service: service, account: account)
-        
-        let updateStatus = SecItemUpdate(
-            query as CFDictionary,
-            [kSecValueData as String: data] as CFDictionary
-        )
-        
-        if updateStatus == errSecSuccess {
-            return true
-        }
-        
-        guard updateStatus == errSecItemNotFound else {
-            debugLog(
-                "Keychain update failed for \(account): \(updateStatus.securityMessage)",
-                space: .crypto
-            )
-            return false
-        }
-        
-        var attributes = query
-        attributes[kSecValueData as String] = data
-        attributes[kSecAttrAccessible as String] =
-        kSecAttrAccessibleWhenUnlockedThisDeviceOnly
-        
-        let addStatus = SecItemAdd(attributes as CFDictionary, nil)
-        
-        if addStatus != errSecSuccess {
-            debugLog(
-                "Keychain add failed for \(account): \(addStatus.securityMessage)",
-                space: .crypto
-            )
-        }
-        
-        return addStatus == errSecSuccess
-    }
-    
-    func recoverEncryptedPrivateKey(service: String, account: String) -> Data? {
-        var query = baseQuery(service: service, account: account)
-        query[kSecReturnData as String] = true
-        query[kSecMatchLimit as String] = kSecMatchLimitOne
-        
-        var itemRef: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &itemRef)
-        
-        guard status == errSecSuccess else {
-            if status != errSecItemNotFound {
-                debugLog(
-                    "Keychain recover failed for \(account): \(status.securityMessage)",
-                    space: .crypto
-                )
-            }
+    func recoverMetaPrivateKey(
+        keyID: String?,
+        password: String
+    ) -> SecKey? {
+        guard !password.isEmpty, let keyID else {
             return nil
         }
         
-        return itemRef as? Data
-    }
-    
-    func deleteEncryptedPrivateKey(service: String, account: String) -> Bool {
-        let status = SecItemDelete(
-            baseQuery(service: service, account: account) as CFDictionary
+        return keychainStore.recoverSecureEnclavePrivateKey(
+            tag: Self.metaKeyTag(for: keyID),
+            password: password
         )
-        
-        if status != errSecSuccess && status != errSecItemNotFound {
-            debugLog(
-                "Keychain delete failed for \(account): \(status.securityMessage)",
-                space: .crypto
-            )
-            return false
-        }
-        
-        return true
     }
     
-    private func baseQuery(service: String, account: String) -> [String: Any] {
-        [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecAttrSynchronizable as String: false,
-            kSecUseDataProtectionKeychain as String: true
-        ]
+    func create(
+        passwordType: PasswordTypeEnum,
+        keyID: String,
+        password: String
+    ) throws -> SecKey {
+        try keychainStore.createSecureEnclavePrivateKey(
+            passwordType: passwordType,
+            tag: Self.metaKeyTag(for: keyID),
+            password: password
+        )
+    }
+    
+    @discardableResult
+    func delete(keyID: String, password: String) -> Bool {
+        keychainStore.deleteSecureEnclavePrivateKey(
+            tag: Self.metaKeyTag(for: keyID),
+            password: password
+        )
+    }
+    
+    private static func metaKeyTag(for keyID: String) -> String {
+        KeychainStore.applicationTag(
+            keyID: keyID,
+            keychainTag: Constants.keychainTag
+        )
     }
 }
