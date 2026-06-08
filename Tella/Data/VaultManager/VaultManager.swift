@@ -12,7 +12,7 @@ import Security
 class VaultManager : VaultManagerInterface, ObservableObject{
     
     
-    private let cryptoManager: CryptoManager
+    private let cryptoManager: VaultCryptoManaging
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
     private let containerPath: String = "Containers"
@@ -26,7 +26,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     var onSuccessLock = PassthroughSubject<Void,Never>()
     
     init(
-        cryptoManager: CryptoManager = CryptoManager(
+        cryptoManager: VaultCryptoManaging = CryptoManager(
             cryptoFileManager: CryptoFileManager()
         )
     ) {

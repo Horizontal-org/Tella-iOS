@@ -11,12 +11,9 @@ import Foundation
 import Security
 
 protocol CryptoKeychainStoring: AnyObject {
-    
     func saveEncryptedPrivateKey(_ data: Data) -> Bool
     func recoverEncryptedPrivateKey() -> Data?
     func deleteEncryptedPrivateKey() -> Bool
-    
-    func deleteVaultKeyMaterial() -> Bool
 }
 
 final class CryptoKeychainStore: CryptoKeychainStoring {
@@ -25,51 +22,19 @@ final class CryptoKeychainStore: CryptoKeychainStoring {
         static let service = "org.horizontal.tella.ios.crypto"
         static let encryptedPrivateKeyAccount = "priv-key"
     }
-    
-    private enum KeychainItem {
-        case encryptedPrivateKey
-        
-        var account: String {
-            switch self {
-            case .encryptedPrivateKey:
-                return Constants.encryptedPrivateKeyAccount
-            }
-        }
-    }
-    
-    func saveEncryptedPrivateKey(_ data: Data) -> Bool {
-        save(data, item: .encryptedPrivateKey)
-    }
-    
-    func recoverEncryptedPrivateKey() -> Data? {
-        recover(item: .encryptedPrivateKey)
-    }
-    
-    func deleteEncryptedPrivateKey() -> Bool {
-        delete(item: .encryptedPrivateKey)
-    }
-    
-    func deleteVaultKeyMaterial() -> Bool {
-        deleteEncryptedPrivateKey()
-    }
-}
 
-// MARK: - Keychain Helpers
-
-private extension CryptoKeychainStore {
-    
-    private func baseQuery(for item: KeychainItem) -> [String: Any] {
+    private var baseQuery: [String: Any] {
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: Constants.service,
-            kSecAttrAccount as String: item.account,
+            kSecAttrAccount as String: Constants.encryptedPrivateKeyAccount,
             kSecAttrSynchronizable as String: false,
             kSecUseDataProtectionKeychain as String: true
         ]
     }
-    
-    private func save(_ data: Data, item: KeychainItem) -> Bool {
-        let query = baseQuery(for: item)
+
+    func saveEncryptedPrivateKey(_ data: Data) -> Bool {
+        let query = baseQuery
         
         let updateStatus = SecItemUpdate(
             query as CFDictionary,
@@ -82,7 +47,7 @@ private extension CryptoKeychainStore {
         
         guard updateStatus == errSecItemNotFound else {
             debugLog(
-                "Keychain update failed for \(item.account): \(updateStatus.securityMessage)",
+                "Keychain update failed for \(Constants.encryptedPrivateKeyAccount): \(updateStatus.securityMessage)",
                 space: .crypto
             )
             return false
@@ -97,7 +62,7 @@ private extension CryptoKeychainStore {
         
         if addStatus != errSecSuccess {
             debugLog(
-                "Keychain add failed for \(item.account): \(addStatus.securityMessage)",
+                "Keychain add failed for \(Constants.encryptedPrivateKeyAccount): \(addStatus.securityMessage)",
                 space: .crypto
             )
         }
@@ -105,8 +70,8 @@ private extension CryptoKeychainStore {
         return addStatus == errSecSuccess
     }
     
-    private func recover(item: KeychainItem) -> Data? {
-        var query = baseQuery(for: item)
+    func recoverEncryptedPrivateKey() -> Data? {
+        var query = baseQuery
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         
@@ -116,7 +81,7 @@ private extension CryptoKeychainStore {
         guard status == errSecSuccess else {
             if status != errSecItemNotFound {
                 debugLog(
-                    "Keychain recover failed for \(item.account): \(status.securityMessage)",
+                    "Keychain recover failed for \(Constants.encryptedPrivateKeyAccount): \(status.securityMessage)",
                     space: .crypto
                 )
             }
@@ -126,12 +91,12 @@ private extension CryptoKeychainStore {
         return itemRef as? Data
     }
     
-    private func delete(item: KeychainItem) -> Bool {
-        let status = SecItemDelete(baseQuery(for: item) as CFDictionary)
+    func deleteEncryptedPrivateKey() -> Bool {
+        let status = SecItemDelete(baseQuery as CFDictionary)
         
         if status != errSecSuccess && status != errSecItemNotFound {
             debugLog(
-                "Keychain delete failed for \(item.account): \(status.securityMessage)",
+                "Keychain delete failed for \(Constants.encryptedPrivateKeyAccount): \(status.securityMessage)",
                 space: .crypto
             )
             return false

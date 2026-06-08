@@ -85,7 +85,10 @@ extension SecKey {
         var error: Unmanaged<CFError>?
         
         guard let privateKey = SecKeyCreateRandomKey(
-            SecKeyOptions.privateKeyCreation as CFDictionary,
+            [
+                kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+                kSecAttrKeySizeInBits as String: 256
+            ] as CFDictionary,
             &error
         ) else {
             throw RuntimeError(
@@ -96,6 +99,20 @@ extension SecKey {
         
         return privateKey
     }
+    
+    func externalRepresentationOrThrow(_ errorMessage: String) throws -> Data {
+        var error: Unmanaged<CFError>?
+
+        guard let data = SecKeyCopyExternalRepresentation(self, &error) as Data? else {
+            throw RuntimeError(
+                error?.takeRetainedValue().localizedDescription
+                ?? errorMessage
+            )
+        }
+
+        return data
+    }
+
 }
 
 // MARK: - ECIES

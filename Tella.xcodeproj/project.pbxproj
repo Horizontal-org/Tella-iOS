@@ -436,9 +436,7 @@
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
 		12C06B702FD1D00000066675 /* OSStatus+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */; };
-		12C06B722FD1D90B00066675 /* SecKeyOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B712FD1D90900066675 /* SecKeyOptions.swift */; };
 		12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */; };
-		12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B832FD1D91200066675 /* VaultSecKey.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -486,6 +484,10 @@
 		12FAC45D2E265BF7007A4651 /* NearbySharingResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */; };
+		12VKM0022FD1D91400066677 /* VaultKeyMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */; };
+		12VKP0022FD1D91400066677 /* VaultKeyPairStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */; };
+		12VKS0022FD1D91600066677 /* VaultKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VKS0012FD1D91600066677 /* VaultKeyStore.swift */; };
+		12VUK0022FD1D91800066677 /* VaultUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */; };
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
@@ -1219,9 +1221,7 @@
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
 		12C06B6F2FD1CFFE00066675 /* OSStatus+Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSStatus+Security.swift"; sourceTree = "<group>"; };
-		12C06B712FD1D90900066675 /* SecKeyOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecKeyOptions.swift; sourceTree = "<group>"; };
 		12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclaveMetaKeyStore.swift; sourceTree = "<group>"; };
-		12C06B832FD1D91200066675 /* VaultSecKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultSecKey.swift; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1267,6 +1267,10 @@
 		12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingResultVM.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebAddServerURLView.swift; sourceTree = "<group>"; };
+		12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyMigrator.swift; sourceTree = "<group>"; };
+		12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyPairStore.swift; sourceTree = "<group>"; };
+		12VKS0012FD1D91600066677 /* VaultKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyStore.swift; sourceTree = "<group>"; };
+		12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultUserDefaultsKey.swift; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionHeaderView.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
@@ -1715,9 +1719,11 @@
 			children = (
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
 				12C06B822FD1D91100066675 /* SecureEnclaveMetaKeyStore.swift */,
+				12VKM0012FD1D91400066677 /* VaultKeyMigrator.swift */,
+				12VKP0012FD1D91400066677 /* VaultKeyPairStore.swift */,
+				12VKS0012FD1D91600066677 /* VaultKeyStore.swift */,
+				12VUK0012FD1D91800066677 /* VaultUserDefaultsKey.swift */,
 				1276D1082FB246DC00F492EC /* CryptoKeychainStore.swift */,
-				12C06B832FD1D91200066675 /* VaultSecKey.swift */,
-				12C06B712FD1D90900066675 /* SecKeyOptions.swift */,
 				12782B492B8400E500B5BC36 /* Cryptor.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
@@ -4395,7 +4401,10 @@
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
 				12C06B822FD1D91100066676 /* SecureEnclaveMetaKeyStore.swift in Sources */,
-				12C06B832FD1D91200066676 /* VaultSecKey.swift in Sources */,
+				12VKM0022FD1D91400066677 /* VaultKeyMigrator.swift in Sources */,
+				12VKP0022FD1D91400066677 /* VaultKeyPairStore.swift in Sources */,
+				12VKS0022FD1D91600066677 /* VaultKeyStore.swift in Sources */,
+				12VUK0022FD1D91800066677 /* VaultUserDefaultsKey.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
@@ -4527,7 +4536,6 @@
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
 				126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */,
-				12C06B722FD1D90B00066675 /* SecKeyOptions.swift in Sources */,
 				20A8BBBC2D6F4843009D52AF /* AddFileRecordView.swift in Sources */,
 				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* NavigationBottomView.swift in Sources */,

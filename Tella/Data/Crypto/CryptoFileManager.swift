@@ -10,13 +10,18 @@ protocol CryptoFileManagerProtocol {
     func recoverKeyData(_ type: KeyFileEnum) -> Data?
     func initKeyFolder(_ keyID: String) throws
     func saveKeyData(_ data: Data, _ type: KeyFileEnum, _ keyID: String) -> Bool
-    func deleteKeyFolder(_ keyID: String)
+    func deleteKeysRootFolder()
     func keyFileExists(_ type: KeyFileEnum) -> Bool
+}
+
+enum KeyFileEnum: String {
+    case publicKey = "pub-key.txt"
+    case privateKey = "priv-key.txt"
 }
 
 class CryptoFileManager: CryptoFileManagerProtocol {
     
-    @UserDefaultsProperty(key: "keyID")
+    @UserDefaultsProperty(key: VaultUserDefaultsKey.keyID)
     private var keyID: String?
     private static let rootDir = "\(NSHomeDirectory())/Documents"
     private static let baseKeyFolderPath = "\(rootDir)/keys"
@@ -41,16 +46,15 @@ class CryptoFileManager: CryptoFileManagerProtocol {
         return fileManager.createFile(atPath: path, contents: data)
     }
     
-    func deleteKeyFolder(_ keyID: String) {
-        let path = keyFolderPath(keyID)
-        if fileManager.fileExists(atPath: path) {
-            do {
-                try fileManager.removeItem(atPath: path)
-            } catch let error {
-                debugLog("Error: \(error.localizedDescription)")
-            }
-        } else {
-            debugLog("\(path) did not exist")
+    func deleteKeysRootFolder() {
+        guard fileManager.fileExists(atPath: Self.baseKeyFolderPath) else {
+            return
+        }
+
+        do {
+            try fileManager.removeItem(atPath: Self.baseKeyFolderPath)
+        } catch {
+            debugLog("Error deleting keys folder: \(error.localizedDescription)")
         }
     }
     
