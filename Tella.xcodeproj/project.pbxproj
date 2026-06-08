@@ -434,6 +434,13 @@
 		12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */; };
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
+		12C06B952FD76E7300066675 /* CryptoKeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */; };
+		12C06B962FD76E7300066675 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B902FD76E7300066675 /* KeychainStore.swift */; };
+		12C06B972FD76E7300066675 /* VaultKeyPairStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B922FD76E7300066675 /* VaultKeyPairStore.swift */; };
+		12C06B982FD76E7300066675 /* VaultKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B932FD76E7300066675 /* VaultKeyStore.swift */; };
+		12C06B992FD76E7300066675 /* VaultUserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B942FD76E7300066675 /* VaultUserDefaultsKey.swift */; };
+		12C06B9A2FD76E7300066675 /* VaultKeyMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B912FD76E7300066675 /* VaultKeyMigrator.swift */; };
+		12C06B9C2FD76E9C00066675 /* OSStatus+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B9B2FD76E9C00066675 /* OSStatus+Security.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
@@ -1212,6 +1219,13 @@
 		12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRateLimiter.swift; sourceTree = "<group>"; };
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
+		12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKeychainStore.swift; sourceTree = "<group>"; };
+		12C06B902FD76E7300066675 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		12C06B912FD76E7300066675 /* VaultKeyMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyMigrator.swift; sourceTree = "<group>"; };
+		12C06B922FD76E7300066675 /* VaultKeyPairStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyPairStore.swift; sourceTree = "<group>"; };
+		12C06B932FD76E7300066675 /* VaultKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyStore.swift; sourceTree = "<group>"; };
+		12C06B942FD76E7300066675 /* VaultUserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultUserDefaultsKey.swift; sourceTree = "<group>"; };
+		12C06B9B2FD76E9C00066675 /* OSStatus+Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSStatus+Security.swift"; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
@@ -1704,6 +1718,12 @@
 			isa = PBXGroup;
 			children = (
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
+				12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */,
+				12C06B902FD76E7300066675 /* KeychainStore.swift */,
+				12C06B912FD76E7300066675 /* VaultKeyMigrator.swift */,
+				12C06B922FD76E7300066675 /* VaultKeyPairStore.swift */,
+				12C06B932FD76E7300066675 /* VaultKeyStore.swift */,
+				12C06B942FD76E7300066675 /* VaultUserDefaultsKey.swift */,
 				12782B492B8400E500B5BC36 /* Cryptor.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
@@ -2184,6 +2204,7 @@
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
+				12C06B9B2FD76E9C00066675 /* OSStatus+Security.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4523,6 +4544,12 @@
 				12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */,
 				15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
+				12C06B952FD76E7300066675 /* CryptoKeychainStore.swift in Sources */,
+				12C06B962FD76E7300066675 /* KeychainStore.swift in Sources */,
+				12C06B972FD76E7300066675 /* VaultKeyPairStore.swift in Sources */,
+				12C06B982FD76E7300066675 /* VaultKeyStore.swift in Sources */,
+				12C06B992FD76E7300066675 /* VaultUserDefaultsKey.swift in Sources */,
+				12C06B9A2FD76E7300066675 /* VaultKeyMigrator.swift in Sources */,
 				12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				209AC68A2C332E3100492356 /* TellaServer.swift in Sources */,
@@ -4875,6 +4902,7 @@
 				CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */,
 				12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
+				12C06B9C2FD76E9C00066675 /* OSStatus+Security.swift in Sources */,
 				1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */,
