@@ -18,12 +18,20 @@ class CertificateGenerator {
     
     // MARK: - Main Function
     
+    /// Client identity for the sender (mTLS)
+    func generateSenderClientIdentity() -> (identity: SecIdentity, certificateHash: String)? {
+        generateIdentity(ipAddresses: [])
+    }
+    
     func generateP12Certificate(ipAddresses: [String]) -> (identity: SecIdentity, certificateHash: String)? {
         guard !ipAddresses.isEmpty else {
             debugLog("No IP addresses for certificate SAN")
             return nil
         }
-
+        return generateIdentity(ipAddresses: ipAddresses)
+    }
+    
+    private func generateIdentity(ipAddresses: [String]) -> (identity: SecIdentity, certificateHash: String)? {
         // Generate RSA private key
         guard let privateKey = generateRSAKey() else {
             debugLog("RSA key generation failed")
@@ -36,7 +44,11 @@ class CertificateGenerator {
         }
 
         // Generate certificate
-        guard let certificate = generateSelfSignedCertificate(ipAddresses: ipAddresses, privateKey: privateKey, publicKey: publicKey) else {
+        guard let certificate = generateSelfSignedCertificate(
+            ipAddresses: ipAddresses,
+            privateKey: privateKey,
+            publicKey: publicKey
+        ) else {
             debugLog("Failed to create certificate")
             return nil
         }
@@ -83,10 +95,11 @@ class CertificateGenerator {
             let notAfter = notBefore.addYear()
 
             let name = try buildDistinguishedName()
-            let sanExtension = try createSANExtension(ipAddresses: ipAddresses)
-            
             var extensions = Certificate.Extensions()
-            try extensions.append(sanExtension)
+            if !ipAddresses.isEmpty {
+                let sanExtension = try createSANExtension(ipAddresses: ipAddresses)
+                try extensions.append(sanExtension)
+            }
             
             let issuerPrivateKey = try Certificate.PrivateKey(privateKey)
             

@@ -15,6 +15,24 @@ class NearbySharingRepository: NSObject, WebRepository {
     
     private var connectionInfo:ConnectionInfo?
     private var uploadTasks : [URLSessionTask] = []
+    var senderClientTLSIdentity: SecIdentity?
+    private(set) var senderCertificateHash: String?
+    
+    func ensureSenderTLSIdentity() {
+        guard senderClientTLSIdentity == nil else { return }
+        guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
+            debugLog("Failed to generate sender client TLS identity")
+            return
+        }
+        senderClientTLSIdentity = generated.identity
+        senderCertificateHash = generated.certificateHash
+    }
+    
+    func senderInfo() -> SenderInfo? {
+        ensureSenderTLSIdentity()
+        guard let hash = senderCertificateHash else { return nil }
+        return SenderInfo(certificateHash: hash)
+    }
     
     /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
     func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
