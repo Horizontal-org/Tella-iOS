@@ -8,9 +8,9 @@
 //
 
 enum NearbySharingEndpoint: String {
-    case ping = "/api/v1/ping"
-    case register = "/api/v1/register"
-    case prepareUpload = "/api/v1/prepare-upload"
-    case upload = "/api/v1/upload"
-    case closeConnection = "/api/v1/close-connection"
+    case ping = "/api/v2/ping"
+    case register = "/api/v2/register"
+    case prepareUpload = "/api/v2/prepare-upload"
+    case upload = "/api/v2/upload"
+    case closeConnection = "/api/v2/close-connection"
 }
