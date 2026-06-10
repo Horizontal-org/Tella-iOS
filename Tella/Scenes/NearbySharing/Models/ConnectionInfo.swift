@@ -15,6 +15,7 @@ class ConnectionInfo: Codable, Equatable {
     var port: Int
     var certificateHash: String?
     var pin: String
+    var protocolVersion: Int?
     
     /// After a successful register against one of `ipAddresses`, HTTPS calls use this host. Not part of the QR JSON.
     var activeHost: String?
@@ -29,13 +30,21 @@ class ConnectionInfo: Codable, Equatable {
         case port
         case certificateHash = "certificate_hash"
         case pin
+        case protocolVersion = "protocol_version"
     }
     
-    init(ipAddresses: [String], port: Int, certificateHash: String?, pin: String) {
+    init(
+        ipAddresses: [String],
+        port: Int,
+        certificateHash: String?,
+        pin: String,
+        protocolVersion: Int? = NearbySharingProtocolVersion.current
+    ) {
         self.ipAddresses = ipAddresses
         self.port = port
         self.certificateHash = certificateHash
         self.pin = pin
+        self.protocolVersion = protocolVersion
     }
     
     required init(from decoder: Decoder) throws {
@@ -44,6 +53,7 @@ class ConnectionInfo: Codable, Equatable {
         certificateHash = try container.decodeIfPresent(String.self, forKey: .certificateHash)
         pin = try container.decode(String.self, forKey: .pin)
         ipAddresses = try container.decode([String].self, forKey: .ipAddresses)
+        protocolVersion = try container.decodeIfPresent(Int.self, forKey: .protocolVersion)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -52,6 +62,7 @@ class ConnectionInfo: Codable, Equatable {
         try container.encode(port, forKey: .port)
         try container.encodeIfPresent(certificateHash, forKey: .certificateHash)
         try container.encode(pin, forKey: .pin)
+        try container.encodeIfPresent(protocolVersion, forKey: .protocolVersion)
     }
     
     static func == (lhs: ConnectionInfo, rhs: ConnectionInfo) -> Bool {
@@ -59,12 +70,17 @@ class ConnectionInfo: Codable, Equatable {
         && lhs.port == rhs.port
         && lhs.pin == rhs.pin
         && lhs.certificateHash == rhs.certificateHash
+        && lhs.protocolVersion == rhs.protocolVersion
     }
 }
 
 extension ConnectionInfo {
     static func stub() -> ConnectionInfo {
-        ConnectionInfo(ipAddresses: ["192.1.2.6"], port: 53317, certificateHash: "764357", pin: "983426")
+        ConnectionInfo(
+            ipAddresses: ["192.1.2.6"],
+            port: 53317,
+            certificateHash: "764357",
+            pin: "983426"
+        )
     }
 }
-
