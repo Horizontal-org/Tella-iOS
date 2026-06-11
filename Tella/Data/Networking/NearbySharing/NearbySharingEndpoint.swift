@@ -13,4 +13,8 @@ enum NearbySharingEndpoint: String {
     case prepareUpload = "/api/v2/prepare-upload"
     case upload = "/api/v2/upload"
     case closeConnection = "/api/v2/close-connection"
+    
+    /// v1 routes used only to detect incompatibility
+    static let legacyRegister = "/api/v1/register"
+    static let legacyPing = "/api/v1/ping"
 }

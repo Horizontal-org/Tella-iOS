@@ -165,6 +165,20 @@ final class NearbySharingServer {
     // MARK: - Request Processing
     
     private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
+        if httpRequest.endpoint == NearbySharingEndpoint.legacyRegister {
+            Task {
+                eventPublisher.send(.incompatibleProtocolVersion)
+                let error = ServerStatus(code: .forbidden, message: .rejected)
+                await sendErrorResponse(error, connection: connection)
+            }
+            return
+        }
+        
+        if httpRequest.endpoint == NearbySharingEndpoint.legacyPing {
+            Task { eventPublisher.send(.incompatibleProtocolVersion) }
+            return
+        }
+        
         guard let endpoint = NearbySharingEndpoint(rawValue: httpRequest.endpoint) else {
             debugLog("Received request for unknown endpoint")
             return
