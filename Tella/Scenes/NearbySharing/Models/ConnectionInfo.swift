@@ -17,6 +17,8 @@ class ConnectionInfo: Codable, Equatable {
     var certificateHash: String?
     var pin: String
     var protocolVersion: Int?
+    /// Receiver QR only: when true (e.g. desktop receiver that can't scan), the sender skips showing its QR and goes directly to sender hash verification.
+    var senderShowHash: Bool?
     
     /// After a successful register against one of `ipAddresses`, HTTPS calls use this host. Not part of the QR JSON.
     var activeHost: String?
@@ -33,6 +35,7 @@ class ConnectionInfo: Codable, Equatable {
         case certificateHash = "certificate_hash"
         case pin
         case protocolVersion = "protocol_version"
+        case senderShowHash = "sender_show_hash"
     }
     
     init(
@@ -40,13 +43,15 @@ class ConnectionInfo: Codable, Equatable {
         port: Int,
         certificateHash: String?,
         pin: String,
-        protocolVersion: Int? = NearbySharingProtocolVersion.current
+        protocolVersion: Int? = NearbySharingProtocolVersion.current,
+        senderShowHash: Bool? = nil
     ) {
         self.ipAddresses = ipAddresses
         self.port = port
         self.certificateHash = certificateHash
         self.pin = pin
         self.protocolVersion = protocolVersion
+        self.senderShowHash = senderShowHash
     }
     
     required init(from decoder: Decoder) throws {
@@ -56,6 +61,7 @@ class ConnectionInfo: Codable, Equatable {
         pin = try container.decode(String.self, forKey: .pin)
         ipAddresses = try container.decode([String].self, forKey: .ipAddresses)
         protocolVersion = try container.decodeIfPresent(Int.self, forKey: .protocolVersion)
+        senderShowHash = try container.decodeIfPresent(Bool.self, forKey: .senderShowHash)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -65,6 +71,18 @@ class ConnectionInfo: Codable, Equatable {
         try container.encodeIfPresent(certificateHash, forKey: .certificateHash)
         try container.encode(pin, forKey: .pin)
         try container.encodeIfPresent(protocolVersion, forKey: .protocolVersion)
+        try container.encodeIfPresent(senderShowHash, forKey: .senderShowHash)
+    }
+    
+    /// Returns nil when the QR payload is compatible, otherwise an error reason for the UI.
+    func protocolCompatibilityError() -> ProtocolCompatibilityError? {
+        guard let version = protocolVersion else {
+            return .incompatibleVersion
+        }
+        guard NearbySharingProtocolVersion.supportedVersions.contains(version) else {
+            return .unsupportedVersion(version)
+        }
+        return nil
     }
     
     static func == (lhs: ConnectionInfo, rhs: ConnectionInfo) -> Bool {
@@ -74,6 +92,11 @@ class ConnectionInfo: Codable, Equatable {
         && lhs.certificateHash == rhs.certificateHash
         && lhs.protocolVersion == rhs.protocolVersion
     }
+}
+
+enum ProtocolCompatibilityError {
+    case incompatibleVersion
+    case unsupportedVersion(Int)
 }
 
 extension ConnectionInfo {
