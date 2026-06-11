@@ -44,10 +44,18 @@ final class NearbySharingServer {
     
     func resetServerState() {
         stopServer()
-        Task { await state.resetConnectionState() }
+        Task {
+            await networkManager.resetPeerCertificatePolicy()
+            await state.resetConnectionState()
+        }
         eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
     }
     
+    /// Recipient scanned the sender QR and pinned the sender client certificate hash
+    func pinSenderCertificateHashFromQR(_ hash: String) {
+        Task { await networkManager.setTrustedPeerCertificateHash(hash) }
+    }
+
     func resetFullServerState() {
         stopServer()
         cleanServer()
@@ -121,8 +129,8 @@ final class NearbySharingServer {
         switch endpoint {
         case .register:
             Task {
-                let manual = await state.isManualConnection()
-                eventPublisher.send(.didRegister(success: success, manual: manual))
+                let isManualConnection = await state.isManualConnection()
+                eventPublisher.send(.didRegister(success: success, manual: isManualConnection))
             }
         case .prepareUpload:
             eventPublisher.send(.prepareUploadResponseSent(success: success))
