@@ -435,6 +435,8 @@
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
 		12C06B9E2FD9C15400066675 /* SenderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B9D2FD9C15200066675 /* SenderInfo.swift */; };
+		12C06BA02FDAC28000066675 /* SecTrust+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */; };
+		12C06BA22FDAC2C200066675 /* NearbySharingPeerCertificatePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */; };
 		12C06B952FD76E7300066675 /* CryptoKeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */; };
 		12C06B962FD76E7300066675 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B902FD76E7300066675 /* KeychainStore.swift */; };
 		12C06B972FD76E7300066675 /* VaultKeyPairStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B922FD76E7300066675 /* VaultKeyPairStore.swift */; };
@@ -1221,6 +1223,8 @@
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
 		12C06B9D2FD9C15200066675 /* SenderInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderInfo.swift; sourceTree = "<group>"; };
+		12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecTrust+Extension.swift"; sourceTree = "<group>"; };
+		12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingPeerCertificatePolicy.swift; sourceTree = "<group>"; };
 		12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKeychainStore.swift; sourceTree = "<group>"; };
 		12C06B902FD76E7300066675 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		12C06B912FD76E7300066675 /* VaultKeyMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyMigrator.swift; sourceTree = "<group>"; };
@@ -2017,6 +2021,7 @@
 				126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */,
 				121AFF942E4CDE6E007300AD /* NearbySharingServerHandler.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
+				12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
 				12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */,
@@ -2206,6 +2211,7 @@
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
+				12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */,
 				12C06B9B2FD76E9C00066675 /* OSStatus+Security.swift */,
 			);
 			path = Extensions;
@@ -4447,6 +4453,7 @@
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
 				E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */,
+				12C06BA02FDAC28000066675 /* SecTrust+Extension.swift in Sources */,
 				123CBAFE2DEF0DCF0030A9BD /* HTTPParser.swift in Sources */,
 				CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
@@ -4661,6 +4668,7 @@
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				123CBB082DEF998C0030A9BD /* NearbySharingServerResponse.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
+				12C06BA22FDAC2C200066675 /* NearbySharingPeerCertificatePolicy.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */,

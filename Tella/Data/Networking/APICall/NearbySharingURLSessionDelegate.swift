@@ -101,12 +101,10 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
             return
         }
         
-        guard let certificateData = extractCertificateData(from: serverTrust) else {
+        guard let serverCertificateHash = serverTrust.certificateHash else {
             debugLog("Failed to extract certificate data")
             return
         }
-        
-        let serverCertificateHash = certificateData.sha256()
         
         // First-contact flow allowed only for ping
         guard let trustedHash = trustedCertificateHash else {
@@ -140,12 +138,5 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
             certificates: [certificate],
             persistence: .forSession
         )
-    }
-    
-    private func extractCertificateData(from trust: SecTrust) -> Data? {
-        guard let certificate = SecTrustGetCertificateAtIndex(trust, 0) else {
-            return nil
-        }
-        return SecCertificateCopyData(certificate) as Data
     }
 }

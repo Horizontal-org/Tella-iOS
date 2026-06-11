@@ -38,11 +38,22 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     var connectionInfo : ConnectionInfo?
     
+    private(set) var clientTLSIdentity: SecIdentity?
+    
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
+        generateClientTLSIdentity()
         
         validateFields()
+    }
+    
+    private func generateClientTLSIdentity() {
+        guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
+            debugLog("Failed to generate sender client TLS identity")
+            return
+        }
+        clientTLSIdentity = generated.identity
     }
     
     func validateFields() {
@@ -59,6 +70,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
         guard let port = Int(port) else { return }
         isLoading = true
         let connectionInfo = ConnectionInfo(ipAddresses: [ipAddress], port: port, certificateHash: nil, pin: pin)
+        connectionInfo.clientTLSIdentity = clientTLSIdentity
         self.connectionInfo = connectionInfo
         
         self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)
