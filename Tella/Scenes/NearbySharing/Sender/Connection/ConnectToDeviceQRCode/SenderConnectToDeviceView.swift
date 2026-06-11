@@ -132,15 +132,18 @@ struct SenderConnectToDeviceView: View {
         .padding([.leading, .trailing], 80)
     }
     
+    @ViewBuilder
     var recipientCantScanQRCodeButton: some View {
-        TellaButtonView(title: "Recipient can't scan QR code".uppercased(),
-                        nextButtonAction: .destination,
-                        destination: SenderConnectToDeviceView(viewModel:viewModel,step: .scanQRCode),
-                        isValid: .constant(true),
-                        buttonRole: .secondary)
-        .padding([.leading, .trailing], 80)
+        if step == .showQRCode {
+            TellaButtonView(title: "Recipient can't scan QR code".uppercased(),
+                            nextButtonAction: .destination,
+                            destination: SenderConnectToDeviceView(viewModel:viewModel,step: .scanQRCode),
+                            isValid: .constant(true),
+                            buttonRole: .secondary)
+            .padding([.leading, .trailing], 80)
+            
+        }
     }
-    
     
     private func showBottomSheetError() {
         isBottomSheetShown = true
