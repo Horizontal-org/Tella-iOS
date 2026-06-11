@@ -8,17 +8,25 @@
 //
 import Foundation
 import Combine
+import Security
 
 class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     
     var trustedCertificateHash : String?
     var path: String?
+    var clientTLSIdentity: SecIdentity?
     var onReceiveServerCertificateHash: ((String) -> Void)?
     var response = CurrentValueSubject<NearbySharingUploadResponse, APIError>(.initial)
     
-    init(path: String?, trustedCertificateHash: String? = nil, onReceiveServerCertificateHash: ((String) -> Void)? = nil) {
+    init(
+        path: String?,
+        trustedCertificateHash: String? = nil,
+        clientTLSIdentity: SecIdentity? = nil,
+        onReceiveServerCertificateHash: ((String) -> Void)? = nil
+    ) {
         self.path = path
         self.trustedCertificateHash = trustedCertificateHash
+        self.clientTLSIdentity = clientTLSIdentity
         self.onReceiveServerCertificateHash = onReceiveServerCertificateHash
     }
     
@@ -73,6 +81,21 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         
         let protectionSpace = challenge.protectionSpace
         
+        if protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate {
+            guard let clientCredential = clientCertificateCredential() else {
+                debugLog("mTLS: missing sender client identity")
+                return
+            }
+            disposition = .useCredential
+            credential = clientCredential
+            return
+        }
+        
+        guard protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
+            debugLog("Unsupported TLS authentication method: \(protectionSpace.authenticationMethod)")
+            return
+        }
+        
         guard let serverTrust = protectionSpace.serverTrust else {
             debugLog("Missing serverTrust")
             return
@@ -103,6 +126,20 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         }
         disposition = .useCredential
         credential = URLCredential(trust: serverTrust)
+    }
+    
+    private func clientCertificateCredential() -> URLCredential? {
+        guard let identity = clientTLSIdentity else { return nil }
+        var certificate: SecCertificate?
+        guard SecIdentityCopyCertificate(identity, &certificate) == errSecSuccess,
+              let certificate else {
+            return nil
+        }
+        return URLCredential(
+            identity: identity,
+            certificates: [certificate],
+            persistence: .forSession
+        )
     }
     
     private func extractCertificateData(from trust: SecTrust) -> Data? {
