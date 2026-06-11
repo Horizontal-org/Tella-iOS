@@ -15,6 +15,7 @@ enum SenderConnectToDeviceViewAction {
     case none
     case showToast(message: String)
     case showBottomSheetError
+    case showIncompatibleVersion
     case showSendFiles
     case showVerificationHash
     case discardAndStartOver
@@ -26,6 +27,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     @Published var viewState: SenderConnectToDeviceViewAction = .none
     @Published var startScanning: Bool = true
     @Published var isLoading: Bool = false
+    @Published private(set) var qrCodeState: ViewModelState<UIImage> = .loading
     
     private var subscribers = Set<AnyCancellable>()
     private var registrationNonceContext: RegistrationNonceContext?
@@ -35,12 +37,34 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     var nearbySharingRepository: NearbySharingRepository
     var session: NearbySharingSession?
     
+    private(set) var clientTLSIdentity: SecIdentity?
+    private(set) var clientCertificateHash: String?
+    
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
-        
+
         super.init()
+        generateClientTLSIdentity()
+        generateSenderQRCode()
         observeScannedCode()
+    }
+    
+    private func generateClientTLSIdentity() {
+        guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
+            debugLog("Failed to generate sender client TLS identity")
+            return
+        }
+        clientTLSIdentity = generated.identity
+        clientCertificateHash = generated.certificateHash
+    }
+    
+    private func generateSenderQRCode() {
+        guard let hash = clientCertificateHash else {
+            qrCodeState = .error(LocalizableCommon.commonError.localized)
+            return
+        }
+        qrCodeState = .loaded(SenderInfo(certificateHash: hash).generateQRCode(size: 215))
     }
     
     func observeScannedCode() {
@@ -50,8 +74,23 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .prefix(1)
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
-                self?.register(connectionInfo: connectionInfo)
+                connectionInfo?.clientTLSIdentity = self?.clientTLSIdentity
+                self?.handleScannedRecipientQR(connectionInfo: connectionInfo)
             }.store(in: &subscribers)
+    }
+    
+    private func handleScannedRecipientQR(connectionInfo: ConnectionInfo?) {
+        guard let connectionInfo else {
+            viewState = .showBottomSheetError
+            return
+        }
+        
+        if connectionInfo.protocolCompatibilityError() != nil {
+            viewState = .showIncompatibleVersion
+            return
+        }
+        
+        register(connectionInfo: connectionInfo)
     }
     
     func register(connectionInfo:ConnectionInfo?) {

@@ -636,6 +636,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_Main_LearnMore" = "Learn more about Nearby Sharing";
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
+"NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
+"NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
 "NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect manually";
@@ -663,6 +665,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ConnectionFailed_SheetTitle" = "Connection failed";
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
+"NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
+"NearbySharing_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
 "NearbySharing_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";

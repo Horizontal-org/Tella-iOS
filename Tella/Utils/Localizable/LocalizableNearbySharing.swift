@@ -47,6 +47,8 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     
     case connectToDevice = "NearbySharing_ConnectToDevice"
     case scanCode = "NearbySharing_ScanCode"
+    case step1ShowSenderQr = "NearbySharing_Step1_ShowSenderQr"
+    case step2ScanRecipientQr = "NearbySharing_Step2_ScanRecipientQr"
     case showQrCode = "NearbySharing_ShowQrCode"
     case havingTrouble = "NearbySharing_HavingTrouble"
     case connectManually = "NearbySharing_ConnectManually"
@@ -81,6 +83,8 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case connectionFailedTitle = "NearbySharing_ConnectionFailed_SheetTitle"
     case connectionFailedExpl = "NearbySharing_ConnectionFailed_SheetExpl"
     case connectionFailedAction = "NearbySharing_ConnectionFailed_SheetAction"
+    case incompatibleVersionTitle = "NearbySharing_IncompatibleVersion_SheetTitle"
+    case incompatibleVersionExpl = "NearbySharing_IncompatibleVersion_SheetExpl"
 
     case verificationAppBar = "NearbySharing_Verification_AppBar"
 
