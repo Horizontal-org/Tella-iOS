@@ -639,6 +639,12 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
 "NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
 "NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
+"NearbySharing_Step1_ScanSenderQr" = "Step 1: Scan the sender’s QR code";
+"NearbySharing_Step2_ShowRecipientQr" = "Step 2: Show this QR code for the sender to scan";
+"NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
+"NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
+
+"NearbySharing_SenderCertificatePinned_Toast" = "Sender certificate pinned";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect manually";
 "NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
@@ -667,6 +673,11 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
 "NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
 "NearbySharing_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
+"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
+"NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
+"NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
+"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
+"NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
 "NearbySharing_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";
@@ -725,9 +736,9 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_SameNetwork_No_SheetAction" = "No";
 "NearbySharing_SameNetwork_DontShowAgain" = "Don’t show again";
 "NearbySharing_Verification_AppBar" = "Verification";
-"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.";
+"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure the connection is safe, make sure the sequence of characters above matches the sequence on the recipient’s device.";
 "NearbySharing_Verification_Sender_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
-"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.";
+"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure the connection is safe, make sure the sequence of characters above matches the sequence on the other device.";
 "NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
 "NearbySharing_ConnectionChanged_Toast" = "Your Wi-Fi connection has changed. Please start over.";
 "Onboarding_Camera_Title" = "Camera";

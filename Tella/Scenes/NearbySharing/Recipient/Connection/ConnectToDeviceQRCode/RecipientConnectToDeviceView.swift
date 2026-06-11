@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RecipientConnectToDeviceView: View {
     
@@ -28,15 +29,25 @@ struct RecipientConnectToDeviceView: View {
     }
     
     private var contentView: some View {
-        VStack  {
+        VStack {
             Spacer()
-            VStack(spacing:12)  {
-                CustomText(LocalizableNearbySharing.showQrCode.localized,
-                           style: .heading1Style,
-                           alignment: .center)
-                
-                qrCodeStateView
-                    .padding(.bottom, 28)
+            VStack(spacing: 12) {
+                if isScanSenderQRStep {
+                    CustomText(LocalizableNearbySharing.step1ScanSenderQr.localized,
+                               style: .heading1Style,
+                               alignment: .center)
+                    senderScannerView
+                        .padding(.bottom, 28)
+                    
+                } else {
+                    CustomText(LocalizableNearbySharing.step2ShowRecipientQr.localized,
+                               style: .heading1Style,
+                               alignment: .center)
+                    
+                    qrCodeStateView
+                        .padding(.bottom, 28)
+                    
+                }
                 CustomText(LocalizableNearbySharing.havingTrouble.localized,
                            style: .body1Style,
                            alignment: .center)
@@ -45,6 +56,11 @@ struct RecipientConnectToDeviceView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    /// Step 1: scan the sender QR. Advances to step 2 (show QR) once the sender hash is pinned
+    private var isScanSenderQRStep: Bool {
+        !viewModel.didPinSenderCertificate
     }
     
     var navigationBarView: some View {
@@ -72,6 +88,20 @@ struct RecipientConnectToDeviceView: View {
             EmptyView()
         }
     }
+    
+    var senderScannerView: some View {
+        ZStack {
+            QRCodeScannerView(
+                scannedCode: $viewModel.scannedSenderCode,
+                startScanning: viewModel.startSenderScanning
+            )
+            .cornerRadius(12)
+            .padding(.all, 4)
+            ResizableImage("qrCode.icon")
+        }
+        .frame(width: 248, height: 248)
+    }
+    
     @ViewBuilder
     func qrCodeImageView(qrImage:UIImage) -> some View {
         Image(uiImage: qrImage)
@@ -88,14 +118,14 @@ struct RecipientConnectToDeviceView: View {
     }
     
     var connectManuallyButton: some View {
-        
-        let viewModel = RecipientConnectManuallyViewModel(certificateGenerator: viewModel.certificateGenerator,
-                                                          mainAppModel: viewModel.mainAppModel,
-                                                          connectionInfo: viewModel.connectionInfo)
+        let manualVM = RecipientConnectManuallyViewModel(
+            certificateGenerator: viewModel.certificateGenerator,
+            mainAppModel: viewModel.mainAppModel,
+            connectionInfo: viewModel.connectionInfo)
         
         return TellaButtonView(title: LocalizableNearbySharing.connectManually.localized.uppercased(),
                                nextButtonAction: .destination,
-                               destination: RecipientConnectToDeviceManuallyView(viewModel:viewModel),
+                               destination: RecipientConnectToDeviceManuallyView(viewModel: manualVM),
                                isValid: .constant(true),
                                buttonRole: .secondary)
         .padding([.leading, .trailing], 80)
@@ -105,7 +135,26 @@ struct RecipientConnectToDeviceView: View {
         switch state {
         case .showReceiveFiles:
             let fileTransferVM = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
-            self.navigateTo(destination: RecipientFileTransferView(viewModel:fileTransferVM))
+            self.navigateTo(destination: RecipientFileTransferView(viewModel: fileTransferVM))
+        case .showVerificationHash:
+            guard let connectionInfo = viewModel.connectionInfo else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .receiverHash(confirmAction: .acknowledgeOnly)
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showSenderHashVerification(let certificateHash):
+            guard let connectionInfo = viewModel.connectionInfo else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acceptPendingRegistration),
+                certificateHashToDisplay: certificateHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
@@ -118,6 +167,8 @@ struct RecipientConnectToDeviceView: View {
 }
 
 #Preview {
-    SenderConnectToDeviceView(viewModel: SenderConnectToDeviceViewModel(nearbySharingRepository:NearbySharingRepository(),
-                                                                        mainAppModel: MainAppModel.stub()))
+    RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel(
+        certificateGenerator: CertificateGenerator(),
+        mainAppModel: MainAppModel.stub()
+    ))
 }

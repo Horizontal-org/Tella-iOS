@@ -16,6 +16,7 @@ enum RecipientConnectToDeviceViewAction {
     case showToast(message: String)
     case showReceiveFiles
     case showVerificationHash
+    case showSenderHashVerification(certificateHash: String)
     case errorOccured
     case discardAndStartOver
 }
@@ -31,10 +32,14 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     // MARK: - State
     @Published private(set) var qrCodeState: ViewModelState<UIImage> = .loading
     @Published private(set) var viewAction: RecipientConnectToDeviceViewAction = .none
+    @Published var scannedSenderCode: String? = nil
+    @Published private(set) var didPinSenderCertificate: Bool = false
+    @Published var startSenderScanning = PassthroughSubject<Bool, Never>()
     
     // MARK: - Combine
     private var registrationEventsCancellable: AnyCancellable?
     private var networkChangeCancellable: AnyCancellable?
+    private var senderScanCancellable: AnyCancellable?
     
     // MARK: - Config
     private let port: Int = 53320
@@ -46,12 +51,12 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         
         observeNetworkChanges()
+        observeSenderScannedCode()
         generateConnectionInfo()
     }
     
     // MARK: - Observers
     func onAppear() {
-        // Re-subscribe if needed
         if registrationEventsCancellable == nil {
             listenToServerRegistrationEvents()
         }
@@ -61,7 +66,6 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     }
     
     func onDisappear() {
-        // Cancel subscriptions to pause listening
         registrationEventsCancellable?.cancel()
         registrationEventsCancellable = nil
         
@@ -82,6 +86,27 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             .sink { [weak self] _ in
                 self?.viewAction = .showToast(message: LocalizableNearbySharing.connectionChangedToast.localized)
             }
+    }
+    
+    private func observeSenderScannedCode() {
+        senderScanCancellable = $scannedSenderCode
+            .compactMap { $0 }
+            .prefix(1)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] code in
+                self?.handleScannedSenderQR(code)
+            }
+    }
+    
+    /// Scan sender QR and pin sender certificate hash before any requests.
+    private func handleScannedSenderQR(_ code: String) {
+        guard let senderInfo = code.decodeJSON(SenderInfo.self) else {
+            viewAction = .errorOccured
+            return
+        }
+        nearbySharingServer?.pinSenderCertificateHashFromQR(senderInfo.certificateHash)
+        didPinSenderCertificate = true
+        viewAction = .showToast(message: LocalizableNearbySharing.senderCertificatePinnedToast.localized)
     }
     
     private func generateConnectionInfo() {
@@ -106,7 +131,9 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                 ipAddresses: ipAddresses,
                 port: self.port,
                 certificateHash: certificateHash,
-                pin: pin
+                pin: pin,
+                protocolVersion: NearbySharingProtocolVersion.current,
+                senderShowHash: false
             )
             
             self.connectionInfo = connectionInfo
@@ -138,8 +165,20 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     
                 case .didRegister(let success, let manual):
                     if !manual {
+                        // Register accepted immediately.
                         self.viewAction = success ? .showReceiveFiles : .errorOccured
                     }
+                    
+                case .senderCertificateVerificationRequested(let certificateHash):
+                    // Sender hash verification after register.
+                    self.viewAction = .showSenderHashVerification(certificateHash: certificateHash)
+                    
+                case .verificationRequested:
+                    // Receiver hash verification after ping.
+                    self.viewAction = .showVerificationHash
+                    
+                case .incompatibleProtocolVersion:
+                    self.viewAction = .errorOccured
                     
                 default:
                     break
