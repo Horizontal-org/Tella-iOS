@@ -116,10 +116,13 @@ struct SenderConnectToDeviceManuallyView: View {
             showBottomSheetError()
         case .showVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return  }
-            let viewModel = ManuallyVerificationViewModel(participant: .sender,
-                                                          nearbySharingRepository:viewModel.nearbySharingRepository,
-                                                          connectionInfo: connectionInfo,
-                                                          mainAppModel: viewModel.mainAppModel)
+            let viewModel = ManuallyVerificationViewModel(
+                participant: .sender,
+                nearbySharingRepository: viewModel.nearbySharingRepository,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .receiverHash(confirmAction: .sendRegister)
+            )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel ))
             
         case .showToast(let message):
