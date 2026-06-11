@@ -135,12 +135,13 @@ struct SenderConnectToDeviceView: View {
     @ViewBuilder
     var recipientCantScanQRCodeButton: some View {
         if step == .showQRCode {
-            TellaButtonView(title: "Recipient can't scan QR code".uppercased(),
+            TellaButtonView(title: "Scan Recipient QR code".uppercased(),
                             nextButtonAction: .destination,
-                            destination: SenderConnectToDeviceView(viewModel:viewModel,step: .scanQRCode),
                             isValid: .constant(true),
-                            buttonRole: .secondary)
-            .padding([.leading, .trailing], 80)
+                            buttonRole: .secondary) {
+                step = .scanQRCode
+            }
+                            .padding([.leading, .trailing], 80)
             
         }
     }
