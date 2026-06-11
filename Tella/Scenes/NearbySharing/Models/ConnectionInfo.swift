@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import Security
 
 class ConnectionInfo: Codable, Equatable {
     
@@ -19,6 +20,7 @@ class ConnectionInfo: Codable, Equatable {
     
     /// After a successful register against one of `ipAddresses`, HTTPS calls use this host. Not part of the QR JSON.
     var activeHost: String?
+    var clientTLSIdentity: SecIdentity?
     
     var requestHost: String {
         if let activeHost, !activeHost.isEmpty { return activeHost }

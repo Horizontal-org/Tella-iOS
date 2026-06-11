@@ -9,6 +9,7 @@
 
 import Foundation
 import Combine
+import Security
 
 enum NearbySharingUploadResponse {
     case initial
@@ -32,8 +33,9 @@ extension WebRepository {
             request.curlRepresentation()
             
             let delegate = NearbySharingURLSessionDelegate(
-                path:endpoint.path,
-                trustedCertificateHash: endpoint.trustedPublicKeyHash
+                path: endpoint.path,
+                trustedCertificateHash: endpoint.trustedPublicKeyHash,
+                clientTLSIdentity: endpoint.clientCertificateIdentity
             )
             guard let fileURL = endpoint.fileToUpload?.url else {   return Fail<NearbySharingUploadResponse, APIError>(error: APIError.errorOccured)
                     .eraseToAnyPublisher()
@@ -60,8 +62,9 @@ extension WebRepository {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
             let delegate = NearbySharingURLSessionDelegate(
-                path:endpoint.path,
-                trustedCertificateHash: endpoint.trustedPublicKeyHash
+                path: endpoint.path,
+                trustedCertificateHash: endpoint.trustedPublicKeyHash,
+                clientTLSIdentity: endpoint.clientCertificateIdentity
             )
             
             return NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
@@ -85,6 +88,7 @@ extension WebRepository {
             let delegate = NearbySharingURLSessionDelegate(
                 path: endpoint.path,
                 trustedCertificateHash: endpoint.trustedPublicKeyHash,
+                clientTLSIdentity: endpoint.clientCertificateIdentity,
                 onReceiveServerCertificateHash: { hash in
                     capturedServerHash = hash
                 }
