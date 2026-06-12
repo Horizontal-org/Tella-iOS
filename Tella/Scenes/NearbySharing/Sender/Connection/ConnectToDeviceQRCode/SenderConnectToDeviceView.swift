@@ -178,6 +178,17 @@ struct SenderConnectToDeviceView: View {
             showBottomSheetError()
         case .showIncompatibleVersion:
             showIncompatibleVersionSheet()
+        case .showSenderHashVerification(let connectionInfo):
+            guard let senderHash = viewModel.clientCertificateHash else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .sender,
+                nearbySharingRepository: viewModel.nearbySharingRepository,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acknowledgeOnly),
+                certificateHashToDisplay: senderHash
+            )
+            navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSendFiles:
             guard let session = viewModel.session else { return }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,

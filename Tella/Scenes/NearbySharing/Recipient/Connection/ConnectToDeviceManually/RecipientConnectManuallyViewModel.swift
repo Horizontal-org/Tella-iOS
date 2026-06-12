@@ -68,7 +68,7 @@ class RecipientConnectManuallyViewModel: ObservableObject {
                 
                 switch event {
                 case .receiverCertificateVerificationRequested:
-                    self.viewState = .showVerificationHash
+                    self.viewState = .showReceipientVerificationHash
                 case .senderCertificateVerificationRequested(let certificateHash):
                     self.viewState = .showSenderHashVerification(certificateHash: certificateHash)
                 default:

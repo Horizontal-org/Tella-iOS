@@ -17,7 +17,8 @@ enum SenderConnectToDeviceViewAction {
     case showBottomSheetError
     case showIncompatibleVersion
     case showSendFiles
-    case showVerificationHash
+    case showReceipientVerificationHash
+    case showSenderHashVerification(connectionInfo: ConnectionInfo)
     case discardAndStartOver
 }
 
@@ -31,7 +32,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     private var registrationNonceContext: RegistrationNonceContext?
-
+    
     
     var mainAppModel: MainAppModel
     var nearbySharingRepository: NearbySharingRepository
@@ -43,7 +44,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
-
+        
         super.init()
         generateClientTLSIdentity()
         generateSenderQRCode()
@@ -91,6 +92,10 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
         }
         
         register(connectionInfo: connectionInfo)
+        
+        if connectionInfo.senderShowHash == true {
+            viewState = .showSenderHashVerification(connectionInfo: connectionInfo)
+        }
     }
     
     func register(connectionInfo:ConnectionInfo?) {
@@ -101,11 +106,11 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             isLoading = false
             return
         }
-
+        
         let nonce = RegistrationNonceContext.nonce(for: connectionInfo, context: &registrationNonceContext)
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
                                               nonce: nonce)
-
+        
         self.nearbySharingRepository.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in

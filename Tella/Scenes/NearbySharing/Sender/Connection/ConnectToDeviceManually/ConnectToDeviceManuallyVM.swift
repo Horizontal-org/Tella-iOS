@@ -84,7 +84,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
             }, receiveValue: { certificateHash in
                 debugLog(certificateHash)
                 self.connectionInfo?.certificateHash = certificateHash
-                self.viewState = .showVerificationHash
+                self.viewState = .showReceipientVerificationHash
             }).store(in: &self.subscribers)
     }
 }

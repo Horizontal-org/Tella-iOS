@@ -15,7 +15,7 @@ enum RecipientConnectToDeviceViewAction {
     case none
     case showToast(message: String)
     case showReceiveFiles
-    case showVerificationHash
+    case showReceipientVerificationHash
     case showSenderHashVerification(certificateHash: String)
     case errorOccured
     case discardAndStartOver
@@ -175,7 +175,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     
                 case .receiverCertificateVerificationRequested:
                     // Receiver hash verification after ping.
-                    self.viewAction = .showVerificationHash
+                    self.viewAction = .showReceipientVerificationHash
                     
                 case .incompatibleProtocolVersion:
                     self.viewAction = .errorOccured

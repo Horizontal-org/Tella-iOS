@@ -64,12 +64,26 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
-        case .showVerificationHash:
+        case .showReceipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return }
-            let viewModel = ManuallyVerificationViewModel(participant:.recipient,
-                                                          connectionInfo: connectionInfo,
-                                                          mainAppModel: viewModel.mainAppModel)
-            self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel))
+            // step 1: receiver hash verification after ping.
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .receiverHash(confirmAction: .acknowledgeOnly)
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showSenderHashVerification(let certificateHash):
+            guard let connectionInfo = viewModel.connectionInfo else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acceptPendingRegistration),
+                certificateHashToDisplay: certificateHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:
