@@ -262,7 +262,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
 
 extension NearbySharingServer: PingHandler {
     func handlePingRequest(on connection: NWConnection) {
-        eventPublisher.send(.verificationRequested)
+        eventPublisher.send(.receiverCertificateVerificationRequested)
         Task { await state.markManualConnection()
             let payload = BoolResponse(success: true)
             await sendSuccessResponse(connection: connection,payload: payload, endpoint: .ping)

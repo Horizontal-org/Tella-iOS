@@ -173,7 +173,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     // Sender hash verification after register.
                     self.viewAction = .showSenderHashVerification(certificateHash: certificateHash)
                     
-                case .verificationRequested:
+                case .receiverCertificateVerificationRequested:
                     // Receiver hash verification after ping.
                     self.viewAction = .showVerificationHash
                     
