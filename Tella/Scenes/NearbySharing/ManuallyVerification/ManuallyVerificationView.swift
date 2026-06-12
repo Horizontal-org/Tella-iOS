@@ -70,8 +70,11 @@ struct ManuallyVerificationView: View {
     
     private func participantInfoView(text: String) -> some View {
         VStack(alignment: .center, spacing: 16) {
+            CustomText(viewModel.stepTitle,
+                       style: .heading1Style,
+                       alignment: .center)
             
-            CustomText(viewModel.connectionInfo.certificateHash?.formatHash() ?? "",
+            CustomText(viewModel.certificateHashToDisplay.formatHash(),
                        style: .body1Style,
                        alignment: .center)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -158,7 +161,10 @@ struct ManuallyVerificationView: View {
 }
 
 #Preview {
-    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(participant: .recipient,
-                                                                      connectionInfo: ConnectionInfo.stub(),
-                                                                      mainAppModel: MainAppModel.stub()))
+    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(
+        participant: .recipient,
+        connectionInfo: ConnectionInfo.stub(),
+        mainAppModel: MainAppModel.stub(),
+        verificationRole: .senderHash(confirmAction: .acceptPendingRegistration)
+    ))
 }
