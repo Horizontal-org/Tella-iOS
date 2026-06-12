@@ -67,6 +67,10 @@ actor NetworkManager {
         peerCertificatePolicy.peekPendingPeerCertificateHash()
     }
     
+    func hasTrustedPeerCertificateHash() -> Bool {
+        peerCertificatePolicy.hasTrustedPeerCertificateHash()
+    }
+    
     // MARK: - Public API
     
     func startListening(port: Int, clientIdentity: SecIdentity) {

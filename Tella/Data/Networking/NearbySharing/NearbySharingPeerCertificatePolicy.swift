@@ -43,6 +43,12 @@ final class NearbySharingPeerCertificatePolicy: @unchecked Sendable {
         return pendingPeerCertificateHash
     }
     
+    func hasTrustedPeerCertificateHash() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return trustedPeerCertificateHash != nil
+    }
+    
     func evaluatePeerTrust(_ secTrust: sec_trust_t) -> Bool {
         let trust = sec_trust_copy_ref(secTrust).takeRetainedValue()
         guard let hash = trust.certificateHash else {

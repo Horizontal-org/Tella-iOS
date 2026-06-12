@@ -275,8 +275,11 @@ extension NearbySharingServer: PingHandler {
 extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
+            // If the recipient already pinned the sender certificate hash (scanned the sender QR),
+            // the TLS layer has already enforced it, so no sender hash verification is needed.
+            let senderHashAlreadyPinned = await networkManager.hasTrustedPeerCertificateHash()
             
-            if await state.isManualConnection() {
+            if await state.isManualConnection() && !senderHashAlreadyPinned {
                 
                 await handleRegisterWithSenderVerification(
                     connection: connection,
