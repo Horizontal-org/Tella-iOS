@@ -123,6 +123,17 @@ struct ManuallyVerificationView: View {
         switch action {
         case .showBottomSheetError:
             showBottomSheetError()
+        case .showSenderHashVerification(let connectionInfo):
+            guard let senderHash = viewModel.nearbySharingRepository?.clientCertificateHash else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .sender,
+                nearbySharingRepository: viewModel.nearbySharingRepository,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acknowledgeOnly),
+                certificateHashToDisplay: senderHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSendFiles:
             guard let session = viewModel.session,
                   let nearbySharingRepository = viewModel.nearbySharingRepository
@@ -147,6 +158,15 @@ struct ManuallyVerificationView: View {
         case .showReceiveFiles:
             let viewModel = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: RecipientFileTransferView(viewModel: viewModel))
+        case .showSenderHashVerification(let certificateHash):
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: viewModel.connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acceptPendingRegistration),
+                certificateHashToDisplay: certificateHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)

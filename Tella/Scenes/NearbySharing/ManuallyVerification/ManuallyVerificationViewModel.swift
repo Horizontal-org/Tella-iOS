@@ -50,8 +50,8 @@ class ManuallyVerificationViewModel: ObservableObject {
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         self.verificationRole = verificationRole
         self.certificateHashToDisplay = certificateHashToDisplay
-            ?? connectionInfo.certificateHash
-            ?? ""
+        ?? connectionInfo.certificateHash
+        ?? ""
         
         updateButtonsState(state: .initial)
     }
@@ -67,7 +67,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         serverEventsCancellable?.cancel()
         serverEventsCancellable = nil
     }
-
+    
     var stepTitle: String {
         verificationRole.stepTitle(participant: participant)
     }
@@ -78,12 +78,12 @@ class ManuallyVerificationViewModel: ObservableObject {
         
         if isInitial {
             confirmButtonTitle = verificationRole.isFinalStep(participant: participant)
-                ? LocalizableNearbySharing.verificationConfirm.localized
-                : LocalizableNearbySharing.verificationConfirmContinue.localized
+            ? LocalizableNearbySharing.verificationConfirm.localized
+            : LocalizableNearbySharing.verificationConfirmContinue.localized
         } else {
             confirmButtonTitle = participant == .sender
-                ? LocalizableNearbySharing.verificationWaitingRecipient.localized
-                : LocalizableNearbySharing.verificationWaitingSender.localized
+            ? LocalizableNearbySharing.verificationWaitingRecipient.localized
+            : LocalizableNearbySharing.verificationWaitingSender.localized
         }
     }
     
@@ -92,7 +92,14 @@ class ManuallyVerificationViewModel: ObservableObject {
         case .receiverHash(let action):
             switch action {
             case .sendRegister:
-                participant == .sender ? register() : acceptRegisterRequest()
+                if participant == .sender {
+                    // Send register: held by the receiver
+                    // then show the sender hash so both parties can verify it
+                    register()
+                    senderViewAction = .showSenderHashVerification(connectionInfo: connectionInfo)
+                } else {
+                    acceptRegisterRequest()
+                }
             case .acceptPendingRegistration:
                 acceptRegisterRequest()
             case .acknowledgeOnly:
@@ -129,7 +136,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
                                               nonce: nonce)
         self.updateButtonsState(state: .waiting)
-
+        
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
@@ -149,7 +156,7 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             }).store(in: &self.subscribers)
     }
-
+    
     private func acceptRegisterRequest() {
         nearbySharingServer?.respondToRegistrationRequest(accept: true)
         self.updateButtonsState(state: .waiting)
@@ -165,6 +172,12 @@ class ManuallyVerificationViewModel: ObservableObject {
                 case .didRegister(let success, let manual):
                     if manual {
                         self.recipientViewAction = success ? .showReceiveFiles : .errorOccured
+                    }
+                case .senderCertificateVerificationRequested(let certificateHash):
+                    // Register held by the server while the recipient is on the receiver hash step:
+                    // move to step 2 (sender hash verification)
+                    if self.participant == .recipient {
+                        self.recipientViewAction = .showSenderHashVerification(certificateHash: certificateHash)
                     }
                 case .connectionClosed:
                     self.recipientViewAction = .errorOccured
