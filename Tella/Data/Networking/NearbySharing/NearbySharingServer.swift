@@ -55,7 +55,7 @@ final class NearbySharingServer {
     func pinSenderCertificateHashFromQR(_ hash: String) {
         Task { await networkManager.setTrustedPeerCertificateHash(hash) }
     }
-
+    
     func resetFullServerState() {
         stopServer()
         cleanServer()
@@ -275,20 +275,72 @@ extension NearbySharingServer: PingHandler {
 extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
+            
             if await state.isManualConnection() {
                 
-                if let pendingRegisterResponse = await state.getPendingRegisterResponse() {
-                    await sendRegistrationResponse(accept: pendingRegisterResponse,
-                                                   connection: connection,
-                                                   request: request)
-                } else {
-                    await state.setPendingRegister(connection: connection, request: request)
-                }
+                await handleRegisterWithSenderVerification(
+                    connection: connection,
+                    request: request
+                )
                 
             } else {
                 await acceptRegisterRequest(connection: connection, httpRequest: request)
             }
         }
+    }
+    
+    /// validate PIN/nonce, hold register, and verify sender certificate 
+    private func handleRegisterWithSenderVerification(
+        connection: NWConnection,
+        request: HTTPRequest
+    ) async {
+        if let pendingRegisterResponse = await state.getPendingRegisterResponse() {
+            await sendRegistrationResponse(
+                accept: pendingRegisterResponse,
+                connection: connection,
+                request: request
+            )
+            return
+        }
+        
+        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            await sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        guard let nonce = regReq.nonce, !nonce.isEmpty else {
+            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
+            await sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        if await state.hasReachedMaxAttempts(for: nonce) {
+            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
+            await sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        guard let pin = regReq.pin, await state.pinMatches(pin) else {
+            await state.recordRegisterPinFailure(for: nonce)
+            if await state.hasReachedMaxAttempts(for: nonce) {
+                let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
+                await sendErrorResponse(error, connection: connection)
+                return
+            }
+            let error = ServerStatus(code: .unauthorized, message: .invalidPIN)
+            await sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        guard let senderHash = await networkManager.peekPendingPeerCertificateHash() else {
+            let error = ServerStatus(code: .unauthorized, message: .invalidRequestFormat)
+            await sendErrorResponse(error, connection: connection)
+            return
+        }
+        
+        await state.setPendingRegister(connection: connection, request: request)
+        eventPublisher.send(.senderCertificateVerificationRequested(certificateHash: senderHash))
     }
     
     func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
@@ -354,8 +406,12 @@ extension NearbySharingServer: RegisterHandler {
                                           connection: NWConnection,
                                           request: HTTPRequest) async {
         if accept {
+            if let peerHash = await networkManager.consumePendingPeerCertificateHash() {
+                await networkManager.setTrustedPeerCertificateHash(peerHash)
+            }
             await acceptRegisterRequest(connection: connection, httpRequest: request)
         } else {
+            await networkManager.consumePendingPeerCertificateHash()
             await discardRegisterRequest(connection: connection)
         }
     }

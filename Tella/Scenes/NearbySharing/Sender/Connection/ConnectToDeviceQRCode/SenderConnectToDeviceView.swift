@@ -60,20 +60,8 @@ struct SenderConnectToDeviceView: View {
             CustomText(LocalizableNearbySharing.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
-            bottomNavigationView
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    
-    /// Step 1 → Step 2: Scan the recipient QR code
-    var bottomNavigationView: some View {
-        NavigationBottomView<SenderConnectToDeviceView>(
-            shouldActivateNext: .constant(true),
-            nextButtonAction: .destination,
-            destination: SenderConnectToDeviceView(viewModel: viewModel, step: .scanQRCode),
-            shouldHideNext: step == .scanQRCode,
-            shouldHideBack: true
-        )
     }
     
     var navigationBarView: some View {
@@ -135,14 +123,13 @@ struct SenderConnectToDeviceView: View {
     @ViewBuilder
     var recipientCantScanQRCodeButton: some View {
         if step == .showQRCode {
-            TellaButtonView(title: "Scan Recipient QR code".uppercased(),
-                            nextButtonAction: .destination,
+            TellaButtonView(title: "Scan Receipient QR code".uppercased(),
+                            nextButtonAction: .action,
                             isValid: .constant(true),
                             buttonRole: .secondary) {
                 step = .scanQRCode
             }
                             .padding([.leading, .trailing], 80)
-            
         }
     }
     
