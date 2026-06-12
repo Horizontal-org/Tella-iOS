@@ -289,7 +289,7 @@ extension NearbySharingServer: RegisterHandler {
         }
     }
     
-    /// validate PIN/nonce, hold register, and verify sender certificate 
+    /// validate PIN/nonce, hold register, and verify sender certificate
     private func handleRegisterWithSenderVerification(
         connection: NWConnection,
         request: HTTPRequest

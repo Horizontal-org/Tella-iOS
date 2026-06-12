@@ -38,26 +38,18 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
     var nearbySharingRepository: NearbySharingRepository
     var session: NearbySharingSession?
     
-    private(set) var clientTLSIdentity: SecIdentity?
-    private(set) var clientCertificateHash: String?
+    var clientCertificateHash: String? {
+        nearbySharingRepository.clientCertificateHash
+    }
     
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
+        nearbySharingRepository.ensureClientTLSIdentity()
         
         super.init()
-        generateClientTLSIdentity()
         generateSenderQRCode()
         observeScannedCode()
-    }
-    
-    private func generateClientTLSIdentity() {
-        guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
-            debugLog("Failed to generate sender client TLS identity")
-            return
-        }
-        clientTLSIdentity = generated.identity
-        clientCertificateHash = generated.certificateHash
     }
     
     private func generateSenderQRCode() {
@@ -75,7 +67,7 @@ class SenderConnectToDeviceViewModel: NSObject, ObservableObject {
             .prefix(1)
             .sink { [weak self] scannedCode in
                 let connectionInfo = scannedCode.decodeJSON(ConnectionInfo.self)
-                connectionInfo?.clientTLSIdentity = self?.clientTLSIdentity
+                connectionInfo?.clientTLSIdentity = self?.nearbySharingRepository.clientTLSIdentity
                 self?.handleScannedRecipientQR(connectionInfo: connectionInfo)
             }.store(in: &subscribers)
     }
