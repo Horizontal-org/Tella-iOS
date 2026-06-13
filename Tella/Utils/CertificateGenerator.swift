@@ -16,6 +16,20 @@ class CertificateGenerator {
     private let commonName = "Tella iOS"
     private let organization = "Tella"
     
+    /// Label used to find and delete old Nearby Sharing identities.
+    static let keychainIdentityLabel = "org.wearehorizontal.tella.nearbysharing.identity"
+    
+    /// Removes any Nearby Sharing identities previously stored in the keychain.
+    static func removeStoredIdentities() {
+        for secClass in [kSecClassKey, kSecClassCertificate] {
+            let query: [String: Any] = [
+                kSecClass as String: secClass,
+                kSecAttrLabel as String: keychainIdentityLabel
+            ]
+            SecItemDelete(query as CFDictionary)
+        }
+    }
+    
     // MARK: - Main Function
     
     /// Client identity for the sender (mTLS)
@@ -32,17 +46,20 @@ class CertificateGenerator {
     }
     
     private func generateIdentity(ipAddresses: [String]) -> (identity: SecIdentity, certificateHash: String)? {
+        // Remove any identity left from a previous session so the keychain never accumulates ephemeral keys.
+        Self.removeStoredIdentities()
+        
         // Generate RSA private key
         guard let privateKey = generateRSAKey() else {
             debugLog("RSA key generation failed")
             return nil
         }
-
+        
         guard let publicKey = privateKey.getPublicKey() else {
             debugLog("Failed to extract public key from private key")
             return nil
         }
-
+        
         // Generate certificate
         guard let certificate = generateSelfSignedCertificate(
             ipAddresses: ipAddresses,
@@ -55,7 +72,7 @@ class CertificateGenerator {
         
         let certificateData = SecCertificateCopyData(certificate)
         let certificateHash = Data(certificateData as Data).sha256()
-
+        
         
         // Store in keychain and return identity
         guard let identity = storeCertificateAndPrivateKey(certificate: certificate, privateKey: privateKey) else {
@@ -93,7 +110,7 @@ class CertificateGenerator {
         do {
             let notBefore = Date()
             let notAfter = notBefore.addYear()
-
+            
             let name = try buildDistinguishedName()
             var extensions = Certificate.Extensions()
             if !ipAddresses.isEmpty {
@@ -139,13 +156,13 @@ class CertificateGenerator {
             inner.append(UInt8(ipBytes.count))
             inner.append(contentsOf: ipBytes)
         }
-
+        
         let sequenceLength = inner.count
         var sanValue = [UInt8]()
         sanValue.append(0x30)
         sanValue.append(UInt8(sequenceLength))
         sanValue.append(contentsOf: inner)
-
+        
         return Certificate.Extension(
             oid: [2, 5, 29, 17], // Subject Alternative Name
             critical: false,
@@ -172,13 +189,13 @@ class CertificateGenerator {
         let privateKeyAttrs: [String: Any] = [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: tagData,
+            kSecAttrLabel as String: Self.keychainIdentityLabel,
             kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
             kSecValueRef as String: privateKey,
             kSecReturnPersistentRef as String: false
         ]
         
-        SecItemDelete(privateKeyAttrs as CFDictionary)
         guard SecItemAdd(privateKeyAttrs as CFDictionary, nil) == errSecSuccess else {
             debugLog("Failed to add private key to Keychain")
             return nil
@@ -186,11 +203,11 @@ class CertificateGenerator {
         
         let certAttrs: [String: Any] = [
             kSecClass as String: kSecClassCertificate,
+            kSecAttrLabel as String: Self.keychainIdentityLabel,
             kSecValueRef as String: certificate,
             kSecReturnPersistentRef as String: false
         ]
         
-        SecItemDelete(certAttrs as CFDictionary)
         guard SecItemAdd(certAttrs as CFDictionary, nil) == errSecSuccess else {
             debugLog("Failed to add certificate to Keychain")
             return nil

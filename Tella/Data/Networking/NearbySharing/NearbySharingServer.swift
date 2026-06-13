@@ -59,6 +59,7 @@ final class NearbySharingServer {
     func resetFullServerState() {
         stopServer()
         cleanServer()
+        CertificateGenerator.removeStoredIdentities()
     }
     
     func cleanServer() {
