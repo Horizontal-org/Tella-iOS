@@ -95,8 +95,8 @@ class ManuallyVerificationViewModel: ObservableObject {
                 if participant == .sender {
                     // Send register: held by the receiver
                     // then show the sender hash so both parties can verify it
-                    register()
                     senderViewAction = .showSenderHashVerification(connectionInfo: connectionInfo)
+                    register()
                 } else {
                     acceptRegisterRequest()
                 }
