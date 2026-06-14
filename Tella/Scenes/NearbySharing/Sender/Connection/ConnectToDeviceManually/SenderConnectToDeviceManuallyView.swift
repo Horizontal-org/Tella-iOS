@@ -33,7 +33,6 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var contentView: some View {
         VStack {
-            Spacer()
             
             VStack {
                 topView

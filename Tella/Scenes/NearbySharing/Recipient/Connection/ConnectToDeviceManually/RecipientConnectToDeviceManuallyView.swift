@@ -29,7 +29,6 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     var contentView: some View {
         VStack {
-            Spacer()
             VStack(spacing: 24) {
                 topView
                 cardsView
@@ -40,7 +39,7 @@ struct RecipientConnectToDeviceManuallyView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizableNearbySharing.connectToDevice.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              rightButtonType: .none)
