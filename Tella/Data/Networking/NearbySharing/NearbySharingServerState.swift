@@ -14,19 +14,24 @@ final class NearbySharingServerState {
     var pin: String?
     var session: NearbySharingSession?
     var isUsingManualConnection: Bool
+    /// Scenario D: recipient tapped Confirm on receiver-hash step.
+    var receiverHashConfirmed: Bool
     
     init(pin: String? = nil,
          session: NearbySharingSession? = nil,
-         isUsingManualConnection: Bool = false) {
+         isUsingManualConnection: Bool = false,
+         receiverHashConfirmed: Bool = false) {
         self.pin = pin
         self.session = session
         self.isUsingManualConnection = isUsingManualConnection
+        self.receiverHashConfirmed = receiverHashConfirmed
     }
     
     func reset() {
         pin = nil
         session = nil
         isUsingManualConnection = false
+        receiverHashConfirmed = false
     }
 }
 

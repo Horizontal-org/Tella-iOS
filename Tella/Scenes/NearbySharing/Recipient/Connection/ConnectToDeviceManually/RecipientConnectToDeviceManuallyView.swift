@@ -65,12 +65,11 @@ struct RecipientConnectToDeviceManuallyView: View {
         switch state {
         case .showReceipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return }
-            // step 1: receiver hash verification after ping.
             let verificationVM = ManuallyVerificationViewModel(
                 participant: .recipient,
                 connectionInfo: connectionInfo,
                 mainAppModel: viewModel.mainAppModel,
-                verificationRole: .receiverHash(confirmAction: .acknowledgeOnly)
+                verificationRole: .receiverHash(confirmAction: .confirmReceiverHash)
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSenderHashVerification(let certificateHash):

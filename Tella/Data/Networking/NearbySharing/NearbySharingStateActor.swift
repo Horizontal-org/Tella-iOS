@@ -72,6 +72,8 @@ actor NearbySharingStateActor {
     func pinMatches(_ pin: String) -> Bool { state.pin == pin }
     func markManualConnection() { state.isUsingManualConnection = true }
     func isManualConnection() -> Bool { state.isUsingManualConnection }
+    func markReceiverHashConfirmed() { state.receiverHashConfirmed = true }
+    func isReceiverHashConfirmed() -> Bool { state.receiverHashConfirmed }
     
     func hasSession() -> Bool { state.session != nil }
     
@@ -112,6 +114,10 @@ actor NearbySharingStateActor {
         pendingRegisterRequest = request
     }
     
+    func hasPendingRegister() -> Bool {
+        pendingRegisterConnection != nil && pendingRegisterRequest != nil
+    }
+    
     func getPendingRegister() -> (NWConnection, HTTPRequest)? {
         guard let connection = pendingRegisterConnection, let request = pendingRegisterRequest else { return nil }
         pendingRegisterConnection = nil
@@ -123,6 +129,13 @@ actor NearbySharingStateActor {
         let response = pendingRegisterResponse
         pendingRegisterResponse = nil
         return response
+    }
+    
+    func clearPendingRegistration() {
+        pendingRegisterConnection = nil
+        pendingRegisterRequest = nil
+        pendingRegisterResponse = nil
+        state.receiverHashConfirmed = false
     }
     
     func savePendingRegisterResponse(accept: Bool) {

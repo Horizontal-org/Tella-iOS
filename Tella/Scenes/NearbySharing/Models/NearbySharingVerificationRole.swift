@@ -19,6 +19,8 @@ enum NearbySharingVerificationRole {
         case sendRegister
         case acceptPendingRegistration
         case acknowledgeOnly
+        /// Recipient confirmed receiver hash; server branches on whether sender cert is pre-pinned.
+        case confirmReceiverHash
     }
     
     /// "Step 1: Confirm sender hash"

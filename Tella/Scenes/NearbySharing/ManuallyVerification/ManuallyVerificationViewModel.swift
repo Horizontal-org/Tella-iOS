@@ -102,6 +102,9 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             case .acceptPendingRegistration:
                 acceptRegisterRequest()
+            case .confirmReceiverHash:
+                nearbySharingServer?.confirmReceiverHashVerification()
+                updateButtonsState(state: .waiting)
             case .acknowledgeOnly:
                 updateButtonsState(state: .waiting)
             }
@@ -113,6 +116,8 @@ class ManuallyVerificationViewModel: ObservableObject {
                 acceptRegisterRequest()
             case .acknowledgeOnly:
                 updateButtonsState(state: .waiting)
+            case .confirmReceiverHash:
+                break
             }
         }
     }
@@ -159,7 +164,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     
     private func acceptRegisterRequest() {
         nearbySharingServer?.respondToRegistrationRequest(accept: true)
-        self.updateButtonsState(state: .waiting)
+        updateButtonsState(state: .waiting)
     }
     
     func listenToServerEvents() {

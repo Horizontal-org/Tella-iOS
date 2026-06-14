@@ -142,7 +142,7 @@ struct RecipientConnectToDeviceView: View {
                 participant: .recipient,
                 connectionInfo: connectionInfo,
                 mainAppModel: viewModel.mainAppModel,
-                verificationRole: .receiverHash(confirmAction: .acknowledgeOnly)
+                verificationRole: .receiverHash(confirmAction: .confirmReceiverHash)
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSenderHashVerification(let certificateHash):

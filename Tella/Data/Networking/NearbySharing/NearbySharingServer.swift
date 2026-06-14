@@ -264,9 +264,11 @@ extension NearbySharingServer: NetworkManagerDelegate {
 extension NearbySharingServer: PingHandler {
     func handlePingRequest(on connection: NWConnection) {
         eventPublisher.send(.receiverCertificateVerificationRequested)
-        Task { await state.markManualConnection()
+        Task {
+            await state.clearPendingRegistration()
+            await state.markManualConnection()
             let payload = BoolResponse(success: true)
-            await sendSuccessResponse(connection: connection,payload: payload, endpoint: .ping)
+            await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
         }
     }
 }
@@ -276,134 +278,107 @@ extension NearbySharingServer: PingHandler {
 extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
-            // If the recipient already pinned the sender certificate hash (scanned the sender QR),
-            // the TLS layer has already enforced it, so no sender hash verification is needed.
-            let senderHashAlreadyPinned = await networkManager.hasTrustedPeerCertificateHash()
-            
-            if await state.isManualConnection() && !senderHashAlreadyPinned {
-                
-                await handleRegisterWithSenderVerification(
-                    connection: connection,
-                    request: request
-                )
-                
+            if await state.isManualConnection() {
+                await holdRegisterRequest(connection: connection, request: request)
             } else {
                 await acceptRegisterRequest(connection: connection, httpRequest: request)
             }
         }
     }
     
-    /// validate PIN/nonce, hold register, and verify sender certificate
-    private func handleRegisterWithSenderVerification(
-        connection: NWConnection,
-        request: HTTPRequest
-    ) async {
-        if let pendingRegisterResponse = await state.getPendingRegisterResponse() {
-            await sendRegistrationResponse(
-                accept: pendingRegisterResponse,
-                connection: connection,
-                request: request
-            )
-            return
-        }
-        
-        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
-        }
-        
-        guard let nonce = regReq.nonce, !nonce.isEmpty else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
-        }
-        
-        if await state.hasReachedMaxAttempts(for: nonce) {
-            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-            await sendErrorResponse(error, connection: connection)
-            return
-        }
-        
-        guard let pin = regReq.pin, await state.pinMatches(pin) else {
-            await state.recordRegisterPinFailure(for: nonce)
-            if await state.hasReachedMaxAttempts(for: nonce) {
-                let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-                await sendErrorResponse(error, connection: connection)
-                return
+    /// Recipient confirmed receiver hash — server decides C vs D from pinned sender cert.
+    func confirmReceiverHashVerification() {
+        Task {
+            if await networkManager.hasTrustedPeerCertificateHash() {
+                await fulfillRegistrationResponse(accept: true)
+            } else {
+                await state.markReceiverHashConfirmed()
+                if await state.hasPendingRegister() {
+                    await emitSenderHashVerificationIfReady()
+                }
             }
-            let error = ServerStatus(code: .unauthorized, message: .invalidPIN)
-            await sendErrorResponse(error, connection: connection)
-            return
         }
-        
-        guard let senderHash = await networkManager.peekPendingPeerCertificateHash() else {
-            let error = ServerStatus(code: .unauthorized, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
-        }
-        
+    }
+    
+    private func holdRegisterRequest(connection: NWConnection, request: HTTPRequest) async {
+        guard await validateRegisterRequest(request, connection: connection) != nil else { return }
         await state.setPendingRegister(connection: connection, request: request)
+        await applySavedRegisterResponseIfNeeded(connection: connection, request: request)
+        let senderPinned = await networkManager.hasTrustedPeerCertificateHash()
+        if await state.isReceiverHashConfirmed(), !senderPinned {
+            await emitSenderHashVerificationIfReady()
+        }
+    }
+    
+    private func emitSenderHashVerificationIfReady() async {
+        guard let senderHash = await networkManager.peekPendingPeerCertificateHash() else { return }
         eventPublisher.send(.senderCertificateVerificationRequested(certificateHash: senderHash))
     }
     
-    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
-        
-        if await state.hasSession() {
-            let error = ServerStatus(code: .conflict, message: .activeSessionAlreadyExists)
-            await sendErrorResponse(error, connection: connection)
+    private func fulfillRegistrationResponse(accept: Bool) async {
+        guard let (connection, request) = await state.getPendingRegister() else {
+            await state.savePendingRegisterResponse(accept: accept)
             return
         }
-        
-        guard let regReq = httpRequest.body.decodeJSON(RegisterRequest.self) else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
+        await sendRegistrationResponse(accept: accept, connection: connection, request: request)
+    }
+    
+    private func applySavedRegisterResponseIfNeeded(
+        connection: NWConnection,
+        request: HTTPRequest
+    ) async {
+        guard let pendingResponse = await state.getPendingRegisterResponse() else { return }
+        await sendRegistrationResponse(accept: pendingResponse, connection: connection, request: request)
+    }
+    
+    /// Returns nil after sending an error response to the client.
+    private func validateRegisterRequest(
+        _ request: HTTPRequest,
+        connection: NWConnection
+    ) async -> RegisterRequest? {
+        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
+            await sendErrorResponse(ServerStatus(code: .badRequest, message: .invalidRequestFormat), connection: connection)
+            return nil
         }
         
         guard let nonce = regReq.nonce, !nonce.isEmpty else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
+            await sendErrorResponse(ServerStatus(code: .badRequest, message: .invalidRequestFormat), connection: connection)
+            return nil
         }
         
         if await state.hasReachedMaxAttempts(for: nonce) {
-            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-            await sendErrorResponse(error, connection: connection)
-            return
+            await sendErrorResponse(ServerStatus(code: .tooManyRequests, message: .tooManyRequests), connection: connection)
+            return nil
         }
         
         guard let pin = regReq.pin, await state.pinMatches(pin) else {
             await state.recordRegisterPinFailure(for: nonce)
             if await state.hasReachedMaxAttempts(for: nonce) {
-                let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-                await sendErrorResponse(error, connection: connection)
-                return
+                await sendErrorResponse(ServerStatus(code: .tooManyRequests, message: .tooManyRequests), connection: connection)
+                return nil
             }
-            let error = ServerStatus(code: .unauthorized, message: .invalidPIN)
-            await sendErrorResponse(error, connection: connection)
+            await sendErrorResponse(ServerStatus(code: .unauthorized, message: .invalidPIN), connection: connection)
+            return nil
+        }
+        
+        return regReq
+    }
+    
+    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
+        if await state.hasSession() {
+            await sendErrorResponse(ServerStatus(code: .conflict, message: .activeSessionAlreadyExists), connection: connection)
             return
         }
         
-        let newSessionId = await state.createSessionAndReturnID(registrationNonce: nonce)
+        guard let regReq = await validateRegisterRequest(httpRequest, connection: connection) else { return }
         
-        // 5) response
+        let newSessionId = await state.createSessionAndReturnID(registrationNonce: regReq.nonce!)
         let payload = RegisterResponse(sessionId: newSessionId)
-        await sendSuccessResponse(connection: connection,
-                                  payload: payload,
-                                  endpoint: .register)
+        await sendSuccessResponse(connection: connection, payload: payload, endpoint: .register)
     }
     
     func respondToRegistrationRequest(accept: Bool) {
-        Task {
-            guard let (connection, request) = await state.getPendingRegister() else {
-                await state.savePendingRegisterResponse(accept: accept)
-                return
-            }
-            await sendRegistrationResponse(accept: accept,
-                                           connection: connection,
-                                           request: request)
-        }
+        Task { await fulfillRegistrationResponse(accept: accept) }
     }
     
     private func sendRegistrationResponse(accept: Bool,
