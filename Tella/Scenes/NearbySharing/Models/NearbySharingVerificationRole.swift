@@ -31,18 +31,18 @@ enum NearbySharingVerificationRole {
         case (.sender, .senderHash):
             return LocalizableNearbySharing.verificationStep2ConfirmSenderHash.localized
         case (.recipient, .senderHash):
-            return LocalizableNearbySharing.verificationStep1ConfirmSenderHash.localized
+            return LocalizableNearbySharing.verificationStep2ConfirmSenderHash.localized
         case (.recipient, .receiverHash):
-            return LocalizableNearbySharing.verificationStep2ConfirmRecipientHash.localized
+            return LocalizableNearbySharing.verificationStep1ConfirmRecipientHash.localized
         }
     }
     
     /// "Confirm and connect" or "Confirm and continue"
     func isFinalStep(participant: NearbySharingParticipant) -> Bool {
         switch (participant, self) {
-        case (.sender, .senderHash), (.recipient, .receiverHash):
+        case (.sender, .senderHash), (.recipient, .senderHash):
             return true
-        case (.sender, .receiverHash), (.recipient, .senderHash):
+        case (.sender, .receiverHash), (.recipient, .receiverHash):
             return false
         }
     }
