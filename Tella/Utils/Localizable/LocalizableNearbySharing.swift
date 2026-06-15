@@ -55,7 +55,6 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case showSenderQrCode = "NearbySharing_ShowSenderQrCode"
     case scanSenderQrCode = "NearbySharing_ScanSenderQrCode"
 
-    case senderCertificatePinnedToast = "NearbySharing_SenderCertificatePinned_Toast"
     case havingTrouble = "NearbySharing_HavingTrouble"
     case connectManually = "NearbySharing_ConnectManually"
     case enterDeviceInformation = "NearbySharing_EnterDevice_Information"

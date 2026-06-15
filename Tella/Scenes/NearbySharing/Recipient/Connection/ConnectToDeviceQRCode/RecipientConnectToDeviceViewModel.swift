@@ -106,7 +106,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         }
         nearbySharingServer?.pinSenderCertificateHashFromQR(senderInfo.certificateHash)
         didPinSenderCertificate = true
-        viewAction = .showToast(message: LocalizableNearbySharing.senderCertificatePinnedToast.localized)
+        debugLog(LocalizableNearbySharing.senderCertificatePinnedToast.localized))
     }
     
     private func generateConnectionInfo() {

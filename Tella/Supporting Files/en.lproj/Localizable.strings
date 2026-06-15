@@ -644,7 +644,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
 "NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
 
-"NearbySharing_SenderCertificatePinned_Toast" = "Sender certificate pinned";
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect manually";
 "NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
