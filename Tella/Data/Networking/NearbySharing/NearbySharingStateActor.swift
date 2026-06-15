@@ -68,6 +68,11 @@ actor NearbySharingStateActor {
     
     // MARK: - Register
     
+    var senderShowHash = false
+    
+    func setSenderShowHash(_ value: Bool) { senderShowHash = value }
+    func shouldSenderShowHash() -> Bool { senderShowHash }
+    
     func setPin(_ pin: String) { state.pin = pin }
     func pinMatches(_ pin: String) -> Bool { state.pin == pin }
     func markManualConnection() { state.isUsingManualConnection = true }

@@ -28,10 +28,11 @@ final class NearbySharingServer {
     
     // MARK: - Server Lifecycle
     
-    func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
+    func startListening(port: Int, pin: String, clientIdentity: SecIdentity, senderShowHash: Bool = false) {
         Task {
             await rateLimiter.reset()
             await state.setPin(pin)
+            await state.setSenderShowHash(senderShowHash)
             await networkManager.startListening(port: port, clientIdentity: clientIdentity)
         }
     }
