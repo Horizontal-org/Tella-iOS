@@ -267,7 +267,8 @@ extension NearbySharingServer: PingHandler {
         Task {
             await state.clearPendingRegistration()
             await state.markManualConnection()
-            let payload = BoolResponse(success: true)
+            let senderShowHash = await state.shouldSenderShowHash()
+            let payload = PingResponse(senderShowHash: senderShowHash)
             await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
         }
     }

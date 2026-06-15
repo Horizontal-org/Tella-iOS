@@ -31,7 +31,7 @@ class NearbySharingRepository: NSObject, WebRepository {
     }
     
     /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
-    func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
+    func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<NearbySharingPingResult, Error> {
         let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
