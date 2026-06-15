@@ -78,7 +78,7 @@ extension WebRepository {
         }
     }
     
-    func fetchServerPublicKeyHash(endpoint: any APIRequest) -> AnyPublisher<String, Error> {
+    func fetchServerPublicKeyHash(endpoint: any APIRequest) -> AnyPublisher<NearbySharingPingResult, Error> {
         do {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
@@ -94,28 +94,31 @@ extension WebRepository {
                 }
             )
             
-            return Future<String, Error> { promise in
-                let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
-
-                
-                let task = session.dataTask(with: request) { data, response, error in
-                    
-                    if let hash = capturedServerHash {
-                        promise(.success(hash))
-                    } else if let error {
-                        debugLog("Network error while fetching hash: \(error)")
-                        promise(.failure(error))
-                    } else {
-                        debugLog("Unexpected response: no error, no server hash")
-                        promise(.failure(APIError.unexpectedResponse))
+            return NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+                .dataTaskPublisher(for: request)
+                .map { ServerResponse(data: $0, response: $1) }
+                .tryMap { serverResponse in
+                    guard let code = (serverResponse.response as? HTTPURLResponse)?.statusCode else {
+                        throw APIError.unexpectedResponse
                     }
+                    guard HTTPCodes.success.contains(code) else {
+                        debugLog("Error code: \(code)")
+                        throw APIError.httpCode(code)
+                    }
+                    guard let hash = capturedServerHash else {
+                        debugLog("Unexpected response: no server hash")
+                        throw APIError.unexpectedResponse
+                    }
+                    let senderShowHash = (try? JSONDecoder().decode(PingResponse.self, from: serverResponse.data))?
+                        .senderShowHash ?? false
+                    return NearbySharingPingResult(
+                        certificateHash: hash,
+                        senderShowHash: senderShowHash
+                    )
                 }
-                
-                task.resume()
-            }
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-            
+                .mapError { $0 as Error }
+                .receive(on: DispatchQueue.main)
+                .eraseToAnyPublisher()
         } catch {
             debugLog("Failed to create URLRequest: \(error)")
             return Fail(error: APIError.invalidURL)

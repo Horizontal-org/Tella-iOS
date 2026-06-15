@@ -92,11 +92,14 @@ class ManuallyVerificationViewModel: ObservableObject {
         case .receiverHash(let action):
             switch action {
             case .sendRegister:
+
                 if participant == .sender {
-                    // Send register: held by the receiver
-                    // then show the sender hash so both parties can verify it
-                    senderViewAction = .showSenderHashVerification(connectionInfo: connectionInfo)
+                    
                     register()
+
+                    if connectionInfo.senderShowHash == true {
+                        senderViewAction = .showSenderHashVerification(connectionInfo: connectionInfo)
+                    }
                 } else {
                     acceptRegisterRequest()
                 }

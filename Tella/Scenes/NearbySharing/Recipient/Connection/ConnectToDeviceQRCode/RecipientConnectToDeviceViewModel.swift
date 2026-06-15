@@ -106,7 +106,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
         }
         nearbySharingServer?.pinSenderCertificateHashFromQR(senderInfo.certificateHash)
         didPinSenderCertificate = true
-        debugLog(LocalizableNearbySharing.senderCertificatePinnedToast.localized))
+        debugLog("Sender certificate pinned")
     }
     
     private func generateConnectionInfo() {
@@ -142,7 +142,8 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             self.nearbySharingServer?.startListening(
                 port: self.port,
                 pin: pin,
-                clientIdentity: clientIdentity
+                clientIdentity: clientIdentity,
+                senderShowHash: connectionInfo.senderShowHash ?? false
             )
         }
     }
