@@ -78,7 +78,7 @@ struct ManuallyVerificationView: View {
                        style: .body1Style,
                        alignment: .center)
             .frame(maxWidth: .infinity, alignment: .center)
-            .cardModifier()
+            .cardModifier(backgroundColor: viewModel.verificationRole.isSenderHash ? Color.black.opacity(0.4) : Color.white.opacity(0.08))
             
             CustomText(text, style: .body1Style)
         }

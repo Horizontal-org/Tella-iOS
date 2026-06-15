@@ -9,18 +9,23 @@
 
 import Foundation
 
-enum NearbySharingVerificationRole {
+enum NearbySharingVerificationRole: Equatable {
     /// Receiver (server) certificate hash after ping
     case receiverHash(confirmAction: VerificationConfirmAction)
     /// Sender (client) certificate hash after register
     case senderHash(confirmAction: VerificationConfirmAction)
     
-    enum VerificationConfirmAction {
+    enum VerificationConfirmAction: Equatable {
         case sendRegister
         case acceptPendingRegistration
         case acknowledgeOnly
         /// Recipient confirmed receiver hash; server branches on whether sender cert is pre-pinned.
         case confirmReceiverHash
+    }
+    
+    var isSenderHash: Bool {
+        if case .senderHash = self { return true }
+        return false
     }
     
     /// "Step 1: Confirm sender hash"
