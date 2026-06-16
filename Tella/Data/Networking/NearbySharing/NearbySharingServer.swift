@@ -268,6 +268,9 @@ extension NearbySharingServer: PingHandler {
         Task {
             await state.clearPendingRegistration()
             await state.markManualConnection()
+            if !(await networkManager.hasTrustedPeerCertificateHash()) {
+                await state.setSenderShowHash(true)
+            }
             let senderShowHash = await state.shouldSenderShowHash()
             let payload = PingResponse(senderShowHash: senderShowHash)
             await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
