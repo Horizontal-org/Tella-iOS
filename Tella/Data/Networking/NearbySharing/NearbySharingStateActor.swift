@@ -18,6 +18,7 @@ actor NearbySharingStateActor {
     var pendingRegisterConnection: NWConnection?
     var pendingRegisterResponse: Bool?
     var pendingRegisterRequest: HTTPRequest?
+    var pendingPingConnection: NWConnection?
     var pendingUploadConnection: NWConnection?
     
     /// Wrong-PIN attempts per registration nonce
@@ -55,6 +56,7 @@ actor NearbySharingStateActor {
         state.reset()
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
+        pendingPingConnection = nil
         pendingUploadConnection = nil
         pendingRegisterResponse = nil
         registerPinFailuresByNonce.removeAll()
@@ -140,7 +142,23 @@ actor NearbySharingStateActor {
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
         pendingRegisterResponse = nil
+        pendingPingConnection = nil
         state.receiverHashConfirmed = false
+    }
+    
+    // MARK: - Ping
+    
+    func setPendingPing(connection: NWConnection) {
+        pendingPingConnection = connection
+    }
+    
+    func hasPendingPing() -> Bool {
+        pendingPingConnection != nil
+    }
+    
+    func getPendingPingConnection() -> NWConnection? {
+        defer { pendingPingConnection = nil }
+        return pendingPingConnection
     }
     
     func savePendingRegisterResponse(accept: Bool) {

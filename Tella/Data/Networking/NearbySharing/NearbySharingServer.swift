@@ -271,10 +271,23 @@ extension NearbySharingServer: PingHandler {
             if !(await networkManager.hasTrustedPeerCertificateHash()) {
                 await state.setSenderShowHash(true)
             }
-            let senderShowHash = await state.shouldSenderShowHash()
-            let payload = PingResponse(senderShowHash: senderShowHash)
-            await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
+            await state.setPendingPing(connection: connection)
         }
+    }
+    
+    func discardPendingPing() {
+        Task {
+            guard let connection = await state.getPendingPingConnection() else { return }
+            let error = ServerStatus(code: .forbidden, message: .rejected)
+            await sendPlainTextResponse(error, connection: connection)
+        }
+    }
+    
+    private func sendPendingPingResponse() async {
+        guard let connection = await state.getPendingPingConnection() else { return }
+        let senderShowHash = await state.shouldSenderShowHash()
+        let payload = PingResponse(senderShowHash: senderShowHash)
+        await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
     }
 }
 
@@ -294,6 +307,9 @@ extension NearbySharingServer: RegisterHandler {
     /// Recipient confirmed receiver hash — server decides C vs D from pinned sender cert.
     func confirmReceiverHashVerification() {
         Task {
+            if await state.hasPendingPing() {
+                await sendPendingPingResponse()
+            }
             if await networkManager.hasTrustedPeerCertificateHash() {
                 await fulfillRegistrationResponse(accept: true)
             } else {
