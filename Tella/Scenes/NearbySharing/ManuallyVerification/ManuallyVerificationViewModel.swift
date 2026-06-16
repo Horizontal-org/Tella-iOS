@@ -53,7 +53,11 @@ class ManuallyVerificationViewModel: ObservableObject {
         ?? connectionInfo.certificateHash
         ?? ""
         
-        updateButtonsState(state: .initial)
+        if verificationRole.isSenderHash && participant == .sender {
+            updateButtonsState(state: .waiting)
+        } else {
+            updateButtonsState(state: .initial)
+        }
     }
     
     // MARK: - Observers
