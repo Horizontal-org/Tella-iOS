@@ -120,8 +120,7 @@ struct SenderConnectToDeviceManuallyView: View {
                 nearbySharingRepository: viewModel.nearbySharingRepository,
                 connectionInfo: connectionInfo,
                 mainAppModel: viewModel.mainAppModel,
-                verificationRole: .receiverHash(confirmAction: .sendRegister),
-                manualPingSession: viewModel.manualPingSession
+                verificationRole: .receiverHash(confirmAction: .sendRegister)
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel ))
             

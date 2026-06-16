@@ -34,7 +34,6 @@ class ManuallyVerificationViewModel: ObservableObject {
     var nearbySharingServer: NearbySharingServer?
     var verificationRole: NearbySharingVerificationRole
     var certificateHashToDisplay: String
-    var manualPingSession: ManualPingSession?
     
     private var subscribers = Set<AnyCancellable>()
     
@@ -43,15 +42,13 @@ class ManuallyVerificationViewModel: ObservableObject {
          connectionInfo: ConnectionInfo,
          mainAppModel: MainAppModel,
          verificationRole: NearbySharingVerificationRole,
-         certificateHashToDisplay: String? = nil,
-         manualPingSession: ManualPingSession? = nil) {
+         certificateHashToDisplay: String? = nil) {
         self.participant = participant
         self.nearbySharingRepository = nearbySharingRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
         self.verificationRole = verificationRole
-        self.manualPingSession = manualPingSession
         self.certificateHashToDisplay = certificateHashToDisplay
         ?? connectionInfo.certificateHash
         ?? ""
@@ -97,7 +94,7 @@ class ManuallyVerificationViewModel: ObservableObject {
             case .sendRegister:
                 if participant == .sender {
                     updateButtonsState(state: .waiting)
-                    manualPingSession?.senderShowHashResponse()
+                    nearbySharingRepository?.waitForManualPingSenderShowHash()
                         .receive(on: DispatchQueue.main)
                         .sink(receiveCompletion: { [weak self] completion in
                             guard let self else { return }
@@ -107,7 +104,6 @@ class ManuallyVerificationViewModel: ObservableObject {
                         }, receiveValue: { [weak self] senderShowHash in
                             guard let self else { return }
                             self.connectionInfo.senderShowHash = senderShowHash
-                            self.manualPingSession = nil
                             self.register()
                             if senderShowHash {
                                 self.senderViewAction = .showSenderHashVerification(connectionInfo: self.connectionInfo)
@@ -151,8 +147,7 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardRegisterRequest() {
-        manualPingSession?.cancel()
-        manualPingSession = nil
+        nearbySharingRepository?.cancelManualPing()
         senderViewAction = .discardAndStartOver
     }
     

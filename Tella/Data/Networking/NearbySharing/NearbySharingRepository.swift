@@ -15,6 +15,7 @@ class NearbySharingRepository: NSObject, WebRepository {
     
     private var connectionInfo: ConnectionInfo?
     private var uploadTasks: [URLSessionTask] = []
+    private(set) var manualPingSession: ManualPingSession?
     
     private(set) var clientTLSIdentity: SecIdentity?
     private(set) var clientCertificateHash: String?
@@ -30,8 +31,9 @@ class NearbySharingRepository: NSObject, WebRepository {
         clientCertificateHash = generated.certificateHash
     }
     
-    /// Opens a manual ping on the first reachable host. Emits `(session, receiverCertificateHash)` when TLS completes; the HTTP body stays open until the recipient confirms.
-    func startManualPing(on connectionInfo: ConnectionInfo) -> AnyPublisher<(ManualPingSession, String), Error> {
+    /// Opens a manual ping on the first reachable host. Emits the receiver certificate hash when TLS completes; keeps the session open for the held HTTP body.
+    func startManualPing(on connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
+        cancelManualPing()
         let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
@@ -44,13 +46,30 @@ class NearbySharingRepository: NSObject, WebRepository {
         ) { info in
             do {
                 let session = try self.startManualPing(endpoint: API.ping(connectionInfo: info))
+                self.manualPingSession = session
                 return session.receiverCertificateHash
-                    .map { hash in (session, hash) }
-                    .eraseToAnyPublisher()
             } catch {
                 return Fail(error: error).eraseToAnyPublisher()
             }
         }
+    }
+    
+    func waitForManualPingSenderShowHash() -> AnyPublisher<Bool, Error> {
+        guard let session = manualPingSession else {
+            return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
+        }
+        return session.senderShowHashResponse()
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .finished = completion {
+                    self?.manualPingSession = nil
+                }
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    func cancelManualPing() {
+        manualPingSession?.cancel()
+        manualPingSession = nil
     }
     
     /// Tries each IP in order using `activeHost`; keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.

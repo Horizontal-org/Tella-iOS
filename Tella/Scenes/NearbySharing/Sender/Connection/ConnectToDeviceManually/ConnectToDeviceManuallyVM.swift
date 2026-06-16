@@ -36,7 +36,6 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     @Published var isLoading : Bool = false
 
     private var subscribers = Set<AnyCancellable>()
-    private(set) var manualPingSession: ManualPingSession?
     var connectionInfo: ConnectionInfo?
     
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
@@ -72,9 +71,8 @@ class ConnectToDeviceManuallyVM: ObservableObject {
                 if case .failure = completion {
                     self?.viewState = .showBottomSheetError
                 }
-            }, receiveValue: { [weak self] session, certificateHash in
+            }, receiveValue: { [weak self] certificateHash in
                 guard let self else { return }
-                self.manualPingSession = session
                 self.connectionInfo?.certificateHash = certificateHash
                 self.viewState = .showReceipientVerificationHash
             }).store(in: &self.subscribers)
