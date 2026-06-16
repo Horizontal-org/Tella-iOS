@@ -36,7 +36,8 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     @Published var isLoading : Bool = false
 
     private var subscribers = Set<AnyCancellable>()
-    var connectionInfo : ConnectionInfo?
+    private(set) var manualPingSession: ManualPingSession?
+    var connectionInfo: ConnectionInfo?
     
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
@@ -63,7 +64,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
         connectionInfo.clientTLSIdentity = nearbySharingRepository.clientTLSIdentity
         self.connectionInfo = connectionInfo
         
-        self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)
+        self.nearbySharingRepository.startManualPing(on: connectionInfo)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
@@ -71,8 +72,9 @@ class ConnectToDeviceManuallyVM: ObservableObject {
                 if case .failure = completion {
                     self?.viewState = .showBottomSheetError
                 }
-            }, receiveValue: { [weak self] certificateHash in
+            }, receiveValue: { [weak self] session, certificateHash in
                 guard let self else { return }
+                self.manualPingSession = session
                 self.connectionInfo?.certificateHash = certificateHash
                 self.viewState = .showReceipientVerificationHash
             }).store(in: &self.subscribers)

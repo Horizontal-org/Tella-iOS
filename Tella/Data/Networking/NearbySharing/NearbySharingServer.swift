@@ -279,7 +279,7 @@ extension NearbySharingServer: PingHandler {
         Task {
             guard let connection = await state.getPendingPingConnection() else { return }
             let error = ServerStatus(code: .forbidden, message: .rejected)
-            await sendPlainTextResponse(error, connection: connection)
+            await sendErrorResponse(error, connection: connection)
         }
     }
     

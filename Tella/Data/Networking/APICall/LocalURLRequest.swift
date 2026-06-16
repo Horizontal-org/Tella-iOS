@@ -78,51 +78,71 @@ extension WebRepository {
         }
     }
     
-    func fetchServerPublicKeyHash(endpoint: any APIRequest) -> AnyPublisher<NearbySharingPingResult, Error> {
-        do {
-            let request = try endpoint.urlRequest()
-            request.curlRepresentation()
-
-            var capturedServerHash: String?
-            
-            let delegate = NearbySharingURLSessionDelegate(
-                path: endpoint.path,
-                trustedCertificateHash: endpoint.trustedPublicKeyHash,
-                clientTLSIdentity: endpoint.clientCertificateIdentity,
-                onReceiveServerCertificateHash: { hash in
-                    capturedServerHash = hash
+    func startManualPing(endpoint: any APIRequest) throws -> ManualPingSession {
+        let request = try endpoint.urlRequest()
+        request.curlRepresentation()
+        
+        let hashSubject = PassthroughSubject<String, Error>()
+        let pingSubject = PassthroughSubject<Bool, Error>()
+        var didEmitHash = false
+        
+        let delegate = NearbySharingURLSessionDelegate(
+            path: endpoint.path,
+            trustedCertificateHash: endpoint.trustedPublicKeyHash,
+            clientTLSIdentity: endpoint.clientCertificateIdentity,
+            onReceiveServerCertificateHash: { hash in
+                guard !didEmitHash else { return }
+                didEmitHash = true
+                hashSubject.send(hash)
+                hashSubject.send(completion: .finished)
+            }
+        )
+        
+        let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error {
+                debugLog("Network error while waiting for ping response: \(error)")
+                if !didEmitHash {
+                    hashSubject.send(completion: .failure(error))
                 }
-            )
+                pingSubject.send(completion: .failure(error))
+                return
+            }
             
-            return NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
-                .dataTaskPublisher(for: request)
-                .map { ServerResponse(data: $0, response: $1) }
-                .tryMap { serverResponse in
-                    guard let code = (serverResponse.response as? HTTPURLResponse)?.statusCode else {
-                        throw APIError.unexpectedResponse
-                    }
-                    guard HTTPCodes.success.contains(code) else {
-                        debugLog("Error code: \(code)")
-                        throw APIError.httpCode(code)
-                    }
-                    guard let hash = capturedServerHash else {
-                        debugLog("Unexpected response: no server hash")
-                        throw APIError.unexpectedResponse
-                    }
-                    let senderShowHash = (try? JSONDecoder().decode(PingResponse.self, from: serverResponse.data))?
-                        .senderShowHash ?? false
-                    return NearbySharingPingResult(
-                        certificateHash: hash,
-                        senderShowHash: senderShowHash
-                    )
+            guard let httpResponse = response as? HTTPURLResponse else {
+                if !didEmitHash {
+                    hashSubject.send(completion: .failure(APIError.unexpectedResponse))
                 }
-                .mapError { $0 as Error }
-                .receive(on: DispatchQueue.main)
-                .eraseToAnyPublisher()
-        } catch {
-            debugLog("Failed to create URLRequest: \(error)")
-            return Fail(error: APIError.invalidURL)
-                .eraseToAnyPublisher()
+                pingSubject.send(completion: .failure(APIError.unexpectedResponse))
+                return
+            }
+            
+            let statusCode = httpResponse.statusCode
+            guard HTTPCodes.success.contains(statusCode) else {
+                debugLog("Error code: \(statusCode)")
+                let apiError = APIError.httpCode(statusCode)
+                if !didEmitHash {
+                    hashSubject.send(completion: .failure(apiError))
+                }
+                pingSubject.send(completion: .failure(apiError))
+                return
+            }
+            
+            let senderShowHash = (try? JSONDecoder().decode(PingResponse.self, from: data ?? Data()))?
+                .senderShowHash ?? false
+            pingSubject.send(senderShowHash)
+            pingSubject.send(completion: .finished)
         }
+        task.resume()
+        
+        return ManualPingSession(
+            receiverCertificateHash: hashSubject
+                .receive(on: DispatchQueue.main)
+                .eraseToAnyPublisher(),
+            senderShowHash: pingSubject
+                .receive(on: DispatchQueue.main)
+                .eraseToAnyPublisher(),
+            task: task
+        )
     }
 }

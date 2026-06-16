@@ -13,13 +13,13 @@ import UIKit
 
 class NearbySharingRepository: NSObject, WebRepository {
     
-    private var connectionInfo:ConnectionInfo?
-    private var uploadTasks : [URLSessionTask] = []
-
+    private var connectionInfo: ConnectionInfo?
+    private var uploadTasks: [URLSessionTask] = []
+    
     private(set) var clientTLSIdentity: SecIdentity?
     private(set) var clientCertificateHash: String?
     
-    /// Generates the sender client identity 
+    /// Generates the sender client identity
     func ensureClientTLSIdentity() {
         guard clientTLSIdentity == nil else { return }
         guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
@@ -30,20 +30,26 @@ class NearbySharingRepository: NSObject, WebRepository {
         clientCertificateHash = generated.certificateHash
     }
     
-    /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
-    func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<NearbySharingPingResult, Error> {
+    /// Opens a manual ping on the first reachable host. Emits `(session, receiverCertificateHash)` when TLS completes; the HTTP body stays open until the recipient confirms.
+    func startManualPing(on connectionInfo: ConnectionInfo) -> AnyPublisher<(ManualPingSession, String), Error> {
         let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
-        let originalActiveHost = connectionInfo.activeHost
         return attemptSequentialHosts(
             connectionInfo: connectionInfo,
             hosts: hosts,
             index: 0,
-            originalActiveHost: originalActiveHost
+            originalActiveHost: connectionInfo.activeHost
         ) { info in
-            self.fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: info))
+            do {
+                let session = try self.startManualPing(endpoint: API.ping(connectionInfo: info))
+                return session.receiverCertificateHash
+                    .map { hash in (session, hash) }
+                    .eraseToAnyPublisher()
+            } catch {
+                return Fail(error: error).eraseToAnyPublisher()
+            }
         }
     }
     
