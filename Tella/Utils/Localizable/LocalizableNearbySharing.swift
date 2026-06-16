@@ -57,6 +57,8 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
 
     case havingTrouble = "NearbySharing_HavingTrouble"
     case connectManually = "NearbySharing_ConnectManually"
+    case continueToStep2 = "NearbySharing_ContinueToStep2"
+
     case enterDeviceInformation = "NearbySharing_EnterDevice_Information"
     case ipAddress = "NearbySharing_IpAddress"
     case pin = "NearbySharing_Pin"

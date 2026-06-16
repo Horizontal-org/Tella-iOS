@@ -646,6 +646,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect manually";
+"NearbySharing_ContinueToStep2" = "  Continue to step 2";
+
 "NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
 "NearbySharing_IpAddress" = "IP address";
 "NearbySharing_Pin" = "PIN";

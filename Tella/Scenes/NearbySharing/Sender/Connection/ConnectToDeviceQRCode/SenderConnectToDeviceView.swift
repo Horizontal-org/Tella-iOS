@@ -56,7 +56,8 @@ struct SenderConnectToDeviceView: View {
                 qrCodeScannerView
                     .padding(.bottom, 28)
             }
-            recipientCantScanQRCodeButton
+            continueToStep2Button
+            
             CustomText(LocalizableNearbySharing.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
@@ -121,15 +122,17 @@ struct SenderConnectToDeviceView: View {
     }
     
     @ViewBuilder
-    var recipientCantScanQRCodeButton: some View {
+    var continueToStep2Button: some View {
         if step == .showQRCode {
-            TellaButtonView(title: "Scan Receipient QR code".uppercased(),
+            TellaButtonView(title: LocalizableNearbySharing.continueToStep2.localized.uppercased(),
                             nextButtonAction: .action,
-                            isValid: .constant(true),
-                            buttonRole: .secondary) {
+                            buttonType: .yellow,
+                            isValid: .constant(true)) {
                 step = .scanQRCode
             }
-                            .padding([.leading, .trailing], 80)
+                            .padding([.leading, .trailing], 20)
+            
+            Spacer()
         }
     }
     
