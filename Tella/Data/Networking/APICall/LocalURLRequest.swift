@@ -83,7 +83,6 @@ extension WebRepository {
         request.curlRepresentation()
         
         let hashSubject = PassthroughSubject<String, Error>()
-        let pingSubject = PassthroughSubject<Bool, Error>()
         var didEmitHash = false
         
         let delegate = NearbySharingURLSessionDelegate(
@@ -98,51 +97,35 @@ extension WebRepository {
             }
         )
         
-        let session = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error {
-                debugLog("Network error while waiting for ping response: \(error)")
-                if !didEmitHash {
+        let senderShowHash = NetworkSessionProvider().makeNearbySharingSession(delegate: delegate)
+            .dataTaskPublisher(for: request)
+            .map { ServerResponse(data: $0, response: $1) }
+            .tryMap { serverResponse in
+                guard let statusCode = (serverResponse.response as? HTTPURLResponse)?.statusCode else {
+                    throw APIError.unexpectedResponse
+                }
+                guard HTTPCodes.success.contains(statusCode) else {
+                    debugLog("Error code: \(statusCode)")
+                    throw APIError.httpCode(statusCode)
+                }
+                let pingResponse: PingResponse = try serverResponse.data.decoded()
+                return pingResponse.senderShowHash
+            }
+            .handleEvents(receiveCompletion: { completion in
+                if case .failure(let error) = completion, !didEmitHash {
                     hashSubject.send(completion: .failure(error))
                 }
-                pingSubject.send(completion: .failure(error))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                if !didEmitHash {
-                    hashSubject.send(completion: .failure(APIError.unexpectedResponse))
-                }
-                pingSubject.send(completion: .failure(APIError.unexpectedResponse))
-                return
-            }
-            
-            let statusCode = httpResponse.statusCode
-            guard HTTPCodes.success.contains(statusCode) else {
-                debugLog("Error code: \(statusCode)")
-                let apiError = APIError.httpCode(statusCode)
-                if !didEmitHash {
-                    hashSubject.send(completion: .failure(apiError))
-                }
-                pingSubject.send(completion: .failure(apiError))
-                return
-            }
-            
-            let senderShowHash = (try? JSONDecoder().decode(PingResponse.self, from: data ?? Data()))?
-                .senderShowHash ?? false
-            pingSubject.send(senderShowHash)
-            pingSubject.send(completion: .finished)
-        }
-        task.resume()
+            })
+            .mapError { $0 as Error }
+            .share()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         
         return ManualPingSession(
             receiverCertificateHash: hashSubject
                 .receive(on: DispatchQueue.main)
                 .eraseToAnyPublisher(),
-            senderShowHash: pingSubject
-                .receive(on: DispatchQueue.main)
-                .eraseToAnyPublisher(),
-            task: task
+            senderShowHash: senderShowHash
         )
     }
 }

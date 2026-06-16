@@ -13,18 +13,15 @@ import Foundation
 final class ManualPingSession {
     let receiverCertificateHash: AnyPublisher<String, Error>
     private let senderShowHashSource: AnyPublisher<Bool, Error>
-    private let task: URLSessionTask
     private var cachedSenderShowHash: Bool?
     private var cacheCancellable: AnyCancellable?
     
     init(
         receiverCertificateHash: AnyPublisher<String, Error>,
-        senderShowHash: AnyPublisher<Bool, Error>,
-        task: URLSessionTask
+        senderShowHash: AnyPublisher<Bool, Error>
     ) {
         self.receiverCertificateHash = receiverCertificateHash
         self.senderShowHashSource = senderShowHash
-        self.task = task
         cacheCancellable = senderShowHashSource
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
                 self?.cachedSenderShowHash = value
@@ -47,6 +44,5 @@ final class ManualPingSession {
     func cancel() {
         cacheCancellable?.cancel()
         cacheCancellable = nil
-        task.cancel()
     }
 }
