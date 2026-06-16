@@ -71,11 +71,9 @@ class ConnectToDeviceManuallyVM: ObservableObject {
                 if case .failure = completion {
                     self?.viewState = .showBottomSheetError
                 }
-            }, receiveValue: { [weak self] pingResult in
+            }, receiveValue: { [weak self] certificateHash in
                 guard let self else { return }
-                debugLog(pingResult.certificateHash)
-                self.connectionInfo?.certificateHash = pingResult.certificateHash
-                self.connectionInfo?.senderShowHash = pingResult.senderShowHash
+                self.connectionInfo?.certificateHash = certificateHash
                 self.viewState = .showReceipientVerificationHash
             }).store(in: &self.subscribers)
     }

@@ -13,6 +13,7 @@ import Foundation
 
 protocol PingHandler {
     func handlePingRequest(on connection: NWConnection)
+    func discardPendingPing()
 }
 
 protocol RegisterHandler {
