@@ -74,7 +74,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
             }, receiveValue: { [weak self] certificateHash in
                 guard let self else { return }
                 self.connectionInfo?.certificateHash = certificateHash
-                self.viewState = .showReceipientVerificationHash
+                self.viewState = .showRecipientVerificationHash
             }).store(in: &self.subscribers)
     }
 }

@@ -136,7 +136,7 @@ struct RecipientConnectToDeviceView: View {
         case .showReceiveFiles:
             let fileTransferVM = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: RecipientFileTransferView(viewModel: fileTransferVM))
-        case .showReceipientVerificationHash:
+        case .showRecipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return }
             let verificationVM = ManuallyVerificationViewModel(
                 participant: .recipient,

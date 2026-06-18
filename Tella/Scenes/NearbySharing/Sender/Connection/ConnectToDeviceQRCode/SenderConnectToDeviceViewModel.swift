@@ -17,7 +17,7 @@ enum SenderConnectToDeviceViewAction {
     case showBottomSheetError
     case showIncompatibleVersion
     case showSendFiles
-    case showReceipientVerificationHash
+    case showRecipientVerificationHash
     case showSenderHashVerification(connectionInfo: ConnectionInfo)
     case discardAndStartOver
 }

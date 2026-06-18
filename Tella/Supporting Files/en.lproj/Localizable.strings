@@ -673,7 +673,8 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
 "NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
-"NearbySharing_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
+"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
+"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "The sender is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
 "NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
 "NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
 "NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";

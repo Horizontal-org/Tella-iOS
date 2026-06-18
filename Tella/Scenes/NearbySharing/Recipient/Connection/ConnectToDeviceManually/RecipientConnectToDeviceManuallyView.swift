@@ -63,7 +63,7 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
-        case .showReceipientVerificationHash:
+        case .showRecipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return }
             let verificationVM = ManuallyVerificationViewModel(
                 participant: .recipient,

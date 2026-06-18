@@ -149,7 +149,7 @@ struct SenderConnectToDeviceView: View {
         isBottomSheetShown = true
         let content = ConfirmBottomSheet(
             titleText: LocalizableNearbySharing.incompatibleVersionTitle.localized,
-            msgText: LocalizableNearbySharing.incompatibleVersionExpl.localized,
+            msgText: LocalizableNearbySharing.senderIncompatibleVersionExpl.localized,
             actionText: LocalizableCommon.commonActionOk.localized,
             shouldHideSheet: false,
             didConfirmAction: {

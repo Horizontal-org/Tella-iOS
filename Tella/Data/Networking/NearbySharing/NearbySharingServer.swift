@@ -98,6 +98,22 @@ final class NearbySharingServer {
         await sendData(connection: connection, serverResponse: response)
     }
     
+    private func sendPlainTextResponse(
+        _ status: ServerStatus,
+        connection: NWConnection,
+        endpoint: NearbySharingEndpoint? = nil
+    ) async {
+        guard let responseData = HTTPResponseBuilder(serverStatus: status)
+            .setPlainTextBody(status.message.rawValue)
+            .closeConnection()
+            .build() else {
+            await sendInternalServerError(connection: connection)
+            return
+        }
+        let response = NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
+        await sendData(connection: connection, serverResponse: response)
+    }
+    
     private func sendInternalServerError(connection: NWConnection) async {
         let error = ServerStatus(code: .internalServerError, message: .serverError)
         await sendErrorResponse(error,connection: connection)
@@ -174,38 +190,73 @@ final class NearbySharingServer {
     }
     // MARK: - Request Processing
     
-    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
-        if httpRequest.endpoint == NearbySharingEndpoint.legacyRegister {
-            Task {
-                eventPublisher.send(.incompatibleProtocolVersion)
-                let error = ServerStatus(code: .forbidden, message: .rejected)
-                await sendErrorResponse(error, connection: connection)
-            }
-            return
-        }
-        
-        if httpRequest.endpoint == NearbySharingEndpoint.legacyPing {
-            Task { eventPublisher.send(.incompatibleProtocolVersion) }
-            return
-        }
-        
-        guard let endpoint = NearbySharingEndpoint(rawValue: httpRequest.endpoint) else {
-            debugLog("Received request for unknown endpoint")
+    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
+        guard let endpoint = await resolveEndpointOrSendError(
+            path: httpRequest.endpoint,
+            connection: connection
+        ) else {
             return
         }
         
         switch endpoint {
         case .ping:
             handlePingRequest(on: connection)
+            
         case .register:
             handleRegisterRequest(on: connection, request: httpRequest)
+            
         case .prepareUpload:
             handlePrepareUploadRequest(on: connection, request: httpRequest)
+            
         case .upload:
             handleReceivedCompleteRequest(on: connection, request: httpRequest)
+            
         case .closeConnection:
             handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
+    }
+    
+    private func resolveEndpointOrSendError(
+        path: String,
+        connection: NWConnection
+    ) async -> NearbySharingEndpoint? {
+        
+        if NearbySharingEndpoint.isV1Route(path) {
+            eventPublisher.send(.incompatibleProtocolVersion)
+            
+            await sendPlainTextResponse(
+                ServerStatus(code: .forbidden, message: .unsupportedVersion),
+                connection: connection
+            )
+            return nil
+        }
+        
+        guard let routeVersion = NearbySharingEndpoint.apiVersion(from: path) else {
+            await sendPlainTextResponse(
+                ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            return nil
+        }
+        
+        guard routeVersion == NearbySharingProtocolVersion.current else {
+            let status = NearbySharingEndpoint.isPingOrRegister(path: path)
+            ? ServerStatus(code: .notAcceptable, message: .unsupportedVersion)
+            : ServerStatus(code: .notFound, message: .notFound)
+            
+            await sendPlainTextResponse(status, connection: connection)
+            return nil
+        }
+        
+        guard let endpoint = NearbySharingEndpoint(rawValue: path) else {
+            await sendPlainTextResponse(
+                ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            return nil
+        }
+        
+        return endpoint
     }
 }
 
@@ -244,7 +295,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
                 eventPublisher.send(.errorOccured)
                 return
             }
-            processRequest(connection: context.connection, httpRequest: context.request)
+            await processRequest(connection: context.connection, httpRequest: context.request)
         }
     }
     

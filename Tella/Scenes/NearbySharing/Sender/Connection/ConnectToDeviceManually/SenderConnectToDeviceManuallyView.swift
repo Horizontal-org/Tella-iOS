@@ -113,7 +113,7 @@ struct SenderConnectToDeviceManuallyView: View {
         switch state {
         case .showBottomSheetError:
             showBottomSheetError()
-        case .showReceipientVerificationHash:
+        case .showRecipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return  }
             let viewModel = ManuallyVerificationViewModel(
                 participant: .sender,
