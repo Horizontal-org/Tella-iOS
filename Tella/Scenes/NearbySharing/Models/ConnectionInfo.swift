@@ -35,7 +35,6 @@ class ConnectionInfo: Codable, Equatable {
         case certificateHash = "certificate_hash"
         case pin
         case protocolVersion = "protocol_version"
-        case senderShowHash = "sender_show_hash"
     }
     
     init(
@@ -61,7 +60,6 @@ class ConnectionInfo: Codable, Equatable {
         pin = try container.decode(String.self, forKey: .pin)
         ipAddresses = try container.decode([String].self, forKey: .ipAddresses)
         protocolVersion = try container.decodeIfPresent(Int.self, forKey: .protocolVersion)
-        senderShowHash = try container.decodeIfPresent(Bool.self, forKey: .senderShowHash)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -71,7 +69,6 @@ class ConnectionInfo: Codable, Equatable {
         try container.encodeIfPresent(certificateHash, forKey: .certificateHash)
         try container.encode(pin, forKey: .pin)
         try container.encodeIfPresent(protocolVersion, forKey: .protocolVersion)
-        try container.encodeIfPresent(senderShowHash, forKey: .senderShowHash)
     }
     
     /// Returns nil when the QR payload is compatible, otherwise an error reason for the UI.
@@ -80,7 +77,7 @@ class ConnectionInfo: Codable, Equatable {
             return .incompatibleVersion
         }
         guard NearbySharingProtocolVersion.supportedVersions.contains(version) else {
-            return .unsupportedVersion(version)
+            return .incompatibleVersion
         }
         return nil
     }
@@ -96,7 +93,6 @@ class ConnectionInfo: Codable, Equatable {
 
 enum ProtocolCompatibilityError {
     case incompatibleVersion
-    case unsupportedVersion(Int)
 }
 
 extension ConnectionInfo {
