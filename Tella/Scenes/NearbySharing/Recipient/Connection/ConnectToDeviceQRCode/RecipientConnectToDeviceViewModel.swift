@@ -17,6 +17,7 @@ enum RecipientConnectToDeviceViewAction {
     case showReceiveFiles
     case showRecipientVerificationHash
     case showSenderHashVerification(certificateHash: String)
+    case showIncompatibleVersion
     case errorOccured
     case discardAndStartOver
 }
@@ -179,7 +180,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     self.viewAction = .showRecipientVerificationHash
                     
                 case .incompatibleProtocolVersion:
-                    self.viewAction = .errorOccured
+                    self.viewAction = .showIncompatibleVersion
                     
                 default:
                     break

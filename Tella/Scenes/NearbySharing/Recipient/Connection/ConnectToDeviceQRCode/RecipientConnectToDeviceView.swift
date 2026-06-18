@@ -13,6 +13,7 @@ import Combine
 struct RecipientConnectToDeviceView: View {
     
     @StateObject var viewModel: RecipientConnectToDeviceViewModel
+    @State private var isBottomSheetShown = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -155,6 +156,8 @@ struct RecipientConnectToDeviceView: View {
                 certificateHashToDisplay: certificateHash
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showIncompatibleVersion:
+            showIncompatibleVersionSheet()
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
@@ -163,6 +166,24 @@ struct RecipientConnectToDeviceView: View {
         default:
             break
         }
+    }
+    
+    private func showIncompatibleVersionSheet() {
+        isBottomSheetShown = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.incompatibleVersionTitle.localized,
+            msgText: LocalizableNearbySharing.recipientIncompatibleVersionExpl.localized,
+            actionText: LocalizableCommon.commonActionOk.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    isBottomSheetShown = false
+                    viewModel.stopServerListening()
+                    popTo(ViewClassType.nearbySharingMainView)
+                }
+            }
+        )
+        showBottomSheetView(content: content, isPresented: $isBottomSheetShown, tapToDismiss: false)
     }
 }
 

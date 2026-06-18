@@ -12,6 +12,7 @@ import SwiftUI
 struct RecipientConnectToDeviceManuallyView: View {
     
     @StateObject var viewModel: RecipientConnectManuallyViewModel
+    @State private var isBottomSheetShown = false
     
     var body: some View {
         ContainerViewWithHeader {
@@ -82,10 +83,30 @@ struct RecipientConnectToDeviceManuallyView: View {
                 certificateHashToDisplay: certificateHash
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showIncompatibleVersion:
+            showIncompatibleVersionSheet()
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:
             break
         }
+    }
+    
+    private func showIncompatibleVersionSheet() {
+        isBottomSheetShown = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.incompatibleVersionTitle.localized,
+            msgText: LocalizableNearbySharing.recipientIncompatibleVersionExpl.localized,
+            actionText: LocalizableCommon.commonActionOk.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    isBottomSheetShown = false
+                    viewModel.nearbySharingServer?.resetServerState()
+                    popTo(ViewClassType.nearbySharingMainView)
+                }
+            }
+        )
+        showBottomSheetView(content: content, isPresented: $isBottomSheetShown, tapToDismiss: false)
     }
 }

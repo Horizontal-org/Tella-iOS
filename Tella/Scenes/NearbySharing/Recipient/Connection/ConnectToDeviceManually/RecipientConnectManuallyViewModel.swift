@@ -71,6 +71,8 @@ class RecipientConnectManuallyViewModel: ObservableObject {
                     self.viewState = .showRecipientVerificationHash
                 case .senderCertificateVerificationRequested(let certificateHash):
                     self.viewState = .showSenderHashVerification(certificateHash: certificateHash)
+                case .incompatibleProtocolVersion:
+                    self.viewState = .showIncompatibleVersion
                 default:
                     break
                 }
