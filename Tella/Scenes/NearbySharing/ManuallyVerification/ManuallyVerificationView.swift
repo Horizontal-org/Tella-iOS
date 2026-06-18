@@ -34,7 +34,6 @@ struct ManuallyVerificationView: View {
     
     var contentView: some View {
         VStack {
-            topView
             infoView
             Spacer()
             buttonsView
@@ -49,12 +48,7 @@ struct ManuallyVerificationView: View {
                              backButtonAction: {self.popTo(ViewClassType.nearbySharingMainView)},
                              rightButtonType: .none)
     }
-    
-    var topView: some View {
-        Image("device")
-            .padding(.bottom, 16)
-    }
-    
+
     var infoView: some View {
         
         let verificationSenderString = LocalizableNearbySharing.verificationSenderPart1.localized.addTwolines + LocalizableNearbySharing.verificationSenderPart2.localized
