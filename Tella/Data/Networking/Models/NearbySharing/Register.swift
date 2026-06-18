@@ -20,3 +20,7 @@ struct RegisterRequest:Codable {
 struct RegisterResponse:Codable {
     var sessionId : String?
 }
+
+struct PingResponse: Codable {
+    var senderShowHash: Bool
+}

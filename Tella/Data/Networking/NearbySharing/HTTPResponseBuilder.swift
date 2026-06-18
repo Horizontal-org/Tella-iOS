@@ -31,6 +31,14 @@ final class HTTPResponseBuilder {
         return self
     }
     
+    func setPlainTextBody(_ text: String) -> Self {
+        let data = Data(text.utf8)
+        response.body = data
+        response.addHeader(name: HTTPHeaderField.contentType.rawValue, value: ContentType.plainText.rawValue)
+        response.addHeader(name: HTTPHeaderField.contentLength.rawValue, value: "\(data.count)")
+        return self
+    }
+    
     func closeConnection() -> Self {
         response.addHeader(name: HTTPHeaderField.connection.rawValue, value: "close")
         return self

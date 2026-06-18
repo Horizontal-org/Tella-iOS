@@ -13,24 +13,63 @@ import UIKit
 
 class NearbySharingRepository: NSObject, WebRepository {
     
-    private var connectionInfo:ConnectionInfo?
-    private var uploadTasks : [URLSessionTask] = []
+    private var connectionInfo: ConnectionInfo?
+    private var uploadTasks: [URLSessionTask] = []
+    private(set) var manualPingSession: ManualPingSession?
     
-    /// Tries each IP in order using `activeHost`, keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
-    func getHash(connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
+    private(set) var clientTLSIdentity: SecIdentity?
+    private(set) var clientCertificateHash: String?
+    
+    /// Generates the sender client identity
+    func ensureClientTLSIdentity() {
+        guard clientTLSIdentity == nil else { return }
+        guard let generated = CertificateGenerator().generateSenderClientIdentity() else {
+            debugLog("Failed to generate sender client TLS identity")
+            return
+        }
+        clientTLSIdentity = generated.identity
+        clientCertificateHash = generated.certificateHash
+    }
+    
+    /// Opens a manual ping on the first reachable host. Emits the receiver certificate hash when TLS completes; keeps the session open for the held HTTP body.
+    func startManualPing(on connectionInfo: ConnectionInfo) -> AnyPublisher<String, Error> {
+        cancelManualPing()
         let hosts = NearbySharingIPAddressPreference.hostsToTry(from: connectionInfo.ipAddresses)
         guard !hosts.isEmpty else {
             return Fail(error: APIError.badServer).eraseToAnyPublisher()
         }
-        let originalActiveHost = connectionInfo.activeHost
         return attemptSequentialHosts(
             connectionInfo: connectionInfo,
             hosts: hosts,
             index: 0,
-            originalActiveHost: originalActiveHost
+            originalActiveHost: connectionInfo.activeHost
         ) { info in
-            self.fetchServerPublicKeyHash(endpoint: API.ping(connectionInfo: info))
+            do {
+                let session = try self.startManualPing(endpoint: API.ping(connectionInfo: info))
+                self.manualPingSession = session
+                return session.receiverCertificateHash
+            } catch {
+                return Fail(error: error).eraseToAnyPublisher()
+            }
         }
+    }
+    
+    func waitForManualPingSenderShowHash() -> AnyPublisher<Bool, Error> {
+        guard let session = manualPingSession else {
+            return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
+        }
+        return session.senderShowHashResponse()
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .finished = completion {
+                    self?.manualPingSession = nil
+                }
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    func cancelManualPing() {
+        manualPingSession?.cancel()
+        manualPingSession = nil
     }
     
     /// Tries each IP in order using `activeHost`; keeps the working host and stores `connectionInfo`, or restores the prior `activeHost` if all fail.
@@ -279,7 +318,19 @@ extension NearbySharingRepository.API: APIRequest {
             return nil
         }
     }
+    
+    var clientCertificateIdentity: SecIdentity? {
+        switch self {
+        case .ping(let connectionInfo),
+                .register(let connectionInfo, _),
+                .prepareUpload(let connectionInfo, _),
+                .uploadFile(let connectionInfo, _, _),
+                .closeConnection(let connectionInfo, _):
+            return connectionInfo.clientTLSIdentity
+        }
+    }
 }
+
 
 // MARK: - IPv4 subnet host selection
 /// Prioritizes QR IPs whose three-octet prefix matches a local IPv4, while still returning all valid QR IPv4s as fallback.

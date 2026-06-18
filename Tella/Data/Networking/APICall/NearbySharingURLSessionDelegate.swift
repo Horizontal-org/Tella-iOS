@@ -8,17 +8,25 @@
 //
 import Foundation
 import Combine
+import Security
 
 class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionDataDelegate {
     
     var trustedCertificateHash : String?
     var path: String?
+    var clientTLSIdentity: SecIdentity?
     var onReceiveServerCertificateHash: ((String) -> Void)?
     var response = CurrentValueSubject<NearbySharingUploadResponse, APIError>(.initial)
     
-    init(path: String?, trustedCertificateHash: String? = nil, onReceiveServerCertificateHash: ((String) -> Void)? = nil) {
+    init(
+        path: String?,
+        trustedCertificateHash: String? = nil,
+        clientTLSIdentity: SecIdentity? = nil,
+        onReceiveServerCertificateHash: ((String) -> Void)? = nil
+    ) {
         self.path = path
         self.trustedCertificateHash = trustedCertificateHash
+        self.clientTLSIdentity = clientTLSIdentity
         self.onReceiveServerCertificateHash = onReceiveServerCertificateHash
     }
     
@@ -73,17 +81,30 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         
         let protectionSpace = challenge.protectionSpace
         
+        if protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate {
+            guard let clientCredential = clientCertificateCredential() else {
+                debugLog("mTLS: missing sender client identity")
+                return
+            }
+            disposition = .useCredential
+            credential = clientCredential
+            return
+        }
+        
+        guard protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
+            debugLog("Unsupported TLS authentication method: \(protectionSpace.authenticationMethod)")
+            return
+        }
+        
         guard let serverTrust = protectionSpace.serverTrust else {
             debugLog("Missing serverTrust")
             return
         }
         
-        guard let certificateData = extractCertificateData(from: serverTrust) else {
+        guard let serverCertificateHash = serverTrust.certificateHash else {
             debugLog("Failed to extract certificate data")
             return
         }
-        
-        let serverCertificateHash = certificateData.sha256()
         
         // First-contact flow allowed only for ping
         guard let trustedHash = trustedCertificateHash else {
@@ -105,10 +126,17 @@ class NearbySharingURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionD
         credential = URLCredential(trust: serverTrust)
     }
     
-    private func extractCertificateData(from trust: SecTrust) -> Data? {
-        guard let certificate = SecTrustGetCertificateAtIndex(trust, 0) else {
+    private func clientCertificateCredential() -> URLCredential? {
+        guard let identity = clientTLSIdentity else { return nil }
+        var certificate: SecCertificate?
+        guard SecIdentityCopyCertificate(identity, &certificate) == errSecSuccess,
+              let certificate else {
             return nil
         }
-        return SecCertificateCopyData(certificate) as Data
+        return URLCredential(
+            identity: identity,
+            certificates: [certificate],
+            persistence: .forSession
+        )
     }
 }

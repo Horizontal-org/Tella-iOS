@@ -47,9 +47,18 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     
     case connectToDevice = "NearbySharing_ConnectToDevice"
     case scanCode = "NearbySharing_ScanCode"
+    case step1ShowSenderQr = "NearbySharing_Step1_ShowSenderQr"
+    case step2ScanRecipientQr = "NearbySharing_Step2_ScanRecipientQr"
     case showQrCode = "NearbySharing_ShowQrCode"
+    case step1ScanSenderQr = "NearbySharing_Step1_ScanSenderQr"
+    case step2ShowRecipientQr = "NearbySharing_Step2_ShowRecipientQr"
+    case showSenderQrCode = "NearbySharing_ShowSenderQrCode"
+    case scanSenderQrCode = "NearbySharing_ScanSenderQrCode"
+
     case havingTrouble = "NearbySharing_HavingTrouble"
     case connectManually = "NearbySharing_ConnectManually"
+    case continueToStep2 = "NearbySharing_ContinueToStep2"
+
     case enterDeviceInformation = "NearbySharing_EnterDevice_Information"
     case ipAddress = "NearbySharing_IpAddress"
     case pin = "NearbySharing_Pin"
@@ -81,7 +90,10 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case connectionFailedTitle = "NearbySharing_ConnectionFailed_SheetTitle"
     case connectionFailedExpl = "NearbySharing_ConnectionFailed_SheetExpl"
     case connectionFailedAction = "NearbySharing_ConnectionFailed_SheetAction"
-
+    case incompatibleVersionTitle = "NearbySharing_IncompatibleVersion_SheetTitle"
+ 
+    case senderIncompatibleVersionExpl = "NearbySharing_Sender_IncompatibleVersion_SheetExpl"
+    case recipientIncompatibleVersionExpl = "NearbySharing_Recipient_IncompatibleVersion_SheetExpl"
     case verificationAppBar = "NearbySharing_Verification_AppBar"
 
     case verificationSenderPart1 = "NearbySharing_Verification_Sender_Part1_Expl"
@@ -90,6 +102,11 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case verificationRecipientPart1 = "NearbySharing_Verification_Recipient_Part1_Expl"
     case verificationRecipientPart2 = "NearbySharing_Verification_Recipient_Part2_Expl"
 
+    case verificationStep1ConfirmRecipientHash = "NearbySharing_Verification_Step1_ConfirmRecipientHash"
+    case verificationStep2ConfirmSenderHash = "NearbySharing_Verification_Step2_ConfirmSenderHash"
+    case verificationStep1ConfirmSenderHash = "NearbySharing_Verification_Step1_ConfirmSenderHash"
+    case verificationStep2ConfirmRecipientHash = "NearbySharing_Verification_Step2_ConfirmRecipientHash"
+    case verificationConfirmContinue = "NearbySharing_Verification_Action_ConfirmContinue"
     case verificationConfirm = "NearbySharing_Verification_Action_Confirm"
     case verificationWaitingSender = "NearbySharing_Verification_Action_WaitingSender"
     case verificationWaitingRecipient = "NearbySharing_Verification_Action_WaitingRecipient"

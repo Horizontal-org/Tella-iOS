@@ -375,11 +375,13 @@
 		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
 		129771862F0FE89200828857 /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = 129771852F0FE89200828857 /* Mantis */; };
 		129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129919BD2E31143400A4417D /* NWConnectionExtension.swift */; };
+		129AD8D12FDC07D600ABB26D /* NearbySharingVerificationRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129AD8D02FDC07D300ABB26D /* NearbySharingVerificationRole.swift */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
 		129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* TellaButtonView.swift */; };
 		129BC3A62CBE582A001C7323 /* FileHandleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */; };
+		129DA1942FE175C2001D5EB4 /* ManualPingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DA1932FE175BB001D5EB4 /* ManualPingSession.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* NavigationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* NavigationBottomView.swift */; };
@@ -434,6 +436,9 @@
 		12BE07E12F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */; };
 		12BE07E52F7ACD13008F6C10 /* NearbySharingTransferLimits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */; };
 		12BE07E92F7ACD17008F6C10 /* NearbySharingTransferStorageValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */; };
+		12C06B9E2FD9C15400066675 /* SenderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B9D2FD9C15200066675 /* SenderInfo.swift */; };
+		12C06BA02FDAC28000066675 /* SecTrust+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */; };
+		12C06BA22FDAC2C200066675 /* NearbySharingPeerCertificatePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */; };
 		12C06B952FD76E7300066675 /* CryptoKeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */; };
 		12C06B962FD76E7300066675 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B902FD76E7300066675 /* KeychainStore.swift */; };
 		12C06B972FD76E7300066675 /* VaultKeyPairStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C06B922FD76E7300066675 /* VaultKeyPairStore.swift */; };
@@ -488,6 +493,7 @@
 		12FAC45D2E265BF7007A4651 /* NearbySharingResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */; };
+		12MTLS0052F70000100B7E63E /* NearbySharingProtocolVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12MTLS0062F70000100B7E63E /* NearbySharingProtocolVersion.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */; };
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
@@ -1160,12 +1166,14 @@
 		12967AF32F5F6FF100D9FC7E /* lus */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lus; path = lus.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BC2E2EC92900A4417D /* az */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = az; path = az.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129919BD2E31143400A4417D /* NWConnectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnectionExtension.swift; sourceTree = "<group>"; };
+		129AD8D02FDC07D300ABB26D /* NearbySharingVerificationRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingVerificationRole.swift; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
 		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
 		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleExtension.swift; sourceTree = "<group>"; };
+		129DA1932FE175BB001D5EB4 /* ManualPingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualPingSession.swift; sourceTree = "<group>"; };
 		129FBF422EB4BBED00E4DA57 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
@@ -1219,6 +1227,9 @@
 		12BE07E02F7ACD0F008F6C10 /* NearbySharingRateLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingRateLimiter.swift; sourceTree = "<group>"; };
 		12BE07E42F7ACD12008F6C10 /* NearbySharingTransferLimits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferLimits.swift; sourceTree = "<group>"; };
 		12BE07E82F7ACD16008F6C10 /* NearbySharingTransferStorageValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingTransferStorageValidation.swift; sourceTree = "<group>"; };
+		12C06B9D2FD9C15200066675 /* SenderInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderInfo.swift; sourceTree = "<group>"; };
+		12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecTrust+Extension.swift"; sourceTree = "<group>"; };
+		12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingPeerCertificatePolicy.swift; sourceTree = "<group>"; };
 		12C06B8F2FD76E7300066675 /* CryptoKeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoKeychainStore.swift; sourceTree = "<group>"; };
 		12C06B902FD76E7300066675 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		12C06B912FD76E7300066675 /* VaultKeyMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultKeyMigrator.swift; sourceTree = "<group>"; };
@@ -1271,6 +1282,7 @@
 		12FAC45C2E265BE4007A4651 /* NearbySharingResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingResultVM.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebAddServerURLView.swift; sourceTree = "<group>"; };
+		12MTLS0062F70000100B7E63E /* NearbySharingProtocolVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingProtocolVersion.swift; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionHeaderView.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
@@ -2015,6 +2027,7 @@
 				126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */,
 				121AFF942E4CDE6E007300AD /* NearbySharingServerHandler.swift */,
 				1282DE502DDE101E004D2176 /* NWConnection.swift */,
+				12C06BA12FDAC2BE00066675 /* NearbySharingPeerCertificatePolicy.swift */,
 				123CBAFD2DEF0DCD0030A9BD /* HTTPParser.swift */,
 				123CBB012DEF34640030A9BD /* HTTPRequest.swift */,
 				12505B212D89A2A500483E34 /* HTTPResponseBuilder.swift */,
@@ -2204,6 +2217,7 @@
 				12E9713C2E97C27700A87531 /* Collection+Extension.swift */,
 				12D39B4E2F194C8B0065EACD /* CGFloat+Extension.swift */,
 				12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */,
+				12C06B9F2FDAC27700066675 /* SecTrust+Extension.swift */,
 				12C06B9B2FD76E9C00066675 /* OSStatus+Security.swift */,
 			);
 			path = Extensions;
@@ -2565,6 +2579,9 @@
 			children = (
 				200751D32D5B91F1000CC076 /* NearbySharingParticipant.swift */,
 				128247A32D5F935A00B7E63E /* ConnectionInfo.swift */,
+				12C06B9D2FD9C15200066675 /* SenderInfo.swift */,
+				129AD8D02FDC07D300ABB26D /* NearbySharingVerificationRole.swift */,
+				12MTLS0062F70000100B7E63E /* NearbySharingProtocolVersion.swift */,
 				128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */,
 			);
 			path = Models;
@@ -2575,6 +2592,7 @@
 			children = (
 				1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */,
 				1282C09F2D8AEA1A0033E4CA /* Register.swift */,
+				129DA1932FE175BB001D5EB4 /* ManualPingSession.swift */,
 				1282C0A12D8AEE110033E4CA /* FileUpload.swift */,
 				1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */,
 			);
@@ -4444,6 +4462,7 @@
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
 				E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */,
+				12C06BA02FDAC28000066675 /* SecTrust+Extension.swift in Sources */,
 				123CBAFE2DEF0DCF0030A9BD /* HTTPParser.swift in Sources */,
 				CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
@@ -4508,6 +4527,7 @@
 				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
 				1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */,
 				128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */,
+				12MTLS0052F70000100B7E63E /* NearbySharingProtocolVersion.swift in Sources */,
 				128247A52D5F936000B7E63E /* RegistrationNonceContext.swift in Sources */,
 				125C16022DAE762F0086D4F0 /* SecKeyExtension.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
@@ -4544,6 +4564,7 @@
 				12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */,
 				15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
+				129DA1942FE175C2001D5EB4 /* ManualPingSession.swift in Sources */,
 				12C06B952FD76E7300066675 /* CryptoKeychainStore.swift in Sources */,
 				12C06B962FD76E7300066675 /* KeychainStore.swift in Sources */,
 				12C06B972FD76E7300066675 /* VaultKeyPairStore.swift in Sources */,
@@ -4658,6 +4679,7 @@
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				123CBB082DEF998C0030A9BD /* NearbySharingServerResponse.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
+				12C06BA22FDAC2C200066675 /* NearbySharingPeerCertificatePolicy.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */,
@@ -4845,6 +4867,7 @@
 				1267D7782D2ED4780059D50F /* AVCapturePhotoSettingsExtension.swift in Sources */,
 				12FAC4592E2571E0007A4651 /* NearbySharingResultView.swift in Sources */,
 				209AC6832C332DA700492356 /* VaultFilesManagerExtension.swift in Sources */,
+				12C06B9E2FD9C15400066675 /* SenderInfo.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */,
 				209AC6962C332F6000492356 /* CLLocationExtension.swift in Sources */,
@@ -4970,6 +4993,7 @@
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
+				129AD8D12FDC07D600ABB26D /* NearbySharingVerificationRole.swift in Sources */,
 				12D9A9262D121789008C206E /* CardButtonView.swift in Sources */,
 				15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */,
 				E1E7C5822AAB707C00DDB07E /* UwaziDictionary.swift in Sources */,

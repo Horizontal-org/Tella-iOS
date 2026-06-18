@@ -12,6 +12,7 @@ import SwiftUI
 struct RecipientConnectToDeviceManuallyView: View {
     
     @StateObject var viewModel: RecipientConnectManuallyViewModel
+    @State private var isBottomSheetShown = false
     
     var body: some View {
         ContainerViewWithHeader {
@@ -29,7 +30,6 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     var contentView: some View {
         VStack {
-            Spacer()
             VStack(spacing: 24) {
                 topView
                 cardsView
@@ -40,7 +40,7 @@ struct RecipientConnectToDeviceManuallyView: View {
     }
     
     var navigationBarView: some View {
-        NavigationHeaderView(title: LocalizableNearbySharing.connectToDevice.localized,
+        NavigationHeaderView(title: LocalizableNearbySharing.connectManually.localized,
                              navigationBarType: .inline,
                              backButtonType: .close,
                              rightButtonType: .none)
@@ -64,16 +64,49 @@ struct RecipientConnectToDeviceManuallyView: View {
     
     private func handleViewState(state: RecipientConnectToDeviceViewAction) {
         switch state {
-        case .showVerificationHash:
+        case .showRecipientVerificationHash:
             guard let connectionInfo = viewModel.connectionInfo else { return }
-            let viewModel = ManuallyVerificationViewModel(participant:.recipient,
-                                                          connectionInfo: connectionInfo,
-                                                          mainAppModel: viewModel.mainAppModel)
-            self.navigateTo(destination: ManuallyVerificationView(viewModel: viewModel))
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .receiverHash(confirmAction: .confirmReceiverHash)
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showSenderHashVerification(let certificateHash):
+            guard let connectionInfo = viewModel.connectionInfo else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acceptPendingRegistration),
+                certificateHashToDisplay: certificateHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showIncompatibleVersion:
+            showIncompatibleVersionSheet()
         case .showToast(let message):
             Toast.displayToast(message: message)
         default:
             break
         }
+    }
+    
+    private func showIncompatibleVersionSheet() {
+        isBottomSheetShown = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.incompatibleVersionTitle.localized,
+            msgText: LocalizableNearbySharing.recipientIncompatibleVersionExpl.localized,
+            actionText: LocalizableCommon.commonActionOk.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    isBottomSheetShown = false
+                    viewModel.nearbySharingServer?.resetServerState()
+                    popTo(ViewClassType.nearbySharingMainView)
+                }
+            }
+        )
+        showBottomSheetView(content: content, isPresented: $isBottomSheetShown, tapToDismiss: false)
     }
 }

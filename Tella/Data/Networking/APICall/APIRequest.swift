@@ -6,6 +6,7 @@
 
 
 import Foundation
+import Security
 
 public protocol APIRequest {
     associatedtype Value
@@ -26,6 +27,7 @@ public protocol APIRequest {
     var multipartBody: Data? { get }
     var multipartHeader: String? {get}
     var trustedPublicKeyHash: String? {get}
+    var clientCertificateIdentity: SecIdentity? {get}
 }
 
 public extension APIRequest {
@@ -55,6 +57,7 @@ public extension APIRequest {
     var multipartBody: Data? { nil }
     var multipartHeader: String? { nil }
     var trustedPublicKeyHash: String? { nil }
+    var clientCertificateIdentity: SecIdentity? { nil }
 }
 
 extension APIRequest {

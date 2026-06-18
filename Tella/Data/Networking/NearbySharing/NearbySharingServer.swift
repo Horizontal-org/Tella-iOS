@@ -28,10 +28,11 @@ final class NearbySharingServer {
     
     // MARK: - Server Lifecycle
     
-    func startListening(port: Int, pin: String, clientIdentity: SecIdentity) {
+    func startListening(port: Int, pin: String, clientIdentity: SecIdentity, senderShowHash: Bool = false) {
         Task {
             await rateLimiter.reset()
             await state.setPin(pin)
+            await state.setSenderShowHash(senderShowHash)
             await networkManager.startListening(port: port, clientIdentity: clientIdentity)
         }
     }
@@ -44,13 +45,22 @@ final class NearbySharingServer {
     
     func resetServerState() {
         stopServer()
-        Task { await state.resetConnectionState() }
+        Task {
+            await networkManager.resetPeerCertificatePolicy()
+            await state.resetConnectionState()
+        }
         eventPublisher = PassthroughSubject<NearbySharingEvent, Never>()
+    }
+    
+    /// Recipient scanned the sender QR and pinned the sender client certificate hash
+    func pinSenderCertificateHashFromQR(_ hash: String) {
+        Task { await networkManager.setTrustedPeerCertificateHash(hash) }
     }
     
     func resetFullServerState() {
         stopServer()
         cleanServer()
+        CertificateGenerator.removeStoredIdentities()
     }
     
     func cleanServer() {
@@ -88,6 +98,22 @@ final class NearbySharingServer {
         await sendData(connection: connection, serverResponse: response)
     }
     
+    private func sendPlainTextResponse(
+        _ status: ServerStatus,
+        connection: NWConnection,
+        endpoint: NearbySharingEndpoint? = nil
+    ) async {
+        guard let responseData = HTTPResponseBuilder(serverStatus: status)
+            .setPlainTextBody(status.message.rawValue)
+            .closeConnection()
+            .build() else {
+            await sendInternalServerError(connection: connection)
+            return
+        }
+        let response = NearbySharingServerResponse(dataResponse: responseData, response: .failure, endpoint: endpoint)
+        await sendData(connection: connection, serverResponse: response)
+    }
+    
     private func sendInternalServerError(connection: NWConnection) async {
         let error = ServerStatus(code: .internalServerError, message: .serverError)
         await sendErrorResponse(error,connection: connection)
@@ -121,8 +147,8 @@ final class NearbySharingServer {
         switch endpoint {
         case .register:
             Task {
-                let manual = await state.isManualConnection()
-                eventPublisher.send(.didRegister(success: success, manual: manual))
+                let isManualConnection = await state.isManualConnection()
+                eventPublisher.send(.didRegister(success: success, manual: isManualConnection))
             }
         case .prepareUpload:
             eventPublisher.send(.prepareUploadResponseSent(success: success))
@@ -164,26 +190,82 @@ final class NearbySharingServer {
     }
     // MARK: - Request Processing
     
-    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) {
-        guard let endpoint = NearbySharingEndpoint(rawValue: httpRequest.endpoint) else {
-            debugLog("Received request for unknown endpoint")
+    private func processRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
+        guard let endpoint = await resolveEndpointOrSendError(
+            path: httpRequest.endpoint,
+            connection: connection
+        ) else {
             return
         }
         
         switch endpoint {
         case .ping:
             handlePingRequest(on: connection)
+            
         case .register:
             handleRegisterRequest(on: connection, request: httpRequest)
+            
         case .prepareUpload:
             handlePrepareUploadRequest(on: connection, request: httpRequest)
+            
         case .upload:
             handleReceivedCompleteRequest(on: connection, request: httpRequest)
+            
         case .closeConnection:
             handleCloseConnectionRequest(on: connection, request: httpRequest)
         }
     }
-}
+    
+    private func resolveEndpointOrSendError(
+        path: String,
+        connection: NWConnection
+    ) async -> NearbySharingEndpoint? {
+        
+        if NearbySharingEndpoint.isV1Route(path) {
+            eventPublisher.send(.incompatibleProtocolVersion)
+            
+            await sendPlainTextResponse(
+                ServerStatus(code: .forbidden, message: .unsupportedVersion),
+                connection: connection
+            )
+            return nil
+        }
+        
+        guard let routeVersion = NearbySharingEndpoint.apiVersion(from: path) else {
+            await sendPlainTextResponse(
+                ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            return nil
+        }
+        
+        guard routeVersion == NearbySharingProtocolVersion.current else {
+            let isVersionCheckRoute = NearbySharingEndpoint.isPingOrRegister(path: path)
+            
+            if isVersionCheckRoute {
+                eventPublisher.send(.incompatibleProtocolVersion)
+            }
+            
+            await sendPlainTextResponse(
+                isVersionCheckRoute
+                ? ServerStatus(code: .notAcceptable, message: .unsupportedVersion)
+                : ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            
+            return nil
+        }
+        
+        guard let endpoint = NearbySharingEndpoint(rawValue: path) else {
+            await sendPlainTextResponse(
+                ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            return nil
+        }
+        
+        return endpoint
+    }}
 
 // MARK: - NetworkManagerDelegate
 
@@ -220,7 +302,7 @@ extension NearbySharingServer: NetworkManagerDelegate {
                 eventPublisher.send(.errorOccured)
                 return
             }
-            processRequest(connection: context.connection, httpRequest: context.request)
+            await processRequest(connection: context.connection, httpRequest: context.request)
         }
     }
     
@@ -240,11 +322,30 @@ extension NearbySharingServer: NetworkManagerDelegate {
 
 extension NearbySharingServer: PingHandler {
     func handlePingRequest(on connection: NWConnection) {
-        eventPublisher.send(.verificationRequested)
-        Task { await state.markManualConnection()
-            let payload = BoolResponse(success: true)
-            await sendSuccessResponse(connection: connection,payload: payload, endpoint: .ping)
+        eventPublisher.send(.receiverCertificateVerificationRequested)
+        Task {
+            await state.clearPendingRegistration()
+            await state.markManualConnection()
+            if !(await networkManager.hasTrustedPeerCertificateHash()) {
+                await state.setSenderShowHash(true)
+            }
+            await state.setPendingPing(connection: connection)
         }
+    }
+    
+    func discardPendingPing() {
+        Task {
+            guard let connection = await state.getPendingPingConnection() else { return }
+            let error = ServerStatus(code: .forbidden, message: .rejected)
+            await sendErrorResponse(error, connection: connection)
+        }
+    }
+    
+    private func sendPendingPingResponse() async {
+        guard let connection = await state.getPendingPingConnection() else { return }
+        let senderShowHash = await state.shouldSenderShowHash()
+        let payload = PingResponse(senderShowHash: senderShowHash)
+        await sendSuccessResponse(connection: connection, payload: payload, endpoint: .ping)
     }
 }
 
@@ -254,86 +355,121 @@ extension NearbySharingServer: RegisterHandler {
     func handleRegisterRequest(on connection: NWConnection, request: HTTPRequest) {
         Task {
             if await state.isManualConnection() {
-                
-                if let pendingRegisterResponse = await state.getPendingRegisterResponse() {
-                    await sendRegistrationResponse(accept: pendingRegisterResponse,
-                                                   connection: connection,
-                                                   request: request)
-                } else {
-                    await state.setPendingRegister(connection: connection, request: request)
-                }
-                
+                await holdRegisterRequest(connection: connection, request: request)
             } else {
                 await acceptRegisterRequest(connection: connection, httpRequest: request)
             }
         }
     }
     
-    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
-        
-        if await state.hasSession() {
-            let error = ServerStatus(code: .conflict, message: .activeSessionAlreadyExists)
-            await sendErrorResponse(error, connection: connection)
+    /// Recipient confirmed receiver hash — server decides C vs D from pinned sender cert.
+    func confirmReceiverHashVerification() {
+        Task {
+            if await state.hasPendingPing() {
+                await sendPendingPingResponse()
+            }
+            if await networkManager.hasTrustedPeerCertificateHash() {
+                await fulfillRegistrationResponse(accept: true)
+            } else {
+                await state.markReceiverHashConfirmed()
+                if await state.hasPendingRegister() {
+                    await emitSenderHashVerificationIfReady()
+                }
+            }
+        }
+    }
+    
+    private func holdRegisterRequest(connection: NWConnection, request: HTTPRequest) async {
+        guard await validateRegisterRequest(request, connection: connection) != nil else { return }
+        await state.setPendingRegister(connection: connection, request: request)
+        await applySavedRegisterResponseIfNeeded(connection: connection, request: request)
+        let senderPinned = await networkManager.hasTrustedPeerCertificateHash()
+        if await state.isReceiverHashConfirmed(), !senderPinned {
+            await emitSenderHashVerificationIfReady()
+        }
+    }
+    
+    private func emitSenderHashVerificationIfReady() async {
+        guard let senderHash = await networkManager.peekPendingPeerCertificateHash() else { return }
+        eventPublisher.send(.senderCertificateVerificationRequested(certificateHash: senderHash))
+    }
+    
+    private func fulfillRegistrationResponse(accept: Bool) async {
+        guard let (connection, request) = await state.getPendingRegister() else {
+            await state.savePendingRegisterResponse(accept: accept)
             return
         }
-        
-        guard let regReq = httpRequest.body.decodeJSON(RegisterRequest.self) else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
+        await sendRegistrationResponse(accept: accept, connection: connection, request: request)
+    }
+    
+    private func applySavedRegisterResponseIfNeeded(
+        connection: NWConnection,
+        request: HTTPRequest
+    ) async {
+        guard let pendingResponse = await state.getPendingRegisterResponse() else { return }
+        await sendRegistrationResponse(accept: pendingResponse, connection: connection, request: request)
+    }
+    
+    /// Returns nil after sending an error response to the client.
+    private func validateRegisterRequest(
+        _ request: HTTPRequest,
+        connection: NWConnection
+    ) async -> RegisterRequest? {
+        guard let regReq = request.body.decodeJSON(RegisterRequest.self) else {
+            await sendErrorResponse(ServerStatus(code: .badRequest, message: .invalidRequestFormat), connection: connection)
+            return nil
         }
         
         guard let nonce = regReq.nonce, !nonce.isEmpty else {
-            let error = ServerStatus(code: .badRequest, message: .invalidRequestFormat)
-            await sendErrorResponse(error, connection: connection)
-            return
+            await sendErrorResponse(ServerStatus(code: .badRequest, message: .invalidRequestFormat), connection: connection)
+            return nil
         }
         
         if await state.hasReachedMaxAttempts(for: nonce) {
-            let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-            await sendErrorResponse(error, connection: connection)
-            return
+            await sendErrorResponse(ServerStatus(code: .tooManyRequests, message: .tooManyRequests), connection: connection)
+            return nil
         }
         
         guard let pin = regReq.pin, await state.pinMatches(pin) else {
             await state.recordRegisterPinFailure(for: nonce)
             if await state.hasReachedMaxAttempts(for: nonce) {
-                let error = ServerStatus(code: .tooManyRequests, message: .tooManyRequests)
-                await sendErrorResponse(error, connection: connection)
-                return
+                await sendErrorResponse(ServerStatus(code: .tooManyRequests, message: .tooManyRequests), connection: connection)
+                return nil
             }
-            let error = ServerStatus(code: .unauthorized, message: .invalidPIN)
-            await sendErrorResponse(error, connection: connection)
+            await sendErrorResponse(ServerStatus(code: .unauthorized, message: .invalidPIN), connection: connection)
+            return nil
+        }
+        
+        return regReq
+    }
+    
+    func acceptRegisterRequest(connection: NWConnection, httpRequest: HTTPRequest) async {
+        if await state.hasSession() {
+            await sendErrorResponse(ServerStatus(code: .conflict, message: .activeSessionAlreadyExists), connection: connection)
             return
         }
         
-        let newSessionId = await state.createSessionAndReturnID(registrationNonce: nonce)
+        guard let regReq = await validateRegisterRequest(httpRequest, connection: connection) else { return }
         
-        // 5) response
+        let newSessionId = await state.createSessionAndReturnID(registrationNonce: regReq.nonce!)
         let payload = RegisterResponse(sessionId: newSessionId)
-        await sendSuccessResponse(connection: connection,
-                                  payload: payload,
-                                  endpoint: .register)
+        await sendSuccessResponse(connection: connection, payload: payload, endpoint: .register)
     }
     
     func respondToRegistrationRequest(accept: Bool) {
-        Task {
-            guard let (connection, request) = await state.getPendingRegister() else {
-                await state.savePendingRegisterResponse(accept: accept)
-                return
-            }
-            await sendRegistrationResponse(accept: accept,
-                                           connection: connection,
-                                           request: request)
-        }
+        Task { await fulfillRegistrationResponse(accept: accept) }
     }
     
     private func sendRegistrationResponse(accept: Bool,
                                           connection: NWConnection,
                                           request: HTTPRequest) async {
         if accept {
+            if let peerHash = await networkManager.consumePendingPeerCertificateHash() {
+                await networkManager.setTrustedPeerCertificateHash(peerHash)
+            }
             await acceptRegisterRequest(connection: connection, httpRequest: request)
         } else {
+            await networkManager.consumePendingPeerCertificateHash()
             await discardRegisterRequest(connection: connection)
         }
     }

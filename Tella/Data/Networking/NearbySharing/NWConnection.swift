@@ -9,6 +9,7 @@
 
 import Network
 import Foundation
+import Security
 
 // MARK: - ConnectionContext
 
@@ -35,6 +36,7 @@ actor NetworkManager {
     private var listener: NWListener?
     private let connections = ConnectionStore()
     private weak var delegate: NetworkManagerDelegate?
+    private let peerCertificatePolicy = NearbySharingPeerCertificatePolicy()
     
     private let minIncompleteLength = 1
     private let maxLength = 1024 * 1024
@@ -49,6 +51,26 @@ actor NetworkManager {
         self.delegate = delegate
     }
     
+    func resetPeerCertificatePolicy() {
+        peerCertificatePolicy.reset()
+    }
+    
+    func setTrustedPeerCertificateHash(_ hash: String) {
+        peerCertificatePolicy.setTrustedPeerCertificateHash(hash)
+    }
+    
+    func consumePendingPeerCertificateHash() -> String? {
+        peerCertificatePolicy.consumePendingPeerCertificateHash()
+    }
+    
+    func peekPendingPeerCertificateHash() -> String? {
+        peerCertificatePolicy.peekPendingPeerCertificateHash()
+    }
+    
+    func hasTrustedPeerCertificateHash() -> Bool {
+        peerCertificatePolicy.hasTrustedPeerCertificateHash()
+    }
+    
     // MARK: - Public API
     
     func startListening(port: Int, clientIdentity: SecIdentity) {
@@ -57,6 +79,7 @@ actor NetworkManager {
         }
         
         do {
+            peerCertificatePolicy.reset()
             let parameters = try createNetworkParameters(clientIdentity: clientIdentity)
             let portValue = NWEndpoint.Port(integerLiteral: UInt16(port))
             let listener = try NWListener(using: parameters, on: portValue)
@@ -119,6 +142,24 @@ actor NetworkManager {
         sec_protocol_options_set_challenge_block(tlsOptions.securityProtocolOptions, { _, completion in
             completion(identity)
         }, networkQueue)
+        
+        sec_protocol_options_set_peer_authentication_required(
+            tlsOptions.securityProtocolOptions,
+            true
+        )
+        
+        let policy = peerCertificatePolicy
+        sec_protocol_options_set_verify_block(
+            tlsOptions.securityProtocolOptions,
+            { _, secTrust, complete in
+                let trusted = policy.evaluatePeerTrust(secTrust)
+                if !trusted {
+                    debugLog("mTLS: rejected peer certificate")
+                }
+                complete(trusted)
+            },
+            networkQueue
+        )
         
         return NWParameters(tls: tlsOptions)
     }
