@@ -240,11 +240,19 @@ final class NearbySharingServer {
         }
         
         guard routeVersion == NearbySharingProtocolVersion.current else {
-            let status = NearbySharingEndpoint.isPingOrRegister(path: path)
-            ? ServerStatus(code: .notAcceptable, message: .unsupportedVersion)
-            : ServerStatus(code: .notFound, message: .notFound)
+            let isVersionCheckRoute = NearbySharingEndpoint.isPingOrRegister(path: path)
             
-            await sendPlainTextResponse(status, connection: connection)
+            if isVersionCheckRoute {
+                eventPublisher.send(.incompatibleProtocolVersion)
+            }
+            
+            await sendPlainTextResponse(
+                isVersionCheckRoute
+                ? ServerStatus(code: .notAcceptable, message: .unsupportedVersion)
+                : ServerStatus(code: .notFound, message: .notFound),
+                connection: connection
+            )
+            
             return nil
         }
         
@@ -257,8 +265,7 @@ final class NearbySharingServer {
         }
         
         return endpoint
-    }
-}
+    }}
 
 // MARK: - NetworkManagerDelegate
 
