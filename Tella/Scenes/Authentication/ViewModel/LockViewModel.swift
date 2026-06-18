@@ -115,6 +115,7 @@ class LockViewModel: ObservableObject {
     private func successLogin() {
         resetUnlockAttempts()
         if  lockFlow == .new {
+            loginPassword = ""
             loadData()
         } else {
             presentingLockChoice = true
@@ -147,12 +148,28 @@ class LockViewModel: ObservableObject {
     func initKeys(passwordTypeEnum:PasswordTypeEnum) {
         mainAppModel.vaultManager.initKeys(passwordTypeEnum,
                                            password: password)
+        password = ""
+        confirmPassword = ""
     }
     
-    func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
-        mainAppModel.vaultManager.updateKeys(passwordTypeEnum,
-                                             newPassword: password,
-                                             oldPassword: loginPassword)
+    @discardableResult
+    func updateKeys(passwordTypeEnum: PasswordTypeEnum) -> Bool {
+        do {
+            try mainAppModel.vaultManager.updateKeys(
+                passwordTypeEnum,
+                newPassword: password,
+                oldPassword: loginPassword
+            )
+            loginPassword = ""
+            oldPassword = ""
+            password = ""
+            confirmPassword = ""
+            return true
+        } catch {
+            debugLog(error)
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
+            return false
+        }
     }
     
     func initUnlockData() {
