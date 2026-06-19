@@ -93,8 +93,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               name: $0.name)
                 
             case .dataTypeSelect:
-              
- 
                 let selectValues = $0.values?.map { value in
                     let nestedValues = value.values?.map { nested in
                         SelectValues(
