@@ -161,7 +161,9 @@ actor NetworkManager {
             networkQueue
         )
         
-        return NWParameters(tls: tlsOptions)
+        let parameters = NWParameters(tls: tlsOptions)
+        parameters.includePeerToPeer = true
+        return parameters
     }
     
     // MARK: - Listener Configuration
