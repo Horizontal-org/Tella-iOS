@@ -9,15 +9,23 @@
 
 import SwiftUI
 
-struct NextBottomView: View {    
+struct NextBottomView: View {
+    var title : String
     var nextAction : (() -> Void)?
+    var isValid: Binding<Bool>
+    
+    init(title: String, isValid: Binding<Bool> = .constant(true), nextAction: (() -> Void)? = nil) {
+        self.title = title
+        self.isValid = isValid
+        self.nextAction = nextAction
+    }
     
     var body: some View {
         HStack {
             Spacer()
             
-            BottomButtonActionView(title: LocalizableLock.actionNext.localized,
-                                   isValid: true) {
+            BottomButtonActionView(title: title, 
+                                   isValid: isValid) {
                 self.nextAction?()
             }
         }
@@ -25,5 +33,5 @@ struct NextBottomView: View {
 }
 
 #Preview {
-    NextBottomView()
+    NextBottomView(title: "Next", isValid: .constant(true))
 }

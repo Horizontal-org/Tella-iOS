@@ -28,6 +28,8 @@ extension CGFloat {
 
     static let extraLarge: CGFloat = 48
 
+    static let doubleLarge: CGFloat = 64
+
     static let borderWidth: CGFloat = 1
     
     static let mediumIconSize: CGFloat = 40

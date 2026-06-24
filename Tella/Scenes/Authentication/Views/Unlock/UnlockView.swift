@@ -19,40 +19,24 @@ enum LockFlow {
 struct UnlockView: View {
     
     @ObservedObject var viewModel: LockViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var type : PasswordTypeEnum
     var body: some View {
         ContainerView {
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 0) {
                 Spacer(minLength: 30)
+
+                topView
                 
-                Image("tella.logo")
-                    .frame(width: 65, height: 72)
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer(minLength: 23)
-                
-                TextView(content: titleString, size: 18)
-                
-                Spacer()
-                
-                if(viewModel.shouldShowAttemptsWarning) {
-                    TextView(content: viewModel.warningText(), size: 14)
-                    Spacer()
-                }
-                
-                
-                if(type == .tellaPassword) {
-                    TellaPasswordView
+                if type == .tellaPassword {
+                    passwordView
                 } else {
-                    TellaPinView
+                    pinView
                 }
-                
-                Spacer()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            if  viewModel.isLoading {
+            if viewModel.isLoading {
                 CircularActivityIndicatory()
             }
             
@@ -69,7 +53,79 @@ struct UnlockView: View {
             }
         }.navigationBarHidden(true)
     }
+    var passwordView: some View {
+        Group {
+            Spacer()
+                .frame(height: .doubleLarge)
+            
+            PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                  isValid: $viewModel.isValidPassword,
+                                  shouldShowError: $viewModel.shouldShowUnlockError) {
+                UIApplication.shared.endEditing()
+            }
+            
+            Spacer()
+            
+            unlockPasswordButton
+        }
+    }
     
+    var pinView: some View {
+        Group {
+            
+            Spacer()
+                .frame(height: .doubleLarge)
+            
+            PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                  isValid: .constant(true),
+                                  shouldShowError: $viewModel.shouldShowUnlockError,
+                                  disabled: true)
+            
+            Spacer(minLength: 20)
+            
+            PinView(fieldContent: $viewModel.loginPassword,
+                    keyboardNumbers: viewModel.unlockKeyboardNumbers) {
+                viewModel.login()
+            }
+            
+            Spacer()
+        }
+    }
+    var topView: some View {
+        VStack {
+            Image(.tellaLogo)
+                .frame(width: 65, height: 72)
+                .aspectRatio(contentMode: .fit)
+            
+            Spacer()
+                .frame(height: .normal)
+            
+            CustomText(titleString, style: .heading1Style, alignment: .center)
+                .padding(.horizontal, 67)
+            
+            if viewModel.shouldShowAttemptsWarning {
+                Spacer()
+                    .frame(height: .normal)
+                
+                CustomText(viewModel.warningText(), style: .body1Style, alignment: .center)
+                    .padding(.horizontal, 67)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    private var unlockPasswordButton: some View {
+        if $viewModel.isValidPassword.wrappedValue {
+            NextBottomView(
+                title: LocalizableLock.unlockPasswordAction.localized,
+                isValid: $viewModel.isValidPassword
+            ) {
+                viewModel.login()
+            }
+        }
+        
+    }
     
     var titleString: String {
         let unlockErrorString: String
@@ -87,29 +143,6 @@ struct UnlockView: View {
         return unlockErrorString.isEmpty ? unlockSubheadString : unlockErrorString
     }
     
-    var TellaPasswordView : some View {
-        PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                              isValid: .constant(true),
-                              shouldShowError: $viewModel.shouldShowUnlockError) {
-            viewModel.login()
-        }
-    }
-    
-    var TellaPinView : some View {
-        Group {
-            PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                  isValid: .constant(true),
-                                  shouldShowError: $viewModel.shouldShowUnlockError,
-                                  disabled: true)
-            
-            Spacer(minLength: 20)
-            
-            PinView(fieldContent: $viewModel.loginPassword,
-                    keyboardNumbers: viewModel.unlockKeyboardNumbers) {
-                viewModel.login()
-            }
-        }
-    }
     private func showLockChoiceView() {
         navigateTo(destination: LockChoiceView(lockViewModel: viewModel))
     }
