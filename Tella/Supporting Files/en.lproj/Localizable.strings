@@ -24,6 +24,7 @@
 "LockUnlock_LockPinConfirm_Expl" = "Please enter your PIN one more time, just to be sure.";
 "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Please try again. Your PINs do not match.";
 "LockUnlock_UnlockPassword_Subhead" = "Enter your password to unlock";
+"LockUnlock_UnlockPassword_Action" = "Unlock";
 "LockUnlock_UnlockUpdatePassword_Subhead" = "Enter your password to change your lock method";
 "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword" = "Incorrect password, please try again";
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
