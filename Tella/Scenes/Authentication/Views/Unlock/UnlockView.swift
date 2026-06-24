@@ -25,7 +25,7 @@ struct UnlockView: View {
         ContainerView {
             VStack(alignment: .center, spacing: 0) {
                 Spacer(minLength: 30)
-
+                
                 topView
                 
                 if type == .tellaPassword {
@@ -114,17 +114,15 @@ struct UnlockView: View {
         .frame(maxWidth: .infinity)
     }
     
-    @ViewBuilder
     private var unlockPasswordButton: some View {
-        if $viewModel.isValidPassword.wrappedValue {
-            NextBottomView(
-                title: LocalizableLock.unlockPasswordAction.localized,
-                isValid: $viewModel.isValidPassword
-            ) {
-                viewModel.login()
-            }
+        NextBottomView(
+            title: LocalizableLock.unlockPasswordAction.localized,
+            isValid: $viewModel.isValidPassword
+        ) {
+            viewModel.login()
         }
-        
+        .opacity(viewModel.isValidPassword ? 1 : 0)
+        .animation(.easeInOut(duration: 0.25), value: viewModel.isValidPassword)
     }
     
     var titleString: String {
