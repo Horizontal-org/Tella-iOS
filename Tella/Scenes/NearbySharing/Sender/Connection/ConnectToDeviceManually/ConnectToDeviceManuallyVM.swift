@@ -18,7 +18,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
-    @Published var port: String = ""
+    @Published var port: String = "\(NearbySharingConfig.defaultPort)"
     @Published var publicKey: String = ""
     @Published var valid : Bool = false
     @Published var validFields: Bool = false
@@ -43,6 +43,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
         self.mainAppModel = mainAppModel
         nearbySharingRepository.ensureClientTLSIdentity()
         
+        isValidPort = port.portValidator()
         validateFields()
     }
     
