@@ -271,6 +271,7 @@
 		1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */; };
 		1276B7392E1E56F10024C38A /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B7382E1E56F00024C38A /* ProgressViewModel.swift */; };
 		1276B73F2E1EA8F10024C38A /* FileReceivingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */; };
+		127767502FF3E7E200849289 /* NearbySharingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1277674F2FF3E7DE00849289 /* NearbySharingConfig.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -1046,6 +1047,7 @@
 		1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportFile.swift; sourceTree = "<group>"; };
 		1276B7382E1E56F00024C38A /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReceivingView.swift; sourceTree = "<group>"; };
+		1277674F2FF3E7DE00849289 /* NearbySharingConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingConfig.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -2580,6 +2582,7 @@
 				12C06B9D2FD9C15200066675 /* SenderInfo.swift */,
 				129AD8D02FDC07D300ABB26D /* NearbySharingVerificationRole.swift */,
 				12MTLS0062F70000100B7E63E /* NearbySharingProtocolVersion.swift */,
+				1277674F2FF3E7DE00849289 /* NearbySharingConfig.swift */,
 				128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */,
 			);
 			path = Models;
@@ -5069,6 +5072,7 @@
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				122389BE293698010058593B /* ConnectionsView.swift in Sources */,
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
+				127767502FF3E7E200849289 /* NearbySharingConfig.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
 				20AA1F9C2D5F38A20092810B /* RecipientFileTransferView.swift in Sources */,
