@@ -17,7 +17,7 @@ enum FieldType {
     case ipAddress
     case pin
     case port
-
+    
 }
 
 struct TextfieldView : View {
@@ -66,7 +66,7 @@ struct TextfieldView : View {
         }
         return nil
     }
-
+    
     var body: some View {
         
         VStack(spacing: 10) {
@@ -115,10 +115,7 @@ struct TextfieldView : View {
                   onCommit: {
             self.onCommit?()
         })
-        .onChange(of: fieldContent, perform: { value in
-            validateField(value: value)
-            self.pfieldContent = value
-        })
+        .onChange(of: fieldContent, perform: handleFieldContentChange)
         
         .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError, keyboardType: keyboardType))
         .frame( height: 22)
@@ -173,7 +170,28 @@ struct TextfieldView : View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
+    
+    private func handleFieldContentChange(_ value: String) {
+        if fieldType == .ipAddress {
+            let isDeleting = value.count < pfieldContent.count
+            
+            let formatted = value.formatIPAddressInput(
+                shouldAutoAddDot: !isDeleting
+            )
+            
+            if formatted != value {
+                fieldContent = formatted
+            }
+            
+            validateField(value: formatted)
+            pfieldContent = formatted
+            return
+        }
         
+        validateField(value: value)
+        pfieldContent = value
+    }
+    
     private func validateField(value:String) {
         
         switch fieldType {
@@ -200,7 +218,7 @@ struct TextfieldView : View {
             self.isValid = value.pinValidator()
         case .port:
             self.isValid = value.portValidator()
-
+            
         }
         
         
