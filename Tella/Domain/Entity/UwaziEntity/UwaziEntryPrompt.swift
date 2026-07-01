@@ -52,7 +52,7 @@ extension UwaziEntryPrompt {
     }
 }
 
-class CommonUwaziEntryPrompt: Hashable {
+class CommonUwaziEntryPrompt: Hashable, ObservableObject {
     
     var id: String?
     var type: UwaziEntityPropertyType = .unknown
