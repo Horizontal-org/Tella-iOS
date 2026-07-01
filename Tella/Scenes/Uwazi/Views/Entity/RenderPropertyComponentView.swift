@@ -13,7 +13,7 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     
     var prompt: any UwaziEntryPrompt
-    var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         
@@ -52,7 +52,7 @@ struct RenderPropertyComponentView: View {
                     EmptyView()
                 }
                 
-                if(prompt.shouldShowMandatoryError) {
+                if prompt.shouldShowMandatoryError {
                     UwaziEntityMandatoryTextView()
                 }
 
