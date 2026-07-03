@@ -53,8 +53,6 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityUnsupportedRequiredPart2Expl = "Uwazi_Entity_RequiredField_Unsupported_Part2_Expl"
     case uwaziEntityUnsupportedRequiredSave = "Uwazi_Entity_RequiredField_Unsupported_Save_Action"
 
-    
-    
     case uwaziMultiFileWidgetPrimaryDocuments = "Uwazi_Entity_MultiFile_PrimaryDocument"
     case uwaziMultiFileWidgetAttachManyPDFFiles = "Uwazi_Entity_MultiFile_AttachManyPDFFiles"
     case uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle = "Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle"
