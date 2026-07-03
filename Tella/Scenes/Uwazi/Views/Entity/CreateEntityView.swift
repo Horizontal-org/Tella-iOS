@@ -74,11 +74,6 @@ struct CreateEntityView: View {
             let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
             
             if !checkMandatoryFields {
-                if entityViewModel.hasUnsupportedRequiredProperties {
-                    showContactAdminConfirmationView()
-                    return
-                }
-                
                 entityViewModel.saveAnswersToEntityInstance()
                 navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
                                                           entityInstance: entityViewModel.entityInstance))
@@ -102,22 +97,6 @@ struct CreateEntityView: View {
                 
             }, didCancelAction: {
                 dismissViews()
-            })
-        }
-    }
-    
-    private func showContactAdminConfirmationView() {
-        let messageText = LocalizableUwazi.uwaziEntityUnsupportedRequiredPart1Expl.localized.addTwolines +
-        LocalizableUwazi.uwaziEntityUnsupportedRequiredPart2Expl.localized
-        
-        sheetManager.showBottomSheet() {
-            
-            ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityUnsupportedRequiredTitle.localized,
-                               msgText: messageText,
-                               actionText: LocalizableUwazi.uwaziEntityUnsupportedRequiredSave.localized.uppercased(),
-                               didConfirmAction: {
-                sheetManager.hide()
-                entityViewModel.saveEntityDraft()
             })
         }
     }

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 06/11/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -110,9 +110,9 @@ struct SummaryEntityView: View {
             
             
             TellaButtonView(title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitLaterAction.localized,
-                                      nextButtonAction: .action,
-                                      buttonType: .clear,
-                                      isValid: .constant(true)) {
+                            nextButtonAction: .action,
+                            buttonType: .clear,
+                            isValid: .constant(true)) {
                 
                 
                 summaryViewModel.submitLater()
@@ -121,11 +121,11 @@ struct SummaryEntityView: View {
             Spacer()
             
             TellaButtonView(title: LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized,
-                                      nextButtonAction: .action,
-                                      buttonType: .yellow,
-                                      isValid: .constant(true)) {
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            isValid: .constant(true)) {
                 
-                summaryViewModel.submitEntity()
+                submitEntity()
                 
             }
             
@@ -144,8 +144,30 @@ struct SummaryEntityView: View {
     private func dismissViews() {
         self.popTo(ViewClassType.uwaziView)
     }
+    
+    private func submitEntity() {
+        if summaryViewModel.hasUnsupportedRequiredProperties {
+            showContactAdminConfirmationView()
+            return
+        }
+        
+        summaryViewModel.submitEntity()
+    }
+    
+    private func showContactAdminConfirmationView() {
+        let messageText = LocalizableUwazi.uwaziEntityUnsupportedRequiredPart1Expl.localized.addTwolines + LocalizableUwazi.uwaziEntityUnsupportedRequiredPart2Expl.localized
+        
+        let content = ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityUnsupportedRequiredTitle.localized,
+                                         msgText: messageText,
+                                         actionText: LocalizableUwazi.uwaziEntityUnsupportedRequiredSave.localized.uppercased(),
+                                         shouldHideSheet: false) {
+            self.dismiss()
+            
+            summaryViewModel.saveEntityAsSubmissionError()
+        }
+        showBottomSheetView(content: content, tapToDismiss: false)
+    }
 }
-
 
 struct UwaziFileItems: View {
     
