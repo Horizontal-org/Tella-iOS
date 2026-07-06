@@ -24,6 +24,7 @@
 "LockUnlock_LockPinConfirm_Expl" = "Please enter your PIN one more time, just to be sure.";
 "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Please try again. Your PINs do not match.";
 "LockUnlock_UnlockPassword_Subhead" = "Enter your password to unlock";
+"LockUnlock_UnlockPassword_Action" = "Unlock";
 "LockUnlock_UnlockUpdatePassword_Subhead" = "Enter your password to change your lock method";
 "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword" = "Incorrect password, please try again";
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
@@ -332,6 +333,10 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
 "Uwazi_Entity_Action_Next" = "Next";
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
+"Uwazi_Entity_RequiredField_Unsupported_Title" = "Unsupported fields";
+"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "This entity contains required fields, which are not supported on Tella iOS.";
+"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "Please contact your organization for help. You can submit this entity from your Outbox once the problem has been resolved.";
+"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "I understand";
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
 "Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
 "Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";

@@ -2,8 +2,8 @@
 //  Validator.swift
 //  Tella
 //
-//   
-//  Copyright © 2021 HORIZONTAL. 
+//
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -29,7 +29,7 @@ struct Regex {
     static let portRegex = "^[0-9]{5}$"
 }
 
-    func validateRegex(value: String, pattern:String) -> Bool {
+func validateRegex(value: String, pattern:String) -> Bool {
     do {
         let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         return !regex.notMatchedIn(value: value)
@@ -39,7 +39,7 @@ struct Regex {
 }
 
 extension String {
-
+    
     func codeValidator() -> Bool {
         guard !self.isEmpty else {
             return false
@@ -57,7 +57,7 @@ extension String {
         }
         return true
     }
-
+    
     func textValidator() -> Bool {
         guard !self.isEmpty else {
             return false
@@ -77,7 +77,7 @@ extension String {
         }
         return true
     }
-
+    
     func usernameValidator() -> Bool {
         guard !self.isEmpty else {
             return false
@@ -87,7 +87,7 @@ extension String {
         }
         return true
     }
-
+    
     func folderNameValidator() -> Bool {
         guard !self.isEmpty else {
             return false
@@ -107,6 +107,44 @@ extension String {
         return true
     }
     
+    func formatIPAddressInput(shouldAutoAddDot: Bool = true) -> String {
+        let filtered = self.filter { $0.isNumber || $0 == "." }
+        
+        var result = ""
+        var currentOctet = ""
+        var dotCount = 0
+        
+        for char in filtered {
+            if char == "." {
+                guard !currentOctet.isEmpty, dotCount < 3 else { continue }
+                
+                result += currentOctet + "."
+                currentOctet = ""
+                dotCount += 1
+            } else {
+                let candidateOctet = currentOctet + String(char)
+                
+                guard candidateOctet.count <= 3,
+                      let value = Int(candidateOctet),
+                      value <= 255 else {
+                    continue
+                }
+                
+                currentOctet = candidateOctet
+                
+                if shouldAutoAddDot,
+                   currentOctet.count == 3,
+                   dotCount < 3 {
+                    result += currentOctet + "."
+                    currentOctet = ""
+                    dotCount += 1
+                }
+            }
+        }
+        
+        result += currentOctet
+        return result
+    }
     func pinValidator() -> Bool {
         guard !self.isEmpty else {
             return false
@@ -126,7 +164,5 @@ extension String {
         }
         return true
     }
-
-
 }
 

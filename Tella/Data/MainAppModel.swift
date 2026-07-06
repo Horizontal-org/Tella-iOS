@@ -157,6 +157,7 @@ class MainAppModel: ObservableObject {
         self.vaultFilesManager = nil
         self.encryptionService = nil
         self.tellaData = nil
+        self.nearbySharingServer?.resetFullServerState()
         self.nearbySharingServer = nil
         self.selectedTab = .home
         self.vaultManager.lock()

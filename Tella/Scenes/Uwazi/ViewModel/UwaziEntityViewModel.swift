@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 29/09/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -20,9 +20,9 @@ class UwaziEntityViewModel: ObservableObject {
     var templateName: String = ""
     
     @Published var entryPrompts: [any UwaziEntryPrompt] = []
- 
+    
     @Published var showingSuccessMessage : Bool = false
- 
+    
     @Published var uwaziEntityParser : UwaziEntityParser?
     @Published var shouldHideView : Bool = false
     @Published var entityFetcher: UwaziEntityFetcher? = nil
@@ -37,7 +37,7 @@ class UwaziEntityViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         self.addFilesViewModel = AddFilesViewModel(mainAppModel: mainAppModel)
-
+        
         let entityInstance = getInstanceById(entityId: entityInstanceId)
         let templateId  = templateId ?? entityInstance?.templateId
         
@@ -122,6 +122,10 @@ class UwaziEntityViewModel: ObservableObject {
             .store(in: &subscribers)
     }
     
+    var hasUnsupportedRequiredProperties: Bool {
+        entryPrompts.contains { ($0.required ?? false) && !$0.type.isRenderable }
+    }
+    
     func handleMandatoryProperties() -> Bool {
         let requiredPrompts = entryPrompts.filter { ($0.required ?? false) && $0.type.isRenderable }
         var hasMandatoryErrors = false
@@ -147,8 +151,8 @@ class UwaziEntityViewModel: ObservableObject {
             
             saveAnswersToEntityInstance()
             guard let entityInstance = uwaziEntityParser?.entityInstance else { return }
-
-             let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+            
+            let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
             if case .success = result {
                 self.shouldHideView = true
                 Toast.displayToast(message: LocalizableUwazi.draftEntitySaved.localized)

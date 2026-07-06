@@ -27,6 +27,8 @@ class LockViewModel: ObservableObject {
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int
+    @Published var isValidPassword: Bool = false
+
     var maxAttempts : Int
     
     private var subscribers = Set<AnyCancellable>()

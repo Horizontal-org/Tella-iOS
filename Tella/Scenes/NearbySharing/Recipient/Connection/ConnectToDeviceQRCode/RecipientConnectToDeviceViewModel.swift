@@ -42,9 +42,6 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
     private var networkChangeCancellable: AnyCancellable?
     private var senderScanCancellable: AnyCancellable?
     
-    // MARK: - Config
-    private let port: Int = 53320
-    
     // MARK: - Init
     init(certificateGenerator: CertificateGenerator, mainAppModel: MainAppModel) {
         self.certificateGenerator = certificateGenerator
@@ -130,7 +127,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             
             let connectionInfo = ConnectionInfo(
                 ipAddresses: ipAddresses,
-                port: self.port,
+                port: NearbySharingConfig.defaultPort,
                 certificateHash: certificateHash,
                 pin: pin,
                 protocolVersion: NearbySharingProtocolVersion.current,
@@ -141,7 +138,7 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
             
             self.listenToServerRegistrationEvents()
             self.nearbySharingServer?.startListening(
-                port: self.port,
+                port: NearbySharingConfig.defaultPort,
                 pin: pin,
                 clientIdentity: clientIdentity,
                 senderShowHash: connectionInfo.senderShowHash ?? false

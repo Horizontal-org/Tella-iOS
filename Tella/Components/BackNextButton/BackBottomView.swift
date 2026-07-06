@@ -17,7 +17,7 @@ struct BackBottomView: View {
     
     var body: some View {
         HStack {
-            BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
+            BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: .constant(true)) {
                 self.backAction?()
                 self.presentationMode.wrappedValue.dismiss()
             }

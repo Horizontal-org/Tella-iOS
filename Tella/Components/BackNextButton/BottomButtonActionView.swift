@@ -11,7 +11,7 @@ import SwiftUI
 
 struct BottomButtonActionView: View {
     let title: String
-    let isValid: Bool
+    let isValid: Binding<Bool>
     let action: (() -> Void)?
     
     var body: some View {
@@ -22,9 +22,9 @@ struct BottomButtonActionView: View {
             Text(title)
         }
         .font(.custom(Styles.Fonts.lightFontName, size: 16))
-        .foregroundColor(isValid ? Color.white : Color.gray)
+        .foregroundColor(isValid.wrappedValue ? Color.white : Color.gray)
         .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
-        .disabled(!isValid)
+        .disabled(!isValid.wrappedValue)
         .frame(height: .bottomButtonHeight)
 
     }
