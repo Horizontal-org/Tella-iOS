@@ -11,15 +11,12 @@
 "LockUnlock_Action_Back" = "Back";
 "LockUnlock_Action_Next" = "தொடர்";
 "LockUnlock_LockPasswordSet_Subhead" = "Enter your password";
-"LockUnlock_LockPasswordSet_Expl" = "• Use at least 6 characters.\
-• Avoid using passwords that can be guessed easily, such as “password.” \
-• The longer your password, the more secure it is.";
+"LockUnlock_LockPasswordSet_Expl" = "• Use at least 6 characters.• Avoid using passwords that can be guessed easily, such as “password.” • The longer your password, the more secure it is.";
 "LockUnlock_LockPasswordConfirm_Subhead" = "Confirm your password";
 "LockUnlock_LockPasswordConfirm_Expl" = "Please enter your password one more time, just to be sure.";
 "LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch" = "Please try again. Your passwords do not match.";
 "LockUnlock_LockPinSet_Subhead" = "Enter your PIN";
-"LockUnlock_LockPinSet_Expl" = "• Use at least 6 digits\
-• Avoid using numbers that can be guessed easily, such as your birthday.";
+"LockUnlock_LockPinSet_Expl" = "• Use at least 6 digits• Avoid using numbers that can be guessed easily, such as your birthday.";
 "LockUnlock_LockPinConfirm_Subhead" = "Confirm your PIN";
 "LockUnlock_LockPinConfirm_Expl" = "Please enter your PIN one more time, just to be sure.";
 "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Please try again. Your PINs do not match.";
@@ -103,9 +100,7 @@
 "Vault_CancelImportFile_SheetExpl" = "Your file will not be imported.";
 "Vault_CancelImportFile_Back_SheetAction" = "BACK";
 "Vault_CancelImportFile_CancelImport_SheetAction" = "CANCEL IMPORT";
-"Vault_EmptyAllFiles_Expl" = "You don’t have any files in Tella yet.\
-\
-Tap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
+"Vault_EmptyAllFiles_Expl" = "You don’t have any files in Tella yet.\\Tap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
 "Vault_EmptyFolder_Expl" = "This folder is empty! Tap the + button below to import a file or create a folder.";
 "Vault_FileAudio_UpdateSecondTime" = "%@s";
 "Recorder_TabBar" = "Rec";
@@ -127,13 +122,7 @@ Tap the “+” button below to import your first file, or go to the Camera or R
 "Recorder_RenameRecording_Cancel_SheetAction" = "CANCEL";
 "Recorder_RenameRecording_Save_SheetAction" = "SAVE";
 "Recorder_AudioRecordingSaved_Toast" = "The audio recording was saved to your Tella files.";
-"Recorder_DeniedAudioPermission_Expl" = "The Tella app does not have permission to access Microphone.\
-\
-If you want to record a voice, proceed in the following way:\
-1. Navigate to Tella app settings.\
-2. Enable permissions for Microphone.\
-3. Open the Tella app.\
-";
+"Recorder_DeniedAudioPermission_Expl" = "The Tella app does not have permission to access Microphone.\\If you want to record a voice, proceed in the following way:1. Navigate to Tella app settings.2. Enable permissions for Microphone.3. Open the Tella app.\"";
 "Recorder_DeniedAudioPermission_Action_Settings" = "அமைப்புகள்";
 "Recorder_DeniedAudioPermission_Action_Cancel" = "CANCEL";
 "Camera_TabBar" = "Camera";
@@ -147,13 +136,7 @@ If you want to record a voice, proceed in the following way:\
 "Camera_CancelEncrypting_SheetExpl" = "If you cancel, your file will be lost.";
 "Camera_CancelEncrypting_Delete_SheetAction" = "DELETE FILE";
 "Camera_CancelEncrypting_Back_SheetAction" = "BACK";
-"Camera_DeniedCameraPermission_Expl" = "The Tella app does not have permission to access the Camera and the Microphone.\
-\
-If you want to take a picture or a video, proceed in the following way:\
-1. Navigate to your phone's settings and find the Tella app.\
-2. Enable permissions for Camera and Microphone.\
-3. Open the Tella app.\
-";
+"Camera_DeniedCameraPermission_Expl" = "The Tella app does not have permission to access the Camera and the Microphone.\\If you want to take a picture or a video, proceed in the following way:1. Navigate to your phone's settings and find the Tella app.2. Enable permissions for Camera and Microphone.3. Open the Tella app.\"";
 "Camera_DeniedCameraPermission_Action_Settings" = "அமைப்புகள்";
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "அமைப்புகள்";
@@ -274,9 +257,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_AllReportDeleted_Toast" = "Your submitted reports have been cleared.";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
 "Settings_SettFeedback_AppBar" = "Feedback";
-"Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\
-\
-This feedback is anonymous, so make sure to include contact information if you want a response from us.";
+"Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\\This feedback is anonymous, so make sure to include contact information if you want a response from us.";
 "Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
 "Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk.";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
@@ -421,13 +402,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
 "Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
 "Uwazi_Relationship_SearchBar_Title" = "Search";
-"Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\
-\
-If you want to add a picture or a video from the photo library, proceed in the following way:\
-1. Navigate to your phone's settings and find the Tella app.\
-2. Enable full access permission for Photos.\
-3. Open the Tella app.\
-";
+"Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\\If you want to add a picture or a video from the photo library, proceed in the following way:1. Navigate to your phone's settings and find the Tella app.2. Enable full access permission for Photos.3. Open the Tella app.\"";
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "அமைப்புகள்";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
@@ -517,10 +492,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
 "Settings_SettLang_Bangla_Expl" = "Bangla";
 "Vault_DeniedPhotoLibraryPermission_SheetTitle" = "Permission required";
-"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella does not have permission to access your photo library. If you want to add a photo or video from your device, please:\
-1. Navigate to your phone's settings\
-2. Find the Tella app\
-3. Enable photo permissions";
+"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella does not have permission to access your photo library. If you want to add a photo or video from your device, please:1. Navigate to your phone's settings2. Find the Tella app3. Enable photo permissions";
 "Vault_DeniedPhotosPermission_Settings_SheetSelect" = "Phone Settings";
 "Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancel";
 "Vault_LimitedPhotoLibrary_AppBar" = "Import files";
@@ -609,9 +581,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_Server_ShareVerification_Title" = "Share verification information";
 "Setting_Server_ShareVerification_Expl" = "Include information about your device and location when sending reports, to make your files verifiable. ";
 "Setting_Server_BackgroundUpload_Title" = "Background upload";
-"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\
-\
-WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\\WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
 "Setting_Server_AutoReport_Title" = "Auto-report";
 "Setting_Server_AutoReport_Expl" = "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.";
 "Setting_Server_AutoDelete_Title" = "தானாக நீக்கு";
@@ -744,23 +714,23 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Setting_Server_ShowProjectURL_SheetWarning" = "WARNING: This setting is permanent. To change it, you will have to delete this Connection and start over.";
 "Setting_Server_HideURL_Action" = "HIDE URL";
 "Setting_Server_ShowURL_Action" = "SHOW URL";
-"LockUnlock_UnlockPassword_Action" = "Unlock";
-"Uwazi_Entity_RequiredField_Unsupported_Title" = "Unsupported fields";
-"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "This entity contains required fields, which are not supported on Tella iOS.";
-"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "Please contact your organization for help. You can submit this entity from your Outbox once the problem has been resolved.";
-"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "I understand";
-"NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
-"NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
-"NearbySharing_Step1_ScanSenderQr" = "Step 1: Scan the sender’s QR code";
-"NearbySharing_Step2_ShowRecipientQr" = "Step 2: Show this QR code for the sender to scan";
-"NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
-"NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
-"NearbySharing_ContinueToStep2" = "  Continue to step 2";
-"NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
-"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "The sender is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
-"NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
-"NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
-"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
-"NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
+"LockUnlock_UnlockPassword_Action" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Title" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "";
+"NearbySharing_Step1_ShowSenderQr" = "";
+"NearbySharing_Step2_ScanRecipientQr" = "";
+"NearbySharing_Step1_ScanSenderQr" = "";
+"NearbySharing_Step2_ShowRecipientQr" = "";
+"NearbySharing_ShowSenderQrCode" = "";
+"NearbySharing_ScanSenderQrCode" = "";
+"NearbySharing_ContinueToStep2" = "";
+"NearbySharing_IncompatibleVersion_SheetTitle" = "";
+"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "";
+"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "";
+"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "";
+"NearbySharing_Verification_Step2_ConfirmSenderHash" = "";
+"NearbySharing_Verification_Step1_ConfirmSenderHash" = "";
+"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "";
+"NearbySharing_Verification_Action_ConfirmContinue" = "";
