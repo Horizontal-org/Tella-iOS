@@ -11,15 +11,12 @@
 "LockUnlock_Action_Back" = "返回";
 "LockUnlock_Action_Next" = "下一步";
 "LockUnlock_LockPasswordSet_Subhead" = "请输入您的密码";
-"LockUnlock_LockPasswordSet_Expl" = "• 使用至少 6 个字符。\
-• 避免使用容易猜到的密码，例如 password。\
-• 密码越长，安全性越高。";
+"LockUnlock_LockPasswordSet_Expl" = "• 使用至少 6 个字符。• 避免使用容易猜到的密码，例如 password。• 密码越长，安全性越高。";
 "LockUnlock_LockPasswordConfirm_Subhead" = "确认密码";
 "LockUnlock_LockPasswordConfirm_Expl" = "请再次输入您的密码，以确认无误。";
 "LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch" = "请重试。您的密码不匹配。";
 "LockUnlock_LockPinSet_Subhead" = "确认 PIN 码";
-"LockUnlock_LockPinSet_Expl" = "• 使用至少 6 位数字\
-• 避免使用容易猜到的数字，例如您的生日。";
+"LockUnlock_LockPinSet_Expl" = "• 使用至少 6 位数字• 避免使用容易猜到的数字，例如您的生日。";
 "LockUnlock_LockPinConfirm_Subhead" = "确认 PIN 码";
 "LockUnlock_LockPinConfirm_Expl" = "请再次输入 PIN 码，以确认无误。";
 "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "请重试，PIN 码不匹配。";
@@ -103,9 +100,7 @@
 "Vault_CancelImportFile_SheetExpl" = "您的文件将不会被导入。";
 "Vault_CancelImportFile_Back_SheetAction" = "返回";
 "Vault_CancelImportFile_CancelImport_SheetAction" = "取消导入";
-"Vault_EmptyAllFiles_Expl" = "Tella 中还没有任何文件。\
-\
-点击下方的 + 按钮导入您的第一个文件，或前往相机或录音机创建文件，也可创建文件夹来整理您的文件。";
+"Vault_EmptyAllFiles_Expl" = "Tella 中还没有任何文件。\\点击下方的 + 按钮导入您的第一个文件，或前往相机或录音机创建文件，也可创建文件夹来整理您的文件。";
 "Vault_EmptyFolder_Expl" = "此文件夹为空！点击下方的 + 按钮以导入文件或创建文件夹。";
 "Vault_FileAudio_UpdateSecondTime" = "%@ 秒";
 "Recorder_TabBar" = "录音";
@@ -127,13 +122,7 @@
 "Recorder_RenameRecording_Cancel_SheetAction" = "取消";
 "Recorder_RenameRecording_Save_SheetAction" = "保存";
 "Recorder_AudioRecordingSaved_Toast" = "音频录音已保存为 Tella 文件。";
-"Recorder_DeniedAudioPermission_Expl" = "Tella 应用没有访问麦克风的权限。\
-\
-如果想要录制语音，请按照以下步骤操作：\
-1. 前往 Tella 应用设置。\
-2. 启用麦克风权限。\
-3. 打开 Tella 应用。\
-";
+"Recorder_DeniedAudioPermission_Expl" = "Tella 应用没有访问麦克风的权限。\\如果想要录制语音，请按照以下步骤操作：1. 前往 Tella 应用设置。2. 启用麦克风权限。3. 打开 Tella 应用。\"";
 "Recorder_DeniedAudioPermission_Action_Settings" = "设置";
 "Recorder_DeniedAudioPermission_Action_Cancel" = "取消";
 "Camera_TabBar" = "相机";
@@ -147,13 +136,7 @@
 "Camera_CancelEncrypting_SheetExpl" = "如果取消，您的文件将丢失。";
 "Camera_CancelEncrypting_Delete_SheetAction" = "删除文件";
 "Camera_CancelEncrypting_Back_SheetAction" = "返回";
-"Camera_DeniedCameraPermission_Expl" = "Tella 应用没有访问相机和麦克风的权限。\
-\
-如果想要拍照或录视频，请按以下步骤操作：\
-1. 打开手机设置，找到 Tella 应用。\
-2. 启用相机和麦克风权限。\
-3. 打开 Tella 应用。\
-";
+"Camera_DeniedCameraPermission_Expl" = "Tella 应用没有访问相机和麦克风的权限。\\如果想要拍照或录视频，请按以下步骤操作：1. 打开手机设置，找到 Tella 应用。2. 启用相机和麦克风权限。3. 打开 Tella 应用。\"";
 "Camera_DeniedCameraPermission_Action_Settings" = "设置";
 "Camera_DeniedCameraPermission_Action_Cancel" = "取消";
 "Settings_Sett_AppBar" = "设置";
@@ -274,9 +257,7 @@
 "Reports_AllReportDeleted_Toast" = "您提交的报告已被清除。";
 "Settings_SettLang_Tamil_Expl" = "泰米尔语";
 "Settings_SettFeedback_AppBar" = "反馈";
-"Settings_SettFeedback_Expl" = "如果遇到错误、需要新功能，或有其他任何反馈，请告诉我们。\
-\
-这些反馈是匿名的，如果希望我们回复，请务必提供联系方式。";
+"Settings_SettFeedback_Expl" = "如果遇到错误、需要新功能，或有其他任何反馈，请告诉我们。\\这些反馈是匿名的，如果希望我们回复，请务必提供联系方式。";
 "Settings_SettFeedback_EnableFeedback_Title" = "启用反馈分享";
 "Settings_SettFeedback_EnableFeedback_Expl" = "警告：使用此功能可能向网络监视者暴露您正在使用 Tella 的事实。请仅在确认可承受这种风险时，开启此功能。";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "了解更多。";
@@ -421,13 +402,7 @@
 "Uwazi_Entity_Relationship_MultipleConnections" = "已连接实体";
 "Uwazi_Relationship_List_Expl" = "搜索或选择要连接到此属性的实体。";
 "Uwazi_Relationship_SearchBar_Title" = "搜索";
-"Vault_LimitedPhotoLibraryPermission_Expl" = "Tella 应用对照片图库的访问权限受限。\
-\
-如果想从照片图库添加图片或视频，请按以下步骤操作：\
-1. 进入手机设置，找到 Tella 应用。\
-2. 为“照片”启用完全访问权限。\
-3. 打开 Tella 应用。\
-";
+"Vault_LimitedPhotoLibraryPermission_Expl" = "Tella 应用对照片图库的访问权限受限。\\如果想从照片图库添加图片或视频，请按以下步骤操作：1. 进入手机设置，找到 Tella 应用。2. 为“照片”启用完全访问权限。3. 打开 Tella 应用。\"";
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "设置";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "取消";
 "Setting_SettServer_GDrive" = "Google 云端硬盘";
@@ -494,7 +469,7 @@
 "Vault_EditAudio_Toast_Message" = "音频时长不足 3 秒，无法剪辑。";
 "Vault_Copy_Text" = "-复制";
 "Setting_SettServer_Dropbox" = "DROPBOX";
-"Setting_Server_Create_Folder_Error" = "此字段不应仅包含空格、/ 和 \ 字符。";
+"Setting_Server_Create_Folder_Error" = "此字段不应仅包含空格、/ 和  字符。";
 "Settings_Server_Dropbox_Success_Message" = "前往 DROPBOX";
 "Dropbox_AppBar" = "Dropbox";
 "Dropbox_ConnectionExpired_SheetTitle" = "您与 Dropbox 的连接已过期";
@@ -517,10 +492,7 @@
 "Vault_EditVideo_Toast_Message" = "视频时长不足 3 秒，无法剪辑。";
 "Settings_SettLang_Bangla_Expl" = "孟加拉语";
 "Vault_DeniedPhotoLibraryPermission_SheetTitle" = "需要权限";
-"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella 没有权限访问您的照片图库。如果想从设备中添加照片或视频，请：\
-1. 进入手机设置\
-2. 找到 Tella 应用\
-3. 启用照片权限";
+"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella 没有权限访问您的照片图库。如果想从设备中添加照片或视频，请：1. 进入手机设置2. 找到 Tella 应用3. 启用照片权限";
 "Vault_DeniedPhotosPermission_Settings_SheetSelect" = "手机设置";
 "Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "取消";
 "Vault_LimitedPhotoLibrary_AppBar" = "导入文件";
@@ -609,9 +581,7 @@
 "Setting_Server_ShareVerification_Title" = "分享验证信息";
 "Setting_Server_ShareVerification_Expl" = "在发送报告时，包含有关设备及位置的信息，以使您的文件可验证。";
 "Setting_Server_BackgroundUpload_Title" = "后台上传";
-"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\
-\
-WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
+"Setting_Server_BackgroundUpload_Expl" = "Continue uploading reports while doing other tasks or if you exit Tella.\\WARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.";
 "Setting_Server_AutoReport_Title" = "自动报告";
 "Setting_Server_AutoReport_Expl" = "每当您在 Tella 中拍摄照片、录制视频或音频时，系统将自动生成一份包含该文件的报告，并将其上传到此项目。";
 "Setting_Server_AutoDelete_Title" = "自动删除";
@@ -744,23 +714,23 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Setting_Server_ShowProjectURL_SheetWarning" = "WARNING: This setting is permanent. To change it, you will have to delete this Connection and start over.";
 "Setting_Server_HideURL_Action" = "HIDE URL";
 "Setting_Server_ShowURL_Action" = "SHOW URL";
-"LockUnlock_UnlockPassword_Action" = "解锁";
-"Uwazi_Entity_RequiredField_Unsupported_Title" = "Unsupported fields";
-"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "This entity contains required fields, which are not supported on Tella iOS.";
-"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "Please contact your organization for help. You can submit this entity from your Outbox once the problem has been resolved.";
-"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "我明白";
-"NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
-"NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
-"NearbySharing_Step1_ScanSenderQr" = "Step 1: Scan the sender’s QR code";
-"NearbySharing_Step2_ShowRecipientQr" = "Step 2: Show this QR code for the sender to scan";
-"NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
-"NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
-"NearbySharing_ContinueToStep2" = "  Continue to step 2";
-"NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
-"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "The sender is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
-"NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
-"NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
-"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
-"NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
+"LockUnlock_UnlockPassword_Action" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Title" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "";
+"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "";
+"NearbySharing_Step1_ShowSenderQr" = "";
+"NearbySharing_Step2_ScanRecipientQr" = "";
+"NearbySharing_Step1_ScanSenderQr" = "";
+"NearbySharing_Step2_ShowRecipientQr" = "";
+"NearbySharing_ShowSenderQrCode" = "";
+"NearbySharing_ScanSenderQrCode" = "";
+"NearbySharing_ContinueToStep2" = "";
+"NearbySharing_IncompatibleVersion_SheetTitle" = "";
+"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "";
+"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "";
+"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "";
+"NearbySharing_Verification_Step2_ConfirmSenderHash" = "";
+"NearbySharing_Verification_Step1_ConfirmSenderHash" = "";
+"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "";
+"NearbySharing_Verification_Action_ConfirmContinue" = "";
