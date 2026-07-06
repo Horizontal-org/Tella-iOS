@@ -24,7 +24,6 @@
 "LockUnlock_LockPinConfirm_Expl" = "Please enter your PIN one more time, just to be sure.";
 "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch" = "Please try again. Your PINs do not match.";
 "LockUnlock_UnlockPassword_Subhead" = "Enter your password to unlock";
-"LockUnlock_UnlockPassword_Action" = "Unlock";
 "LockUnlock_UnlockUpdatePassword_Subhead" = "Enter your password to change your lock method";
 "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword" = "Incorrect password, please try again";
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
@@ -333,10 +332,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
 "Uwazi_Entity_Action_Next" = "Next";
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
-"Uwazi_Entity_RequiredField_Unsupported_Title" = "Unsupported fields";
-"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "This entity contains required fields, which are not supported on Tella iOS.";
-"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "Please contact your organization for help. You can submit this entity from your Outbox once the problem has been resolved.";
-"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "I understand";
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
 "Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
 "Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
@@ -641,18 +636,9 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_Main_LearnMore" = "Learn more about Nearby Sharing";
 "NearbySharing_ConnectToDevice" = "Connect to device";
 "NearbySharing_ScanCode" = "Scan the recipient’s QR code";
-"NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
-"NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
 "NearbySharing_ShowQrCode" = "Show this QR code for the sender to scan";
-"NearbySharing_Step1_ScanSenderQr" = "Step 1: Scan the sender’s QR code";
-"NearbySharing_Step2_ShowRecipientQr" = "Step 2: Show this QR code for the sender to scan";
-"NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
-"NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
-
 "NearbySharing_HavingTrouble" = "Having trouble with the QR code?";
 "NearbySharing_ConnectManually" = "Connect manually";
-"NearbySharing_ContinueToStep2" = "  Continue to step 2";
-
 "NearbySharing_EnterDevice_Information" = "Enter the recipient’s device information to find it on the network";
 "NearbySharing_IpAddress" = "IP address";
 "NearbySharing_Pin" = "PIN";
@@ -677,14 +663,6 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "NearbySharing_ConnectionFailed_SheetTitle" = "Connection failed";
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
-"NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
-"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "The sender is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
-"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
-"NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
-"NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
-"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
-"NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
 "NearbySharing_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";
@@ -766,3 +744,23 @@ WARNING: If enabled, Tella will remain unlocked until all reports are fully uplo
 "Setting_Server_ShowProjectURL_SheetWarning" = "WARNING: This setting is permanent. To change it, you will have to delete this Connection and start over.";
 "Setting_Server_HideURL_Action" = "HIDE URL";
 "Setting_Server_ShowURL_Action" = "SHOW URL";
+"LockUnlock_UnlockPassword_Action" = "Unlock";
+"Uwazi_Entity_RequiredField_Unsupported_Title" = "Unsupported fields";
+"Uwazi_Entity_RequiredField_Unsupported_Part1_Expl" = "This entity contains required fields, which are not supported on Tella iOS.";
+"Uwazi_Entity_RequiredField_Unsupported_Part2_Expl" = "Please contact your organization for help. You can submit this entity from your Outbox once the problem has been resolved.";
+"Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "I understand";
+"NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
+"NearbySharing_Step2_ScanRecipientQr" = "Step 2: Scan the recipient’s QR code";
+"NearbySharing_Step1_ScanSenderQr" = "Step 1: Scan the sender’s QR code";
+"NearbySharing_Step2_ShowRecipientQr" = "Step 2: Show this QR code for the sender to scan";
+"NearbySharing_ShowSenderQrCode" = "Show this QR code for the recipient to scan";
+"NearbySharing_ScanSenderQrCode" = "Scan the sender's QR code";
+"NearbySharing_ContinueToStep2" = "  Continue to step 2";
+"NearbySharing_IncompatibleVersion_SheetTitle" = "Connection failed";
+"NearbySharing_Sender_IncompatibleVersion_SheetExpl" = "The recipient is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
+"NearbySharing_Recipient_IncompatibleVersion_SheetExpl" = "The sender is using an outdated version of Tella. Update their Tella to the latest version to enable this connection.";
+"NearbySharing_Verification_Step1_ConfirmRecipientHash" = "Step 1: Confirm recipient hash";
+"NearbySharing_Verification_Step2_ConfirmSenderHash" = "Step 2: Confirm sender hash";
+"NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
+"NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
+"NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
