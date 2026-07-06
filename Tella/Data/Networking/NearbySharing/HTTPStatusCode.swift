@@ -41,6 +41,8 @@ enum ServerMessage: String {
     case transferNotFound = "Transfer not found"
     case nonceZeroLength = "nonce is of length zero"
     case nonceReuse = "nonce has already been seen before"
+    case notFound = "Not found"
+    case unsupportedVersion = "Unsupported version"
 }
 
 struct ServerStatus : Error {

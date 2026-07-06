@@ -34,9 +34,8 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
 
     func makeNearbySharingLocal() -> URLSessionConfiguration {
         let config = URLSessionConfiguration.ephemeral
-        config.waitsForConnectivity = false
+        config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 30
-        config.allowsCellularAccess = false
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         return config

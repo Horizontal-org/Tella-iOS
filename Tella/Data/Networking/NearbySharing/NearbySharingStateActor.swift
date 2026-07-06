@@ -18,6 +18,7 @@ actor NearbySharingStateActor {
     var pendingRegisterConnection: NWConnection?
     var pendingRegisterResponse: Bool?
     var pendingRegisterRequest: HTTPRequest?
+    var pendingPingConnection: NWConnection?
     var pendingUploadConnection: NWConnection?
     
     /// Wrong-PIN attempts per registration nonce
@@ -55,6 +56,7 @@ actor NearbySharingStateActor {
         state.reset()
         pendingRegisterConnection = nil
         pendingRegisterRequest = nil
+        pendingPingConnection = nil
         pendingUploadConnection = nil
         pendingRegisterResponse = nil
         registerPinFailuresByNonce.removeAll()
@@ -68,10 +70,17 @@ actor NearbySharingStateActor {
     
     // MARK: - Register
     
+    var senderShowHash = false
+    
+    func setSenderShowHash(_ value: Bool) { senderShowHash = value }
+    func shouldSenderShowHash() -> Bool { senderShowHash }
+    
     func setPin(_ pin: String) { state.pin = pin }
     func pinMatches(_ pin: String) -> Bool { state.pin == pin }
     func markManualConnection() { state.isUsingManualConnection = true }
     func isManualConnection() -> Bool { state.isUsingManualConnection }
+    func markReceiverHashConfirmed() { state.receiverHashConfirmed = true }
+    func isReceiverHashConfirmed() -> Bool { state.receiverHashConfirmed }
     
     func hasSession() -> Bool { state.session != nil }
     
@@ -112,6 +121,10 @@ actor NearbySharingStateActor {
         pendingRegisterRequest = request
     }
     
+    func hasPendingRegister() -> Bool {
+        pendingRegisterConnection != nil && pendingRegisterRequest != nil
+    }
+    
     func getPendingRegister() -> (NWConnection, HTTPRequest)? {
         guard let connection = pendingRegisterConnection, let request = pendingRegisterRequest else { return nil }
         pendingRegisterConnection = nil
@@ -123,6 +136,29 @@ actor NearbySharingStateActor {
         let response = pendingRegisterResponse
         pendingRegisterResponse = nil
         return response
+    }
+    
+    func clearPendingRegistration() {
+        pendingRegisterConnection = nil
+        pendingRegisterRequest = nil
+        pendingRegisterResponse = nil
+        pendingPingConnection = nil
+        state.receiverHashConfirmed = false
+    }
+    
+    // MARK: - Ping
+    
+    func setPendingPing(connection: NWConnection) {
+        pendingPingConnection = connection
+    }
+    
+    func hasPendingPing() -> Bool {
+        pendingPingConnection != nil
+    }
+    
+    func getPendingPingConnection() -> NWConnection? {
+        defer { pendingPingConnection = nil }
+        return pendingPingConnection
     }
     
     func savePendingRegisterResponse(accept: Bool) {

@@ -12,9 +12,15 @@ import Combine
 
 struct SenderConnectToDeviceView: View {
     
+    enum ConnectStep {
+        case showQRCode
+        case scanQRCode
+    }
+    
     @StateObject var viewModel: SenderConnectToDeviceViewModel
     @State var isBottomSheetShown : Bool = false
     @State var startScanning = PassthroughSubject<Bool, Never>()
+    @State var step: ConnectStep = .showQRCode
     
     var body: some View {
         ZStack {
@@ -36,9 +42,22 @@ struct SenderConnectToDeviceView: View {
     var contentView: some View {
         VStack(alignment: .center, spacing: 12) {
             Spacer()
-            CustomText(LocalizableNearbySharing.scanCode.localized, style: .heading1Style)
-            qrCodeView
-                .padding(.bottom, 28)
+            switch step {
+            case .showQRCode:
+                CustomText(LocalizableNearbySharing.step1ShowSenderQr.localized,
+                           style: .heading1Style,
+                           alignment: .center)
+                qrCodeStateView
+                    .padding(.bottom, 28)
+            case .scanQRCode:
+                CustomText(LocalizableNearbySharing.step2ScanRecipientQr.localized,
+                           style: .heading1Style,
+                           alignment: .center)
+                qrCodeScannerView
+                    .padding(.bottom, 28)
+            }
+            continueToStep2Button
+            
             CustomText(LocalizableNearbySharing.havingTrouble.localized, style: .body1Style)
             connectManuallyButton
             Spacer()
@@ -52,7 +71,38 @@ struct SenderConnectToDeviceView: View {
                              rightButtonType: .none)
     }
     
-    var qrCodeView: some View {
+    @ViewBuilder
+    var qrCodeStateView: some View {
+        switch viewModel.qrCodeState {
+        case .loading:
+            CircularActivityIndicatory(isTransparent: true)
+                .frame(width: 240, height: 240)
+        case .loaded(let qrImage):
+            qrCodeImageView(qrImage: qrImage)
+        case .error(let error):
+            CustomText(error, style: .body1Style)
+                .frame(width: 240, height: 240)
+        case .none:
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    func qrCodeImageView(qrImage: UIImage) -> some View {
+        Image(uiImage: qrImage)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 215, height: 215)
+            .padding(.all, 16)
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Styles.Colors.yellow, lineWidth: 8)
+            )
+    }
+    
+    var qrCodeScannerView: some View {
         ZStack{
             QRCodeScannerView(scannedCode: $viewModel.scannedCode,startScanning: startScanning)
                 .cornerRadius(12)
@@ -71,6 +121,21 @@ struct SenderConnectToDeviceView: View {
         .padding([.leading, .trailing], 80)
     }
     
+    @ViewBuilder
+    var continueToStep2Button: some View {
+        if step == .showQRCode {
+            TellaButtonView(title: LocalizableNearbySharing.continueToStep2.localized.uppercased(),
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            isValid: .constant(true)) {
+                step = .scanQRCode
+            }
+                            .padding([.leading, .trailing], 20)
+            
+            Spacer()
+        }
+    }
+    
     private func showBottomSheetError() {
         isBottomSheetShown = true
         let content = ConnectionFailedView( tryAction:  {
@@ -80,10 +145,40 @@ struct SenderConnectToDeviceView: View {
         self.showBottomSheetView(content: content, isPresented: $isBottomSheetShown)
     }
     
+    private func showIncompatibleVersionSheet() {
+        isBottomSheetShown = true
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.incompatibleVersionTitle.localized,
+            msgText: LocalizableNearbySharing.senderIncompatibleVersionExpl.localized,
+            actionText: LocalizableCommon.commonActionOk.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    isBottomSheetShown = false
+                    popTo(ViewClassType.nearbySharingMainView)
+                }
+            }
+        )
+        showBottomSheetView(content: content, isPresented: $isBottomSheetShown, tapToDismiss: false)
+    }
+    
     private func handleViewState(state: SenderConnectToDeviceViewAction) {
         switch state {
         case .showBottomSheetError:
             showBottomSheetError()
+        case .showIncompatibleVersion:
+            showIncompatibleVersionSheet()
+        case .showSenderHashVerification(let connectionInfo):
+            guard let senderHash = viewModel.clientCertificateHash else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .sender,
+                nearbySharingRepository: viewModel.nearbySharingRepository,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acknowledgeOnly),
+                certificateHashToDisplay: senderHash
+            )
+            navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSendFiles:
             guard let session = viewModel.session else { return }
             let viewModel = SenderPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel,

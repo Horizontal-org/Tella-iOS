@@ -63,12 +63,6 @@ struct RenderPropertyComponentView: View {
     
     private func shouldRenderPrompt(forType type: String) -> Bool {
         guard let propertyType = UwaziEntityPropertyType(rawValue: type) else { return false }
-        
-        switch propertyType {
-        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
-            return true
-        default:
-            return false
-        }
+        return propertyType.isRenderable
     }
 }

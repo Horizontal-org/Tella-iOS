@@ -53,7 +53,9 @@ struct LockConfirmPinView: View {
     }
     
     func updatePin() {
-        lockViewModel.updateKeys(passwordTypeEnum: .tellaPin)
+        guard lockViewModel.updateKeys(passwordTypeEnum: .tellaPin) else {
+            return
+        }
         lockViewModel.shouldDismiss.send(true)
     }
 }

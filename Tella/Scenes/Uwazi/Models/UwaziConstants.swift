@@ -33,6 +33,20 @@ enum UwaziEntityPropertyType: String, CodingKey {
     case dataRelationship = "relationship"
 }
 
+extension UwaziEntityPropertyType {
+    var isRenderable: Bool {
+        switch self {
+        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect,
+             .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider,
+             .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
+            return true
+            
+        default:
+            return false
+        }
+    }
+}
+
 struct UwaziEntityMetadataKeys {
     static let attachments = "attachments"
     static let documents = "documents"

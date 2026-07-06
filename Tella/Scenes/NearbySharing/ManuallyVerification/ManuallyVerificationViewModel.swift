@@ -32,20 +32,32 @@ class ManuallyVerificationViewModel: ObservableObject {
     var connectionInfo: ConnectionInfo
     var mainAppModel: MainAppModel
     var nearbySharingServer: NearbySharingServer?
+    var verificationRole: NearbySharingVerificationRole
+    var certificateHashToDisplay: String
     
     private var subscribers = Set<AnyCancellable>()
     
     init(participant: NearbySharingParticipant,
          nearbySharingRepository: NearbySharingRepository? = nil,
          connectionInfo: ConnectionInfo,
-         mainAppModel: MainAppModel) {
+         mainAppModel: MainAppModel,
+         verificationRole: NearbySharingVerificationRole,
+         certificateHashToDisplay: String? = nil) {
         self.participant = participant
         self.nearbySharingRepository = nearbySharingRepository
         self.connectionInfo = connectionInfo
         self.mainAppModel = mainAppModel
         self.nearbySharingServer = mainAppModel.nearbySharingServer
+        self.verificationRole = verificationRole
+        self.certificateHashToDisplay = certificateHashToDisplay
+        ?? connectionInfo.certificateHash
+        ?? ""
         
-        updateButtonsState(state: .initial)
+        if verificationRole.isSenderHash && participant == .sender {
+            updateButtonsState(state: .waiting)
+        } else {
+            updateButtonsState(state: .initial)
+        }
     }
     
     // MARK: - Observers
@@ -59,23 +71,72 @@ class ManuallyVerificationViewModel: ObservableObject {
         serverEventsCancellable?.cancel()
         serverEventsCancellable = nil
     }
-
+    
+    var stepTitle: String {
+        verificationRole.stepTitle(participant: participant)
+    }
+    
     func updateButtonsState(state: ManuallyVerificationState) {
+        let isInitial = state == .initial
+        shouldEnableConfirmButton = isInitial
         
-        let result = state == .initial
-        
-        switch participant {
-        case .sender:
-            shouldEnableConfirmButton = result
-            confirmButtonTitle = result ? LocalizableNearbySharing.verificationConfirm.localized : LocalizableNearbySharing.verificationWaitingRecipient.localized
-        case .recipient:
-            shouldEnableConfirmButton = result
-            confirmButtonTitle = result ? LocalizableNearbySharing.verificationConfirm.localized: LocalizableNearbySharing.verificationWaitingSender.localized
+        if isInitial {
+            confirmButtonTitle = verificationRole.isFinalStep(participant: participant)
+            ? LocalizableNearbySharing.verificationConfirm.localized
+            : LocalizableNearbySharing.verificationConfirmContinue.localized
+        } else {
+            confirmButtonTitle = participant == .sender
+            ? LocalizableNearbySharing.verificationWaitingRecipient.localized
+            : LocalizableNearbySharing.verificationWaitingSender.localized
         }
     }
     
     func confirmAction() {
-        participant == .recipient ? acceptRegisterRequest() : register()
+        switch verificationRole {
+        case .receiverHash(let action):
+            switch action {
+            case .sendRegister:
+                if participant == .sender {
+                    updateButtonsState(state: .waiting)
+                    nearbySharingRepository?.waitForManualPingSenderShowHash()
+                        .receive(on: DispatchQueue.main)
+                        .sink(receiveCompletion: { [weak self] completion in
+                            guard let self else { return }
+                            if case .failure = completion {
+                                self.senderViewAction = .showBottomSheetError
+                            }
+                        }, receiveValue: { [weak self] senderShowHash in
+                            guard let self else { return }
+                            self.connectionInfo.senderShowHash = senderShowHash
+                            self.register()
+                            if senderShowHash {
+                                self.senderViewAction = .showSenderHashVerification(connectionInfo: self.connectionInfo)
+                            }
+                        })
+                        .store(in: &subscribers)
+                } else {
+                    acceptRegisterRequest()
+                }
+            case .acceptPendingRegistration:
+                acceptRegisterRequest()
+            case .confirmReceiverHash:
+                nearbySharingServer?.confirmReceiverHashVerification()
+                updateButtonsState(state: .waiting)
+            case .acknowledgeOnly:
+                updateButtonsState(state: .waiting)
+            }
+        case .senderHash(let action):
+            switch action {
+            case .sendRegister:
+                register()
+            case .acceptPendingRegistration:
+                acceptRegisterRequest()
+            case .acknowledgeOnly:
+                updateButtonsState(state: .waiting)
+            case .confirmReceiverHash:
+                break
+            }
+        }
     }
     
     func discardAction() {
@@ -83,12 +144,14 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     private func discardSenderRegisterRequest() {
+        nearbySharingServer?.discardPendingPing()
         self.nearbySharingServer?.respondToRegistrationRequest(accept: false)
         self.nearbySharingServer?.resetServerState()
         recipientViewAction = .discardAndStartOver
     }
     
     private func discardRegisterRequest() {
+        nearbySharingRepository?.cancelManualPing()
         senderViewAction = .discardAndStartOver
     }
     
@@ -97,7 +160,7 @@ class ManuallyVerificationViewModel: ObservableObject {
         let registerRequest = RegisterRequest(pin: connectionInfo.pin,
                                               nonce: nonce)
         self.updateButtonsState(state: .waiting)
-
+        
         self.nearbySharingRepository?.register(connectionInfo: connectionInfo, registerRequest: registerRequest)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
@@ -117,10 +180,10 @@ class ManuallyVerificationViewModel: ObservableObject {
                 }
             }).store(in: &self.subscribers)
     }
-
+    
     private func acceptRegisterRequest() {
         nearbySharingServer?.respondToRegistrationRequest(accept: true)
-        self.updateButtonsState(state: .waiting)
+        updateButtonsState(state: .waiting)
     }
     
     func listenToServerEvents() {
@@ -133,6 +196,12 @@ class ManuallyVerificationViewModel: ObservableObject {
                 case .didRegister(let success, let manual):
                     if manual {
                         self.recipientViewAction = success ? .showReceiveFiles : .errorOccured
+                    }
+                case .senderCertificateVerificationRequested(let certificateHash):
+                    // Register held by the server while the recipient is on the receiver hash step:
+                    // move to step 2 (sender hash verification)
+                    if self.participant == .recipient {
+                        self.recipientViewAction = .showSenderHashVerification(certificateHash: certificateHash)
                     }
                 case .connectionClosed:
                     self.recipientViewAction = .errorOccured

@@ -123,7 +123,7 @@ class UwaziEntityViewModel: ObservableObject {
     }
     
     func handleMandatoryProperties() -> Bool {
-        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
+        let requiredPrompts = entryPrompts.filter { ($0.required ?? false) && $0.type.isRenderable }
         var hasMandatoryErrors = false
         
         requiredPrompts.forEach { prompt in
