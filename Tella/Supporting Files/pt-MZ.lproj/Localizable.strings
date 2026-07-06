@@ -691,9 +691,9 @@
 "NearbySharing_SameNetwork_No_SheetAction" = "No";
 "NearbySharing_SameNetwork_DontShowAgain" = "Don’t show again";
 "NearbySharing_Verification_AppBar" = "Verification";
-"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure the connection is safe, make sure the sequence of characters above matches the sequence on the recipient’s device.";
+"NearbySharing_Verification_Sender_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the recipient’s device.";
 "NearbySharing_Verification_Sender_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
-"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure the connection is safe, make sure the sequence of characters above matches the sequence on the sender’s device.";
+"NearbySharing_Verification_Recipient_Part1_Expl" = "To ensure that the connection is safe, make sure that the sequence of numbers above matches what is shown on the other device.";
 "NearbySharing_Verification_Recipient_Part2_Expl" = "If the sequences do not match, the connection may not be secure and should be discarded.";
 "NearbySharing_ConnectionChanged_Toast" = "Your Wi-Fi connection has changed. Please start over.";
 "Onboarding_Camera_Title" = "Câmera.";
