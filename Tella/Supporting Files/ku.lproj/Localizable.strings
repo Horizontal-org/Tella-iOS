@@ -506,11 +506,11 @@
 "Setting_Server_Edit_Connection_Title" = "Edit connection";
 "Setting_Server_Foldername_Placeholder" = "Folder name";
 "Settings_Sett_NearbySharing" = "Nearby Sharing";
-"Setting_Server_Uwazi_Access_Title" = "";
+"Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
 "Setting_Server_Uwazi_Login_Access" = "Log in to access the server";
 "Setting_Server_ShowURL_Action" = "SHOW URL";
 "NearbySharing" = "Nearby Sharing";
-"Setting_SettServer_No_Internet" = "";
+"Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Uwazi_Entity_RequiredField_Unsupported_Save_Action" = "I understand";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Setting_Server_URL" = "Enter the server URL";
@@ -668,7 +668,7 @@
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Uwazi_Draft_Delete_YES_SheetAction" = "YES";
-"Setting_SettServer_Server_URL_Incorrect" = "";
+"Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
 "NearbySharing_Sender_RecipientInsufficientStorage_SheetExpl" = "The recipient’s device does not have enough storage space. Please remove files from the transfer or ask the recipient to free up storage space on their device.";
 "NearbySharing_Help_ConnectDevice_Part3" = "Setting up a Hotspot on one device, and having the other device join it.";
 "Setting_Server_AutoDelete_Expl" = "Automatically delete files from your device once they are uploaded to this project as a report.";
@@ -691,7 +691,7 @@
 "Reports_Outbox_ExitReport_SheetExpl" = "The upload will be paused.";
 "NearbySharing_Help_ConnectDevice_Part1" = "There are 2 ways to connect your devices through Wi-Fi:";
 "Uwazi_View_SheetSelect" = "View entity";
-"Setting_SettServer_Selection_Title" = "";
+"Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
 "Setting_Server_ShowProjectURL_SheetExpl" = "For increased security, you can hide the project URL in the Tella settings.";
 "Settings_Server_Dropbox_Success_Message" = "GO TO DROPBOX";
 "Settings_Sett_AddConnection_Expl" = "If you work with an organization, connect to its server to send files and data. You can also back up files to a personal cloud.";
@@ -748,7 +748,7 @@
 "NearbySharing_Step1_ShowSenderQr" = "Step 1: Show this QR code for the recipient to scan";
 "NearbySharing_Results_PartialFailureFilesReceived_Expl" = "Only %i files were received. %i files were not received.";
 "Error_Dropbox_StartSession" = "Error while starting Dropbox session";
-"Setting_Server_Uwazi_Login" = "";
+"Setting_Server_Uwazi_Login" = "LOG IN";
 "Vault_LimitedPhotoLibrary_EmptyFiles_Expl" = "Tap “Manage” to add your first photos and videos.";
 "NearbySharing_ConnectionChanged_Toast" = "Your Wi-Fi connection has changed. Please start over.";
 "NearbySharing_StopReceiving_SheetTitle" = "Stop receiving files?";
