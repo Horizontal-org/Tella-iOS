@@ -33,7 +33,9 @@ extension View {
             
         }
         
-        UIApplication.shared.topNavigationController()?.pushViewController(hostingView, animated: true)
+        let navigationController = UIApplication.shared.topNavigationController()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.pushViewController(hostingView, animated: true)
     }
     
     func present<Content: View>(style: UIModalPresentationStyle = .automatic, transitionStyle: UIModalTransitionStyle = .coverVertical, @ViewBuilder builder: () -> Content) {
