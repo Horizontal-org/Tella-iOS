@@ -33,13 +33,13 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var contentView: some View {
         VStack {
-            
             VStack {
                 topView
                 Spacer()
                     .frame(height: 24)
                 textFieldsView
             }
+            .scrollableWhenKeyboardShown()
             
             Spacer()
             bottomView
@@ -63,11 +63,9 @@ struct SenderConnectToDeviceManuallyView: View {
     
     var textFieldsView: some View {
         VStack(spacing:8) {
-            ScrollView {
-                ipAddressTextFieldView
-                pinTextFieldView
-                portTextFieldView
-            }
+            ipAddressTextFieldView
+            pinTextFieldView
+            portTextFieldView
         }
     }
     
