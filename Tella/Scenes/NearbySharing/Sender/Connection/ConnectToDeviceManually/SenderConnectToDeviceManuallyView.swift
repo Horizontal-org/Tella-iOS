@@ -28,6 +28,8 @@ struct SenderConnectToDeviceManuallyView: View {
             if viewModel.isLoading {
                 CircularActivityIndicatory()
             }
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
     }
     
