@@ -42,29 +42,12 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     var body: some View {
         ContainerView {
             VStack(alignment: .center, spacing: 0) {
+                
                 Spacer(minLength: 20)
                 
-                VStack {
-                    Image("lock.pin.B")
-                        .frame(width: 64, height: 64)
-                        .aspectRatio(contentMode: .fit)
-                    
-                    Spacer()
-                        .frame(height: 24)
-                    
-                    LockDescriptionView(title: lockViewData.title,
-                                        description: lockViewData.description,
-                                        alignement: lockViewData.alignement)
-                    
-                    Spacer()
-                        .frame(height: 32)
-                    
-                    PasswordTextFieldView(fieldContent: $fieldContent,
-                                          isValid: $isValid,
-                                          shouldShowError: .constant(false),
-                                          disabled: true)
-                }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
                 
+                
+                topView
                 Spacer(minLength: 5)
                 
                 PinView(fieldContent: self.$fieldContent,
@@ -89,6 +72,31 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
             .onChange(of: fieldContent) { _ in
                 shouldShowErrorMessage = false
             }
+    }
+    var topView: some View {
+        
+        VStack {
+            
+            Image("lock.pin.B")
+                .frame(width: 64, height: 64)
+                .aspectRatio(contentMode: .fit)
+            
+            Spacer()
+                .frame(height: 24)
+            
+            LockDescriptionView(title: lockViewData.title,
+                                description: lockViewData.description,
+                                alignement: lockViewData.alignement)
+            
+            Spacer()
+                .frame(height: 32)
+            
+            PasswordTextFieldView(fieldContent: $fieldContent,
+                                  isValid: $isValid,
+                                  shouldShowError: .constant(false),
+                                  disabled: true)
+        }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
+        
     }
 }
 
