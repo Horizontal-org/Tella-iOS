@@ -53,7 +53,7 @@ enum Language: String, CaseIterable {
         case .persian:
             return "fa-IR"
         case .kurdish:
-            return "ku"
+            return "ckb"
         case .burmese:
             return "my"
         case .tamil:
