@@ -33,8 +33,8 @@ struct UnlockView: View {
                 } else {
                     pinView
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             if viewModel.isLoading {
                 CircularActivityIndicatory()

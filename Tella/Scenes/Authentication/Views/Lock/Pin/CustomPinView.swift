@@ -44,24 +44,26 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
             VStack(alignment: .center, spacing: 0) {
                 Spacer(minLength: 20)
                 
-                Image("lock.pin.B")
-                    .frame(width: 64, height: 64)
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer()
-                    .frame(height: 24)
-                
-                LockDescriptionView(title: lockViewData.title,
-                                    description: lockViewData.description,
-                                    alignement: lockViewData.alignement)
-                
-                Spacer()
-                    .frame(height: 32)
-                
-                PasswordTextFieldView(fieldContent: $fieldContent,
-                                      isValid: $isValid,
-                                      shouldShowError: .constant(false),
-                                      disabled: true)
+                VStack {
+                    Image("lock.pin.B")
+                        .frame(width: 64, height: 64)
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Spacer()
+                        .frame(height: 24)
+                    
+                    LockDescriptionView(title: lockViewData.title,
+                                        description: lockViewData.description,
+                                        alignement: lockViewData.alignement)
+                    
+                    Spacer()
+                        .frame(height: 32)
+                    
+                    PasswordTextFieldView(fieldContent: $fieldContent,
+                                          isValid: $isValid,
+                                          shouldShowError: .constant(false),
+                                          disabled: true)
+                }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
                 
                 Spacer(minLength: 5)
                 
@@ -69,7 +71,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                         keyboardNumbers: lockKeyboardNumbers)
                 
                 Spacer(minLength: 0)
-
+                
                 NavigationBottomView(shouldActivateNext: $isValid,
                                      shouldEnableBackButton: shouldEnableBackButton,
                                      nextButtonAction: nextButtonAction,

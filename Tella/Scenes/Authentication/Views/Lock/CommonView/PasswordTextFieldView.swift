@@ -94,12 +94,12 @@ struct PasswordTextFieldViewWithFocus : View {
             Divider()
                 .frame(height: 2)
                 .background(Styles.Colors.yellow)
-        }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    isFocused = true
-                })
-            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                isFocused = true
+            })
+        }
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()
@@ -129,23 +129,23 @@ struct PasswordTextFieldViewWithoutFocus : View {
                     TextField("", text: $fieldContent,onCommit: {
                         self.onCommit?()
                     })
-                        .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
-                        .onChange(of: fieldContent, perform: { value in
-                            validateField(value: value)
-                        })
-                        .disabled(disabled)
-                        .frame( height: 22)
+                    .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
+                    .onChange(of: fieldContent, perform: { value in
+                        validateField(value: value)
+                    })
+                    .disabled(disabled)
+                    .frame( height: 22)
                     
                 } else {
                     SecureField("", text: $fieldContent,onCommit: {
                         self.onCommit?()
                     })
-                        .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
-                        .onChange(of: fieldContent, perform: { value in
-                            validateField(value: value)
-                        })
-                        .disabled(disabled)
-                        .frame( height: 22)
+                    .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
+                    .onChange(of: fieldContent, perform: { value in
+                        validateField(value: value)
+                    })
+                    .disabled(disabled)
+                    .frame( height: 22)
                 }
                 
                 Spacer()
@@ -162,7 +162,7 @@ struct PasswordTextFieldViewWithoutFocus : View {
             Divider()
                 .frame(height: 2)
                 .background(Styles.Colors.yellow)
-        }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+        }
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()

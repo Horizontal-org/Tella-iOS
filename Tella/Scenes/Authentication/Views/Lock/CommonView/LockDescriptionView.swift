@@ -29,8 +29,7 @@ struct LockDescriptionView : View {
             CustomText(description,
                        style: .body1Style,
                        alignment: alignement)
-        }
-        .padding(EdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 46))
+        } 
     }
 }
 

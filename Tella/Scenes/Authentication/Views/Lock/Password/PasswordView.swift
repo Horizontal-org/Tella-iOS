@@ -35,32 +35,35 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-                Spacer(minLength: 56)
                 
-                Image("lock.password.B")
-                    .frame(width: 120, height: 37)
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer()
-                    .frame(height: 50)
-                
-                LockDescriptionView(title: lockViewData.title,
-                                    description: lockViewData.description,
-                                    alignement: lockViewData.alignement)
-                
-                Spacer()
-                
-                PasswordTextFieldView(fieldContent: $fieldContent,
-                                      isValid: $isValid,
-                                      shouldShowError: .constant(false))
-                Spacer()
+                VStack(spacing: 0) {
+                    Spacer(minLength: 56)
+                    
+                    Image("lock.password.B")
+                        .frame(width: 120, height: 37)
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Spacer()
+                        .frame(height: 50)
+                    
+                    LockDescriptionView(title: lockViewData.title,
+                                        description: lockViewData.description,
+                                        alignement: lockViewData.alignement)
+                    
+                    Spacer()
+                    
+                    PasswordTextFieldView(fieldContent: $fieldContent,
+                                          isValid: $isValid,
+                                          shouldShowError: .constant(false))
+                    Spacer()
+                }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
                 
                 
                 NavigationBottomView(shouldActivateNext: $isValid,
-                               shouldEnableBackButton: shouldEnableBackButton,
-                               nextButtonAction: nextButtonAction,
-                               destination:destination,
-                               nextAction: action, backAction: {
+                                     shouldEnableBackButton: shouldEnableBackButton,
+                                     nextButtonAction: nextButtonAction,
+                                     destination:destination,
+                                     nextAction: action, backAction: {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }
