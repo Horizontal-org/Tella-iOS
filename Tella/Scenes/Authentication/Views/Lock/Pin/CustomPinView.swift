@@ -41,7 +41,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     
     var body: some View {
         ContainerView {
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 0) {
                 Spacer(minLength: 20)
                 
                 Image("lock.pin.B")
@@ -49,34 +49,34 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                     .aspectRatio(contentMode: .fit)
                 
                 Spacer()
+                    .frame(height: 24)
                 
                 LockDescriptionView(title: lockViewData.title,
                                     description: lockViewData.description,
                                     alignement: lockViewData.alignement)
                 
                 Spacer()
+                    .frame(height: 32)
+                
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
                                       shouldShowError: .constant(false),
                                       disabled: true)
                 
-                Spacer(minLength: 20)
+                Spacer(minLength: 5)
                 
                 PinView(fieldContent: self.$fieldContent,
                         keyboardNumbers: lockKeyboardNumbers)
                 
-                Spacer()
-                
-                VStack {
-                    
-                    NavigationBottomView(shouldActivateNext: $isValid,
-                                   shouldEnableBackButton: shouldEnableBackButton,
-                                   nextButtonAction: nextButtonAction,
-                                   destination:destination,
-                                   nextAction: action, backAction: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    })
-                }
+                Spacer(minLength: 0)
+
+                NavigationBottomView(shouldActivateNext: $isValid,
+                                     shouldEnableBackButton: shouldEnableBackButton,
+                                     nextButtonAction: nextButtonAction,
+                                     destination:destination,
+                                     nextAction: action, backAction: {
+                    self.presentationMode.wrappedValue.dismiss()
+                })
             }
         }.navigationBarHidden(true)
             .onChange(of: shouldShowErrorMessage) { newValue in
