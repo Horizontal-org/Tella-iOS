@@ -86,7 +86,7 @@ struct AddFileBottomSheetView<Content: View>: View {
     
     var fileListView: some View {
         FileListView(mainAppModel: viewModel.mainAppModel,
-                     filterType: viewModel.shouldShowDocumentsOnly ? .documents : .audioPhotoVideo,
+                     filterType: viewModel.shouldShowDocumentsOnly ? .pdf : .allWithoutDirectory,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $viewModel.resultFile)

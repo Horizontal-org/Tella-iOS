@@ -104,20 +104,11 @@ class UwaziEntityViewModel: ObservableObject {
                 
                 guard let self = self, let files = files else { return }
                 
-                let pdfPrompt = self.entryPrompts.filter({$0.type == .dataTypeMultiPDFFiles}).first as? UwaziFilesEntryPrompt
-                let multiFilesPrompt = self.entryPrompts.filter({$0.type == .dataTypeMultiFiles}).first as? UwaziFilesEntryPrompt
+                let promptType: UwaziEntityPropertyType = self.addFilesViewModel.shouldShowDocumentsOnly ? .dataTypeMultiPDFFiles : .dataTypeMultiFiles
+                let prompt = self.entryPrompts.first(where: { $0.type == promptType }) as? UwaziFilesEntryPrompt
                 
-                
-                files.forEach { vaultFileDB in
-                    let isPDF = vaultFileDB.mimeType?.isPDF ?? false
-                    if isPDF {
-                        pdfPrompt?.value.insert(files)
-                    } else {
-                        multiFilesPrompt?.value.insert(files)
-                    }
-                    
-                    self.publishUpdates()
-                }
+                prompt?.value.formUnion(files)
+                self.publishUpdates()
             })
             .store(in: &subscribers)
     }
