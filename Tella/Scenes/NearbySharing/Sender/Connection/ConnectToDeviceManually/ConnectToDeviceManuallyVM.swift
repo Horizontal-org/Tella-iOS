@@ -18,7 +18,7 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     
     @Published var ipAddress : String = ""
     @Published var pin: String = ""
-    @Published var port: String = ""
+    @Published var port: String = "\(NearbySharingConfig.defaultPort)"
     @Published var publicKey: String = ""
     @Published var valid : Bool = false
     @Published var validFields: Bool = false
@@ -36,12 +36,14 @@ class ConnectToDeviceManuallyVM: ObservableObject {
     @Published var isLoading : Bool = false
 
     private var subscribers = Set<AnyCancellable>()
-    var connectionInfo : ConnectionInfo?
+    var connectionInfo: ConnectionInfo?
     
     init(nearbySharingRepository:NearbySharingRepository, mainAppModel:MainAppModel) {
         self.nearbySharingRepository = nearbySharingRepository
         self.mainAppModel = mainAppModel
+        nearbySharingRepository.ensureClientTLSIdentity()
         
+        isValidPort = port.portValidator()
         validateFields()
     }
     
@@ -59,9 +61,10 @@ class ConnectToDeviceManuallyVM: ObservableObject {
         guard let port = Int(port) else { return }
         isLoading = true
         let connectionInfo = ConnectionInfo(ipAddresses: [ipAddress], port: port, certificateHash: nil, pin: pin)
+        connectionInfo.clientTLSIdentity = nearbySharingRepository.clientTLSIdentity
         self.connectionInfo = connectionInfo
         
-        self.nearbySharingRepository.getHash(connectionInfo: connectionInfo)
+        self.nearbySharingRepository.startManualPing(on: connectionInfo)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
@@ -69,10 +72,10 @@ class ConnectToDeviceManuallyVM: ObservableObject {
                 if case .failure = completion {
                     self?.viewState = .showBottomSheetError
                 }
-            }, receiveValue: { certificateHash in
-                debugLog(certificateHash)
+            }, receiveValue: { [weak self] certificateHash in
+                guard let self else { return }
                 self.connectionInfo?.certificateHash = certificateHash
-                self.viewState = .showVerificationHash
+                self.viewState = .showRecipientVerificationHash
             }).store(in: &self.subscribers)
     }
 }

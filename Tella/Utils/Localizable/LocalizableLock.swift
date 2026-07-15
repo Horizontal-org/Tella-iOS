@@ -102,6 +102,7 @@ enum LocalizableLock: String, LocalizableDelegate {
     
     // Unlock Password view
     case unlockPasswordSubhead = "LockUnlock_UnlockPassword_Subhead"
+    case unlockPasswordAction = "LockUnlock_UnlockPassword_Action"
     case unlockUpdatePasswordSubhead = "LockUnlock_UnlockUpdatePassword_Subhead"
     case unlockUpdatePasswordErrorIncorrectPassword = "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword"
     
@@ -110,7 +111,7 @@ enum LocalizableLock: String, LocalizableDelegate {
     case unlockUpdatePinErrorIncorrectPIN = "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN"
     case unlockUpdatePinSubhead = "LockUnlock_UnlockUpdatePin_Subhead"
 
-    // Delete After Faile
+    // Delete After Fail
     case unlockDeleterAfterFailRemainingAttempts = "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts"
     case unlockDeleteAfterFailContentDeleted = "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted"
 }

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 29/09/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -70,6 +70,7 @@ struct CreateEntityView: View {
     
     fileprivate var bottomActionView: some View {
         Button(action: {
+            
             let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
             
             if !checkMandatoryFields {
@@ -85,7 +86,7 @@ struct CreateEntityView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-        
+    
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,

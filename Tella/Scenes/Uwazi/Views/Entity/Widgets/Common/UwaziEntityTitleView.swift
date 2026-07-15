@@ -14,7 +14,6 @@ struct UwaziEntityTitleView: View {
     var title: String
     var isRequired: Bool
     var showClear: Bool
-    // @Binding var showClear: Bool
 
     var onClearAction: () -> Void
     var body: some View {

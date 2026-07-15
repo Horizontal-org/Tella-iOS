@@ -11,7 +11,7 @@ class MainAppModel: ObservableObject {
         case camera
         case mic
         case settings
-
+        
     }
     
     enum ImportOption: CaseIterable {
@@ -32,10 +32,10 @@ class MainAppModel: ObservableObject {
     @Published var vaultManager :VaultManagerInterface = VaultManager()
     
     @Published var encryptionService : EncryptionService?
-
+    
     @Published var vaultFilesManager : VaultFilesManager?
     @Published var tellaData : TellaData?
-
+    
     @Published var selectedTab: Tabs = .home
     
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
@@ -63,56 +63,77 @@ class MainAppModel: ObservableObject {
         self.onSuccessLock()
     }
     
-    func loadData() -> AnyPublisher<Bool,Never> {
+    func loadData() -> AnyPublisher<Bool, Never> {
         return Deferred {
-            Future <Bool,Never> {  [weak self] promise in
-                guard let self = self else { return }
-
-                self.initDataSource()
-
+            Future<Bool, Never> { [weak self] promise in
+                guard let self else { return }
+                
+                guard self.vaultFilesManager != nil, self.tellaData != nil else {
+                    debugLog("Database is not initialized", space: .crypto)
+                    promise(.success(false))
+                    return
+                }
+                
                 if self.settings.shouldMergeVaultFilesToDb ?? true {
                     self.mergeFileToDatabase()
                 }
-
+                
                 self.vaultFilesManager?.updateEncryptionVaultFile()
-
+                
                 promise(.success(true))
                 self.sendPendingFiles()
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
-
     private func onSuccessLock() {
-        vaultManager.onSuccessLock.sink(receiveValue: { key in
-            self.settings.shouldMergeVaultFilesToDb = false
-            self.saveSettings()
-            self.initDataSource()
-            self.initAutoUpload()
-        }).store(in: &cancellable)
+        vaultManager.onSuccessLock
+            .sink(receiveValue: { [weak self] in
+                guard let self else { return }
+                self.settings.shouldMergeVaultFilesToDb = false
+                self.saveSettings()
+                
+                self.initDataSource()
+                self.initAutoUpload()
+            })
+            .store(in: &cancellable)
     }
-
+    
     private func initDataSource() {
         do {
             try self.vaultManager.initialize()
-
-            let vaultDatabase = try VaultDatabase(key: self.vaultManager.key)
-            let tellaDataBase = try TellaDataBase(key: self.vaultManager.key)
-
-            self.vaultFilesManager = try VaultFilesManager(vaultDataBase: vaultDatabase, vaultManager: self.vaultManager)
-            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
-            self.tellaData = try TellaData(database: tellaDataBase, vaultManager: self.vaultManager)
             
-            self.nearbySharingServer = NearbySharingServer()
+            try self.vaultManager.withVaultDerivedSQLCipherKey { databaseKey in
+                let vaultDatabase = try VaultDatabase(key: databaseKey)
+                let tellaDataBase = try TellaDataBase(key: databaseKey)
+                
+                self.vaultFilesManager = try VaultFilesManager(
+                    vaultDataBase: vaultDatabase,
+                    vaultManager: self.vaultManager
+                )
+                
+                self.encryptionService = EncryptionService(
+                    vaultFilesManager: self.vaultFilesManager,
+                    mainAppModel: self
+                )
+                
+                self.tellaData = try TellaData(
+                    database: tellaDataBase,
+                    vaultManager: self.vaultManager
+                )
+                
+                self.nearbySharingServer = NearbySharingServer()
+            }
+            
         } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
-
     private func mergeFileToDatabase() {
         let files = self.vaultManager.getFilesToMergeToDatabase()
         self.saveFiles(files: files)
     }
-
+    
     private func saveFiles(files: [VaultFileDetailsToMerge]) {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)
@@ -120,7 +141,7 @@ class MainAppModel: ObservableObject {
             self.vaultManager.deleteRootFile()
             self.settings.shouldMergeVaultFilesToDb = false
             self.saveSettings()
-
+            
         } catch (let error){
             debugLog(error)
         }
@@ -134,7 +155,12 @@ class MainAppModel: ObservableObject {
     
     func resetData() {
         self.vaultFilesManager = nil
+        self.encryptionService = nil
+        self.tellaData = nil
+        self.nearbySharingServer?.resetFullServerState()
+        self.nearbySharingServer = nil
         self.selectedTab = .home
+        self.vaultManager.lock()
     }
 }
 
@@ -165,6 +191,7 @@ extension MainAppModel {
     
     func deleteAfterMaxAttempts() {
         resetSettings()
+        resetData()
         vaultManager.deleteContainerDirectory()
     }
 }
@@ -202,7 +229,7 @@ extension MainAppModel {
     func initAutoUpload() {
         uploadService.initAutoUpload(mainAppModel: self)
     }
-
+    
     func sendPendingFiles() {
         uploadService.initAutoUpload(mainAppModel: self)
         uploadService.sendUnsentReports(mainAppModel: self)
@@ -217,7 +244,7 @@ extension MainAppModel {
 }
 
 extension MainAppModel {
-
+    
     func addVaultFile(importedFiles: [ImportedFile],
                       autoUpload:Bool = false) {
         encryptionService?.addVaultFile(importedFiles: importedFiles,

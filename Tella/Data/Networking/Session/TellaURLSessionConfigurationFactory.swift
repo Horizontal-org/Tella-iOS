@@ -25,7 +25,6 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
     
     func makeDefault() -> URLSessionConfiguration {
         let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 60
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
@@ -34,9 +33,7 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
 
     func makeNearbySharingLocal() -> URLSessionConfiguration {
         let config = URLSessionConfiguration.ephemeral
-        config.waitsForConnectivity = false
         config.timeoutIntervalForRequest = 30
-        config.allowsCellularAccess = false
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         return config
@@ -44,7 +41,6 @@ final class TellaURLSessionConfigurationFactory: URLSessionConfigurationFactoryP
     
     func makeBackground(identifier: String) -> URLSessionConfiguration {
         let config = URLSessionConfiguration.background(withIdentifier: identifier)
-        config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 60
         config.sessionSendsLaunchEvents = true
         config.shouldUseExtendedBackgroundIdleMode = true

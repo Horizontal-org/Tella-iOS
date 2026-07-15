@@ -17,7 +17,7 @@ struct SuccessLockView: View {
             ImageTitleMessageView(content: SuccessLockContent())
             LinkView(url: TellaUrls.appLock, text: LocalizableLock.lockSuccessLink.localized)
             Spacer()
-            NextBottomView {
+            NextBottomView(title: LocalizableLock.actionNext.localized) {
                 dismiss()
             }
         }.padding(.horizontal, .medium)

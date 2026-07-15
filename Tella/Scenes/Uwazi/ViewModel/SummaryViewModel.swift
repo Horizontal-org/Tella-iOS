@@ -22,6 +22,15 @@ class SummaryViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var shouldHideView : Bool = false
     
+    var hasUnsupportedRequiredProperties: Bool {
+        let properties = entityInstance?.collectedTemplate?.entityRow?.properties ?? []
+        return properties.contains { property in
+            guard property.propertyRequired == true else { return false }
+            let propertyType = UwaziEntityPropertyType(rawValue: property.type ?? "") ?? .unknown
+            return !propertyType.isRenderable
+        }
+    }
+
     var entityTitle : String {
         guard let stringValue = self.entityInstance?.title else { return "" }
         return stringValue
@@ -88,6 +97,19 @@ class SummaryViewModel: ObservableObject {
         
         if case .success = result {
              self.shouldHideView = true
+        } else {
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
+        }
+    }
+    
+    func saveEntityAsSubmissionError() {
+        guard let entityInstance = entityInstance else { return }
+        entityInstance.status = .submissionError
+        
+        let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+        
+        if case .success = result {
+            self.shouldHideView = true
         } else {
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         }

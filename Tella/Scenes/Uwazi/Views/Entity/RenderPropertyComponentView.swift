@@ -13,7 +13,7 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     
     var prompt: any UwaziEntryPrompt
-    var entityViewModel: UwaziEntityViewModel
+    @ObservedObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
         
@@ -52,7 +52,7 @@ struct RenderPropertyComponentView: View {
                     EmptyView()
                 }
                 
-                if(prompt.shouldShowMandatoryError) {
+                if prompt.shouldShowMandatoryError {
                     UwaziEntityMandatoryTextView()
                 }
 
@@ -63,12 +63,6 @@ struct RenderPropertyComponentView: View {
     
     private func shouldRenderPrompt(forType type: String) -> Bool {
         guard let propertyType = UwaziEntityPropertyType(rawValue: type) else { return false }
-        
-        switch propertyType {
-        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
-            return true
-        default:
-            return false
-        }
+        return propertyType.isRenderable
     }
 }

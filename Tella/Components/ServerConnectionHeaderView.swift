@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 5/29/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,7 +17,7 @@ struct ServerConnectionHeaderView: View {
     var imageIconName: ImageResource
     var subtitleTextAlignment: TextAlignment = .center
     var alignment: Alignment = .center
-
+    
     var body: some View {
         VStack(spacing: 8) {
             
@@ -25,6 +25,8 @@ struct ServerConnectionHeaderView: View {
                 .padding(.bottom, 16)
             CustomText(title,style: .heading1Style,
                        alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .center)
+            
             
             if let subtitle {
                 CustomText(subtitle,

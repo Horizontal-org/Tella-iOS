@@ -34,7 +34,6 @@ struct ManuallyVerificationView: View {
     
     var contentView: some View {
         VStack {
-            topView
             infoView
             Spacer()
             buttonsView
@@ -49,12 +48,7 @@ struct ManuallyVerificationView: View {
                              backButtonAction: {self.popTo(ViewClassType.nearbySharingMainView)},
                              rightButtonType: .none)
     }
-    
-    var topView: some View {
-        Image("device")
-            .padding(.bottom, 16)
-    }
-    
+
     var infoView: some View {
         
         let verificationSenderString = LocalizableNearbySharing.verificationSenderPart1.localized.addTwolines + LocalizableNearbySharing.verificationSenderPart2.localized
@@ -70,12 +64,15 @@ struct ManuallyVerificationView: View {
     
     private func participantInfoView(text: String) -> some View {
         VStack(alignment: .center, spacing: 16) {
+            CustomText(viewModel.stepTitle,
+                       style: .heading1Style,
+                       alignment: .center)
             
-            CustomText(viewModel.connectionInfo.certificateHash?.formatHash() ?? "",
+            CustomText(viewModel.certificateHashToDisplay.formatHash(),
                        style: .body1Style,
                        alignment: .center)
             .frame(maxWidth: .infinity, alignment: .center)
-            .cardModifier()
+            .cardModifier(backgroundColor: viewModel.verificationRole.isSenderHash ? Color.black.opacity(0.4) : Color.white.opacity(0.08))
             
             CustomText(text, style: .body1Style)
         }
@@ -120,6 +117,17 @@ struct ManuallyVerificationView: View {
         switch action {
         case .showBottomSheetError:
             showBottomSheetError()
+        case .showSenderHashVerification(let connectionInfo):
+            guard let senderHash = viewModel.nearbySharingRepository?.clientCertificateHash else { return }
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .sender,
+                nearbySharingRepository: viewModel.nearbySharingRepository,
+                connectionInfo: connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acknowledgeOnly),
+                certificateHashToDisplay: senderHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .showSendFiles:
             guard let session = viewModel.session,
                   let nearbySharingRepository = viewModel.nearbySharingRepository
@@ -144,6 +152,15 @@ struct ManuallyVerificationView: View {
         case .showReceiveFiles:
             let viewModel = RecipientPrepareFileTransferVM(mainAppModel: viewModel.mainAppModel)
             self.navigateTo(destination: RecipientFileTransferView(viewModel: viewModel))
+        case .showSenderHashVerification(let certificateHash):
+            let verificationVM = ManuallyVerificationViewModel(
+                participant: .recipient,
+                connectionInfo: viewModel.connectionInfo,
+                mainAppModel: viewModel.mainAppModel,
+                verificationRole: .senderHash(confirmAction: .acceptPendingRegistration),
+                certificateHashToDisplay: certificateHash
+            )
+            self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
@@ -158,7 +175,10 @@ struct ManuallyVerificationView: View {
 }
 
 #Preview {
-    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(participant: .recipient,
-                                                                      connectionInfo: ConnectionInfo.stub(),
-                                                                      mainAppModel: MainAppModel.stub()))
+    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(
+        participant: .recipient,
+        connectionInfo: ConnectionInfo.stub(),
+        mainAppModel: MainAppModel.stub(),
+        verificationRole: .senderHash(confirmAction: .acceptPendingRegistration)
+    ))
 }

@@ -9,6 +9,7 @@ import Foundation
 
 public enum ContentType: String {
     case json = "application/json"
+    case plainText = "text/plain"
     case data = "multipart/form-data"
     case octetStream = "application/octet-stream"
 }
