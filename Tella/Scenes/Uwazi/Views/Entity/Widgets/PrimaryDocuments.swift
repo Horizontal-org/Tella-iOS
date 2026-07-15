@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 25/10/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -36,9 +36,10 @@ struct PrimaryDocuments: View {
             .cornerRadius(15)
             
         }
-
-        FileItems(files: prompt.value)
         
+        if(prompt.value.count > 0) {
+            FileDropdown(files: $prompt.value)
+        }
     }
     
 }
