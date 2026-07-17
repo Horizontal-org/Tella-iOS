@@ -13,7 +13,8 @@ import SwiftUI
 
 struct LockPinData  : LockViewProtocol {
     var title = LocalizableLock.lockPinSetSubhead.localized
-    var description = LocalizableLock.lockPinSetExpl.localized
+    var description = LocalizableLock.lockPinSetExpl1.localized.bulleted().addline
+    + LocalizableLock.lockPinSetExpl2.localized.bulleted()
     var image = "lock.password.B"
     var alignement: TextAlignment = .leading
     var action: (() -> Void)?

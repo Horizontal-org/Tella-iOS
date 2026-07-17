@@ -88,14 +88,17 @@ enum LocalizableLock: String, LocalizableDelegate {
     
     // Lock Password view
     case lockPasswordSetSubhead = "LockUnlock_LockPasswordSet_Subhead"
-    case lockPasswordSetExpl = "LockUnlock_LockPasswordSet_Expl"
+    case lockPasswordSetExpl1 = "LockUnlock_LockPasswordSet_Expl1"
+    case lockPasswordSetExpl2 = "LockUnlock_LockPasswordSet_Expl2"
+    case lockPasswordSetExpl3 = "LockUnlock_LockPasswordSet_Expl3"
     case lockPasswordConfirmSubhead = "LockUnlock_LockPasswordConfirm_Subhead"
     case lockPasswordConfirmExpl = "LockUnlock_LockPasswordConfirm_Expl"
     case lockPasswordConfirmErrorPasswordsDoNotMatch = "LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch"
     
     // Lock Pin view
     case lockPinSetSubhead = "LockUnlock_LockPinSet_Subhead"
-    case lockPinSetExpl = "LockUnlock_LockPinSet_Expl"
+    case lockPinSetExpl1 = "LockUnlock_LockPinSet_Expl1"
+    case lockPinSetExpl2 = "LockUnlock_LockPinSet_Expl2"
     case lockPinConfirmSubhead = "LockUnlock_LockPinConfirm_Subhead"
     case lockPinConfirmExpl = "LockUnlock_LockPinConfirm_Expl"
     case lockPinConfirmErrorPINsDoNotMatch = "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch"
