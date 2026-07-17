@@ -1175,7 +1175,6 @@
 		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleExtension.swift; sourceTree = "<group>"; };
 		129DA1932FE175BB001D5EB4 /* ManualPingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualPingSession.swift; sourceTree = "<group>"; };
-		129FBF422EB4BBED00E4DA57 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* NavigationBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBottomView.swift; sourceTree = "<group>"; };
@@ -4187,7 +4186,6 @@
 				ml,
 				"sn-ZW",
 				az,
-				zh_CN,
 				"zh-Hans",
 				lus,
 				uk,
@@ -5155,7 +5153,6 @@
 				129380082DC284D50019ECC4 /* vi */,
 				1282DE472DDD0302004D2176 /* sn-ZW */,
 				129919BC2E2EC92900A4417D /* az */,
-				129FBF422EB4BBED00E4DA57 /* zh_CN */,
 				122E2F4A2EC50343004E42B3 /* zh-Hans */,
 				12967AF32F5F6FF100D9FC7E /* lus */,
 				1266F32D2F9F6DE00020A81E /* uk */,
