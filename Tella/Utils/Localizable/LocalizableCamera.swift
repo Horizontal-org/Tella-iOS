@@ -23,7 +23,11 @@ enum LocalizableCamera: String, LocalizableDelegate {
     case cancelEncryptingDeleteSheetAction = "Camera_CancelEncrypting_Delete_SheetAction"
     case cancelEncryptingBackSheetAction = "Camera_CancelEncrypting_Back_SheetAction"
     
-    case deniedCameraPermissionExpl = "Camera_DeniedCameraPermission_Expl"
+    case deniedCameraPermissionExpl1 = "Camera_DeniedCameraPermission_Expl1"
+    case deniedCameraPermissionExpl2 = "Camera_DeniedCameraPermission_Expl2"
+    case deniedCameraPermissionExpl3 = "Camera_DeniedCameraPermission_Expl3"
+    case deniedCameraPermissionExpl4 = "Camera_DeniedCameraPermission_Expl4"
+    case deniedCameraPermissionExpl5 = "Camera_DeniedCameraPermission_Expl5"
     case deniedCameraPermissionActionSettings = "Camera_DeniedCameraPermission_Action_Settings"
     case deniedCameraPermissionActionCancel = "Camera_DeniedCameraPermission_Action_Cancel"
 }

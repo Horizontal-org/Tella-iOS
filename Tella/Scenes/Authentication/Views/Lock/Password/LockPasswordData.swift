@@ -21,7 +21,9 @@ protocol LockViewProtocol {
 
 struct LockPasswordData  : LockViewProtocol {
     var title = LocalizableLock.lockPasswordSetSubhead.localized
-    var description = LocalizableLock.lockPasswordSetExpl.localized
+    var description = LocalizableLock.lockPasswordSetExpl1.localized.bulleted().addline
+    + LocalizableLock.lockPasswordSetExpl2.localized.bulleted().addline
+    + LocalizableLock.lockPasswordSetExpl3.localized.bulleted()
     var image = "lock.password.B"
     var alignement: TextAlignment = .leading
     var action: (() -> Void)?
