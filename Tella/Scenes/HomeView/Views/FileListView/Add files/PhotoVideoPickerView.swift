@@ -89,7 +89,10 @@ struct PhotoVideoPickerView: View {
     private func showAccessDeniedUI()  {
         
         let content = ConfirmBottomSheet(titleText: LocalizableVault.deniedPhotoLibraryPermissionTitle.localized,
-                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl.localized,
+                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl1.localized.addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl2.localized.numbered(1).addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl3.localized.numbered(2).addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl4.localized.numbered(3),
                                          cancelText: LocalizableVault.deniedPhotosPermissionCancel.localized.uppercased(),
                                          actionText:LocalizableVault.deniedPhotosPermissionSettings.localized.uppercased(),
                                          shouldHideSheet: false,

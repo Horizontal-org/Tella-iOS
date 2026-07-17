@@ -37,7 +37,11 @@ enum LocalizableRecorder: String, LocalizableDelegate {
     
     case audioRecordingSavedToast = "Recorder_AudioRecordingSaved_Toast"
     
-    case deniedAudioPermissionExpl = "Recorder_DeniedAudioPermission_Expl"
+    case deniedAudioPermissionExpl1 = "Recorder_DeniedAudioPermission_Expl1"
+    case deniedAudioPermissionExpl2 = "Recorder_DeniedAudioPermission_Expl2"
+    case deniedAudioPermissionExpl3 = "Recorder_DeniedAudioPermission_Expl3"
+    case deniedAudioPermissionExpl4 = "Recorder_DeniedAudioPermission_Expl4"
+    case deniedAudioPermissionExpl5 = "Recorder_DeniedAudioPermission_Expl5"
     case deniedAudioPermissionActionSettings = "Recorder_DeniedAudioPermission_Action_Settings"
     case deniedAudioPermissionActionCancel = "Recorder_DeniedAudioPermission_Action_Cancel"
 }

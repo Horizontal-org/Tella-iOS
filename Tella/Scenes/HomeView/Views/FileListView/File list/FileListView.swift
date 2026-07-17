@@ -60,7 +60,8 @@ struct FileListView: View {
             VStack {
                 
                 if (fileListViewModel.vaultFiles.isEmpty) && fileListViewModel.rootFile == nil  {
-                    EmptyFileView(message: LocalizableVault.emptyAllFilesExpl.localized)
+                    EmptyFileView(message: LocalizableVault.emptyAllFilesExpl1.localized.addTwolines
+                                  + LocalizableVault.emptyAllFilesExpl2.localized)
                     
                 } else {
                     if fileListViewModel.folderPathArray.count > 0 {

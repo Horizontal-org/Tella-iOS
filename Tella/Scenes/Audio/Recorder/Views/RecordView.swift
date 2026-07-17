@@ -71,7 +71,11 @@ struct RecordView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(LocalizableRecorder.deniedAudioPermissionExpl.localized),
+              message: Text(LocalizableRecorder.deniedAudioPermissionExpl1.localized.addTwolines
+                            + LocalizableRecorder.deniedAudioPermissionExpl2.localized.addline
+                            + LocalizableRecorder.deniedAudioPermissionExpl3.localized.numbered(1).addline
+                            + LocalizableRecorder.deniedAudioPermissionExpl4.localized.numbered(2).addline
+                            + LocalizableRecorder.deniedAudioPermissionExpl5.localized.numbered(3)),
               primaryButton: .default(Text(LocalizableRecorder.deniedAudioPermissionActionCancel.localized), action: {
             self.viewModel.shouldShowSettingsAlert = false
         }), secondaryButton: .default(Text(LocalizableRecorder.deniedAudioPermissionActionSettings.localized), action: {
