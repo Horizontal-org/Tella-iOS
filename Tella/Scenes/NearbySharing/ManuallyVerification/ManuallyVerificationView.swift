@@ -161,6 +161,8 @@ struct ManuallyVerificationView: View {
                 certificateHashToDisplay: certificateHash
             )
             self.navigateTo(destination: ManuallyVerificationView(viewModel: verificationVM))
+        case .showConnectionFailed:
+            showConnectionFailedSheet()
         case .errorOccured:
             self.popTo(ViewClassType.nearbySharingMainView)
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
@@ -172,13 +174,24 @@ struct ManuallyVerificationView: View {
             break
         }
     }
+    
+    private func showConnectionFailedSheet() {
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.connectionFailedTitle.localized,
+            msgText: LocalizableNearbySharing.recipientConnectionFailedExpl.localized,
+            actionText: LocalizableCommon.commonActionOk.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    self.popTo(ViewClassType.nearbySharingMainView)
+
+                }
+            }
+        )
+        showBottomSheetView(content: content/*, isPresented: $isBottomSheetShown*/, tapToDismiss: false)
+    }
 }
 
 #Preview {
-    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel(
-        participant: .recipient,
-        connectionInfo: ConnectionInfo.stub(),
-        mainAppModel: MainAppModel.stub(),
-        verificationRole: .senderHash(confirmAction: .acceptPendingRegistration)
-    ))
+    ManuallyVerificationView(viewModel: ManuallyVerificationViewModel.stub())
 }

@@ -434,9 +434,11 @@ extension NearbySharingServer: RegisterHandler {
             await state.recordRegisterPinFailure(for: nonce)
             if await state.hasReachedMaxAttempts(for: nonce) {
                 await sendErrorResponse(ServerStatus(code: .tooManyRequests, message: .tooManyRequests), connection: connection)
+                eventPublisher.send(.registerPinFailed)
                 return nil
             }
             await sendErrorResponse(ServerStatus(code: .unauthorized, message: .invalidPIN), connection: connection)
+            eventPublisher.send(.registerPinFailed)
             return nil
         }
         
