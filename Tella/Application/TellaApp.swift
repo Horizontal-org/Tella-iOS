@@ -20,8 +20,6 @@ struct TellaApp: App {
     @StateObject private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    /// Delay before clearing tmp and resetting view state when app enters background.
-    private let backgroundCleanupDelay: TimeInterval = 1.0
     
     var body: some Scene {
         WindowGroup {
@@ -42,17 +40,23 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                UIApplication.getTopViewController()?.dismiss(animated: false)
                 appViewState.homeViewModel.saveLockTimeoutStartDate()
                 self.saveData(lockAppType: .enterInBackground)
             case .active:
                 self.resetApp()
             case .inactive:
+                dismissPresentedViewsIfNeeded()
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
             default:
                 break
             }
         }
+    }
+    
+    /// Hides presented overlays when leaving the app, but keeps onboarding lock-choice modals
+    private func dismissPresentedViewsIfNeeded() {
+        guard appViewState.currentView != .LOCK else { return }
+        UIApplication.getTopViewController()?.dismiss(animated: false)
     }
     
     func saveData(lockAppType: LockAppType) {
@@ -70,10 +74,11 @@ struct TellaApp: App {
         let hasFileOnBackground = appViewState.homeViewModel.uploadService.hasFilesToUploadOnBackground
         guard !hasFileOnBackground else { return }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + backgroundCleanupDelay) {
-            appViewState.homeViewModel.vaultManager.clearTmpDirectory()
-            appViewState.resetApp()
+        guard UIApplication.shared.applicationState == .background else {
+            return
         }
+        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+        appViewState.lockAfterBackground()
     }
     
     func resetApp() {
@@ -84,7 +89,6 @@ struct TellaApp: App {
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
         
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
-            UIApplication.getTopViewController()?.dismiss(animated: false)
             DispatchQueue.main.async { appViewState.resetApp() }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
             appViewState.homeViewModel.uploadService.reset()
