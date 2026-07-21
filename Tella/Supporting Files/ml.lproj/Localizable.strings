@@ -415,13 +415,6 @@
 "Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
 "Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
 "Uwazi_Relationship_SearchBar_Title" = "Search";
-"Vault_LimitedPhotoLibraryPermission_Expl1" = "The Tella app have limited permission to access the photo library.";
-"Vault_LimitedPhotoLibraryPermission_Expl2" = "If you want to add a picture or a video from the photo library, proceed in the following way:";
-"Vault_LimitedPhotoLibraryPermission_Expl3" = "Navigate to your phone's settings and find the Tella app.";
-"Vault_LimitedPhotoLibraryPermission_Expl4" = "Enable full access permission for Photos.";
-"Vault_LimitedPhotoLibraryPermission_Expl5" = "Open the Tella app.";
-"Vault_LimitedPhotoLibraryPermission_Action_Settings" = "ക്രമീകരണം";
-"Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
 "Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";

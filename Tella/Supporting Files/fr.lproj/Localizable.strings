@@ -415,13 +415,6 @@
 "Uwazi_Entity_Relationship_MultipleConnections" = "entités connectées";
 "Uwazi_Relationship_List_Expl" = "Recherchez ou sélectionnez les entités que vous souhaitez connecter à cette propriété.";
 "Uwazi_Relationship_SearchBar_Title" = "Rechercher";
-"Vault_LimitedPhotoLibraryPermission_Expl1" = "L'application Tella dispose d'une autorisation limitée pour accéder à la galerie de photos.";
-"Vault_LimitedPhotoLibraryPermission_Expl2" = "Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, procédez de la manière suivante :";
-"Vault_LimitedPhotoLibraryPermission_Expl3" = "Accédez aux paramètres de votre téléphone et recherchez l'application Tella.";
-"Vault_LimitedPhotoLibraryPermission_Expl4" = "Activez l'autorisation d'accès complet pour les photos.";
-"Vault_LimitedPhotoLibraryPermission_Expl5" = "Ouvrez l'application Tella.";
-"Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Paramètres";
-"Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "ANNULER";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
 "Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";

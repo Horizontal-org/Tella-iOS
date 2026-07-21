@@ -415,13 +415,6 @@
 "Uwazi_Entity_Relationship_MultipleConnections" = "已连接实体";
 "Uwazi_Relationship_List_Expl" = "搜索或选择要连接到此属性的实体。";
 "Uwazi_Relationship_SearchBar_Title" = "搜索";
-"Vault_LimitedPhotoLibraryPermission_Expl1" = "Tella 应用对照片图库的访问权限受限。";
-"Vault_LimitedPhotoLibraryPermission_Expl2" = "如果想从照片图库添加图片或视频，请按以下步骤操作：";
-"Vault_LimitedPhotoLibraryPermission_Expl3" = "进入手机设置，找到 Tella 应用。";
-"Vault_LimitedPhotoLibraryPermission_Expl4" = "为“照片”启用完全访问权限。";
-"Vault_LimitedPhotoLibraryPermission_Expl5" = "打开 Tella 应用。";
-"Vault_LimitedPhotoLibraryPermission_Action_Settings" = "设置";
-"Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "取消";
 "Setting_SettServer_GDrive" = "Google 云端硬盘";
 "Setting_SettServer_UnavailableConnections_Subhead" = "连接不可用";
 "Setting_SettServer_UnavailableConnections_Expl" = "对于以下类别，一次只能启用一个连接。要添加新连接，请前往“连接”设置删除当前连接。";
