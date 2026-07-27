@@ -357,8 +357,7 @@
 "BackgroundActivities_Encrypting" = "Encrypting “%@”";
 "Resources_Home_Serve_title" = "Magwaro anobatsira";
 "Resources_Downloaded_Title" = "Arikutorwa mashoko.";
-"Resources_Downloaded_Empty" = "Aphana cha watola.  Taka pakazwi \"kutola \"\
-Ngondivi ko passi kuti utongue.";
+"Resources_Downloaded_Empty" = "Aphana cha watola.  Taka pakazwi “kutola“ Ngondivi ko passi kuti utongue.";
 "Resources_Downloaded_Empty_SecondMsg" = "Aphana cha watola.";
 "Resources_Available_Title" = "Aripo mashoko o kuti a torwe.";
 "Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
@@ -747,3 +746,4 @@ Ngondivi ko passi kuti utongue.";
 "NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
+"NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";

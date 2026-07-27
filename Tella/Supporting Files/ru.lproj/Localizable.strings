@@ -60,10 +60,8 @@
 "Vault_ImportDelete_Title" = "Import and delete original file?";
 "Vault_ImportDelete_Content" = "After importing the file into Tella, do you want to keep the original file on your device or delete it?";
 "Vault_ImportDelete_SubContent" = "If you delete it, the file imported into Tella will be the only copy left.";
-"Vault_ImportDelete_KeepOriginal" = "СОХРАНИТЬ ОРИГИНАЛ\
-";
-"Vault_ImportDelete_DeleteOriginal" = "УДАЛИТЬ ОРИГИНАЛ\
-";
+"Vault_ImportDelete_KeepOriginal" = "СОХРАНИТЬ ОРИГИНАЛ";
+"Vault_ImportDelete_DeleteOriginal" = "УДАЛИТЬ ОРИГИНАЛ";
 "Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Create new folder";
 "Vault_ManageFiles_PhotoLibrary_SheetSelect" = "Photo Library";
 "Vault_ManageFiles_Document_SheetSelect" = "Document";
@@ -473,12 +471,9 @@
 "Error_Nextcloud_ForderExist" = "Folder already exist";
 "Error_Nextcloud_InvalidCredentials" = "The username or password is incorrect";
 "Error_Nextcloud_ManyFailedRequests" = "Too many failed attempts. Please try again later.";
-"Vault_EditFile_Exit_SheetTitle" = "Несохраненные изменения\
-";
-"Vault_EditFile_Exit_SheetExpl" = "Ваши изменения не были сохранены. Хотите ли Вы сохранить изменения перед выходом?\
-";
-"Vault_EditFile_Exit_SheetAction" = "ВЫХОД БЕЗ СОХРАНЕНИЯ\
-";
+"Vault_EditFile_Exit_SheetTitle" = "Несохраненные изменения";
+"Vault_EditFile_Exit_SheetExpl" = "Ваши изменения не были сохранены. Хотите ли Вы сохранить изменения перед выходом?";
+"Vault_EditFile_Exit_SheetAction" = "ВЫХОД БЕЗ СОХРАНЕНИЯ";
 "Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
@@ -751,3 +746,4 @@
 "NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
+"NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
