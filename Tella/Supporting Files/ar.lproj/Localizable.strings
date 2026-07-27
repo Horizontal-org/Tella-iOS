@@ -15,7 +15,7 @@
 "LockUnlock_LockPasswordSet_Expl2" = "Avoid using passwords that can be guessed easily, such as “password.”";
 "LockUnlock_LockPasswordSet_Expl3" = "The longer your password, the more secure it is.";
 "LockUnlock_LockPasswordConfirm_Subhead" = "تأكيد كلمة السر";
-"LockUnlock_LockPasswordConfirm_Expl" = "Please enter your password one more time, just to be sure.";
+"LockUnlock_LockPasswordConfirm_Expl" = "يُرجى إدخال كلمة السر مرة أخرى، فقط للتأكد.";
 "LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch" = "يُرجى المحاولة مرة أخرى. كلمتا السر غير متطابقتين.";
 "LockUnlock_LockPinSet_Subhead" = "أدخل رقم التعريف الشخصي";
 "LockUnlock_LockPinSet_Expl1" = "Use at least 6 digits";
