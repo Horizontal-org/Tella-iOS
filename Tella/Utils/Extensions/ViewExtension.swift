@@ -33,7 +33,9 @@ extension View {
             
         }
         
-        UIApplication.shared.topNavigationController()?.pushViewController(hostingView, animated: true)
+        let navigationController = UIApplication.shared.topNavigationController()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.pushViewController(hostingView, animated: true)
     }
     
     func present<Content: View>(style: UIModalPresentationStyle = .automatic, transitionStyle: UIModalTransitionStyle = .coverVertical, @ViewBuilder builder: () -> Content) {
@@ -115,6 +117,17 @@ extension View {
     func `if`<Transform: View>(_ condition: Bool, transform: (Self) -> Transform) -> some View {
         if condition { transform(self) }
         else { self }
+    }
+
+    /// Enables/disables scrolling without removing the ScrollView from the
+    /// hierarchy. On iOS 15 and earlier scrolling stays enabled.
+    @ViewBuilder
+    func scrollEnabled(_ enabled: Bool) -> some View {
+        if #available(iOS 16.0, *) {
+            self.scrollDisabled(!enabled)
+        } else {
+            self
+        }
     }
     
     func showTopSheetView<Content:View>( content : Content) {

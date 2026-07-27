@@ -19,7 +19,6 @@ struct MainView: View  {
     var serversViewModel: ServersViewModel
 
     init(appViewState: AppViewState) {
-        UIApplication.shared.setupApperance()
         self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
         self.homeViewModel = HomeViewModel(appViewState: appViewState)

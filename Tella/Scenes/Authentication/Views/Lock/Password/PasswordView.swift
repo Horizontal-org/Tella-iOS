@@ -35,32 +35,17 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-                Spacer(minLength: 56)
-                
-                Image("lock.password.B")
-                    .frame(width: 120, height: 37)
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer()
-                    .frame(height: 50)
-                
-                LockDescriptionView(title: lockViewData.title,
-                                    description: lockViewData.description,
-                                    alignement: lockViewData.alignement)
-                
                 Spacer()
                 
-                PasswordTextFieldView(fieldContent: $fieldContent,
-                                      isValid: $isValid,
-                                      shouldShowError: .constant(false))
-                Spacer()
+                topView
                 
+                Spacer()
                 
                 NavigationBottomView(shouldActivateNext: $isValid,
-                               shouldEnableBackButton: shouldEnableBackButton,
-                               nextButtonAction: nextButtonAction,
-                               destination:destination,
-                               nextAction: action, backAction: {
+                                     shouldEnableBackButton: shouldEnableBackButton,
+                                     nextButtonAction: nextButtonAction,
+                                     destination:destination,
+                                     nextAction: action, backAction: {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }
@@ -73,6 +58,28 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
             .onChange(of: fieldContent) { _ in
                 shouldShowErrorMessage = false
             }
+    }
+    
+    var topView: some View {
+        VStack(spacing: 0) {
+            Image("lock.password.B")
+                .frame(width: 120, height: 37)
+                .aspectRatio(contentMode: .fit)
+            
+            Spacer()
+                .frame(height: 50)
+            
+            LockDescriptionView(title: lockViewData.title,
+                                description: lockViewData.description,
+                                alignement: lockViewData.alignement)
+            
+            Spacer()
+                .frame(height: 50)
+            
+            PasswordTextFieldView(fieldContent: $fieldContent,
+                                  isValid: $isValid,
+                                  shouldShowError: .constant(false))
+        }.padding(EdgeInsets(top: 0, leading: .medium, bottom: 0, trailing: .medium))
     }
 }
 

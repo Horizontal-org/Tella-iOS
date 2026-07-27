@@ -11,12 +11,14 @@
 import SwiftUI
 import Combine
 import Photos
+import UniformTypeIdentifiers
 
 struct PhotoVideoPickerView: View {
     
     @StateObject var viewModel : PhotoVideoViewModel
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
+    var allowedContentTypes : ImportFileType
     @State private var showingImagePickerSheet : Bool = false
     @State private var pendingImagePickerAssets: [PHAsset]? = nil
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
@@ -27,7 +29,8 @@ struct PhotoVideoPickerView: View {
          showingImportDocumentPicker: Binding<Bool>,
          mainAppModel: MainAppModel,
          resultFile : Binding<[VaultFileDB]?>? = nil,
-         rootFile:Binding<VaultFileDB?>? = nil) {
+         rootFile:Binding<VaultFileDB?>? = nil,
+         allowedContentTypes: ImportFileType = .allFiles) {
         
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: mainAppModel,
                                                                    folderPathArray: [],
@@ -35,6 +38,7 @@ struct PhotoVideoPickerView: View {
                                                                    rootFile: rootFile))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
+        self.allowedContentTypes = allowedContentTypes
     }
     
     var body: some View {
@@ -123,7 +127,7 @@ struct PhotoVideoPickerView: View {
         HStack{}
             .fileImporter(
                 isPresented:  showingImportDocumentPicker,
-                allowedContentTypes: [.data],
+                allowedContentTypes: allowedContentTypes.uttypes,
                 allowsMultipleSelection: true,
                 onCompletion: { result in
                     if let urls = try? result.get() {

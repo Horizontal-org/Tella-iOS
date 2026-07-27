@@ -646,6 +646,7 @@
 "NearbySharing_ConnectionFailed_SheetTitle" = "Connection failed";
 "NearbySharing_ConnectionFailed_SheetExpl" = "Please make sure your connection details are correct and that you are on the same Wi-Fi network.";
 "NearbySharing_ConnectionFailed_SheetAction" = "Try again";
+"NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
 "NearbySharing_Verification_Action_Confirm" = "Confirm and connect";
 "NearbySharing_Verification_Action_WaitingSender" = "Waiting for sender ...";
 "NearbySharing_Verification_Action_WaitingRecipient" = "Waiting for recipient ...";

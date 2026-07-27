@@ -17,7 +17,8 @@ struct AddFilePhotoVideoPickerView: View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
                              mainAppModel: viewModel.mainAppModel,
-                             resultFile: $viewModel.resultFile)
+                             resultFile: $viewModel.resultFile,
+                             allowedContentTypes: viewModel.importFileType)
         
     }
 }

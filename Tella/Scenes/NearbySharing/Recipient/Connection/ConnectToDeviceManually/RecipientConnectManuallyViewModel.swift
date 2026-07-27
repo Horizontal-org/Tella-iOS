@@ -79,3 +79,12 @@ class RecipientConnectManuallyViewModel: ObservableObject {
             }
     }
 }
+
+
+extension RecipientConnectManuallyViewModel {
+    static func stub() -> RecipientConnectManuallyViewModel {
+        return RecipientConnectManuallyViewModel(certificateGenerator: CertificateGenerator(),
+                                                 mainAppModel: MainAppModel.stub(),
+                                                 connectionInfo: ConnectionInfo.stub())
+    }
+}

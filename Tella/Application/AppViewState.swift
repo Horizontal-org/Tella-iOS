@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Rance Tsai on 9/7/20.
-//  Copyright © 2020 HORIZONTAL. 
+//  Copyright © 2020 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,12 +15,12 @@ enum MainViewEnum {
 }
 
 final class AppViewState: ObservableObject {
-   
+    
     @Published var homeViewModel : MainAppModel
     @Published private var viewStack = [MainViewEnum]()
     @Published var mainAppLayout: LayoutDirection = .leftToRight
-    @Published var networkMonitor : NetworkMonitor 
-
+    @Published var networkMonitor : NetworkMonitor
+    
     init() {
         let networkMonitor = NetworkMonitor.shared
         self.networkMonitor = networkMonitor
@@ -29,20 +29,20 @@ final class AppViewState: ObservableObject {
         self.resetApp()
         self.initLanguage()
     }
-
+    
     var currentView: MainViewEnum {
         return viewStack.last ?? .LOCK
     }
-
+    
     func resetToLock() {
         viewStack = [.LOCK]
     }
-
+    
     func resetToUnlock() {
         homeViewModel.resetData()
         viewStack = [.UNLOCK]
     }
-
+    
     func showMainView() {
         viewStack = [.MAIN]
     }
@@ -50,9 +50,16 @@ final class AppViewState: ObservableObject {
     func resetToMain() {
         viewStack = [.MAIN]
     }
-
+    
     func resetApp() {
         homeViewModel.vaultManager.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
+    }
+    
+    func lockAfterBackground() {
+        let vaultManager = homeViewModel.vaultManager
+        if vaultManager.isUnlocked {
+            resetToUnlock()
+        }
     }
     
     func initLanguage() {
@@ -67,4 +74,3 @@ extension AppViewState {
         return AppViewState()
     }
 }
-

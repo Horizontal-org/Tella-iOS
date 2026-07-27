@@ -18,6 +18,7 @@ enum RecipientConnectToDeviceViewAction {
     case showRecipientVerificationHash
     case showSenderHashVerification(certificateHash: String)
     case showIncompatibleVersion
+    case showConnectionFailed
     case errorOccured
     case discardAndStartOver
 }
@@ -183,5 +184,13 @@ class RecipientConnectToDeviceViewModel: ObservableObject {
                     break
                 }
             }
+    }
+}
+
+extension RecipientConnectToDeviceViewModel {
+    static var stub: RecipientConnectToDeviceViewModel {
+        .init(certificateGenerator: CertificateGenerator(),
+              mainAppModel: MainAppModel.stub()
+          )
     }
 }

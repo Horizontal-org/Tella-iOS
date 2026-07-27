@@ -110,3 +110,7 @@ struct RecipientConnectToDeviceManuallyView: View {
         showBottomSheetView(content: content, isPresented: $isBottomSheetShown, tapToDismiss: false)
     }
 }
+
+#Preview {
+    RecipientConnectToDeviceManuallyView(viewModel: RecipientConnectManuallyViewModel.stub())
+}
