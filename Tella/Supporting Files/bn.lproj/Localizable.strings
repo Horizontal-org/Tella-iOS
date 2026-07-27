@@ -746,4 +746,4 @@
 "NearbySharing_Verification_Step1_ConfirmSenderHash" = "Step 1: Confirm sender hash";
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
-"NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "";
+"NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again।";
