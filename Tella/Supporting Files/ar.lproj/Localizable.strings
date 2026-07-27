@@ -103,7 +103,7 @@
 "Vault_CancelImportFile_SheetExpl" = "Your file will not be imported.";
 "Vault_CancelImportFile_Back_SheetAction" = "العودة";
 "Vault_CancelImportFile_CancelImport_SheetAction" = "CANCEL IMPORT";
-"Vault_EmptyAllFiles_Expl1" = "You don’t have any files in Tella yet.";
+"Vault_EmptyAllFiles_Expl1" = "ليس لديك أي ملفات بعد في Tella.";
 "Vault_EmptyAllFiles_Expl2" = "Tap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
 "Vault_EmptyFolder_Expl" = "This folder is empty! Tap the + button below to import a file or create a folder.";
 "Vault_FileAudio_UpdateSecondTime" = "%@s";
@@ -119,12 +119,12 @@
 "Recorder_AudioRecordings_AppBar" = "التسجيلات الصوتية";
 "Recorder_SaveRecording_SheetTitle" = "هل ترغب في حفظ التسجيل؟";
 "Recorder_SaveRecording_SheetExpl" = "لم يُحفظ تسجيلك. هل ترغب في حفظ التسجيل قبل الإغلاق؟";
-"Recorder_SaveRecording_Cancel_SheetAction" = "CANCEL";
+"Recorder_SaveRecording_Cancel_SheetAction" = "إلغاء";
 "Recorder_SaveRecording_Discard_SheetAction" = "DISCARD";
-"Recorder_SaveRecording_Save_SheetAction" = "SAVE";
+"Recorder_SaveRecording_Save_SheetAction" = "حفظ";
 "Recorder_RenameRecording_SheetTitle" = "إعادة تسمية التسجيل الصوتي";
-"Recorder_RenameRecording_Cancel_SheetAction" = "CANCEL";
-"Recorder_RenameRecording_Save_SheetAction" = "SAVE";
+"Recorder_RenameRecording_Cancel_SheetAction" = "إلغاء";
+"Recorder_RenameRecording_Save_SheetAction" = "حفظ";
 "Recorder_AudioRecordingSaved_Toast" = "The audio recording was saved to your Tella files.";
 "Recorder_DeniedAudioPermission_Expl1" = "The Tella app does not have permission to access Microphone.";
 "Recorder_DeniedAudioPermission_Expl2" = "If you want to record a voice, proceed in the following way:";
