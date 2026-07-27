@@ -479,7 +479,7 @@
 "Vault_EditAudio_Toast_Message" = "音频时长不足 3 秒，无法剪辑。";
 "Vault_Copy_Text" = "-复制";
 "Setting_SettServer_Dropbox" = "DROPBOX";
-"Setting_Server_Create_Folder_Error" = "此字段不应仅包含空格、/ 和  字符。";
+"Setting_Server_Create_Folder_Error" = "此字段不应仅包含空格、/ 和 字符。";
 "Settings_Server_Dropbox_Success_Message" = "前往 DROPBOX";
 "Dropbox_AppBar" = "Dropbox";
 "Dropbox_ConnectionExpired_SheetTitle" = "您与 Dropbox 的连接已过期";
