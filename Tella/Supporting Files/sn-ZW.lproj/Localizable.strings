@@ -357,7 +357,7 @@
 "BackgroundActivities_Encrypting" = "Encrypting “%@”";
 "Resources_Home_Serve_title" = "Magwaro anobatsira";
 "Resources_Downloaded_Title" = "Arikutorwa mashoko.";
-"Resources_Downloaded_Empty" = "Aphana cha watola.  Taka pakazwi \"kutola \"\\Ngondivi ko passi kuti utongue.";
+"Resources_Downloaded_Empty" = "Aphana cha watola.  Taka pakazwi “kutola“ Ngondivi ko passi kuti utongue.";
 "Resources_Downloaded_Empty_SecondMsg" = "Aphana cha watola.";
 "Resources_Available_Title" = "Aripo mashoko o kuti a torwe.";
 "Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
