@@ -47,8 +47,7 @@ struct RecipientFileTransferView: View {
         NavigationHeaderView(title: LocalizableNearbySharing.receiveFiles.localized,
                              navigationBarType: .inline,
                              backButtonAction: {
-            self.popTo(ViewClassType.nearbySharingMainView)
-            viewModel.stopServerListening()
+            showExitNearbySharingConfirmation()
         },
                              rightButtonType: .none)
     }
@@ -60,13 +59,13 @@ struct RecipientFileTransferView: View {
             
             CustomText(String(format: LocalizableNearbySharing.senderRequestFilesNumberDesc.localized, viewModel.files.count),
                        style: .heading1Style)
-                .padding(.bottom, 16)
+            .padding(.bottom, 16)
             
             CustomText(LocalizableNearbySharing.requestQuestion.localized,
                        style: .body1Style,
                        alignment: .center)
             
-                .padding(.bottom, 48)
+            .padding(.bottom, 48)
             VStack(spacing: 16) {
                 TellaButtonView(title: LocalizableNearbySharing.accept.localized.uppercased(),
                                 nextButtonAction: .action,
@@ -100,6 +99,26 @@ struct RecipientFileTransferView: View {
         default:
             break
         }
+    }
+    
+    private func showExitNearbySharingConfirmation() {
+        let content = ConfirmBottomSheet(
+            titleText: LocalizableNearbySharing.exitProgressSheetTitle.localized,
+            msgText: LocalizableNearbySharing.exitProgressSheetExpl.localized,
+            cancelText: LocalizableNearbySharing.cancel.localized.uppercased(),
+            actionText: LocalizableNearbySharing.exitProgressExitAction.localized,
+            shouldHideSheet: false,
+            didConfirmAction: {
+                self.dismiss {
+                    self.popTo(ViewClassType.nearbySharingMainView)
+                    self.viewModel.stopServerListening()
+                }
+            },
+            didCancelAction: {
+                self.dismiss()
+            }
+        )
+        self.showBottomSheetView(content: content)
     }
 }
 
