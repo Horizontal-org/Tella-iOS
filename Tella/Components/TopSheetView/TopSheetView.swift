@@ -72,7 +72,8 @@ struct TopSheetView<Content:View>: View {
             
         } .frame(height:self.currentHeight + currentDrag)
             .frame(maxWidth: .infinity)
-            .background(Styles.Colors.backgroundTab.cornerRadius(30))
+            .background(Styles.Colors.backgroundTab)
+            .cornerRadius(.mediumCornerRadius, corners: [.bottomLeft, .bottomRight])
             .clipped()
             .offset(y: offset)
             .if(offset == -kMinHeight, transform: { view in
