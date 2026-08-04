@@ -119,7 +119,8 @@ enum LocalizableVault: String, LocalizableDelegate {
     
     // Empty File Message
     
-    case emptyAllFilesExpl = "Vault_EmptyAllFiles_Expl"
+    case emptyAllFilesExpl1 = "Vault_EmptyAllFiles_Expl1"
+    case emptyAllFilesExpl2 = "Vault_EmptyAllFiles_Expl2"
     case emptyFolderExpl = "Vault_EmptyFolder_Expl"
     
     case fileAudioUpdateSecondTime = "Vault_FileAudio_UpdateSecondTime"
@@ -127,17 +128,13 @@ enum LocalizableVault: String, LocalizableDelegate {
     
     
     case deniedPhotoLibraryPermissionTitle = "Vault_DeniedPhotoLibraryPermission_SheetTitle"
-    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_SheetExpl"
+    case deniedPhotoLibraryPermissionExpl1 = "Vault_DeniedPhotoLibraryPermission_SheetExpl1"
+    case deniedPhotoLibraryPermissionExpl2 = "Vault_DeniedPhotoLibraryPermission_SheetExpl2"
+    case deniedPhotoLibraryPermissionExpl3 = "Vault_DeniedPhotoLibraryPermission_SheetExpl3"
+    case deniedPhotoLibraryPermissionExpl4 = "Vault_DeniedPhotoLibraryPermission_SheetExpl4"
     case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Settings_SheetSelect"
     case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Cancel_SheetSelect"
 
-    
-    
-    case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
-    case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
-    case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
-    
-    
     case limitedPhotoLibraryAppBar = "Vault_LimitedPhotoLibrary_AppBar"
 
     case limitedPhotoLibraryTitle =  "Vault_LimitedPhotoLibrary_Title"

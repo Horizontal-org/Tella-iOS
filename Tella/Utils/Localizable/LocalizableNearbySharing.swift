@@ -90,6 +90,7 @@ enum LocalizableNearbySharing: String, LocalizableDelegate {
     case connectionFailedTitle = "NearbySharing_ConnectionFailed_SheetTitle"
     case connectionFailedExpl = "NearbySharing_ConnectionFailed_SheetExpl"
     case connectionFailedAction = "NearbySharing_ConnectionFailed_SheetAction"
+    case recipientConnectionFailedExpl = "NearbySharing_Recipient_ConnectionFailed_SheetExpl"
     case incompatibleVersionTitle = "NearbySharing_IncompatibleVersion_SheetTitle"
  
     case senderIncompatibleVersionExpl = "NearbySharing_Sender_IncompatibleVersion_SheetExpl"

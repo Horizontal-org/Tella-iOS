@@ -300,6 +300,7 @@
 		128247A12D5F923100B7E63E /* SenderConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */; };
 		128247A42D5F935D00B7E63E /* ConnectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A32D5F935A00B7E63E /* ConnectionInfo.swift */; };
 		128247A52D5F936000B7E63E /* RegistrationNonceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */; };
+		1282B3423005201B009BC44E /* KeyboardAwareScrollViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282B34130052013009BC44E /* KeyboardAwareScrollViewModifier.swift */; };
 		1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */; };
 		1282C0A02D8AEA1E0033E4CA /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C09F2D8AEA1A0033E4CA /* Register.swift */; };
 		1282C0A22D8AEE130033E4CA /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A12D8AEE110033E4CA /* FileUpload.swift */; };
@@ -844,6 +845,7 @@
 		121C5D7A29424F4E00A64123 /* ReportAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportAPI.swift; sourceTree = "<group>"; };
 		121C5D7C2942710600A64123 /* ProjectAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAPI.swift; sourceTree = "<group>"; };
 		121F87A92964383D00E6BA0D /* SubmittedReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedReportVM.swift; sourceTree = "<group>"; };
+		12200BF73006CAF500227FDE /* ckb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ckb; path = ckb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1220A72D292EB11B000BC24C /* ReportFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFileGridView.swift; sourceTree = "<group>"; };
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
@@ -1073,6 +1075,7 @@
 		128247A02D5F922900B7E63E /* SenderConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
 		128247A32D5F935A00B7E63E /* ConnectionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionInfo.swift; sourceTree = "<group>"; };
 		128247A62D5F936100B7E63E /* RegistrationNonceContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationNonceContext.swift; sourceTree = "<group>"; };
+		1282B34130052013009BC44E /* KeyboardAwareScrollViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAwareScrollViewModifier.swift; sourceTree = "<group>"; };
 		1282C09D2D8AD7990033E4CA /* PrepareUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareUpload.swift; sourceTree = "<group>"; };
 		1282C09F2D8AEA1A0033E4CA /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		1282C0A12D8AEE110033E4CA /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
@@ -1139,7 +1142,6 @@
 		12937FFB2DC284D50019ECC4 /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		12937FFC2DC284D50019ECC4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12937FFD2DC284D50019ECC4 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		12937FFE2DC284D50019ECC4 /* ku */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ku; path = ku.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129380002DC284D50019ECC4 /* ml */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ml; path = ml.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129380012DC284D50019ECC4 /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		129380032DC284D50019ECC4 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1175,7 +1177,6 @@
 		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleExtension.swift; sourceTree = "<group>"; };
 		129DA1932FE175BB001D5EB4 /* ManualPingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualPingSession.swift; sourceTree = "<group>"; };
-		129FBF422EB4BBED00E4DA57 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* NavigationBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBottomView.swift; sourceTree = "<group>"; };
@@ -3552,6 +3553,7 @@
 			isa = PBXGroup;
 			children = (
 				20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */,
+				1282B34130052013009BC44E /* KeyboardAwareScrollViewModifier.swift */,
 				20BA4FB02D522551006DD8B9 /* CardModifier.swift */,
 			);
 			path = Modifiers;
@@ -4177,7 +4179,6 @@
 				my,
 				"fa-IR",
 				ta,
-				ku,
 				ru,
 				"pt-BR",
 				vi,
@@ -4188,10 +4189,10 @@
 				ml,
 				"sn-ZW",
 				az,
-				zh_CN,
 				"zh-Hans",
 				lus,
 				uk,
+				ckb,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4593,6 +4594,7 @@
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
+				1282B3423005201B009BC44E /* KeyboardAwareScrollViewModifier.swift in Sources */,
 				121AFF952E4CDE7B007300AD /* NearbySharingServerHandler.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
@@ -5145,7 +5147,6 @@
 				12937FFB2DC284D50019ECC4 /* fa-IR */,
 				12937FFC2DC284D50019ECC4 /* fr */,
 				12937FFD2DC284D50019ECC4 /* id */,
-				12937FFE2DC284D50019ECC4 /* ku */,
 				129380002DC284D50019ECC4 /* ml */,
 				129380012DC284D50019ECC4 /* my */,
 				129380032DC284D50019ECC4 /* pt-BR */,
@@ -5156,10 +5157,10 @@
 				129380082DC284D50019ECC4 /* vi */,
 				1282DE472DDD0302004D2176 /* sn-ZW */,
 				129919BC2E2EC92900A4417D /* az */,
-				129FBF422EB4BBED00E4DA57 /* zh_CN */,
 				122E2F4A2EC50343004E42B3 /* zh-Hans */,
 				12967AF32F5F6FF100D9FC7E /* lus */,
 				1266F32D2F9F6DE00020A81E /* uk */,
+				12200BF73006CAF500227FDE /* ckb */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5356,7 +5357,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 150;
+				CURRENT_PROJECT_VERSION = 152;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -5367,7 +5368,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5386,7 +5387,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 150;
+				CURRENT_PROJECT_VERSION = 152;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
@@ -5398,7 +5399,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

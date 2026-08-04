@@ -191,7 +191,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Feedback
     case settFeedbackAppBar = "Settings_SettFeedback_AppBar"
-    case settFeedbackExpl = "Settings_SettFeedback_Expl"
+    case settFeedbackExpl1 = "Settings_SettFeedback_Expl1"
+    case settFeedbackExpl2 = "Settings_SettFeedback_Expl2"
     case enableFeedbackTitle = "Settings_SettFeedback_EnableFeedback_Title"
     case enableFeedbackExpl = "Settings_SettFeedback_EnableFeedback_Expl"
     case enableFeedbackLearnMore = "Settings_SettFeedback_EnableFeedback_LearnMore"

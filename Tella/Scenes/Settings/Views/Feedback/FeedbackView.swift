@@ -93,7 +93,8 @@ struct FeedbackView: View {
                 
                 Spacer().frame(width: 25)
                 
-                Text(LocalizableSettings.settFeedbackExpl.localized)
+                Text(LocalizableSettings.settFeedbackExpl1.localized.addTwolines
+                     + LocalizableSettings.settFeedbackExpl2.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
                     .fixedSize(horizontal: false, vertical: true)

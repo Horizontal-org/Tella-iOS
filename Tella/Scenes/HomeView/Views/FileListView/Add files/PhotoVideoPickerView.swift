@@ -11,12 +11,14 @@
 import SwiftUI
 import Combine
 import Photos
+import UniformTypeIdentifiers
 
 struct PhotoVideoPickerView: View {
     
     @StateObject var viewModel : PhotoVideoViewModel
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
+    var allowedContentTypes : ImportFileType
     @State private var showingImagePickerSheet : Bool = false
     @State private var pendingImagePickerAssets: [PHAsset]? = nil
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
@@ -27,7 +29,8 @@ struct PhotoVideoPickerView: View {
          showingImportDocumentPicker: Binding<Bool>,
          mainAppModel: MainAppModel,
          resultFile : Binding<[VaultFileDB]?>? = nil,
-         rootFile:Binding<VaultFileDB?>? = nil) {
+         rootFile:Binding<VaultFileDB?>? = nil,
+         allowedContentTypes: ImportFileType = .allFiles) {
         
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: mainAppModel,
                                                                    folderPathArray: [],
@@ -35,6 +38,7 @@ struct PhotoVideoPickerView: View {
                                                                    rootFile: rootFile))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
+        self.allowedContentTypes = allowedContentTypes
     }
     
     var body: some View {
@@ -89,7 +93,10 @@ struct PhotoVideoPickerView: View {
     private func showAccessDeniedUI()  {
         
         let content = ConfirmBottomSheet(titleText: LocalizableVault.deniedPhotoLibraryPermissionTitle.localized,
-                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl.localized,
+                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl1.localized.addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl2.localized.numbered(1).addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl3.localized.numbered(2).addline
+                                         + LocalizableVault.deniedPhotoLibraryPermissionExpl4.localized.numbered(3),
                                          cancelText: LocalizableVault.deniedPhotosPermissionCancel.localized.uppercased(),
                                          actionText:LocalizableVault.deniedPhotosPermissionSettings.localized.uppercased(),
                                          shouldHideSheet: false,
@@ -120,7 +127,7 @@ struct PhotoVideoPickerView: View {
         HStack{}
             .fileImporter(
                 isPresented:  showingImportDocumentPicker,
-                allowedContentTypes: [.data],
+                allowedContentTypes: allowedContentTypes.uttypes,
                 allowsMultipleSelection: true,
                 onCompletion: { result in
                     if let urls = try? result.get() {

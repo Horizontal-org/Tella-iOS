@@ -187,6 +187,9 @@ class ManuallyVerificationViewModel: ObservableObject {
     }
     
     func listenToServerEvents() {
+
+        guard participant == .recipient else { return }
+        
         serverEventsCancellable = nearbySharingServer?.eventPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
@@ -200,14 +203,25 @@ class ManuallyVerificationViewModel: ObservableObject {
                 case .senderCertificateVerificationRequested(let certificateHash):
                     // Register held by the server while the recipient is on the receiver hash step:
                     // move to step 2 (sender hash verification)
-                    if self.participant == .recipient {
-                        self.recipientViewAction = .showSenderHashVerification(certificateHash: certificateHash)
-                    }
+                    self.recipientViewAction = .showSenderHashVerification(certificateHash: certificateHash)
+                case .registerPinFailed:
+                    self.recipientViewAction = .showConnectionFailed
                 case .connectionClosed:
                     self.recipientViewAction = .errorOccured
                 default:
                     break
                 }
             }
+    }
+}
+
+extension ManuallyVerificationViewModel {
+    static func stub() -> ManuallyVerificationViewModel {
+        .init(
+            participant: .recipient,
+            connectionInfo: ConnectionInfo.stub(),
+            mainAppModel: MainAppModel.stub(),
+            verificationRole: .senderHash(confirmAction: .acceptPendingRegistration)
+            )
     }
 }

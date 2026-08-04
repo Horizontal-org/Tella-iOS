@@ -9,6 +9,19 @@
 
 import Foundation
 import Combine
+import UniformTypeIdentifiers
+
+enum ImportFileType {
+    case pdf
+    case allFiles
+    
+    var uttypes: [UTType] {
+        switch self {
+        case .pdf: return [.pdf]
+        case .allFiles: return [.data]
+        }
+    }
+}
 
 class AddFilesViewModel: ObservableObject {
     
@@ -20,6 +33,10 @@ class AddFilesViewModel: ObservableObject {
     @Published var showingCamera : Bool = false
     @Published var resultFile : [VaultFileDB]?
     var shouldShowDocumentsOnly: Bool = false
+    
+    var importFileType: ImportFileType {
+        shouldShowDocumentsOnly ? .pdf : .allFiles
+    }
     
     var mainAppModel: MainAppModel
     var subscribers = Set<AnyCancellable>()

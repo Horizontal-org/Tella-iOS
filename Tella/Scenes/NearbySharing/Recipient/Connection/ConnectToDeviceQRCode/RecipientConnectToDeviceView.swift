@@ -188,8 +188,5 @@ struct RecipientConnectToDeviceView: View {
 }
 
 #Preview {
-    RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel(
-        certificateGenerator: CertificateGenerator(),
-        mainAppModel: MainAppModel.stub()
-    ))
+    RecipientConnectToDeviceView(viewModel: RecipientConnectToDeviceViewModel.stub)
 }

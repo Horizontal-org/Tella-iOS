@@ -563,6 +563,10 @@ class VaultManager : VaultManagerInterface, ObservableObject{
 
 extension VaultManager {
     
+    var isUnlocked: Bool {
+        cryptoManager.isUnlocked
+    }
+    
     func keysInitialized() -> Bool {
         return self.cryptoManager.keysInitialized()
     }

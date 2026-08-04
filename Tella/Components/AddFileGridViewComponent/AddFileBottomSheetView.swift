@@ -12,10 +12,9 @@ import SwiftUI
 struct AddFileBottomSheetView<Content: View>: View {
     
     @ObservedObject var viewModel: AddFilesViewModel
-    @EnvironmentObject var sheetManager: SheetManager
     var content: () -> Content
     var moreAction: (() -> ())? = nil
-
+    
     init(viewModel: AddFilesViewModel, content: @escaping () -> Content, moreAction: (() -> ())? = nil ) {
         self.viewModel = viewModel
         self.content = content
@@ -32,13 +31,11 @@ struct AddFileBottomSheetView<Content: View>: View {
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet(content: {
-            ActionListBottomSheet(items: viewModel.bottomSheetItems,
-                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
-                                  action: { item in
-                self.handleActions(item: item)
-            })
-        })
+        showBottomSheetView(content: ActionListBottomSheet(items: viewModel.bottomSheetItems,
+                                                           headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
+                                                           action: { item in
+            self.handleActions(item: item)
+        }))
     }
     
     private func handleActions(item: ListActionSheetItem) {
@@ -46,30 +43,50 @@ struct AddFileBottomSheetView<Content: View>: View {
         
         switch type {
         case .camera:
-            viewModel.showingCamera = true
+            dismiss { viewModel.showingCamera = true }
             
         case .recorder:
-            viewModel.showingRecordView = true
+            dismiss { viewModel.showingRecordView = true }
             
         case .fromDevice:
             showAddPhotoVideoSheet()
             
         case .tellaFile:
-            navigateTo(destination: fileListView)
+            dismiss { navigateTo(destination: fileListView) }
             
         default:
-            break
+            dismiss()
         }
-        sheetManager.hide()
     }
     
     func showAddPhotoVideoSheet() {
-        viewModel.showingImagePicker = true
+        if viewModel.shouldShowDocumentsOnly {
+            dismiss { viewModel.showingImportDocumentPicker = true }
+        } else {
+            dismiss {
+                showBottomSheetView(content: ActionListBottomSheet(items: AddPhotoVideoItems,
+                                                                   headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized,
+                                                                   action: { item in
+                    self.handleAddPhotoVideoActions(item: item)
+                }))
+            }
+        }
+    }
+    
+    private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
+        guard let type = item.type as? AddPhotoVideoType else { return }
+        
+        switch type {
+        case .photoLibrary:
+            dismiss { viewModel.showingImagePicker = true }
+        case .document:
+            dismiss { viewModel.showingImportDocumentPicker = true }
+        }
     }
     
     var fileListView: some View {
         FileListView(mainAppModel: viewModel.mainAppModel,
-                     filterType: viewModel.shouldShowDocumentsOnly ? .documents : .audioPhotoVideo,
+                     filterType: viewModel.shouldShowDocumentsOnly ? .pdf : .allWithoutDirectory,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $viewModel.resultFile)

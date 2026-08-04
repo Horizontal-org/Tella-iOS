@@ -8,11 +8,12 @@ import Foundation
 import Combine
 
 protocol VaultManagerInterface {
-
+    
     var shouldCancelImportAndEncryption : CurrentValueSubject<Bool,Never> { get set }
     var onSuccessLock : PassthroughSubject<Void,Never> { get set }
     func rootIsExist() -> Bool
     
+    var isUnlocked: Bool { get }
     func keysInitialized() -> Bool
     func login(password:String?) -> AnyPublisher<Bool,Never>
     func initKeys(_ type: PasswordTypeEnum, password:String)

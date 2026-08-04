@@ -32,6 +32,10 @@ final class CryptoManager {
         )
     }
     
+    var isUnlocked: Bool {
+        unlockedVaultPrivateKey != nil
+    }
+    
     func lock() {
         unlockedVaultPrivateKey = nil
     }
@@ -41,6 +45,7 @@ final class CryptoManager {
 
 protocol VaultLockManaging: AnyObject {
     var passwordType: PasswordTypeEnum { get set }
+    var isUnlocked: Bool { get }
     func unlockAndMigrateIfNeeded(password: String?) async -> Bool
     func keysInitialized() -> Bool
     func initKeys(_ type: PasswordTypeEnum, password: String) throws

@@ -389,7 +389,9 @@ extension TellaData {
     
     func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
         let id = database.updateUwaziTemplate(template: template)
-        
+        if id != nil {
+            self.shouldReloadUwaziTemplates.send(true)
+        }
         return id
     }
     func deleteAllUwaziTemplate(templateId: String) {
