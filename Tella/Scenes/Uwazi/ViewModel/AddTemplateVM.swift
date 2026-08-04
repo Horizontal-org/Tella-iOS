@@ -105,6 +105,7 @@ class AddTemplateViewModel: ObservableObject {
     
     fileprivate func handleRecieveValue(_ templates: [CollectedTemplate]) {
         self.handleTemplateDownload(templates: templates)
+        self.syncDownloadedTemplates(templates: templates)
         self.templates = templates
         self.isLoading = false
         
@@ -137,16 +138,43 @@ class AddTemplateViewModel: ObservableObject {
         }
     }
     
+    /// Updates the downloaded templates with the latest structure from the server
+    func syncDownloadedTemplates(templates: [CollectedTemplate]) {
+        let savedTemplates = getAllDownloadedTemplate() ?? []
+        
+        templates.forEach { remoteTemplate in
+            guard let templateId = remoteTemplate.templateId,
+                  let savedTemplate = savedTemplates.first(where: { $0.templateId == templateId }),
+                  let entityRow = remoteTemplate.entityRow else { return }
+
+            savedTemplate.entityRow = entityRow
+            _ = tellaData?.updateUwaziTemplate(template: savedTemplate)
+            refreshTemplateRelationships(savedTemplate)
+        }
+    }
+    
+    private func refreshTemplateRelationships(_ template: CollectedTemplate) {
+        entityFetcher?.fetchRelationshipEntities(template: template) { [weak self] result in
+            guard case .success(let relationships) = result else { return }
+            template.relationships = relationships
+            _ = self?.tellaData?.updateUwaziTemplate(template: template)
+        }
+    }
+    
     /// Save the template to the database
     /// - Parameter template: The template that we need to save into the database
     func saveTemplate(template: CollectedTemplate) {
-        let savedTemplateid = self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
-        if let savedTemplate = savedTemplateid,let templateId = template.templateId {
-            if !savedTemplate.contains(templateId) {
-                let result = self.tellaData?.addUwaziTemplate(template: template)
-                
-                handleSaveTemplateCompletion(template: template, result: result)
-            }
+        let savedTemplates = getAllDownloadedTemplate() ?? []
+        guard let templateId = template.templateId else { return }
+        
+        if let existingTemplate = savedTemplates.first(where: { $0.templateId == templateId }) {
+            existingTemplate.entityRow = template.entityRow
+            existingTemplate.relationships = template.relationships
+            _ = tellaData?.updateUwaziTemplate(template: existingTemplate)
+            handleSaveTemplateCompletion(template: existingTemplate, result: .success(existingTemplate))
+        } else {
+            let result = tellaData?.addUwaziTemplate(template: template)
+            handleSaveTemplateCompletion(template: template, result: result)
         }
     }
     
