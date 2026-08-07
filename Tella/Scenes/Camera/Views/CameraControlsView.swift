@@ -20,6 +20,7 @@ struct CameraControlsView: View {
     var updateCameraTypeAction: ((CameraType) -> Void)
     var toggleFlash: (() -> Void)
     var close: (() -> Void)
+    var zoomFactor: CGFloat = 1.0
     
     // MARK: - Private properties
     
@@ -39,6 +40,8 @@ struct CameraControlsView: View {
             cameraHeaderView()
             
             Spacer()
+            
+            zoomFactorLabel
             
             switch state {
                 
@@ -60,6 +63,26 @@ struct CameraControlsView: View {
                 stopRecordingVideo()
             }
         }
+    }
+    
+    var zoomFactorLabel: some View {
+        
+        CustomText(formattedZoomFactor, style: .subheading1Style)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.black.opacity(0.5))
+            .clipShape(Capsule())
+            .padding(.bottom, 20)
+            .rotate(deviceOrientation: deviceOrientation,
+                    shouldAnimate: shouldAnimate)
+
+    }
+    
+    private var formattedZoomFactor: String {
+        let roundedValue = (zoomFactor * 10).rounded() / 10
+        let isWholeNumber = roundedValue.truncatingRemainder(dividingBy: 1) == 0
+        let text = isWholeNumber ? String(Int(roundedValue)) : String(format: "%.1f", roundedValue)
+        return "\(text)x"
     }
     
     private func cameraHeaderView() -> some View {

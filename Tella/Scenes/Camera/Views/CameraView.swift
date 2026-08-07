@@ -45,6 +45,12 @@ struct CameraView: View {
         
         NavigationContainerView(backgroundColor: Color.black) {
             
+            CameraPreview(session: model.session,
+                          onZoomBegan: {
+                model.startZoom()
+            }, onZoomChanged: { pinchScale in
+                model.zoom(by: pinchScale)
+            })
             CameraPreview(session: model.session, gridIsOn: gridIsOn)
                 .edgesIgnoringSafeArea(.all)
             
@@ -126,7 +132,7 @@ struct CameraView: View {
             model.toggleFlash()
         }, close: {
             model.stopRunningCaptureSession()
-        })
+        }, zoomFactor: model.currentZoomFactor)
         .edgesIgnoringSafeArea(.all)
     }
     
