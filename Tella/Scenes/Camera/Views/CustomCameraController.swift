@@ -24,10 +24,9 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     private let sessionQueue = DispatchQueue(label: "session queue")
     
     private var locationManager = LocationManager()
-    var shouldPreserveMetadata: Bool = false
+    private let zoomController = CameraZoomController()
     
-    // Zoom factor of the device when the pinch gesture began
-    private var initialZoomFactor: CGFloat = 1.0
+    var shouldPreserveMetadata: Bool = false
     
     weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
     weak private var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
@@ -146,7 +145,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     func toggleFlash() {
         
-        if let avDevice = (captureSession.inputs.first as? AVCaptureDeviceInput)?.device {
+        if let avDevice = inputCamera() {
             
             if avDevice.hasTorch {
                 do {
@@ -162,69 +161,24 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     /// Captures the current zoom factor when a pinch gesture begins
     func startZoom() {
-        initialZoomFactor = inputCamera()?.videoZoomFactor ?? 1.0
+        zoomController.startZoom(device: inputCamera())
     }
     
-    /// Applies the pinch scale to the zoom captured at gesture start, clamped to the allowed range.
     func zoom(by pinchScale: CGFloat) {
         guard let device = inputCamera() else { return }
         
-        let desiredZoomFactor = initialZoomFactor * pinchScale
-        let clampedZoomFactor = max(device.minAvailableVideoZoomFactor,
-                                    min(desiredZoomFactor, maximumZoomFactor(for: device)))
-        
-        do {
-            try device.lockForConfiguration()
-            device.videoZoomFactor = clampedZoomFactor
-            device.unlockForConfiguration()
-            currentZoomFactor = displayedZoomFactor(for: device)
-        } catch {
-        }
+        currentZoomFactor = zoomController.zoom(
+            by: pinchScale,
+            device: device
+        )
     }
     
-    /// Max zoom: the system's recommended range on iOS 18+, otherwise 5x the longest lens like the native Camera app
-    private func maximumZoomFactor(for device: AVCaptureDevice) -> CGFloat {
-        if #available(iOS 18.0, *),
-           let range = device.activeFormat.systemRecommendedVideoZoomRange {
-            return min(range.upperBound, device.maxAvailableVideoZoomFactor)
-        }
-        
-        let longestLensZoomFactor = device.virtualDeviceSwitchOverVideoZoomFactors.last
-            .map { CGFloat(truncating: $0) } ?? 1.0
-        
-        return min(longestLensZoomFactor * 5.0,
-                   device.maxAvailableVideoZoomFactor)
-    }
-    
-    /// Converts the zoom factor into the user facing value, so the wide lens reads as 1x.
-    private func displayedZoomFactor(for device: AVCaptureDevice) -> CGFloat {
-        if #available(iOS 18.0, *) {
-            return device.videoZoomFactor * device.displayVideoZoomFactorMultiplier
-        }
-        
-        return device.videoZoomFactor / defaultZoomFactor(for: device)
-    }
-    
-    /// The device's internal zoom factor for the main wide lens (what the user sees as "1x").
-    private func defaultZoomFactor(for device: AVCaptureDevice) -> CGFloat {
-        guard device.constituentDevices.first?.deviceType == .builtInUltraWideCamera,
-              let wideLensFactor = device.virtualDeviceSwitchOverVideoZoomFactors.first else {
-            return 1.0
-        }
-        return CGFloat(truncating: wideLensFactor)
-    }
-    
-    /// Resets the camera to the "1x" wide lens whenever a new input is installed
     private func applyDefaultZoom() {
         guard let device = inputCamera() else { return }
         
-        do {
-            try device.lockForConfiguration()
-            device.videoZoomFactor = defaultZoomFactor(for: device)
-            device.unlockForConfiguration()
-        } catch {
-        }
-        currentZoomFactor = 1.0
+        currentZoomFactor = zoomController.applyDefaultZoom(
+            device: device
+        )
     }
     
     // MARK: - Private functions

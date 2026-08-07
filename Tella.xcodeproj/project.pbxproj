@@ -236,6 +236,7 @@
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
 		126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */; };
+		126C862B30267EC700DDE7D4 /* CameraZoomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C862A30267EC500DDE7D4 /* CameraZoomController.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
 		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
@@ -1017,6 +1018,7 @@
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
 		126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingEvent.swift; sourceTree = "<group>"; };
+		126C862A30267EC500DDE7D4 /* CameraZoomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraZoomController.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
 		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
@@ -2656,6 +2658,7 @@
 				1289B45728B63187005DA687 /* RotationViewModifier.swift */,
 				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
+				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
 				1227FC902922BE24002FD6FB /* CameraPreview.swift */,
 				127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */,
 				1227FC8E2922BDBC002FD6FB /* CameraModel.swift */,
@@ -4852,6 +4855,7 @@
 				20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
+				126C862B30267EC700DDE7D4 /* CameraZoomController.swift in Sources */,
 				125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
