@@ -15,7 +15,9 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     var vaultDataBase : VaultDataBaseProtocol
     
     var vaultManager : VaultManagerInterface?
-    var cancellable: Set<AnyCancellable> = []
+    
+    private var cancellables: Set<AnyCancellable> = []
+    private let cancellablesLock = NSLock()
     
     var shouldReloadFiles = CurrentValueSubject<Bool, Never>(false)
     
@@ -55,33 +57,34 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                      importedFiles: importedFiles)
         }
         
-        importProgress.progress.sink { progress in
+        let progressCancellable = importProgress.progress.sink { progress in
             subject.send(.importProgress(importProgress:  importProgress))
-        }.store(in: &self.cancellable)
+        }
+        storeCancellable(progressCancellable)
         
         return subject.eraseToAnyPublisher()
     }
     
     func addVaultFile(importedFile:  ImportedFile) async -> VaultFileDB? {
-
+        
         guard var fileDetails = await getFileDetails(importedFile: importedFile),
               let filePath = await getModifiedURL(importedFile: fileDetails.importedFile)
         else {
             return nil
         }
-
+        
         if let fileSize = filePath.fileSize {
             fileDetails.file.size = fileSize
         }
         if let contentHash = await filePath.sha256Hash() {
             fileDetails.file.hash = contentHash
         }
-
+        
         guard let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetails.file.id)
         else {
             return nil
         }
-
+        
         if isSaved {
             self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
             return fileDetails.file
@@ -151,13 +154,14 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             finishImport()
         }
         
-        self.shouldCancelImportAndEncryption.sink(receiveValue: { shouldCancel in
+        let cancellationCancellable = self.shouldCancelImportAndEncryption.sink(receiveValue: { shouldCancel in
             if shouldCancel {
                 task.cancel()
                 self.shouldCancelVideoExport.value = true
                 importProgress.pause()
             }
-        }).store(in: &cancellable)
+        })
+        storeCancellable(cancellationCancellable)
         
         
         func finishImport() {
@@ -171,6 +175,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             shouldReloadFiles.send(true)
             shouldCancelImportAndEncryption.value = false
         }
+    }
+    
+    private func storeCancellable(_ cancellable: AnyCancellable) {
+        cancellablesLock.lock()
+        defer { cancellablesLock.unlock() }
+        cancellables.insert(cancellable)
     }
     
     func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
@@ -351,7 +361,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         let duration =  filePath.getDuration()
         let size = filePath.fileSize ?? 0
-
+        
         let vaultFile = await VaultFileDB(id: id,
                                           type: .file,
                                           thumbnail: thumnail  ,
