@@ -185,14 +185,14 @@ extension VaultFilesManager {
         exportSession.metadata = nil
         exportSession.metadataItemFilter = .forSharing()
 
-        self.shouldCancelVideoExport
+        let cancellationCancellable = self.shouldCancelVideoExport
             .dropFirst()
             .sink(receiveValue: { [weak self] shouldCancel in
                 guard shouldCancel else { return }
                 self?.shouldCancelVideoExport.value = false
                 exportSession.cancelExport()
             })
-            .store(in: &self.cancellable)
+        defer { cancellationCancellable.cancel() }
         
         await exportSession.export()
 
