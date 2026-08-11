@@ -30,7 +30,7 @@ struct ImageTitleMessageView: View {
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-        }
+        }.frame(maxWidth: .infinity)
     }
 }
 
