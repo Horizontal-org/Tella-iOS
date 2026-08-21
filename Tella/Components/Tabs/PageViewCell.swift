@@ -25,7 +25,7 @@ struct  PageViewCell: View {
             VStack {
                 HStack(spacing: 3) {
                     Text(title)
-                        .font(.custom(Styles.Fonts.boldFontName, size: 15))
+                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 15))
                         .foregroundColor(selected ? .white : .white.opacity(0.5))
                         .padding(.bottom, 1)
                     if number > 0 {

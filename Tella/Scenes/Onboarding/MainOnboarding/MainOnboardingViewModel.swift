@@ -19,6 +19,7 @@ final class MainOnboardingViewModel: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     let pages: [OnboardingItem] = [
+        .welcome,
         .record(RecordContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
@@ -42,9 +43,16 @@ final class MainOnboardingViewModel: ObservableObject {
     // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
+    var dotCount: Int { max(0, count - 1) }
+    var dotIndex: Int { max(0, index - 1) }
     
     var currentPage: OnboardingItem {
-        pages[safe: index] ?? .record(RecordContent())
+        pages[safe: index] ?? .welcome
+    }
+
+    var isOnWelcome: Bool {
+        if case .welcome = currentPage { return true }
+        return false
     }
     
     var isOnAllDone: Bool {
@@ -79,9 +87,9 @@ final class MainOnboardingViewModel: ObservableObject {
     
     func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
         switch page {
-        case .record:
-            return direction == .left
-        case .files, .connections:
+        case .welcome:
+            return false
+        case .record, .files, .connections:
             return true
         case .nearbySharing:
             return direction == .right
@@ -96,6 +104,7 @@ enum OnboardingItem: Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
+    case welcome
     case record(any ImageTitleMessageContent)
     case files(any ImageTitleMessageContent)
     case connections(any ImageTitleMessageContent)
@@ -105,6 +114,8 @@ enum OnboardingItem: Identifiable, Equatable {
     var id: String {
         
         switch self {
+        case .welcome:
+            return "welcome"
         case .record:
             return "record"
         case .files:
