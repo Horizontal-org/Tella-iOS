@@ -53,15 +53,14 @@ extension View {
     }
     
     @ViewBuilder
-    func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
+    func addNavigationLink<Destination: View>(isActive:Binding<Bool>, destination: Destination) -> some View    {
         
         if #available(iOS 16.0, *) {
             
             self.navigationDestination(isPresented: isActive) {
                 destination
             }
-        } else
-        if #available(iOS 15.0, *) {
+        } else {
             ZStack {
                 self
                 AnyView(
@@ -70,25 +69,6 @@ extension View {
                                        EmptyView()
                                    }.frame(width: 0, height: 0)
                         .hidden())
-            }
-            
-        } else {
-            ZStack {
-                self
-                AnyView(
-                    ZStack {
-                        NavigationLink(destination:destination,
-                                       isActive: isActive) {
-                            EmptyView()
-                        }.frame(width: 0, height: 0)
-                            .hidden()
-                        
-                        if shouldAddEmptyView {
-                            NavigationLink(destination: EmptyView()) {
-                                EmptyView()
-                            }
-                        }
-                    })
             }
         }
     }
@@ -116,7 +96,7 @@ extension View {
     }
     
     /// Enables/disables scrolling without removing the ScrollView from the
-    /// hierarchy. On iOS 15 and earlier scrolling stays enabled.
+    /// hierarchy. On iOS 15 scrolling stays enabled.
     @ViewBuilder
     func scrollEnabled(_ enabled: Bool) -> some View {
         if #available(iOS 16.0, *) {

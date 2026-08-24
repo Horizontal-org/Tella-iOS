@@ -41,15 +41,8 @@ struct TextFieldBottomSheetView: View {
             Spacer()
                 .frame(height:12)
 
-            if #available(iOS 15.0, *) {
-
-                FocusedTextFieldBottomSheet(fieldContent: $fieldContent,
-                                            isValid: $isValid)
-
-            } else {
-                TextFieldBottomSheet(fieldContent: $fieldContent,
-                                     isValid: $isValid)
-            }
+            FocusedTextFieldBottomSheet(fieldContent: $fieldContent,
+                                        isValid: $isValid)
 
             Spacer()
                 .frame(height:8)
@@ -96,7 +89,6 @@ struct TextFieldBottomSheetView: View {
     }
 }
 
-@available(iOS 15.0, *)
 struct FocusedTextFieldBottomSheet : View {
 
     @Binding var fieldContent : String
@@ -116,21 +108,6 @@ struct FocusedTextFieldBottomSheet : View {
         .onAppear {
             isFocused = true
         }
-    }
-}
-
-struct TextFieldBottomSheet : View {
-
-    @Binding var fieldContent : String
-    @Binding var isValid : Bool
-
-    var body: some View {
-
-        TextField("", text: $fieldContent)
-            .textFieldStyle(FileNameStyle())
-            .onChange(of: fieldContent, perform: { value in
-                self.isValid = fieldContent.textValidator()
-            })
     }
 }
 
