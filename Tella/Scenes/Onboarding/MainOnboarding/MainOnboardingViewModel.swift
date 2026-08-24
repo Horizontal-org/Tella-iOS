@@ -24,6 +24,7 @@ final class MainOnboardingViewModel: ObservableObject {
         .files(FilesContent()),
         .connections(ConnectionsContent()),
         .nearbySharing(NearbySharingContent()),
+        .lockChoice,
         .allDone
     ]
     
@@ -62,7 +63,7 @@ final class MainOnboardingViewModel: ObservableObject {
     
     func canTapNext() -> Bool {
         switch currentPage {
-        case .allDone: return false
+        case .lockChoice, .allDone: return false
         default:       return index < lastIndex
         }
     }
@@ -89,9 +90,9 @@ final class MainOnboardingViewModel: ObservableObject {
         switch page {
         case .welcome:
             return false
-        case .record, .files, .connections:
+        case .record, .files, .connections, .nearbySharing:
             return true
-        case .nearbySharing:
+        case .lockChoice:
             return direction == .right
         case .allDone:
             return false
@@ -109,6 +110,7 @@ enum OnboardingItem: Identifiable, Equatable {
     case files(any ImageTitleMessageContent)
     case connections(any ImageTitleMessageContent)
     case nearbySharing(any ImageTitleMessageContent)
+    case lockChoice
     case allDone
     
     var id: String {
@@ -124,6 +126,8 @@ enum OnboardingItem: Identifiable, Equatable {
             return "connections"
         case .nearbySharing:
             return "nearbySharing"
+        case .lockChoice:
+            return "lockChoice"
         case .allDone:
             return "allDone"
         }

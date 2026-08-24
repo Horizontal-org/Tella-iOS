@@ -63,6 +63,10 @@ struct MainOnboardingView: View {
         case .nearbySharing(let content):
             ImageTitleMessageView(content: content)
                 .padding(.horizontal, .medium)
+
+        case .lockChoice:
+            LockChoiceView(lockViewModel: viewModel.lockViewModel)
+
             
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
@@ -83,18 +87,7 @@ struct MainOnboardingView: View {
                 shouldHideBack: viewModel.shouldHideBack(),
                 nextAction: {
                     guard viewModel.canTapNext() else { return }
-                    
-                    let page = viewModel.pages[viewModel.index]
-                    
-                    switch page {
-                    case .nearbySharing:
-                        self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
-                            LockChoiceOnboardingView(lockViewModel: viewModel.lockViewModel)
-                        }
-                    default:
-                        viewModel.goNext()
-                    }
-                    
+                    viewModel.goNext()
                 },
                 backAction: {
                     if viewModel.canTapBack() {

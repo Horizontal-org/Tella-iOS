@@ -46,10 +46,13 @@ struct LockConfirmPinView: View {
     
     func lockWithPin() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
-        
-        self.navigateTo(destination: SuccessLockView())
-        
+
+        self.popToRoot(animated: false)
         lockViewModel.shouldDismiss.send(true)
+
+        self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
+            SuccessLockView()
+        }
     }
     
     func updatePin() {
