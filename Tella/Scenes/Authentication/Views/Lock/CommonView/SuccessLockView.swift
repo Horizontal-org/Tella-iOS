@@ -10,6 +10,8 @@
 import SwiftUI
 
 struct SuccessLockView: View {
+    var nextAction: () -> Void
+    
     var body: some View {
         
         VStack(spacing: .normal) {
@@ -18,7 +20,7 @@ struct SuccessLockView: View {
             LinkView(url: TellaUrls.appLock, text: LocalizableLock.lockSuccessLink.localized)
             Spacer()
             NextBottomView(title: LocalizableLock.actionNext.localized) {
-                dismiss()
+                nextAction()
             }
         }.padding(.horizontal, .medium)
             .containerStyle()
@@ -27,5 +29,5 @@ struct SuccessLockView: View {
 }
 
 #Preview {
-    SuccessLockView()
+    SuccessLockView {}
 }

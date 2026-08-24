@@ -34,9 +34,8 @@ final class MainOnboardingViewModel: ObservableObject {
         
         lockViewModel.shouldDismiss
             .filter { $0 }
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.goNext()
+                self?.goNext(animated: false)
             }
             .store(in: &subscribers)
     }
@@ -50,7 +49,7 @@ final class MainOnboardingViewModel: ObservableObject {
     var currentPage: OnboardingItem {
         pages[safe: index] ?? .welcome
     }
-
+    
     var isOnWelcome: Bool {
         if case .welcome = currentPage { return true }
         return false
@@ -79,12 +78,19 @@ final class MainOnboardingViewModel: ObservableObject {
     func shouldHideBack() -> Bool { isOnAllDone }
     
     // MARK: - Navigation
-    func goToPage(_ newIndex: Int) {
+    func goToPage(_ newIndex: Int, animated: Bool = true) {
         guard count > 0 else { return }
-        index = min(max(newIndex, 0), lastIndex)
+        let clampedIndex = min(max(newIndex, 0), lastIndex)
+        if animated {
+            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.9, blendDuration: 0.2)) {
+                index = clampedIndex
+            }
+        } else {
+            index = clampedIndex
+        }
     }
-    func goNext() { goToPage(index + 1) }
-    func goBack() { goToPage(index - 1) }
+    func goNext(animated: Bool = true) { goToPage(index + 1, animated: animated) }
+    func goBack(animated: Bool = true) { goToPage(index - 1, animated: animated) }
     
     func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
         switch page {

@@ -48,12 +48,8 @@ extension View {
         UIApplication.getTopViewController()?.present(toPresent, animated: true, completion: nil)
     }
     
-    func dismiss() {
-        UIApplication.getTopViewController()?.dismiss(animated: false)
-    }
-    
-    func dismiss(completion:@escaping () -> Void) {
-        UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
+    func dismiss(animated: Bool = false, completion: (() -> Void)? = nil) {
+        UIApplication.getTopViewController()?.dismiss(animated: animated, completion: completion)
     }
     
     @ViewBuilder
@@ -118,7 +114,7 @@ extension View {
         if condition { transform(self) }
         else { self }
     }
-
+    
     /// Enables/disables scrolling without removing the ScrollView from the
     /// hierarchy. On iOS 15 and earlier scrolling stays enabled.
     @ViewBuilder
@@ -146,4 +142,3 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: { viewToShow })
     }
 }
-

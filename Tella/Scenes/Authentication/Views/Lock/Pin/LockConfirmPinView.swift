@@ -46,12 +46,18 @@ struct LockConfirmPinView: View {
     
     func lockWithPin() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
-
-        self.popToRoot(animated: false)
-        lockViewModel.shouldDismiss.send(true)
-
-        self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
-            SuccessLockView()
+        presentSuccessLockView()
+    }
+    
+    private func presentSuccessLockView() {
+        present(style: .fullScreen, transitionStyle: .crossDissolve) {
+            SuccessLockView {
+                popToRoot(animated: false)
+                lockViewModel.shouldDismiss.send(true)
+                DispatchQueue.main.async {
+                    dismiss(animated: true)
+                }
+            }
         }
     }
     
