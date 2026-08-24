@@ -49,7 +49,7 @@ final class MainOnboardingViewModel: ObservableObject {
     var currentPage: OnboardingItem {
         pages[safe: index] ?? .welcome
     }
-
+    
     var isOnWelcome: Bool {
         if case .welcome = currentPage { return true }
         return false
