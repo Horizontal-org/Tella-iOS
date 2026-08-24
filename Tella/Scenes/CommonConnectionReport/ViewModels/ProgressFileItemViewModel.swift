@@ -32,7 +32,7 @@ extension NearbySharingFileStatus {
         switch self {
         case .saving:
             return "home.progress-circle"
-        case .saved:
+        case .saved, .finished:
             return "report.submitted"
         default:
             return nil
