@@ -43,8 +43,7 @@ struct OnboardingLockDoneView: View {
     }
 }
 
-//struct OnboardingEndView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        OnboardingLockDoneView(appViewState: AppViewState.)
-//    }
-//}
+#Preview {
+    OnboardingLockDoneView(appViewState: AppViewState.stub())
+        .background(Styles.Colors.backgroundMain)
+}

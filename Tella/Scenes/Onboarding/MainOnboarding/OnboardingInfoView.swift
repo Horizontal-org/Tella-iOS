@@ -33,4 +33,5 @@ struct OnboardingInfoView: View {
 
 #Preview {
     OnboardingInfoView(content: RecordContent(), info: LocalizableLock.onboardingRecordInfo.localized)
+        .background(Styles.Colors.backgroundMain)
 }

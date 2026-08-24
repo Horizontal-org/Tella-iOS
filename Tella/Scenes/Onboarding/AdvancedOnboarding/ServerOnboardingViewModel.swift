@@ -89,6 +89,12 @@ final class ServerOnboardingViewModel: ObservableObject {
     }
 }
 
+extension ServerOnboardingViewModel {
+    static func stub() -> ServerOnboardingViewModel {
+        ServerOnboardingViewModel(mainAppModel: MainAppModel.stub())
+    }
+}
+
 enum ServerOnboardingItem: Identifiable, Equatable {
     case main
     case customizationDone

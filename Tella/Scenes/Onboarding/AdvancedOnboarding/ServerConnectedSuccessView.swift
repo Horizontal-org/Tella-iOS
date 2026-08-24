@@ -23,4 +23,6 @@ struct ServerConnectedSuccessView: View {
 
 #Preview {
     ServerConnectedSuccessView()
+        .background(Styles.Colors.backgroundMain)
+
 }

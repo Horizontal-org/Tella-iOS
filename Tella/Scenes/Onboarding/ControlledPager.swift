@@ -60,10 +60,24 @@ struct ControlledPager<Content: View>: View {
                 } else if value.translation.width > threshold, index > 0 {
                     newIndex -= 1
                 }
+                index = min(max(newIndex, 0), pageCount - 1)
             }
     }
 }
 
-//#Preview {
-//    ControlledPager()
-//}
+#Preview {
+    struct PreviewWrapper: View {
+        @State private var index = 0
+        
+        var body: some View {
+            ControlledPager(pageCount: 3, index: $index, canSwipe: { _, _ in true }) { i in
+                Text("Page \(i + 1)")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(.white)
+            }
+            .background(Styles.Colors.backgroundMain)
+        }
+    }
+    
+    return PreviewWrapper()
+}
