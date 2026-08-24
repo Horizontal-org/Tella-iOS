@@ -66,7 +66,6 @@ struct ControlledPager<Content: View>: View {
                     index = min(max(newIndex, 0), pageCount - 1)
                     translation = 0
                 }
-                index = min(max(newIndex, 0), pageCount - 1)
             }
     }
 }
