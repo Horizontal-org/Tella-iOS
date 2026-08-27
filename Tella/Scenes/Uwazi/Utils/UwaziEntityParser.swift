@@ -136,6 +136,13 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                                       helpText: $0.translatedLabel,
                                                       selectValues: selectValues ,
                                                       name: $0.name)
+            case .dataTypeGeolocation:
+                prompt = UwaziGeolocationEntryPrompt(id: $0.id ?? "",
+                                                     type: $0.type ?? "",
+                                                     question: $0.translatedLabel ?? "",
+                                                     required: $0.propertyRequired,
+                                                     helpText: $0.translatedLabel,
+                                                     name: $0.name)
                 
             default:
                 prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
@@ -218,6 +225,11 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
                 metadata[propertyName] = entryPrompt.value.compactMap({ UwaziValue(value: $0)}).arraydDictionnary
+            case .dataTypeGeolocation:
+                guard let entryPrompt = entryPrompt as? UwaziGeolocationEntryPrompt else { continue }
+                guard let location = entryPrompt.value else { continue }
+                metadata[propertyName] = [UwaziValue(value: location)].arraydDictionnary
+                
             default:
                 break
             }
@@ -277,6 +289,15 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 guard let decoded = uwaziString?.compactMap({ try? $0.decode(UwaziValue<String>.self)}) else { continue }
 
                 entryPrompt.value = decoded.compactMap({$0.value})
+            case .dataTypeGeolocation:
+                guard let entryPrompt = entryPrompt as? UwaziGeolocationEntryPrompt else { continue }
+                let valueDict = value as? [[String: Any]]
+                if let decoded = try? valueDict?.first?.decode(UwaziValue<UwaziGeoLocation>.self) {
+                    entryPrompt.value = decoded.value
+                } else if let nested = valueDict?.first?["value"] as? [String: Any] {
+                    entryPrompt.value = UwaziGeoLocation(dictionary: nested)
+                }
+
             default:
                 break
             }
