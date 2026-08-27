@@ -28,12 +28,6 @@ struct ServerCreateFolderView: View {
             }
             .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
 
-            VStack {
-                Spacer()
-                if case .error(let message) = createFolderViewModel.createFolderState, !message.isEmpty {
-                    ToastView(message: message)
-                }
-            }
             if  createFolderViewModel.createFolderState == .loading {
                 CircularActivityIndicatory()
             }
@@ -41,8 +35,13 @@ struct ServerCreateFolderView: View {
         .containerStyle()
         .navigationBarHidden(true)
         .onReceive(createFolderViewModel.$createFolderState) { value in
-            if value == .loaded(true) {
+            switch value {
+            case .loaded(true):
                 navigateToSuccessLogin?()
+            case .error(let message):
+                Toast.displayToast(message: message)
+            default:
+                break
             }
         }
     }

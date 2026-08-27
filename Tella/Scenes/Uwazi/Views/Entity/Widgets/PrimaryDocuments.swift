@@ -28,12 +28,11 @@ struct PrimaryDocuments: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             AddFileBottomSheetView(viewModel:  entityViewModel.addFilesViewModel, content: {
-                UwaziSelectFileComponent(title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
+                UwaziActionRow(icon: .uwaziAddFiles,
+                               title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
             }, moreAction: {
                 entityViewModel.addFilesViewModel.shouldShowDocumentsOnly = true
             })
-            .background(Color.white.opacity(0.08))
-            .cornerRadius(15)
             
         }
         

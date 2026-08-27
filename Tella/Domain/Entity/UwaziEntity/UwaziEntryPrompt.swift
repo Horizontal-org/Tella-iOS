@@ -184,8 +184,36 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     }
 }
 
+class UwaziGeolocationEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
+    
+    typealias Value = UwaziGeoLocation?
+    
+    var isEmpty: Bool {
+        return value == nil
+    }
+    
+    @Published var value: UwaziGeoLocation? = nil {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    func empty() {
+        value = nil
+    }
+}
+
 extension UwaziRelationshipEntryPrompt {
     static func stub() -> UwaziRelationshipEntryPrompt {
         return UwaziRelationshipEntryPrompt(type: "Type", question: "Question")
+    }
+}
+
+extension UwaziGeolocationEntryPrompt {
+    static func stub(value: UwaziGeoLocation? = nil) -> UwaziGeolocationEntryPrompt {
+        let prompt = UwaziGeolocationEntryPrompt(type: UwaziEntityPropertyType.dataTypeGeolocation.rawValue,
+                                                 question: "Location")
+        prompt.value = value
+        return prompt
     }
 }

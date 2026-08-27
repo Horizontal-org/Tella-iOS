@@ -159,3 +159,9 @@ class UwaziEntityViewModel: ObservableObject {
         }
     }
 }
+
+extension UwaziEntityViewModel {
+    static func stub() -> UwaziEntityViewModel {
+        UwaziEntityViewModel(mainAppModel: .stub(), templateId: nil, entityInstanceId: nil)
+    }
+}

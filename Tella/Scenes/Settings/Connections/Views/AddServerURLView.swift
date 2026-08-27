@@ -49,26 +49,21 @@ struct AddServerURLView: View {
         .containerStyle()
         .navigationBarHidden(true)
         .onReceive(viewModel.$checkServerState) { value in
-            if value == .loaded(true) {
+            switch value {
+            case .loaded(true):
                 successCheckServerAction?()
+            case .error(let message):
+                Toast.displayToast(message: message)
+            default:
+                break
             }
         }
     }
     
     @ViewBuilder
     private var handleState : some View {
-        switch viewModel.checkServerState {
-        case .loading:
+        if case .loading = viewModel.checkServerState {
             CircularActivityIndicatory()
-        case .error(let message):
-            if !message.isEmpty {
-                VStack { // This VStack is used to display the Toast View Properly
-                    Spacer()
-                    ToastView(message: message)
-                }
-            }
-        default:
-            EmptyView()
         }
     }
 }

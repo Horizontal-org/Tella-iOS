@@ -119,5 +119,12 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityRelationshipMultipleConnections = "Uwazi_Entity_Relationship_MultipleConnections"
     case uwaziRelationshipListExpl = "Uwazi_Relationship_List_Expl"
     case uwaziRelationshipSearchTitle = "Uwazi_Relationship_SearchBar_Title"
+    
+    case uwaziEntityGeolocationExpl = "Uwazi_Entity_Geolocation_Expl"
+    case uwaziEntityGeolocationAddLocation = "Uwazi_Entity_Geolocation_AddLocation"
+    case uwaziEntityGeolocationRecordTitle = "Uwazi_Entity_Geolocation_RecordTitle"
+    case uwaziEntityGeolocationMapHint = "Uwazi_Entity_Geolocation_MapHint"
+    case uwaziEntityGeolocationLatitude = "Uwazi_Entity_Geolocation_Latitude"
+    case uwaziEntityGeolocationLongitude = "Uwazi_Entity_Geolocation_Longitude"
 }
 
