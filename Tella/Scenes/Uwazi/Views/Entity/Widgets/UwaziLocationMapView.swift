@@ -39,6 +39,11 @@ struct UwaziLocationMapView: View {
         .onDisappear {
             viewModel.stop()
         }
+        .alert(isPresented: $viewModel.shouldShowPermissionDenied) {
+            LocationPermissionAlert.denied {
+                viewModel.shouldShowPermissionDenied = false
+            }
+        }
     }
     
     var navigationBarView: some View {
@@ -53,10 +58,10 @@ struct UwaziLocationMapView: View {
         ZStack(alignment: .top) {
             LocationMapViewRepresentable(coordinate: $viewModel.selectedCoordinate,
                                          recenterGeneration: viewModel.recenterGeneration)
-                .ignoresSafeArea(edges: .bottom)
-
+            .ignoresSafeArea(edges: .bottom)
+            
             ToastMessageView(message: LocalizableUwazi.uwaziEntityGeolocationMapHint.localized)
-
+            
         }
     }
     
@@ -68,35 +73,27 @@ struct UwaziLocationMapView: View {
     }
 }
 
-final class LocationPickerViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+final class LocationPickerViewModel: ObservableObject {
     
     @Published var selectedCoordinate: CLLocationCoordinate2D?
     @Published var recenterGeneration: Int = 0
+    @Published var shouldShowPermissionDenied = false
     
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationManager()
     private let hadInitialCoordinate: Bool
     private var didAutoFillFromGPS = false
     
     init(initialCoordinate: CLLocationCoordinate2D?) {
         selectedCoordinate = initialCoordinate
         hadInitialCoordinate = initialCoordinate != nil
-        super.init()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         if initialCoordinate != nil {
             recenterGeneration = 1
         }
+        locationManager.observer = self
     }
     
     func start() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.startUpdatingLocation()
-        default:
-            break
-        }
+        locationManager.startUpdatingLocation()
     }
     
     func stop() {
@@ -108,20 +105,26 @@ final class LocationPickerViewModel: NSObject, ObservableObject, CLLocationManag
         recenterGeneration += 1
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse, .authorizedAlways:
-            manager.startUpdatingLocation()
-        default:
-            break
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard !hadInitialCoordinate, !didAutoFillFromGPS, let location = locations.last else { return }
+    private func handleLocationUpdate(_ location: CLLocation) {
+        guard !hadInitialCoordinate, !didAutoFillFromGPS else { return }
         didAutoFillFromGPS = true
         selectCoordinate(location.coordinate)
-        manager.stopUpdatingLocation()
+        locationManager.stopUpdatingLocation()
+    }
+}
+
+extension LocationPickerViewModel: LocationManagerObserver {
+    func locationManager(_ manager: LocationManager, didFailWithError error: any Error) {
+        
+    }
+    
+    func locationManager(_ manager: LocationManager, didUpdate location: CLLocation) {
+        handleLocationUpdate(location)
+    }
+    
+    func locationManager(_ manager: LocationManager,
+                         didChangeAuthorization authorizationState: LocationManager.AuthorizationState) {
+        shouldShowPermissionDenied = authorizationState == .denied
     }
 }
 
@@ -142,7 +145,9 @@ struct LocationMapViewRepresentable: UIViewRepresentable {
         
         let longPress = UILongPressGestureRecognizer(target: context.coordinator,
                                                      action: #selector(Coordinator.handleLongPress(_:)))
-        longPress.minimumPressDuration = 3.0
+        longPress.minimumPressDuration = 0.5
+        longPress.allowableMovement = 40
+        longPress.delegate = context.coordinator
         mapView.addGestureRecognizer(longPress)
         
         context.coordinator.syncAnnotation(on: mapView, recenter: true)
@@ -156,7 +161,7 @@ struct LocationMapViewRepresentable: UIViewRepresentable {
         context.coordinator.syncAnnotation(on: mapView, recenter: shouldRecenter)
     }
     
-    final class Coordinator: NSObject, MKMapViewDelegate {
+    final class Coordinator: NSObject, MKMapViewDelegate, UIGestureRecognizerDelegate {
         var parent: LocationMapViewRepresentable
         var lastRecenterGeneration: Int = 0
         
@@ -169,6 +174,11 @@ struct LocationMapViewRepresentable: UIViewRepresentable {
             let point = gesture.location(in: mapView)
             let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
             parent.coordinate = coordinate
+        }
+        
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                               shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return gestureRecognizer is UILongPressGestureRecognizer
         }
         
         func syncAnnotation(on mapView: MKMapView, recenter: Bool) {

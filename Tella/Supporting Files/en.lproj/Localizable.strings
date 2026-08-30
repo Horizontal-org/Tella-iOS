@@ -345,6 +345,15 @@
 "Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
 "Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
 "Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl1" = "The Tella app does not have permission to access Location.";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl2" = "If you want Tella to record your position, proceed in the following way:";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl3" = "Navigate to your phone's settings and find the Tella app.";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl4" = "Enable permissions for Location.";
+
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl5" = "Open the Tella app.";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Action_Settings" = "Settings";
+"Uwazi_Entity_Geolocation_DeniedLocationPermission_Action_Cancel" = "CANCEL";
+
 "Vault_DeleteFolder_SheetTitle" = "Delete folder?";
 "Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from Tella";
 "Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from Tella";

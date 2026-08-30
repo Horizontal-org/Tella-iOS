@@ -452,6 +452,7 @@
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12C454D82DAD24300085FCD6 /* X509 in Frameworks */ = {isa = PBXBuildFile; productRef = 12C454D72DAD24300085FCD6 /* X509 */; };
+		12C70F553044D1E100CE0333 /* LocationPermissionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -1243,6 +1244,7 @@
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
+		12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionAlert.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -2471,6 +2473,7 @@
 			isa = PBXGroup;
 			children = (
 				209AC68B2C332F0000492356 /* LocationManager.swift */,
+				12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */,
 				209AC68C2C332F0000492356 /* ViewClassType.swift */,
 				1203CDE52991630200D09073 /* Language */,
 				125D231D271F127D00250FBB /* Extensions */,
@@ -4932,6 +4935,7 @@
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
+				12C70F553044D1E100CE0333 /* LocationPermissionAlert.swift in Sources */,
 				12FAC4572E2519F5007A4651 /* FileSendingView.swift in Sources */,
 				12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
