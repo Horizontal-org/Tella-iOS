@@ -218,6 +218,7 @@
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
 		1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD5E3040485700940AF6 /* ToastMessageView.swift */; };
+		12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C80F103050A20000CE0334 /* LocationPickerMapView.swift */; };
 		1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
 		1262FD6530409BDC00940AF6 /* UwaziGeolocationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
@@ -452,7 +453,6 @@
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12C454D82DAD24300085FCD6 /* X509 in Frameworks */ = {isa = PBXBuildFile; productRef = 12C454D72DAD24300085FCD6 /* X509 */; };
-		12C70F553044D1E100CE0333 /* LocationPermissionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -999,6 +999,7 @@
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
 		1262FD5E3040485700940AF6 /* ToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
+		12C80F103050A20000CE0334 /* LocationPickerMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerMapView.swift; sourceTree = "<group>"; };
 		1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
 		1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziGeolocationWidget.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
@@ -1244,7 +1245,6 @@
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
-		12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionAlert.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -2473,7 +2473,6 @@
 			isa = PBXGroup;
 			children = (
 				209AC68B2C332F0000492356 /* LocationManager.swift */,
-				12C70F543044D1DE00CE0333 /* LocationPermissionAlert.swift */,
 				209AC68C2C332F0000492356 /* ViewClassType.swift */,
 				1203CDE52991630200D09073 /* Language */,
 				125D231D271F127D00250FBB /* Extensions */,
@@ -3181,6 +3180,7 @@
 				12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */,
 				1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */,
 				1262FD5E3040485700940AF6 /* ToastMessageView.swift */,
+				12C80F103050A20000CE0334 /* LocationPickerMapView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
 				15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */,
 				12AFF1B62D3FAC2900C2455C /* NavigationHeaderView */,
@@ -4935,7 +4935,6 @@
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				124866FF2DFCCABA00EBE8F8 /* LocalURLRequest.swift in Sources */,
 				209AC67A2C2D5E3500492356 /* ServerViewModel.swift in Sources */,
-				12C70F553044D1E100CE0333 /* LocationPermissionAlert.swift in Sources */,
 				12FAC4572E2519F5007A4651 /* FileSendingView.swift in Sources */,
 				12E9713D2E97C27D00A87531 /* Collection+Extension.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
@@ -5042,6 +5041,7 @@
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,
 				1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */,
+				12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */,

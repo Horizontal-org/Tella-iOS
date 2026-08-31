@@ -9,6 +9,7 @@
 
 
 import Foundation
+import CoreLocation
 
 class UwaziValue<T:Codable>: ObservableObject, Codable {
     
@@ -40,6 +41,10 @@ struct UwaziGeoLocation: Codable, Equatable {
     var lon: Double
     var label: String
     
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: lat, longitude: lon)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case lat, lon, label
     }
@@ -48,6 +53,10 @@ struct UwaziGeoLocation: Codable, Equatable {
         self.lat = lat
         self.lon = lon
         self.label = label
+    }
+    
+    init(coordinate: CLLocationCoordinate2D, label: String = "") {
+        self.init(lat: coordinate.latitude, lon: coordinate.longitude, label: label)
     }
     
     init?(dictionary: [String: Any]) {
