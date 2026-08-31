@@ -127,11 +127,4 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityGeolocationLatitude = "Uwazi_Entity_Geolocation_Latitude"
     case uwaziEntityGeolocationLongitude = "Uwazi_Entity_Geolocation_Longitude"
     
-    case uwaziEntityGeolocationDeniedLocationExpl1 = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl1"
-    case uwaziEntityGeolocationDeniedLocationExpl2 = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl2"
-    case uwaziEntityGeolocationDeniedLocationExpl3 = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl3"
-    case uwaziEntityGeolocationDeniedLocationExpl4 = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl4"
-    case uwaziEntityGeolocationDeniedLocationExpl5 = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Expl5"
-    case uwaziEntityGeolocationDeniedLocationActionSettings = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Action_Settings"
-    case uwaziEntityGeolocationDeniedLocationActionCancel = "Uwazi_Entity_Geolocation_DeniedLocationPermission_Action_Cancel"
 }
