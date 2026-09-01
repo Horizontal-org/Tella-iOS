@@ -182,7 +182,7 @@ class AddTemplateViewModel: ObservableObject {
         switch result {
         case .success(let collectedTemplate):
             self.toastMessage = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized,
-                                       collectedTemplate.entityRow?.name ?? "")
+                                       collectedTemplate.entityRow?.displayName ?? "")
             self.showToast = true
             self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
         case .failure(let error):

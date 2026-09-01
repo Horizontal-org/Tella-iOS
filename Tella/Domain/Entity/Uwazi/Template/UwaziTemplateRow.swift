@@ -37,4 +37,11 @@ class UwaziTemplateRow: DomainModel, Codable {
         self.rowDefault = rowDefault
         self.entityViewPage = entityViewPage
     }
+
+    var displayName: String {
+        if let translatedName, !translatedName.isEmpty {
+            return translatedName
+        }
+        return name ?? ""
+    }
 }

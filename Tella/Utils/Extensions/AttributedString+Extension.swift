@@ -11,7 +11,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 15, *)
 extension AttributedString {
     mutating func link(
         text: String,
@@ -23,21 +22,6 @@ extension AttributedString {
             }
             self[range].foregroundColor = Styles.Colors.yellow
             self[range].underlineStyle = .single
-        }
-}
-
-extension NSMutableAttributedString {
-    func link(
-        text: String,
-        url: URL?) {
-            let range = (string as NSString).range(of: text)
-            guard range.location != NSNotFound else { return }
-            
-            if let url {
-                addAttribute(.link, value: url, range: range)
-            }
-            addAttribute(.foregroundColor, value: Styles.Colors.yellow, range: range)
-            addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range)
         }
 }
 

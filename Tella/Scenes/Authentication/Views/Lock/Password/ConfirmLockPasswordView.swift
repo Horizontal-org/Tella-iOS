@@ -50,8 +50,20 @@ struct ConfirmLockPasswordView: View {
     
     func lockWithPassword() {
         lockViewModel.initKeys(passwordTypeEnum: .tellaPassword)
-        self.navigateTo(destination: SuccessLockView())
-        lockViewModel.shouldDismiss.send(true)
+        presentSuccessLockView()
+    }
+    
+    private func presentSuccessLockView() {
+        present(style: .fullScreen, transitionStyle: .crossDissolve) {
+            
+            SuccessLockView {
+                popToRoot(animated: false)
+                lockViewModel.shouldDismiss.send(true)
+                DispatchQueue.main.async {
+                    dismiss(animated: true)
+                }
+            }
+        }
     }
     
     func updatePassword() {

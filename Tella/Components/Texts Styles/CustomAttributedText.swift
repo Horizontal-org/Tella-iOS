@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CustomAttributedText: View {
     
-    private let text: AnyView
+    private let attributedText: NSAttributedString
     let style: TypographyStyle
     let alignment: TextAlignment
     let color: Color
@@ -20,15 +20,7 @@ struct CustomAttributedText: View {
          style: TypographyStyle,
          alignment: TextAlignment = .leading,
          color: Color = .white) {
-        if #available(iOS 15, *) {
-            self.text = AnyView(
-                Text(AttributedString(attributedText))
-            )
-        } else {
-            self.text = AnyView(
-                AttributedLabel(attributedText: attributedText)
-            )
-        }
+        self.attributedText = attributedText
         self.style = style
         self.alignment = alignment
         self.color = color
@@ -36,7 +28,7 @@ struct CustomAttributedText: View {
     
     
     var body: some View {
-        text
+        Text(AttributedString(attributedText))
             .style(style)
             .foregroundColor(color)
             .fixedSize(horizontal: false, vertical: true)

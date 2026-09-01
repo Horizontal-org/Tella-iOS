@@ -50,7 +50,7 @@ class UwaziEntityViewModel: ObservableObject {
         entityFetcher = UwaziEntityFetcher(server: server, subscribers: subscribers)
         
         serverName = template.serverName ?? ""
-        templateName = template.entityRow?.name ?? ""
+        templateName = template.entityRow?.displayName ?? ""
         self.bindVaultFileTaken()
         
         // preload entities in relationship array in case the endpoint fails

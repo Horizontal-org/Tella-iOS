@@ -11,14 +11,18 @@ import SwiftUI
 import Combine
 
 struct MainOnboardingView: View {
-    @StateObject var viewModel: MainOnboardingViewModel
+    @ObservedObject var viewModel: MainOnboardingViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         VStack(spacing: 0) {
             tabView()
+
             bottomView()
                 .frame(height: .bottomViewHeight)
+                .opacity(viewModel.isOnWelcome ? 0 : 1)
+                .allowsHitTesting(!viewModel.isOnWelcome)
+                .accessibilityHidden(viewModel.isOnWelcome)
         }
         .containerStyle()
         .navigationBarHidden(true)
@@ -42,6 +46,11 @@ struct MainOnboardingView: View {
     @ViewBuilder
     func view(for page: OnboardingItem) -> some View {
         switch page {
+        case .welcome:
+            TransitionView(transitionViewData: WelcomeViewData()) {
+                viewModel.goNext()
+            }
+
         case .record(let content):
             OnboardingInfoView(content: content, info: LocalizableLock.onboardingRecordInfo.localized)
             
@@ -54,6 +63,10 @@ struct MainOnboardingView: View {
         case .nearbySharing(let content):
             ImageTitleMessageView(content: content)
                 .padding(.horizontal, .medium)
+
+        case .lockChoice:
+            LockChoiceView(lockViewModel: viewModel.lockViewModel)
+
             
         case .allDone:
             OnboardingLockDoneView(appViewState: viewModel.lockViewModel.appViewState)
@@ -64,7 +77,7 @@ struct MainOnboardingView: View {
         VStack(spacing: 2) {
             Spacer()
             
-            PageDots(current: viewModel.index, total: viewModel.count)
+            PageDots(current: viewModel.dotIndex, total: viewModel.dotCount)
                 .padding(.smallMedium)
             
             NavigationBottomView<AnyView>(
@@ -74,18 +87,7 @@ struct MainOnboardingView: View {
                 shouldHideBack: viewModel.shouldHideBack(),
                 nextAction: {
                     guard viewModel.canTapNext() else { return }
-                    
-                    let page = viewModel.pages[viewModel.index]
-                    
-                    switch page {
-                    case .nearbySharing:
-                        self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
-                            LockChoiceOnboardingView(lockViewModel: viewModel.lockViewModel)
-                        }
-                    default:
-                        viewModel.goNext()
-                    }
-                    
+                    viewModel.goNext()
                 },
                 backAction: {
                     if viewModel.canTapBack() {

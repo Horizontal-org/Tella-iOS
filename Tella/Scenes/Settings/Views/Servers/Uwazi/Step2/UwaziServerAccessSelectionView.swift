@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/18/23.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -16,12 +16,12 @@ struct UwaziServerAccessSelectionView: View {
         case privateServer
         case none
     }
-
+    
     @State var isButtonValid = true
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var accessServerType: UwaziAccessServerType = .none
     @StateObject var uwaziServerViewModel : UwaziServerViewModel
-
+    
     var body: some View {
         ContainerView {
             VStack {
@@ -33,11 +33,11 @@ struct UwaziServerAccessSelectionView: View {
                 }
                 Spacer()
                 NavigationBottomView<AnyView>(shouldActivateNext: $isButtonValid,
-                                        nextButtonAction: .action,
-                                        nextAction: {
+                                              nextButtonAction: .action,
+                                              nextAction: {
                     handleNavigation()
                 },
-                                        backAction: {
+                                              backAction: {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -48,30 +48,31 @@ struct UwaziServerAccessSelectionView: View {
         var body: some View {
             VStack(spacing: 12) {
                 Image("settings.server")
-                Text(LocalizableSettings.UwaziAccessServerTitle.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
+                
+                CustomText(LocalizableSettings.UwaziAccessServerTitle.localized,
+                           style: .heading1Style,
+                           alignment: .center)
             }
         }
     }
+    
     fileprivate func buttonView() -> some View {
         return VStack(spacing: 12) {
             TellaButtonView(title: LocalizableSettings.UwaziLogin.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: accessServerType == .privateServer,
-                                     isValid: .constant(true),action: {
+                            nextButtonAction: .action,
+                            isOverlay: accessServerType == .privateServer,
+                            isValid: .constant(true),action: {
                 accessServerType = .privateServer
             })
             TellaButtonView(title: LocalizableSettings.UwaziPublicInstance.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: accessServerType == .publicServer,
-                                     isValid: .constant(true),action: {
+                            nextButtonAction: .action,
+                            isOverlay: accessServerType == .publicServer,
+                            isValid: .constant(true),action: {
                 accessServerType = .publicServer
             })
         }
     }
-
+    
     fileprivate func handleNavigation() {
         switch accessServerType {
         case .publicServer:
@@ -87,10 +88,10 @@ struct UwaziServerAccessSelectionView: View {
         let loginView = UwaziLoginView(uwaziServerViewModel: uwaziServerViewModel)
         navigateTo(destination: loginView)
     }
-
+    
     fileprivate func navigateToLanguageView() {
         let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true),
-                                                            uwaziServerViewModel: uwaziServerViewModel)
+                                                           uwaziServerViewModel: uwaziServerViewModel)
         navigateTo(destination: languageSelection)
     }
 }

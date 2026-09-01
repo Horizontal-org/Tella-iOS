@@ -22,7 +22,7 @@ class TemplateItemViewModel: Hashable {
          downloadTemplate: @escaping (() -> Void),
          deleteTemplate: @escaping (() -> Void) ) {
         self.id = template.templateId
-        self.name = template.entityRow?.name ?? ""
+        self.name = template.entityRow?.displayName ?? ""
         self.isDownloaded = template.isDownloaded ?? false
         self.downloadTemplate = downloadTemplate
         self.deleteTemplate = deleteTemplate

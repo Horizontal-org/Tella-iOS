@@ -78,13 +78,12 @@ struct OnboardingConnectionsView: View {
         VStack {
             Image(connection.icon)
                 .frame(width: .mediumIconSize, height: .mediumIconSize)
-            Text(connection.title)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(.white)
+            CustomText(connection.title, style: .body2Style)
         }
     }
 }
 
 #Preview {
     OnboardingConnectionsView(content: RecordContent())
+        .background(Styles.Colors.backgroundMain)
 }

@@ -19,10 +19,12 @@ final class MainOnboardingViewModel: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     let pages: [OnboardingItem] = [
+        .welcome,
         .record(RecordContent()),
         .files(FilesContent()),
         .connections(ConnectionsContent()),
         .nearbySharing(NearbySharingContent()),
+        .lockChoice,
         .allDone
     ]
     
@@ -32,9 +34,8 @@ final class MainOnboardingViewModel: ObservableObject {
         
         lockViewModel.shouldDismiss
             .filter { $0 }
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.goNext()
+                self?.goNext(animated: false)
             }
             .store(in: &subscribers)
     }
@@ -42,9 +43,16 @@ final class MainOnboardingViewModel: ObservableObject {
     // MARK: - States
     var count: Int { pages.count }
     var lastIndex: Int { max(0, count - 1) }
+    var dotCount: Int { max(0, count - 1) }
+    var dotIndex: Int { max(0, index - 1) }
     
     var currentPage: OnboardingItem {
-        pages[safe: index] ?? .record(RecordContent())
+        pages[safe: index] ?? .welcome
+    }
+    
+    var isOnWelcome: Bool {
+        if case .welcome = currentPage { return true }
+        return false
     }
     
     var isOnAllDone: Bool {
@@ -54,7 +62,7 @@ final class MainOnboardingViewModel: ObservableObject {
     
     func canTapNext() -> Bool {
         switch currentPage {
-        case .allDone: return false
+        case .lockChoice, .allDone: return false
         default:       return index < lastIndex
         }
     }
@@ -70,20 +78,27 @@ final class MainOnboardingViewModel: ObservableObject {
     func shouldHideBack() -> Bool { isOnAllDone }
     
     // MARK: - Navigation
-    func goToPage(_ newIndex: Int) {
+    func goToPage(_ newIndex: Int, animated: Bool = true) {
         guard count > 0 else { return }
-        index = min(max(newIndex, 0), lastIndex)
+        let clampedIndex = min(max(newIndex, 0), lastIndex)
+        if animated {
+            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.9, blendDuration: 0.2)) {
+                index = clampedIndex
+            }
+        } else {
+            index = clampedIndex
+        }
     }
-    func goNext() { goToPage(index + 1) }
-    func goBack() { goToPage(index - 1) }
+    func goNext(animated: Bool = true) { goToPage(index + 1, animated: animated) }
+    func goBack(animated: Bool = true) { goToPage(index - 1, animated: animated) }
     
     func handleSwipe(for page: OnboardingItem, direction: SwipeDirection) -> Bool {
         switch page {
-        case .record:
-            return direction == .left
-        case .files, .connections:
+        case .welcome:
+            return false
+        case .record, .files, .connections, .nearbySharing:
             return true
-        case .nearbySharing:
+        case .lockChoice:
             return direction == .right
         case .allDone:
             return false
@@ -96,15 +111,19 @@ enum OnboardingItem: Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
+    case welcome
     case record(any ImageTitleMessageContent)
     case files(any ImageTitleMessageContent)
     case connections(any ImageTitleMessageContent)
     case nearbySharing(any ImageTitleMessageContent)
+    case lockChoice
     case allDone
     
     var id: String {
         
         switch self {
+        case .welcome:
+            return "welcome"
         case .record:
             return "record"
         case .files:
@@ -113,6 +132,8 @@ enum OnboardingItem: Identifiable, Equatable {
             return "connections"
         case .nearbySharing:
             return "nearbySharing"
+        case .lockChoice:
+            return "lockChoice"
         case .allDone:
             return "allDone"
         }

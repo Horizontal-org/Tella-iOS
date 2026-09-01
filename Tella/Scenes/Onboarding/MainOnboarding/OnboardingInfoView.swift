@@ -24,14 +24,14 @@ struct OnboardingInfoView: View {
     var infoView: some View {
         HStack(spacing: .extraSmall) {
             Image(.infoIcon)
-            
-            Text(info)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(.white)
-        }.cardFrameBlackStyle()
+            CustomText(info, style: .body2Style)
+            Spacer(minLength: 0)
+        }
+        .cardFrameBlackStyle()
     }
 }
 
 #Preview {
     OnboardingInfoView(content: RecordContent(), info: LocalizableLock.onboardingRecordInfo.localized)
+        .background(Styles.Colors.backgroundMain)
 }

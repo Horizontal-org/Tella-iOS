@@ -30,7 +30,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         
         self.mainAppModel = mainAppModel
 
-        let title = template.entityRow?.translatedName ?? ""
+        let title = template.entityRow?.displayName ?? ""
         let deleteTitle = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)")
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,

@@ -21,19 +21,18 @@ struct ImageTitleMessageView: View {
                 Image(imageName)
             }
             
-            Text(content.title)
-                .font(.custom(Styles.Fonts.boldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
+            CustomText(content.title,
+                       style: .heading1Style,
+                       alignment: .center)
             
-            Text(content.message)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-        }
+            CustomText(content.message,
+                       style: .body1Style,
+                       alignment: .center)
+        }.frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
     ImageTitleMessageView(content: RecordContent())
+        .background(Color.blue)
 }
