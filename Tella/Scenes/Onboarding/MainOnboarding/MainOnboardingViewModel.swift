@@ -54,12 +54,7 @@ final class MainOnboardingViewModel: ObservableObject {
         if case .welcome = currentPage { return true }
         return false
     }
-    
-    var isOnWelcome: Bool {
-        if case .welcome = currentPage { return true }
-        return false
-    }
-    
+
     var isOnAllDone: Bool {
         if case .allDone = currentPage { return true }
         return false

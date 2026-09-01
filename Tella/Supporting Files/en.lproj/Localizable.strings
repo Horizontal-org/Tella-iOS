@@ -339,7 +339,7 @@
 "Uwazi_Entity_SelectFiles_Dropdown_Hide" = "Hide files";
 "Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
 "Uwazi_Entity_SelectDate_Title" = "Select date";
-"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and Tella will automatically record your position.";
+"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
 "Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
