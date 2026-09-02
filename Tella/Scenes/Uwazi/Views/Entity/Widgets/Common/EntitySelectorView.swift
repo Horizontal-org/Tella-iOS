@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 4/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -33,11 +33,12 @@ struct EntitySelectorView: View {
     var contentView: some View {
         VStack {
             SearchBarView(searchText: $searchText, placeholderText: LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
-            Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white.opacity(0.87))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+            
+            CustomText(LocalizableUwazi.uwaziRelationshipListExpl.localized,
+                       style: .body1Style,
+                       fillsWidth: true)
+            .padding(.horizontal, .smallMedium)
+            
             ScrollView {
                 ForEach(filteredEntities()) {entity in
                     entityListOptionsView(entity: entity,

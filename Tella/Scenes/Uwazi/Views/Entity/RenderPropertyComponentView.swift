@@ -18,7 +18,7 @@ struct RenderPropertyComponentView: View {
     var body: some View {
         
         if shouldRenderPrompt(forType: prompt.type.rawValue) {
-            VStack() {
+            VStack(spacing: .extraSmall) {
                 
                 UwaziEntityTitleView(title: prompt.question,
                                      isRequired: prompt.required ?? false,

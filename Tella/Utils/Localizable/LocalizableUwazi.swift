@@ -27,7 +27,6 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     case uwaziAddTemplateTitle = "Uwazi_Template_AddTemplate_Title"
     case uwaziAddTemplateExpl = "Uwazi_Template_AddTemplate_Expl"
-    case uwaziAddTemplateSecondExpl = "Uwazi_Template_AddTemplate_SecondExpl"
     case uwaziAddTemplateSavedToast = "Uwazi_Template_AddTemplateSaved_Toast"
     
     case uwaziAddTemplateEmptydExpl = "Uwazi_Template_AddTemplate_EmptyExpl"

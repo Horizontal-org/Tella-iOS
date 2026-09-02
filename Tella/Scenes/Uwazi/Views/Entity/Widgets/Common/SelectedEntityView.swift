@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 5/13/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -22,11 +22,11 @@ struct SelectedEntityView : View {
     }
     
     var entitiesCounter: some View {
-        Text("\(prompt.value.count) \(prompt.value.count == 1 ? LocalizableUwazi.uwaziEntityRelationshipSingleConnection.localized : LocalizableUwazi.uwaziEntityRelationshipMultipleConnections.localized)"
-        )
-        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-        .foregroundColor(Color.white.opacity(0.87))
-        .frame(maxWidth: .infinity, alignment: .leading)
+        let text = "\(prompt.value.count) \(prompt.value.count == 1 ? LocalizableUwazi.uwaziEntityRelationshipSingleConnection.localized : LocalizableUwazi.uwaziEntityRelationshipMultipleConnections.localized)"
+        
+        return CustomText(text,
+                          style: .body1Style,
+                          fillsWidth: true)
     }
     
     var selectedEntitiesList: some View {
@@ -66,5 +66,18 @@ struct SelectedEntityView : View {
     func getEntityLabel (value: String) -> String {
         return prompt.selectValues?
             .first(where: { $0.id == value })?.label ?? ""
+    }
+}
+
+#Preview("Multiple connections") {
+    let prompt = UwaziRelationshipEntryPrompt.stub()
+    prompt.selectValues = [
+        SelectValues(id: "1", label: "Entity one", values: nil),
+        SelectValues(id: "2", label: "Entity two", values: nil)
+    ]
+    prompt.value = ["1", "2"]
+    return ContainerView {
+        SelectedEntityView(prompt: prompt)
+            .padding()
     }
 }

@@ -21,11 +21,12 @@ struct SupportingFileWidget: View {
     
     var body: some View {
         VStack {
-            Spacer()
-            Text(prompt.helpText!)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(Color.white.opacity(0.87))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            CustomText(prompt.helpText ?? "",
+                       style: .body2Style,
+                       color: Color.white.opacity(0.80),
+                       fillsWidth: true)
+
             AddFileBottomSheetView(viewModel: entityViewModel.addFilesViewModel, content: {
                 UwaziActionRow(icon: .uwaziAddFiles,
                                title: LocalizableUwazi.uwaziEntitySelectFiles.localized)

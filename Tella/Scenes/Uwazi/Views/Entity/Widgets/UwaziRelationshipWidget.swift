@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by gus valbuena on 4/10/24.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -16,12 +16,13 @@ struct UwaziRelationshipWidget: View {
     
     var body: some View {
         VStack {
-            Text(LocalizableUwazi.uwaziEntityRelationshipExpl.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(Color.white.opacity(0.87))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            CustomText(LocalizableUwazi.uwaziEntityRelationshipExpl.localized,
+                       style: .body2Style,
+                       color: Color.white.opacity(0.80),
+                       fillsWidth: true)
             
             selectEntitiesButton
+            
             if(!prompt.value.isEmpty) {
                 SelectedEntityView(prompt: prompt)
             }
@@ -30,7 +31,7 @@ struct UwaziRelationshipWidget: View {
             entityViewModel.publishUpdates()
         }
     }
-
+    
     var selectEntitiesButton : some View {
         Button {
             navigateTo(destination: EntitySelectorView(prompt: prompt)
@@ -41,5 +42,27 @@ struct UwaziRelationshipWidget: View {
                            LocalizableUwazi.uwaziEntityRelationshipSelectTitle.localized :
                             LocalizableUwazi.uwaziEntityRelationshipAddMoreTitle.localized)
         }
+    }
+}
+
+#Preview("Select entities") {
+    ContainerView {
+        UwaziRelationshipWidget(prompt: .stub(),
+                                entityViewModel: .stub())
+        .padding()
+    }
+}
+
+#Preview("Selected entities") {
+    let prompt = UwaziRelationshipEntryPrompt.stub()
+    prompt.selectValues = [
+        SelectValues(id: "1", label: "Entity one", values: nil),
+        SelectValues(id: "2", label: "Entity two", values: nil)
+    ]
+    prompt.value = ["1", "2"]
+    return ContainerView {
+        UwaziRelationshipWidget(prompt: prompt,
+                                entityViewModel: .stub())
+        .padding()
     }
 }
