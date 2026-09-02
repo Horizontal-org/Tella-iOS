@@ -27,12 +27,11 @@ struct SupportingFileWidget: View {
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
             AddFileBottomSheetView(viewModel: entityViewModel.addFilesViewModel, content: {
-                UwaziSelectFileComponent(title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
+                UwaziActionRow(icon: .uwaziAddFiles,
+                               title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
             }, moreAction: {
                 entityViewModel.addFilesViewModel.shouldShowDocumentsOnly = false
             })
-            .background(Color.white.opacity(0.08))
-            .cornerRadius(15)
         }
         
         if(prompt.value.count > 0) {

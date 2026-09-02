@@ -339,6 +339,13 @@
 "Uwazi_Entity_SelectFiles_Dropdown_Hide" = "Hide files";
 "Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
 "Uwazi_Entity_SelectDate_Title" = "Select date";
+"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
+"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
+"Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
+"Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
+"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
+"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+
 "Vault_DeleteFolder_SheetTitle" = "Delete folder?";
 "Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from Tella";
 "Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from Tella";

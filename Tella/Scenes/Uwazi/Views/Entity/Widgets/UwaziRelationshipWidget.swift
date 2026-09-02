@@ -36,22 +36,10 @@ struct UwaziRelationshipWidget: View {
             navigateTo(destination: EntitySelectorView(prompt: prompt)
             )
         } label: {
-            entitiesSelect
+            UwaziActionRow(icon: .uwaziAddFiles,
+                           title: prompt.value.isEmpty ?
+                           LocalizableUwazi.uwaziEntityRelationshipSelectTitle.localized :
+                            LocalizableUwazi.uwaziEntityRelationshipAddMoreTitle.localized)
         }
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(15)
-    }
-
-    var entitiesSelect: some View {
-        HStack {
-            Image("uwazi.add-files")
-                .padding(.vertical, 20)
-            Text(prompt.value.isEmpty ?
-                    LocalizableUwazi.uwaziEntityRelationshipSelectTitle.localized :
-                    LocalizableUwazi.uwaziEntityRelationshipAddMoreTitle.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white.opacity(0.87))
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }.padding(.horizontal, 16)
     }
 }

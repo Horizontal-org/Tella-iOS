@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 23/08/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -35,12 +35,12 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     
     case uwaziDeletedToast = "Uwazi_Deleted_Toast"
-
+    
     
     case uwaziCreateEntitySheetExpl = "Uwazi_Template_CreateEntity_SheetAction"
     case uwaziDeleteFromDevice = "Uwazi_Template_DeleteFromDevice_SheetAction"
     case uwaziDeleteTemplate = "Uwazi_Template_DeleteTemplate_SheetAction"
-
+    
     
     
     case uwaziEntityExitSheetTitle = "Uwazi_Entity_ExitEntity_SheetTitle"
@@ -52,7 +52,7 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityUnsupportedRequiredPart1Expl = "Uwazi_Entity_RequiredField_Unsupported_Part1_Expl"
     case uwaziEntityUnsupportedRequiredPart2Expl = "Uwazi_Entity_RequiredField_Unsupported_Part2_Expl"
     case uwaziEntityUnsupportedRequiredSave = "Uwazi_Entity_RequiredField_Unsupported_Save_Action"
-
+    
     case uwaziMultiFileWidgetPrimaryDocuments = "Uwazi_Entity_MultiFile_PrimaryDocument"
     case uwaziMultiFileWidgetAttachManyPDFFiles = "Uwazi_Entity_MultiFile_AttachManyPDFFiles"
     case uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle = "Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle"
@@ -77,41 +77,41 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     case draftListExpl = "Uwazi_Draft_DraftList_Expl"
     case emptyDraftListExpl = "Uwazi_Draft_EmptyDraftList_Expl"
-
+    
     case draftEntitySaved = "Uwazi_Draft_EntitySaved_Toast"
-
+    
     
     case deleteSheetTitle = "Uwazi_Delete_SheetTitle"
     case deleteDraftSheetExpl = "Uwazi_Draft_Delete_SheetExpl"
-
+    
     case editDraft = "Uwazi_Draft_Edit_SheetSelect"
     case deleteDraft = "Uwazi_Draft_Delete_SheetSelect"
-
+    
     case outboxListExpl = "Uwazi_Outbox_OutboxList_Expl"
     case emptyOutboxListExpl = "Uwazi_Outbox_EmptyOutboxList_Expl"
     case outboxDeleteSheetExpl = "Uwazi_Outbox_Delete_SheetExpl"
-
+    
     
     case submittedListExpl = "Uwazi_Submitted_SubmittedList_Expl"
     case emptySubmittedListExpl = "Uwazi_Submitted_EmptySubmittedList_Expl"
     case submitted_AppBar = "Uwazi_Submitted_AppBar"
-
+    
     
     case uploadedOn = "Uwazi_Submitted_UploadedOn"
     case submittedFiles = "Uwazi_Submitted_Files"
     case submittedFile = "Uwazi_Submitted_File"
-
+    
     
     
     case submittedDeleteSheetTitle = "Uwazi_Submitted_Delete_SheetTitle"
     case submittedDeleteSheetExpl = "Uwazi_Submitted_Delete_SheetExpl"
     case submittedDeleteCancelAction = "Uwazi_Submitted_Delete_Cancel_SheetAction"
     case submittedDeleteDeleteAction = "Uwazi_Submitted_Delete_Delete_SheetAction"
-
-
+    
+    
     case viewSheetSelect = "Uwazi_View_SheetSelect"
     case deleteSheetSelect = "Uwazi_Delete_SheetSelect"
-
+    
     case uwaziEntityRelationshipExpl = "Uwazi_Entity_Relationship_Expl"
     case uwaziEntityRelationshipSelectTitle = "Uwazi_Entity_Relationship_Select_title"
     case uwaziEntityRelationshipAddMoreTitle = "Uwazi_Entity_Relationship_AddMore_title"
@@ -119,5 +119,12 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityRelationshipMultipleConnections = "Uwazi_Entity_Relationship_MultipleConnections"
     case uwaziRelationshipListExpl = "Uwazi_Relationship_List_Expl"
     case uwaziRelationshipSearchTitle = "Uwazi_Relationship_SearchBar_Title"
+    
+    case uwaziEntityGeolocationExpl = "Uwazi_Entity_Geolocation_Expl"
+    case uwaziEntityGeolocationAddLocation = "Uwazi_Entity_Geolocation_AddLocation"
+    case uwaziEntityGeolocationRecordTitle = "Uwazi_Entity_Geolocation_RecordTitle"
+    case uwaziEntityGeolocationMapHint = "Uwazi_Entity_Geolocation_MapHint"
+    case uwaziEntityGeolocationLatitude = "Uwazi_Entity_Geolocation_Latitude"
+    case uwaziEntityGeolocationLongitude = "Uwazi_Entity_Geolocation_Longitude"
+    
 }
-

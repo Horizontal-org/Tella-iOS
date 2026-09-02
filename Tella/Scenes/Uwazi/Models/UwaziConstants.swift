@@ -38,7 +38,7 @@ extension UwaziEntityPropertyType {
         switch self {
         case .dataTypeText, .dataTypeNumeric, .dataTypeSelect,
              .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider,
-             .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
+             .dataTypeDate, .dataTypeMarkdown, .dataRelationship, .dataTypeGeolocation:
             return true
             
         default:

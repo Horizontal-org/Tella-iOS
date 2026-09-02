@@ -63,7 +63,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     func startRunningCaptureSession() {
         if shouldPreserveMetadata {
-            locationManager.initializeLocationManager()
+            locationManager.startUpdatingLocation()
         }
         sessionQueue.async {
             self.captureSession.startRunning()

@@ -16,6 +16,7 @@ struct Styles {
         static let lightBlue = UIColor(hexValue: 0x2C6C97)
         static let disabledYellow = UIColor(hexValue: 0x463755)
         static let gray = UIColor(hexValue: 0xDCDCDC)
+        static let backgroundToast = UIColor(hexValue: 0xE8E8EC)
     }
     
     struct Colors {
@@ -25,6 +26,7 @@ struct Styles {
         static let lightBlue = Color(uiColor.lightBlue)
         static let disabledYellow = Color(uiColor.disabledYellow)
         static let gray = Color(uiColor.gray)
+        static let backgroundToast = Color(uiColor.backgroundToast)
     }
     
     struct Stroke {
