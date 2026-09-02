@@ -19,7 +19,7 @@ struct UwaziActionRow: View {
                 .padding(.vertical, .smallMedium)
             CustomText(title,
                        style: .body1Style,
-                       color: Color.white.opacity(0.87),
+                       color: Color.white.opacity(0.80),
                        fillsWidth: true)
         }
         .padding(.horizontal, .normal)

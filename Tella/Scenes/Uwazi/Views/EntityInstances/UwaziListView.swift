@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 27/3/2024.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -28,10 +28,11 @@ struct UwaziListView: View {
                 
             } else {
                 
-                Text(message)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(.white.opacity(0.64))
-                    .padding(.all, 15)
+                CustomText(message,
+                           style: .body1Style,
+                           alignment: .center,
+                           color: .white.opacity(0.64))
+                .padding(.all, .extraNormal)
                 
                 ScrollView {
                     ForEach($cardsViewModel, id: \.id) { itemViewModel in
@@ -46,7 +47,7 @@ struct UwaziListView: View {
 }
 
 struct EntityInstanceItemView: View {
-
+    
     @EnvironmentObject var sheetManager: SheetManager
     @Binding var cardViewModel: UwaziCardViewModel
     
@@ -67,11 +68,11 @@ struct EntityInstanceItemView: View {
                     }
                     
                     ConnectionCardDetailsView(title: cardViewModel.title,
-                                         subtitle: cardViewModel.serverName)
+                                              subtitle: cardViewModel.serverName)
                     
                     Spacer()
                     
-                    ImageButtonView(imageName: "reports.more",
+                    ImageButtonView(imageName: .reportsMore,
                                     action: { showBottomSheet()})
                     
                 }.padding(.all, 16)
@@ -134,7 +135,7 @@ struct EntityInstanceItemView: View {
     }
     
     private func showDeleteTemplateConfirmationView() {
-
+        
         sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
@@ -144,4 +145,20 @@ struct EntityInstanceItemView: View {
             }
         }
     }
+}
+
+#Preview("List") {
+    UwaziListView(message: LocalizableUwazi.draftListExpl.localized,
+                  emptyMessage: LocalizableUwazi.emptyDraftListExpl.localized,
+                  cardsViewModel: .constant([UwaziCardViewModel.stub()]))
+    .padding(.horizontal, 20)
+    .background(Styles.Colors.backgroundMain)
+    .environmentObject(SheetManager())
+}
+
+#Preview("Empty") {
+    UwaziListView(message: LocalizableUwazi.draftListExpl.localized,
+                  emptyMessage: LocalizableUwazi.emptyDraftListExpl.localized,
+                  cardsViewModel: .constant([]))
+    .background(Styles.Colors.backgroundMain)
 }

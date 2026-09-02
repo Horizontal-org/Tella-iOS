@@ -20,6 +20,8 @@ extension CGFloat {
 
     static let normal: CGFloat = 16
 
+    static let extraNormal: CGFloat = 18
+
     static let smallMedium: CGFloat = 20
 
     static let medium: CGFloat = 24

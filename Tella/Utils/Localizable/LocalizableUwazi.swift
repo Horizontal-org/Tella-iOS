@@ -27,7 +27,6 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     case uwaziAddTemplateTitle = "Uwazi_Template_AddTemplate_Title"
     case uwaziAddTemplateExpl = "Uwazi_Template_AddTemplate_Expl"
-    case uwaziAddTemplateSecondExpl = "Uwazi_Template_AddTemplate_SecondExpl"
     case uwaziAddTemplateSavedToast = "Uwazi_Template_AddTemplateSaved_Toast"
     
     case uwaziAddTemplateEmptydExpl = "Uwazi_Template_AddTemplate_EmptyExpl"
@@ -48,6 +47,7 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntityUnsopportedProperty = "Uwazi_Entity_Property_Unsopported"
     case uwaziEntityActionNext = "Uwazi_Entity_Action_Next"
     case uwaziEntityMandatoryExpl = "Uwazi_Entity_Mandatory_Expl"
+    case uwaziEntityMandatoryToast = "Uwazi_Entity_Mandatory_Toast"
     case uwaziEntityUnsupportedRequiredTitle = "Uwazi_Entity_RequiredField_Unsupported_Title"
     case uwaziEntityUnsupportedRequiredPart1Expl = "Uwazi_Entity_RequiredField_Unsupported_Part1_Expl"
     case uwaziEntityUnsupportedRequiredPart2Expl = "Uwazi_Entity_RequiredField_Unsupported_Part2_Expl"

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 2/7/2024.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,7 +17,7 @@ struct CommonReportListView: View {
     var message: String
     var emptyMessage: String
     var emptyIcon: String
-
+    
     @Binding var cardsViewModel: [CommonCardViewModel]
     var showDetails: ((CommonCardViewModel) -> Void)
     var showBottomSheet: ((CommonCardViewModel) -> Void)
@@ -30,10 +30,12 @@ struct CommonReportListView: View {
                 ConnectionEmptyView(message: emptyMessage, iconName: emptyIcon)
             } else {
                 
-                Text(message)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(.white.opacity(0.64))
-                    .padding(.all, 15)
+                CustomText(message,
+                           style: .body1Style,
+                           alignment: .center,
+                           color: .white.opacity(0.64))
+                .padding(.all, .extraNormal)
+                
                 
                 ScrollView {
                     ForEach($cardsViewModel, id: \.id) { itemViewModel in
@@ -48,8 +50,7 @@ struct CommonReportListView: View {
 }
 
 struct CommonItemView: View {
-
-    @EnvironmentObject var sheetManager: SheetManager
+    
     @Binding var cardViewModel: CommonCardViewModel
     
     var showDetails: (() -> Void)
@@ -70,15 +71,44 @@ struct CommonItemView: View {
                     }
                     
                     ConnectionCardDetailsView(title: cardViewModel.title,
-                                          subtitle: cardViewModel.subtitle)
+                                              subtitle: cardViewModel.subtitle)
                     
                     Spacer()
                     
-                    ImageButtonView(imageName: "reports.more",
+                    ImageButtonView(imageName: .reportsMore,
                                     action: showBottomSheet)
                     
-                }.padding(.all, 16)
+                }.padding(.all, .normal)
             }
         }
     }
+}
+
+#Preview("Item") {
+    CommonItemView(cardViewModel: .constant(CommonCardViewModel.stub()),
+                   showDetails: {},
+                   showBottomSheet: {})
+    .padding(.horizontal, 20)
+    .background(Styles.Colors.backgroundMain)
+}
+
+#Preview("List") {
+    CommonReportListView(message: LocalizableReport.draftListExpl.localized,
+                         emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
+                         emptyIcon: ServerConnectionType.tella.emptyIcon,
+                         cardsViewModel: .constant([CommonCardViewModel.stub()]),
+                         showDetails: { _ in },
+                         showBottomSheet: { _ in })
+    .padding(.horizontal, 20)
+    .background(Styles.Colors.backgroundMain)
+}
+
+#Preview("Empty") {
+    CommonReportListView(message: LocalizableReport.draftListExpl.localized,
+                         emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
+                         emptyIcon: ServerConnectionType.tella.emptyIcon,
+                         cardsViewModel: .constant([]),
+                         showDetails: { _ in },
+                         showBottomSheet: { _ in })
+    .background(Styles.Colors.backgroundMain)
 }

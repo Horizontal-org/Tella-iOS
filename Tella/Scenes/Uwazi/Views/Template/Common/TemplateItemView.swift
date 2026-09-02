@@ -18,18 +18,17 @@ struct TemplateItemView: View {
     var body: some View {
         HStack {
             if(templateItemViewModel.isDownloaded) {
-                Image("report.submitted")
-                    .padding(.leading, 8)
+                Image(.reportSubmitted)
+                    .padding(.horizontal, .extraSmall)
             }
-            Text(templateItemViewModel.name)
-                .font(.custom(Styles.Fonts.regularFontName, size: 16))
-                .foregroundColor(.white)
-                .padding(.horizontal, 8)
             
+            CustomText(templateItemViewModel.name, style: .body1Style)
+                .padding(.horizontal, .extraSmall)
+
             Spacer()
             
             if(!templateItemViewModel.isDownloaded) {
-                ImageButtonView(imageName: "template.add",
+                ImageButtonView(imageName: .templateAdd ,
                                action: {
                     templateItemViewModel.downloadTemplate()
                     
@@ -37,7 +36,7 @@ struct TemplateItemView: View {
 //                    Toast.displayToast(message:message)
                 })
             } else {
-                ImageButtonView(imageName: "reports.more", action: {
+                ImageButtonView(imageName: .reportsMore, action: {
                     showTemplateActionBottomSheet()
                 }).padding(.trailing, 8)
             }

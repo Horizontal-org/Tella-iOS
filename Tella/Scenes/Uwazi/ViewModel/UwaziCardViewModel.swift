@@ -79,5 +79,15 @@ class UwaziCardViewModel: CommonCardViewModel {
         type = .entityInstance
     }
     
-    
+    override class func stub() -> Self {
+        let instance = UwaziEntityInstance()
+        instance.id = 1
+        instance.title = "Entity title"
+        instance.status = .draft
+        instance.server = UwaziServer(name: "Uwazi server")
+        
+        return UwaziCardViewModel(mainAppModel: MainAppModel.stub(),
+                                  instance: instance,
+                                  deleteTemplate: {}) as! Self
+    }
 }

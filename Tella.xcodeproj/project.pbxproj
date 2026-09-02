@@ -218,8 +218,8 @@
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
 		1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD5E3040485700940AF6 /* ToastMessageView.swift */; };
-		12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C80F103050A20000CE0334 /* LocationPickerMapView.swift */; };
-		1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
+
+1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
 		1262FD6530409BDC00940AF6 /* UwaziGeolocationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
@@ -453,6 +453,7 @@
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12C454D82DAD24300085FCD6 /* X509 in Frameworks */ = {isa = PBXBuildFile; productRef = 12C454D72DAD24300085FCD6 /* X509 */; };
+		12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C80F103050A20000CE0334 /* LocationPickerMapView.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -656,7 +657,6 @@
 		CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */; };
 		CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */; };
 		CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */; };
-		CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */; };
 		CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */; };
 		CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */; };
 		CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */; };
@@ -999,8 +999,8 @@
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
 		1262FD5E3040485700940AF6 /* ToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
-		12C80F103050A20000CE0334 /* LocationPickerMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerMapView.swift; sourceTree = "<group>"; };
-		1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
+
+1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
 		1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziGeolocationWidget.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
@@ -1245,6 +1245,7 @@
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
+		12C80F103050A20000CE0334 /* LocationPickerMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerMapView.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -1452,7 +1453,6 @@
 		CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDividerWidget.swift; sourceTree = "<group>"; };
 		CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
 		CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityMandatoryTextView.swift; sourceTree = "<group>"; };
-		CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntitySubtitleView.swift; sourceTree = "<group>"; };
 		CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityTitleView.swift; sourceTree = "<group>"; };
 		CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParser.swift; sourceTree = "<group>"; };
 		CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParserProtocol.swift; sourceTree = "<group>"; };
@@ -3949,7 +3949,6 @@
 			isa = PBXGroup;
 			children = (
 				CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */,
-				CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */,
 				CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */,
 				CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */,
 				CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */,
@@ -4580,7 +4579,6 @@
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				209AC68A2C332E3100492356 /* TellaServer.swift in Sources */,
 				12A6B6652D132E310002F74B /* CardFrame.swift in Sources */,
-				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
 				12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
