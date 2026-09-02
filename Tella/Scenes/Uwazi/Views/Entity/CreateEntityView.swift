@@ -73,22 +73,28 @@ struct CreateEntityView: View {
     }
     
     fileprivate var bottomActionView: some View {
-        Button(action: {
-            hideKeyboard()
-            
-            let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
-            
-            if !checkMandatoryFields {
-                entityViewModel.saveAnswersToEntityInstance()
-                navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
-                                                          entityInstance: entityViewModel.entityInstance))
+        HStack {
+            Spacer()
+            Button(action: {
+                hideKeyboard()
+                
+                let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
+                
+                if !checkMandatoryFields {
+                    entityViewModel.saveAnswersToEntityInstance()
+                    navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
+                                                              entityInstance: entityViewModel.entityInstance))
+                } else {
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityMandatoryToast.localized)
+                }
+            }) {
+                CustomText(LocalizableUwazi.uwaziEntityActionNext.localized, style: .link1Style)
+                    .padding(EdgeInsets(top: .extraSmall, leading: .normal, bottom: .extraSmall, trailing: .large))
+                
             }
-        }) {
-            CustomText(LocalizableUwazi.uwaziEntityActionNext.localized, style: .link1Style)
-                .padding(EdgeInsets(top: .extraSmall, leading: .normal, bottom: .extraSmall, trailing: .large))
+            .buttonStyle(PlainButtonStyle())
             
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private func showSaveEntityConfirmationView() {

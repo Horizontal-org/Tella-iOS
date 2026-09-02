@@ -325,6 +325,7 @@
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
 "Uwazi_Entity_Action_Next" = "Next";
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
+"Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
 "Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
 "Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
