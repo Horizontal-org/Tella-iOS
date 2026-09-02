@@ -31,7 +31,7 @@ struct CreateEntityView: View {
             
             AddFilePhotoVideoPickerView(viewModel: entityViewModel.addFilesViewModel)
         }.onTapGesture {
-            UIApplication.shared.endEditing()
+            hideKeyboard()
         }
         .overlay(AddFileCameraView(viewModel: entityViewModel.addFilesViewModel))
         .overlay(AddFileRecordView(viewModel: entityViewModel.addFilesViewModel))
@@ -56,7 +56,7 @@ struct CreateEntityView: View {
                              backButtonAction: { showSaveEntityConfirmationView() },
                              rightButtonType: .save,
                              rightButtonAction: {
-            UIApplication.shared.endEditing()
+            hideKeyboard()
             entityViewModel.saveEntityDraft() })
     }
     
@@ -74,6 +74,7 @@ struct CreateEntityView: View {
     
     fileprivate var bottomActionView: some View {
         Button(action: {
+            hideKeyboard()
             
             let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
             
@@ -92,7 +93,7 @@ struct CreateEntityView: View {
     }
     
     private func showSaveEntityConfirmationView() {
-        UIApplication.shared.endEditing()
+        hideKeyboard()
         
         sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
@@ -110,6 +111,10 @@ struct CreateEntityView: View {
     private func dismissViews() {
         sheetManager.hide()
         self.popTo(ViewClassType.uwaziView)
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.endEditing()
     }
 }
 
