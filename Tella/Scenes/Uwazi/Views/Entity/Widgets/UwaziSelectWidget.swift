@@ -65,7 +65,7 @@ struct SelectWidgetButton: View {
         HStack {
             
             CustomText(title,
-                       style: .body2Style,
+                       style: .body1Style,
                        color: Color.white.opacity(0.80),
                        fillsWidth: true)
             

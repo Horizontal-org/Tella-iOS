@@ -84,10 +84,9 @@ struct CreateEntityView: View {
                                                           entityInstance: entityViewModel.entityInstance))
             }
         }) {
-            Text(LocalizableUwazi.uwaziEntityActionNext.localized)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 32))
-                .foregroundColor(Color.white)
+            CustomText(LocalizableUwazi.uwaziEntityActionNext.localized, style: .link1Style)
+                .padding(EdgeInsets(top: .extraSmall, leading: .normal, bottom: .extraSmall, trailing: .large))
+            
         }
         .buttonStyle(PlainButtonStyle())
     }
