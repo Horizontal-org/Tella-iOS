@@ -104,7 +104,7 @@ extension LocationPickerMapView: MKMapViewDelegate {
         let pinView = mapView.dequeueReusableAnnotationView(withIdentifier: Self.pinReuseIdentifier)
             ?? MKAnnotationView(annotation: annotation, reuseIdentifier: Self.pinReuseIdentifier)
         pinView.annotation = annotation
-        pinView.image = UIImage(named: "uwazi.location")
+        pinView.image = UIImage(resource: .locationPin)
         pinView.canShowCallout = false
         if let height = pinView.image?.size.height {
             pinView.centerOffset = CGPoint(x: 0, y: -height / 2)
