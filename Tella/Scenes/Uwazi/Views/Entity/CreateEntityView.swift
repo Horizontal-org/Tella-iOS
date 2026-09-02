@@ -30,6 +30,8 @@ struct CreateEntityView: View {
             }
             
             AddFilePhotoVideoPickerView(viewModel: entityViewModel.addFilesViewModel)
+        }.onTapGesture {
+            UIApplication.shared.endEditing()
         }
         .overlay(AddFileCameraView(viewModel: entityViewModel.addFilesViewModel))
         .overlay(AddFileRecordView(viewModel: entityViewModel.addFilesViewModel))
@@ -53,7 +55,9 @@ struct CreateEntityView: View {
         NavigationHeaderView(title: entityViewModel.templateName,
                              backButtonAction: { showSaveEntityConfirmationView() },
                              rightButtonType: .save,
-                             rightButtonAction: {entityViewModel.saveEntityDraft() })
+                             rightButtonAction: {
+            UIApplication.shared.endEditing()
+            entityViewModel.saveEntityDraft() })
     }
     
     fileprivate var draftContentView: some View {
@@ -88,6 +92,8 @@ struct CreateEntityView: View {
     }
     
     private func showSaveEntityConfirmationView() {
+        UIApplication.shared.endEditing()
+        
         sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
                                msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
