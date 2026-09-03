@@ -748,10 +748,10 @@
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
 "Uwazi_Entity_Geolocation_MapHint" = "Yeri qeyd etmək üçün istənilən nöqtəyə basıb, saniyə saxlayın.";
 "Camera_ShowGrid" = "Show grid";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Longitude" = "Uzunluq:";
 "Camera_HideGrid" = "Hide grid";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Mövqeyi qeyd edin";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "En:";
