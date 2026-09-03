@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,6 +12,7 @@ struct CameraControlsView: View {
     @ObservedObject var cameraViewModel: CameraViewModel
     @Binding var showingCameraView : Bool
     var sourceView : SourceView
+    @Binding var gridIsOn: Bool
     
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
@@ -62,25 +63,23 @@ struct CameraControlsView: View {
     }
     
     private func cameraHeaderView() -> some View {
-        VStack {
-            HStack() {
-                closeButton
-                Spacer()
-                flashButton
-            }
-            .frame(height: 90)
-            .background(Color.black.opacity(0.8))
-            .edgesIgnoringSafeArea(.all)
-            
+        HStack() {
+            closeButton
             Spacer()
+            gridButton
+            flashButton
         }
+        .padding(.top, .smallMedium)
+        .frame(height: 90)
+        .background(Color.black.opacity(0.8))
+        .edgesIgnoringSafeArea(.all)
     }
     
     @ViewBuilder
     var closeButton: some View {
         if !shouldHideCloseButton {
             Button {
-
+                
                 if sourceView == .tab {
                     cameraViewModel.mainAppModel.selectedTab = .home
                 } else {
@@ -90,10 +89,9 @@ struct CameraControlsView: View {
                 close()
                 
             } label: {
-                Image("close")
+                Image(.close)
+                    .padding(.normal)
             }
-            .frame(width: 30, height: 30)
-            .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
             .rotate(deviceOrientation: self.deviceOrientation,
                     shouldAnimate: self.shouldAnimate)
         }
@@ -104,13 +102,26 @@ struct CameraControlsView: View {
             toggleFlash()
             flashIsOn.toggle()
         } label: {
-            flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
+            flashIsOn ? Image(.cameraFlashOn) .padding(.normal) : Image(.cameraFlashOff) .padding(.normal)
         }
-        .frame(width: 30, height: 30)
-        .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
         .rotate(deviceOrientation: self.deviceOrientation,
                 shouldAnimate: self.shouldAnimate)
         
+    }
+    
+    var gridButton: some View {
+        Button {
+            gridIsOn.toggle()
+        } label: {
+            Image(gridIsOn ? .cameraGridOn : .cameraGridOff)
+                .padding(.normal)
+        }
+        
+        .rotate(deviceOrientation: self.deviceOrientation,
+                shouldAnimate: self.shouldAnimate)
+        .accessibilityLabel(gridIsOn
+                            ? LocalizableCamera.hideGrid.localized
+                            : LocalizableCamera.showGrid.localized)
     }
     
     var capturePhotoControllers : some View {
@@ -127,7 +138,7 @@ struct CameraControlsView: View {
                     Button {
                         captureButtonAction()
                     } label: {
-                        Image("camera.capture")
+                        Image(.cameraCapture)
                     }.frame(width: 57, height: 57)
                     
                     previewImageAndVideodFile
@@ -156,10 +167,6 @@ struct CameraControlsView: View {
         
         VStack {
             
-            Text(cameraViewModel.formattedCurrentTime)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14) )
-                .foregroundColor(.white)
-            
             VStack {
                 
                 HStack(spacing: 50) {
@@ -174,7 +181,7 @@ struct CameraControlsView: View {
                         recordVideoAction()
                         cameraViewModel.initialiseTimerRunning()
                     } label: {
-                        Image("camera.start-record-video")
+                        Image(.cameraStartRecordVideo)
                     }.frame(width: 57, height: 57)
                     
                     
@@ -195,10 +202,7 @@ struct CameraControlsView: View {
         
         VStack {
             
-            Text(cameraViewModel.formattedCurrentTime)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14) )
-                .foregroundColor(.white)
-            
+            CustomText(cameraViewModel.formattedCurrentTime, style: .body1Style)
             
             VStack {
                 
@@ -209,7 +213,7 @@ struct CameraControlsView: View {
                     Button {
                         stopRecordingVideo()
                     } label: {
-                        Image( "camera.stop-record-video")
+                        Image( .cameraStopRecordVideo)
                             .frame(width: 57, height: 57)
                     }.frame(width: 57, height: 57)
                     
@@ -219,7 +223,7 @@ struct CameraControlsView: View {
                 
                 Spacer()
             }
-            .frame(height: 130)
+            .frame(height: 120)
         }
     }
     
@@ -247,7 +251,7 @@ struct CameraControlsView: View {
         Button {
             toggleCamera()
         } label: {
-            Image("camera.flip-camera")
+            Image(.cameraFlipCamera)
         }.frame(width: 40, height: 40)
             .rotate(deviceOrientation: self.deviceOrientation,
                     shouldAnimate: self.shouldAnimate)
@@ -309,8 +313,9 @@ struct CameraControlsView: View {
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
         CameraControlsView(cameraViewModel: CameraViewModel.stub(),
-                            showingCameraView:.constant(false),
-                            sourceView: .tab) {
+                           showingCameraView:.constant(false),
+                           sourceView: .tab,
+                           gridIsOn: .constant(false)) {
             
         } recordVideoAction: {
             

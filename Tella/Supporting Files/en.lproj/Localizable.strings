@@ -151,6 +151,8 @@
 "Camera_DeniedCameraPermission_Expl5" = "Open the Tella app.";
 "Camera_DeniedCameraPermission_Action_Settings" = "Settings";
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
+"Camera_ShowGrid" = "Show grid";
+"Camera_HideGrid" = "Hide grid";
 "Settings_Sett_AppBar" = "Settings";
 "Settings_Sett_General" = "General";
 "Settings_Sett_Servers" = "Servers";
