@@ -128,11 +128,13 @@ struct CameraView: View {
             model.toggleCameraType()
         }, updateCameraTypeAction: { cameraType in
             model.cameraType = cameraType
-        }, toggleFlash: {
-            model.toggleFlash()
+        }, updateFlashMode: { mode in
+            model.setFlashMode(mode)
         }, close: {
             model.stopRunningCaptureSession()
-        }, zoomFactor: model.currentZoomFactor)
+        }, zoomFactor: model.currentZoomFactor,
+                           flashMode: model.flashMode,
+                           isFlashAvailable: model.isFlashAvailable)
         .edgesIgnoringSafeArea(.all)
     }
     
