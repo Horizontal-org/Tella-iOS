@@ -20,6 +20,7 @@ final class CameraModel: ObservableObject {
     @Published var isRecording = false
     @Published var shouldCloseCamera = false
     @Published var shouldShowProgressView = false
+    @Published var currentZoomFactor: CGFloat = 1.0
 
     var session: AVCaptureSession
     var shouldPreserveMetadata: Bool = false
@@ -43,6 +44,11 @@ final class CameraModel: ObservableObject {
         service.$videoURLCompletion.sink { [weak self] (val) in
             guard let val = val else { return }
             self?.videoURLCompletion = val
+        }
+        .store(in: &self.subscriptions)
+        
+        service.$currentZoomFactor.sink { [weak self] (val) in
+            self?.currentZoomFactor = val
         }
         .store(in: &self.subscriptions)
     }
@@ -72,6 +78,14 @@ final class CameraModel: ObservableObject {
     
     func toggleFlash() {
         service.toggleFlash()
+    }
+    
+    func startZoom() {
+        service.startZoom()
+    }
+    
+    func zoom(by pinchScale: CGFloat) {
+        service.zoom(by: pinchScale)
     }
     
     func stopRunningCaptureSession() {

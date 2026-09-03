@@ -45,8 +45,14 @@ struct CameraView: View {
         
         NavigationContainerView(backgroundColor: Color.black) {
             
-            CameraPreview(session: model.session, gridIsOn: gridIsOn)
-                .edgesIgnoringSafeArea(.all)
+            CameraPreview(session: model.session,
+                          gridIsOn: gridIsOn,
+                          onZoomBegan: {
+                model.startZoom()
+            }, onZoomChanged: { pinchScale in
+                model.zoom(by: pinchScale)
+            })
+            .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
             
@@ -126,7 +132,7 @@ struct CameraView: View {
             model.toggleFlash()
         }, close: {
             model.stopRunningCaptureSession()
-        })
+        }, zoomFactor: model.currentZoomFactor)
         .edgesIgnoringSafeArea(.all)
     }
     
@@ -149,9 +155,9 @@ struct CameraView: View {
         cameraViewModel.progressFile = ProgressFile()
         
         let content = ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
-                                progress: cameraViewModel.progressFile,
-                                importFilesProgressProtocol: ImportFilesFromCameraProgress(),
-                                onImportFinished: { self.dismiss() })
+                                              progress: cameraViewModel.progressFile,
+                                              importFilesProgressProtocol: ImportFilesFromCameraProgress(),
+                                              onImportFinished: { self.dismiss() })
         
         showBottomSheetView(content: content,
                             tapToDismiss: false)

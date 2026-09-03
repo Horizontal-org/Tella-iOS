@@ -24,6 +24,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     private let sessionQueue = DispatchQueue(label: "session queue")
     
     private var locationManager = LocationManager()
+    private let zoomController = CameraZoomController()
+    
     var shouldPreserveMetadata: Bool = false
     
     weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
@@ -39,6 +41,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var imageCompletion: CameraImageCompletion?
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
+    @Published var currentZoomFactor: CGFloat = 1.0
     
     var cameraType : CameraType = .image {
         didSet {
@@ -119,9 +122,10 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         guard let inputCameraPosition = inputCameraPosition() else {
             return
         }
-        if let currentInput = captureSession.inputs.first   {
+        if let currentInput = cameraInput() {
             captureSession.removeInput(currentInput)
         }
+        
         switch inputCameraPosition {
         case .back:
             if let  frontCameraInput = cameraDeviceInput(type: .front) {
@@ -136,11 +140,12 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         default:
             break
         }
+        applyDefaultZoom()
     }
     
     func toggleFlash() {
         
-        if let avDevice = (captureSession.inputs.first as? AVCaptureDeviceInput)?.device {
+        if let avDevice = inputCamera() {
             
             if avDevice.hasTorch {
                 do {
@@ -152,6 +157,28 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
                 avDevice.unlockForConfiguration()
             }
         }
+    }
+    
+    /// Captures the current zoom factor when a pinch gesture begins
+    func startZoom() {
+        zoomController.startZoom(device: inputCamera())
+    }
+    
+    func zoom(by pinchScale: CGFloat) {
+        guard let device = inputCamera() else { return }
+        
+        currentZoomFactor = zoomController.zoom(
+            by: pinchScale,
+            device: device
+        )
+    }
+    
+    private func applyDefaultZoom() {
+        guard let device = inputCamera() else { return }
+        
+        currentZoomFactor = zoomController.applyDefaultZoom(
+            device: device
+        )
     }
     
     // MARK: - Private functions
@@ -215,6 +242,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             
         }
         
+        applyDefaultZoom()
+        
         startRunningCaptureSession()
     }
     
@@ -240,11 +269,17 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             captureSession.addOutput(videoOutput)
         }
         
+        applyDefaultZoom()
+        
         startRunningCaptureSession()
     }
     
     private func cameraDeviceInput(type: AVCaptureDevice.Position) -> AVCaptureDeviceInput?  {
-        let deviceTypes = [ AVCaptureDevice.DeviceType.builtInDualCamera, AVCaptureDevice.DeviceType.builtInWideAngleCamera ]
+        
+        let deviceTypes = [ AVCaptureDevice.DeviceType.builtInTripleCamera,
+                            AVCaptureDevice.DeviceType.builtInDualWideCamera,
+                            AVCaptureDevice.DeviceType.builtInDualCamera,
+                            AVCaptureDevice.DeviceType.builtInWideAngleCamera ]
         
         let devices = AVCaptureDevice.DiscoverySession(deviceTypes: deviceTypes, mediaType: AVMediaType.video, position: type).devices
         
@@ -281,14 +316,21 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
         captureSession.stopRunning()
         
+        currentZoomFactor = 1.0
     }
     
     private func inputCameraPosition() -> AVCaptureDevice.Position? {
         return inputCamera()?.position
     }
     
+    private func cameraInput() -> AVCaptureDeviceInput? {
+        captureSession.inputs
+            .compactMap { $0 as? AVCaptureDeviceInput }
+            .first { $0.device.hasMediaType(.video) }
+    }
+    
     private func inputCamera() -> AVCaptureDevice? {
-        return (captureSession.inputs.first as? AVCaptureDeviceInput)?.device
+        cameraInput()?.device
     }
     
     func checkCameraPermission() {

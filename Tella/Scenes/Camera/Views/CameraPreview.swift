@@ -13,6 +13,8 @@ struct CameraPreview: UIViewRepresentable {
     
     let session: AVCaptureSession
     let gridIsOn: Bool
+    var onZoomBegan: (() -> Void)? = nil
+    var onZoomChanged: ((CGFloat) -> Void)? = nil
     
     class VideoPreviewView: UIView {
 
@@ -36,6 +38,29 @@ struct CameraPreview: UIViewRepresentable {
         }
     }
     
+    class Coordinator: NSObject {
+        var parent: CameraPreview
+        
+        init(_ parent: CameraPreview) {
+            self.parent = parent
+        }
+        
+        @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
+            switch gesture.state {
+            case .began:
+                parent.onZoomBegan?()
+            case .changed:
+                parent.onZoomChanged?(gesture.scale)
+            default:
+                break
+            }
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
     func makeUIView(context: Context) -> VideoPreviewView {
         let view = VideoPreviewView()
         view.backgroundColor = .black
@@ -45,11 +70,16 @@ struct CameraPreview: UIViewRepresentable {
         view.gridOverlay.isHidden = !gridIsOn
         view.addSubview(view.gridOverlay)
         
+        let pinchGesture = UIPinchGestureRecognizer(target: context.coordinator,
+                                                    action: #selector(Coordinator.handlePinch(_:)))
+        view.addGestureRecognizer(pinchGesture)
+        
         return view
     }
     
     func updateUIView(_ uiView: VideoPreviewView, context: Context) {
         uiView.gridOverlay.isHidden = !gridIsOn
         uiView.setNeedsLayout()
+        context.coordinator.parent = self
     }
 }
