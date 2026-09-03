@@ -61,10 +61,11 @@ struct VideoViewer: View {
     
     var contentView: some View {
         VStack {
-            Spacer()
-            
             CustomVideoPlayer(player: playerVM.player,
-                              rotationAngle: .constant(0))
+                              rotationAngle: .constant(0),
+                              isZoomEnabled: true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .id(playerVM.currentFile?.id)
             Spacer()
                 .frame(height: 20)
             CustomVideoControlsView(playerVM: playerVM)
