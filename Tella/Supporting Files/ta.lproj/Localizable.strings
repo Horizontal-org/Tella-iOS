@@ -746,11 +746,11 @@
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
-"Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
+"Uwazi_Entity_Geolocation_MapHint" = "நிலையை பதிவு செய்ய திரையில் எங்காவது 3 விநாடிகள் தொடவும்.";
 "Camera_ShowGrid" = "Show grid";
 "Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
 "Camera_HideGrid" = "Hide grid";
-"Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
+"Uwazi_Entity_Geolocation_RecordTitle" = "பதிவு நிலை";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
