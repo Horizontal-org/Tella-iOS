@@ -20,6 +20,7 @@ struct CameraView: View {
     private var subscriptions = Set<AnyCancellable>()
     
     @State private var showingPermissionAlert : Bool = false
+    @State private var gridIsOn: Bool = false
     @StateObject private var cameraViewModel :  CameraViewModel
     @StateObject private var model = CameraModel()
     @EnvironmentObject private var sheetManager: SheetManager
@@ -44,7 +45,7 @@ struct CameraView: View {
         
         NavigationContainerView(backgroundColor: Color.black) {
             
-            CameraPreview(session: model.session)
+            CameraPreview(session: model.session, gridIsOn: gridIsOn)
                 .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
@@ -112,6 +113,7 @@ struct CameraView: View {
         CameraControlsView(cameraViewModel: cameraViewModel,
                            showingCameraView: showingCameraView,
                            sourceView: cameraViewModel.sourceView,
+                           gridIsOn: $gridIsOn,
                            captureButtonAction: {
             model.capturePhoto()
         }, recordVideoAction: {
@@ -156,4 +158,3 @@ struct CameraView: View {
         
     }
 }
-

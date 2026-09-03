@@ -29,6 +29,8 @@ enum TypographyStyle {
     
     case link1Style
 
+    case cameraTabStyle
+    
     var fontSize: CGFloat {
         switch self {
             
@@ -60,6 +62,8 @@ enum TypographyStyle {
             return 11
         case .link1Style:
             return 16
+        case .cameraTabStyle:
+            return 15
         }
     }
     
@@ -93,6 +97,8 @@ enum TypographyStyle {
             return Styles.Fonts.regularFontName
         case .link1Style:
             return Styles.Fonts.regularFontName
+        case .cameraTabStyle:
+            return Styles.Fonts.semiBoldFontName
         }
     }
     

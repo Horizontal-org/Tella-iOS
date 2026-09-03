@@ -218,8 +218,7 @@
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
 		1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD5E3040485700940AF6 /* ToastMessageView.swift */; };
-
-1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
+		1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
 		1262FD6530409BDC00940AF6 /* UwaziGeolocationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
@@ -296,6 +295,7 @@
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
+		127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */; };
 		127FF42B2FBDECE500DB34EC /* TwoActionBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
 		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
@@ -999,8 +999,7 @@
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
 		1262FD5E3040485700940AF6 /* ToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
-
-1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
+		1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
 		1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziGeolocationWidget.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
@@ -1072,6 +1071,7 @@
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
+		127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGridOverlayView.swift; sourceTree = "<group>"; };
 		127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoActionBottomSheet.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
 		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
@@ -2655,6 +2655,7 @@
 				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
 				1227FC902922BE24002FD6FB /* CameraPreview.swift */,
+				127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */,
 				1227FC8E2922BDBC002FD6FB /* CameraModel.swift */,
 			);
 			path = Views;
@@ -5068,6 +5069,7 @@
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
+				127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
 				1206CD4528F59DD100B38539 /* APIError.swift in Sources */,
