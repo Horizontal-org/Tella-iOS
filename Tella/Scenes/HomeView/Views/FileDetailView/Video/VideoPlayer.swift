@@ -5,22 +5,32 @@
 
 
 import SwiftUI
-import Combine
-import AVKit
+import AVFoundation
 
 struct CustomVideoPlayer: UIViewRepresentable {
     
     var player: AVPlayer
-    @Binding var rotationAngle: Int // Use this to bind rotation angle
+    @Binding var rotationAngle: Int
+    var isZoomEnabled: Bool = false
     
-    func makeUIView(context: Context) -> VideoPlayerView {
-        let view = VideoPlayerView()
-        view.player = player
-        return view
+    func makeUIView(context _: Context) -> ZoomableMediaView {
+        let playerView = VideoPlayerView()
+        playerView.player = player
+        
+        let container = ZoomableMediaView(mediaView: playerView)
+        container.isZoomEnabled = isZoomEnabled
+        return container
     }
     
-    func updateUIView(_ uiView: VideoPlayerView, context: Context) {
-        // Update the rotation of the video when the angle changes
-        uiView.rotateVideo(by: rotationAngle)
+    func updateUIView(_ uiView: ZoomableMediaView, context _: Context) {
+        guard let playerView = uiView.mediaView as? VideoPlayerView else { return }
+        
+        if playerView.player !== player {
+            playerView.player = player
+        }
+        if !isZoomEnabled {
+            playerView.rotateVideo(by: rotationAngle)
+        }
+        uiView.isZoomEnabled = isZoomEnabled
     }
 }
