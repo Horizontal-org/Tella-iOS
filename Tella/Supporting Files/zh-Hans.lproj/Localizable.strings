@@ -523,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "聪加语";
 "Settings_SettLang_Ndau_Expl" = "恩道语";
 "Settings_SettLang_Azerbaijani_Expl" = "阿塞拜疆语";
-"Onboarding_NearbySharing_Title" = "附近分享";
+"Onboarding_NearbySharing_Title" = "仅分享文件";
 "Onboarding_NearbySharing_Expl" = "无需互联网连接，即可与附近的设备分享文件。";
 "Onboarding_LockDone_Title" = "已全部完成！";
 "Onboarding_LockDone_Expl" = "可前往 Tella，或者继续通过高级选项自定义 Tella。";
@@ -748,10 +748,10 @@
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
 "Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
 "Camera_ShowGrid" = "Show grid";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Longitude" = "经度：";
 "Camera_HideGrid" = "Hide grid";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "纬度：";
