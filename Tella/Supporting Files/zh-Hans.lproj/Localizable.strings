@@ -311,7 +311,7 @@
 "Uwazi_Template_TemplateList_EmptyExpl" = "尚未保存任何模板。点击 + 按钮添加新模板。";
 "Uwazi_Template_CreateEntity_SheetAction" = "创建实体";
 "Uwazi_Template_AddTemplate_Title" = "添加模板";
-"Uwazi_Template_AddTemplate_Expl" = "这些是您连接的 Uwazi 实例上可用的模板。您可以";
+"Uwazi_Template_AddTemplate_Expl" = "这些是您连接的 Uwazi 实例上可用的模板。";
 "Uwazi_Template_AddTemplateSaved_Toast" = "已成功添加到 Uwazi 模板。";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "没有模板";
 "Uwazi_DeleteTemplate_SheetExpl" = "是否确定删除此模板？";
