@@ -312,7 +312,6 @@
 "Uwazi_Template_CreateEntity_SheetAction" = "Створити сутність";
 "Uwazi_Template_AddTemplate_Title" = "Додати шаблони";
 "Uwazi_Template_AddTemplate_Expl" = "Це шаблони, доступні на Uwazi, до яких ви підключені. ";
-"Uwazi_Template_AddTemplate_SecondExpl" = "manage your Uwazi instances here.";
 "Uwazi_Template_AddTemplateSaved_Toast" = "успішно додано до ваших шаблонів Uwazi.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "Немає шаблонів";
 "Uwazi_DeleteTemplate_SheetExpl" = "Ви впевнені, що хочете видалити цей шаблон?";

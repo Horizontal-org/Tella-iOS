@@ -312,7 +312,6 @@
 "Uwazi_Template_CreateEntity_SheetAction" = "Créer une entité";
 "Uwazi_Template_AddTemplate_Title" = "Ajouter des modèles";
 "Uwazi_Template_AddTemplate_Expl" = "Ce sont les modèles disponibles sur les instances Uwazi auxquelles vous êtes connecté. Vous pouvez ";
-"Uwazi_Template_AddTemplate_SecondExpl" = "gérer vos instances Uwazi ici.";
 "Uwazi_Template_AddTemplateSaved_Toast" = "ajouté avec succès à vos modèles Uwazi.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "Il n'y a pas de modèles";
 "Uwazi_DeleteTemplate_SheetExpl" = "Êtes-vous sûr de vouloir supprimer ce modèle ?";
