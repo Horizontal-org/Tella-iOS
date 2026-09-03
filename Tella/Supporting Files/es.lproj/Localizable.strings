@@ -753,5 +753,5 @@
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Registrar posición";
 "Uwazi_Entity_Geolocation_MapHint" = "Toca en cualquier lugar durante 3 segundos para grabar la posición.";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "Latitud:";
+"Uwazi_Entity_Geolocation_Longitude" = "Longitud:";
