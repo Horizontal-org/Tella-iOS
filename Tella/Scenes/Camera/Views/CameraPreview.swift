@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,9 +17,9 @@ struct CameraPreview: UIViewRepresentable {
     var onZoomChanged: ((CGFloat) -> Void)? = nil
     
     class VideoPreviewView: UIView {
-
+        
         let gridOverlay = CameraGridOverlayView()
-
+        
         override class var layerClass: AnyClass {
             AVCaptureVideoPreviewLayer.self
         }
@@ -27,10 +27,17 @@ struct CameraPreview: UIViewRepresentable {
         var videoPreviewLayer: AVCaptureVideoPreviewLayer {
             return layer as! AVCaptureVideoPreviewLayer
         }
-
+        
+        func configurePreview(session: AVCaptureSession) {
+            backgroundColor = .black
+            videoPreviewLayer.cornerRadius = 0
+            videoPreviewLayer.session = session
+            videoPreviewLayer.connection?.videoOrientation = .portrait
+        }
+        
         override func layoutSubviews() {
             super.layoutSubviews()
-
+            
             let videoRect = videoPreviewLayer.layerRectConverted(
                 fromMetadataOutputRect: CGRect(x: 0, y: 0, width: 1, height: 1)
             )
@@ -63,10 +70,7 @@ struct CameraPreview: UIViewRepresentable {
     
     func makeUIView(context: Context) -> VideoPreviewView {
         let view = VideoPreviewView()
-        view.backgroundColor = .black
-        view.videoPreviewLayer.cornerRadius = 0
-        view.videoPreviewLayer.session = session
-        view.videoPreviewLayer.connection?.videoOrientation = .portrait
+        view.configurePreview(session: session)
         view.gridOverlay.isHidden = !gridIsOn
         view.addSubview(view.gridOverlay)
         

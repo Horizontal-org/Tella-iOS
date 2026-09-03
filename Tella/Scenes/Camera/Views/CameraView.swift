@@ -58,7 +58,9 @@ struct CameraView: View {
             
         }.background(Color.black)
             .accentColor(.white)
+            .navigationBarHidden(true)
             .onAppear {
+                UIApplication.shared.topNavigationController()?.setNavigationBarHidden(true, animated: false)
                 model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
                 model.configure()
             }

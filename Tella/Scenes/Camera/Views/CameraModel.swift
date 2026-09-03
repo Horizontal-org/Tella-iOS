@@ -73,7 +73,7 @@ final class CameraModel: ObservableObject {
     
     func configure() {
         service.shouldPreserveMetadata = shouldPreserveMetadata
-        service.checkCameraPermission()
+        service.resumeOrSetupCaptureSession()
     }
     
     func capturePhoto() {

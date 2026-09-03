@@ -81,6 +81,26 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
     }
     
+    func resumeOrSetupCaptureSession() {
+        sessionQueue.async {
+            if !self.captureSession.inputs.isEmpty {
+                if self.shouldPreserveMetadata {
+                    DispatchQueue.main.async {
+                        self.locationManager.startUpdatingLocation()
+                    }
+                }
+                if !self.captureSession.isRunning {
+                    self.captureSession.startRunning()
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.checkCameraPermission()
+            }
+        }
+    }
+    
     
     func stopRunningCaptureSession() {
         turnOffTorch()
