@@ -751,7 +751,7 @@
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
-"Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
+"Uwazi_Entity_Geolocation_RecordTitle" = "تۆمارکردنی شوێن";
+"Uwazi_Entity_Geolocation_MapHint" = "لە هەر شوێنێک بۆ ماوەی 3 چرکە پەنجە بنێ بۆ ئەوەی شوێن تۆمار بکات.";
 "Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
 "Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
