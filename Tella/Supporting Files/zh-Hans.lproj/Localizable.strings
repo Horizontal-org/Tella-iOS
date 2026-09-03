@@ -311,8 +311,7 @@
 "Uwazi_Template_TemplateList_EmptyExpl" = "尚未保存任何模板。点击 + 按钮添加新模板。";
 "Uwazi_Template_CreateEntity_SheetAction" = "创建实体";
 "Uwazi_Template_AddTemplate_Title" = "添加模板";
-"Uwazi_Template_AddTemplate_Expl" = "这些是您连接的 Uwazi 实例上可用的模板。您可以";
-"Uwazi_Template_AddTemplate_SecondExpl" = "在此管理您的 Uwazi 实例。";
+"Uwazi_Template_AddTemplate_Expl" = "这些是您连接的 Uwazi 实例上可用的模板。";
 "Uwazi_Template_AddTemplateSaved_Toast" = "已成功添加到 Uwazi 模板。";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "没有模板";
 "Uwazi_DeleteTemplate_SheetExpl" = "是否确定删除此模板？";
@@ -524,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "聪加语";
 "Settings_SettLang_Ndau_Expl" = "恩道语";
 "Settings_SettLang_Azerbaijani_Expl" = "阿塞拜疆语";
-"Onboarding_NearbySharing_Title" = "附近分享";
+"Onboarding_NearbySharing_Title" = "仅分享文件";
 "Onboarding_NearbySharing_Expl" = "无需互联网连接，即可与附近的设备分享文件。";
 "Onboarding_LockDone_Title" = "已全部完成！";
 "Onboarding_LockDone_Expl" = "可前往 Tella，或者继续通过高级选项自定义 Tella。";
@@ -747,3 +746,12 @@
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
+"Uwazi_Entity_Geolocation_MapHint" = "触摸任意位置 3 秒钟，记录位置。";
+"Camera_ShowGrid" = "Show grid";
+"Uwazi_Entity_Geolocation_Longitude" = "经度：";
+"Camera_HideGrid" = "Hide grid";
+"Uwazi_Entity_Geolocation_RecordTitle" = "记录位置";
+"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
+"Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
+"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
+"Uwazi_Entity_Geolocation_Latitude" = "纬度：";

@@ -311,8 +311,7 @@
 "Uwazi_Template_TemplateList_EmptyExpl" = "You have no saved templates. Tap the “+” button to add a new template.";
 "Uwazi_Template_CreateEntity_SheetAction" = "ایجاد مدخل";
 "Uwazi_Template_AddTemplate_Title" = "Add Templates";
-"Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can ";
-"Uwazi_Template_AddTemplate_SecondExpl" = "manage your Uwazi instances here.";
+"Uwazi_Template_AddTemplate_Expl" = "این‌ها قالب‌هایی هستند که در نمونه‌های Uwazi که به آن‌ها متصل شده‌اید، در دسترس هستند.";
 "Uwazi_Template_AddTemplateSaved_Toast" = "successfully added to your Uwazi templates.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
 "Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
@@ -524,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
+"Onboarding_NearbySharing_Title" = "فقط اشتراک‌گذاری فایل‌ها";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
 "Onboarding_LockDone_Title" = "کار پایان یافت!";
 "Onboarding_LockDone_Expl" = "You can go to Tella or continue customizing Tella with advanced options.";
@@ -747,3 +746,12 @@
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
+"Camera_ShowGrid" = "Show grid";
+"Camera_HideGrid" = "Hide grid";
+"Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
+"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
+"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
+"Uwazi_Entity_Geolocation_RecordTitle" = "ثبت موقعیت";
+"Uwazi_Entity_Geolocation_MapHint" = "برای ثبت کردن موقعیت، هر نقطه‌ای از صفحه را به مدت 3 ثانیه لمس کنید.";
+"Uwazi_Entity_Geolocation_Latitude" = "عرض جغرافیایی:";
+"Uwazi_Entity_Geolocation_Longitude" = "طول جغرافیایی:";
