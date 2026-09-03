@@ -55,18 +55,11 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     var photoSettings : AVCapturePhotoSettings {
-        
-        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-        
-        photoSettings.isHighResolutionPhotoEnabled = true
+        let selectedFlashMode = resolvedPhotoFlashMode()
+        let photoSettings = makeHEVCPhotoSettings(flashMode: selectedFlashMode)
         
         if let currentLocation = locationManager.currentLocation {
             photoSettings.add(location: currentLocation)
-        }
-        
-        let selectedFlashMode = flashMode.photoFlashMode
-        if photoOutput?.supportedFlashModes.contains(selectedFlashMode) == true {
-            photoSettings.flashMode = selectedFlashMode
         }
         
         return photoSettings
@@ -78,6 +71,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
         sessionQueue.async {
             self.captureSession.startRunning()
+            self.configurePhotoFlashIfNeeded()
         }
     }
     
@@ -92,6 +86,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
                 if !self.captureSession.isRunning {
                     self.captureSession.startRunning()
                 }
+                self.configurePhotoFlashIfNeeded()
                 return
             }
             
@@ -177,7 +172,13 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
         applyDefaultZoom()
         updateFlashAvailability()
-        applyVideoTorchMode()
+        if cameraType == .video {
+            applyVideoTorchMode()
+        } else {
+            sessionQueue.async {
+                self.configurePhotoFlashIfNeeded()
+            }
+        }
     }
     
     func setFlashMode(_ mode: CameraFlashMode) {
@@ -185,6 +186,10 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         if cameraType == .video {
             applyVideoTorchMode()
+        } else {
+            sessionQueue.async {
+                self.configurePhotoFlashIfNeeded()
+            }
         }
     }
     
@@ -256,19 +261,13 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             captureSession.addInput(backCameraInput)
         }
         
-        // Photo Output
         photoOutput = AVCapturePhotoOutput()
-        photoOutput?.setPreparedPhotoSettingsArray( [AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])],
-                                                    completionHandler: nil)
-        
-        
         guard let photoOutput = photoOutput else { return }
         
-        photoOutput.isHighResolutionCaptureEnabled = true // Required for isHighResolutionPhotoEnabled of AVCapturePhotoSettings, default is false
+        photoOutput.isHighResolutionCaptureEnabled = true
         
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
-            
         }
         
         applyDefaultZoom()
@@ -322,6 +321,72 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         monitoringSettings.flashMode = .auto
         sceneMonitorOutput.photoSettingsForSceneMonitoring = monitoringSettings
         videoFlashSceneMonitorOutput = sceneMonitorOutput
+    }
+    
+    private func configurePhotoFlashIfNeeded() {
+        guard cameraType == .image else { return }
+        updatePhotoFlashSceneMonitoring()
+        preparePhotoCaptureSettings()
+    }
+    
+    private func updatePhotoFlashSceneMonitoring() {
+        guard let photoOutput else { return }
+        guard photoOutput.supportedFlashModes.contains(.auto) else {
+            photoOutput.photoSettingsForSceneMonitoring = nil
+            return
+        }
+        
+        let monitoringSettings = AVCapturePhotoSettings()
+        monitoringSettings.flashMode = .auto
+        photoOutput.photoSettingsForSceneMonitoring = monitoringSettings
+    }
+    
+    private func preparePhotoCaptureSettings() {
+        guard let photoOutput, cameraType == .image else { return }
+        
+        let modes: [AVCaptureDevice.FlashMode]
+        switch flashMode {
+        case .auto:
+            modes = [.auto, .on, .off]
+        case .on:
+            modes = [.on]
+        case .off:
+            modes = [.off]
+        }
+        
+        let preparedSettings = modes.map { makeHEVCPhotoSettings(flashMode: $0) }
+        photoOutput.setPreparedPhotoSettingsArray(preparedSettings, completionHandler: nil)
+    }
+    
+    private func makeHEVCPhotoSettings(flashMode: AVCaptureDevice.FlashMode) -> AVCapturePhotoSettings {
+        let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+        settings.isHighResolutionPhotoEnabled = true
+        
+        if let photoOutput {
+            if #available(iOS 16.0, *) {
+                settings.maxPhotoDimensions = photoOutput.maxPhotoDimensions
+            }
+            if photoOutput.supportedFlashModes.contains(flashMode) {
+                settings.flashMode = flashMode
+            }
+        }
+        
+        return settings
+    }
+    
+    private func resolvedPhotoFlashMode() -> AVCaptureDevice.FlashMode {
+        guard let photoOutput else {
+            return flashMode.photoFlashMode
+        }
+        
+        switch flashMode {
+        case .auto:
+            return photoOutput.isFlashScene ? .on : .auto
+        case .on:
+            return .on
+        case .off:
+            return .off
+        }
     }
     
     private func cameraDeviceInput(type: AVCaptureDevice.Position) -> AVCaptureDeviceInput?  {
@@ -537,6 +602,9 @@ extension CameraService  {
                             error: Error?) {
         self.imageCompletion = CameraImageCompletion(capturePhoto: photo,
                                                      currentLocation: locationManager.currentLocation)
+        sessionQueue.async {
+            self.preparePhotoCaptureSettings()
+        }
     }
     
     public func fileOutput(_ output: AVCaptureFileOutput,
