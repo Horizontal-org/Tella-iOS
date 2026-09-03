@@ -21,10 +21,12 @@ final class CameraModel: ObservableObject {
     @Published var shouldCloseCamera = false
     @Published var shouldShowProgressView = false
     @Published var currentZoomFactor: CGFloat = 1.0
-
+    @Published var flashMode: CameraFlashMode = .off
+    @Published var isFlashAvailable = false
+    
     var session: AVCaptureSession
     var shouldPreserveMetadata: Bool = false
-
+    
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
@@ -51,6 +53,16 @@ final class CameraModel: ObservableObject {
             self?.currentZoomFactor = val
         }
         .store(in: &self.subscriptions)
+        
+        service.$flashMode.sink { [weak self] mode in
+            self?.flashMode = mode
+        }
+        .store(in: &self.subscriptions)
+        
+        service.$isFlashAvailable.sink { [weak self] isAvailable in
+            self?.isFlashAvailable = isAvailable
+        }
+        .store(in: &self.subscriptions)
     }
     
     var cameraType : CameraType = .image {
@@ -61,7 +73,7 @@ final class CameraModel: ObservableObject {
     
     func configure() {
         service.shouldPreserveMetadata = shouldPreserveMetadata
-        service.checkCameraPermission()
+        service.resumeOrSetupCaptureSession()
     }
     
     func capturePhoto() {
@@ -76,8 +88,8 @@ final class CameraModel: ObservableObject {
         service.toggleCameraType()
     }
     
-    func toggleFlash() {
-        service.toggleFlash()
+    func setFlashMode(_ mode: CameraFlashMode) {
+        service.setFlashMode(mode)
     }
     
     func startZoom() {

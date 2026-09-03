@@ -18,15 +18,16 @@ struct CameraControlsView: View {
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
     var updateCameraTypeAction: ((CameraType) -> Void)
-    var toggleFlash: (() -> Void)
+    var updateFlashMode: ((CameraFlashMode) -> Void)
     var close: (() -> Void)
     var zoomFactor: CGFloat = 1.0
+    var flashMode: CameraFlashMode = .off
+    var isFlashAvailable: Bool = true
     
     // MARK: - Private properties
     
     @State private var selectedOption: CameraType = .image
     @State private var state : CameraState = .readyTakingImage
-    @State private var flashIsOn: Bool = false
     @State private var shouldHideCloseButton: Bool = false
     
     
@@ -55,9 +56,6 @@ struct CameraControlsView: View {
                 recordingVideoControllers
             }
         }
-        .onDisappear {
-            flashIsOn = false
-        }
         .onReceive(cameraViewModel.mainAppModel.$shouldSaveCurrentData) { value in
             if(value && state == .recordingVideo) {
                 stopRecordingVideo()
@@ -75,7 +73,7 @@ struct CameraControlsView: View {
             .padding(.bottom, 20)
             .rotate(deviceOrientation: deviceOrientation,
                     shouldAnimate: shouldAnimate)
-
+        
     }
     
     private var formattedZoomFactor: String {
@@ -122,14 +120,27 @@ struct CameraControlsView: View {
     
     var flashButton: some View {
         Button {
-            toggleFlash()
-            flashIsOn.toggle()
+            updateFlashMode(flashMode.next)
         } label: {
-            flashIsOn ? Image(.cameraFlashOn) .padding(.normal) : Image(.cameraFlashOff) .padding(.normal)
+            flashIcon
+                .padding(.normal)
         }
+        .disabled(!isFlashAvailable)
+        .opacity(isFlashAvailable ? 1 : 0.4)
         .rotate(deviceOrientation: self.deviceOrientation,
                 shouldAnimate: self.shouldAnimate)
-        
+    }
+    
+    @ViewBuilder
+    private var flashIcon: some View {
+        switch flashMode {
+        case .auto:
+            Image(.cameraFlashAuto)
+        case .on:
+            Image(.cameraFlashOn)
+        case .off:
+            Image(.cameraFlashOff)
+        }
     }
     
     var gridButton: some View {
@@ -346,7 +357,26 @@ struct CameraControlsView_Previews: PreviewProvider {
             
         } updateCameraTypeAction: { value in
             
-        } toggleFlash: {
+        } updateFlashMode: { _ in
         } close: {}
+    }
+}
+
+private extension CameraFlashMode {
+    var next: CameraFlashMode {
+        switch self {
+        case .auto:
+            return .on
+        case .on:
+            return .off
+        case .off:
+            return .auto
+        }
+    }
+}
+
+private extension LocalizableCamera {
+    func localized(or fallback: String) -> String {
+        Bundle.main.localizedString(forKey: rawValue, value: fallback, table: table)
     }
 }

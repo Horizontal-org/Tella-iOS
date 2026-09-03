@@ -19,6 +19,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     // MARK: - Private properties
     
     private var photoOutput: AVCapturePhotoOutput?
+    private var videoFlashSceneMonitorOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureMovieFileOutput?
     private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     private let sessionQueue = DispatchQueue(label: "session queue")
@@ -42,6 +43,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
     @Published var currentZoomFactor: CGFloat = 1.0
+    @Published private(set) var flashMode: CameraFlashMode = .off
+    @Published private(set) var isFlashAvailable = false
     
     var cameraType : CameraType = .image {
         didSet {
@@ -52,10 +55,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     var photoSettings : AVCapturePhotoSettings {
-        
-        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-        
-        photoSettings.isHighResolutionPhotoEnabled = true
+        let selectedFlashMode = resolvedPhotoFlashMode()
+        let photoSettings = makeHEVCPhotoSettings(flashMode: selectedFlashMode)
         
         if let currentLocation = locationManager.currentLocation {
             photoSettings.add(location: currentLocation)
@@ -70,11 +71,34 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
         sessionQueue.async {
             self.captureSession.startRunning()
+            self.configurePhotoFlashIfNeeded()
+        }
+    }
+    
+    func resumeOrSetupCaptureSession() {
+        sessionQueue.async {
+            if !self.captureSession.inputs.isEmpty {
+                if self.shouldPreserveMetadata {
+                    DispatchQueue.main.async {
+                        self.locationManager.startUpdatingLocation()
+                    }
+                }
+                if !self.captureSession.isRunning {
+                    self.captureSession.startRunning()
+                }
+                self.configurePhotoFlashIfNeeded()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.checkCameraPermission()
+            }
         }
     }
     
     
     func stopRunningCaptureSession() {
+        turnOffTorch()
         captureSession.stopRunning()
         shouldCloseCamera = false
         locationManager.stopUpdatingLocation()
@@ -98,6 +122,9 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         if videoOutput.isRecording {
             videoOutput.stopRecording()
+            if flashMode == .auto {
+                turnOffTorch()
+            }
             shouldShowProgressView = true
             return
         }
@@ -115,6 +142,8 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             videoOutput.add(location: currentLocation)
         }
         
+        applyVideoTorchMode(activateAutomaticFlash: true)
+        
         videoOutput.startRecording(to: outFileUrl, recordingDelegate: delegate )
     }
     
@@ -122,6 +151,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         guard let inputCameraPosition = inputCameraPosition() else {
             return
         }
+        turnOffTorch()
         if let currentInput = cameraInput() {
             captureSession.removeInput(currentInput)
         }
@@ -141,20 +171,24 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             break
         }
         applyDefaultZoom()
+        updateFlashAvailability()
+        if cameraType == .video {
+            applyVideoTorchMode()
+        } else {
+            sessionQueue.async {
+                self.configurePhotoFlashIfNeeded()
+            }
+        }
     }
     
-    func toggleFlash() {
+    func setFlashMode(_ mode: CameraFlashMode) {
+        flashMode = mode
         
-        if let avDevice = inputCamera() {
-            
-            if avDevice.hasTorch {
-                do {
-                    try avDevice.lockForConfiguration()
-                } catch {
-                    
-                }
-                avDevice.torchMode =  avDevice.torchMode == . on ? .off : .on
-                avDevice.unlockForConfiguration()
+        if cameraType == .video {
+            applyVideoTorchMode()
+        } else {
+            sessionQueue.async {
+                self.configurePhotoFlashIfNeeded()
             }
         }
     }
@@ -227,22 +261,17 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             captureSession.addInput(backCameraInput)
         }
         
-        // Photo Output
         photoOutput = AVCapturePhotoOutput()
-        photoOutput?.setPreparedPhotoSettingsArray( [AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])],
-                                                    completionHandler: nil)
-        
-        
         guard let photoOutput = photoOutput else { return }
         
-        photoOutput.isHighResolutionCaptureEnabled = true // Required for isHighResolutionPhotoEnabled of AVCapturePhotoSettings, default is false
+        photoOutput.isHighResolutionCaptureEnabled = true
         
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
-            
         }
         
         applyDefaultZoom()
+        updateFlashAvailability()
         
         startRunningCaptureSession()
     }
@@ -269,9 +298,95 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             captureSession.addOutput(videoOutput)
         }
         
+        setupVideoFlashSceneMonitoring()
+        
         applyDefaultZoom()
+        updateFlashAvailability()
         
         startRunningCaptureSession()
+    }
+    
+    /// Adds an auxiliary photo output used only to meter the scene for the automatic video torch.
+    private func setupVideoFlashSceneMonitoring() {
+        let sceneMonitorOutput = AVCapturePhotoOutput()
+        guard captureSession.canAddOutput(sceneMonitorOutput) else { return }
+        
+        captureSession.addOutput(sceneMonitorOutput)
+        guard sceneMonitorOutput.supportedFlashModes.contains(.auto) else {
+            captureSession.removeOutput(sceneMonitorOutput)
+            return
+        }
+        
+        let monitoringSettings = AVCapturePhotoSettings()
+        monitoringSettings.flashMode = .auto
+        sceneMonitorOutput.photoSettingsForSceneMonitoring = monitoringSettings
+        videoFlashSceneMonitorOutput = sceneMonitorOutput
+    }
+    
+    private func configurePhotoFlashIfNeeded() {
+        guard cameraType == .image else { return }
+        updatePhotoFlashSceneMonitoring()
+        preparePhotoCaptureSettings()
+    }
+    
+    private func updatePhotoFlashSceneMonitoring() {
+        guard let photoOutput else { return }
+        guard photoOutput.supportedFlashModes.contains(.auto) else {
+            photoOutput.photoSettingsForSceneMonitoring = nil
+            return
+        }
+        
+        let monitoringSettings = AVCapturePhotoSettings()
+        monitoringSettings.flashMode = .auto
+        photoOutput.photoSettingsForSceneMonitoring = monitoringSettings
+    }
+    
+    private func preparePhotoCaptureSettings() {
+        guard let photoOutput, cameraType == .image else { return }
+        
+        let modes: [AVCaptureDevice.FlashMode]
+        switch flashMode {
+        case .auto:
+            modes = [.auto, .on, .off]
+        case .on:
+            modes = [.on]
+        case .off:
+            modes = [.off]
+        }
+        
+        let preparedSettings = modes.map { makeHEVCPhotoSettings(flashMode: $0) }
+        photoOutput.setPreparedPhotoSettingsArray(preparedSettings, completionHandler: nil)
+    }
+    
+    private func makeHEVCPhotoSettings(flashMode: AVCaptureDevice.FlashMode) -> AVCapturePhotoSettings {
+        let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+        settings.isHighResolutionPhotoEnabled = true
+        
+        if let photoOutput {
+            if #available(iOS 16.0, *) {
+                settings.maxPhotoDimensions = photoOutput.maxPhotoDimensions
+            }
+            if photoOutput.supportedFlashModes.contains(flashMode) {
+                settings.flashMode = flashMode
+            }
+        }
+        
+        return settings
+    }
+    
+    private func resolvedPhotoFlashMode() -> AVCaptureDevice.FlashMode {
+        guard let photoOutput else {
+            return flashMode.photoFlashMode
+        }
+        
+        switch flashMode {
+        case .auto:
+            return photoOutput.isFlashScene ? .on : .auto
+        case .on:
+            return .on
+        case .off:
+            return .off
+        }
     }
     
     private func cameraDeviceInput(type: AVCaptureDevice.Position) -> AVCaptureDeviceInput?  {
@@ -299,6 +414,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     private func releasePreview() {
+        turnOffTorch()
         
         if let inputs = captureSession.inputs as? [AVCaptureDeviceInput] {
             for input in inputs {
@@ -310,10 +426,13 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         for output in outputs {
             captureSession.removeOutput(output)
         }
+        photoOutput = nil
+        videoFlashSceneMonitorOutput = nil
         
         if let videoOutput = videoOutput, videoOutput.isRecording {
             videoOutput.stopRecording()
         }
+        videoOutput = nil
         captureSession.stopRunning()
         
         currentZoomFactor = 1.0
@@ -331,6 +450,70 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     private func inputCamera() -> AVCaptureDevice? {
         cameraInput()?.device
+    }
+    
+    private func updateFlashAvailability() {
+        guard let device = inputCamera() else {
+            setFlashAvailability(false)
+            return
+        }
+        
+        setFlashAvailability(cameraType == .video ? device.hasTorch : device.hasFlash)
+    }
+    
+    private func setFlashAvailability(_ isAvailable: Bool) {
+        if Thread.isMainThread {
+            isFlashAvailable = isAvailable
+        } else {
+            DispatchQueue.main.async {
+                self.isFlashAvailable = isAvailable
+            }
+        }
+    }
+    
+    private func applyVideoTorchMode(activateAutomaticFlash: Bool = false) {
+        guard cameraType == .video,
+              let device = inputCamera(),
+              device.hasTorch else {
+            return
+        }
+        
+        let torchMode: AVCaptureDevice.TorchMode
+        if flashMode == .auto, activateAutomaticFlash, let videoFlashSceneMonitorOutput {
+            torchMode = videoFlashSceneMonitorOutput.isFlashScene ? .on : .off
+        } else if flashMode == .auto, activateAutomaticFlash {
+            torchMode = .auto
+        } else if flashMode == .auto {
+            torchMode = .off
+        } else {
+            torchMode = flashMode.torchMode
+        }
+        
+        guard device.isTorchModeSupported(torchMode) else { return }
+        
+        do {
+            try device.lockForConfiguration()
+            device.torchMode = torchMode
+            device.unlockForConfiguration()
+        } catch {
+            debugLog("Unable to configure the camera torch: \(error.localizedDescription)")
+        }
+    }
+    
+    private func turnOffTorch() {
+        guard let device = inputCamera(),
+              device.hasTorch,
+              device.isTorchModeSupported(.off) else {
+            return
+        }
+        
+        do {
+            try device.lockForConfiguration()
+            device.torchMode = .off
+            device.unlockForConfiguration()
+        } catch {
+            debugLog("Unable to turn off the camera torch: \(error.localizedDescription)")
+        }
     }
     
     func checkCameraPermission() {
@@ -388,6 +571,30 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
 }
 
+private extension CameraFlashMode {
+    var photoFlashMode: AVCaptureDevice.FlashMode {
+        switch self {
+        case .auto:
+            return .auto
+        case .on:
+            return .on
+        case .off:
+            return .off
+        }
+    }
+    
+    var torchMode: AVCaptureDevice.TorchMode {
+        switch self {
+        case .auto:
+            return .auto
+        case .on:
+            return .on
+        case .off:
+            return .off
+        }
+    }
+}
+
 extension CameraService  {
     
     public func photoOutput(_ output: AVCapturePhotoOutput,
@@ -395,12 +602,19 @@ extension CameraService  {
                             error: Error?) {
         self.imageCompletion = CameraImageCompletion(capturePhoto: photo,
                                                      currentLocation: locationManager.currentLocation)
+        sessionQueue.async {
+            self.preparePhotoCaptureSettings()
+        }
     }
     
     public func fileOutput(_ output: AVCaptureFileOutput,
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
+        if flashMode == .auto {
+            turnOffTorch()
+        }
+        
         if error != nil {
             DispatchQueue.main.async {
                 self.shouldShowProgressView = false

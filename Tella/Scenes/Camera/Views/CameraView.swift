@@ -58,7 +58,9 @@ struct CameraView: View {
             
         }.background(Color.black)
             .accentColor(.white)
+            .navigationBarHidden(true)
             .onAppear {
+                UIApplication.shared.topNavigationController()?.setNavigationBarHidden(true, animated: false)
                 model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
                 model.configure()
             }
@@ -128,11 +130,13 @@ struct CameraView: View {
             model.toggleCameraType()
         }, updateCameraTypeAction: { cameraType in
             model.cameraType = cameraType
-        }, toggleFlash: {
-            model.toggleFlash()
+        }, updateFlashMode: { mode in
+            model.setFlashMode(mode)
         }, close: {
             model.stopRunningCaptureSession()
-        }, zoomFactor: model.currentZoomFactor)
+        }, zoomFactor: model.currentZoomFactor,
+                           flashMode: model.flashMode,
+                           isFlashAvailable: model.isFlashAvailable)
         .edgesIgnoringSafeArea(.all)
     }
     
