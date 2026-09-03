@@ -311,7 +311,7 @@
 "Uwazi_Template_TemplateList_EmptyExpl" = "У вас немає збережених шаблонів. Натисніть кнопку «+», щоб додати новий шаблон.";
 "Uwazi_Template_CreateEntity_SheetAction" = "Створити сутність";
 "Uwazi_Template_AddTemplate_Title" = "Додати шаблони";
-"Uwazi_Template_AddTemplate_Expl" = "Це шаблони, доступні на Uwazi, до яких ви підключені. ";
+"Uwazi_Template_AddTemplate_Expl" = "Це шаблони, доступні на серверах Uwazi, до яких ви під’єднані.";
 "Uwazi_Template_AddTemplateSaved_Toast" = "успішно додано до ваших шаблонів Uwazi.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "Немає шаблонів";
 "Uwazi_DeleteTemplate_SheetExpl" = "Ви впевнені, що хочете видалити цей шаблон?";
@@ -523,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "Тсонґа";
 "Settings_SettLang_Ndau_Expl" = "Ндау";
 "Settings_SettLang_Azerbaijani_Expl" = "Азербайджанська";
-"Onboarding_NearbySharing_Title" = "Обмін поблизу";
+"Onboarding_NearbySharing_Title" = "Обмін файлами поблизу";
 "Onboarding_NearbySharing_Expl" = "Діліться файлами з пристроями поблизу без під’єднання до інтернету.";
 "Onboarding_LockDone_Title" = "Усе готово!";
 "Onboarding_LockDone_Expl" = "Ви можете перейти до Tella або продовжити налаштування Tella за допомогою розширених параметрів.";
@@ -717,7 +717,7 @@
 "Onboarding_ServerConnections_part1_Expl" = "If you work with an organization, send forms, reports, and files directly from Tella to your organization. You can also back up files to a personal cloud.";
 "Onboarding_ServerConnections_part2_Expl" = "Tella iOS supports Connections to Dropbox, Google Drive, Nextcloud, Uwazi and Tella Web.";
 "Settings_SettLang_Ukrainian_Expl" = "Ukrainian";
-"NearbySharing_ExitProgress_SheetTitle" = "Вийти з обміну поблизу?";
+"NearbySharing_ExitProgress_SheetTitle" = "Вийти з Обміну поблизу?";
 "NearbySharing_ExitProgress_SheetExpl" = "Ваш прогрес буде втрачено.";
 "NearbySharing_ExitProgress_Exit_Action" = "Вихід";
 "Setting_Server_ShowProjectURL_SheetTitle" = "Show project URL in settings?";
