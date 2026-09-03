@@ -751,7 +751,7 @@
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
-"Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
+"Uwazi_Entity_Geolocation_RecordTitle" = "မှတ်တမ်းအနေအထား";
+"Uwazi_Entity_Geolocation_MapHint" = "တည်နေရာကို မှတ်တမ်းတင်ရန် မည်သည့်နေရာကိုမဆို ၃ စက္ကန့်ကြာ ထိထားပါ။";
 "Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
 "Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
