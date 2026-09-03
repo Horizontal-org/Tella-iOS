@@ -746,11 +746,11 @@
 "NearbySharing_Verification_Step2_ConfirmRecipientHash" = "Step 2: Confirm recipient hash";
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
-"Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
+"Uwazi_Entity_Geolocation_MapHint" = "触摸任意位置 3 秒钟，记录位置。";
 "Camera_ShowGrid" = "Show grid";
 "Uwazi_Entity_Geolocation_Longitude" = "经度：";
 "Camera_HideGrid" = "Hide grid";
-"Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
+"Uwazi_Entity_Geolocation_RecordTitle" = "记录位置";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
