@@ -753,5 +753,5 @@
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Rekam posisi";
 "Uwazi_Entity_Geolocation_MapHint" = "Sentuh di mana saja selama 3 detik untuk posisi merekam.";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "Lintang:";
+"Uwazi_Entity_Geolocation_Longitude" = "Bujur:";
