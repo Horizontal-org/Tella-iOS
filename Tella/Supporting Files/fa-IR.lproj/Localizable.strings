@@ -753,5 +753,5 @@
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_RecordTitle" = "ثبت موقعیت";
 "Uwazi_Entity_Geolocation_MapHint" = "برای ثبت کردن موقعیت، هر نقطه‌ای از صفحه را به مدت 3 ثانیه لمس کنید.";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "عرض جغرافیایی:";
+"Uwazi_Entity_Geolocation_Longitude" = "طول جغرافیایی:";
