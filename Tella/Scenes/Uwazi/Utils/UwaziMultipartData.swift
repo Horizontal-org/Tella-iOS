@@ -33,22 +33,22 @@ struct UwaziMultipartFormDataBuilder {
         attachments?.enumerated().forEach { index, attachment in
             multipartRequest.add(
                 key: "attachments[\(index)]",
-                fileName: attachment.filename,
+                fileName: "\(attachment.filename).\(attachment.fileExtension)",
                 fileMimeType: attachment.mimeType,
                 fileData: attachment.data
             )
-            multipartRequest.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
+            multipartRequest.add(key: "attachments_originalname[\(index)]", value: "\(attachment.filename).\(attachment.fileExtension)")
         }
                 
                 // Add documents
         documents?.enumerated().forEach { index, document in
             multipartRequest.add(
                 key: "documents[\(index)]",
-                fileName: document.filename,
+                fileName: "\(document.filename).\(document.fileExtension)",
                 fileMimeType: document.mimeType,
                 fileData: document.data
             )
-            multipartRequest.add(key: "documents_originalname[\(index)]", value: document.filename)
+            multipartRequest.add(key: "documents_originalname[\(index)]", value: "\(document.filename).\(document.fileExtension)")
         }
         
         return (
