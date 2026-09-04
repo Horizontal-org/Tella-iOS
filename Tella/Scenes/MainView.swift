@@ -8,16 +8,16 @@ import SwiftUI
 import Combine
 
 struct MainView: View  {
-
+    
     @ObservedObject var mainAppModel: MainAppModel
     @ObservedObject var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     @State private var shouldReload : Bool = false
-   
+    
     var homeViewModel: HomeViewModel
     var settingsViewModel: SettingsViewModel
     var serversViewModel: ServersViewModel
-
+    
     init(appViewState: AppViewState) {
         self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
@@ -37,8 +37,6 @@ struct MainView: View  {
                      tapToDismiss: sheetManager.shouldHideOnTap) {
                 sheetManager.content
             }
-            securityScreenView
-            
         }
     }
     
@@ -87,18 +85,10 @@ struct MainView: View  {
             SettingsMainView(appViewState: appViewState,
                              settingsViewModel: SettingsViewModel(mainAppModel: mainAppModel),
                              serversViewModel: ServersViewModel(mainAppModel: mainAppModel))
-                .tabItem {
-                    Image("tab.settings")
-                    Text(LocalizableSettings.settAppBar.localized)
-                }.tag(MainAppModel.Tabs.settings)
-        }
-    }
-    
-    @ViewBuilder
-    var securityScreenView : some View {
-        if appViewState.homeViewModel.shouldShowSecurityScreen == true || appViewState.homeViewModel.shouldShowRecordingSecurityScreen == true ,    appViewState.homeViewModel.settings.screenSecurity == true {
-            Color.white
-                .edgesIgnoringSafeArea(.all)
+            .tabItem {
+                Image("tab.settings")
+                Text(LocalizableSettings.settAppBar.localized)
+            }.tag(MainAppModel.Tabs.settings)
         }
     }
 }
