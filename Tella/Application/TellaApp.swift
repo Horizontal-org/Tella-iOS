@@ -62,11 +62,12 @@ struct TellaApp: App {
     
     func saveData(lockAppType: LockAppType) {
         
+        appViewState.homeViewModel.appEnterInBackground = true
+
         guard appViewState.homeViewModel.shouldResetApp() else { return }
         
         // Cancel foreground uploads and mark background entry; must run even when waiting for background uploads.
         appViewState.homeViewModel.uploadService.cancelTasksIfNeeded()
-        appViewState.homeViewModel.appEnterInBackground = true
         
         if lockAppType == .enterInBackground {
             appViewState.homeViewModel.shouldSaveCurrentData = true
