@@ -69,7 +69,7 @@ class FileListViewModel: ObservableObject {
     }
 
     var isAllFilesType: Bool {
-        return  filterType == .all && self.rootFile == nil
+        filterType == .all
     }
 
     var selectedFiles : [VaultFileDB] {
