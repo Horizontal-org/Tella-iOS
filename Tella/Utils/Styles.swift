@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 HORIZONTAL. 
+//  Copyright © 2021 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -15,8 +15,19 @@ struct Styles {
         static let yellow = UIColor(hexValue: 0xD6933B)
         static let lightBlue = UIColor(hexValue: 0x2C6C97)
         static let disabledYellow = UIColor(hexValue: 0x463755)
-        static let gray = UIColor(hexValue: 0xDCDCDC)
+        
+        static let yellowWhite = UIColor(hexValue: 0xDDA45A)
+        
+        static let darkRed = UIColor(hexValue: 0x971212)
+        static let red = UIColor(hexValue: 0xFC4444)
+        
         static let backgroundToast = UIColor(hexValue: 0xE8E8EC)
+        
+        static let grey1 = UIColor(hexValue: 0xDCDCDC)
+        static let grey2 = UIColor(hexValue: 0xA8ADAF)
+        
+        static let backgroundGrey1 = UIColor(hexValue: 0x1F2125)
+        static let backgroundGrey2 = UIColor(hexValue: 0x3A3C40)
     }
     
     struct Colors {
@@ -25,8 +36,19 @@ struct Styles {
         static let yellow = Color(uiColor.yellow)
         static let lightBlue = Color(uiColor.lightBlue)
         static let disabledYellow = Color(uiColor.disabledYellow)
-        static let gray = Color(uiColor.gray)
+        
+        static let yellowWhite = Color(uiColor.yellowWhite)
+        
+        static let red = Color(uiColor.red)
+        static let darkRed = Color(uiColor.darkRed)
+        
         static let backgroundToast = Color(uiColor.backgroundToast)
+        
+        static let grey1 = Color(uiColor.grey1)
+        static let grey2 = Color(uiColor.grey2)
+        
+        static let backgroundGrey1 = Color(uiColor.backgroundGrey1)
+        static let backgroundGrey2 = Color(uiColor.backgroundGrey2)
     }
     
     struct Stroke {

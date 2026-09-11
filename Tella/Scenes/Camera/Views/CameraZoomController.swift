@@ -11,13 +11,18 @@ import AVFoundation
 
 final class CameraZoomController {
     
+    private static let rampRate: Float = 8.0
+    
     private var initialZoomFactor: CGFloat = 1.0
     
     func startZoom(device: AVCaptureDevice?) {
+        if let device = device, device.isRampingVideoZoom {
+            cancelZoomRamp(device: device)
+        }
+        
         initialZoomFactor = device?.videoZoomFactor ?? 1.0
     }
     
-    /// Applies the pinch scale to the zoom captured at gesture start, clamped to the allowed range.
     func zoom(
         by pinchScale: CGFloat,
         device: AVCaptureDevice
@@ -38,6 +43,39 @@ final class CameraZoomController {
         } catch {
             return displayedZoomFactor(for: device)
         }
+    }
+    
+    /// The fixed zoom levels the installed lenses can reach, in user facing values.
+    func availableZoomLevels(device: AVCaptureDevice?) -> [CameraZoomLevel] {
+        guard let device = device else { return [] }
+        
+        let lowest = displayedZoomFactor(forDeviceFactor: device.minAvailableVideoZoomFactor,
+                                         device: device)
+        let highest = displayedZoomFactor(forDeviceFactor: maximumZoomFactor(for: device),
+                                          device: device)
+        
+        return CameraZoomLevel.candidates
+            .filter { $0 >= lowest && $0 <= highest }
+            .map { CameraZoomLevel(factor: $0) }
+    }
+    
+    /// Ramps to one of the fixed zoom levels, returning the user facing factor it settles on.
+    func setZoom(to level: CameraZoomLevel, device: AVCaptureDevice) -> CGFloat {
+        let desiredZoomFactor = deviceZoomFactor(forDisplayedFactor: level.factor, device: device)
+        let clampedZoomFactor = max(
+            device.minAvailableVideoZoomFactor,
+            min(desiredZoomFactor, maximumZoomFactor(for: device))
+        )
+        
+        do {
+            try device.lockForConfiguration()
+            defer { device.unlockForConfiguration() }
+            
+            device.cancelVideoZoomRamp()
+            device.ramp(toVideoZoomFactor: clampedZoomFactor, withRate: Self.rampRate)
+        } catch {}
+        
+        return displayedZoomFactor(forDeviceFactor: clampedZoomFactor, device: device)
     }
     
     /// Resets the camera to the "1x" wide lens whenever a new input is installed
@@ -73,12 +111,36 @@ final class CameraZoomController {
     }
     /// Converts the zoom factor into the user facing value, so the wide lens reads as 1x.
     private func displayedZoomFactor(for device: AVCaptureDevice) -> CGFloat {
+        displayedZoomFactor(forDeviceFactor: device.videoZoomFactor, device: device)
+    }
+    
+    private func displayedZoomFactor(forDeviceFactor deviceFactor: CGFloat,
+                                     device: AVCaptureDevice) -> CGFloat {
         if #available(iOS 18.0, *) {
-            return device.videoZoomFactor *
-            device.displayVideoZoomFactorMultiplier
+            return deviceFactor * device.displayVideoZoomFactorMultiplier
         }
         
-        return device.videoZoomFactor / defaultZoomFactor(for: device)
+        return deviceFactor / defaultZoomFactor(for: device)
+    }
+    
+    /// The reverse of `displayedZoomFactor(forDeviceFactor:device:)`, for zooming to a requested level.
+    private func deviceZoomFactor(forDisplayedFactor displayedFactor: CGFloat,
+                                  device: AVCaptureDevice) -> CGFloat {
+        if #available(iOS 18.0, *) {
+            let multiplier = device.displayVideoZoomFactorMultiplier
+            guard multiplier > 0 else { return displayedFactor }
+            
+            return displayedFactor / multiplier
+        }
+        
+        return displayedFactor * defaultZoomFactor(for: device)
+    }
+    
+    private func cancelZoomRamp(device: AVCaptureDevice) {
+        guard (try? device.lockForConfiguration()) != nil else { return }
+        defer { device.unlockForConfiguration() }
+        
+        device.cancelVideoZoomRamp()
     }
     
     /// The device's internal zoom factor for the main wide lens (what the user sees as "1x").

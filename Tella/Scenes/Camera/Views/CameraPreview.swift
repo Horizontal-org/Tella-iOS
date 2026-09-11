@@ -11,10 +11,13 @@ import AVFoundation
 
 struct CameraPreview: UIViewRepresentable {
     
+    private static let swipeThreshold: CGFloat = 40
+    
     let session: AVCaptureSession
     let gridIsOn: Bool
     var onZoomBegan: (() -> Void)? = nil
     var onZoomChanged: ((CGFloat) -> Void)? = nil
+    var onSwipe: ((CameraSwipeDirection) -> Void)? = nil
     
     class VideoPreviewView: UIView {
         
@@ -62,6 +65,16 @@ struct CameraPreview: UIViewRepresentable {
                 break
             }
         }
+        
+        @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
+            guard gesture.state == .ended else { return }
+            
+            let translation = gesture.translation(in: gesture.view)
+            guard abs(translation.x) > CameraPreview.swipeThreshold,
+                  abs(translation.x) > abs(translation.y) else { return }
+            
+            parent.onSwipe?(translation.x < 0 ? .left : .right)
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -77,6 +90,12 @@ struct CameraPreview: UIViewRepresentable {
         let pinchGesture = UIPinchGestureRecognizer(target: context.coordinator,
                                                     action: #selector(Coordinator.handlePinch(_:)))
         view.addGestureRecognizer(pinchGesture)
+        
+        // Limited to one finger so a two finger pinch still zooms instead of switching mode.
+        let panGesture = UIPanGestureRecognizer(target: context.coordinator,
+                                                action: #selector(Coordinator.handlePan(_:)))
+        panGesture.maximumNumberOfTouches = 1
+        view.addGestureRecognizer(panGesture)
         
         return view
     }

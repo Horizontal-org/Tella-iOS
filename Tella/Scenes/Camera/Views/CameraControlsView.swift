@@ -13,92 +13,75 @@ struct CameraControlsView: View {
     @Binding var showingCameraView : Bool
     var sourceView : SourceView
     @Binding var gridIsOn: Bool
+    @Binding var cameraState: CameraState
     
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
-    var updateCameraTypeAction: ((CameraType) -> Void)
+    var selectCameraType: ((CameraType) -> Void)
     var updateFlashMode: ((CameraFlashMode) -> Void)
+    var selectZoomLevel: ((CameraZoomLevel) -> Void)
+    var moreOptionsAction: (() -> Void)
     var close: (() -> Void)
     var zoomFactor: CGFloat = 1.0
+    var zoomLevels: [CameraZoomLevel] = []
     var flashMode: CameraFlashMode = .off
     var isFlashAvailable: Bool = true
     
     // MARK: - Private properties
     
-    @State private var selectedOption: CameraType = .image
-    @State private var state : CameraState = .readyTakingImage
-    @State private var shouldHideCloseButton: Bool = false
+    private static let modeSwipeThreshold: CGFloat = 40
     
-    
-    @State private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
+    @State private var deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     @State private var shouldAnimate: Bool = false
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: 0) {
             
             cameraHeaderView()
             
-            Spacer()
+            Spacer(minLength: 0)
+                .allowsHitTesting(false)
             
-            zoomFactorLabel
+            viewfinderControls
             
-            switch state {
-                
-            case .readyTakingImage:
-                capturePhotoControllers
-                
-            case .readyRecordingVideo:
-                recordVideoControllers
-                
-            case .recordingVideo:
-                recordingVideoControllers
+            bottomBar
+        }
+        .onAppear {
+            DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
+                self.deviceOrientation = deviceOrientation
+                shouldAnimate = true
             }
         }
         .onReceive(cameraViewModel.mainAppModel.$shouldSaveCurrentData) { value in
-            if(value && state == .recordingVideo) {
+            if(value && cameraState == .recordingVideo) {
                 stopRecordingVideo()
             }
         }
     }
     
-    var zoomFactorLabel: some View {
-        
-        CustomText(formattedZoomFactor, style: .subheading1Style)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color.black.opacity(0.5))
-            .clipShape(Capsule())
-            .padding(.bottom, 20)
-            .rotate(deviceOrientation: deviceOrientation,
-                    shouldAnimate: shouldAnimate)
-        
+    private var rotation: CameraControlRotation {
+        CameraControlRotation(deviceOrientation: deviceOrientation,
+                              shouldAnimate: shouldAnimate)
     }
     
-    private var formattedZoomFactor: String {
-        let roundedValue = (zoomFactor * 10).rounded() / 10
-        let isWholeNumber = roundedValue.truncatingRemainder(dividingBy: 1) == 0
-        let text = isWholeNumber ? String(Int(roundedValue)) : String(format: "%.1f", roundedValue)
-        return "\(text)x"
-    }
+    // MARK: - Header
     
     private func cameraHeaderView() -> some View {
-        HStack() {
+        HStack(spacing: 0) {
             closeButton
-            Spacer()
-            gridButton
+            Spacer(minLength: 0)
             flashButton
+            gridButton
         }
-        .padding(.top, .smallMedium)
-        .frame(height: 90)
-        .background(Color.black.opacity(0.8))
-        .edgesIgnoringSafeArea(.all)
+        .frame(height: .large)
+        .background(Styles.Colors.backgroundGrey1.ignoresSafeArea(edges: .top))
     }
     
     @ViewBuilder
     var closeButton: some View {
-        if !shouldHideCloseButton {
+        if !cameraState.isRecording {
             Button {
                 
                 if sourceView == .tab {
@@ -113,8 +96,7 @@ struct CameraControlsView: View {
                 Image(.close)
                     .padding(.normal)
             }
-            .rotate(deviceOrientation: self.deviceOrientation,
-                    shouldAnimate: self.shouldAnimate)
+            .rotate(rotation)
         }
     }
     
@@ -127,8 +109,7 @@ struct CameraControlsView: View {
         }
         .disabled(!isFlashAvailable)
         .opacity(isFlashAvailable ? 1 : 0.4)
-        .rotate(deviceOrientation: self.deviceOrientation,
-                shouldAnimate: self.shouldAnimate)
+        .rotate(rotation)
     }
     
     @ViewBuilder
@@ -151,145 +132,139 @@ struct CameraControlsView: View {
                 .padding(.normal)
         }
         
-        .rotate(deviceOrientation: self.deviceOrientation,
-                shouldAnimate: self.shouldAnimate)
+        .rotate(rotation)
         .accessibilityLabel(gridIsOn
                             ? LocalizableCamera.hideGrid.localized
                             : LocalizableCamera.showGrid.localized)
     }
     
-    var capturePhotoControllers : some View {
-        VStack {
-            
-            VStack {
-                
-                HStack(spacing: 50) {
-                    
-                    Spacer()
-                    
-                    flipCamera
-                    
-                    Button {
-                        captureButtonAction()
-                    } label: {
-                        Image(.cameraCapture)
-                    }.frame(width: 57, height: 57)
-                    
-                    previewImageAndVideodFile
-                    
-                    Spacer()
-                }
-                
-                .padding(EdgeInsets(top: 13, leading: 0, bottom: 7, trailing: 0))
-                
-                bottomMenu
-            }
-            .background(Color.black.opacity(0.8))
-        }
-        
-        .onAppear(perform: {
-            DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
-                self.deviceOrientation = deviceOrientation
-                shouldAnimate = true
-            }
-        })
-        
+    // MARK: - Viewfinder controls
+    
+    private var viewfinderControls: some View {
+        CameraViewfinderControlsView(zoomLevels: zoomLevels,
+                                     zoomFactor: zoomFactor,
+                                     recordingTime: cameraState.isRecording
+                                     ? cameraViewModel.formattedCurrentTime
+                                     : nil,
+                                     rotation: rotation,
+                                     onSelectZoomLevel: selectZoomLevel,
+                                     onMoreOptions: moreOptionsAction)
     }
     
+    // MARK: - Bottom bar
     
-    var recordVideoControllers : some View {
-        
-        VStack {
+    private var bottomBar: some View {
+        VStack(spacing: 0) {
             
-            VStack {
-                
-                HStack(spacing: 50) {
-                    
-                    Spacer()
-                    
-                    flipCamera
-                    
-                    Button {
-                        shouldHideCloseButton = true
-                        state = .recordingVideo
-                        recordVideoAction()
-                        cameraViewModel.initialiseTimerRunning()
-                    } label: {
-                        Image(.cameraStartRecordVideo)
-                    }.frame(width: 57, height: 57)
-                    
-                    
-                    previewImageAndVideodFile
-                    
-                    Spacer()
-                }
-                
-                .padding(EdgeInsets(top: 13, leading: 0, bottom: 7, trailing: 0))
-                
-                bottomMenu
+            controlRow
+            
+            modeSelector
+            
+        }
+        .background(Styles.Colors.backgroundGrey1.ignoresSafeArea(edges: .bottom))
+    }
+    
+    private var controlRow: some View {
+        HStack(spacing: 0) {
+            
+            galleryButton
+            
+            Spacer()
+            
+            shutterButton
+            
+            Spacer()
+            
+            flipCameraButton
+        }
+        .padding(.horizontal, .extraLarge)
+        .frame(height: 85.adjusted)
+    }
+    
+    /// The gallery and flip buttons stay in the layout while recording, so the shutter does not move.
+    private var galleryButton: some View {
+        CameraGalleryButton(file: cameraViewModel.lastImageOrVideoVaultFile,
+                            rotation: rotation) {
+            navigateTo(destination: getFileListView())
+        }
+                            .opacity(recordingChromeOpacity)
+                            .disabled(cameraState.isRecording)
+                            .animation(.easeInOut(duration: CameraStyle.Animations.recording),
+                                       value: cameraState.isRecording)
+    }
+    
+    private var shutterButton: some View {
+        CameraShutterButton(mode: shutterMode) {
+            switch cameraState {
+            case .readyTakingImage:
+                captureButtonAction()
+            case .readyRecordingVideo:
+                startRecordingVideo()
+            case .recordingVideo:
+                stopRecordingVideo()
             }
-            .background(Color.black.opacity(0.8))
         }
     }
     
-    var recordingVideoControllers : some View {
-        
-        VStack {
-            
-            CustomText(cameraViewModel.formattedCurrentTime, style: .body1Style)
-            
-            VStack {
-                
-                HStack(spacing: 50) {
-                    
-                    Spacer()
-                    
-                    Button {
-                        stopRecordingVideo()
-                    } label: {
-                        Image( .cameraStopRecordVideo)
-                            .frame(width: 57, height: 57)
-                    }.frame(width: 57, height: 57)
-                    
-                    Spacer()
-                }
-                .padding(EdgeInsets(top: 13, leading: 0, bottom: 7, trailing: 0))
-                
-                Spacer()
-            }
-            .frame(height: 120)
+    private var shutterMode: CameraShutterMode {
+        switch cameraState {
+        case .readyTakingImage:
+            return .photo
+        case .readyRecordingVideo:
+            return .video
+        case .recordingVideo:
+            return .recording
         }
     }
     
-    @ViewBuilder
-    var previewImageAndVideodFile : some View {
-        VStack {
-            if let file = $cameraViewModel.lastImageOrVideoVaultFile.wrappedValue,
-               let data = file.thumbnail {
-                
-                Button {
-                    navigateTo(destination: getFileListView())
-                } label: {
-                    UIImage.image(fromData:data)
-                        .rounded()
-                }
-            } else {
-                Spacer()
-                    .frame(width: 40, height: 40)
+    var flipCameraButton: some View {
+        
+        Button(action: toggleCamera) {
+            ZStack {
+                Image(.cameraFlipCamera)
             }
-        }.rotate(deviceOrientation: self.deviceOrientation,
-                 shouldAnimate: self.shouldAnimate)
+            .frame(width: .mediumIconSize,
+                   height: .mediumIconSize)
+            .clipShape(Circle())
+            .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
+        }
+        .rotate(rotation)
+        .opacity(recordingChromeOpacity)
+        .disabled(cameraState.isRecording)
+        .animation(.easeInOut(duration: CameraStyle.Animations.recording),
+                   value: cameraState.isRecording)
     }
     
-    var flipCamera: some View {
-        Button {
-            toggleCamera()
-        } label: {
-            Image(.cameraFlipCamera)
-        }.frame(width: 40, height: 40)
-            .rotate(deviceOrientation: self.deviceOrientation,
-                    shouldAnimate: self.shouldAnimate)
+    private var modeSelector: some View {
+        CameraModeSelectorView(selectedType: cameraState.cameraType,
+                               onSelect: selectCameraType)
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
+        .gesture(modeSwipeGesture)
+        .opacity(recordingChromeOpacity)
+        .disabled(cameraState.isRecording)
+        .animation(.easeInOut(duration: CameraStyle.Animations.recording),
+                   value: cameraState.isRecording)
     }
+    
+    private var recordingChromeOpacity: Double {
+        cameraState.isRecording ? 0 : 1
+    }
+    
+    /// Swiping across the toggle moves between modes, matching the swipe over the viewfinder.
+    private var modeSwipeGesture: some Gesture {
+        DragGesture(minimumDistance: .smallMedium)
+            .onEnded { value in
+                let translation = value.translation
+                
+                guard abs(translation.width) > Self.modeSwipeThreshold,
+                      abs(translation.width) > abs(translation.height) else { return }
+                
+                selectCameraType(translation.width < 0 ? .image : .video)
+            }
+    }
+    
+    // MARK: - Actions
     
     func getFileListView() -> FileListView {
         FileListView(mainAppModel: cameraViewModel.mainAppModel,
@@ -298,47 +273,18 @@ struct CameraControlsView: View {
                      fileListType: .cameraGallery)
     }
     
-    var bottomMenu : some View {
-        
-        HStack(spacing: 15) {
-            Button(action: {
-                
-                if self.selectedOption != .image {
-                    withAnimation(.interactiveSpring()){
-                        self.selectedOption = .image
-                    }
-                    
-                    updateCameraTypeAction(.image)
-                    state = .readyTakingImage
-                }
-            }, label: {
-                CameraTypeItemView(title: LocalizableCamera.tabTitlePhoto.localized, width: 140, page: .image, selectedOption: $selectedOption)
-            })
-            
-            Button(action: {
-                if self.selectedOption != .video {
-                    withAnimation(.interactiveSpring()) {
-                        self.selectedOption = .video
-                    }
-                    
-                    updateCameraTypeAction(.video)
-                    state = .readyRecordingVideo
-                    
-                }
-            }, label: {
-                CameraTypeItemView(title: LocalizableCamera.tabTitleVideo.localized,
-                                   width: 140,
-                                   page: .video,
-                                   selectedOption: $selectedOption)
-            })
+    private func startRecordingVideo() {
+        withAnimation(.easeInOut(duration: CameraStyle.Animations.recording)) {
+            cameraState = .recordingVideo
         }
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
-        
+        recordVideoAction()
+        cameraViewModel.initialiseTimerRunning()
     }
     
     private func stopRecordingVideo() {
-        shouldHideCloseButton = false
-        state = .readyRecordingVideo
+        withAnimation(.easeInOut(duration: CameraStyle.Animations.recording)) {
+            cameraState = .readyRecordingVideo
+        }
         recordVideoAction()
         cameraViewModel.invalidateTimerRunning()
     }
@@ -346,19 +292,32 @@ struct CameraControlsView: View {
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
+        Group {
+            preview(state: .readyTakingImage).previewDisplayName("Photo")
+            preview(state: .readyRecordingVideo).previewDisplayName("Video")
+            preview(state: .recordingVideo).previewDisplayName("Recording")
+        }
+    }
+    
+    private static func preview(state: CameraState) -> some View {
         CameraControlsView(cameraViewModel: CameraViewModel.stub(),
-                           showingCameraView:.constant(false),
+                           showingCameraView: .constant(false),
                            sourceView: .tab,
-                           gridIsOn: .constant(false)) {
-            
-        } recordVideoAction: {
-            
-        } toggleCamera: {
-            
-        } updateCameraTypeAction: { value in
-            
-        } updateFlashMode: { _ in
-        } close: {}
+                           gridIsOn: .constant(false),
+                           cameraState: .constant(state),
+                           captureButtonAction: {},
+                           recordVideoAction: {},
+                           toggleCamera: {},
+                           selectCameraType: { _ in },
+                           updateFlashMode: { _ in },
+                           selectZoomLevel: { _ in },
+                           moreOptionsAction: {},
+                           close: {},
+                           zoomFactor: 1,
+                           zoomLevels: [CameraZoomLevel(factor: 0.5),
+                                        CameraZoomLevel(factor: 1),
+                                        CameraZoomLevel(factor: 2)])
+        .background(Color.gray)
     }
 }
 
@@ -372,11 +331,5 @@ private extension CameraFlashMode {
         case .off:
             return .auto
         }
-    }
-}
-
-private extension LocalizableCamera {
-    func localized(or fallback: String) -> String {
-        Bundle.main.localizedString(forKey: rawValue, value: fallback, table: table)
     }
 }

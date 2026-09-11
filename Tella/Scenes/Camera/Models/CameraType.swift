@@ -11,6 +11,24 @@ public enum CameraType: Hashable {
     case video
 }
 
+extension CameraType {
+    
+    var title: String {
+        switch self {
+        case .image:
+            return LocalizableCamera.tabTitlePhoto.localized
+        case .video:
+            return LocalizableCamera.tabTitleVideo.localized
+        }
+    }
+}
+
+/// The direction of a one finger swipe across the viewfinder, used to move between capture modes.
+public enum CameraSwipeDirection {
+    case left
+    case right
+}
+
 public enum CameraFlashMode: Hashable {
     case auto
     case on

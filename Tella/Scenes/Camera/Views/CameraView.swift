@@ -21,6 +21,7 @@ struct CameraView: View {
     
     @State private var showingPermissionAlert : Bool = false
     @State private var gridIsOn: Bool = false
+    @State private var cameraState: CameraState = .readyTakingImage
     @StateObject private var cameraViewModel :  CameraViewModel
     @StateObject private var model = CameraModel()
     @EnvironmentObject private var sheetManager: SheetManager
@@ -51,8 +52,10 @@ struct CameraView: View {
                 model.startZoom()
             }, onZoomChanged: { pinchScale in
                 model.zoom(by: pinchScale)
+            }, onSwipe: { direction in
+                selectCameraType(swipedTo: direction)
             })
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
             
             getCameraControlsView()
             
@@ -113,7 +116,6 @@ struct CameraView: View {
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }
-            .edgesIgnoringSafeArea(.all)
     }
     
     private func getCameraControlsView() -> some View {
@@ -122,22 +124,42 @@ struct CameraView: View {
                            showingCameraView: showingCameraView,
                            sourceView: cameraViewModel.sourceView,
                            gridIsOn: $gridIsOn,
+                           cameraState: $cameraState,
                            captureButtonAction: {
             model.capturePhoto()
         }, recordVideoAction: {
             model.startCaptureVideo()
         }, toggleCamera: {
             model.toggleCameraType()
-        }, updateCameraTypeAction: { cameraType in
-            model.cameraType = cameraType
+        }, selectCameraType: { cameraType in
+            selectCameraType(cameraType)
         }, updateFlashMode: { mode in
             model.setFlashMode(mode)
+        }, selectZoomLevel: { level in
+            model.setZoom(to: level)
+        }, moreOptionsAction: {
+            // TODO: behaviour of the extra options button is still to be defined.
         }, close: {
             model.stopRunningCaptureSession()
         }, zoomFactor: model.currentZoomFactor,
+                           zoomLevels: model.availableZoomLevels,
                            flashMode: model.flashMode,
                            isFlashAvailable: model.isFlashAvailable)
-        .edgesIgnoringSafeArea(.all)
+    }
+    
+    private func selectCameraType(swipedTo direction: CameraSwipeDirection) {
+        selectCameraType(direction == .left ? .image : .video)
+    }
+    
+    private func selectCameraType(_ cameraType: CameraType) {
+        guard !cameraState.isRecording,
+              cameraState.cameraType != cameraType else { return }
+        
+        withAnimation(.easeInOut(duration: CameraStyle.Animations.modeChange)) {
+            cameraState = CameraState(cameraType: cameraType)
+        }
+        
+        model.cameraType = cameraType
     }
     
     private func getSettingsAlertView() -> Alert {

@@ -43,6 +43,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
     @Published var currentZoomFactor: CGFloat = 1.0
+    @Published private(set) var availableZoomLevels: [CameraZoomLevel] = []
     @Published private(set) var flashMode: CameraFlashMode = .off
     @Published private(set) var isFlashAvailable = false
     
@@ -171,6 +172,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             break
         }
         applyDefaultZoom()
+        updateAvailableZoomLevels()
         updateFlashAvailability()
         if cameraType == .video {
             applyVideoTorchMode()
@@ -207,12 +209,31 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         )
     }
     
+    /// Jumps to one of the fixed zoom levels offered above the viewfinder.
+    func setZoom(to level: CameraZoomLevel) {
+        guard let device = inputCamera() else { return }
+        
+        currentZoomFactor = zoomController.setZoom(to: level, device: device)
+    }
+    
     private func applyDefaultZoom() {
         guard let device = inputCamera() else { return }
         
         currentZoomFactor = zoomController.applyDefaultZoom(
             device: device
         )
+    }
+    
+    private func updateAvailableZoomLevels() {
+        let levels = zoomController.availableZoomLevels(device: inputCamera())
+        
+        if Thread.isMainThread {
+            availableZoomLevels = levels
+        } else {
+            DispatchQueue.main.async {
+                self.availableZoomLevels = levels
+            }
+        }
     }
     
     // MARK: - Private functions
@@ -271,6 +292,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         }
         
         applyDefaultZoom()
+        updateAvailableZoomLevels()
         updateFlashAvailability()
         
         startRunningCaptureSession()
@@ -301,6 +323,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         setupVideoFlashSceneMonitoring()
         
         applyDefaultZoom()
+        updateAvailableZoomLevels()
         updateFlashAvailability()
         
         startRunningCaptureSession()

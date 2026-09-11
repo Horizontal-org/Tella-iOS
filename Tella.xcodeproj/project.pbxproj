@@ -295,6 +295,10 @@
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
+		127D61A330541E6B00A2B141 /* CameraStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A230541E6700A2B141 /* CameraStyle.swift */; };
+		127D61A83054297A00A2B141 /* CameraZoomLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A73054297700A2B141 /* CameraZoomLevel.swift */; };
+		127D61AA30542AB400A2B141 /* CameraShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A930542AB100A2B141 /* CameraShutterButton.swift */; };
+		127D61AC30542AF900A2B141 /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61AB30542AF700A2B141 /* Transaction+Extension.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
 		127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */; };
@@ -321,7 +325,6 @@
 		1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B45928B64221005DA687 /* UIDeviceOrientationExtension.swift */; };
 		1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98627C5397200315FCE /* ScreenExtension.swift */; };
 		1289B98927C53A9C00315FCE /* CameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98827C53A9C00315FCE /* CameraType.swift */; };
-		1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */; };
 		1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98C27C53C8400315FCE /* ImageExtension.swift */; };
 		128A760A2CD23DDA0033F1C2 /* OutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76052CD23DDA0033F1C2 /* OutboxDetailsView.swift */; };
 		128A760B2CD23DDA0033F1C2 /* SubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76082CD23DDA0033F1C2 /* SubmittedDetailsView.swift */; };
@@ -474,6 +477,9 @@
 		12D9A9262D121789008C206E /* CardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9252D121789008C206E /* CardButtonView.swift */; };
 		12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */; };
 		12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98022F1ADB77004436CC /* NextBottomView.swift */; };
+		12DF971F3053047B00BB8C0E /* CameraViewfinderControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */; };
+		12DF97233053121900BB8C0E /* CameraModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */; };
+		12DF97253053263F00BB8C0E /* CameraGalleryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
 		12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
@@ -1077,6 +1083,10 @@
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
+		127D61A230541E6700A2B141 /* CameraStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStyle.swift; sourceTree = "<group>"; };
+		127D61A73054297700A2B141 /* CameraZoomLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraZoomLevel.swift; sourceTree = "<group>"; };
+		127D61A930542AB100A2B141 /* CameraShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraShutterButton.swift; sourceTree = "<group>"; };
+		127D61AB30542AF700A2B141 /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
 		127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGridOverlayView.swift; sourceTree = "<group>"; };
@@ -1104,7 +1114,6 @@
 		1289B45928B64221005DA687 /* UIDeviceOrientationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceOrientationExtension.swift; sourceTree = "<group>"; };
 		1289B98627C5397200315FCE /* ScreenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExtension.swift; sourceTree = "<group>"; };
 		1289B98827C53A9C00315FCE /* CameraType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraType.swift; sourceTree = "<group>"; };
-		1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTypeItemView.swift; sourceTree = "<group>"; };
 		1289B98C27C53C8400315FCE /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		128A76042CD23DDA0033F1C2 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
 		128A76052CD23DDA0033F1C2 /* OutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -1272,6 +1281,9 @@
 		12D9A9252D121789008C206E /* CardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonView.swift; sourceTree = "<group>"; };
 		12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectedSuccessView.swift; sourceTree = "<group>"; };
 		12DE98022F1ADB77004436CC /* NextBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBottomView.swift; sourceTree = "<group>"; };
+		12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewfinderControlsView.swift; sourceTree = "<group>"; };
+		12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModeSelectorView.swift; sourceTree = "<group>"; };
+		12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGalleryButton.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
 		12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfoView.swift; sourceTree = "<group>"; };
@@ -2191,6 +2203,7 @@
 				125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */,
 				125D2320271F823100250FBB /* UIApplicationExtension.swift */,
 				12A1488E27209F2800A1ADDC /* ViewExtension.swift */,
+				127D61AB30542AF700A2B141 /* Transaction+Extension.swift */,
 				126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */,
 				12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */,
 				12AE8D1D278CD4900007C781 /* IntExtension.swift */,
@@ -2642,6 +2655,8 @@
 		1289B98327C536F400315FCE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				127D61A73054297700A2B141 /* CameraZoomLevel.swift */,
+				127D61A230541E6700A2B141 /* CameraStyle.swift */,
 				1289B98827C53A9C00315FCE /* CameraType.swift */,
 				126ECFE927C57FA600ED5161 /* CameraState.swift */,
 				1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */,
@@ -2652,10 +2667,13 @@
 		1289B98427C5390000315FCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */,
+				12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */,
+				12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */,
+				127D61A930542AB100A2B141 /* CameraShutterButton.swift */,
 				1278B66427EB9C1400C9AC4D /* CameraView.swift */,
 				12776A8F27BA742700CDC5DC /* CameraControlsView.swift */,
 				1289B45728B63187005DA687 /* RotationViewModifier.swift */,
-				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
 				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
 				1227FC902922BE24002FD6FB /* CameraPreview.swift */,
@@ -4262,6 +4280,7 @@
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */,
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
+				12DF97233053121900BB8C0E /* CameraModeSelectorView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
@@ -4357,7 +4376,6 @@
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				124852A22E7173BC00BDDC2D /* IconTextButton.swift in Sources */,
 				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
-				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
@@ -4393,6 +4411,7 @@
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */,
+				12DF971F3053047B00BB8C0E /* CameraViewfinderControlsView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				F0A1B2C32F5E111100AA1101 /* FormChangeTracker.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
@@ -4577,6 +4596,7 @@
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
 				1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */,
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
+				127D61A330541E6B00A2B141 /* CameraStyle.swift in Sources */,
 				12F2C65C2B86567F008457EB /* FileDetailsViewModel.swift in Sources */,
 				127A1CD62F618E9800EEA99F /* NetworkSessionProvider.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
@@ -4694,6 +4714,7 @@
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */,
 				12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */,
+				127D61A83054297A00A2B141 /* CameraZoomLevel.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
@@ -4800,6 +4821,7 @@
 				15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
+				127D61AC30542AF900A2B141 /* Transaction+Extension.swift in Sources */,
 				129919BE2E31144300A4417D /* NWConnectionExtension.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */,
@@ -4855,6 +4877,7 @@
 				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* TellaServerDraftView.swift in Sources */,
+				127D61AA30542AB400A2B141 /* CameraShutterButton.swift in Sources */,
 				15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */,
 				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
@@ -4924,6 +4947,7 @@
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */,
 				12E41E7A2F17EC810043BB3F /* OnboardingInfoView.swift in Sources */,
+				12DF97253053263F00BB8C0E /* CameraGalleryButton.swift in Sources */,
 				E1E7C5712AAB2BAB00DDB07E /* UwaziLanguageRow.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
 				15587A012C010F1E0071389E /* GDriveServer.swift in Sources */,

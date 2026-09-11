@@ -18,7 +18,7 @@ struct PageDots: View {
             ForEach(0..<total, id: \.self) { index in
                 Circle()
                     .fill(current == index ? Styles.Colors.yellow
-                          : Styles.Colors.gray.opacity(0.6))
+                          : Styles.Colors.grey1.opacity(0.6))
                     .frame(width: .extraSmallIconSize, height: .extraSmallIconSize)
             }
         }

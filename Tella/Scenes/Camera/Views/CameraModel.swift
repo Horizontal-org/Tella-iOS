@@ -21,6 +21,7 @@ final class CameraModel: ObservableObject {
     @Published var shouldCloseCamera = false
     @Published var shouldShowProgressView = false
     @Published var currentZoomFactor: CGFloat = 1.0
+    @Published var availableZoomLevels: [CameraZoomLevel] = []
     @Published var flashMode: CameraFlashMode = .off
     @Published var isFlashAvailable = false
     
@@ -51,6 +52,11 @@ final class CameraModel: ObservableObject {
         
         service.$currentZoomFactor.sink { [weak self] (val) in
             self?.currentZoomFactor = val
+        }
+        .store(in: &self.subscriptions)
+        
+        service.$availableZoomLevels.sink { [weak self] levels in
+            self?.availableZoomLevels = levels
         }
         .store(in: &self.subscriptions)
         
@@ -98,6 +104,10 @@ final class CameraModel: ObservableObject {
     
     func zoom(by pinchScale: CGFloat) {
         service.zoom(by: pinchScale)
+    }
+    
+    func setZoom(to level: CameraZoomLevel) {
+        service.setZoom(to: level)
     }
     
     func stopRunningCaptureSession() {
