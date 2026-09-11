@@ -523,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
+"Onboarding_NearbySharing_Title" = "Solo compartir archivos";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
 "Onboarding_LockDone_Title" = "Todo listo!";
 "Onboarding_LockDone_Expl" = "Puedes ir a Tella ahora o continuar personalizando Tella con opciones avanzadas.";
@@ -750,7 +750,7 @@
 "Camera_HideGrid" = "Hide grid";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
-"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
+"Uwazi_Entity_Geolocation_AddLocation" = "Añadir opción";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Registrar posición";
 "Uwazi_Entity_Geolocation_MapHint" = "Toca en cualquier lugar durante 3 segundos para grabar la posición.";
 "Uwazi_Entity_Geolocation_Latitude" = "Latitud:";
