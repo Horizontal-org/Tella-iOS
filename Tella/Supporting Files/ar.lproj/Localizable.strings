@@ -523,7 +523,7 @@
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Onboarding_NearbySharing_Title" = "Nearby Sharing";
+"Onboarding_NearbySharing_Title" = "مشاركة الملفات فقط";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
 "Onboarding_LockDone_Title" = "اكتمل الضبط";
 "Onboarding_LockDone_Expl" = "يمكنك الذهاب إلى Tella أو الاستمرار في تخصيص الخيارات المتقدمة للتطبيق.";
@@ -753,5 +753,5 @@
 "Uwazi_Entity_Geolocation_RecordTitle" = "تسجيل الموقع";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
-"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
+"Uwazi_Entity_Geolocation_AddLocation" = "أضف خيار";
 "Uwazi_Entity_Geolocation_Latitude" = "خط العرض:";
