@@ -524,7 +524,7 @@
 "Settings_SettLang_Ndau_Expl" = "Ндау";
 "Settings_SettLang_Azerbaijani_Expl" = "Азербайджанська";
 "Onboarding_NearbySharing_Title" = "Обмін файлами поблизу";
-"Onboarding_NearbySharing_Expl" = "Діліться файлами з пристроями поблизу без під’єднання до інтернету.";
+"Onboarding_NearbySharing_Expl" = "За допомогою функції Обмін поблизу надсилайте файли людям поблизу без підключення до Інтернету.";
 "Onboarding_LockDone_Title" = "Усе готово!";
 "Onboarding_LockDone_Expl" = "Ви можете перейти до Tella або продовжити налаштування Tella за допомогою розширених параметрів.";
 "Onboarding_Done_Action_GoToTella" = "Перейти до Tella";
@@ -747,11 +747,11 @@
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Попросіть відправника перевірити деталі підключення та спробувати ще раз, будь ласка.";
 "Uwazi_Entity_Geolocation_MapHint" = "Утримуйте пальцем у будь-якому місці протягом 3 секунд, щоб записати положення.";
-"Camera_ShowGrid" = "Show grid";
-"Uwazi_Entity_Geolocation_Longitude" = "Довгота:";
-"Camera_HideGrid" = "Hide grid";
+"Camera_ShowGrid" = "Показати сітку";
+"Uwazi_Entity_Geolocation_Longitude" = "Довгота: %@";
+"Camera_HideGrid" = "Сховати сітку";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Записати місцезнаходження";
-"Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
+"Uwazi_Entity_Geolocation_Expl" = "Торкніться кнопки «Додати місцезнаходження» та збережіть позицію.";
 "Uwazi_Entity_Mandatory_Toast" = "У одній або кількох ваших відповідях виявлено помилки.";
-"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_Latitude" = "Широта:";
+"Uwazi_Entity_Geolocation_AddLocation" = "Додати місцезнаходження";
+"Uwazi_Entity_Geolocation_Latitude" = "Широта: %@";
