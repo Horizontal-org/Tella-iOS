@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct ImageButtonView: View {
-    var imageName : String
+    var imageName : ImageResource
     var action : () -> Void
     var body: some View {
         Button {
@@ -24,5 +24,5 @@ struct ImageButtonView: View {
 }
 
 #Preview {
-    ImageButtonView(imageName: "", action: {})
+    ImageButtonView(imageName: .templateAdd, action: {})
 }

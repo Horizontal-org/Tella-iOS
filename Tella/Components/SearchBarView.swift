@@ -18,11 +18,7 @@ struct SearchBarView: View {
         VStack {
             ZStack {
                 SearchBarPlaceholderText(searchText: $searchText, placeholderText: placeholderText)
-                if #available(iOS 15.0, *) {
-                    FocusedSearchBar(searchText: $searchText)
-                } else {
-                    UnfocusedSearchBar(searchText: $searchText)
-                }
+                FocusedSearchBar(searchText: $searchText)
             }
         }.padding(.top, 8)
     }
@@ -42,7 +38,6 @@ struct SearchBarPlaceholderText: View {
     }
 }
 
-@available(iOS 15.0, *)
 struct FocusedSearchBar: View {
     @Binding var searchText: String
     @FocusState private var isInputActive:Bool
@@ -60,26 +55,6 @@ struct FocusedSearchBar: View {
         .overlay(
           RoundedRectangle(cornerRadius: 6)
             .stroke(isInputActive ? Styles.Colors.yellow : .white.opacity(0.64), lineWidth: 1)
-        )
-        .padding()
-    }
-}
-
-struct UnfocusedSearchBar: View {
-    @Binding var searchText: String
-    var body: some View {
-        HStack {
-            Image("file.search")
-            TextField("", text: $searchText)
-                .keyboardType(.default)
-                .textFieldStyle(TextfieldStyle(shouldShowError: false))
-                .frame( height: 22)
-            SearchBarCancelButton(searchText: $searchText)
-        }
-        .padding()
-        .overlay(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(.white.opacity(0.64), lineWidth: 1)
         )
         .padding()
     }

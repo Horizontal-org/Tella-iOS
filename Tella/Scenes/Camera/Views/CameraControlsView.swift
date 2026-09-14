@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,19 +12,22 @@ struct CameraControlsView: View {
     @ObservedObject var cameraViewModel: CameraViewModel
     @Binding var showingCameraView : Bool
     var sourceView : SourceView
+    @Binding var gridIsOn: Bool
     
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
     var updateCameraTypeAction: ((CameraType) -> Void)
-    var toggleFlash: (() -> Void)
+    var updateFlashMode: ((CameraFlashMode) -> Void)
     var close: (() -> Void)
+    var zoomFactor: CGFloat = 1.0
+    var flashMode: CameraFlashMode = .off
+    var isFlashAvailable: Bool = true
     
     // MARK: - Private properties
     
     @State private var selectedOption: CameraType = .image
     @State private var state : CameraState = .readyTakingImage
-    @State private var flashIsOn: Bool = false
     @State private var shouldHideCloseButton: Bool = false
     
     
@@ -39,6 +42,8 @@ struct CameraControlsView: View {
             
             Spacer()
             
+            zoomFactorLabel
+            
             switch state {
                 
             case .readyTakingImage:
@@ -51,9 +56,6 @@ struct CameraControlsView: View {
                 recordingVideoControllers
             }
         }
-        .onDisappear {
-            flashIsOn = false
-        }
         .onReceive(cameraViewModel.mainAppModel.$shouldSaveCurrentData) { value in
             if(value && state == .recordingVideo) {
                 stopRecordingVideo()
@@ -61,26 +63,44 @@ struct CameraControlsView: View {
         }
     }
     
+    var zoomFactorLabel: some View {
+        
+        CustomText(formattedZoomFactor, style: .subheading1Style)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.black.opacity(0.5))
+            .clipShape(Capsule())
+            .padding(.bottom, 20)
+            .rotate(deviceOrientation: deviceOrientation,
+                    shouldAnimate: shouldAnimate)
+        
+    }
+    
+    private var formattedZoomFactor: String {
+        let roundedValue = (zoomFactor * 10).rounded() / 10
+        let isWholeNumber = roundedValue.truncatingRemainder(dividingBy: 1) == 0
+        let text = isWholeNumber ? String(Int(roundedValue)) : String(format: "%.1f", roundedValue)
+        return "\(text)x"
+    }
+    
     private func cameraHeaderView() -> some View {
-        VStack {
-            HStack() {
-                closeButton
-                Spacer()
-                flashButton
-            }
-            .frame(height: 90)
-            .background(Color.black.opacity(0.8))
-            .edgesIgnoringSafeArea(.all)
-            
+        HStack() {
+            closeButton
             Spacer()
+            gridButton
+            flashButton
         }
+        .padding(.top, .smallMedium)
+        .frame(height: 90)
+        .background(Color.black.opacity(0.8))
+        .edgesIgnoringSafeArea(.all)
     }
     
     @ViewBuilder
     var closeButton: some View {
         if !shouldHideCloseButton {
             Button {
-
+                
                 if sourceView == .tab {
                     cameraViewModel.mainAppModel.selectedTab = .home
                 } else {
@@ -90,10 +110,9 @@ struct CameraControlsView: View {
                 close()
                 
             } label: {
-                Image("close")
+                Image(.close)
+                    .padding(.normal)
             }
-            .frame(width: 30, height: 30)
-            .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
             .rotate(deviceOrientation: self.deviceOrientation,
                     shouldAnimate: self.shouldAnimate)
         }
@@ -101,16 +120,42 @@ struct CameraControlsView: View {
     
     var flashButton: some View {
         Button {
-            toggleFlash()
-            flashIsOn.toggle()
+            updateFlashMode(flashMode.next)
         } label: {
-            flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
+            flashIcon
+                .padding(.normal)
         }
-        .frame(width: 30, height: 30)
-        .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+        .disabled(!isFlashAvailable)
+        .opacity(isFlashAvailable ? 1 : 0.4)
         .rotate(deviceOrientation: self.deviceOrientation,
                 shouldAnimate: self.shouldAnimate)
+    }
+    
+    @ViewBuilder
+    private var flashIcon: some View {
+        switch flashMode {
+        case .auto:
+            Image(.cameraFlashAuto)
+        case .on:
+            Image(.cameraFlashOn)
+        case .off:
+            Image(.cameraFlashOff)
+        }
+    }
+    
+    var gridButton: some View {
+        Button {
+            gridIsOn.toggle()
+        } label: {
+            Image(gridIsOn ? .cameraGridOn : .cameraGridOff)
+                .padding(.normal)
+        }
         
+        .rotate(deviceOrientation: self.deviceOrientation,
+                shouldAnimate: self.shouldAnimate)
+        .accessibilityLabel(gridIsOn
+                            ? LocalizableCamera.hideGrid.localized
+                            : LocalizableCamera.showGrid.localized)
     }
     
     var capturePhotoControllers : some View {
@@ -127,7 +172,7 @@ struct CameraControlsView: View {
                     Button {
                         captureButtonAction()
                     } label: {
-                        Image("camera.capture")
+                        Image(.cameraCapture)
                     }.frame(width: 57, height: 57)
                     
                     previewImageAndVideodFile
@@ -156,10 +201,6 @@ struct CameraControlsView: View {
         
         VStack {
             
-            Text(cameraViewModel.formattedCurrentTime)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14) )
-                .foregroundColor(.white)
-            
             VStack {
                 
                 HStack(spacing: 50) {
@@ -174,7 +215,7 @@ struct CameraControlsView: View {
                         recordVideoAction()
                         cameraViewModel.initialiseTimerRunning()
                     } label: {
-                        Image("camera.start-record-video")
+                        Image(.cameraStartRecordVideo)
                     }.frame(width: 57, height: 57)
                     
                     
@@ -195,10 +236,7 @@ struct CameraControlsView: View {
         
         VStack {
             
-            Text(cameraViewModel.formattedCurrentTime)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14) )
-                .foregroundColor(.white)
-            
+            CustomText(cameraViewModel.formattedCurrentTime, style: .body1Style)
             
             VStack {
                 
@@ -209,7 +247,7 @@ struct CameraControlsView: View {
                     Button {
                         stopRecordingVideo()
                     } label: {
-                        Image( "camera.stop-record-video")
+                        Image( .cameraStopRecordVideo)
                             .frame(width: 57, height: 57)
                     }.frame(width: 57, height: 57)
                     
@@ -219,7 +257,7 @@ struct CameraControlsView: View {
                 
                 Spacer()
             }
-            .frame(height: 130)
+            .frame(height: 120)
         }
     }
     
@@ -247,7 +285,7 @@ struct CameraControlsView: View {
         Button {
             toggleCamera()
         } label: {
-            Image("camera.flip-camera")
+            Image(.cameraFlipCamera)
         }.frame(width: 40, height: 40)
             .rotate(deviceOrientation: self.deviceOrientation,
                     shouldAnimate: self.shouldAnimate)
@@ -309,8 +347,9 @@ struct CameraControlsView: View {
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
         CameraControlsView(cameraViewModel: CameraViewModel.stub(),
-                            showingCameraView:.constant(false),
-                            sourceView: .tab) {
+                           showingCameraView:.constant(false),
+                           sourceView: .tab,
+                           gridIsOn: .constant(false)) {
             
         } recordVideoAction: {
             
@@ -318,7 +357,26 @@ struct CameraControlsView_Previews: PreviewProvider {
             
         } updateCameraTypeAction: { value in
             
-        } toggleFlash: {
+        } updateFlashMode: { _ in
         } close: {}
+    }
+}
+
+private extension CameraFlashMode {
+    var next: CameraFlashMode {
+        switch self {
+        case .auto:
+            return .on
+        case .on:
+            return .off
+        case .off:
+            return .auto
+        }
+    }
+}
+
+private extension LocalizableCamera {
+    func localized(or fallback: String) -> String {
+        Bundle.main.localizedString(forKey: rawValue, value: fallback, table: table)
     }
 }

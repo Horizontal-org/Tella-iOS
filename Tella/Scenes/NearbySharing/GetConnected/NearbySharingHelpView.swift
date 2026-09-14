@@ -91,20 +91,12 @@ struct NearbySharingHelpView: View {
         let linkText = LocalizableNearbySharing.helpMoreTipsDocumentation.localized
         let url = TellaUrls.nearbySharingLearnMore.url()
         
-        if #available(iOS 15, *) {
-            var attributed = AttributedString(text)
-            attributed.link(
-                text: linkText,
-                url: url
-            )
-            return NSAttributedString(attributed)
-        } else {
-            let attributed = NSMutableAttributedString(string: text)
-            attributed.link(
-                text: linkText,
-                url: url)
-            return attributed
-        }
+        var attributed = AttributedString(text)
+        attributed.link(
+            text: linkText,
+            url: url
+        )
+        return NSAttributedString(attributed)
     }
 }
 

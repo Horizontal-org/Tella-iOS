@@ -14,10 +14,10 @@ enum ResourceCardType {
     case save
     case more
     
-    var imageName: String {
+    var imageName: ImageResource {
         switch self {
-        case .save: return "save-icon"
-        case .more: return "reports.more"
+        case .save: return .saveIcon
+        case .more: return .reportsMore
         }
     }
 }

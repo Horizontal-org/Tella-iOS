@@ -63,15 +63,34 @@ struct SelectWidgetButton: View {
     
     var body: some View {
         HStack {
-            Text(title)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white.opacity(0.87))
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
             
+            CustomText(title,
+                       style: .body1Style,
+                       color: Color.white.opacity(0.80),
+                       fillsWidth: true)
+            
+            .padding()
             Image(shouldShowMenu ? .selectArrowUp : .reportsArrowDown)
                 .padding()
         }
+    }
+}
+
+#Preview("Closed") {
+    ContainerView {
+        SelectWidgetButton(title: "Select", shouldShowMenu: false)
+            .background(Color.white.opacity(0.08))
+            .cornerRadius(12)
+            .padding()
+    }
+}
+
+#Preview("Open") {
+    ContainerView {
+        SelectWidgetButton(title: "Select", shouldShowMenu: true)
+            .background(Color.white.opacity(0.08))
+            .cornerRadius(12)
+            .padding()
     }
 }
 

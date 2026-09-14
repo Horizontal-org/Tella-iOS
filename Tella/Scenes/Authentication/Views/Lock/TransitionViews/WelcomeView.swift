@@ -8,20 +8,25 @@ import SwiftUI
 
 struct WelcomeView: View {
     var appViewState: AppViewState
+
+    @StateObject private var mainOnboardingViewModel: MainOnboardingViewModel
+
+    init(appViewState: AppViewState) {
+        self.appViewState = appViewState
+
+        let lockViewModel = LockViewModel(lockFlow: .new, appViewState: appViewState)
+        _mainOnboardingViewModel = StateObject(
+            wrappedValue: MainOnboardingViewModel(lockViewModel: lockViewModel)
+        )
+    }
     
     var body: some View {
         NavigationContainerView {
-            TransitionView(transitionViewData: WelcomeViewData()) {
-                let lockViewModel = LockViewModel(lockFlow: .new, appViewState: appViewState)
-                let mainOnboardingViewModel = MainOnboardingViewModel(lockViewModel: lockViewModel)
-                navigateTo(destination: MainOnboardingView(viewModel: mainOnboardingViewModel))
-            }
+            MainOnboardingView(viewModel: mainOnboardingViewModel)
         }
     }
 }
 
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-//        WelcomeView(mainAppModel: MainAppModel.stub())
-    }
+#Preview {
+    WelcomeView(appViewState: AppViewState.stub())
 }

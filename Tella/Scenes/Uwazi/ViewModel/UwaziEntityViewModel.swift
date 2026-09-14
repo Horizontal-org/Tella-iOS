@@ -50,7 +50,7 @@ class UwaziEntityViewModel: ObservableObject {
         entityFetcher = UwaziEntityFetcher(server: server, subscribers: subscribers)
         
         serverName = template.serverName ?? ""
-        templateName = template.entityRow?.name ?? ""
+        templateName = template.entityRow?.displayName ?? ""
         self.bindVaultFileTaken()
         
         // preload entities in relationship array in case the endpoint fails
@@ -157,5 +157,11 @@ class UwaziEntityViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+}
+
+extension UwaziEntityViewModel {
+    static func stub() -> UwaziEntityViewModel {
+        UwaziEntityViewModel(mainAppModel: .stub(), templateId: nil, entityInstanceId: nil)
     }
 }

@@ -36,8 +36,13 @@ struct ServerLoginView: View {
             handleState
         }
         .onReceive(viewModel.$loginState) { value in
-            if value == .loaded(true) {
+            switch value {
+            case .loaded(true):
                 successLoginAction?()
+            case .error(let message):
+                Toast.displayToast(message: message)
+            default:
+                break
             }
         }
         .containerStyle()
@@ -76,18 +81,8 @@ struct ServerLoginView: View {
     
     @ViewBuilder
     private var handleState : some View {
-        switch viewModel.loginState {
-        case .loading:
+        if case .loading = viewModel.loginState {
             CircularActivityIndicatory()
-        case .error(let message):
-            if !message.isEmpty {
-                VStack { // This VStack is used to display the Toast View Properly
-                    Spacer()
-                    ToastView(message: message)
-                }
-            }
-        default:
-            EmptyView()
         }
     }
 }

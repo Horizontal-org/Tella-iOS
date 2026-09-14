@@ -84,3 +84,9 @@ struct ServerOnboardingView: View {
     }
 }
 
+#Preview {
+    ServerOnboardingView(appViewState: AppViewState.stub(),
+                         viewModel: ServerOnboardingViewModel.stub(),
+                         serversViewModel: ServersViewModel.stub())
+}
+

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 03/08/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -40,7 +40,9 @@ struct AddTemplatesView: View {
     
     var contentView: some View {
         VStack {
-            headerView()
+            CustomText(LocalizableUwazi.uwaziAddTemplateExpl.localized, style: .body1Style)
+                .padding(.all, .extraNormal)
+            
             if !self.uwaziTemplateViewModel.isLoading {
                 handleListView()
             }
@@ -48,35 +50,16 @@ struct AddTemplatesView: View {
         }.padding(.top, 0)
     }
     
-    fileprivate func headerView() -> some View {
-        let firstPart = Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
-            .foregroundColor(.white)
-        let secondPart = Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
-            .foregroundColor(Styles.Colors.yellow)
-        
-        return Group {
-            HStack {
-                firstPart + secondPart
-            }
-            .onTapGesture {
-                let viewModel = ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)
-                navigateTo(destination: ServersListView(serversViewModel: viewModel))
-            }
-        }
-        .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-        .padding(.all, 18)
-    }
-    
     fileprivate func handleListView() -> some View {
         VStack {
             if uwaziTemplateViewModel.templateItemsViewModel.count > 0 {
-                Text("")
+
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(uwaziTemplateViewModel.serverName)
-                            .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
-                            .foregroundColor(.white)
-                            .padding(.all, 14)
+
+                        CustomText(uwaziTemplateViewModel.serverName, style: .subheading1Style)
+                            .padding(.all, .normal)
+
                         ForEach($uwaziTemplateViewModel.templateItemsViewModel, id: \.id) { itemViewModel in
                             TemplateItemView(templateItemViewModel: itemViewModel)
                             if itemViewModel.wrappedValue.id != (uwaziTemplateViewModel.templateItemsViewModel.last?.id ?? "") {
@@ -85,8 +68,8 @@ struct AddTemplatesView: View {
                         }
                     }
                     .background(Color.white.opacity(0.08))
-                    .cornerRadius(15)
-                    .padding(.all, 18)
+                    .cornerRadius(.smallCornerRadius)
+                    .padding(.all, .extraNormal)
                     .padding(.top, 0)
                 }
             } else {

@@ -42,7 +42,7 @@ class SummaryViewModel: ObservableObject {
     }
     
     var templateName : String {
-        String(format: "%@ %@", LocalizableUwazi.uwaziEntitySummaryDetailTemplateTitle.localized, entityInstance?.collectedTemplate?.entityRow?.name ?? "")
+        String(format: "%@ %@", LocalizableUwazi.uwaziEntitySummaryDetailTemplateTitle.localized, entityInstance?.collectedTemplate?.entityRow?.displayName ?? "")
     }
     
     var shouldHideBottomActionView: Bool {

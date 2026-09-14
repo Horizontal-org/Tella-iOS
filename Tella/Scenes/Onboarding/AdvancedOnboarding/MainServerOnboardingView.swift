@@ -45,3 +45,9 @@ struct MainServerOnboardingView: View {
     }
 }
 
+#Preview {
+    MainServerOnboardingView(appViewState: AppViewState.stub(),
+                             serversViewModel: ServersViewModel.stub())
+        .background(Styles.Colors.backgroundMain)
+}
+

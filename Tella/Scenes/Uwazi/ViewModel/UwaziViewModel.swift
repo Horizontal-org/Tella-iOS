@@ -148,7 +148,7 @@ class UwaziViewModel: ObservableObject {
         
         var message = ""
         if case .success = resultDeletion {
-            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, template.entityRow?.translatedName ?? "")
+            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, template.entityRow?.displayName ?? "")
             getDownloadedTemplates()
             
         } else {

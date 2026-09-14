@@ -45,7 +45,6 @@ struct TellaApp: App {
             case .active:
                 self.resetApp()
             case .inactive:
-                dismissPresentedViewsIfNeeded()
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
             default:
                 break
@@ -53,19 +52,22 @@ struct TellaApp: App {
         }
     }
     
-    /// Hides presented overlays when leaving the app, but keeps onboarding lock-choice modals
-    private func dismissPresentedViewsIfNeeded() {
+    /// Closes presented overlays before the app locks, so they cannot stay on top of the
+    /// unlock screen. Onboarding modals are kept: there is no vault to protect yet.
+    /// Only call this when the app really locks.
+    private func dismissPresentedViewsBeforeLock() {
         guard appViewState.currentView != .LOCK else { return }
         UIApplication.getTopViewController()?.dismiss(animated: false)
     }
     
     func saveData(lockAppType: LockAppType) {
         
+        appViewState.homeViewModel.appEnterInBackground = true
+
         guard appViewState.homeViewModel.shouldResetApp() else { return }
         
         // Cancel foreground uploads and mark background entry; must run even when waiting for background uploads.
         appViewState.homeViewModel.uploadService.cancelTasksIfNeeded()
-        appViewState.homeViewModel.appEnterInBackground = true
         
         if lockAppType == .enterInBackground {
             appViewState.homeViewModel.shouldSaveCurrentData = true
@@ -78,6 +80,7 @@ struct TellaApp: App {
             return
         }
         appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+        dismissPresentedViewsBeforeLock()
         appViewState.lockAfterBackground()
     }
     
@@ -89,6 +92,7 @@ struct TellaApp: App {
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
         
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
+            dismissPresentedViewsBeforeLock()
             DispatchQueue.main.async { appViewState.resetApp() }
             appViewState.homeViewModel.vaultManager.clearTmpDirectory()
             appViewState.homeViewModel.uploadService.reset()

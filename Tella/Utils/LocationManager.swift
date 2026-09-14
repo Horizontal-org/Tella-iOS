@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 21/6/2024.
-//  Copyright © 2024 HORIZONTAL. 
+//  Copyright © 2024 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -11,43 +11,113 @@
 import Foundation
 import CoreLocation
 
-class LocationManager : NSObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject {
+    enum AuthorizationState: Equatable {
+        case notDetermined
+        case authorized
+        case denied
+    }
     
-    var currentLocation: CLLocation?
-    private var locationManager: CLLocationManager!
+    private(set) var currentLocation: CLLocation?
+    weak var observer: LocationManagerObserver?
     
+    private let locationManager = CLLocationManager()
+    private var shouldMonitorLocation = false
+    private var isMonitoringLocation = false
     
-    // MARK: Location Manager
+    private var authorizationState: AuthorizationState {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            return .notDetermined
+        case .authorizedWhenInUse, .authorizedAlways:
+            return .authorized
+        case .denied, .restricted:
+            return .denied
+        @unknown default:
+            return .denied
+        }
+    }
     
-    func initializeLocationManager() {
-        // Initialize location manager
-        locationManager = CLLocationManager()
+    override init() {
+        super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startMonitoringSignificantLocationChanges()
+    }
+    
+    // MARK: - Location updates
+    
+    func startUpdatingLocation() {
+        shouldMonitorLocation = true
+        applyAuthorizationStatus()
     }
     
     func stopUpdatingLocation() {
-        guard let locationManager = self.locationManager else { return  }
-        locationManager.stopUpdatingLocation()
+        shouldMonitorLocation = false
+        stopMonitoringLocation()
     }
     
-    // CLLocationManagerDelegate method
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    private func applyAuthorizationStatus() {
+        let authorizationState = authorizationState
         
-        // This is where you do something with your location that's accurate enough.
-        guard let userLocation = locations.last else {
-            return
+        switch authorizationState {
+        case .notDetermined:
+            if shouldMonitorLocation {
+                locationManager.requestWhenInUseAuthorization()
+            }
+        case .authorized:
+            startMonitoringLocationIfNeeded()
+        case .denied:
+            currentLocation = nil
+            stopMonitoringLocation()
         }
-        currentLocation = userLocation
+        
+        if shouldMonitorLocation {
+            observer?.locationManager(self, didChangeAuthorization: authorizationState)
+        }
     }
     
-    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    private func startMonitoringLocationIfNeeded() {
+        guard shouldMonitorLocation, !isMonitoringLocation else { return }
         
+        if CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            locationManager.startMonitoringSignificantLocationChanges()
+        } else {
+            locationManager.startUpdatingLocation()
+        }
+        
+        isMonitoringLocation = true
+    }
+    
+    private func stopMonitoringLocation() {
+        locationManager.stopUpdatingLocation()
+        locationManager.stopMonitoringSignificantLocationChanges()
+        isMonitoringLocation = false
     }
 }
 
+protocol LocationManagerObserver: AnyObject {
+    func locationManager(_ manager: LocationManager, didUpdate location: CLLocation)
+    func locationManager(_ manager: LocationManager,
+                         didChangeAuthorization authorizationState: LocationManager.AuthorizationState)
+    func locationManager(_ manager: LocationManager, didFailWithError error: Error)
+}
 
+// MARK: - CLLocationManagerDelegate
 
+extension LocationManager: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last(where: { $0.horizontalAccuracy >= 0 }) else { return }
+        currentLocation = location
+        observer?.locationManager(self, didUpdate: location)
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        applyAuthorizationStatus()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        observer?.locationManager(self, didFailWithError: error)
+    }
+}

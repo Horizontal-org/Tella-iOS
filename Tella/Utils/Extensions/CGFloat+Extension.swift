@@ -20,6 +20,8 @@ extension CGFloat {
 
     static let normal: CGFloat = 16
 
+    static let extraNormal: CGFloat = 18
+
     static let smallMedium: CGFloat = 20
 
     static let medium: CGFloat = 24
@@ -38,7 +40,9 @@ extension CGFloat {
     
     static let extraSmallIconSize: CGFloat = 10
 
-    static let cornerRadius: CGFloat = 15
+    static let smallCornerRadius: CGFloat = 15
+
+    static let mediumCornerRadius: CGFloat = 30
 }
 
 extension CGFloat {

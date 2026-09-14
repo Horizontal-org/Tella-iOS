@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 02/08/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -16,14 +16,12 @@ struct ConnectionCardDetailsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             
-            Text(title)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.white)
+            CustomText(title, style: .subheading1Style)
                 .lineLimit(1)
+            
             if let subtitle {
-                Text(subtitle)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                    .foregroundColor(.white)
+                
+                CustomText(subtitle, style: .body2Style)
             }
         }
     }
@@ -31,6 +29,7 @@ struct ConnectionCardDetailsView: View {
 
 struct ReportCardDetail_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionCardDetailsView(title: "", subtitle: "")
+        ConnectionCardDetailsView(title: "Title", subtitle: "Subtitle")
+            .background(Styles.Colors.backgroundTab)
     }
 }

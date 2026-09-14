@@ -48,24 +48,19 @@ extension View {
         UIApplication.getTopViewController()?.present(toPresent, animated: true, completion: nil)
     }
     
-    func dismiss() {
-        UIApplication.getTopViewController()?.dismiss(animated: false)
-    }
-    
-    func dismiss(completion:@escaping () -> Void) {
-        UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
+    func dismiss(animated: Bool = false, completion: (() -> Void)? = nil) {
+        UIApplication.getTopViewController()?.dismiss(animated: animated, completion: completion)
     }
     
     @ViewBuilder
-    func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
+    func addNavigationLink<Destination: View>(isActive:Binding<Bool>, destination: Destination) -> some View    {
         
         if #available(iOS 16.0, *) {
             
             self.navigationDestination(isPresented: isActive) {
                 destination
             }
-        } else
-        if #available(iOS 15.0, *) {
+        } else {
             ZStack {
                 self
                 AnyView(
@@ -74,25 +69,6 @@ extension View {
                                        EmptyView()
                                    }.frame(width: 0, height: 0)
                         .hidden())
-            }
-            
-        } else {
-            ZStack {
-                self
-                AnyView(
-                    ZStack {
-                        NavigationLink(destination:destination,
-                                       isActive: isActive) {
-                            EmptyView()
-                        }.frame(width: 0, height: 0)
-                            .hidden()
-                        
-                        if shouldAddEmptyView {
-                            NavigationLink(destination: EmptyView()) {
-                                EmptyView()
-                            }
-                        }
-                    })
             }
         }
     }
@@ -118,9 +94,9 @@ extension View {
         if condition { transform(self) }
         else { self }
     }
-
+    
     /// Enables/disables scrolling without removing the ScrollView from the
-    /// hierarchy. On iOS 15 and earlier scrolling stays enabled.
+    /// hierarchy. On iOS 15 scrolling stays enabled.
     @ViewBuilder
     func scrollEnabled(_ enabled: Bool) -> some View {
         if #available(iOS 16.0, *) {
@@ -146,4 +122,3 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: { viewToShow })
     }
 }
-

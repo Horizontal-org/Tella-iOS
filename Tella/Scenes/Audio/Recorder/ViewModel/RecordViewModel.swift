@@ -186,7 +186,7 @@ class RecordViewModel: ObservableObject {
         self.objectWillChange.send()
     }
     
-    /// - Returns: "Recording 2020.06.24-16.45"
+    /// - Returns: "Recording 2020-06-24-16-45-30"
     var initialFileName: String {
         return  LocalizableRecorder.suffixRecording.localized + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
     }

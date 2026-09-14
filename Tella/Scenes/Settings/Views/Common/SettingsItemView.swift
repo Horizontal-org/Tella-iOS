@@ -19,7 +19,7 @@ struct SettingsItemView<T:View> : View {
     var body : some View {
         
         Button {
-            if (destination != nil) {
+            if let destination {
                 
                 switch presentationType {
                 case .push:

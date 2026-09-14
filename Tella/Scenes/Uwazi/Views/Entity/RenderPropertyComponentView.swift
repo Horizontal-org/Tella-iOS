@@ -18,7 +18,7 @@ struct RenderPropertyComponentView: View {
     var body: some View {
         
         if shouldRenderPrompt(forType: prompt.type.rawValue) {
-            VStack() {
+            VStack(spacing: .extraSmall) {
                 
                 UwaziEntityTitleView(title: prompt.question,
                                      isRequired: prompt.required ?? false,
@@ -48,6 +48,9 @@ struct RenderPropertyComponentView: View {
                 case .dataRelationship:
                     UwaziRelationshipWidget(prompt: prompt as! UwaziRelationshipEntryPrompt,
                                             entityViewModel: entityViewModel)
+                case .dataTypeGeolocation:
+                    UwaziGeolocationWidget(prompt: prompt as! UwaziGeolocationEntryPrompt,
+                                           entityViewModel: entityViewModel)
                 default:
                     EmptyView()
                 }

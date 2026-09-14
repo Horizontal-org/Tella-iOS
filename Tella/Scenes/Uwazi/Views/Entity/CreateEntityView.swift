@@ -30,6 +30,8 @@ struct CreateEntityView: View {
             }
             
             AddFilePhotoVideoPickerView(viewModel: entityViewModel.addFilesViewModel)
+        }.onTapGesture {
+            hideKeyboard()
         }
         .overlay(AddFileCameraView(viewModel: entityViewModel.addFilesViewModel))
         .overlay(AddFileRecordView(viewModel: entityViewModel.addFilesViewModel))
@@ -53,7 +55,9 @@ struct CreateEntityView: View {
         NavigationHeaderView(title: entityViewModel.templateName,
                              backButtonAction: { showSaveEntityConfirmationView() },
                              rightButtonType: .save,
-                             rightButtonAction: {entityViewModel.saveEntityDraft() })
+                             rightButtonAction: {
+            hideKeyboard()
+            entityViewModel.saveEntityDraft() })
     }
     
     fileprivate var draftContentView: some View {
@@ -69,25 +73,33 @@ struct CreateEntityView: View {
     }
     
     fileprivate var bottomActionView: some View {
-        Button(action: {
-            
-            let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
-            
-            if !checkMandatoryFields {
-                entityViewModel.saveAnswersToEntityInstance()
-                navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
-                                                          entityInstance: entityViewModel.entityInstance))
+        HStack {
+            Spacer()
+            Button(action: {
+                hideKeyboard()
+                
+                let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
+                
+                if !checkMandatoryFields {
+                    entityViewModel.saveAnswersToEntityInstance()
+                    navigateTo(destination: SummaryEntityView(mainAppModel: entityViewModel.mainAppModel,
+                                                              entityInstance: entityViewModel.entityInstance))
+                } else {
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityMandatoryToast.localized)
+                }
+            }) {
+                CustomText(LocalizableUwazi.uwaziEntityActionNext.localized, style: .link1Style)
+                    .padding(EdgeInsets(top: .extraSmall, leading: .normal, bottom: .extraSmall, trailing: .large))
+                
             }
-        }) {
-            Text(LocalizableUwazi.uwaziEntityActionNext.localized)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 32))
-                .foregroundColor(Color.white)
+            .buttonStyle(PlainButtonStyle())
+            
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private func showSaveEntityConfirmationView() {
+        hideKeyboard()
+        
         sheetManager.showBottomSheet() {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
                                msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
@@ -104,6 +116,10 @@ struct CreateEntityView: View {
     private func dismissViews() {
         sheetManager.hide()
         self.popTo(ViewClassType.uwaziView)
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.endEditing()
     }
 }
 

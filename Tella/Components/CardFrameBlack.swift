@@ -14,7 +14,7 @@ struct CardFrameBlackModifier: ViewModifier {
         content
             .padding(.all, .normal)
             .background(Color.black.opacity(0.4))
-            .cornerRadius(.cornerRadius)
+            .cornerRadius(.smallCornerRadius)
     }
 }
 

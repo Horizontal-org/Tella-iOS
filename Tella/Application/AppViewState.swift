@@ -26,6 +26,7 @@ final class AppViewState: ObservableObject {
         self.networkMonitor = networkMonitor
         homeViewModel = MainAppModel(networkMonitor:  networkMonitor)
         
+        SecurityScreenManager.shared.bind(to: homeViewModel)
         self.resetApp()
         self.initLanguage()
     }

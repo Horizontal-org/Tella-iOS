@@ -42,6 +42,7 @@
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
 		1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */; };
+		120D3C7C304AE34800215CAC /* SecurityScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D3C7B304AE34100215CAC /* SecurityScreenManager.swift */; };
 		120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D86632CB56FC500C007B4 /* ResultExtension.swift */; };
 		1212677F2C0E77A2005F75A4 /* VaultFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */; };
 		121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */; };
@@ -210,7 +211,6 @@
 		125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */; };
 		125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125FA6D5278DE49A004B9D06 /* URLExtension.swift */; };
 		125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125FA6D7278E2828004B9D06 /* DoubleExtension.swift */; };
-		12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12603DAB2A56C72900FB1492 /* ToastView.swift */; };
 		12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5227903E9E00E2B8CC /* CustomVideoControlsView.swift */; };
 		12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D552790416400E2B8CC /* PlayerViewModel.swift */; };
 		12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D57279042CE00E2B8CC /* VideoPlayer.swift */; };
@@ -218,6 +218,9 @@
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
+		1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD5E3040485700940AF6 /* ToastMessageView.swift */; };
+		1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */; };
+		1262FD6530409BDC00940AF6 /* UwaziGeolocationWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
 		126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684442B18B78200561650 /* BackgroundActivityStatus.swift */; };
@@ -234,6 +237,7 @@
 		126B20E82DBF806100FD7762 /* URL+VideoRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */; };
 		126B898E2D2E97C400CF3B9A /* AVCapturePhotoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */; };
 		126B91BB2E337390002C8B35 /* NearbySharingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */; };
+		126C862B30267EC700DDE7D4 /* CameraZoomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C862A30267EC500DDE7D4 /* CameraZoomController.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
 		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
@@ -293,6 +297,7 @@
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
+		127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */; };
 		127FF42B2FBDECE500DB34EC /* TwoActionBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
 		1282479D2D5E1ADC00B7E63E /* RecipientConnectToDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */; };
@@ -307,6 +312,7 @@
 		1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282C0A32D8AF3D50033E4CA /* CloseConnection.swift */; };
 		1282DE512DDE1021004D2176 /* NWConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282DE502DDE101E004D2176 /* NWConnection.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
+		1284C2CB30499A1C007754FF /* ZoomableMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284C2CA30499A19007754FF /* ZoomableMediaView.swift */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
 		128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 128777C42718D25D000624E2 /* OpenSans-Light.ttf */; };
@@ -402,10 +408,8 @@
 		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
 		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
 		12A6B9872F34ACB5005C0E70 /* AttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */; };
-		12A6B9892F34D166005C0E70 /* AttributedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B9882F34D164005C0E70 /* AttributedLabel.swift */; };
 		12A6B98B2F34D21B005C0E70 /* CustomAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */; };
 		12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */; };
-		12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */; };
 		12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12A9ECD72D9F3FC800711BA4 /* SenderPrepareFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */; };
@@ -452,6 +456,7 @@
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12C454D82DAD24300085FCD6 /* X509 in Frameworks */ = {isa = PBXBuildFile; productRef = 12C454D72DAD24300085FCD6 /* X509 */; };
+		12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C80F103050A20000CE0334 /* LocationPickerMapView.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -643,7 +648,7 @@
 		CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */; };
 		CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5DF8772B02B06A0068F622 /* UwaziServer.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
-		CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */; };
+		CC9DEE5F2AE80ED400C8ED29 /* UwaziActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziActionRow.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
@@ -655,7 +660,6 @@
 		CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */; };
 		CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */; };
 		CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */; };
-		CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */; };
 		CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */; };
 		CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */; };
 		CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */; };
@@ -820,6 +824,7 @@
 		1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
+		120D3C7B304AE34100215CAC /* SecurityScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScreenManager.swift; sourceTree = "<group>"; };
 		120D86632CB56FC500C007B4 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemViewModel.swift; sourceTree = "<group>"; };
 		1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemView.swift; sourceTree = "<group>"; };
@@ -990,7 +995,6 @@
 		125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		125FA6D5278DE49A004B9D06 /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		125FA6D7278E2828004B9D06 /* DoubleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
-		12603DAB2A56C72900FB1492 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		12607D5227903E9E00E2B8CC /* CustomVideoControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoControlsView.swift; sourceTree = "<group>"; };
 		12607D552790416400E2B8CC /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		12607D57279042CE00E2B8CC /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
@@ -998,6 +1002,9 @@
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
+		1262FD5E3040485700940AF6 /* ToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
+		1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocationMapView.swift; sourceTree = "<group>"; };
+		1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziGeolocationWidget.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
 		126684442B18B78200561650 /* BackgroundActivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityStatus.swift; sourceTree = "<group>"; };
@@ -1013,6 +1020,7 @@
 		126B20E72DBF804F00FD7762 /* URL+VideoRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+VideoRotation.swift"; sourceTree = "<group>"; };
 		126B898D2D2E97BC00CF3B9A /* AVCapturePhotoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCapturePhotoExtension.swift; sourceTree = "<group>"; };
 		126B91BA2E33738C002C8B35 /* NearbySharingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingEvent.swift; sourceTree = "<group>"; };
+		126C862A30267EC500DDE7D4 /* CameraZoomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraZoomController.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
 		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
@@ -1068,6 +1076,7 @@
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
+		127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGridOverlayView.swift; sourceTree = "<group>"; };
 		127FF42A2FBDECE500DB34EC /* TwoActionBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoActionBottomSheet.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
 		1282479C2D5E1AD900B7E63E /* RecipientConnectToDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientConnectToDeviceViewModel.swift; sourceTree = "<group>"; };
@@ -1083,6 +1092,7 @@
 		1282DE472DDD0302004D2176 /* sn-ZW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sn-ZW"; path = "sn-ZW.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1282DE502DDE101E004D2176 /* NWConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWConnection.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		1284C2CA30499A19007754FF /* ZoomableMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableMediaView.swift; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
 		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
 		128777C42718D25D000624E2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -1193,10 +1203,8 @@
 		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
 		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
 		12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Extension.swift"; sourceTree = "<group>"; };
-		12A6B9882F34D164005C0E70 /* AttributedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedLabel.swift; sourceTree = "<group>"; };
 		12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAttributedText.swift; sourceTree = "<group>"; };
 		12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoseFilesWarningOnboardingView.swift; sourceTree = "<group>"; };
-		12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceOnboardingView.swift; sourceTree = "<group>"; };
 		12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderPrepareFileTransferVM.swift; sourceTree = "<group>"; };
@@ -1243,6 +1251,7 @@
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
+		12C80F103050A20000CE0334 /* LocationPickerMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerMapView.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -1438,7 +1447,7 @@
 		CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachment.swift; sourceTree = "<group>"; };
 		CC5DF8772B02B06A0068F622 /* UwaziServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServer.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
-		CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSelectFileComponent.swift; sourceTree = "<group>"; };
+		CC9DEE5E2AE80ED400C8ED29 /* UwaziActionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziActionRow.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
@@ -1450,7 +1459,6 @@
 		CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDividerWidget.swift; sourceTree = "<group>"; };
 		CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
 		CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityMandatoryTextView.swift; sourceTree = "<group>"; };
-		CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntitySubtitleView.swift; sourceTree = "<group>"; };
 		CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityTitleView.swift; sourceTree = "<group>"; };
 		CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParser.swift; sourceTree = "<group>"; };
 		CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParserProtocol.swift; sourceTree = "<group>"; };
@@ -2652,7 +2660,9 @@
 				1289B45728B63187005DA687 /* RotationViewModifier.swift */,
 				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
+				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
 				1227FC902922BE24002FD6FB /* CameraPreview.swift */,
+				127E9BD83048D7290054DDEE /* CameraGridOverlayView.swift */,
 				1227FC8E2922BDBC002FD6FB /* CameraModel.swift */,
 			);
 			path = Views;
@@ -2734,7 +2744,6 @@
 				127BCA242E85216500902C59 /* MainOnboardingViewModel.swift */,
 				12E41E792F17EC810043BB3F /* OnboardingInfoView.swift */,
 				12D39B4C2F183F100065EACD /* OnboardingConnectionsView.swift */,
-				12A84F482F1A88380070A4B9 /* LockChoiceOnboardingView.swift */,
 			);
 			path = MainOnboarding;
 			sourceTree = "<group>";
@@ -3117,6 +3126,7 @@
 				12D37A932721752B00E43BDB /* TellaApp.swift */,
 				CE64FA282505542E00B03CEC /* AppViewState.swift */,
 				1293547A294A454900735ED0 /* AppDelegate.swift */,
+				120D3C7B304AE34100215CAC /* SecurityScreenManager.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -3162,6 +3172,7 @@
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
 				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
 				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
+				1284C2CA30499A19007754FF /* ZoomableMediaView.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
@@ -3178,7 +3189,8 @@
 				CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */,
 				12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */,
 				1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */,
-				12603DAB2A56C72900FB1492 /* ToastView.swift */,
+				1262FD5E3040485700940AF6 /* ToastMessageView.swift */,
+				12C80F103050A20000CE0334 /* LocationPickerMapView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
 				15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */,
 				12AFF1B62D3FAC2900C2455C /* NavigationHeaderView */,
@@ -3192,7 +3204,6 @@
 				12D39B482F1805220065EACD /* CardFrameBlack.swift */,
 				126FC6BF2F20108B00FC9316 /* BackNextButton */,
 				126FC6BD2F1E482900FC9316 /* LinkView.swift */,
-				12A6B9882F34D164005C0E70 /* AttributedLabel.swift */,
 				12D39B522F198B150065EACD /* HeaderImageTitleDescriptionView */,
 			);
 			path = Components;
@@ -3938,6 +3949,8 @@
 				CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */,
 				CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */,
 				15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */,
+				1262FD6430409BDA00940AF6 /* UwaziGeolocationWidget.swift */,
+				1262FD6230409B4C00940AF6 /* UwaziLocationMapView.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -3946,11 +3959,10 @@
 			isa = PBXGroup;
 			children = (
 				CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */,
-				CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */,
 				CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */,
 				CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */,
 				CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */,
-				CC9DEE5E2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift */,
+				CC9DEE5E2AE80ED400C8ED29 /* UwaziActionRow.swift */,
 				CC5CEB862AF037B600BF238B /* FileDropdown.swift */,
 				15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */,
 				15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */,
@@ -4435,12 +4447,14 @@
 				1282479F2D5F50B300B7E63E /* QRCodeScannerView.swift in Sources */,
 				1291BDE02E9EB44800AA078F /* PopoverController.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
+				1262FD6530409BDC00940AF6 /* UwaziGeolocationWidget.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */,
 				126973F32E8DA59800FBA206 /* SuccessLockView.swift in Sources */,
 				151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */,
 				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */,
+				1262FD6330409B4E00940AF6 /* UwaziLocationMapView.swift in Sources */,
 				1276B73F2E1EA8F10024C38A /* FileReceivingView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
@@ -4575,7 +4589,6 @@
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				209AC68A2C332E3100492356 /* TellaServer.swift in Sources */,
 				12A6B6652D132E310002F74B /* CardFrame.swift in Sources */,
-				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
 				12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
@@ -4653,7 +4666,6 @@
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
-				12A84F492F1A88380070A4B9 /* LockChoiceOnboardingView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
 				208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
@@ -4753,7 +4765,7 @@
 				15DCD9402C9CB18F001339A7 /* DropboxSubmittedViewModel.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
-				CC9DEE5F2AE80ED400C8ED29 /* UwaziSelectFileComponent.swift in Sources */,
+				CC9DEE5F2AE80ED400C8ED29 /* UwaziActionRow.swift in Sources */,
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
@@ -4846,6 +4858,7 @@
 				20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
+				126C862B30267EC700DDE7D4 /* CameraZoomController.swift in Sources */,
 				125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
@@ -4858,6 +4871,7 @@
 				E1D48B852A1BB8EA00D36270 /* UwaziCheckURLDTO.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
+				120D3C7C304AE34800215CAC /* SecurityScreenManager.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				12A6B98B2F34D21B005C0E70 /* CustomAttributedText.swift in Sources */,
@@ -4942,6 +4956,7 @@
 				120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */,
 				1275A8442C5AA4460071A97D /* NextcloudUploadProgressInfo.swift in Sources */,
 				12742C8F2BEB9FBC00919FAE /* EncodableExtension.swift in Sources */,
+				1284C2CB30499A1C007754FF /* ZoomableMediaView.swift in Sources */,
 				125F9B952AD933AB0073748C /* FeedbackStatus.swift in Sources */,
 				125D58AB2E1811AB00365C40 /* TransferProgressView.swift in Sources */,
 				122389B929367ABA0058593B /* ServerType.swift in Sources */,
@@ -4975,7 +4990,6 @@
 				1236644F28FFECEF00FA839B /* TellaServerDraftView.swift in Sources */,
 				15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */,
 				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
-				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */,
@@ -5029,7 +5043,6 @@
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
-				12A6B9892F34D166005C0E70 /* AttributedLabel.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				20A8BBB22D6F2C27009D52AF /* AddFileGridView.swift in Sources */,
 				12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */,
@@ -5038,6 +5051,8 @@
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,
+				1262FD5F3040485700940AF6 /* ToastMessageView.swift in Sources */,
+				12C80F113050A20000CE0334 /* LocationPickerMapView.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */,
@@ -5066,6 +5081,7 @@
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
+				127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
 				1206CD4528F59DD100B38539 /* APIError.swift in Sources */,
@@ -5181,7 +5197,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = VaultManager/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5211,7 +5227,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = VaultManager/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5281,7 +5297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5339,7 +5355,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -5357,18 +5373,18 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 153;
+				CURRENT_PROJECT_VERSION = 160;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5387,19 +5403,19 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 153;
+				CURRENT_PROJECT_VERSION = 160;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5419,7 +5435,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2RXQS7CK9P;
 				INFOPLIST_FILE = TellaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5442,7 +5458,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TellaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

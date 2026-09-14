@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -14,17 +14,16 @@ enum MoreButtonType {
 }
 
 struct MoreFileActionButton: View {
-    
+
     @ObservedObject var fileListViewModel: FileListViewModel
-    @EnvironmentObject var sheetManager: SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     @State var fileNameToUpdate : String = ""
-    
+
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
     @State var fileData: Data?
-    
+
     var body: some View {
         ZStack{
             switch moreButtonType {
@@ -33,10 +32,10 @@ struct MoreFileActionButton: View {
             case .list, .navigationBar:
                 listMoreButton.eraseToAnyView()
             }
-            
+
         }
     }
-    
+
     var listMoreButton: some View {
         Button {
             showFileActionSheet()
@@ -45,69 +44,69 @@ struct MoreFileActionButton: View {
                 .padding(.all, moreButtonType == .navigationBar ? 20 : 13)
         }
     }
-    
+
     var gridMoreButton: some View {
         Button {
             showFileActionSheet()
-            
+
         } label: {
             Image("files.more")
                 .frame(width: 35, height: 35)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
-        
+
     }
-    
+
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
         }
-        
-        sheetManager.showBottomSheet {
-            ActionListBottomSheet(items: fileListViewModel.fileActionItems,
-                                  headerTitle: fileListViewModel.fileActionsTitle , action: {item in
+
+        let content = ActionListBottomSheet(items: fileListViewModel.fileActionItems,
+                                            headerTitle: fileListViewModel.fileActionsTitle , action: {item in
+            self.dismiss {
                 self.handleActions(item : item)
-            })
-        }
+
+            }
+        })
+        showBottomSheetView(content: content)
+
     }
-    
+
     private func handleActions(item: ListActionSheetItem) {
-        
+
         guard let type = item.type as? FileActionType else { return }
-        
+
         switch type {
-            
+
         case .share:
-            hideMenu()
+            deselectFiles()
             showActivityViewController()
         case .move:
-            self.hideMenu()
+            self.deselectFiles()
             fileListViewModel.showingMoveFileView = true
             fileListViewModel.oldParentFile = fileListViewModel.rootFile
-            
+
         case .rename:
             if fileListViewModel.selectedFiles.count == 1 {
                 fileNameToUpdate = fileListViewModel.selectedFiles[0].name
                 showRenameFileSheet()
             }
-            
+
         case .save:
             showSaveConfirmationSheet()
-            
+
         case .info:
             self.showFileInfoView()
-            self.hideMenu()
-            
+            self.deselectFiles()
+
         case .delete:
-            if fileListViewModel.filesAreUsedInConnections() {
-                showDeleteWarningSheet()
-            } else {
-                showDeleteConfirmationSheet()
-            }
+            showDeleteConfirmationSheet()
+
         case .edit:
-            hideMenu()
+            deselectFiles()
             editFileAction()
-            
+
         default:
             break
         }
@@ -134,7 +133,7 @@ struct MoreFileActionButton: View {
             }
         }
     }
-    
+
     private func showEditImageView() {
         self.present(style: .fullScreen) {
             EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
@@ -151,82 +150,122 @@ struct MoreFileActionButton: View {
             }
         }
     }
-    
-    private func hideMenu() {
+
+    private func deselectFiles() {
         fileListViewModel.selectingFiles = false
-        sheetManager.hide()
     }
-    
+
     func showRenameFileSheet() {
-        sheetManager.showBottomSheet {
-            TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,
-                                     validateButtonText: LocalizableVault.renameFileSaveSheetAction.localized,
-                                     cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
-                                     fieldContent: $fileNameToUpdate,
-                                     fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].name : "",
-                                     didConfirmAction: {
-                fileListViewModel.selectedFiles[0].name = fileNameToUpdate
-                fileListViewModel.renameSelectedFile()
-            })
-        }
+
+        let content = TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,
+                                               validateButtonText: LocalizableVault.renameFileSaveSheetAction.localized,
+                                               cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
+                                               fieldContent: $fileNameToUpdate,
+                                               fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].name : "",
+                                               shouldHideSheet: false,
+
+                                               didConfirmAction: {
+
+            fileListViewModel.selectedFiles[0].name = fileNameToUpdate
+            fileListViewModel.renameSelectedFile()
+            self.dismiss()
+
+        },didCancelAction:  {
+            self.dismiss()
+        })
+
+        showBottomSheetView(content: content)
+
     }
-    
-    
+
     func showFileInfoView() {
         guard let file else { return }
         let destination = FileInfoView(viewModel: self.fileListViewModel, file: file)
         self.navigateTo(destination: destination)
     }
-    
+
     func showDeleteConfirmationSheet() {
         let deleteConfirmation = fileListViewModel.deleteConfirmation
-        sheetManager.showBottomSheet {
-            ConfirmBottomSheet(titleText: deleteConfirmation.title,
-                               msgText: deleteConfirmation.message,
-                               cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
-                               actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
-                               destructive: true,
-                               didConfirmAction:{
-                deleteAction()
-                if fileListViewModel.fileActionSource == .details {
-                    self.presentationMode.wrappedValue.dismiss()
+
+        let content = ConfirmBottomSheet(titleText: deleteConfirmation.title,
+                                         msgText: deleteConfirmation.message,
+                                         cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
+                                         actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
+                                         destructive: true,
+                                         shouldHideSheet: false,
+                                         didConfirmAction:{
+
+            if fileListViewModel.filesAreUsedInConnections() {
+                self.dismiss {
+                    showDeleteWarningSheet()
                 }
-            })
-        }
+            } else {
+                self.dismiss {
+                    deleteAction()
+                    if fileListViewModel.fileActionSource == .details {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+
+                }
+            }
+
+        },didCancelAction:  {
+            self.dismiss()
+        })
+
+        showBottomSheetView(content: content)
+
     }
-    
+
     private func deleteAction() {
         fileListViewModel.deleteSelectedFiles()
         fileListViewModel.selectingFiles = false
         fileListViewModel.resetSelectedItems()
     }
-    
+
     func showDeleteWarningSheet() {
-        sheetManager.showBottomSheet {
-            ConfirmBottomSheet(titleText: LocalizableVault.deleteFileWarningTitle.localized,
-                               msgText:  LocalizableVault.deleteFileWarningDescription.localized,
-                               cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
-                               actionText: LocalizableVault.deleteFileDeleteAnyway.localized,
-                               destructive: true,
-                               didConfirmAction:{
+
+        let content = ConfirmBottomSheet(titleText: LocalizableVault.deleteFileWarningTitle.localized,
+                                         msgText:  LocalizableVault.deleteFileWarningDescription.localized,
+                                         cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
+                                         actionText: LocalizableVault.deleteFileDeleteAnyway.localized,
+                                         destructive: true,
+                                         shouldHideSheet: false,
+                                         didConfirmAction:{
+            self.dismiss {
                 deleteAction()
-            })
-        }
+                if fileListViewModel.fileActionSource == .details {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+
+            }
+        },didCancelAction:  {
+            self.dismiss()
+        })
+
+        showBottomSheetView(content: content)
+
     }
-    
-    
+
     func showSaveConfirmationSheet() {
-        sheetManager.showBottomSheet {
-            ConfirmBottomSheet(titleText: LocalizableVault.saveToDeviceSheetTitle.localized,
-                               msgText: LocalizableVault.saveToDeviceSheetExpl.localized,
-                               cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
-                               actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized.uppercased(),
-                               didConfirmAction: {
+
+        let content = ConfirmBottomSheet(titleText: LocalizableVault.saveToDeviceSheetTitle.localized,
+                                         msgText: LocalizableVault.saveToDeviceSheetExpl.localized,
+                                         cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
+                                         actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized.uppercased(),
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss{
                 showDocumentPickerView()
-            })
-        }
+            }
+        },didCancelAction:  {
+            self.dismiss()
+        })
+
+        showBottomSheetView(content: content)
+
     }
-    
+
     func showDocumentPickerView() {
         let items = fileListViewModel.getDataToShare()
         let tempURLs = items.compactMap { $0 as? URL }
@@ -236,7 +275,7 @@ struct MoreFileActionButton: View {
             }.edgesIgnoringSafeArea(.all)
         }
     }
-    
+
     func showActivityViewController() {
         let items = fileListViewModel.getDataToShare()
         self.present(style: .pageSheet) {

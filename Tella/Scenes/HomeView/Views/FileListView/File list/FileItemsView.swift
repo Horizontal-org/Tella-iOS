@@ -29,7 +29,6 @@ struct FileItemsView: View {
         }
     }
     
-    @available(iOS 14.0, *)
     var itemsGridView: some View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {

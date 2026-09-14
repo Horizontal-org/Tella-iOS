@@ -9,7 +9,7 @@ import Foundation
 enum DateFormat : String {
     case short = "dd MMM yyyy"
     case fileInfo = "dd-MM-yyyy HH:mm:ss Z"
-    case fileName = "yyyy.MM.dd-HH.mm.ss"
+    case fileName = "yyyy-MM-dd-HH-mm-ss"
     case time = "hh:mm a"
     case dataBase = "yyyy-MM-dd'T'HH:mm:ssZ"
     case submittedReport = "dd.MM.yyyy, hh:mm a"

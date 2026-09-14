@@ -19,35 +19,6 @@ struct PasswordTextFieldView : View {
     
     var disabled : Bool = false
     var onCommit : (() -> Void)? =  ({})
-    
-    var body: some View {
-        
-        if #available(iOS 15.0, *) {
-            PasswordTextFieldViewWithFocus( fieldContent: $fieldContent,
-                                            isValid: $isValid,
-                                            shouldShowError: $shouldShowError,
-                                            disabled: disabled,
-                                            onCommit: onCommit)
-        } else {
-            PasswordTextFieldViewWithoutFocus( fieldContent: $fieldContent,
-                                               isValid: $isValid,
-                                               shouldShowError: $shouldShowError,
-                                               disabled: disabled,
-                                               onCommit: onCommit)
-        }
-    }
-}
-
-@available(iOS 15.0, *)
-struct PasswordTextFieldViewWithFocus : View {
-    
-    @State var shouldShowPassword : Bool = false
-    @Binding var fieldContent : String
-    @Binding var isValid : Bool
-    @Binding var shouldShowError : Bool
-    
-    var disabled : Bool = false
-    var onCommit : (() -> Void)? =  ({})
     @FocusState var isFocused : Bool
     var body: some View {
         
@@ -99,69 +70,6 @@ struct PasswordTextFieldViewWithFocus : View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 isFocused = true
             })
-        }
-    }
-    private func validateField(value:String) {
-        self.isValid = value.passwordValidator()
-        self.shouldShowError = false
-        
-    }
-}
-
-struct PasswordTextFieldViewWithoutFocus : View {
-    
-    @State var shouldShowPassword : Bool = false
-    @Binding var fieldContent : String
-    @Binding var isValid : Bool
-    @Binding var shouldShowError : Bool
-    
-    var disabled : Bool = false
-    var onCommit : (() -> Void)? =  ({})
-    
-    var body: some View {
-        
-        VStack(spacing: 13) {
-            HStack {
-                Spacer()
-                    .frame(width: 32)
-                
-                if shouldShowPassword {
-                    TextField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
-                    })
-                    .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
-                    .onChange(of: fieldContent, perform: { value in
-                        validateField(value: value)
-                    })
-                    .disabled(disabled)
-                    .frame( height: 22)
-                    
-                } else {
-                    SecureField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
-                    })
-                    .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
-                    .onChange(of: fieldContent, perform: { value in
-                        validateField(value: value)
-                    })
-                    .disabled(disabled)
-                    .frame( height: 22)
-                }
-                
-                Spacer()
-                    .frame(width: 10)
-                
-                Button {
-                    shouldShowPassword.toggle()
-                } label: {
-                    Image(shouldShowPassword ? "lock.hide" : "lock.show")
-                        .frame(width: 22, height: 20)
-                        .aspectRatio(contentMode: .fit)
-                }
-            }
-            Divider()
-                .frame(height: 2)
-                .background(Styles.Colors.yellow)
         }
     }
     private func validateField(value:String) {

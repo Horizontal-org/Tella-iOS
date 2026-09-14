@@ -34,4 +34,5 @@ struct AdvancedCustomizationCompleteView: View {
 
 #Preview {
     AdvancedCustomizationCompleteView(appViewState: AppViewState.stub())
+        .background(Styles.Colors.backgroundMain)
 }

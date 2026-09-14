@@ -24,20 +24,16 @@ struct UwaziDatePicker: View {
     }
     
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
-            ZStack(alignment: .topLeading) {
-                DateLabel()
+        UwaziActionRow(icon: .uwaziDate,
+                       title: parseDateFromPrompt(prompt.value))
+            .overlay {
                 TransparentDatePicker(selection: $selectedDate) {
                     updatePromptWithDate($0)
                 }
-                
             }
-        }.frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(12)
-        .onAppear{
-            selectedDate = Date()
-        }
+            .onAppear {
+                selectedDate = Date()
+            }
     }
     
     private func TransparentDatePicker(selection: Binding<Date>, onChange: @escaping (Date) -> Void) -> some View {
@@ -47,21 +43,9 @@ struct UwaziDatePicker: View {
             .accentColor(Styles.Colors.lightBlue)
             .colorInvert()
             .colorMultiply(Color.clear)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .contentShape(Rectangle())
             .onChange(of: selection.wrappedValue, perform: onChange)
-    }
-
-    fileprivate func DateLabel() -> some View{
-        ZStack {
-            HStack(alignment: .top) {
-                HStack {
-                    Image("uwazi.date")
-                    Text(parseDateFromPrompt(prompt.value))
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                }
-            }
-        }.padding()
     }
     
     private func updatePromptWithDate(_ date: Date) {

@@ -30,4 +30,7 @@ enum LocalizableCamera: String, LocalizableDelegate {
     case deniedCameraPermissionExpl5 = "Camera_DeniedCameraPermission_Expl5"
     case deniedCameraPermissionActionSettings = "Camera_DeniedCameraPermission_Action_Settings"
     case deniedCameraPermissionActionCancel = "Camera_DeniedCameraPermission_Action_Cancel"
+    
+    case showGrid = "Camera_ShowGrid"
+    case hideGrid = "Camera_HideGrid"
 }

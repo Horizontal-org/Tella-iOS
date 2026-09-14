@@ -20,6 +20,7 @@ struct CameraView: View {
     private var subscriptions = Set<AnyCancellable>()
     
     @State private var showingPermissionAlert : Bool = false
+    @State private var gridIsOn: Bool = false
     @StateObject private var cameraViewModel :  CameraViewModel
     @StateObject private var model = CameraModel()
     @EnvironmentObject private var sheetManager: SheetManager
@@ -44,14 +45,22 @@ struct CameraView: View {
         
         NavigationContainerView(backgroundColor: Color.black) {
             
-            CameraPreview(session: model.session)
-                .edgesIgnoringSafeArea(.all)
+            CameraPreview(session: model.session,
+                          gridIsOn: gridIsOn,
+                          onZoomBegan: {
+                model.startZoom()
+            }, onZoomChanged: { pinchScale in
+                model.zoom(by: pinchScale)
+            })
+            .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
             
         }.background(Color.black)
             .accentColor(.white)
+            .navigationBarHidden(true)
             .onAppear {
+                UIApplication.shared.topNavigationController()?.setNavigationBarHidden(true, animated: false)
                 model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
                 model.configure()
             }
@@ -112,6 +121,7 @@ struct CameraView: View {
         CameraControlsView(cameraViewModel: cameraViewModel,
                            showingCameraView: showingCameraView,
                            sourceView: cameraViewModel.sourceView,
+                           gridIsOn: $gridIsOn,
                            captureButtonAction: {
             model.capturePhoto()
         }, recordVideoAction: {
@@ -120,11 +130,13 @@ struct CameraView: View {
             model.toggleCameraType()
         }, updateCameraTypeAction: { cameraType in
             model.cameraType = cameraType
-        }, toggleFlash: {
-            model.toggleFlash()
+        }, updateFlashMode: { mode in
+            model.setFlashMode(mode)
         }, close: {
             model.stopRunningCaptureSession()
-        })
+        }, zoomFactor: model.currentZoomFactor,
+                           flashMode: model.flashMode,
+                           isFlashAvailable: model.isFlashAvailable)
         .edgesIgnoringSafeArea(.all)
     }
     
@@ -147,13 +159,12 @@ struct CameraView: View {
         cameraViewModel.progressFile = ProgressFile()
         
         let content = ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
-                                progress: cameraViewModel.progressFile,
-                                importFilesProgressProtocol: ImportFilesFromCameraProgress(),
-                                onImportFinished: { self.dismiss() })
+                                              progress: cameraViewModel.progressFile,
+                                              importFilesProgressProtocol: ImportFilesFromCameraProgress(),
+                                              onImportFinished: { self.dismiss() })
         
         showBottomSheetView(content: content,
                             tapToDismiss: false)
         
     }
 }
-

@@ -30,7 +30,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         
         self.mainAppModel = mainAppModel
 
-        let title = template.entityRow?.translatedName ?? ""
+        let title = template.entityRow?.displayName ?? ""
         let deleteTitle = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)")
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
@@ -79,5 +79,15 @@ class UwaziCardViewModel: CommonCardViewModel {
         type = .entityInstance
     }
     
-    
+    override class func stub() -> Self {
+        let instance = UwaziEntityInstance()
+        instance.id = 1
+        instance.title = "Entity title"
+        instance.status = .draft
+        instance.server = UwaziServer(name: "Uwazi server")
+        
+        return UwaziCardViewModel(mainAppModel: MainAppModel.stub(),
+                                  instance: instance,
+                                  deleteTemplate: {}) as! Self
+    }
 }

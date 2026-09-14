@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 23/10/2023.
-//  Copyright © 2023 HORIZONTAL. 
+//  Copyright © 2023 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -17,7 +17,21 @@ enum EntityResult {
 
 struct EntityCreationResponse: Decodable {
     let entity: Entity?
-    let errors: [UwaziError]?
+    let errors: [UwaziError]
+    
+    var isSuccess: Bool {
+        errors.isEmpty && entity != nil
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        entity = try container.decodeIfPresent(Entity.self, forKey: .entity)
+        errors = (try? container.decodeIfPresent([UwaziError].self, forKey: .errors)) ?? []
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case entity, errors
+    }
 }
 
 
@@ -36,7 +50,7 @@ struct Entity: Decodable {
     let __v: Int?
     let documents: [Attachment]?
     let attachments: [Attachment]?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case language
@@ -56,34 +70,47 @@ struct Entity: Decodable {
 }
 
 struct MetaDataItem: Decodable {
-    let value: MetaDataType?
+    let value: MetaDataValue?
     let label: String?
+    let type: String?
+}
 
-    enum MetaDataType {
-        case stringValue(String)
-        case intValue(Int)
-    }
-
+enum MetaDataValue: Decodable {
+    case stringValue(String)
+    case intValue(Int)
+    case doubleValue(Double)
+    case geoLocation(UwaziGeoLocation)
+    case unsupported
+    
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let intValue = try? container.decode(Int.self, forKey: .value) {
-            self.value = .intValue(intValue)
-        } else if let stringValue = try? container.decode(String.self, forKey: .value) {
-            self.value = .stringValue(stringValue)
-        } else {
-            throw DecodingError.typeMismatch(
-                MetaDataType.self,
-                DecodingError.Context(
-                    codingPath: decoder.codingPath,
-                    debugDescription: "Expected value to be either Int or String"
-                )
-            )
+        let container = try decoder.singleValueContainer()
+        
+        if container.decodeNil() {
+            self = .unsupported
+            return
         }
-        label = try container.decodeIfPresent(String.self, forKey: .label)
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case value, label
+        
+        if let location = try? container.decode(UwaziGeoLocation.self) {
+            self = .geoLocation(location)
+            return
+        }
+        
+        if let value = try? container.decode(Int.self) {
+            self = .intValue(value)
+            return
+        }
+        
+        if let value = try? container.decode(Double.self) {
+            self = .doubleValue(value)
+            return
+        }
+        
+        if let value = try? container.decode(String.self) {
+            self = .stringValue(value)
+            return
+        }
+        
+        self = .unsupported
     }
 }
 
@@ -102,7 +129,7 @@ struct Attachment: Decodable {
     let mimetype: String?
     let size: Int64?
     let creationDate: Int64?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case entity
@@ -119,5 +146,3 @@ struct UwaziError: Codable {
     let error: String?
     let prettyMessage: String?
 }
-
-

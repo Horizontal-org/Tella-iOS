@@ -53,4 +53,17 @@ class CommonCardViewModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+    
+    class func stub() -> Self {
+        return CommonCardViewModel(id: 1,
+                                   title: "Report title",
+                                   subtitle: "Modified 2 hours ago",
+                                   iconImageName: "submitted",
+                                   serverName: "Tella Web",
+                                   listActionSheetItem: [],
+                                   connectionType: .tella,
+                                   deleteReportStrings: ConfirmDeleteConnectionStrings(deleteTitle: "",
+                                                                                       deleteMessage: ""),
+                                   deleteAction: {}) as! Self
+    }
 }
