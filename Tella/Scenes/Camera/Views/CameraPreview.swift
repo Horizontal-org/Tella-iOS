@@ -23,12 +23,35 @@ struct CameraPreview: UIViewRepresentable {
         
         let gridOverlay = CameraGridOverlayView()
         
+        var onZoomBegan: (() -> Void)?
+        var onZoomChanged: ((CGFloat) -> Void)?
+        var onSwipe: ((CameraSwipeDirection) -> Void)?
+        
+        private let panGesture = UIPanGestureRecognizer()
+        
         override class var layerClass: AnyClass {
             AVCaptureVideoPreviewLayer.self
         }
         
         var videoPreviewLayer: AVCaptureVideoPreviewLayer {
             return layer as! AVCaptureVideoPreviewLayer
+        }
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            addSubview(gridOverlay)
+            
+            let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
+            addGestureRecognizer(pinchGesture)
+            
+            panGesture.addTarget(self, action: #selector(handlePan))
+            panGesture.maximumNumberOfTouches = 1
+            addGestureRecognizer(panGesture)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
         
         func configurePreview(session: AVCaptureSession) {
@@ -46,63 +69,49 @@ struct CameraPreview: UIViewRepresentable {
             )
             gridOverlay.frame = videoRect.intersection(bounds)
         }
-    }
-    
-    class Coordinator: NSObject {
-        var parent: CameraPreview
         
-        init(_ parent: CameraPreview) {
-            self.parent = parent
-        }
-        
-        @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
+        @objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
             switch gesture.state {
             case .began:
-                parent.onZoomBegan?()
+                panGesture.isEnabled = false
+                onZoomBegan?()
             case .changed:
-                parent.onZoomChanged?(gesture.scale)
+                onZoomChanged?(gesture.scale)
+            case .ended, .cancelled, .failed:
+                panGesture.isEnabled = true
             default:
                 break
             }
         }
         
-        @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
+        @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
             guard gesture.state == .ended else { return }
             
-            let translation = gesture.translation(in: gesture.view)
+            let translation = gesture.translation(in: self)
             guard abs(translation.x) > CameraPreview.swipeThreshold,
                   abs(translation.x) > abs(translation.y) else { return }
             
-            parent.onSwipe?(translation.x < 0 ? .left : .right)
+            onSwipe?(translation.x < 0 ? .left : .right)
         }
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
     }
     
     func makeUIView(context: Context) -> VideoPreviewView {
         let view = VideoPreviewView()
         view.configurePreview(session: session)
         view.gridOverlay.isHidden = !gridIsOn
-        view.addSubview(view.gridOverlay)
-        
-        let pinchGesture = UIPinchGestureRecognizer(target: context.coordinator,
-                                                    action: #selector(Coordinator.handlePinch(_:)))
-        view.addGestureRecognizer(pinchGesture)
-        
-        // Limited to one finger so a two finger pinch still zooms instead of switching mode.
-        let panGesture = UIPanGestureRecognizer(target: context.coordinator,
-                                                action: #selector(Coordinator.handlePan(_:)))
-        panGesture.maximumNumberOfTouches = 1
-        view.addGestureRecognizer(panGesture)
-        
+        updateCallbacks(on: view)
         return view
     }
     
     func updateUIView(_ uiView: VideoPreviewView, context: Context) {
         uiView.gridOverlay.isHidden = !gridIsOn
         uiView.setNeedsLayout()
-        context.coordinator.parent = self
+        updateCallbacks(on: uiView)
+    }
+    
+    private func updateCallbacks(on view: VideoPreviewView) {
+        view.onZoomBegan = onZoomBegan
+        view.onZoomChanged = onZoomChanged
+        view.onSwipe = onSwipe
     }
 }

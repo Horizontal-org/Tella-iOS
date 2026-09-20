@@ -66,6 +66,7 @@ struct CameraViewfinderControlsView: View {
                     }
                 }
             }
+            .contentShape(Rectangle())
         }
     }
     

@@ -10,23 +10,10 @@ import SwiftUI
 struct CameraControlsView: View {
     // MARK: - Public properties
     @ObservedObject var cameraViewModel: CameraViewModel
+    @ObservedObject var model: CameraModel
     @Binding var showingCameraView : Bool
-    var sourceView : SourceView
     @Binding var gridIsOn: Bool
     @Binding var cameraState: CameraState
-    
-    var captureButtonAction: (() -> Void)
-    var recordVideoAction: (() -> Void)
-    var toggleCamera: (() -> Void)
-    var selectCameraType: ((CameraType) -> Void)
-    var updateFlashMode: ((CameraFlashMode) -> Void)
-    var selectZoomLevel: ((CameraZoomLevel) -> Void)
-    var moreOptionsAction: (() -> Void)
-    var close: (() -> Void)
-    var zoomFactor: CGFloat = 1.0
-    var zoomLevels: [CameraZoomLevel] = []
-    var flashMode: CameraFlashMode = .off
-    var isFlashAvailable: Bool = true
     
     // MARK: - Private properties
     
@@ -83,15 +70,8 @@ struct CameraControlsView: View {
     var closeButton: some View {
         if !cameraState.isRecording {
             Button {
-                
-                if sourceView == .tab {
-                    cameraViewModel.mainAppModel.selectedTab = .home
-                } else {
-                    showingCameraView = false
-                }
-                
-                close()
-                
+                cameraViewModel.dismissCamera(showingCameraView: $showingCameraView)
+                model.stopRunningCaptureSession()
             } label: {
                 Image(.close)
                     .padding(.normal)
@@ -102,19 +82,19 @@ struct CameraControlsView: View {
     
     var flashButton: some View {
         Button {
-            updateFlashMode(flashMode.next)
+            model.setFlashMode(model.flashMode.next)
         } label: {
             flashIcon
                 .padding(.normal)
         }
-        .disabled(!isFlashAvailable)
-        .opacity(isFlashAvailable ? 1 : 0.4)
+        .disabled(!model.isFlashAvailable)
+        .opacity(model.isFlashAvailable ? 1 : 0.4)
         .rotate(rotation)
     }
     
     @ViewBuilder
     private var flashIcon: some View {
-        switch flashMode {
+        switch model.flashMode {
         case .auto:
             Image(.cameraFlashAuto)
         case .on:
@@ -141,14 +121,14 @@ struct CameraControlsView: View {
     // MARK: - Viewfinder controls
     
     private var viewfinderControls: some View {
-        CameraViewfinderControlsView(zoomLevels: zoomLevels,
-                                     zoomFactor: zoomFactor,
+        CameraViewfinderControlsView(zoomLevels: model.availableZoomLevels,
+                                     zoomFactor: model.currentZoomFactor,
                                      recordingTime: cameraState.isRecording
                                      ? cameraViewModel.formattedCurrentTime
                                      : nil,
                                      rotation: rotation,
-                                     onSelectZoomLevel: selectZoomLevel,
-                                     onMoreOptions: moreOptionsAction)
+                                     onSelectZoomLevel: { model.setZoom(to: $0) },
+                                     onMoreOptions: moreOptionsTapped)
     }
     
     // MARK: - Bottom bar
@@ -187,17 +167,14 @@ struct CameraControlsView: View {
                             rotation: rotation) {
             navigateTo(destination: getFileListView())
         }
-                            .opacity(recordingChromeOpacity)
-                            .disabled(cameraState.isRecording)
-                            .animation(.easeInOut(duration: CameraStyle.Animations.recording),
-                                       value: cameraState.isRecording)
+        .hiddenDuringRecording(cameraState.isRecording)
     }
     
     private var shutterButton: some View {
         CameraShutterButton(mode: shutterMode) {
             switch cameraState {
             case .readyTakingImage:
-                captureButtonAction()
+                model.capturePhoto()
             case .readyRecordingVideo:
                 startRecordingVideo()
             case .recordingVideo:
@@ -219,7 +196,9 @@ struct CameraControlsView: View {
     
     var flipCameraButton: some View {
         
-        Button(action: toggleCamera) {
+        Button {
+            model.toggleCameraType()
+        } label: {
             ZStack {
                 Image(.cameraFlipCamera)
             }
@@ -229,10 +208,7 @@ struct CameraControlsView: View {
             .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
         }
         .rotate(rotation)
-        .opacity(recordingChromeOpacity)
-        .disabled(cameraState.isRecording)
-        .animation(.easeInOut(duration: CameraStyle.Animations.recording),
-                   value: cameraState.isRecording)
+        .hiddenDuringRecording(cameraState.isRecording)
     }
     
     private var modeSelector: some View {
@@ -241,14 +217,7 @@ struct CameraControlsView: View {
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())
         .gesture(modeSwipeGesture)
-        .opacity(recordingChromeOpacity)
-        .disabled(cameraState.isRecording)
-        .animation(.easeInOut(duration: CameraStyle.Animations.recording),
-                   value: cameraState.isRecording)
-    }
-    
-    private var recordingChromeOpacity: Double {
-        cameraState.isRecording ? 0 : 1
+        .hiddenDuringRecording(cameraState.isRecording)
     }
     
     /// Swiping across the toggle moves between modes, matching the swipe over the viewfinder.
@@ -277,7 +246,7 @@ struct CameraControlsView: View {
         withAnimation(.easeInOut(duration: CameraStyle.Animations.recording)) {
             cameraState = .recordingVideo
         }
-        recordVideoAction()
+        model.startCaptureVideo()
         cameraViewModel.initialiseTimerRunning()
     }
     
@@ -285,8 +254,23 @@ struct CameraControlsView: View {
         withAnimation(.easeInOut(duration: CameraStyle.Animations.recording)) {
             cameraState = .readyRecordingVideo
         }
-        recordVideoAction()
+        model.startCaptureVideo()
         cameraViewModel.invalidateTimerRunning()
+    }
+    
+    private func selectCameraType(_ cameraType: CameraType) {
+        guard !cameraState.isRecording,
+              cameraState.cameraType != cameraType else { return }
+        
+        withAnimation(.easeInOut(duration: CameraStyle.Animations.modeChange)) {
+            cameraState = CameraState(cameraType: cameraType)
+        }
+        
+        model.cameraType = cameraType
+    }
+    
+    private func moreOptionsTapped() {
+        // TODO: behaviour of the extra options button is still to be defined.
     }
 }
 
@@ -301,35 +285,22 @@ struct CameraControlsView_Previews: PreviewProvider {
     
     private static func preview(state: CameraState) -> some View {
         CameraControlsView(cameraViewModel: CameraViewModel.stub(),
+                           model: CameraModel.stub(),
                            showingCameraView: .constant(false),
-                           sourceView: .tab,
                            gridIsOn: .constant(false),
-                           cameraState: .constant(state),
-                           captureButtonAction: {},
-                           recordVideoAction: {},
-                           toggleCamera: {},
-                           selectCameraType: { _ in },
-                           updateFlashMode: { _ in },
-                           selectZoomLevel: { _ in },
-                           moreOptionsAction: {},
-                           close: {},
-                           zoomFactor: 1,
-                           zoomLevels: [CameraZoomLevel(factor: 0.5),
-                                        CameraZoomLevel(factor: 1),
-                                        CameraZoomLevel(factor: 2)])
+                           cameraState: .constant(state))
         .background(Color.gray)
     }
 }
 
-private extension CameraFlashMode {
-    var next: CameraFlashMode {
-        switch self {
-        case .auto:
-            return .on
-        case .on:
-            return .off
-        case .off:
-            return .auto
-        }
+private extension View {
+    
+    /// Keeps the control in the layout while recording so the shutter does not shift, then fades it out.
+    func hiddenDuringRecording(_ isRecording: Bool) -> some View {
+        self
+            .opacity(isRecording ? 0 : 1)
+            .disabled(isRecording)
+            .animation(.easeInOut(duration: CameraStyle.Animations.recording),
+                       value: isRecording)
     }
 }

@@ -114,3 +114,15 @@ final class CameraModel: ObservableObject {
         service.stopRunningCaptureSession()
     }
 }
+
+extension CameraModel {
+    static func stub() -> CameraModel {
+        let model = CameraModel()
+        model.currentZoomFactor = 1
+        model.availableZoomLevels = [CameraZoomLevel(factor: 0.5),
+                                     CameraZoomLevel(factor: 1),
+                                     CameraZoomLevel(factor: 2)]
+        model.isFlashAvailable = true
+        return model
+    }
+}

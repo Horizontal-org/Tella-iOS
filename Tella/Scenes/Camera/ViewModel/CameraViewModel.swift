@@ -68,6 +68,14 @@ class CameraViewModel: ObservableObject {
         
     }
     
+    func dismissCamera(showingCameraView: Binding<Bool>) {
+        if sourceView == .tab {
+            mainAppModel.selectedTab = .home
+        } else {
+            showingCameraView.wrappedValue = false
+        }
+    }
+    
     private func updateLastItem() {
         DispatchQueue.main.async {
             self.lastImageOrVideoVaultFile = self.mainAppModel.vaultFilesManager?.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first

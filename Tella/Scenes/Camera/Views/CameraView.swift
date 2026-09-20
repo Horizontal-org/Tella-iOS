@@ -5,19 +5,14 @@
 
 
 import SwiftUI
-import Combine
-import AVFoundation
 
 
 struct CameraView: View {
     
     // MARK: - Public properties
-    //    var sourceView : SourceView
-    var showingCameraView : Binding<Bool>
+    @Binding var showingCameraView: Bool
     
     // MARK: - Private properties
-    
-    private var subscriptions = Set<AnyCancellable>()
     
     @State private var showingPermissionAlert : Bool = false
     @State private var gridIsOn: Bool = false
@@ -33,7 +28,7 @@ struct CameraView: View {
          mainAppModel: MainAppModel,
          rootFile:VaultFileDB? = nil) {
         
-        self.showingCameraView = showingCameraView
+        _showingCameraView = showingCameraView
         
         _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
                                                                      rootFile: rootFile,
@@ -57,7 +52,7 @@ struct CameraView: View {
             })
             .ignoresSafeArea()
             
-            getCameraControlsView()
+            cameraControls
             
         }.background(Color.black)
             .accentColor(.white)
@@ -87,11 +82,7 @@ struct CameraView: View {
         
             .onReceive(model.$shouldCloseCamera) { value in
                 if value {
-                    if cameraViewModel.sourceView == .tab {
-                        cameraViewModel.mainAppModel.selectedTab = .home
-                    } else {
-                        showingCameraView.wrappedValue = false
-                    }
+                    cameraViewModel.dismissCamera(showingCameraView: $showingCameraView)
                     cameraViewModel.mainAppModel.vaultManager.clearTmpDirectory()
                 }
             }
@@ -118,33 +109,12 @@ struct CameraView: View {
             }
     }
     
-    private func getCameraControlsView() -> some View {
-        
+    private var cameraControls: some View {
         CameraControlsView(cameraViewModel: cameraViewModel,
-                           showingCameraView: showingCameraView,
-                           sourceView: cameraViewModel.sourceView,
+                           model: model,
+                           showingCameraView: $showingCameraView,
                            gridIsOn: $gridIsOn,
-                           cameraState: $cameraState,
-                           captureButtonAction: {
-            model.capturePhoto()
-        }, recordVideoAction: {
-            model.startCaptureVideo()
-        }, toggleCamera: {
-            model.toggleCameraType()
-        }, selectCameraType: { cameraType in
-            selectCameraType(cameraType)
-        }, updateFlashMode: { mode in
-            model.setFlashMode(mode)
-        }, selectZoomLevel: { level in
-            model.setZoom(to: level)
-        }, moreOptionsAction: {
-            // TODO: behaviour of the extra options button is still to be defined.
-        }, close: {
-            model.stopRunningCaptureSession()
-        }, zoomFactor: model.currentZoomFactor,
-                           zoomLevels: model.availableZoomLevels,
-                           flashMode: model.flashMode,
-                           isFlashAvailable: model.isFlashAvailable)
+                           cameraState: $cameraState)
     }
     
     private func selectCameraType(swipedTo direction: CameraSwipeDirection) {

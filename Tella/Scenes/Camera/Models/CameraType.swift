@@ -33,6 +33,17 @@ public enum CameraFlashMode: Hashable {
     case auto
     case on
     case off
+    
+    var next: CameraFlashMode {
+        switch self {
+        case .auto:
+            return .on
+        case .on:
+            return .off
+        case .off:
+            return .auto
+        }
+    }
 }
 
 public enum SourceView: Hashable {
