@@ -1,5 +1,5 @@
 //
-//  CameraViewfinderControlsView.swift
+//  CameraPreviewControlsView.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 10/9/2026.
@@ -9,34 +9,18 @@
 
 import SwiftUI
 
-struct CameraViewfinderControlsView: View {
+struct CameraPreviewControlsView: View {
     
     let zoomLevels: [CameraZoomLevel]
     let zoomFactor: CGFloat
-    /// Set only while a video is being recorded.
-    let recordingTime: String?
+    let isRecording: Bool
     var rotation = CameraControlRotation()
     let onSelectZoomLevel: (CameraZoomLevel) -> Void
     let onMoreOptions: () -> Void
     
     var body: some View {
-        VStack(spacing: .normal) {
-            // recordingIndicator
-            controlsRow
-        }.frame(height: 52.adjusted)
-        
-    }
-    
-    @ViewBuilder
-    private var recordingIndicator: some View {
-        if let recordingTime = recordingTime {
-            CustomText(recordingTime, style: .cameraTabStyle)
-                .padding(.horizontal, .small)
-                .padding(.vertical, .tiny)
-                .background(Capsule().fill(Styles.Colors.darkRed))
-                .rotate(rotation)
-                .transition(.opacity)
-        }
+        controlsRow
+            .frame(height: CameraViewfinderLayout.zoomHeight)
     }
     
     private var controlsRow: some View {
@@ -46,7 +30,9 @@ struct CameraViewfinderControlsView: View {
             HStack {
                 Spacer()
                     .allowsHitTesting(false)
-                moreOptionsButton
+                if !isRecording {
+                    moreOptionsButton
+                }
             }
             .padding(.trailing, .medium)
         }
@@ -98,16 +84,16 @@ struct CameraViewfinderControlsView: View {
     }
 }
 
-struct CameraViewfinderControlsView_Previews: PreviewProvider {
+struct CameraPreviewControlsView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 40) {
-            CameraViewfinderControlsView(zoomLevels: [CameraZoomLevel(factor: 0.5),
-                                                      CameraZoomLevel(factor: 1),
-                                                      CameraZoomLevel(factor: 2)],
-                                         zoomFactor: 1,
-                                         recordingTime: "00:00:12",
-                                         onSelectZoomLevel: { _ in },
-                                         onMoreOptions: {})
+            CameraPreviewControlsView(zoomLevels: [CameraZoomLevel(factor: 0.5),
+                                                  CameraZoomLevel(factor: 1),
+                                                  CameraZoomLevel(factor: 2)],
+                                      zoomFactor: 1,
+                                      isRecording: true,
+                                      onSelectZoomLevel: { _ in },
+                                      onMoreOptions: {})
         }
         .background(Color.gray)
     }

@@ -477,7 +477,7 @@
 		12D9A9262D121789008C206E /* CardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9252D121789008C206E /* CardButtonView.swift */; };
 		12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */; };
 		12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98022F1ADB77004436CC /* NextBottomView.swift */; };
-		12DF971F3053047B00BB8C0E /* CameraViewfinderControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */; };
+		12DF971F3053047B00BB8C0E /* CameraPreviewControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */; };
 		12DF97233053121900BB8C0E /* CameraModeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */; };
 		12DF97253053263F00BB8C0E /* CameraGalleryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
@@ -1281,7 +1281,7 @@
 		12D9A9252D121789008C206E /* CardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonView.swift; sourceTree = "<group>"; };
 		12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectedSuccessView.swift; sourceTree = "<group>"; };
 		12DE98022F1ADB77004436CC /* NextBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBottomView.swift; sourceTree = "<group>"; };
-		12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewfinderControlsView.swift; sourceTree = "<group>"; };
+		12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewControlsView.swift; sourceTree = "<group>"; };
 		12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModeSelectorView.swift; sourceTree = "<group>"; };
 		12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraGalleryButton.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
@@ -2667,7 +2667,7 @@
 		1289B98427C5390000315FCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */,
+				12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */,
 				12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */,
 				12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */,
 				127D61A930542AB100A2B141 /* CameraCaptureButton.swift */,
@@ -4411,7 +4411,7 @@
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */,
-				12DF971F3053047B00BB8C0E /* CameraViewfinderControlsView.swift in Sources */,
+				12DF971F3053047B00BB8C0E /* CameraPreviewControlsView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				F0A1B2C32F5E111100AA1101 /* FormChangeTracker.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
