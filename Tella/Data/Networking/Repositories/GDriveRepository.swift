@@ -9,7 +9,7 @@
 
 import Foundation
 import GoogleSignIn
-import GoogleAPIClientForREST
+import GoogleAPIClientForREST_Drive
 import Combine
 
 struct FileUploadDetails {
