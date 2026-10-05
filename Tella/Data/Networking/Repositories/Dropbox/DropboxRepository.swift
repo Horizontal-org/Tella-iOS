@@ -10,6 +10,7 @@
 
 import Foundation
 import Combine
+import UIKit
 import SwiftyDropbox
 
 protocol DropboxRepositoryProtocol {

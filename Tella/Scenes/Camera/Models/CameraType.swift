@@ -5,6 +5,7 @@
 
 
 import Foundation
+import CoreGraphics
 
 public enum CameraType: Hashable {
     case image
@@ -27,6 +28,23 @@ extension CameraType {
 public enum CameraSwipeDirection {
     case left
     case right
+    
+    static let threshold: CGFloat = 40
+    
+    var cameraType: CameraType {
+        switch self {
+        case .left:
+            return .image
+        case .right:
+            return .video
+        }
+    }
+    
+    init?(translationX: CGFloat, translationY: CGFloat) {
+        guard abs(translationX) > Self.threshold,
+              abs(translationX) > abs(translationY) else { return nil }
+        self = translationX < 0 ? .left : .right
+    }
 }
 
 public enum CameraFlashMode: Hashable {
@@ -36,12 +54,34 @@ public enum CameraFlashMode: Hashable {
     
     var next: CameraFlashMode {
         switch self {
-        case .auto:
+        case .off:
             return .on
         case .on:
-            return .off
-        case .off:
             return .auto
+        case .auto:
+            return .off
+        }
+    }
+    
+    var imageName: ImageResource {
+        switch self {
+        case .off:
+            return .cameraFlashOff
+        case .on:
+            return .cameraFlashOn
+        case .auto:
+            return .cameraFlashAuto
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .off:
+            return LocalizableCamera.flashOff.localized
+        case .on:
+            return LocalizableCamera.flashOn.localized
+        case .auto:
+            return LocalizableCamera.flashAuto.localized
         }
     }
 }

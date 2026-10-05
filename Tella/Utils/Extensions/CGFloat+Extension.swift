@@ -28,6 +28,8 @@ extension CGFloat {
 
     static let medium: CGFloat = 24
 
+    static let largeMedium: CGFloat = 28
+
     static let large: CGFloat = 32
 
     static let extraLarge: CGFloat = 48

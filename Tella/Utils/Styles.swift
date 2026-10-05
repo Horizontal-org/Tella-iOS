@@ -17,6 +17,7 @@ struct Styles {
         static let disabledYellow = UIColor(hexValue: 0x463755)
         
         static let yellowWhite = UIColor(hexValue: 0xDDA45A)
+        static let yellowBrighter = UIColor(hexValue: 0xF2B25E)
         
         static let darkRed = UIColor(hexValue: 0x971212)
         static let red = UIColor(hexValue: 0xFC4444)
@@ -28,6 +29,7 @@ struct Styles {
         
         static let backgroundGrey1 = UIColor(hexValue: 0x1F2125)
         static let backgroundGrey2 = UIColor(hexValue: 0x3A3C40)
+        static let black = UIColor(hexValue: 0x071013)
     }
     
     struct Colors {
@@ -38,6 +40,7 @@ struct Styles {
         static let disabledYellow = Color(uiColor.disabledYellow)
         
         static let yellowWhite = Color(uiColor.yellowWhite)
+        static let yellowBrighter = Color(uiColor.yellowBrighter)
         
         static let red = Color(uiColor.red)
         static let darkRed = Color(uiColor.darkRed)
@@ -49,6 +52,9 @@ struct Styles {
         
         static let backgroundGrey1 = Color(uiColor.backgroundGrey1)
         static let backgroundGrey2 = Color(uiColor.backgroundGrey2)
+        
+        static let black = Color(uiColor.black)
+        
     }
     
     struct Stroke {
