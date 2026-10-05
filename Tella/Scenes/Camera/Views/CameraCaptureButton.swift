@@ -1,5 +1,5 @@
 //
-//  CameraShutterButton.swift
+//  CameraCaptureButton.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 11/9/2026.
@@ -10,18 +10,19 @@
 
 import SwiftUI
 
-enum CameraShutterMode {
+enum CameraCaptureMode {
     case photo
     case video
     case recording
 }
 
-struct CameraShutterButton: View {
+struct CameraCaptureButton: View {
     
-    let mode: CameraShutterMode
+    let mode: CameraCaptureMode
     let action: () -> Void
     
     @State private var innerScale: CGFloat = 1
+    @State private var pulseID = UUID()
     
     var body: some View {
         Button(action: capture) {
@@ -36,9 +37,12 @@ struct CameraShutterButton: View {
             }
             .frame(width: .largeIconSize,
                    height: .largeIconSize)
+            .contentShape(Circle())
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: CameraStyle.Animations.recording), value: mode)
+        .onChange(of: mode) { _ in resetPulse() }
+        .onDisappear(perform: resetPulse)
     }
     
     private var innerDiameter: CGFloat {
@@ -61,25 +65,36 @@ struct CameraShutterButton: View {
         action()
         
         guard mode == .photo else { return }
+
+        let currentPulseID = UUID()
+        pulseID = currentPulseID
         
         withAnimation(.easeInOut(duration: CameraStyle.Animations.shutterDip)) {
             innerScale = CameraStyle.Animations.shutterDipScale
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + CameraStyle.Animations.shutterDip) {
+            guard pulseID == currentPulseID else { return }
             withAnimation(.easeInOut(duration: CameraStyle.Animations.shutterDip)) {
                 innerScale = 1
             }
         }
     }
+
+    private func resetPulse() {
+        pulseID = UUID()
+        withoutAnimation {
+            innerScale = 1
+        }
+    }
 }
 
-struct CameraShutterButton_Previews: PreviewProvider {
+struct CameraCaptureButton_Previews: PreviewProvider {
     static var previews: some View {
         HStack(spacing: 20) {
-            CameraShutterButton(mode: .photo) {}
-            CameraShutterButton(mode: .video) {}
-            CameraShutterButton(mode: .recording) {}
+            CameraCaptureButton(mode: .photo) {}
+            CameraCaptureButton(mode: .video) {}
+            CameraCaptureButton(mode: .recording) {}
         }
         .padding()
         .background(Styles.Colors.backgroundGrey2)

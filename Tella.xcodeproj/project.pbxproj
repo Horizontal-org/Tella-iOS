@@ -297,7 +297,7 @@
 		127D50A82DCE3F0500332973 /* EditMediaProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */; };
 		127D61A330541E6B00A2B141 /* CameraStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A230541E6700A2B141 /* CameraStyle.swift */; };
 		127D61A83054297A00A2B141 /* CameraZoomLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A73054297700A2B141 /* CameraZoomLevel.swift */; };
-		127D61AA30542AB400A2B141 /* CameraShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A930542AB100A2B141 /* CameraShutterButton.swift */; };
+		127D61AA30542AB400A2B141 /* CameraCaptureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61A930542AB100A2B141 /* CameraCaptureButton.swift */; };
 		127D61AC30542AF900A2B141 /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D61AB30542AF700A2B141 /* Transaction+Extension.swift */; };
 		127E81A32DB7C4AC002AED4C /* TextStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */; };
 		127E81A82DB9008B002AED4C /* TypographyStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127E81A72DB90089002AED4C /* TypographyStyle.swift */; };
@@ -1085,7 +1085,7 @@
 		127D50A72DCE3F0200332973 /* EditMediaProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaProtocol.swift; sourceTree = "<group>"; };
 		127D61A230541E6700A2B141 /* CameraStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStyle.swift; sourceTree = "<group>"; };
 		127D61A73054297700A2B141 /* CameraZoomLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraZoomLevel.swift; sourceTree = "<group>"; };
-		127D61A930542AB100A2B141 /* CameraShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraShutterButton.swift; sourceTree = "<group>"; };
+		127D61A930542AB100A2B141 /* CameraCaptureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureButton.swift; sourceTree = "<group>"; };
 		127D61AB30542AF700A2B141 /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
 		127E81A22DB7C4A9002AED4C /* TextStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyleModifier.swift; sourceTree = "<group>"; };
 		127E81A72DB90089002AED4C /* TypographyStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographyStyle.swift; sourceTree = "<group>"; };
@@ -2670,7 +2670,7 @@
 				12DF971E3053047900BB8C0E /* CameraViewfinderControlsView.swift */,
 				12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */,
 				12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */,
-				127D61A930542AB100A2B141 /* CameraShutterButton.swift */,
+				127D61A930542AB100A2B141 /* CameraCaptureButton.swift */,
 				1278B66427EB9C1400C9AC4D /* CameraView.swift */,
 				12776A8F27BA742700CDC5DC /* CameraControlsView.swift */,
 				1289B45728B63187005DA687 /* RotationViewModifier.swift */,
@@ -4877,7 +4877,7 @@
 				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* TellaServerDraftView.swift in Sources */,
-				127D61AA30542AB400A2B141 /* CameraShutterButton.swift in Sources */,
+				127D61AA30542AB400A2B141 /* CameraCaptureButton.swift in Sources */,
 				15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */,
 				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
