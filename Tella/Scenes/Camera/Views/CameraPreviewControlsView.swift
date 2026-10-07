@@ -48,11 +48,11 @@ struct CameraPreviewControlsView: View {
                         onSelectZoomLevel(level)
                     } label: {
                         zoomLevelPill(for: level)
-                            .padding(.all, .tiny)
+                            .frame(width: .mediumIconSize,
+                                   height: .mediumIconSize)
                     }
                 }
             }
-            .contentShape(Rectangle())
         }
     }
     
@@ -68,7 +68,7 @@ struct CameraPreviewControlsView: View {
                           alignment: .center,
                           color: isActive ? Styles.Colors.backgroundGrey1 : .white)
         .rotate(rotation)
-        .frame(width: .smallMediumIconSize, height: .smallMediumIconSize)
+        .frame(width: .smallIconSize, height: .smallIconSize)
         .background(Capsule().fill(isActive ? Styles.Colors.grey1
                                    : Styles.Colors.backgroundGrey2))
     }
@@ -76,9 +76,11 @@ struct CameraPreviewControlsView: View {
     private var moreOptionsButton: some View {
         Button(action: onMoreOptions) {
             Image(.cameraMoreGrid)
-                .frame(width: .smallMediumIconSize, height: .smallMediumIconSize)
+                .frame(width: .smallIconSize, height: .smallIconSize)
                 .background(Circle().fill(Styles.Colors.backgroundGrey2))
-                .padding(.all, .tiny)
+                .frame(width: .mediumIconSize,
+                       height: .mediumIconSize)
+            
         }
         .rotate(rotation)
     }
@@ -88,10 +90,10 @@ struct CameraPreviewControlsView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 40) {
             CameraPreviewControlsView(zoomLevels: [CameraZoomLevel(factor: 0.5),
-                                                  CameraZoomLevel(factor: 1),
-                                                  CameraZoomLevel(factor: 2)],
+                                                   CameraZoomLevel(factor: 1),
+                                                   CameraZoomLevel(factor: 2)],
                                       zoomFactor: 1,
-                                      isRecording: true,
+                                      isRecording: false,
                                       onSelectZoomLevel: { _ in },
                                       onMoreOptions: {})
         }
