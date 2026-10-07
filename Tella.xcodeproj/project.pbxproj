@@ -470,6 +470,10 @@
 		12D39B542F198BD40065EACD /* OnboardingContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39B532F198B9E0065EACD /* OnboardingContent.swift */; };
 		12D47AF52F33B1BB002C4078 /* SameNetworkBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D47AF42F33B1BB002C4078 /* SameNetworkBottomSheet.swift */; };
 		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
+		12D53D30307676CF007FC4DF /* CameraMoreActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D53D2F307676CD007FC4DF /* CameraMoreActionsView.swift */; };
+		12D53D3230767F39007FC4DF /* CameraFlashOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D53D3130767F37007FC4DF /* CameraFlashOptionsView.swift */; };
+		12D53D3530767F61007FC4DF /* CameraAspectOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D53D3430767F60007FC4DF /* CameraAspectOptionsView.swift */; };
+		12D53D3730767F9C007FC4DF /* CameraOptionsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D53D3630767F9B007FC4DF /* CameraOptionsCard.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
 		12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9212D11AADA008C206E /* QuickDeleteView.swift */; };
@@ -1274,6 +1278,10 @@
 		12D39B532F198B9E0065EACD /* OnboardingContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContent.swift; sourceTree = "<group>"; };
 		12D47AF42F33B1BB002C4078 /* SameNetworkBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameNetworkBottomSheet.swift; sourceTree = "<group>"; };
 		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
+		12D53D2F307676CD007FC4DF /* CameraMoreActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMoreActionsView.swift; sourceTree = "<group>"; };
+		12D53D3130767F37007FC4DF /* CameraFlashOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFlashOptionsView.swift; sourceTree = "<group>"; };
+		12D53D3430767F60007FC4DF /* CameraAspectOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAspectOptionsView.swift; sourceTree = "<group>"; };
+		12D53D3630767F9B007FC4DF /* CameraOptionsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOptionsCard.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
 		12D9A9212D11AADA008C206E /* QuickDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDeleteView.swift; sourceTree = "<group>"; };
@@ -2668,6 +2676,10 @@
 			isa = PBXGroup;
 			children = (
 				12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */,
+				12D53D2F307676CD007FC4DF /* CameraMoreActionsView.swift */,
+				12D53D3130767F37007FC4DF /* CameraFlashOptionsView.swift */,
+				12D53D3430767F60007FC4DF /* CameraAspectOptionsView.swift */,
+				12D53D3630767F9B007FC4DF /* CameraOptionsCard.swift */,
 				12DF97223053121700BB8C0E /* CameraModeSelectorView.swift */,
 				12DF97243053263D00BB8C0E /* CameraGalleryButton.swift */,
 				127D61A930542AB100A2B141 /* CameraCaptureButton.swift */,
@@ -4279,9 +4291,11 @@
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */,
+				12D53D3530767F61007FC4DF /* CameraAspectOptionsView.swift in Sources */,
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				12DF97233053121900BB8C0E /* CameraModeSelectorView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
+				12D53D3730767F9C007FC4DF /* CameraOptionsCard.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
@@ -4712,9 +4726,11 @@
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
+				12D53D3230767F39007FC4DF /* CameraFlashOptionsView.swift in Sources */,
 				20A8BBBA2D6F4830009D52AF /* AddFileCameraView.swift in Sources */,
 				12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */,
 				127D61A83054297A00A2B141 /* CameraZoomLevel.swift in Sources */,
+				A1F2E3F93054C10000C0FF20 /* CameraAspectRatio.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
@@ -4982,6 +4998,7 @@
 				122389BE293698010058593B /* ConnectionsView.swift in Sources */,
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				127767502FF3E7E200849289 /* NearbySharingConfig.swift in Sources */,
+				12D53D30307676CF007FC4DF /* CameraMoreActionsView.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
 				20AA1F9C2D5F38A20092810B /* RecipientFileTransferView.swift in Sources */,

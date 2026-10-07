@@ -156,6 +156,7 @@
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
 "Camera_MoreAction_Aspect" = "Aspect";
+"Camera_Aspect_Full" = "Full";
 "Camera_Flash_Off" = "Off";
 "Camera_Flash_On" = "On";
 "Camera_Flash_Auto" = "Auto";
