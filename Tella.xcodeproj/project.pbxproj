@@ -479,6 +479,9 @@
 		12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9212D11AADA008C206E /* QuickDeleteView.swift */; };
 		12D9A9242D11F78F008C206E /* LimitedAccessPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */; };
 		12D9A9262D121789008C206E /* CardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9252D121789008C206E /* CardButtonView.swift */; };
+		12DC53C630797B0600165C25 /* CameraHeaderControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC53C530797B0400165C25 /* CameraHeaderControlsView.swift */; };
+		12DC53C830797B6200165C25 /* CameraCaptureControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC53C730797B6000165C25 /* CameraCaptureControlsView.swift */; };
+		12DC53CA307981F800165C25 /* CameraViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC53C9307981F400165C25 /* CameraViewModifiers.swift */; };
 		12DE98012F1ADAE9004436CC /* ServerConnectedSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */; };
 		12DE98032F1ADB77004436CC /* NextBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE98022F1ADB77004436CC /* NextBottomView.swift */; };
 		12DF971F3053047B00BB8C0E /* CameraPreviewControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */; };
@@ -1287,6 +1290,9 @@
 		12D9A9212D11AADA008C206E /* QuickDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDeleteView.swift; sourceTree = "<group>"; };
 		12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoView.swift; sourceTree = "<group>"; };
 		12D9A9252D121789008C206E /* CardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonView.swift; sourceTree = "<group>"; };
+		12DC53C530797B0400165C25 /* CameraHeaderControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHeaderControlsView.swift; sourceTree = "<group>"; };
+		12DC53C730797B6000165C25 /* CameraCaptureControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureControlsView.swift; sourceTree = "<group>"; };
+		12DC53C9307981F400165C25 /* CameraViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModifiers.swift; sourceTree = "<group>"; };
 		12DE98002F1ADAE9004436CC /* ServerConnectedSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectedSuccessView.swift; sourceTree = "<group>"; };
 		12DE98022F1ADB77004436CC /* NextBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBottomView.swift; sourceTree = "<group>"; };
 		12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewControlsView.swift; sourceTree = "<group>"; };
@@ -2685,6 +2691,9 @@
 				127D61A930542AB100A2B141 /* CameraCaptureButton.swift */,
 				1278B66427EB9C1400C9AC4D /* CameraView.swift */,
 				12776A8F27BA742700CDC5DC /* CameraControlsView.swift */,
+				12DC53C530797B0400165C25 /* CameraHeaderControlsView.swift */,
+				12DC53C730797B6000165C25 /* CameraCaptureControlsView.swift */,
+				12DC53C9307981F400165C25 /* CameraViewModifiers.swift */,
 				1289B45728B63187005DA687 /* RotationViewModifier.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
 				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
@@ -4457,6 +4466,7 @@
 				1244141927E35D120037D469 /* VaultFileImages.swift in Sources */,
 				121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
+				12DC53C630797B0600165C25 /* CameraHeaderControlsView.swift in Sources */,
 				12D39B4F2F194CA30065EACD /* CGFloat+Extension.swift in Sources */,
 				12A6B9872F34ACB5005C0E70 /* AttributedString+Extension.swift in Sources */,
 				D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */,
@@ -4731,6 +4741,7 @@
 				12E9713F2E97CC5B00A87531 /* ControlledPager.swift in Sources */,
 				127D61A83054297A00A2B141 /* CameraZoomLevel.swift in Sources */,
 				A1F2E3F93054C10000C0FF20 /* CameraAspectRatio.swift in Sources */,
+				12DC53C830797B6200165C25 /* CameraCaptureControlsView.swift in Sources */,
 				20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
@@ -4986,6 +4997,7 @@
 				123CBB022DEF34660030A9BD /* HTTPRequest.swift in Sources */,
 				209107F72D53BA7800808BCF /* SenderConnectToDeviceManuallyView.swift in Sources */,
 				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
+				12DC53CA307981F800165C25 /* CameraViewModifiers.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				127E9BD93048D72B0054DDEE /* CameraGridOverlayView.swift in Sources */,
