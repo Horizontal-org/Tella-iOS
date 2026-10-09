@@ -28,18 +28,17 @@ struct CameraCaptureButton: View {
         Button(action: capture) {
             ZStack {
                 Circle()
-                    .strokeBorder(Color.white.opacity(0.4), lineWidth: 2)
+                    .strokeBorder(Color.white.opacity(0.4), lineWidth: 2.35)
                 
                 RoundedRectangle(cornerRadius: innerCornerRadius, style: .continuous)
                     .fill(innerColor)
                     .frame(width: innerDiameter, height: innerDiameter)
                     .scaleEffect(innerScale)
             }
-            .frame(width: .largeIconSize,
-                   height: .largeIconSize)
+            .frame(width: .extraLargeIconSize,
+                   height: .extraLargeIconSize)
             .contentShape(Circle())
         }
-        .buttonStyle(.plain)
         .animation(.easeInOut(duration: CameraStyle.Animations.recording), value: mode)
         .onChange(of: mode) { _ in resetPulse() }
         .onDisappear(perform: resetPulse)
@@ -47,14 +46,14 @@ struct CameraCaptureButton: View {
     
     private var innerDiameter: CGFloat {
         mode == .recording
-        ? .smallMediumIconSize
-        : .extraMediumIconSize
+        ? .smallIconSize
+        : .mediumLargeIconSize
     }
     
     private var innerCornerRadius: CGFloat {
         mode == .recording
         ? .tinyCornerRadius
-        : .extraMediumIconSize / 2
+        : .mediumLargeIconSize / 2
     }
     
     private var innerColor: Color {
@@ -65,7 +64,7 @@ struct CameraCaptureButton: View {
         action()
         
         guard mode == .photo else { return }
-
+        
         let currentPulseID = UUID()
         pulseID = currentPulseID
         
@@ -80,7 +79,7 @@ struct CameraCaptureButton: View {
             }
         }
     }
-
+    
     private func resetPulse() {
         pulseID = UUID()
         withoutAnimation {
