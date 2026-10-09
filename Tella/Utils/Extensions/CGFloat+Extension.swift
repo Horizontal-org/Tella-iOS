@@ -32,23 +32,29 @@ extension CGFloat {
 
     static let large: CGFloat = 32
 
+    static let mediumlarge: CGFloat = 40
+
     static let extraLarge: CGFloat = 48
 
     static let doubleLarge: CGFloat = 64
     
     static let borderWidth: CGFloat = 1
     
-    static let largeIconSize: CGFloat = 60
+    static let extraLargeIconSize: CGFloat = 60
 
-    static let extraMediumIconSize: CGFloat = 45
+    static let largeIconSize: CGFloat = 56
+
+    static let mediumLargeIconSize: CGFloat = 45
 
     static let mediumIconSize: CGFloat = 40
     
-    static let smallMediumIconSize: CGFloat = 28
+    static let smallMediumIconSize: CGFloat = 32
 
-    static let smallIconSize: CGFloat = 24
+    static let smallIconSize: CGFloat = 28
+
+    static let extraSmallIconSize: CGFloat = 24
     
-    static let extraSmallIconSize: CGFloat = 10
+    static let tinyIconSize: CGFloat = 10
 
     static let tinyCornerRadius: CGFloat = 5
 
