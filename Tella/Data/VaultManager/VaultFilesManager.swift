@@ -316,6 +316,10 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
+
+    func getLatestPhotoVideoFile() -> VaultFileDB? {
+        vaultDataBase.getLatestPhotoVideoFile()
+    }
     
     func getVaultFile(vaultFilesFolders: [VaultFileDB]) -> [VaultFileDB] {
         var resultFiles: [VaultFileDB] = []

@@ -18,10 +18,10 @@ enum CameraPermissionOutcome {
 
 enum CameraPermissionHandler {
     
-    static func check(completion: @escaping (CameraPermissionOutcome) -> Void) {
+    static func check(for cameraType: CameraType, completion: @escaping (CameraPermissionOutcome) -> Void) {
         DispatchQueue.main.async {
             checkPermission(for: .video) { outcome in
-                guard outcome == .authorized else {
+                guard outcome == .authorized, cameraType == .video else {
                     completion(outcome)
                     return
                 }

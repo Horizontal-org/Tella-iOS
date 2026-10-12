@@ -276,7 +276,6 @@
 		1276B73F2E1EA8F10024C38A /* FileReceivingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */; };
 		127767502FF3E7E200849289 /* NearbySharingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1277674F2FF3E7DE00849289 /* NearbySharingConfig.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
-		12776A9527BA761C00CDC5DC /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CameraService.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
 		12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */; };
 		12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEFD547268943CC0014EADE /* DocumentPickerView.swift */; };
@@ -416,6 +415,10 @@
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12A9ECD72D9F3FC800711BA4 /* SenderPrepareFileTransferVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
+		12AA5DF0307D17420005C48F /* CameraSessionConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DEF307D173E0005C48F /* CameraSessionConfigurator.swift */; };
+		12AA5DF2307D17B30005C48F /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF1307D17B10005C48F /* CameraService.swift */; };
+		12AA5DF4307D3BEF0005C48F /* CameraPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */; };
+		12AA5DF6307D3C0B0005C48F /* CameraVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */; };
 		12AAB1122E5FACE0007300CE /* NonceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAB1112E5FACE0007300CE /* NonceManager.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
@@ -647,9 +650,6 @@
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
 		20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */; };
 		20FA030D2CD282C3001121F1 /* TrimMediaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */; };
-		A1F2E3D73054800100C0FF02 /* CameraSessionConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2E3D63054800100C0FF02 /* CameraSessionConfigurator.swift */; };
-		A1F2E3DB3054800100C0FF04 /* CameraPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2E3DA3054800100C0FF04 /* CameraPhotoCapture.swift */; };
-		A1F2E3DD3054800100C0FF05 /* CameraVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2E3DC3054800100C0FF05 /* CameraVideoCapture.swift */; };
 		C0FFEE000000000000000021 /* SQLCipher in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000011 /* SQLCipher */; };
 		C0FFEE000000000000000022 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000012 /* ZIPFoundation */; };
 		C0FFEE000000000000000023 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000013 /* GoogleSignIn */; };
@@ -1080,7 +1080,6 @@
 		1276B73E2E1EA8F10024C38A /* FileReceivingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReceivingView.swift; sourceTree = "<group>"; };
 		1277674F2FF3E7DE00849289 /* NearbySharingConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbySharingConfig.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
-		12776A9427BA761C00CDC5DC /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTypeEnum.swift; sourceTree = "<group>"; };
 		12782B492B8400E500B5BC36 /* Cryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
@@ -1233,6 +1232,10 @@
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12A9ECD62D9F3FC300711BA4 /* SenderPrepareFileTransferVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderPrepareFileTransferVM.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		12AA5DEF307D173E0005C48F /* CameraSessionConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSessionConfigurator.swift; sourceTree = "<group>"; };
+		12AA5DF1307D17B10005C48F /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhotoCapture.swift; sourceTree = "<group>"; };
+		12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVideoCapture.swift; sourceTree = "<group>"; };
 		12AAB1112E5FACE0007300CE /* NonceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceManager.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
@@ -1464,9 +1467,6 @@
 		20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFileCancelBottomSheet.swift; sourceTree = "<group>"; };
 		20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimMediaSliderView.swift; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		A1F2E3D63054800100C0FF02 /* CameraSessionConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSessionConfigurator.swift; sourceTree = "<group>"; };
-		A1F2E3DA3054800100C0FF04 /* CameraPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhotoCapture.swift; sourceTree = "<group>"; };
-		A1F2E3DC3054800100C0FF05 /* CameraVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVideoCapture.swift; sourceTree = "<group>"; };
 		CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplateVM.swift; sourceTree = "<group>"; };
 		CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatePicker.swift; sourceTree = "<group>"; };
@@ -3651,12 +3651,12 @@
 		A1F2E3DE3054800100C0FF06 /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				12776A9427BA761C00CDC5DC /* CameraService.swift */,
+				12AA5DF1307D17B10005C48F /* CameraService.swift */,
 				12DC53CF307991A200165C25 /* CameraPermissionHandler.swift */,
-				A1F2E3D63054800100C0FF02 /* CameraSessionConfigurator.swift */,
+				12AA5DEF307D173E0005C48F /* CameraSessionConfigurator.swift */,
 				12DC53CD3079914000165C25 /* CameraFlashController.swift */,
-				A1F2E3DA3054800100C0FF04 /* CameraPhotoCapture.swift */,
-				A1F2E3DC3054800100C0FF05 /* CameraVideoCapture.swift */,
+				12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */,
+				12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */,
 				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
 			);
 			path = Capture;
@@ -4363,7 +4363,6 @@
 				157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */,
 				1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */,
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
-				12776A9527BA761C00CDC5DC /* CameraService.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */,
@@ -4467,6 +4466,7 @@
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				12782B4A2B8400E500B5BC36 /* Cryptor.swift in Sources */,
 				1293F6702AD8295400F6CFBD /* BorderedTextEditorView.swift in Sources */,
+				12AA5DF6307D3C0B0005C48F /* CameraVideoCapture.swift in Sources */,
 				1293F6712AD8295500F6CFBD /* BorderedTextFieldView.swift in Sources */,
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */,
@@ -4613,6 +4613,7 @@
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
+				12AA5DF0307D17420005C48F /* CameraSessionConfigurator.swift in Sources */,
 				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
 				1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */,
 				209AC67F2C2D660600492356 /* NextcloudServerViewModel.swift in Sources */,
@@ -4773,6 +4774,7 @@
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
 				125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
+				12AA5DF4307D3BEF0005C48F /* CameraPhotoCapture.swift in Sources */,
 				153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */,
 				20E4DA832C36E8CF00123843 /* ServerCreateFolderViewModel.swift in Sources */,
 				12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */,
@@ -4800,10 +4802,7 @@
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
 				126C862B30267EC700DDE7D4 /* CameraZoomController.swift in Sources */,
-				A1F2E3D73054800100C0FF02 /* CameraSessionConfigurator.swift in Sources */,
-				A1F2E3DB3054800100C0FF04 /* CameraPhotoCapture.swift in Sources */,
 				12DC53D0307991A300165C25 /* CameraPermissionHandler.swift in Sources */,
-				A1F2E3DD3054800100C0FF05 /* CameraVideoCapture.swift in Sources */,
 				125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
@@ -4875,6 +4874,7 @@
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */,
 				15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */,
+				12AA5DF2307D17B30005C48F /* CameraService.swift in Sources */,
 				15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
