@@ -66,6 +66,7 @@ struct CameraControlsView: View {
                        value: previewAspectRatio)
         }
         .background(Styles.Colors.backgroundGrey1.ignoresSafeArea())
+        .buttonStyle(.plain)
         .disabled(viewModel.isRecordingTransitioning)
         .onAppear {
             orientationHelper.startDeviceOrientationNotifier()

@@ -26,18 +26,16 @@ struct CameraCaptureButton: View {
     
     var body: some View {
         Button(action: capture) {
-            ZStack {
-                Circle()
-                    .strokeBorder(Color.white.opacity(0.4), lineWidth: 2.35)
-                
-                RoundedRectangle(cornerRadius: innerCornerRadius, style: .continuous)
-                    .fill(innerColor)
-                    .frame(width: innerDiameter, height: innerDiameter)
-                    .scaleEffect(innerScale)
-            }
-            .frame(width: .extraLargeIconSize,
-                   height: .extraLargeIconSize)
-            .contentShape(Circle())
+            RoundedRectangle(cornerRadius: innerCornerRadius, style: .continuous)
+                .fill(innerColor)
+                .frame(width: innerDiameter, height: innerDiameter)
+                .scaleEffect(innerScale)
+                .frame(width: .extraLargeIconSize,
+                       height: .extraLargeIconSize)
+                .background(Styles.Colors.backgroundGrey1.opacity(0.55))
+                .clipShape(Circle())
+                .overlay(Circle().strokeBorder(Color.white, lineWidth: 2.35))
+            
         }
         .animation(.easeInOut(duration: CameraStyle.Animations.recording), value: mode)
         .onChange(of: mode) { _ in resetPulse() }

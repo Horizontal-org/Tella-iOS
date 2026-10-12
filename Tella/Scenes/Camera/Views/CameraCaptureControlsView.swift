@@ -44,6 +44,7 @@ struct CameraCaptureControlsView: View {
             Image(.cameraFlipCamera)
                 .frame(width: .mediumIconSize,
                        height: .mediumIconSize)
+                .background(Styles.Colors.backgroundGrey1.opacity(0.55))
                 .clipShape(Circle())
                 .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
         }
