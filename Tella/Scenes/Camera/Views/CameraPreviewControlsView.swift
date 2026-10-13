@@ -14,6 +14,7 @@ struct CameraPreviewControlsView: View {
     let zoomLevels: [CameraZoomLevel]
     let zoomFactor: CGFloat
     let isRecording: Bool
+    var isFlipping: Bool = false
     var rotation = CameraControlRotation()
     let onSelectZoomLevel: (CameraZoomLevel) -> Void
     let onMoreOptions: () -> Void
@@ -53,6 +54,9 @@ struct CameraPreviewControlsView: View {
                     }
                 }
             }
+            .opacity(isFlipping ? 0 : 1)
+            .animation(.easeInOut(duration: CameraStyle.Animations.cameraFlip),
+                       value: isFlipping)
         }
     }
     

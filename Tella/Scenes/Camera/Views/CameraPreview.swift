@@ -12,6 +12,7 @@ struct CameraPreview: UIViewRepresentable {
     
     let session: AVCaptureSession
     let gridIsOn: Bool
+    var isFlipping: Bool = false
     var onZoomBegan: (() -> Void)? = nil
     var onZoomChanged: ((CGFloat) -> Void)? = nil
     var onSwipe: ((CameraSwipeDirection) -> Void)? = nil
@@ -65,7 +66,18 @@ struct CameraPreview: UIViewRepresentable {
             if previewLayer.session !== session {
                 previewLayer.session = session
             }
-            updatePreviewOrientation()
+            updatePreviewConnection()
+        }
+        
+        func playFlipTransition() {
+            let clips = clipsToBounds
+            clipsToBounds = false
+            UIView.transition(with: self,
+                              duration: CameraStyle.Animations.cameraFlip,
+                              options: [.transitionFlipFromLeft, .allowAnimatedContent]) {
+            } completion: { _ in
+                self.clipsToBounds = clips
+            }
         }
         
         func updateGestureAvailability() {
@@ -94,14 +106,18 @@ struct CameraPreview: UIViewRepresentable {
             super.layoutSubviews()
             
             gridOverlay.frame = bounds
-            updatePreviewOrientation()
+            updatePreviewConnection()
         }
         
-        private func updatePreviewOrientation() {
-            guard let connection = previewLayer.connection,
-                  connection.isVideoOrientationSupported,
-                  connection.videoOrientation != .portrait else { return }
-            connection.videoOrientation = .portrait
+        private func updatePreviewConnection() {
+            guard let connection = previewLayer.connection else { return }
+            if connection.isVideoOrientationSupported, connection.videoOrientation != .portrait {
+                connection.videoOrientation = .portrait
+            }
+            // Keep automatic mirroring so the front camera stays mirrored after a flip.
+            if connection.isVideoMirroringSupported {
+                connection.automaticallyAdjustsVideoMirroring = true
+            }
         }
         
         @objc private func handleTap() {
@@ -132,14 +148,27 @@ struct CameraPreview: UIViewRepresentable {
         }
     }
     
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
     func makeUIView(context: Context) -> VideoPreviewView {
         let view = VideoPreviewView()
+        context.coordinator.isFlipping = isFlipping
         updatePreview(view, isEnabled: context.environment.isEnabled)
         return view
     }
     
     func updateUIView(_ uiView: VideoPreviewView, context: Context) {
         updatePreview(uiView, isEnabled: context.environment.isEnabled)
+        if isFlipping, !context.coordinator.isFlipping {
+            uiView.playFlipTransition()
+        }
+        context.coordinator.isFlipping = isFlipping
+    }
+    
+    final class Coordinator {
+        var isFlipping = false
     }
     
     static func dismantleUIView(_ uiView: VideoPreviewView, coordinator: Coordinator) {
@@ -147,7 +176,7 @@ struct CameraPreview: UIViewRepresentable {
     }
     
     private func updatePreview(_ view: VideoPreviewView, isEnabled: Bool) {
-        view.isUserInteractionEnabled = isEnabled
+        view.isUserInteractionEnabled = isEnabled && !isFlipping
         view.configurePreview(session: session)
         view.gridOverlay.isHidden = !gridIsOn
         view.onZoomBegan = onZoomBegan

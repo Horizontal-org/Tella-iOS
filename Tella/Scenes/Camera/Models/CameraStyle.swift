@@ -30,6 +30,9 @@ struct CameraStyle {
         /// Cropping the viewfinder between photo aspect ratios, matching the system Camera app.
         static let aspectRatio: TimeInterval = 0.35
         
+        /// Covering the front/back input swap, matching the system Camera app.
+        static let cameraFlip: TimeInterval = 0.4
+        
         static let recording: TimeInterval = 0.2
         
         static let moreActions: TimeInterval = 0.2

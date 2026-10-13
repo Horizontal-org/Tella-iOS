@@ -68,6 +68,7 @@ struct CameraControlsView: View {
         .background(Styles.Colors.backgroundGrey1.ignoresSafeArea())
         .buttonStyle(.plain)
         .disabled(viewModel.isRecordingTransitioning)
+        .allowsHitTesting(!viewModel.isFlippingCamera)
         .onAppear {
             orientationHelper.startDeviceOrientationNotifier()
         }
@@ -102,11 +103,13 @@ struct CameraControlsView: View {
     private var cameraPreview: some View {
         CameraPreview(session: viewModel.session,
                       gridIsOn: viewModel.gridIsOn,
+                      isFlipping: viewModel.isFlippingCamera,
                       onZoomBegan: viewModel.startZoom,
                       onZoomChanged: viewModel.zoom,
                       onSwipe: { direction in
             viewModel.selectCameraType(direction.cameraType)
         }, onTap: viewModel.hideMenu)
+        .cameraFlipBlur(viewModel.isFlippingCamera)
     }
     
     // MARK: - Header controls
@@ -201,6 +204,7 @@ struct CameraControlsView: View {
         CameraPreviewControlsView(zoomLevels: viewModel.availableZoomLevels,
                                   zoomFactor: viewModel.currentZoomFactor,
                                   isRecording: viewModel.cameraState.isRecording,
+                                  isFlipping: viewModel.isFlippingCamera,
                                   rotation: rotation,
                                   onSelectZoomLevel: viewModel.setZoom,
                                   onMoreOptions: viewModel.toggleMoreActions)

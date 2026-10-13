@@ -23,7 +23,7 @@ enum CameraSessionConfigurator {
     static func addCameraInput(position: AVCaptureDevice.Position, to session: AVCaptureSession) -> Bool {
         guard let input = makeCameraInput(position: position),
               session.canAddInput(input) else { return false }
-
+        
         session.addInput(input)
         return true
     }
@@ -61,16 +61,18 @@ enum CameraSessionConfigurator {
         session.sessionPreset = preset
     }
     
+    /// Prepares the other camera before locking the session, then swaps the input in one
+    /// configuration commit so the preview is not held frozen while the device is looked up.
     @discardableResult
     static func toggleCamera(in session: AVCaptureSession) -> Bool {
-        guard let currentInput = videoInput(in: session),
-              let newInput = makeCameraInput(position: currentInput.device.position == .back ? .front : .back)
-        else { return false }
-
+        guard let currentInput = videoInput(in: session) else { return false }
+        let newPosition: AVCaptureDevice.Position = currentInput.device.position == .back ? .front : .back
+        guard let newInput = makeCameraInput(position: newPosition) else { return false }
+        
         session.beginConfiguration()
         defer { session.commitConfiguration() }
         session.removeInput(currentInput)
-
+        
         if session.canAddInput(newInput) {
             session.addInput(newInput)
             return true

@@ -213,18 +213,19 @@ extension CameraService {
     
     // MARK: - Camera controls
     
-    func toggleCameraPosition() {
+    func toggleCameraPosition() async {
         guard isCameraActive, recordingState == .idle else { return }
-        sessionQueue.async {
-            guard self.isSessionActive, self.sessionRecordingState == .idle else { return }
-            CameraFlashController.turnOffTorch(device: self.inputCamera)
-            guard CameraSessionConfigurator.toggleCamera(in: self.captureSession) else {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            sessionQueue.async {
+                defer { continuation.resume() }
+                guard self.isSessionActive, self.sessionRecordingState == .idle else { return }
+                CameraFlashController.turnOffTorch(device: self.inputCamera)
+                if CameraSessionConfigurator.toggleCamera(in: self.captureSession) {
+                    self.photoCapture.applyResolution(device: self.inputCamera)
+                    self.updateCameraControls(resetZoom: true)
+                }
                 self.updateFlashMode()
-                return
             }
-            self.photoCapture.applyResolution(device: self.inputCamera)
-            self.updateCameraControls(resetZoom: true)
-            self.updateFlashMode()
         }
     }
     

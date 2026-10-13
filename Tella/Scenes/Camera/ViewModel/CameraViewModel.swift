@@ -14,85 +14,86 @@ struct CameraStatusChipState: Equatable {
 }
 
 class CameraViewModel: ObservableObject {
-
+    
     // MARK: - Context and bindings
-
+    
     var mainAppModel: MainAppModel
     var rootFile: VaultFileDB?
     var sourceView: SourceView
     var resultFile: Binding<[VaultFileDB]?>?
     var showingCameraView: Binding<Bool>
-
+    
     // MARK: - Capture state
-
+    
     @Published var lastImageOrVideoVaultFile: VaultFileDB?
     @Published var cameraState: CameraState = .readyTakingImage
     @Published private(set) var isRecordingTransitioning = false
+    @Published private(set) var isFlippingCamera = false
     @Published var formattedCurrentTime: String = "00:00:00"
     @Published var currentTime: TimeInterval = 0.0
-
+    
     // MARK: - Capture options
-
+    
     @Published var gridIsOn: Bool = false
     @Published var photoAspectRatio: CameraAspectRatio = .threeByFour
     @Published var flashMode: CameraFlashMode = .off
     @Published var isFlashAvailable = false
     @Published var currentZoomFactor: CGFloat = 1.0
     @Published var availableZoomLevels: [CameraZoomLevel] = []
-
+    
     // MARK: - Menu state
-
+    
     @Published var showingMoreActions: Bool = false
     @Published var showingFlashOptions: Bool = false
     @Published var showingAspectOptions: Bool = false
-
+    
     // MARK: - Presentation state
-
+    
     @Published var progressFile: ProgressFile = ProgressFile()
     @Published var shouldShowToast: Bool = false
     @Published var shouldShowPermission: Bool = false
     @Published var shouldPresentProgressView: Bool = false
     @Published var statusChip: CameraStatusChipState?
     var errorMessage: String = ""
-
+    
     // MARK: - Computed properties
-
+    
     var session: AVCaptureSession {
         service.captureSession
     }
-
+    
     var shouldShowProgressView: Bool {
         resultFile != nil
     }
-
+    
     var aspectRatioTitle: String {
         photoAspectRatio.title
     }
-
+    
     var videoResolutionTitle: String {
         "HD"
     }
-
+    
     // MARK: - Dependencies
-
+    
     private let service: CameraService
     private let mediaImporter: CameraMediaImporter
-
+    
     // MARK: - Private state
-
+    
     private var cancellable: Set<AnyCancellable> = []
     private var timer = Timer()
     private var recordingStartedAt: Date?
     private var statusChipHideWorkItem: DispatchWorkItem?
-
+    
     // MARK: - Initialization
-
+    
     init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB?,
          resultFile: Binding<[VaultFileDB]?>? = nil,
          sourceView: SourceView,
          showingCameraView: Binding<Bool> = .constant(false)) {
-
+        
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         self.resultFile = resultFile
@@ -103,26 +104,26 @@ class CameraViewModel: ObservableObject {
                                                  rootFile: rootFile,
                                                  resultFile: resultFile,
                                                  sourceView: sourceView)
-
+        
         updateLastItem()
         configureMediaImporter()
         listenToShouldReloadFiles()
         listenToCameraService()
         listenToAppLifecycle()
     }
-
+    
     // MARK: - Camera lifecycle
-
+    
     func configure() {
         service.shouldPreserveMetadata = mainAppModel.settings.preserveMetadata
         service.resumeOrSetupCaptureSession()
     }
-
+    
     func stopRunningCaptureSession() {
         invalidateTimerRunning()
         service.stopRunningCaptureSession()
     }
-
+    
     func dismissCamera() {
         hideMenu()
         stopRunningCaptureSession()
@@ -132,11 +133,11 @@ class CameraViewModel: ObservableObject {
             showingCameraView.wrappedValue = false
         }
     }
-
+    
     private func handleForcedClose() {
         dismissCamera()
     }
-
+    
     /// The lock tears this screen down and sweeps the temp directory right after, so nothing
     /// from the camera should still be in flight: a pending photo is dropped and a recording
     /// is discarded instead of being saved.
@@ -144,9 +145,9 @@ class CameraViewModel: ObservableObject {
         invalidateTimerRunning()
         service.discardCaptures()
     }
-
+    
     // MARK: - Capture requests
-
+    
     /// The suspended task holds the service and importer, so the photo is saved even if this
     /// model is released before the capture is delivered.
     func capturePhoto() {
@@ -166,7 +167,7 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
-
+    
     /// The task holds the service until the recording ends,
     /// so a video also survives closing the camera mid-recording.
     func startRecordingVideo() {
@@ -186,49 +187,55 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
-
+    
     func stopRecordingVideo() {
         hideMenu()
         service.stopRecordingVideo()
     }
-
+    
     // MARK: - Camera controls
-
+    
     func selectCameraType(_ cameraType: CameraType) {
         guard !cameraState.isRecording, !isRecordingTransitioning,
               cameraState.cameraType != cameraType else { return }
-
+        
         hideMenu()
         withAnimation(.easeInOut(duration: CameraStyle.Animations.modeChange)) {
             cameraState = CameraState(cameraType: cameraType)
         }
-
+        
         service.cameraType = cameraType
     }
-
+    
     func toggleCameraPosition() {
+        guard !isFlippingCamera, !cameraState.isRecording, !isRecordingTransitioning else { return }
         hideMenu()
-        service.toggleCameraPosition()
+        isFlippingCamera = true
+        let service = service
+        Task { @MainActor [weak self] in
+            await service.toggleCameraPosition()
+            self?.isFlippingCamera = false
+        }
     }
-
+    
     // MARK: - Zoom controls
-
+    
     func startZoom() {
         hideMenu()
         service.startZoom()
     }
-
+    
     func zoom(by pinchScale: CGFloat) {
         service.zoom(by: pinchScale)
     }
-
+    
     func setZoom(to level: CameraZoomLevel) {
         hideMenu()
         service.setZoom(to: level)
     }
-
+    
     // MARK: - More actions
-
+    
     func toggleMoreActions() {
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
             showingFlashOptions = false
@@ -236,38 +243,38 @@ class CameraViewModel: ObservableObject {
             showingMoreActions.toggle()
         }
     }
-
+    
     func hideMoreActions() {
         guard showingMoreActions else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
             showingMoreActions = false
         }
     }
-
+    
     func hideMenu() {
         hideMoreActions()
         hideFlashOptions()
         hideAspectOptions()
     }
-
+    
     func moreActionsAspectTapped() {
         showAspectOptions()
     }
-
+    
     func moreActionsResolutionTapped() {
         // TODO: video resolution
     }
-
+    
     func moreActionsSettingsTapped() {
         // TODO: camera settings
     }
-
+    
     // MARK: - Flash options
-
+    
     func selectFlashMode(_ mode: CameraFlashMode) {
         service.setFlashMode(mode)
     }
-
+    
     func showFlashOptions() {
         guard isFlashAvailable else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
@@ -276,14 +283,14 @@ class CameraViewModel: ObservableObject {
             showingFlashOptions = true
         }
     }
-
+    
     func hideFlashOptions() {
         guard showingFlashOptions else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
             showingFlashOptions = false
         }
     }
-
+    
     func goBackFromFlashOptions() {
         guard showingFlashOptions else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
@@ -292,16 +299,16 @@ class CameraViewModel: ObservableObject {
             showingMoreActions = true
         }
     }
-
+    
     // MARK: - Aspect ratio options
-
+    
     func selectPhotoAspectRatio(_ ratio: CameraAspectRatio) {
         guard photoAspectRatio != ratio else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.aspectRatio)) {
             photoAspectRatio = ratio
         }
     }
-
+    
     func showAspectOptions() {
         guard cameraState.cameraType == .image else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
@@ -310,14 +317,14 @@ class CameraViewModel: ObservableObject {
             showingAspectOptions = true
         }
     }
-
+    
     func hideAspectOptions() {
         guard showingAspectOptions else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
             showingAspectOptions = false
         }
     }
-
+    
     func goBackFromAspectOptions() {
         guard showingAspectOptions else { return }
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
@@ -326,27 +333,27 @@ class CameraViewModel: ObservableObject {
             showingMoreActions = true
         }
     }
-
+    
     // MARK: - Grid and status feedback
-
+    
     func toggleGrid() {
         hideMenu()
         gridIsOn.toggle()
         presentStatusChip(isOn: gridIsOn)
     }
-
+    
     private func presentStatusChip(isOn: Bool) {
         statusChipHideWorkItem?.cancel()
-
+        
         let chip = CameraStatusChipState(title: isOn
                                          ? LocalizableCamera.gridOn.localized
                                          : LocalizableCamera.gridOff.localized,
                                          isOn: isOn)
-
+        
         withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
             statusChip = chip
         }
-
+        
         let workItem = DispatchWorkItem { [weak self] in
             withAnimation(.easeInOut(duration: CameraStyle.Animations.moreActions)) {
                 self?.statusChip = nil
@@ -356,9 +363,9 @@ class CameraViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + CameraStyle.Animations.statusChip,
                                       execute: workItem)
     }
-
+    
     // MARK: - Recording timer
-
+    
     func initialiseTimerRunning() {
         invalidateTimerRunning()
         recordingStartedAt = Date()
@@ -367,22 +374,22 @@ class CameraViewModel: ObservableObject {
         }
         RunLoop.main.add(timer, forMode: .common)
     }
-
+    
     func invalidateTimerRunning() {
         timer.invalidate()
         recordingStartedAt = nil
         currentTime = 0.0
         formattedCurrentTime = currentTime.formattedAsHHMMSS()
     }
-
+    
     private func timerRunning() {
         guard let recordingStartedAt else { return }
         currentTime = Date().timeIntervalSince(recordingStartedAt)
         formattedCurrentTime = currentTime.formattedAsHHMMSS()
     }
-
+    
     // MARK: - Subscriptions
-
+    
     private func listenToCameraService() {
         // CameraService publishes recording transitions on the main queue.
         service.$recordingState
@@ -407,36 +414,36 @@ class CameraViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellable)
-
+        
         service.captureFailed
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.displayError() }
             .store(in: &cancellable)
-
+        
         service.$shouldShowPermission
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.shouldShowPermission = $0 }
             .store(in: &cancellable)
-
+        
         service.cameraCloseRequested
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.handleForcedClose()
             }
             .store(in: &cancellable)
-
+        
         service.$currentZoomFactor
             .sink { [weak self] in self?.currentZoomFactor = $0 }
             .store(in: &cancellable)
-
+        
         service.$availableZoomLevels
             .sink { [weak self] in self?.availableZoomLevels = $0 }
             .store(in: &cancellable)
-
+        
         service.$flashMode
             .sink { [weak self] in self?.flashMode = $0 }
             .store(in: &cancellable)
-
+        
         service.$isFlashAvailable
             .sink { [weak self] isAvailable in
                 self?.isFlashAvailable = isAvailable
@@ -446,7 +453,7 @@ class CameraViewModel: ObservableObject {
             }
             .store(in: &cancellable)
     }
-
+    
     private func listenToAppLifecycle() {
         // Sent on the main queue right before the app locks; handled synchronously so the
         // camera is cleared before the temp directory is swept.
@@ -455,7 +462,7 @@ class CameraViewModel: ObservableObject {
             .sink { [weak self] _ in self?.clearCamera() }
             .store(in: &cancellable)
     }
-
+    
     private func listenToShouldReloadFiles() {
         mainAppModel.vaultFilesManager?.shouldReloadFiles.sink { [weak self] shouldReloadVaultFiles in
             if shouldReloadVaultFiles {
@@ -463,17 +470,17 @@ class CameraViewModel: ObservableObject {
             }
         }.store(in: &cancellable)
     }
-
+    
     // MARK: - Gallery updates
-
+    
     private func updateLastItem() {
         DispatchQueue.main.async {
             self.lastImageOrVideoVaultFile = self.mainAppModel.vaultFilesManager?.getLatestPhotoVideoFile()
         }
     }
-
+    
     // MARK: - Import progress
-
+    
     private func configureMediaImporter() {
         mediaImporter.onProgress = { [weak self] importProgress in
             guard let self else { return }
@@ -488,7 +495,7 @@ class CameraViewModel: ObservableObject {
             self?.displayError()
         }
     }
-
+    
     private func presentProgressViewIfNeeded() {
         guard shouldShowProgressView else { return }
         if !shouldPresentProgressView {
@@ -496,9 +503,9 @@ class CameraViewModel: ObservableObject {
         }
         shouldPresentProgressView = true
     }
-
+    
     // MARK: - Error presentation
-
+    
     private func displayError() {
         shouldPresentProgressView = false
         errorMessage = LocalizableCommon.commonError.localized
