@@ -83,7 +83,6 @@ struct CameraPreview: UIViewRepresentable {
             onTap = nil
             isUserInteractionEnabled = false
             updateGestureAvailability()
-            previewLayer.session = nil
         }
         
         private func setEnabled(_ isEnabled: Bool, for gesture: UIGestureRecognizer) {

@@ -65,10 +65,6 @@ class CameraViewModel: ObservableObject {
         resultFile != nil
     }
 
-    var autoUpload: Bool {
-        sourceView != .addReportFile
-    }
-
     var aspectRatioTitle: String {
         photoAspectRatio.title
     }
@@ -79,10 +75,8 @@ class CameraViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    private let service = CameraService()
-    private let photoProcessingQueue = DispatchQueue(label: "org.tella.camera.photo-processing",
-                                                     qos: .userInitiated,
-                                                     autoreleaseFrequency: .workItem)
+    private let service: CameraService
+    private let mediaImporter: CameraMediaImporter
 
     // MARK: - Private state
 
@@ -104,8 +98,14 @@ class CameraViewModel: ObservableObject {
         self.resultFile = resultFile
         self.sourceView = sourceView
         self.showingCameraView = showingCameraView
+        self.service = CameraService()
+        self.mediaImporter = CameraMediaImporter(mainAppModel: mainAppModel,
+                                                 rootFile: rootFile,
+                                                 resultFile: resultFile,
+                                                 sourceView: sourceView)
 
         updateLastItem()
+        configureMediaImporter()
         listenToShouldReloadFiles()
         listenToCameraService()
         listenToAppLifecycle()
@@ -134,21 +134,57 @@ class CameraViewModel: ObservableObject {
     }
 
     private func handleForcedClose() {
-        mainAppModel.vaultManager.clearTmpDirectory()
         dismissCamera()
+    }
+
+    /// The lock tears this screen down and sweeps the temp directory right after, so nothing
+    /// from the camera should still be in flight: a pending photo is dropped and a recording
+    /// is discarded instead of being saved.
+    private func clearCamera() {
+        invalidateTimerRunning()
+        service.discardCaptures()
     }
 
     // MARK: - Capture requests
 
+    /// The suspended task holds the service and importer, so the photo is saved even if this
+    /// model is released before the capture is delivered.
     func capturePhoto() {
         hideMenu()
-        service.takePhoto(aspectRatio: photoAspectRatio)
+        let service = service
+        let importer = mediaImporter
+        let aspectRatio = photoAspectRatio
+        presentProgressViewIfNeeded()
+        Task { @MainActor [weak self] in
+            do {
+                let capture = try await service.takePhoto(aspectRatio: aspectRatio)
+                importer.save(capture)
+            } catch CameraService.CaptureError.cameraUnavailable, is CancellationError {
+                self?.shouldPresentProgressView = false
+            } catch {
+                self?.displayError()
+            }
+        }
     }
 
+    /// The task holds the service until the recording ends,
+    /// so a video also survives closing the camera mid-recording.
     func startRecordingVideo() {
         guard cameraState == .readyRecordingVideo, !isRecordingTransitioning else { return }
         hideMenu()
-        service.startRecordingVideo()
+        let service = service
+        let importer = mediaImporter
+        Task { @MainActor [weak self] in
+            do {
+                let recording = try await service.recordVideo()
+                self?.presentProgressViewIfNeeded()
+                importer.save(videoAt: recording.url)
+            } catch CameraService.CaptureError.cameraUnavailable, is CancellationError {
+                // Nothing was recorded, or the recording was discarded for the lock.
+            } catch {
+                self?.displayError()
+            }
+        }
     }
 
     func stopRecordingVideo() {
@@ -382,36 +418,10 @@ class CameraViewModel: ObservableObject {
             .sink { [weak self] in self?.shouldShowPermission = $0 }
             .store(in: &cancellable)
 
-        service.$shouldCloseCamera
+        service.cameraCloseRequested
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] shouldClose in
-                guard shouldClose else { return }
+            .sink { [weak self] _ in
                 self?.handleForcedClose()
-            }
-            .store(in: &cancellable)
-
-        service.$shouldShowProgressView
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] shouldShow in
-                guard let self, self.shouldShowProgressView else { return }
-                if shouldShow && !self.shouldPresentProgressView {
-                    self.progressFile = ProgressFile()
-                }
-                self.shouldPresentProgressView = shouldShow
-            }
-            .store(in: &cancellable)
-
-        service.imageCompletion
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] capture in
-                self?.saveImage(capture.photo, aspectRatio: capture.aspectRatio)
-            }
-            .store(in: &cancellable)
-
-        service.videoURLCompletion
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] url in
-                self?.saveVideo(url)
             }
             .store(in: &cancellable)
 
@@ -438,13 +448,11 @@ class CameraViewModel: ObservableObject {
     }
 
     private func listenToAppLifecycle() {
+        // Sent on the main queue right before the app locks; handled synchronously so the
+        // camera is cleared before the temp directory is swept.
         mainAppModel.$shouldSaveCurrentData
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] shouldSave in
-                guard let self, shouldSave,
-                      self.cameraState.isRecording || self.isRecordingTransitioning else { return }
-                self.stopRecordingVideo()
-            }
+            .filter { $0 }
+            .sink { [weak self] _ in self?.clearCamera() }
             .store(in: &cancellable)
     }
 
@@ -464,86 +472,29 @@ class CameraViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Media saving
+    // MARK: - Import progress
 
-    private func saveImage(_ capturePhoto: AVCapturePhoto, aspectRatio: CGFloat) {
-        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
-        let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
-        // Preparing the HEIC is synchronous; the vault import already handles its own background work.
-        photoProcessingQueue.async {
-            do {
-                try capturePhoto.saveImage(to: url,
-                                          shouldPreserveMetadata: isPreserveMetadataOn,
-                                          aspectRatio: aspectRatio)
-                DispatchQueue.main.async { self.saveFile(urlFile: url) }
-            } catch {
-                debugLog("Unable to save photo: \(error.localizedDescription)")
-                try? FileManager.default.removeItem(at: url)
-                DispatchQueue.main.async { self.service.reportCaptureFailure(error) }
-            }
-        }
-    }
-
-    private func saveVideo(_ videoURL: URL) {
-        saveFile(urlFile: videoURL)
-    }
-
-    private func saveFile(urlFile: URL) {
-        if shouldShowProgressView {
-            addVaultFileWithProgressView(urlFile: urlFile)
-        } else {
-            addVaultFileInBackground(urlFile: urlFile)
-        }
-    }
-
-    // MARK: - Vault import and progress
-
-    private func addVaultFileWithProgressView(urlFile: URL) {
-        let importedFiles = ImportedFile(urlFile: urlFile,
-                                         parentId: rootFile?.id,
-                                         shouldPreserveMetadata: mainAppModel.settings.preserveMetadata,
-                                         fileSource: FileSource.camera)
-
-        mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles])
-            .sink { [weak self] importVaultFileResult in
-                switch importVaultFileResult {
-                case .fileAdded(let vaultFiles):
-                    self?.handleSuccessAddingFiles(vaultFiles: vaultFiles)
-                case .importProgress(let importProgress):
-                    self?.updateProgress(importProgress: importProgress)
-                }
-            }.store(in: &cancellable)
-    }
-
-    private func addVaultFileInBackground(urlFile: URL) {
-        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
-
-        let importedFile = ImportedFile(urlFile: urlFile,
-                                        parentId: rootFile?.id,
-                                        shouldPreserveMetadata: isPreserveMetadataOn,
-                                        fileSource: .camera)
-
-        mainAppModel.addVaultFile(importedFiles: [importedFile],
-                                  autoUpload: autoUpload)
-    }
-
-    private func handleSuccessAddingFiles(vaultFiles: [VaultFileDB]) {
-        updateResultFile(vaultFiles: vaultFiles)
-    }
-
-    private func updateProgress(importProgress: ImportProgress) {
-        DispatchQueue.main.async {
+    private func configureMediaImporter() {
+        mediaImporter.onProgress = { [weak self] importProgress in
+            guard let self else { return }
             self.progressFile.progress = importProgress.progress.value
             self.progressFile.progressFile = importProgress.progressFile.value
             self.progressFile.isFinishing = importProgress.isFinishing.value
         }
+        mediaImporter.onFilesAdded = { [weak self] vaultFiles in
+            self?.lastImageOrVideoVaultFile = vaultFiles.first
+        }
+        mediaImporter.onFailure = { [weak self] _ in
+            self?.displayError()
+        }
     }
 
-    private func updateResultFile(vaultFiles: [VaultFileDB]) {
-        DispatchQueue.main.async {
-            self.resultFile?.wrappedValue = vaultFiles
-            self.lastImageOrVideoVaultFile = vaultFiles.first
+    private func presentProgressViewIfNeeded() {
+        guard shouldShowProgressView else { return }
+        if !shouldPresentProgressView {
+            progressFile = ProgressFile()
         }
+        shouldPresentProgressView = true
     }
 
     // MARK: - Error presentation

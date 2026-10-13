@@ -11,7 +11,7 @@ import AVFoundation
 import Combine
 import UIKit
 
-final class CameraService: ObservableObject {
+final class CameraService: ObservableObject, @unchecked Sendable {
     
     // MARK: - Types
     
@@ -25,23 +25,26 @@ final class CameraService: ObservableObject {
     }
     
     enum CaptureError: Error, Equatable {
+        case cameraUnavailable
         case captureFailed
         case insufficientStorage
+    }
+    
+    private struct PendingPhoto {
+        let aspectRatio: CGFloat
+        let continuation: CheckedContinuation<CapturedPhoto, Error>
     }
     
     // MARK: - Session and events
     
     let captureSession = AVCaptureSession()
-    let imageCompletion = PassthroughSubject<CapturedPhoto, Never>()
-    let videoURLCompletion = PassthroughSubject<URL, Never>()
     let captureFailed = PassthroughSubject<Error?, Never>()
     let captureWarning = PassthroughSubject<CaptureError, Never>()
+    let cameraCloseRequested = PassthroughSubject<Void, Never>()
     
     // MARK: - Published state
     
     @Published private(set) var shouldShowPermission = false
-    @Published private(set) var shouldCloseCamera = false
-    @Published private(set) var shouldShowProgressView = false
     @Published private(set) var recordingState: RecordingState = .idle
     @Published private(set) var currentZoomFactor: CGFloat = 1.0
     @Published private(set) var availableZoomLevels: [CameraZoomLevel] = []
@@ -85,7 +88,8 @@ final class CameraService: ObservableObject {
     private var requestedCameraType: CameraType = .image
     private var requestedFlashMode: CameraFlashMode = .off
     private var configuredCameraType: CameraType?
-    private var photoAspectRatios: [Int64: CGFloat] = [:]
+    private var pendingPhotos: [Int64: PendingPhoto] = [:]
+    private var recordingContinuation: CheckedContinuation<CameraVideoCapture.Recording, Error>?
     
     // MARK: - Initialization
     
@@ -100,11 +104,12 @@ extension CameraService {
     
     func resumeOrSetupCaptureSession() {
         isCameraActive = true
-        shouldCloseCamera = false
         requestCaptureSession()
     }
     
+    /// Stops the camera but lets a capture that is already underway finish and be delivered.
     func stopRunningCaptureSession() {
+        guard isCameraActive else { return }
         isCameraActive = false
         permissionRequestID = nil
         orientationHelper.stopDeviceOrientationNotifier()
@@ -114,58 +119,88 @@ extension CameraService {
             self.isSessionActive = false
             CameraFlashController.turnOffTorch(device: self.inputCamera)
             if self.sessionRecordingState == .idle {
-                self.stopSession()
+                self.stopSessionIfFinished()
             } else {
                 self.requestRecordingStop()
             }
         }
     }
     
+    /// Stops the camera and drops whatever is in flight: pending photos are cancelled and a
+    /// recording is stopped and its file removed. Used when the app locks, so nothing from
+    /// the camera outlives the lock or lands in the temp directory after it is swept.
+    func discardCaptures() {
+        stopRunningCaptureSession()
+        sessionQueue.async {
+            let photos = Array(self.pendingPhotos.values)
+            self.pendingPhotos.removeAll()
+            let recording = self.recordingContinuation
+            self.recordingContinuation = nil
+            self.stopSessionIfFinished()
+            photos.forEach { $0.continuation.resume(throwing: CancellationError()) }
+            recording?.resume(throwing: CancellationError())
+        }
+    }
+    
     // MARK: - Capture requests
     
-    func takePhoto(aspectRatio: CameraAspectRatio) {
-        guard isCameraActive, cameraType == .image else { return }
+    /// Suspends until the photo has been processed, even if the camera closes in the meantime.
+    /// Throws `CaptureError.cameraUnavailable` when no capture was attempted.
+    @MainActor
+    func takePhoto(aspectRatio: CameraAspectRatio) async throws -> CapturedPhoto {
+        guard isCameraActive, cameraType == .image else { throw CaptureError.cameraUnavailable }
         let portraitAspectRatio = aspectRatio.widthOverHeight
         let orientation = deviceOrientation.videoOrientation()
         let mode = flashMode
         let location = shouldPreserveMetadata ? locationManager.currentLocation : nil
-        sessionQueue.async {
-            guard self.isSessionActive, self.configuredCameraType == .image,
-                  self.captureSession.isRunning, !self.captureSession.isInterrupted,
-                  self.photoCapture.photoOutput != nil else {
-                DispatchQueue.main.async { self.reportCaptureFailure() }
-                return
-            }
-            let settings = self.photoCapture.makeHEVCPhotoSettings(flashMode: mode.photoFlashMode)
-            self.photoAspectRatios[settings.uniqueID] = portraitAspectRatio
-            if let location {
-                settings.add(location: location)
-            }
-            DispatchQueue.main.async { self.shouldShowProgressView = true }
-            if !self.photoCapture.takePhoto(orientation: orientation, settings: settings) {
-                self.photoAspectRatios.removeValue(forKey: settings.uniqueID)
-                DispatchQueue.main.async { self.reportCaptureFailure() }
+        return try await withCheckedThrowingContinuation { continuation in
+            sessionQueue.async {
+                guard self.isSessionActive, self.configuredCameraType == .image,
+                      self.captureSession.isRunning, !self.captureSession.isInterrupted,
+                      self.photoCapture.photoOutput != nil else {
+                    continuation.resume(throwing: CaptureError.captureFailed)
+                    return
+                }
+                let settings = self.photoCapture.makeHEVCPhotoSettings(flashMode: mode.photoFlashMode)
+                self.pendingPhotos[settings.uniqueID] = PendingPhoto(aspectRatio: portraitAspectRatio,
+                                                                     continuation: continuation)
+                if let location {
+                    settings.add(location: location)
+                }
+                if !self.photoCapture.takePhoto(orientation: orientation, settings: settings) {
+                    self.pendingPhotos.removeValue(forKey: settings.uniqueID)
+                    continuation.resume(throwing: CaptureError.captureFailed)
+                }
             }
         }
     }
     
-    func startRecordingVideo() {
-        guard isCameraActive, cameraType == .video, recordingState == .idle else { return }
+    /// Starts recording and suspends until the recording ends, even if the camera closes in
+    /// the meantime; end it with `stopRecordingVideo()`. Throws `CaptureError.cameraUnavailable`
+    /// when no recording was attempted.
+    @MainActor
+    func recordVideo() async throws -> CameraVideoCapture.Recording {
+        guard isCameraActive, cameraType == .video, recordingState == .idle else {
+            throw CaptureError.cameraUnavailable
+        }
         recordingState = .starting
         let orientation = deviceOrientation.videoOrientation()
         let location = shouldPreserveMetadata ? locationManager.currentLocation : nil
-        sessionQueue.async {
-            guard self.isSessionActive, self.configuredCameraType == .video,
-                  self.captureSession.isRunning, !self.captureSession.isInterrupted,
-                  self.hasVideoConfiguration,
-                  self.sessionRecordingState == .idle else {
-                self.recordingStartFailed()
-                return
-            }
-            self.sessionRecordingState = .starting
-            self.updateFlashMode()
-            if !self.videoCapture.startRecording(orientation: orientation, location: location) {
-                self.recordingStartFailed()
+        return try await withCheckedThrowingContinuation { continuation in
+            sessionQueue.async {
+                self.recordingContinuation = continuation
+                guard self.isSessionActive, self.configuredCameraType == .video,
+                      self.captureSession.isRunning, !self.captureSession.isInterrupted,
+                      self.hasVideoConfiguration,
+                      self.sessionRecordingState == .idle else {
+                    self.recordingStartFailed()
+                    return
+                }
+                self.sessionRecordingState = .starting
+                self.updateFlashMode()
+                if !self.videoCapture.startRecording(orientation: orientation, location: location) {
+                    self.recordingStartFailed()
+                }
             }
         }
     }
@@ -227,7 +262,6 @@ extension CameraService {
     // MARK: - Failure reporting
     
     func reportCaptureFailure(_ error: Error? = nil) {
-        shouldShowProgressView = false
         captureFailed.send(error)
     }
 }
@@ -265,7 +299,7 @@ private extension CameraService {
             case .showSettings:
                 self.shouldShowPermission = true
             case .close:
-                self.shouldCloseCamera = true
+                self.cameraCloseRequested.send(())
             }
         }
     }
@@ -309,6 +343,12 @@ private extension CameraService {
         if captureSession.isRunning {
             captureSession.stopRunning()
         }
+    }
+    
+    /// Stops the session once the camera has closed and no capture is still being delivered.
+    func stopSessionIfFinished() {
+        guard !isSessionActive, pendingPhotos.isEmpty, sessionRecordingState == .idle else { return }
+        stopSession()
     }
     
     func setupSession(type: CameraType) {
@@ -362,13 +402,15 @@ private extension CameraService {
     
     func recordingStartFailed() {
         sessionRecordingState = .idle
+        let continuation = recordingContinuation
+        recordingContinuation = nil
         updateFlashMode()
         if !isSessionActive {
             stopSession()
         }
         DispatchQueue.main.async {
             self.recordingState = .idle
-            self.reportCaptureFailure()
+            continuation?.resume(throwing: CaptureError.captureFailed)
         }
     }
     
@@ -387,21 +429,24 @@ private extension CameraService {
     
     func handleRecordingFinished(_ result: Result<CameraVideoCapture.Recording, Error>) {
         sessionRecordingState = .idle
+        let continuation = recordingContinuation
+        recordingContinuation = nil
         if isSessionActive {
             activateSession()
         } else {
             CameraFlashController.turnOffTorch(device: inputCamera)
             stopSession()
         }
+        // A discarded recording has no one waiting for it; do not leave its file behind.
+        if continuation == nil, case .success(let recording) = result {
+            try? FileManager.default.removeItem(at: recording.url)
+        }
         DispatchQueue.main.async {
             self.recordingState = .idle
             switch result {
             case .failure(let error):
                 debugLog("Unable to record video: \(error.localizedDescription)")
-                self.reportCaptureFailure(error)
             case .success(let recording):
-                self.shouldShowProgressView = true
-                self.videoURLCompletion.send(recording.url)
                 if let warning = recording.warning {
                     debugLog("Video recording ended: \(warning.localizedDescription)")
                     if warning.isInsufficientStorageError {
@@ -409,6 +454,7 @@ private extension CameraService {
                     }
                 }
             }
+            continuation?.resume(with: result)
         }
     }
     
@@ -418,15 +464,17 @@ private extension CameraService {
         photoCapture.onPhotoCaptured = { [weak self] captureID, photo, error in
             guard let self else { return }
             self.sessionQueue.async {
-                guard let aspectRatio = self.photoAspectRatios.removeValue(forKey: captureID) else { return }
-                DispatchQueue.main.async {
-                    if let error {
-                        self.reportCaptureFailure(error)
-                    } else if let photo {
-                        self.imageCompletion.send(CapturedPhoto(photo: photo, aspectRatio: aspectRatio))
-                    } else {
-                        self.reportCaptureFailure()
-                    }
+                // Removing the entry first guarantees the continuation resumes exactly once,
+                // since both delegate callbacks can report the same capture.
+                guard let pending = self.pendingPhotos.removeValue(forKey: captureID) else { return }
+                self.stopSessionIfFinished()
+                if let error {
+                    pending.continuation.resume(throwing: error)
+                } else if let photo {
+                    pending.continuation.resume(returning: CapturedPhoto(photo: photo,
+                                                                         aspectRatio: pending.aspectRatio))
+                } else {
+                    pending.continuation.resume(throwing: CaptureError.captureFailed)
                 }
             }
         }

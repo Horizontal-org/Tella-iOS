@@ -47,7 +47,7 @@ public enum CameraSwipeDirection {
     }
 }
 
-public enum CameraFlashMode: Hashable {
+public enum CameraFlashMode: Hashable, Sendable {
     case auto
     case on
     case off

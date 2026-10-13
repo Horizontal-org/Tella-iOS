@@ -419,6 +419,7 @@
 		12AA5DF2307D17B30005C48F /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF1307D17B10005C48F /* CameraService.swift */; };
 		12AA5DF4307D3BEF0005C48F /* CameraPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */; };
 		12AA5DF6307D3C0B0005C48F /* CameraVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */; };
+		12AA5DF8307E4D150005C48F /* CameraMediaImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF7307E4D120005C48F /* CameraMediaImporter.swift */; };
 		12AAB1122E5FACE0007300CE /* NonceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAB1112E5FACE0007300CE /* NonceManager.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
@@ -1236,6 +1237,7 @@
 		12AA5DF1307D17B10005C48F /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhotoCapture.swift; sourceTree = "<group>"; };
 		12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVideoCapture.swift; sourceTree = "<group>"; };
+		12AA5DF7307E4D120005C48F /* CameraMediaImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMediaImporter.swift; sourceTree = "<group>"; };
 		12AAB1112E5FACE0007300CE /* NonceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceManager.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
@@ -3657,6 +3659,7 @@
 				12DC53CD3079914000165C25 /* CameraFlashController.swift */,
 				12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */,
 				12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */,
+				12AA5DF7307E4D120005C48F /* CameraMediaImporter.swift */,
 				126C862A30267EC500DDE7D4 /* CameraZoomController.swift */,
 			);
 			path = Capture;
@@ -4870,6 +4873,7 @@
 				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */,
 				1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */,
+				12AA5DF8307E4D150005C48F /* CameraMediaImporter.swift in Sources */,
 				12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				1282C09E2D8AD79C0033E4CA /* PrepareUpload.swift in Sources */,
