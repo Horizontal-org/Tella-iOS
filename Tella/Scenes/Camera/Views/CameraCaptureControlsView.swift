@@ -46,7 +46,7 @@ struct CameraCaptureControlsView: View {
                        height: .mediumIconSize)
                 .background(Styles.Colors.backgroundGrey1.opacity(0.55))
                 .clipShape(Circle())
-                .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
+                .overlay(Circle().strokeBorder(Color.white, lineWidth: 1))
         }
         .rotate(rotation)
         .hiddenDuringRecording(isRecording)

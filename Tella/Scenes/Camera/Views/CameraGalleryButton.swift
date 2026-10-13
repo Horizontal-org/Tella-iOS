@@ -35,7 +35,7 @@ struct CameraGalleryButton: View {
                     .scaleEffect(incomingScale)
             }
             .frame(width: .mediumIconSize, height: .mediumIconSize)
-            .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
+            .overlay(Circle().strokeBorder(Color.white, lineWidth: 1))
         }
         .rotate(rotation)
         .opacity(file == nil ? 0 : 1)
