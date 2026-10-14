@@ -47,9 +47,9 @@ struct CameraOptionsCard<Content: View>: View {
             HStack {
                 Button(action: onBack) {
                     Image(.chevronBackward)
+                        .frame(width: .mediumIconSize, height: .mediumIconSize)
                         .background(Circle().fill(Styles.Colors.backgroundGrey1))
-                        .frame(width: .smallMediumIconSize, height: .smallMediumIconSize)
-                        .contentShape(Rectangle())
+                        .contentShape(Circle())
                 }
                 .rotate(rotation)
                 .accessibilityLabel(LocalizableLock.actionBack.localized)
