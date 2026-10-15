@@ -12,6 +12,9 @@ struct CameraControlsView: View {
     // MARK: - Private properties
     
     @StateObject private var orientationHelper = DeviceOrientationHelper()
+    @State private var isZoomDialExpanded = false
+    
+    // MARK: - Body
     
     var body: some View {
         
@@ -27,8 +30,16 @@ struct CameraControlsView: View {
                 cameraPreview
                     .cameraFrame(layout.previewFrame)
                 
+                Color.clear
+                    .ignoresSafeArea()
+                    .contentShape(Rectangle())
+                    .onTapGesture { isZoomDialExpanded = false }
+                    .allowsHitTesting(isZoomDialExpanded)
+                
                 headerControls
                     .frame(width: layout.headerFrame.width, height: layout.headerFrame.height)
+                    .contentShape(Rectangle())
+                    .simultaneousGesture(zoomDismissalGesture)
                     .background {
                         if !layout.overlaysHeader {
                             Styles.Colors.backgroundGrey1
@@ -44,23 +55,42 @@ struct CameraControlsView: View {
                 viewfinderOverlays
                     .cameraFrame(layout.optionsFrame)
                 if !showsBottomMenu {
-                    previewControls
-                        .background(layout.overlaysZoom ? Color.clear : Styles.Colors.backgroundGrey1)
+                    (layout.overlaysZoom ? Color.clear : Styles.Colors.backgroundGrey1)
                         .cameraFrame(layout.zoomFrame)
-                        .transition(.opacity)
+                        .allowsHitTesting(false)
+                }
+                
+                if !layout.overlaysShutter && !showsZoomDialBackground {
+                    Styles.Colors.backgroundGrey1
+                        .cameraFrame(layout.shutterFrame)
+                        .allowsHitTesting(false)
+                }
+                
+                if showsZoomDialBackground {
+                    CameraZoomDialBackground(zoomFrame: layout.zoomDialFrame,
+                                             bottomEdge: layout.zoomDialBackgroundBottom)
+                    .ignoresSafeArea(edges: .bottom)
                 }
                 
                 captureControls
-                    .background(layout.overlaysShutter ? Color.clear : Styles.Colors.backgroundGrey1)
+                    .contentShape(Rectangle())
+                    .simultaneousGesture(zoomDismissalGesture)
                     .cameraFrame(layout.shutterFrame)
                 
                 modeSelector
+                    .simultaneousGesture(zoomDismissalGesture)
                     .background {
                         if !layout.overlaysMode {
                             Styles.Colors.backgroundGrey1.ignoresSafeArea(edges: .bottom)
                         }
                     }
                     .cameraFrame(layout.modeFrame)
+                
+                if !showsBottomMenu {
+                    previewControls(zoomFrame: layout.zoomFrame,
+                                    dialFrame: layout.zoomDialFrame,
+                                    interactionFrame: layout.optionsFrame)
+                }
             }
             .animation(.easeInOut(duration: CameraStyle.Animations.aspectRatio),
                        value: previewAspectRatio)
@@ -73,7 +103,17 @@ struct CameraControlsView: View {
             orientationHelper.startDeviceOrientationNotifier()
         }
         .onDisappear {
+            isZoomDialExpanded = false
             orientationHelper.stopDeviceOrientationNotifier()
+        }
+        .onChange(of: showsBottomMenu) { isShowing in
+            if isShowing { isZoomDialExpanded = false }
+        }
+        .onChange(of: viewModel.isFlippingCamera) { isFlipping in
+            if isFlipping { isZoomDialExpanded = false }
+        }
+        .onChange(of: previewAspectRatio) { _ in
+            isZoomDialExpanded = false
         }
     }
     
@@ -96,6 +136,12 @@ struct CameraControlsView: View {
     
     private var showsBottomMenu: Bool {
         viewModel.showingMoreActions || viewModel.showingFlashOptions || showsAspectOptions
+    }
+    
+    private var showsZoomDialBackground: Bool {
+        let range = CameraZoomScale(range: viewModel.availableZoomRange).range
+        return isZoomDialExpanded && !showsBottomMenu && !viewModel.isFlippingCamera
+        && range.lowerBound < range.upperBound
     }
     
     // MARK: - Preview
@@ -200,14 +246,25 @@ struct CameraControlsView: View {
     
     // MARK: - Preview controls
     
-    private var previewControls: some View {
+    private func previewControls(zoomFrame: CGRect, dialFrame: CGRect, interactionFrame: CGRect) -> some View {
         CameraPreviewControlsView(zoomLevels: viewModel.availableZoomLevels,
+                                  zoomLenses: viewModel.availableZoomLenses,
                                   zoomFactor: viewModel.currentZoomFactor,
+                                  zoomRange: viewModel.availableZoomRange,
+                                  zoomFrame: zoomFrame,
+                                  dialFrame: dialFrame,
+                                  interactionFrame: interactionFrame,
+                                  isZoomDialExpanded: $isZoomDialExpanded,
                                   isRecording: viewModel.cameraState.isRecording,
                                   isFlipping: viewModel.isFlippingCamera,
                                   rotation: rotation,
+                                  onZoomChanged: viewModel.setZoomFactor,
                                   onSelectZoomLevel: viewModel.setZoom,
                                   onMoreOptions: viewModel.toggleMoreActions)
+    }
+    
+    private var zoomDismissalGesture: some Gesture {
+        TapGesture().onEnded { isZoomDialExpanded = false }
     }
     
     // MARK: - Capture controls
@@ -281,6 +338,8 @@ struct CameraControlsView: View {
 }
 
 
+// MARK: - Status chip
+
 private struct CameraStatusChip: View {
     
     let title: String
@@ -298,6 +357,8 @@ private struct CameraStatusChip: View {
         .rotate(rotation)
     }
 }
+
+// MARK: - Previews
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {

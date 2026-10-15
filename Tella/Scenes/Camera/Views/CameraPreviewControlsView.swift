@@ -9,98 +9,105 @@
 
 import SwiftUI
 
+/// Positions zoom and extra options over the camera preview.
 struct CameraPreviewControlsView: View {
+    // MARK: - Public properties
     
     let zoomLevels: [CameraZoomLevel]
+    let zoomLenses: [CameraZoomLens]
     let zoomFactor: CGFloat
+    let zoomRange: ClosedRange<CGFloat>
+    let zoomFrame: CGRect
+    let dialFrame: CGRect
+    let interactionFrame: CGRect
+    @Binding var isZoomDialExpanded: Bool
     let isRecording: Bool
     var isFlipping: Bool = false
     var rotation = CameraControlRotation()
+    let onZoomChanged: (CGFloat) -> Void
     let onSelectZoomLevel: (CameraZoomLevel) -> Void
     let onMoreOptions: () -> Void
     
+    // MARK: - Body
+    
     var body: some View {
-        controlsRow
-            .frame(height: CameraViewfinderLayout.zoomHeight)
-    }
-    
-    private var controlsRow: some View {
-        ZStack {
-            zoomLevelsView
+        ZStack(alignment: .topLeading) {
+            if !isRecording && !isZoomDialExpanded {
+                moreOptionsButton
+                    .position(x: zoomFrame.maxX - .medium - .mediumIconSize / 2,
+                              y: zoomFrame.midY)
+            }
             
-            HStack {
-                Spacer()
-                    .allowsHitTesting(false)
-                if !isRecording {
-                    moreOptionsButton
-                }
-            }
-            .padding(.trailing, .medium)
-        }
-    }
-    
-    /// Hidden when the lens set only reaches a single level, as with most front cameras.
-    @ViewBuilder
-    private var zoomLevelsView: some View {
-        if zoomLevels.count > 1 {
-            HStack(spacing: 0) {
-                ForEach(zoomLevels) { level in
-                    Button {
-                        onSelectZoomLevel(level)
-                    } label: {
-                        zoomLevelPill(for: level)
-                            .frame(width: .mediumIconSize,
-                                   height: .mediumIconSize)
-                    }
-                }
-            }
+            CameraZoomTouchControl(zoomLevels: zoomLevels,
+                                   zoomLenses: zoomLenses,
+                                   zoomFactor: zoomFactor,
+                                   zoomRange: zoomRange,
+                                   zoomFrame: zoomFrame,
+                                   dialFrame: dialFrame,
+                                   interactionFrame: interactionFrame,
+                                   isExpanded: $isZoomDialExpanded,
+                                   rotation: rotation,
+                                   onZoomChanged: onZoomChanged,
+                                   onSelectZoomLevel: onSelectZoomLevel)
             .opacity(isFlipping ? 0 : 1)
-            .animation(.easeInOut(duration: CameraStyle.Animations.cameraFlip),
-                       value: isFlipping)
         }
     }
     
-    private var activeZoomLevel: CameraZoomLevel? {
-        CameraZoomLevel.active(for: zoomFactor, in: zoomLevels)
-    }
-    
-    private func zoomLevelPill(for level: CameraZoomLevel) -> some View {
-        let isActive = level == activeZoomLevel
-        
-        return CustomText(isActive ? CameraZoomLevel.activeTitle(for: zoomFactor) : level.title,
-                          style: .subheading2Style,
-                          alignment: .center,
-                          color: isActive ? Styles.Colors.backgroundGrey1 : .white)
-        .rotate(rotation)
-        .frame(width: .smallIconSize, height: .smallIconSize)
-        .background(Capsule().fill(isActive ? Styles.Colors.grey1
-                                   : Styles.Colors.backgroundGrey2))
-    }
+    // MARK: - More options
     
     private var moreOptionsButton: some View {
         Button(action: onMoreOptions) {
             Image(.cameraMoreGrid)
                 .frame(width: .smallIconSize, height: .smallIconSize)
                 .background(Circle().fill(Styles.Colors.backgroundGrey2))
-                .frame(width: .mediumIconSize,
-                       height: .mediumIconSize)
-            
+                .frame(width: .mediumIconSize, height: .mediumIconSize)
         }
         .rotate(rotation)
     }
 }
 
+// MARK: - Previews
+
 struct CameraPreviewControlsView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 40) {
-            CameraPreviewControlsView(zoomLevels: [CameraZoomLevel(factor: 0.5),
-                                                   CameraZoomLevel(factor: 1),
-                                                   CameraZoomLevel(factor: 2)],
+        Group {
+            CameraPreviewControlsView(zoomLevels: levels,
+                                      zoomLenses: lenses,
                                       zoomFactor: 1,
+                                      zoomRange: 0.5...5,
+                                      zoomFrame: zoomFrame,
+                                      dialFrame: zoomFrame,
+                                      interactionFrame: interactionFrame,
+                                      isZoomDialExpanded: .constant(false),
                                       isRecording: false,
-                                      onSelectZoomLevel: { _ in },
-                                      onMoreOptions: {})
+                                      onZoomChanged: { _ in },
+                                      onSelectZoomLevel: { _ in }, onMoreOptions: {})
+            .previewDisplayName("Presets")
+            
+            CameraZoomTouchControl(zoomLevels: levels,
+                                   zoomLenses: lenses,
+                                   zoomFactor: 1,
+                                   zoomRange: 0.5...5,
+                                   zoomFrame: zoomFrame,
+                                   dialFrame: zoomFrame,
+                                   interactionFrame: interactionFrame,
+                                   isExpanded: .constant(true),
+                                   rotation: CameraControlRotation(deviceOrientation: .portrait),
+                                   onZoomChanged: { _ in },
+                                   onSelectZoomLevel: { _ in })
+            .background {
+                CameraZoomDialBackground(zoomFrame: zoomFrame,
+                                         bottomEdge: zoomFrame.maxY + CameraViewfinderLayout.shutterHeight)
+            }
+            .previewDisplayName("Dial")
         }
+        .frame(width: 390, height: 600)
         .background(Color.gray)
     }
+    
+    private static let levels = [0.5, 1, 2].map { CameraZoomLevel(factor: $0) }
+    private static let lenses = [CameraZoomLens(factor: 0.5, focalLength: 13),
+                                 CameraZoomLens(factor: 1, focalLength: 26)]
+    private static let zoomFrame = CGRect(x: 0, y: 400, width: 390, height: 52)
+    private static let interactionFrame = CGRect(x: 0, y: 56, width: 390, height: 396)
 }

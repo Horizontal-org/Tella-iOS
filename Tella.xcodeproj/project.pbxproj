@@ -420,6 +420,7 @@
 		12AA5DF4307D3BEF0005C48F /* CameraPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */; };
 		12AA5DF6307D3C0B0005C48F /* CameraVideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */; };
 		12AA5DF8307E4D150005C48F /* CameraMediaImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF7307E4D120005C48F /* CameraMediaImporter.swift */; };
+		12AA5DFA307FA5760005C48F /* CameraZoomTouchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5DF9307FA5720005C48F /* CameraZoomTouchControl.swift */; };
 		12AAB1122E5FACE0007300CE /* NonceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AAB1112E5FACE0007300CE /* NonceManager.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
@@ -1238,6 +1239,7 @@
 		12AA5DF3307D3BEE0005C48F /* CameraPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhotoCapture.swift; sourceTree = "<group>"; };
 		12AA5DF5307D3C090005C48F /* CameraVideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVideoCapture.swift; sourceTree = "<group>"; };
 		12AA5DF7307E4D120005C48F /* CameraMediaImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMediaImporter.swift; sourceTree = "<group>"; };
+		12AA5DF9307FA5720005C48F /* CameraZoomTouchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraZoomTouchControl.swift; sourceTree = "<group>"; };
 		12AAB1112E5FACE0007300CE /* NonceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonceManager.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
@@ -2698,6 +2700,7 @@
 			isa = PBXGroup;
 			children = (
 				12DF971E3053047900BB8C0E /* CameraPreviewControlsView.swift */,
+				12AA5DF9307FA5720005C48F /* CameraZoomTouchControl.swift */,
 				12D53D2F307676CD007FC4DF /* CameraMoreActionsView.swift */,
 				12D53D3130767F37007FC4DF /* CameraFlashOptionsView.swift */,
 				12D53D3430767F60007FC4DF /* CameraAspectOptionsView.swift */,
@@ -4488,6 +4491,7 @@
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				123CBB042DEF97290030A9BD /* HTTPStatusCode.swift in Sources */,
 				12351C1A28D2209400F3CB7C /* Report.swift in Sources */,
+				12AA5DFA307FA5760005C48F /* CameraZoomTouchControl.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				121C5D7B29424F4E00A64123 /* ReportAPI.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,

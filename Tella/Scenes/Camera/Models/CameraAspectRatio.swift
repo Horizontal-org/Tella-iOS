@@ -17,6 +17,8 @@ enum CameraAspectRatio: Hashable, CaseIterable {
     case oneByOne
     case full
     
+    // MARK: - Display properties
+    
     var title: String {
         switch self {
         case .threeByFour:
@@ -42,6 +44,8 @@ enum CameraAspectRatio: Hashable, CaseIterable {
             return .threeByFour
         }
     }
+    
+    // MARK: - Framing
     
     /// Displayed width / height.
     var widthOverHeight: CGFloat {
@@ -82,6 +86,8 @@ enum CameraAspectRatio: Hashable, CaseIterable {
                       height: height)
     }
     
+    // MARK: - Image cropping
+    
     static func cropped(_ image: CGImage,
                         orientation: CGImagePropertyOrientation,
                         portraitAspectRatio: CGFloat) -> CGImage {
@@ -93,15 +99,18 @@ enum CameraAspectRatio: Hashable, CaseIterable {
     }
 }
 
+// MARK: - Viewfinder layout
+
 /// Shared geometry keeps photo framing independent of the fixed control rows.
 struct CameraViewfinderLayout {
     static let headerHeight: CGFloat = 56
     static let zoomHeight: CGFloat = 52
     static let shutterHeight: CGFloat = 85
     static let modeHeight: CGFloat = 60
-
+    
     let headerFrame: CGRect
     let zoomFrame: CGRect
+    let zoomDialFrame: CGRect
     let shutterFrame: CGRect
     let modeFrame: CGRect
     let previewFrame: CGRect
@@ -110,7 +119,12 @@ struct CameraViewfinderLayout {
     let overlaysZoom: Bool
     let overlaysShutter: Bool
     let overlaysMode: Bool
-
+    
+    var zoomDialBackgroundBottom: CGFloat {
+        if overlaysMode { return previewFrame.maxY }
+        return overlaysShutter ? shutterFrame.maxY : zoomDialFrame.maxY
+    }
+    
     init(bounds: CGRect,
          aspectRatio: CameraAspectRatio,
          safeAreaInsets: UIEdgeInsets = .zero) {
@@ -118,26 +132,26 @@ struct CameraViewfinderLayout {
         let shutterTop = max(bounds.minY, modeTop - Self.shutterHeight)
         let zoomTop = max(bounds.minY, shutterTop - Self.zoomHeight)
         let headerBottom = min(bounds.minY + Self.headerHeight, zoomTop)
-
+        
         func row(from top: CGFloat, to bottom: CGFloat) -> CGRect {
             CGRect(x: bounds.minX, y: top, width: max(0, bounds.width), height: max(0, bottom - top))
         }
-
+        
         zoomFrame = row(from: zoomTop, to: shutterTop)
         shutterFrame = row(from: shutterTop, to: modeTop)
         modeFrame = row(from: modeTop, to: bounds.maxY)
-
+        
         let available = row(from: headerBottom, to: zoomTop)
         let photoHeight = max(0, bounds.width) / CameraAspectRatio.threeByFour.widthOverHeight
         let fullWidthPhoto = row(from: shutterTop - photoHeight, to: shutterTop)
         let hasRoom = available.width > 0 && available.height > 0
         let photoWithZoom = hasRoom
-            && fullWidthPhoto.minY >= headerBottom
-            && fullWidthPhoto.minY <= zoomTop
+        && fullWidthPhoto.minY >= headerBottom
+        && fullWidthPhoto.minY <= zoomTop
         let photoFrame = photoWithZoom
-            ? fullWidthPhoto
-            : CameraAspectRatio.threeByFour.visibleRect(in: available)
-
+        ? fullWidthPhoto
+        : CameraAspectRatio.threeByFour.visibleRect(in: available)
+        
         let expanded = aspectRatio == .nineBySixteen || aspectRatio == .full
         switch aspectRatio {
         case .threeByFour:
@@ -154,7 +168,14 @@ struct CameraViewfinderLayout {
             previewFrame = row(from: bounds.minY - max(0, safeAreaInsets.top),
                                to: bounds.maxY + max(0, safeAreaInsets.bottom))
         }
-
+        
+        // The square preview ends above the fixed zoom row; keep the expanded dial inside it.
+        zoomDialFrame = aspectRatio == .oneByOne
+        ? CGRect(x: previewFrame.minX,
+                 y: min(previewFrame.maxY, zoomFrame.maxY) - zoomFrame.height,
+                 width: previewFrame.width, height: zoomFrame.height)
+        : zoomFrame
+        
         headerFrame = row(from: bounds.minY, to: headerBottom)
         overlaysHeader = expanded
         overlaysZoom = expanded || (aspectRatio == .threeByFour && photoWithZoom)
@@ -165,6 +186,8 @@ struct CameraViewfinderLayout {
                            to: shutterTop)
     }
 }
+
+// MARK: - Image helpers
 
 private extension CGImagePropertyOrientation {
     var uiImageOrientation: UIImage.Orientation {

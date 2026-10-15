@@ -40,6 +40,8 @@ class CameraViewModel: ObservableObject {
     @Published var isFlashAvailable = false
     @Published var currentZoomFactor: CGFloat = 1.0
     @Published var availableZoomLevels: [CameraZoomLevel] = []
+    @Published var availableZoomRange: ClosedRange<CGFloat> = 1.0...1.0
+    @Published var availableZoomLenses: [CameraZoomLens] = []
     
     // MARK: - Menu state
     
@@ -231,7 +233,11 @@ class CameraViewModel: ObservableObject {
     
     func setZoom(to level: CameraZoomLevel) {
         hideMenu()
-        service.setZoom(to: level)
+        service.setZoomFactor(to: level.factor)
+    }
+    
+    func setZoomFactor(to factor: CGFloat) {
+        service.setZoomFactor(to: factor)
     }
     
     // MARK: - More actions
@@ -440,6 +446,14 @@ class CameraViewModel: ObservableObject {
             .sink { [weak self] in self?.availableZoomLevels = $0 }
             .store(in: &cancellable)
         
+        service.$availableZoomRange
+            .sink { [weak self] in self?.availableZoomRange = $0 }
+            .store(in: &cancellable)
+        
+        service.$availableZoomLenses
+            .sink { [weak self] in self?.availableZoomLenses = $0 }
+            .store(in: &cancellable)
+        
         service.$flashMode
             .sink { [weak self] in self?.flashMode = $0 }
             .store(in: &cancellable)
@@ -525,6 +539,9 @@ extension CameraViewModel {
         viewModel.availableZoomLevels = [CameraZoomLevel(factor: 0.5),
                                          CameraZoomLevel(factor: 1),
                                          CameraZoomLevel(factor: 2)]
+        viewModel.availableZoomRange = 0.5...5.0
+        viewModel.availableZoomLenses = [CameraZoomLens(factor: 0.5, focalLength: 13),
+                                         CameraZoomLens(factor: 1, focalLength: 26)]
         viewModel.isFlashAvailable = true
         viewModel.photoAspectRatio = .threeByFour
         return viewModel

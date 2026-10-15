@@ -9,11 +9,13 @@
 
 import AVFoundation
 
+struct CameraZoomCapabilities {
+    let range: ClosedRange<CGFloat>
+    let levels: [CameraZoomLevel]
+    let lenses: [CameraZoomLens]
+}
+
 final class CameraZoomController {
-    
-    // MARK: - Constants
-    
-    private static let rampRate: Float = 8.0
     
     // MARK: - Stored properties
     
@@ -25,66 +27,81 @@ extension CameraZoomController {
     // MARK: - Pinch zoom
     
     func startZoom(device: AVCaptureDevice?) {
-        if let device, device.isRampingVideoZoom {
-            configure(device, errorMessage: "Unable to cancel the camera zoom ramp") {
-                device.cancelVideoZoomRamp()
-            }
-        }
         initialZoomFactor = device?.videoZoomFactor ?? 1.0
     }
     
-    
-    func zoom(by pinchScale: CGFloat, device: AVCaptureDevice) -> CGFloat {
+    func zoom(by pinchScale: CGFloat, device: AVCaptureDevice) {
+        guard pinchScale.isFinite, pinchScale > 0 else { return }
         configure(device, errorMessage: "Unable to configure the camera zoom") {
             device.videoZoomFactor = clampedZoomFactor(initialZoomFactor * pinchScale, for: device)
         }
-        return displayedZoomFactor(for: device)
     }
     
-    // MARK: - Preset zoom
+    // MARK: - Zoom selection
     
-    func setZoom(to level: CameraZoomLevel, device: AVCaptureDevice) -> CGFloat {
-        let multiplier = displayMultiplier(for: device)
-        // Presets use displayed zoom; AVFoundation expects device zoom.
-        let zoomFactor = clampedZoomFactor(level.factor / multiplier, for: device)
-        
-        let didConfigure = configure(device, errorMessage: "Unable to configure the camera zoom") {
-            device.cancelVideoZoomRamp()
-            device.ramp(toVideoZoomFactor: zoomFactor, withRate: Self.rampRate)
+    /// Applies the displayed zoom immediately for preset taps and dial adjustments.
+    func setZoomFactor(to factor: CGFloat, device: AVCaptureDevice) {
+        guard factor.isFinite else { return }
+        configure(device, errorMessage: "Unable to configure the camera zoom") {
+            // Convert to device zoom; assigning the factor also cancels any zoom ramp.
+            device.videoZoomFactor = clampedZoomFactor(factor / displayMultiplier(for: device), for: device)
         }
-        return didConfigure ? zoomFactor * multiplier : displayedZoomFactor(for: device)
     }
     
-    
-    func applyDefaultZoom(device: AVCaptureDevice) -> CGFloat {
-        configure(device, errorMessage: "Unable to reset the camera zoom") {
-            device.videoZoomFactor = clampedZoomFactor(1.0 / displayMultiplier(for: device), for: device)
-        }
-        return displayedZoomFactor(for: device)
+    func applyDefaultZoom(device: AVCaptureDevice) {
+        setZoomFactor(to: 1, device: device)
     }
     
-    // MARK: - Displayed zoom
-    
-    func availableZoomLevels(device: AVCaptureDevice?) -> [CameraZoomLevel] {
-        guard let device else { return [] }
-        
-        let multiplier = displayMultiplier(for: device)
-        let lowest = device.minAvailableVideoZoomFactor * multiplier
-        let highest = maximumZoomFactor(for: device) * multiplier
-        
-        return CameraZoomLevel.candidates
-            .filter { $0 >= lowest && $0 <= highest }
-            .map { CameraZoomLevel(factor: $0) }
-    }
+    // MARK: - Zoom state
     
     func displayedZoomFactor(for device: AVCaptureDevice) -> CGFloat {
         device.videoZoomFactor * displayMultiplier(for: device)
+    }
+    
+    func zoomCapabilities(for device: AVCaptureDevice?) -> CameraZoomCapabilities {
+        let range = availableZoomRange(device: device)
+        let levels = device == nil
+        ? []
+        : CameraZoomLevel.candidates.filter(range.contains).map { CameraZoomLevel(factor: $0) }
+        let lenses = zoomLenses(device: device).filter { range.contains($0.factor) }
+        return CameraZoomCapabilities(range: range, levels: levels, lenses: lenses)
     }
 }
 
 private extension CameraZoomController {
     
-    // MARK: - Zoom scale conversion
+    // MARK: - Zoom capabilities and display scale
+    
+    /// Displayed values differ from AVFoundation values on virtual ultra-wide cameras.
+    func availableZoomRange(device: AVCaptureDevice?) -> ClosedRange<CGFloat> {
+        guard let device else { return 1.0...1.0 }
+        let multiplier = displayMultiplier(for: device)
+        let lowest = device.minAvailableVideoZoomFactor * multiplier
+        let highest = maximumZoomFactor(for: device) * multiplier
+        return lowest...max(lowest, highest)
+    }
+    
+    /// Physical lens landmarks use the virtual camera's display scale, not each lens's scale.
+    func zoomLenses(device: AVCaptureDevice?) -> [CameraZoomLens] {
+        guard let device else { return [] }
+        let lenses = device.isVirtualDevice ? device.constituentDevices : [device]
+        let rawFactors: [CGFloat] = device.isVirtualDevice
+        ? [1] + device.virtualDeviceSwitchOverVideoZoomFactors.map { CGFloat(truncating: $0) }
+        : [1]
+        let multiplier = displayMultiplier(for: device)
+        
+        return zip(lenses, rawFactors).compactMap { lens, rawFactor in
+            let factor = rawFactor * multiplier
+            guard factor.isFinite, factor > 0 else { return nil }
+            return CameraZoomLens(factor: factor, focalLength: nominalFocalLength(of: lens))
+        }
+    }
+    
+    func nominalFocalLength(of device: AVCaptureDevice) -> CGFloat? {
+        guard #available(iOS 26.0, *) else { return nil }
+        let nominal = CGFloat(device.nominalFocalLengthIn35mmFilm)
+        return nominal.isFinite && nominal > 0 ? nominal : nil
+    }
     
     func displayMultiplier(for device: AVCaptureDevice) -> CGFloat {
         if #available(iOS 18.0, *), device.displayVideoZoomFactorMultiplier > 0 {
@@ -106,28 +123,30 @@ private extension CameraZoomController {
     }
     
     func maximumZoomFactor(for device: AVCaptureDevice) -> CGFloat {
+        let preferredMaximum: CGFloat
         if #available(iOS 18.0, *),
            let range = device.activeFormat.systemRecommendedVideoZoomRange {
-            return min(range.upperBound, device.maxAvailableVideoZoomFactor)
+            preferredMaximum = range.upperBound
+        } else {
+            // Older systems have no recommended range. Allow fivefold digital zoom beyond
+            // the longest installed lens, using device factors until display conversion.
+            let longestLensZoomFactor = device.virtualDeviceSwitchOverVideoZoomFactors.last
+                .map { CGFloat(truncating: $0) } ?? 1.0
+            preferredMaximum = longestLensZoomFactor * 5.0
         }
-        
-        let longestLensZoomFactor = device.virtualDeviceSwitchOverVideoZoomFactors.last
-            .map { CGFloat(truncating: $0) } ?? 1.0
-        return min(longestLensZoomFactor * 5.0, device.maxAvailableVideoZoomFactor)
+        return max(device.minAvailableVideoZoomFactor,
+                   min(preferredMaximum, device.maxAvailableVideoZoomFactor))
     }
     
     // MARK: - Device configuration
     
-    @discardableResult
-    func configure(_ device: AVCaptureDevice, errorMessage: String, _ body: () -> Void) -> Bool {
+    func configure(_ device: AVCaptureDevice, errorMessage: String, _ body: () -> Void) {
         do {
             try device.lockForConfiguration()
             defer { device.unlockForConfiguration() }
             body()
-            return true
         } catch {
             debugLog("\(errorMessage): \(error.localizedDescription)")
-            return false
         }
     }
 }

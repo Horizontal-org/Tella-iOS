@@ -48,6 +48,8 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     @Published private(set) var recordingState: RecordingState = .idle
     @Published private(set) var currentZoomFactor: CGFloat = 1.0
     @Published private(set) var availableZoomLevels: [CameraZoomLevel] = []
+    @Published private(set) var availableZoomRange: ClosedRange<CGFloat> = 1.0...1.0
+    @Published private(set) var availableZoomLenses: [CameraZoomLens] = []
     @Published private(set) var flashMode: CameraFlashMode = .off
     @Published private(set) var isFlashAvailable = false
     
@@ -90,6 +92,9 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     private var configuredCameraType: CameraType?
     private var pendingPhotos: [Int64: PendingPhoto] = [:]
     private var recordingContinuation: CheckedContinuation<CameraVideoCapture.Recording, Error>?
+    private weak var observedZoomDevice: AVCaptureDevice?
+    private var zoomObservations: [NSKeyValueObservation] = []
+    private var previousRecordingHapticsSetting: Bool?
     
     // MARK: - Initialization
     
@@ -222,7 +227,7 @@ extension CameraService {
                 CameraFlashController.turnOffTorch(device: self.inputCamera)
                 if CameraSessionConfigurator.toggleCamera(in: self.captureSession) {
                     self.photoCapture.applyResolution(device: self.inputCamera)
-                    self.updateCameraControls(resetZoom: true)
+                    self.updateCameraControls()
                 }
                 self.updateFlashMode()
             }
@@ -237,6 +242,8 @@ extension CameraService {
         }
     }
     
+    // MARK: - Zoom controls
+    
     func startZoom() {
         sessionQueue.async {
             guard self.isSessionActive else { return }
@@ -247,16 +254,14 @@ extension CameraService {
     func zoom(by pinchScale: CGFloat) {
         sessionQueue.async {
             guard self.isSessionActive, let device = self.inputCamera else { return }
-            let factor = self.zoomController.zoom(by: pinchScale, device: device)
-            DispatchQueue.main.async { self.currentZoomFactor = factor }
+            self.zoomController.zoom(by: pinchScale, device: device)
         }
     }
     
-    func setZoom(to level: CameraZoomLevel) {
+    func setZoomFactor(to factor: CGFloat) {
         sessionQueue.async {
             guard self.isSessionActive, let device = self.inputCamera else { return }
-            let factor = self.zoomController.setZoom(to: level, device: device)
-            DispatchQueue.main.async { self.currentZoomFactor = factor }
+            self.zoomController.setZoomFactor(to: factor, device: device)
         }
     }
     
@@ -305,7 +310,7 @@ private extension CameraService {
         }
     }
     
-    // MARK: - Session configuration (session queue)
+    // MARK: - Session access and lifecycle (session queue)
     
     var inputCamera: AVCaptureDevice? {
         CameraSessionConfigurator.videoDevice(in: captureSession)
@@ -327,13 +332,20 @@ private extension CameraService {
         }
         guard inputCamera != nil, photoCapture.photoOutput != nil,
               type != .video || hasVideoConfiguration else {
+            restoreRecordingHaptics()
             DispatchQueue.main.async { self.reportCaptureFailure() }
             return
+        }
+        if type == .video {
+            enableRecordingHaptics()
+        } else {
+            restoreRecordingHaptics()
         }
         if !captureSession.isRunning {
             captureSession.startRunning()
         }
         guard captureSession.isRunning else {
+            restoreRecordingHaptics()
             DispatchQueue.main.async { self.reportCaptureFailure() }
             return
         }
@@ -344,7 +356,42 @@ private extension CameraService {
         if captureSession.isRunning {
             captureSession.stopRunning()
         }
+        restoreRecordingHaptics()
     }
+    
+    // MARK: - Recording haptics (session queue)
+    
+    /// Audio input suppresses haptics by default, including during video preview.
+    func enableRecordingHaptics() {
+        let audioSession = AVAudioSession.sharedInstance()
+        let previousSetting = audioSession.allowHapticsAndSystemSoundsDuringRecording
+        do {
+            if !previousSetting {
+                try audioSession.setAllowHapticsAndSystemSoundsDuringRecording(true)
+            }
+            if previousRecordingHapticsSetting == nil {
+                previousRecordingHapticsSetting = previousSetting
+            }
+        } catch {
+            debugLog("Unable to enable camera zoom haptics: \(error.localizedDescription)")
+        }
+    }
+    
+    /// Keep the shared audio session's setting scoped to the camera's microphone use.
+    func restoreRecordingHaptics() {
+        guard let previousSetting = previousRecordingHapticsSetting else { return }
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            if audioSession.allowHapticsAndSystemSoundsDuringRecording != previousSetting {
+                try audioSession.setAllowHapticsAndSystemSoundsDuringRecording(previousSetting)
+            }
+            previousRecordingHapticsSetting = nil
+        } catch {
+            debugLog("Unable to restore recording haptics: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - Session completion and configuration (session queue)
     
     /// Stops the session once the camera has closed and no capture is still being delivered.
     func stopSessionIfFinished() {
@@ -370,7 +417,7 @@ private extension CameraService {
         }
         captureSession.commitConfiguration()
         configuredCameraType = type
-        updateCameraControls(resetZoom: true)
+        updateCameraControls()
     }
     
     func switchCaptureMode(to type: CameraType) {
@@ -387,7 +434,7 @@ private extension CameraService {
         captureSession.commitConfiguration()
         photoCapture.applyResolution(device: inputCamera)
         configuredCameraType = type
-        updateCameraControls(resetZoom: true)
+        updateCameraControls()
     }
     
     // MARK: - Recording lifecycle (session queue)
@@ -507,20 +554,62 @@ private extension CameraService {
         }
     }
     
-    func updateCameraControls(resetZoom: Bool) {
+    func updateCameraControls() {
         let device = inputCamera
         let isFlashAvailable = configuredCameraType == .video
         ? device?.hasTorch ?? false
         : device?.hasFlash ?? false
-        let factor = device.map {
-            resetZoom ? zoomController.applyDefaultZoom(device: $0)
-            : zoomController.displayedZoomFactor(for: $0)
-        } ?? 1.0
-        let levels = zoomController.availableZoomLevels(device: device)
+        if let device {
+            zoomController.applyDefaultZoom(device: device)
+        }
+        observeZoomChanges(device: device)
+        publishZoomState(device: device)
         DispatchQueue.main.async {
-            self.currentZoomFactor = factor
-            self.availableZoomLevels = levels
             self.isFlashAvailable = isFlashAvailable
+        }
+    }
+    
+    // MARK: - Zoom observation (session queue)
+    
+    /// Observe actual device values so preset taps and configuration changes stay in sync
+    /// with the dial. Device reads and published snapshots are serialized on the session queue.
+    func observeZoomChanges(device: AVCaptureDevice?) {
+        guard observedZoomDevice !== device else { return }
+        zoomObservations.removeAll()
+        observedZoomDevice = device
+        guard let device else { return }
+        
+        observeZoom(device, \.videoZoomFactor, includingCapabilities: false)
+        observeZoom(device, \.activeFormat, includingCapabilities: true)
+        observeZoom(device, \.minAvailableVideoZoomFactor, includingCapabilities: true)
+        observeZoom(device, \.maxAvailableVideoZoomFactor, includingCapabilities: true)
+        if #available(iOS 18.0, *) {
+            observeZoom(device, \.displayVideoZoomFactorMultiplier, includingCapabilities: true)
+        }
+    }
+    
+    func observeZoom<Value>(_ device: AVCaptureDevice,
+                            _ keyPath: KeyPath<AVCaptureDevice, Value>,
+                            includingCapabilities: Bool) {
+        zoomObservations.append(device.observe(keyPath) { [weak self] device, _ in
+            self?.sessionQueue.async { [weak self] in
+                guard let self, self.observedZoomDevice === device else { return }
+                self.publishZoomState(device: device, includingCapabilities: includingCapabilities)
+            }
+        })
+    }
+    
+    /// Zoom-only updates skip lens capabilities, which do not change with the factor.
+    func publishZoomState(device: AVCaptureDevice?, includingCapabilities: Bool = true) {
+        let factor = device.map { zoomController.displayedZoomFactor(for: $0) } ?? 1.0
+        let capabilities = includingCapabilities ? zoomController.zoomCapabilities(for: device) : nil
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if self.currentZoomFactor != factor { self.currentZoomFactor = factor }
+            guard let capabilities else { return }
+            if self.availableZoomRange != capabilities.range { self.availableZoomRange = capabilities.range }
+            if self.availableZoomLevels != capabilities.levels { self.availableZoomLevels = capabilities.levels }
+            if self.availableZoomLenses != capabilities.lenses { self.availableZoomLenses = capabilities.lenses }
         }
     }
 }
