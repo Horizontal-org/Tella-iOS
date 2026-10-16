@@ -10,19 +10,15 @@ struct FileGroupsView: View {
     
     @ObservedObject var mainAppModel: MainAppModel
     
-    var shouldShowFilesTitle : Bool
-    
     let columns = [GridItem(.flexible(),spacing: 16),
                    GridItem(.flexible(),spacing: 16)]
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16 ) {
-                if shouldShowFilesTitle {
-                    Text(LocalizableHome.tellaFilesSubhead.localized)
-                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                        .foregroundColor(.white)
-                }
+                Text(LocalizableHome.tellaFilesSubhead.localized)
+                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                    .foregroundColor(.white)
                 
                 LazyVGrid(columns: columns, spacing: 18) {
                     ForEach(homeFileItems, id: \.filterType) { homeFileItem in
@@ -42,7 +38,6 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView(mainAppModel: MainAppModel.stub(),
-                       shouldShowFilesTitle: true)        
+        FileGroupsView(mainAppModel: MainAppModel.stub())        
     }
 }
