@@ -73,6 +73,7 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     private let zoomController = CameraZoomController()
     private let photoCapture = CameraPhotoCapture()
     private let videoCapture = CameraVideoCapture()
+    private var lockCancellable: AnyCancellable?
     
     // MARK: - Main queue state
     
@@ -98,8 +99,12 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     
     // MARK: - Initialization
     
-    init() {
+    init(lockPublisher: AnyPublisher<Bool, Never>) {
         configureCaptureCallbacks()
+        // Capture tasks retain the service after the camera view model is released.
+        lockCancellable = lockPublisher
+            .filter { $0 }
+            .sink { [weak self] _ in self?.discardCaptures() }
     }
 }
 
@@ -531,7 +536,12 @@ private extension CameraService {
             self.sessionQueue.async { self.handleRecordingStarted() }
         }
         videoCapture.onRecordingFinished = { [weak self] result in
-            guard let self else { return }
+            guard let self else {
+                if case .success(let recording) = result {
+                    try? FileManager.default.removeItem(at: recording.url)
+                }
+                return
+            }
             self.sessionQueue.async { self.handleRecordingFinished(result) }
         }
     }

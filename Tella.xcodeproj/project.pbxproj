@@ -410,6 +410,7 @@
 		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
 		12A6B9872F34ACB5005C0E70 /* AttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */; };
 		12A6B98B2F34D21B005C0E70 /* CustomAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */; };
+		12A73EF93082419700F2A351 /* Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A73EF83082419400F2A351 /* Locked.swift */; };
 		12A84F472F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */; };
 		12A84F4B2F1A91760070A4B9 /* BackBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
@@ -1229,6 +1230,7 @@
 		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
 		12A6B9862F34AC96005C0E70 /* AttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Extension.swift"; sourceTree = "<group>"; };
 		12A6B98A2F34D219005C0E70 /* CustomAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAttributedText.swift; sourceTree = "<group>"; };
+		12A73EF83082419400F2A351 /* Locked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locked.swift; sourceTree = "<group>"; };
 		12A84F462F1A3DDD0070A4B9 /* LoseFilesWarningOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoseFilesWarningOnboardingView.swift; sourceTree = "<group>"; };
 		12A84F4A2F1A91750070A4B9 /* BackBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackBottomView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
@@ -2531,6 +2533,7 @@
 				125D231B271F119D00250FBB /* Validator.swift */,
 				6DD4C039240F547300491438 /* Utils.swift */,
 				CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */,
+				12A73EF83082419400F2A351 /* Locked.swift */,
 				12567FF8271742C500A2D356 /* Localizable.swift */,
 				126FE4D627A427E200AE4188 /* Constants.swift */,
 				D516397B2631113B003A11B5 /* Styles.swift */,
@@ -4591,6 +4594,7 @@
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
+				12A73EF93082419700F2A351 /* Locked.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				1282C0A42D8AF3D70033E4CA /* CloseConnection.swift in Sources */,
 				126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */,

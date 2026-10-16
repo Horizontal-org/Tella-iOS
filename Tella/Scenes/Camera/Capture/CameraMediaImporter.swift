@@ -31,6 +31,12 @@ final class CameraMediaImporter {
                                                      qos: .userInitiated,
                                                      autoreleaseFrequency: .workItem)
     private var importCancellable: AnyCancellable?
+    private var lockCancellable: AnyCancellable?
+    private let cancellation = Locked(false)
+
+    private var isCancelled: Bool {
+        cancellation.withValue { $0 }
+    }
 
     var reportsProgress: Bool {
         resultFile != nil
@@ -44,6 +50,11 @@ final class CameraMediaImporter {
         self.rootFile = rootFile
         self.resultFile = resultFile
         self.autoUpload = sourceView != .addReportFile
+        // Stay subscribed while capture tasks or queued photo processing retain this importer.
+        // Handle the lock synchronously, before the app sweeps the temporary directory.
+        lockCancellable = mainAppModel.$shouldSaveCurrentData
+            .filter { $0 }
+            .sink { [weak self] _ in self?.cancelImports() }
     }
 }
 
@@ -52,19 +63,29 @@ extension CameraMediaImporter {
     // MARK: - Saving
     
     func save(_ capture: CameraService.CapturedPhoto) {
+        guard !isCancelled else { return }
         let shouldPreserveMetadata = mainAppModel.settings.preserveMetadata
         let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
         // Preparing the HEIC is synchronous; the vault import already handles its own background work.
         photoProcessingQueue.async {
+            guard !self.isCancelled else { return }
             do {
                 try capture.photo.saveImage(to: url,
                                             shouldPreserveMetadata: shouldPreserveMetadata,
                                             aspectRatio: capture.aspectRatio)
+                // Encoding may finish after the lock's temporary-directory cleanup.
+                guard !self.isCancelled else {
+                    try? FileManager.default.removeItem(at: url)
+                    return
+                }
                 DispatchQueue.main.async { self.importFile(at: url) }
             } catch {
                 debugLog("Unable to save photo: \(error.localizedDescription)")
                 try? FileManager.default.removeItem(at: url)
-                DispatchQueue.main.async { self.onFailure?(error) }
+                DispatchQueue.main.async {
+                    guard !self.isCancelled else { return }
+                    self.onFailure?(error)
+                }
             }
         }
     }
@@ -75,10 +96,20 @@ extension CameraMediaImporter {
 }
 
 private extension CameraMediaImporter {
+
+    func cancelImports() {
+        cancellation.withValue { $0 = true }
+        importCancellable = nil
+    }
     
     // MARK: - Vault import
     
     func importFile(at url: URL) {
+        // Also covers videos and photos already waiting on the main queue when locking starts.
+        guard !isCancelled else {
+            try? FileManager.default.removeItem(at: url)
+            return
+        }
         let importedFile = ImportedFile(urlFile: url,
                                         parentId: rootFile?.id,
                                         shouldPreserveMetadata: mainAppModel.settings.preserveMetadata,
@@ -99,6 +130,7 @@ private extension CameraMediaImporter {
             .sink(receiveCompletion: { [weak self] _ in
                 self?.importCancellable = nil
             }, receiveValue: { [self] result in
+                guard !self.isCancelled else { return }
                 switch result {
                 case .importProgress(let importProgress):
                     self.onProgress?(importProgress)

@@ -101,7 +101,7 @@ class CameraViewModel: ObservableObject {
         self.resultFile = resultFile
         self.sourceView = sourceView
         self.showingCameraView = showingCameraView
-        self.service = CameraService()
+        self.service = CameraService(lockPublisher: mainAppModel.$shouldSaveCurrentData.eraseToAnyPublisher())
         self.mediaImporter = CameraMediaImporter(mainAppModel: mainAppModel,
                                                  rootFile: rootFile,
                                                  resultFile: resultFile,
@@ -111,7 +111,6 @@ class CameraViewModel: ObservableObject {
         configureMediaImporter()
         listenToShouldReloadFiles()
         listenToCameraService()
-        listenToAppLifecycle()
     }
     
     // MARK: - Camera lifecycle
@@ -138,14 +137,6 @@ class CameraViewModel: ObservableObject {
     
     private func handleForcedClose() {
         dismissCamera()
-    }
-    
-    /// The lock tears this screen down and sweeps the temp directory right after, so nothing
-    /// from the camera should still be in flight: a pending photo is dropped and a recording
-    /// is discarded instead of being saved.
-    private func clearCamera() {
-        invalidateTimerRunning()
-        service.discardCaptures()
     }
     
     // MARK: - Capture requests
@@ -465,15 +456,6 @@ class CameraViewModel: ObservableObject {
                     self?.hideFlashOptions()
                 }
             }
-            .store(in: &cancellable)
-    }
-    
-    private func listenToAppLifecycle() {
-        // Sent on the main queue right before the app locks; handled synchronously so the
-        // camera is cleared before the temp directory is swept.
-        mainAppModel.$shouldSaveCurrentData
-            .filter { $0 }
-            .sink { [weak self] _ in self?.clearCamera() }
             .store(in: &cancellable)
     }
     
