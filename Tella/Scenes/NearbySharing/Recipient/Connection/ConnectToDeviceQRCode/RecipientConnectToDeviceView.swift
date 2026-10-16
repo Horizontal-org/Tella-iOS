@@ -127,8 +127,7 @@ struct RecipientConnectToDeviceView: View {
         return TellaButtonView(title: LocalizableNearbySharing.connectManually.localized.uppercased(),
                                nextButtonAction: .destination,
                                destination: RecipientConnectToDeviceManuallyView(viewModel: manualVM),
-                               isValid: .constant(true),
-                               buttonRole: .secondary)
+                               isValid: .constant(true))
         .padding([.leading, .trailing], 80)
     }
     

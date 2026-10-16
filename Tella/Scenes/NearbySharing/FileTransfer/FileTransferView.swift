@@ -57,11 +57,11 @@ struct FileTransferView: View {
                 Spacer()
                 TellaButtonView(title: LocalizableNearbySharing.cancel.localized.uppercased(),
                                 nextButtonAction: .action,
-                                isValid: .constant(true),
-                                buttonRole: .secondary) {
+                                layout: .compact,
+                                isValid: .constant(true)) {
                     showCancelUploadConfirmationView()
-                }.frame(width: 132)
-                    .padding(.trailing, 22)
+                }
+                .padding(.trailing, 22)
             }
         }
     }

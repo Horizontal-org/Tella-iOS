@@ -13,14 +13,16 @@ class UwaziLanguageRow: DomainModel, Hashable {
     let id: String?
     let locale: String?
     let languageName: String
+    let translatedLanguageName: String
 
     init(id: String?,
          locale: String?,
-         languageName: String) {
+         languageName: String,
+         translatedLanguageName: String) {
         self.id = id
         self.locale = locale
         self.languageName = languageName
-
+        self.translatedLanguageName = translatedLanguageName
     }
     static func == (lhs: UwaziLanguageRow, rhs: UwaziLanguageRow) -> Bool {
         lhs.locale == rhs.locale

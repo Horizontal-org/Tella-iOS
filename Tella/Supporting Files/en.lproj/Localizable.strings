@@ -307,7 +307,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "This Uwazi instance requires two-step verification. Enter here the 6-digit code from your authenticator app.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
 "Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
-"Setting_Server_Uwazi_Language_Title" = "Uwazi language";
+"Setting_Server_Uwazi_Language_Title" = "Language";
 "Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
 "Setting_Server_Uwazi_Language_Ok" = "OK";
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";

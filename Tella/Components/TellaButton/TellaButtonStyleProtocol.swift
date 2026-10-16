@@ -12,9 +12,10 @@ enum ButtonType {
     case yellow
     case clear
 }
-enum ButtonRole {
-    case primary
-    case secondary
+
+enum TellaButtonLayout {
+    case fullWidth
+    case compact
 }
 
 protocol TellaButtonStyleProtocol {
@@ -29,7 +30,7 @@ protocol TellaButtonStyleProtocol {
 
 struct ClearButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Color.white.opacity(0.16)
-    var disabledBackgroundColor = Color.white.opacity(0.16)
+    var disabledBackgroundColor = Color.white.opacity(0.08)
     var pressedBackgroundColor = Color.white.opacity(0.32)
     var overlayColor = Color.white.opacity(0.80)
     var foregroundColor = Color.white
@@ -39,8 +40,8 @@ struct ClearButtonStyle : TellaButtonStyleProtocol {
 struct YellowButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Styles.Colors.yellow
     var disabledBackgroundColor = Styles.Colors.disabledYellow
-    var pressedBackgroundColor = Color(UIColor(hexValue: 0xe0ad6a))
-    var overlayColor = Color.black.opacity(0.80)
+    var pressedBackgroundColor = Styles.Colors.yellowWhite
+    var overlayColor = Color.black
     var foregroundColor = Color.black
     var disabledForegroundColor = Color.black.opacity(0.38)
 }

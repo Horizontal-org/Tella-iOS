@@ -16,33 +16,21 @@ struct SettingsBottomView: View {
     var body: some View {
         
         HStack(spacing: 16) {
-            
             Spacer()
-            
-            Button {
-                cancelAction()
-            } label: {
-                Text(LocalizableSettings.UwaziLanguageCancel.localized)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
-                    .background(Color(UIColor(hexValue: 0xF5F5F5)).opacity(0.16))
-                    .cornerRadius(25)
-            }
-            
-            Button {
-                saveAction()
-            } label: {
-                Text(saveActionTitle)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
-                    .background(Styles.Colors.yellow)
-                    .opacity(isDisable ? 0.8 : 1)
-                    .cornerRadius(25)
-            }.disabled(isDisable)
-            
-        }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            TellaButtonView(title: LocalizableSettings.UwaziLanguageCancel.localized,
+                            nextButtonAction: .action,
+                            buttonType: .clear,
+                            layout: .compact,
+                            isValid: .constant(true),
+                            action: cancelAction)
+            TellaButtonView(title: saveActionTitle,
+                            nextButtonAction: .action,
+                            buttonType: .yellow,
+                            layout: .compact,
+                            isValid: .constant(!isDisable),
+                            action: saveAction)
+        }
+        .padding(.horizontal, 16)
       }
 }
 
