@@ -13,6 +13,7 @@ protocol VaultFilesManagerInterface {
 
     func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>?
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
+    func getLatestPhotoVideoFile() -> VaultFileDB?
     func getVaultFile(id: String?) -> VaultFileDB?
     func vaultFileExists(name: String) -> Bool
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
@@ -29,4 +30,3 @@ protocol VaultFilesManagerInterface {
     @discardableResult
     func updateHashVaultFile(id: String, hash: String) -> Result<Bool,Error>
 }
-

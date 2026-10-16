@@ -12,6 +12,8 @@ import Foundation
 
 extension CGFloat {
 
+    static let tiny: CGFloat = 6
+
     static let extraSmall: CGFloat = 8
 
     static let extraESmall: CGFloat = 10
@@ -26,23 +28,48 @@ extension CGFloat {
 
     static let medium: CGFloat = 24
 
+    static let largeMedium: CGFloat = 28
+
     static let large: CGFloat = 32
+
+    static let mediumlarge: CGFloat = 40
 
     static let extraLarge: CGFloat = 48
 
     static let doubleLarge: CGFloat = 64
-
+    
     static let borderWidth: CGFloat = 1
     
+    static let extraLargeIconSize: CGFloat = 60
+
+    static let largeIconSize: CGFloat = 56
+
+    static let mediumLargeIconSize: CGFloat = 45
+
     static let mediumIconSize: CGFloat = 40
     
-    static let smallIconSize: CGFloat = 24
+    static let smallMediumIconSize: CGFloat = 32
+
+    static let smallIconSize: CGFloat = 28
+
+    static let extraSmallIconSize: CGFloat = 24
     
-    static let extraSmallIconSize: CGFloat = 10
+    static let tinyIconSize: CGFloat = 10
+
+    static let tinyCornerRadius: CGFloat = 5
 
     static let smallCornerRadius: CGFloat = 15
 
     static let mediumCornerRadius: CGFloat = 30
+}
+
+extension CGFloat {
+    
+    static let mediumButtonHeight: CGFloat = 28
+
+    static let mediumButtonWidth: CGFloat = 80
+
+    
 }
 
 extension CGFloat {

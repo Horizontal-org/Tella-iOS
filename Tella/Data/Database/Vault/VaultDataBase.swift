@@ -13,6 +13,7 @@ protocol VaultDataBaseProtocol {
     @discardableResult
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
+    func getLatestPhotoVideoFile() -> VaultFileDB?
     func getVaultFile(id: String?) -> VaultFileDB?
     func vaultFileExists(name: String) -> Bool
     func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB]
@@ -153,6 +154,14 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
+        getVaultFiles(parentId: parentId, filter: filter, sort: sort, limit: 0)
+    }
+
+    func getLatestPhotoVideoFile() -> VaultFileDB? {
+        getVaultFiles(parentId: nil, filter: .photoVideo, sort: .newestToOldest, limit: 1).first
+    }
+
+    private func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?, limit: Int) -> [VaultFileDB] {
         do {
             
             let parentId = parentId ?? VaultD.rootId
@@ -166,6 +175,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                                                      differentCondition: filterConditions.differentCondition,
                                                                      inCondition: filterConditions.inCondition,
                                                                      sortCondition: [sortCondition],
+                                                                     limit: limit,
                                                                      likeConditions: filterConditions.likeConditions,
                                                                      notLikeConditions: filterConditions.notLikeConditions )
             

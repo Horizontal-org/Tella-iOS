@@ -92,10 +92,16 @@ struct TellaApp: App {
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
         
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
+            let model = appViewState.homeViewModel
+            // Cancel retained camera work before the lock's temporary-file cleanup.
+            model.shouldSaveCurrentData = true
             dismissPresentedViewsBeforeLock()
-            DispatchQueue.main.async { appViewState.resetApp() }
-            appViewState.homeViewModel.vaultManager.clearTmpDirectory()
-            appViewState.homeViewModel.uploadService.reset()
+            DispatchQueue.main.async {
+                appViewState.resetApp()
+                model.shouldSaveCurrentData = false
+            }
+            model.vaultManager.clearTmpDirectory()
+            model.uploadService.reset()
         }
         
         appViewState.homeViewModel.appEnterInBackground = false

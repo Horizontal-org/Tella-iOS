@@ -16,8 +16,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     var vaultManager : VaultManagerInterface?
     
-    private var cancellables: Set<AnyCancellable> = []
-    private let cancellablesLock = NSLock()
+    private let cancellables = Locked<Set<AnyCancellable>>([])
     
     var shouldReloadFiles = CurrentValueSubject<Bool, Never>(false)
     
@@ -178,9 +177,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     }
     
     private func storeCancellable(_ cancellable: AnyCancellable) {
-        cancellablesLock.lock()
-        defer { cancellablesLock.unlock() }
-        cancellables.insert(cancellable)
+        cancellables.withValue { cancellable.store(in: &$0) }
     }
     
     func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
@@ -315,6 +312,10 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
+    }
+
+    func getLatestPhotoVideoFile() -> VaultFileDB? {
+        vaultDataBase.getLatestPhotoVideoFile()
     }
     
     func getVaultFile(vaultFilesFolders: [VaultFileDB]) -> [VaultFileDB] {

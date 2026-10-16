@@ -44,7 +44,7 @@ extension Int {
 
 extension Int {
     var adjusted: CGFloat {
-        return CGFloat(self) * Device.ratio
+        return CGFloat(self)
     }
 }
 

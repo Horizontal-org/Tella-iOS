@@ -5,139 +5,54 @@
 
 
 import SwiftUI
-import Combine
-import AVFoundation
-
 
 struct CameraView: View {
     
-    // MARK: - Public properties
-    //    var sourceView : SourceView
-    var showingCameraView : Binding<Bool>
-    
-    // MARK: - Private properties
-    
-    private var subscriptions = Set<AnyCancellable>()
-    
-    @State private var showingPermissionAlert : Bool = false
-    @State private var gridIsOn: Bool = false
-    @StateObject private var cameraViewModel :  CameraViewModel
-    @StateObject private var model = CameraModel()
-    @EnvironmentObject private var sheetManager: SheetManager
-    
+    @StateObject private var viewModel: CameraViewModel
     
     init(sourceView: SourceView,
          showingCameraView: Binding<Bool>,
          resultFile: Binding<[VaultFileDB]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFileDB? = nil) {
+         rootFile: VaultFileDB? = nil) {
         
-        self.showingCameraView = showingCameraView
-        
-        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
-                                                                     rootFile: rootFile,
-                                                                     resultFile: resultFile,
-                                                                     sourceView: sourceView))
-        
+        _viewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
+                                                               rootFile: rootFile,
+                                                               resultFile: resultFile,
+                                                               sourceView: sourceView,
+                                                               showingCameraView: showingCameraView))
     }
     
     var body: some View {
         
-        NavigationContainerView(backgroundColor: Color.black) {
+        NavigationContainerView(backgroundColor: Styles.Colors.backgroundGrey1) {
             
-            CameraPreview(session: model.session,
-                          gridIsOn: gridIsOn,
-                          onZoomBegan: {
-                model.startZoom()
-            }, onZoomChanged: { pinchScale in
-                model.zoom(by: pinchScale)
-            })
-            .edgesIgnoringSafeArea(.all)
+            CameraControlsView(viewModel: viewModel)
             
-            getCameraControlsView()
-            
-        }.background(Color.black)
+        }.background(Styles.Colors.backgroundGrey1)
             .accentColor(.white)
             .navigationBarHidden(true)
             .onAppear {
                 UIApplication.shared.topNavigationController()?.setNavigationBarHidden(true, animated: false)
-                model.shouldPreserveMetadata = cameraViewModel.mainAppModel.settings.preserveMetadata
-                model.configure()
+                viewModel.configure()
             }
             .onDisappear {
-                model.stopRunningCaptureSession()
+                viewModel.stopRunningCaptureSession()
             }
-        
-            .onReceive(model.$isRecording) { value in
-                cameraViewModel.isRecording = value
-            }
-        
-            .onReceive(model.$shouldShowPermission) { value in
-                showingPermissionAlert = value
-            }
-        
-            .onReceive(model.service.$shouldShowProgressView) { value in
-                if value, cameraViewModel.shouldShowProgressView {
-                    showProgressView()
-                }
-            }
-        
-            .onReceive(model.$shouldCloseCamera) { value in
-                if value {
-                    if cameraViewModel.sourceView == .tab {
-                        cameraViewModel.mainAppModel.selectedTab = .home
-                    } else {
-                        showingCameraView.wrappedValue = false
-                    }
-                    cameraViewModel.mainAppModel.vaultManager.clearTmpDirectory()
-                }
-            }
-        
-            .onReceive(model.service.$imageCompletion) { imageCompletion in
-                guard let imageCompletion else { return }
-                cameraViewModel.capturePhoto = imageCompletion.capturePhoto
-                cameraViewModel.saveImage()
-            }
-        
-            .onReceive(model.$videoURLCompletion) { videoURL in
-                guard let videoURL = videoURL else { return }
-                cameraViewModel.videoURL = videoURL
-                cameraViewModel.saveVideo()
-            }
-            .onReceive(cameraViewModel.$shouldShowToast) { shouldShowToast in
+            .onReceive(viewModel.$shouldShowToast) { shouldShowToast in
                 if shouldShowToast {
-                    Toast.displayToast(message: cameraViewModel.errorMessage)
+                    Toast.displayToast(message: viewModel.errorMessage)
+                    viewModel.shouldShowToast = false
                 }
             }
-        
-            .alert(isPresented:$showingPermissionAlert) {
+            .overlay {
+                if viewModel.shouldPresentProgressView {
+                    progressView
+                }
+            }
+            .alert(isPresented: $viewModel.shouldShowPermission) {
                 getSettingsAlertView()
             }
-            .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func getCameraControlsView() -> some View {
-        
-        CameraControlsView(cameraViewModel: cameraViewModel,
-                           showingCameraView: showingCameraView,
-                           sourceView: cameraViewModel.sourceView,
-                           gridIsOn: $gridIsOn,
-                           captureButtonAction: {
-            model.capturePhoto()
-        }, recordVideoAction: {
-            model.startCaptureVideo()
-        }, toggleCamera: {
-            model.toggleCameraType()
-        }, updateCameraTypeAction: { cameraType in
-            model.cameraType = cameraType
-        }, updateFlashMode: { mode in
-            model.setFlashMode(mode)
-        }, close: {
-            model.stopRunningCaptureSession()
-        }, zoomFactor: model.currentZoomFactor,
-                           flashMode: model.flashMode,
-                           isFlashAvailable: model.isFlashAvailable)
-        .edgesIgnoringSafeArea(.all)
     }
     
     private func getSettingsAlertView() -> Alert {
@@ -148,23 +63,32 @@ struct CameraView: View {
                             + LocalizableCamera.deniedCameraPermissionExpl4.localized.numbered(2).addline
                             + LocalizableCamera.deniedCameraPermissionExpl5.localized.numbered(3)),
               primaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionCancel.localized), action: {
-            cameraViewModel.mainAppModel.selectedTab = .home
+            viewModel.dismissCamera()
         }), secondaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionSettings.localized), action: {
             UIApplication.shared.openSettings()
-            cameraViewModel.mainAppModel.selectedTab = .home
+            viewModel.dismissCamera()
         }))
     }
     
-    func showProgressView() {
-        cameraViewModel.progressFile = ProgressFile()
-        
-        let content = ImportFilesProgressView(mainAppModel: cameraViewModel.mainAppModel,
-                                              progress: cameraViewModel.progressFile,
-                                              importFilesProgressProtocol: ImportFilesFromCameraProgress(),
-                                              onImportFinished: { self.dismiss() })
-        
-        showBottomSheetView(content: content,
-                            tapToDismiss: false)
-        
+    private var progressView: some View {
+        DragView(isPresented: $viewModel.shouldPresentProgressView,
+                 presentationType: .show,
+                 backgroundColor: Styles.Colors.backgroundTab,
+                 tapToDismiss: false) {
+            ImportFilesProgressView(mainAppModel: viewModel.mainAppModel,
+                                    progress: viewModel.progressFile,
+                                    importFilesProgressProtocol: ImportFilesFromCameraProgress(),
+                                    onImportFinished: {
+                viewModel.shouldPresentProgressView = false
+            })
+        }
+    }
+}
+
+struct CameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView(sourceView: .tab,
+                   showingCameraView: .constant(true),
+                   mainAppModel: MainAppModel.stub())
     }
 }

@@ -33,4 +33,16 @@ enum LocalizableCamera: String, LocalizableDelegate {
     
     case showGrid = "Camera_ShowGrid"
     case hideGrid = "Camera_HideGrid"
+    
+    case moreActionFlash = "Camera_MoreAction_Flash"
+    case moreActionGrid = "Camera_MoreAction_Grid"
+    case moreActionAspect = "Camera_MoreAction_Aspect"
+    case aspectFull = "Camera_Aspect_Full"
+    
+    case flashOff = "Camera_Flash_Off"
+    case flashOn = "Camera_Flash_On"
+    case flashAuto = "Camera_Flash_Auto"
+    
+    case gridOn = "Camera_Grid_On"
+    case gridOff = "Camera_Grid_Off"
 }

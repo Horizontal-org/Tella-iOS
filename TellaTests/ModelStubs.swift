@@ -11,7 +11,7 @@ extension VaultFileDB {
     static func stub() -> VaultFileDB {
         let file = VaultFileDB(id: UUID().uuidString,
                                type: VaultFileType.file,
-                               thumbnail: nil,
+                               thumbnail: UIImage(systemName: "photo")?.pngData(),
                                name: "Test",
                                duration: 20,
                                size: 20,

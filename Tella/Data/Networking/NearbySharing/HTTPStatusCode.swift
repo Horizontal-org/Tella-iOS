@@ -8,6 +8,8 @@
 //
 
 import Foundation
+import AVFoundation
+import Darwin
 
 enum HTTPStatusCode: Int, Error {
     case ok = 200
@@ -51,10 +53,11 @@ struct ServerStatus : Error {
 }
 
 extension Error {
-    /// True if the error represents insufficient disk space (POSIX or Cocoa).
+    /// True when this error directly reports insufficient disk space.
     var isInsufficientStorageError: Bool {
         let ns = self as NSError
-        if ns.domain == NSPOSIXErrorDomain, ns.code == 28 { return true }
+        if ns.domain == AVFoundationErrorDomain, ns.code == AVError.Code.diskFull.rawValue { return true }
+        if ns.domain == NSPOSIXErrorDomain, ns.code == Int(ENOSPC) { return true }
         if ns.domain == NSCocoaErrorDomain, ns.code == NSFileWriteOutOfSpaceError { return true }
         return false
     }

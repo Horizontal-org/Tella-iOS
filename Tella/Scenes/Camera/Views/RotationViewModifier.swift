@@ -7,7 +7,17 @@
 
 import SwiftUI
 
+struct CameraControlRotation {
+    var deviceOrientation: UIDeviceOrientation = UIDevice.current.orientation
+    var shouldAnimate: Bool = false
+}
+
 extension View {
+    
+    func rotate(_ rotation: CameraControlRotation) -> some View {
+        rotate(deviceOrientation: rotation.deviceOrientation,
+               shouldAnimate: rotation.shouldAnimate)
+    }
     
     public func rotate(deviceOrientation: UIDeviceOrientation,
                        shouldAnimate: Bool) -> some View {
@@ -34,9 +44,8 @@ struct RotationViewModifier : ViewModifier {
     
     public func body(content: Content) -> some View {
         
-        content.rotationEffect(.degrees(degree))
-            .if(shouldAnimate, transform: { view in
-                view.animation(.easeInOut(duration: 0.3))
-            })
+        content
+            .rotationEffect(.degrees(degree))
+            .animation(shouldAnimate ? .easeInOut(duration: 0.3) : nil, value: degree)
     }
 }
