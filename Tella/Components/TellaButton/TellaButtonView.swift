@@ -82,23 +82,25 @@ struct TellaButtonView<Destination:View> : View {
             }
         } label: {
             buttonLabel
-        }.cornerRadius(cornerRadius)
-            .fixedSize(horizontal: layout == .compact, vertical: false)
-            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle,
-                                          isValid: isValid,
-                                          cornerRadius: cornerRadius))
-            .disabled(isValid == false)
-            .overlay(self.isOverlay ?
-                     RoundedRectangle(cornerRadius: cornerRadius)
-                .stroke(.white, lineWidth: 4) : nil)
+        }
+        .fixedSize(horizontal: layout == .compact, vertical: false)
+        .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle,
+                                      isValid: isValid,
+                                      isCapsule: layout == .compact))
+        .disabled(isValid == false)
+        .overlay {
+            if isOverlay {
+                selectedOutline
+            }
+        }
     }
     
-    private var cornerRadius: CGFloat {
-        switch layout {
-        case .fullWidth:
-            return 20
-        case .compact:
-            return 25
+    @ViewBuilder
+    private var selectedOutline: some View {
+        if layout == .compact {
+            Capsule().stroke(Color.white, lineWidth: 4)
+        } else {
+            RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4)
         }
     }
     
@@ -115,14 +117,15 @@ struct TellaButtonView<Destination:View> : View {
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal, .normal)
                     .padding(.vertical, .normal)
+                    .contentShape(RoundedRectangle(cornerRadius: 20))
             case .compact:
                 text
                     .lineLimit(1)
                     .padding(.normal)
                     .frame(minWidth: 132, minHeight: 51)
+                    .contentShape(Capsule())
             }
         }
-        .contentShape(Rectangle())
     }
 }
 
@@ -131,18 +134,28 @@ struct TellaButtonStyle : ButtonStyle {
     var buttonStyle : TellaButtonStyleProtocol
     var isValid : Bool
     var cornerRadius: CGFloat = 20
+    var isCapsule: Bool = false
     
     func makeBody(configuration: Configuration) -> some View {
-        
         configuration.label
-            .background(configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor())
-            .cornerRadius(cornerRadius)
-            .overlay(
-                configuration.isPressed && isValid ?
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: 3) :
-                    RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
-            )
+            .background(backgroundShape(configuration))
             .foregroundColor(getForegroundColor())
+    }
+    
+    @ViewBuilder
+    private func backgroundShape(_ configuration: Configuration) -> some View {
+        let fill = configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor()
+        let showsStroke = configuration.isPressed && isValid
+        
+        if isCapsule {
+            Capsule()
+                .fill(fill)
+                .overlay(Capsule().stroke(buttonStyle.overlayColor, lineWidth: showsStroke ? 3 : 0))
+        } else {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(fill)
+                .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: showsStroke ? 3 : 0))
+        }
     }
     
     func getBackgroundColor() -> Color {
