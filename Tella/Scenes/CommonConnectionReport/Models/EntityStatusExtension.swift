@@ -12,17 +12,18 @@ import Foundation
 
 extension EntityStatus {
     
-    func deleteReportStrings(title:String) -> ConfirmDeleteConnectionStrings {
+    var deleteReportStrings: ConfirmDeleteConnectionStrings {
+        let deleteTitle = LocalizableUwazi.entityDeleteSheetTitle.localized
         switch self {
         case .draft:
-            return ConfirmDeleteConnectionStrings(deleteTitle: String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)"),
+            return ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                        deleteMessage: LocalizableUwazi.deleteDraftSheetExpl.localized)
             
         case .submitted:
-            return ConfirmDeleteConnectionStrings(deleteTitle: LocalizableUwazi.submittedDeleteSheetTitle.localized,
+            return ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                        deleteMessage :LocalizableUwazi.submittedDeleteSheetExpl.localized)
         default:
-            return ConfirmDeleteConnectionStrings(deleteTitle : LocalizableUwazi.submittedDeleteSheetTitle.localized,
+            return ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                        deleteMessage : LocalizableUwazi.outboxDeleteSheetExpl.localized)
         }
         
@@ -37,7 +38,7 @@ extension EntityStatus {
                                     content: LocalizableUwazi.editDraft.localized,
                                     type: ConnectionActionType.editDraft),
                 ListActionSheetItem(imageName: "delete-icon-white",
-                                    content: LocalizableUwazi.deleteDraft.localized,
+                                    content: LocalizableUwazi.deleteSheetSelect.localized,
                                     type: ConnectionActionType.delete)
             ]
         case .submitted:

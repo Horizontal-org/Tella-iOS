@@ -40,7 +40,8 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziDeleteFromDevice = "Uwazi_Template_DeleteFromDevice_SheetAction"
     case uwaziDeleteTemplate = "Uwazi_Template_DeleteTemplate_SheetAction"
     
-    
+    case deleteTemplateSheetTitle = "Uwazi_Template_Delete_SheetTitle"
+
     
     case uwaziEntityExitSheetTitle = "Uwazi_Entity_ExitEntity_SheetTitle"
     case uwaziEntityExitSheetExpl = "Uwazi_Entity_ExitEntity_SheetExpl"
@@ -79,14 +80,11 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case emptyDraftListExpl = "Uwazi_Draft_EmptyDraftList_Expl"
     
     case draftEntitySaved = "Uwazi_Draft_EntitySaved_Toast"
-    
-    
-    case deleteSheetTitle = "Uwazi_Delete_SheetTitle"
+
     case deleteDraftSheetExpl = "Uwazi_Draft_Delete_SheetExpl"
     
     case editDraft = "Uwazi_Draft_Edit_SheetSelect"
-    case deleteDraft = "Uwazi_Draft_Delete_SheetSelect"
-    
+
     case outboxListExpl = "Uwazi_Outbox_OutboxList_Expl"
     case emptyOutboxListExpl = "Uwazi_Outbox_EmptyOutboxList_Expl"
     case outboxDeleteSheetExpl = "Uwazi_Outbox_Delete_SheetExpl"
@@ -103,10 +101,8 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     
     
-    case submittedDeleteSheetTitle = "Uwazi_Submitted_Delete_SheetTitle"
+    case entityDeleteSheetTitle = "Uwazi_Entity_Delete_SheetTitle"
     case submittedDeleteSheetExpl = "Uwazi_Submitted_Delete_SheetExpl"
-    case submittedDeleteCancelAction = "Uwazi_Submitted_Delete_Cancel_SheetAction"
-    case submittedDeleteDeleteAction = "Uwazi_Submitted_Delete_Delete_SheetAction"
     
     
     case viewSheetSelect = "Uwazi_View_SheetSelect"

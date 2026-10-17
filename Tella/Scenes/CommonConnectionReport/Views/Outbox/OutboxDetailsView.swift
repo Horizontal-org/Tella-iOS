@@ -219,8 +219,7 @@ struct OutboxDetailsView<T: Server>: View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet() {
-            DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
-                                         message: LocalizableReport.deleteOutboxReportMessage.localized) {
+            DeleteReportConfirmationView(message: LocalizableReport.deleteOutboxReportMessage.localized) {
                 outboxReportVM.deleteReport()
                 sheetManager.hide()
             }
