@@ -69,18 +69,21 @@ struct MainView: View  {
                     Image("tab.home")
                     Text(LocalizableHome.tabBar.localized)
                 }.tag(MainAppModel.Tabs.home)
+                .modifier(MainTabBarAppearance())
             
             ContainerView{}
                 .tabItem {
                     Image("tab.camera")
                     Text(LocalizableCamera.tabBar.localized)
                 }.tag(MainAppModel.Tabs.camera)
+                .modifier(MainTabBarAppearance())
             
             ContainerView{}
                 .tabItem {
                     Image("tab.mic")
                     Text(LocalizableRecorder.tabBar.localized)
                 }.tag(MainAppModel.Tabs.mic)
+                .modifier(MainTabBarAppearance())
             
             SettingsMainView(appViewState: appViewState,
                              settingsViewModel: SettingsViewModel(mainAppModel: mainAppModel),
@@ -89,16 +92,20 @@ struct MainView: View  {
                 Image("tab.settings")
                 Text(LocalizableSettings.settAppBar.localized)
             }.tag(MainAppModel.Tabs.settings)
+                .modifier(MainTabBarAppearance())
         }
+        .modifier(TabBarBackgroundModifier())
     }
 }
 
-//struct AppView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainView(mainAppModel: MainAppModel.stub())
-//            .preferredColorScheme(.light)
-//            .previewLayout(.device)
-//            .previewDevice("iPhone 8")
-//    }
-//}
-//
+private struct MainTabBarAppearance: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 27.0, *) {
+            content
+                .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
+        } else {
+            content
+        }
+    }
+}
