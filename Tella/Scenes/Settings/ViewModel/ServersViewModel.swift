@@ -83,12 +83,8 @@ class ServersViewModel: ObservableObject {
         mainAppModel.tellaData?.deleteAllServers()
     }
     
-    func filterServerConnections() -> [ServerConnectionButton] {
-        let unavailableTypes = Set(unavailableServers.compactMap { $0.serverType })
-        
-        return serverConnections.filter { connection in
-            !unavailableTypes.contains(connection.type)
-        }
+    func isConnectionUnavailable(_ type: ServerConnectionType) -> Bool {
+        unavailableServers.contains { $0.serverType == type }
     }
 }
 

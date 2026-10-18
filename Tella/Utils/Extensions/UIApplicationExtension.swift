@@ -81,11 +81,14 @@ extension UIApplication {
     
     func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
         
-        UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
-        UITabBar.appearance().shadowImage = UIImage()
-        UITabBar.appearance().backgroundImage = UIImage()
-        UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().backgroundColor = backgroundColor
+        // Legacy image overrides suppress the native floating tab bar background.
+        if #unavailable(iOS 27.0) {
+            UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
+            UITabBar.appearance().shadowImage = UIImage()
+            UITabBar.appearance().backgroundImage = UIImage()
+            UITabBar.appearance().isTranslucent = true
+            UITabBar.appearance().backgroundColor = backgroundColor
+        }
         
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()

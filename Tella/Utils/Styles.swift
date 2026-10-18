@@ -21,6 +21,7 @@ struct Styles {
         
         static let darkRed = UIColor(hexValue: 0x971212)
         static let red = UIColor(hexValue: 0xFC4444)
+        static let lightRed = UIColor(hexValue: 0xFEA5A5)
         
         static let backgroundToast = UIColor(hexValue: 0xE8E8EC)
         
@@ -44,6 +45,7 @@ struct Styles {
         
         static let red = Color(uiColor.red)
         static let darkRed = Color(uiColor.darkRed)
+        static let lightRed = Color(uiColor.lightRed)
         
         static let backgroundToast = Color(uiColor.backgroundToast)
         

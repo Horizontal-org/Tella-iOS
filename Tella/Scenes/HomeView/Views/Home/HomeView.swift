@@ -47,7 +47,7 @@ struct HomeView: View {
                     Spacer()
                         .frame(height: 30)
                     
-                    FileGroupsView(mainAppModel: mainAppModel, shouldShowFilesTitle: viewModel.showingFilesTitle)
+                    FileGroupsView(mainAppModel: mainAppModel)
                 }
             }
             

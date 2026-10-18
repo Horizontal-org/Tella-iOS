@@ -1,5 +1,5 @@
 //
-//  Copyright © 2022 HORIZONTAL. 
+//  Copyright © 2022 HORIZONTAL.
 //  Licensed under MIT (https://github.com/Horizontal-org/Tella-iOS/blob/develop/LICENSE)
 //
 
@@ -12,7 +12,7 @@ enum ServerConnectionType: Codable {
     case gDrive
     case nextcloud
     case dropbox
-
+    
 }
 
 extension ServerConnectionType {
@@ -31,18 +31,18 @@ extension ServerConnectionType {
         }
     }
     
-    var serverTitle: String {
+    var connectionName: String {
         switch self {
         case .gDrive:
-            LocalizableSettings.settServerGDrive.localized
+            LocalizableLock.onboardingConnectionsGDrive.localized
         case .uwazi:
-            LocalizableSettings.settServerUwazi.localized
+            LocalizableLock.onboardingConnectionsUwazi.localized
         case .nextcloud:
-            LocalizableSettings.settServerNextCloud.localized
+            LocalizableLock.onboardingConnectionsNextcloud.localized
         case .dropbox:
-            LocalizableSettings.settServerDropbox.localized
-        default:
-            ""
+            LocalizableLock.onboardingConnectionsDropbox.localized
+        case .tella:
+            LocalizableLock.onboardingConnectionsTellaWeb.localized
         }
     }
     

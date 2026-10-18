@@ -19,12 +19,6 @@ class HomeViewModel: ObservableObject {
     @Published var items : [BackgroundActivityModel] = []
     private var subscribers = Set<AnyCancellable>()
     
-    var hasRecentFile = false
-    
-    
-    var showingFilesTitle: Bool {
-        return (hasRecentFile && mainAppModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
-    }
     init(appViewState: AppViewState) {
         self.mainAppModel = appViewState.homeViewModel
         self.appViewState = appViewState
@@ -74,7 +68,6 @@ class HomeViewModel: ObservableObject {
     
     func getFiles()   {
         recentFiles = mainAppModel.vaultFilesManager?.getRecentVaultFiles() ?? []
-        hasRecentFile = recentFiles.count > 0
     }
     
     func deleteAllVaultFiles()   {

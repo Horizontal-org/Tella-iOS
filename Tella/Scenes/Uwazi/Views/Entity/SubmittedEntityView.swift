@@ -102,10 +102,10 @@ struct SubmittedEntityView: View {
     }
     
     private func showDeleteConfirmationView() {
-        let deleteTitle = LocalizableUwazi.submittedDeleteSheetTitle.localized
+        let deleteTitle = LocalizableUwazi.entityDeleteSheetTitle.localized
         let deleteMessage = LocalizableUwazi.submittedDeleteSheetExpl.localized
-        let cancelText = LocalizableUwazi.submittedDeleteCancelAction.localized
-        let actionText = LocalizableUwazi.submittedDeleteDeleteAction.localized
+        let cancelText = LocalizableCommon.commonCancel.localized
+        let actionText = LocalizableCommon.commonDelete.localized
         
         sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: deleteTitle,

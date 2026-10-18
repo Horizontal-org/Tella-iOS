@@ -72,7 +72,7 @@ extension ReportStatus {
     var deleteReportStrings: ConfirmDeleteConnectionStrings {
         switch self {
         case .draft:
-            ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteDraftTitle.localized,
+            ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteTitle.localized,
                                            deleteMessage: LocalizableReport.deleteDraftReportMessage.localized)
         case .submitted:
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteTitle.localized,

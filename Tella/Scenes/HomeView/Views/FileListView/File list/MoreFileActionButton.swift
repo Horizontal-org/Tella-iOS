@@ -191,7 +191,6 @@ struct MoreFileActionButton: View {
                                          msgText: deleteConfirmation.message,
                                          cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
                                          actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
-                                         destructive: true,
                                          shouldHideSheet: false,
                                          didConfirmAction:{
 
@@ -229,7 +228,6 @@ struct MoreFileActionButton: View {
                                          msgText:  LocalizableVault.deleteFileWarningDescription.localized,
                                          cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
                                          actionText: LocalizableVault.deleteFileDeleteAnyway.localized,
-                                         destructive: true,
                                          shouldHideSheet: false,
                                          didConfirmAction:{
             self.dismiss {

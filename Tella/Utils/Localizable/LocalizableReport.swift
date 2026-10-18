@@ -37,7 +37,6 @@ enum LocalizableReport: String, LocalizableDelegate {
     case attachFiles = "Reports_Draft_AddFiles"
     
     case deleteTitle = "Reports_DeleteReport_SheetTitle"
-    case deleteDraftTitle = "Reports_DeleteReport_Draft_SheetTitle"
 
     case deleteDraftReportMessage = "Reports_DeleteDraftReport_SheetExpl"
     case deleteOutboxReportMessage = "Reports_DeleteOutboxReport_SheetExpl"

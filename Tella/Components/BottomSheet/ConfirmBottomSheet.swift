@@ -13,7 +13,6 @@ struct ConfirmBottomSheet : View {
     var cancelText : String?
     var discardText : String?
     var actionText = ""
-    var destructive : Bool = false
     var shouldHideSheet : Bool = true
     
     var didConfirmAction : () -> ()
@@ -71,7 +70,7 @@ struct ConfirmBottomSheet : View {
             }
             Spacer()
                 .frame(width: 10)
-            BottomSheetButton(title: actionText, destructive: destructive) {
+            BottomSheetButton(title: actionText) {
                 didConfirmAction()
                 if shouldHideSheet {
                     sheetManager.hide()
@@ -98,12 +97,11 @@ struct ConfirmBottomSheetHeaderView: View {
 struct BottomSheetButton: View {
     let title: String
     let action: () -> Void
-    var destructive: Bool = false
     
     var body: some View {
         Button(action: action) {
             Text(title.uppercased())
-                .foregroundColor(destructive ? Color.red : Color.white)
+                .foregroundColor(Color.white)
         }
         .buttonStyle(ButtonSheetStyle())
     }
@@ -125,7 +123,6 @@ struct ConfirmBottomSheet_Previews: PreviewProvider {
                            msgText: "Test",
                            cancelText: "Test",
                            actionText: "Test",
-                           destructive: true,
                            didConfirmAction: {})
     }
 }

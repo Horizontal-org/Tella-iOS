@@ -13,6 +13,7 @@ struct TellaButtonView<Destination:View> : View {
     var nextButtonAction : NextButtonAction
     var buttonType : ButtonType = .clear
     var isOverlay: Bool = false
+    var layout: TellaButtonLayout = .fullWidth
     
     var destination : Destination?
     @Binding var isValid : Bool
@@ -28,24 +29,23 @@ struct TellaButtonView<Destination:View> : View {
             return ClearButtonStyle()
         }
     }
-    var buttonRole: ButtonRole = .primary
     init(
         title: String,
         nextButtonAction: NextButtonAction,
         buttonType: ButtonType = .clear,
         isOverlay: Bool = false,
+        layout: TellaButtonLayout = .fullWidth,
         destination: Destination,
         isValid: Binding<Bool>,
-        buttonRole: ButtonRole = .primary,
         action: (() -> ())? = nil
     ) {
         self.title = title
         self.nextButtonAction = nextButtonAction
         self.buttonType = buttonType
         self.isOverlay = isOverlay
+        self.layout = layout
         self.destination = destination
         self._isValid = isValid
-        self.buttonRole = buttonRole
         self.action = action
     }
     
@@ -55,17 +55,17 @@ struct TellaButtonView<Destination:View> : View {
         nextButtonAction: NextButtonAction,
         buttonType: ButtonType = .clear,
         isOverlay: Bool = false,
+        layout: TellaButtonLayout = .fullWidth,
         isValid: Binding<Bool>,
-        buttonRole: ButtonRole = .primary,
         action: (() -> ())? = nil
     ) where Destination == EmptyView {
         self.title = title
         self.nextButtonAction = nextButtonAction
         self.buttonType = buttonType
         self.isOverlay = isOverlay
+        self.layout = layout
         self.destination = nil
         self._isValid = isValid
-        self.buttonRole = buttonRole
         self.action = action
     }
     
@@ -81,21 +81,51 @@ struct TellaButtonView<Destination:View> : View {
                 navigateTo(destination: destination)
             }
         } label: {
-            CustomText(title,
-                       style: buttonRole == .primary ? .buttonLStyle : .buttonSStyle,
-                       color: isValid ? buttonStyle.foregroundColor : buttonStyle.disabledForegroundColor)
-            .frame(maxWidth:.infinity)
-            .contentShape(Rectangle())
-            .padding(.horizontal, 16)
-            .padding(.vertical, 16)
+            buttonLabel
+        }
+        .fixedSize(horizontal: layout == .compact, vertical: false)
+        .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle,
+                                      isValid: isValid,
+                                      isCapsule: layout == .compact))
+        .disabled(isValid == false)
+        .overlay {
+            if isOverlay {
+                selectedOutline
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var selectedOutline: some View {
+        if layout == .compact {
+            Capsule().stroke(Color.white, lineWidth: 4)
+        } else {
+            RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4)
+        }
+    }
+    
+    private var buttonLabel: some View {
+        let text = CustomText(title,
+                              style: layout == .fullWidth ? .buttonLStyle : .buttonSStyle,
+                              color: isValid ? buttonStyle.foregroundColor : buttonStyle.disabledForegroundColor)
             .multilineTextAlignment(.center)
-            
-        }.cornerRadius(20)
-            .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
-            .disabled(isValid == false)
-            .overlay(self.isOverlay ?
-                     RoundedRectangle(cornerRadius: 20)
-                .stroke(.white, lineWidth: 4) : nil)
+        
+        return Group {
+            switch layout {
+            case .fullWidth:
+                text
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, .normal)
+                    .padding(.vertical, .normal)
+                    .contentShape(RoundedRectangle(cornerRadius: 20))
+            case .compact:
+                text
+                    .lineLimit(1)
+                    .padding(.normal)
+                    .frame(minWidth: 132, minHeight: 51)
+                    .contentShape(Capsule())
+            }
+        }
     }
 }
 
@@ -104,19 +134,28 @@ struct TellaButtonStyle : ButtonStyle {
     var buttonStyle : TellaButtonStyleProtocol
     var isValid : Bool
     var cornerRadius: CGFloat = 20
-    var buttonRole: ButtonRole = .primary
+    var isCapsule: Bool = false
     
     func makeBody(configuration: Configuration) -> some View {
-        
         configuration.label
-            .background(configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor())
-            .cornerRadius(cornerRadius)
-            .overlay(
-                configuration.isPressed && isValid ?
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: 3) :
-                    RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.clear, lineWidth: 0)
-            )
+            .background(backgroundShape(configuration))
             .foregroundColor(getForegroundColor())
+    }
+    
+    @ViewBuilder
+    private func backgroundShape(_ configuration: Configuration) -> some View {
+        let fill = configuration.isPressed ? buttonStyle.pressedBackgroundColor : getBackgroundColor()
+        let showsStroke = configuration.isPressed && isValid
+        
+        if isCapsule {
+            Capsule()
+                .fill(fill)
+                .overlay(Capsule().stroke(buttonStyle.overlayColor, lineWidth: showsStroke ? 3 : 0))
+        } else {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(fill)
+                .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(buttonStyle.overlayColor, lineWidth: showsStroke ? 3 : 0))
+        }
     }
     
     func getBackgroundColor() -> Color {

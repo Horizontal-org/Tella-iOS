@@ -20,19 +20,20 @@ struct AddServerURLView: View {
                 Spacer()
                     .frame(height: 80)
                 
-                Image("settings.server")
+                Image(.settingsServer)
                 Spacer()
                     .frame(height: 24)
-                Text(LocalizableSettings.serverURL.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                    .foregroundColor(.white)
+                CustomText(LocalizableSettings.serverURL.localized,
+                           style: .heading1Style,
+                           alignment: .center)
                 Spacer()
                     .frame(height: 40)
                 TextfieldView(fieldContent: $viewModel.serverURL,
                               isValid: $viewModel.validURL,
                               shouldShowError: $viewModel.shouldShowURLError,
                               errorMessage: viewModel.urlErrorMessage,
-                              fieldType: .url)
+                              fieldType: .url,
+                              placeholder: LocalizableSettings.serverDisplayServerURL.localized)
                 Spacer()
                 
                 NavigationBottomView<AnyView>(shouldActivateNext: $viewModel.validURL,

@@ -31,7 +31,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         self.mainAppModel = mainAppModel
 
         let title = template.entityRow?.displayName ?? ""
-        let deleteTitle = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)")
+        let deleteTitle = LocalizableUwazi.deleteTemplateSheetTitle.localized
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                                                  deleteMessage: deleteMessage)
@@ -61,7 +61,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         let serverName = instance.server?.name ?? ""
         let iconImageName : String? = instance.status.iconImageName
         let listActionSheetItem = instance.status.listActionSheetItem
-        let deleteReportStrings = instance.status.deleteReportStrings(title: title)
+        let deleteReportStrings = instance.status.deleteReportStrings
         
         super.init(id: instance.id,
                    title: title,

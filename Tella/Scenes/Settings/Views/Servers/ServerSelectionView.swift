@@ -9,12 +9,11 @@
 
 
 import SwiftUI
-import Combine
 
 struct ServerSelectionView: View {
     @ObservedObject var serversViewModel : ServersViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
-    @ObservedObject var dropboxServerVM: DropboxServerViewModel
+    @StateObject private var dropboxServerVM: DropboxServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -23,17 +22,23 @@ struct ServerSelectionView: View {
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: serversViewModel.gDriveRepository,
                                                                             mainAppModel: serversViewModel.mainAppModel,
                                                                             serversSourceView: serversViewModel.serversSourceView))
-        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: serversViewModel.mainAppModel))
+        _dropboxServerVM = StateObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: serversViewModel.mainAppModel))
     }
     
     var body: some View {
         Group {
-            ContainerViewWithHeader {
-                if serversViewModel.serversSourceView == .settings {
-                    navigationBarView
+            if dropboxServerVM.shouldShowSuccessScreen {
+                SuccessLoginView(navigateToAction: {
+                    navigateTo(destination: dropboxReportsView)
+                }, type: .dropbox)
+            } else {
+                ContainerViewWithHeader {
+                    if serversViewModel.serversSourceView == .settings {
+                        navigationBarView
+                    }
+                } content: {
+                    contentView
                 }
-            } content: {
-                contentView
             }
         }
         .onReceive(gDriveServerVM.$signInState){ signInState in
@@ -41,8 +46,15 @@ struct ServerSelectionView: View {
                 Toast.displayToast(message: message)
             }
         }
-        .onReceive(Publishers.CombineLatest(dropboxServerVM.$signInState, dropboxServerVM.$addServerState)) { signInState, addServerState in
-            handleDropboxStateChange(signInState: signInState, addServerState: addServerState)
+        .onReceive(dropboxServerVM.$signInState) { state in
+            if case .error(let message) = state {
+                Toast.displayToast(message: message)
+            }
+        }
+        .onReceive(dropboxServerVM.$addServerState) { state in
+            if case .error(let message) = state {
+                Toast.displayToast(message: message)
+            }
         }
         .onOpenURL { url in
             dropboxServerVM.handleURLRedirect(url: url)
@@ -63,9 +75,6 @@ struct ServerSelectionView: View {
             Spacer()
             HeaderView()
             buttonViews()
-            if(!serversViewModel.unavailableServers.isEmpty) {
-                unavailableConnectionsView()
-            }
             Spacer()
             bottomView()
         }.scrollOnOverflow()
@@ -73,15 +82,19 @@ struct ServerSelectionView: View {
     
     fileprivate func buttonViews() -> some View {
         return Group {
-            ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
+            ForEach(serverConnections, id: \.type) { connection in
                 TellaButtonView(
                     title: connection.title,
                     nextButtonAction: .action,
                     isOverlay: serversViewModel.selectedServerType == connection.type,
                     isValid: .constant(true),
                     action: {
-                        serversViewModel.selectedServerType = connection.type
-                        serversViewModel.shouldEnableNextButton = true
+                        if serversViewModel.isConnectionUnavailable(connection.type) {
+                            showUnavailableConnectionSheet(connection.type)
+                        } else {
+                            serversViewModel.selectedServerType = connection.type
+                            serversViewModel.shouldEnableNextButton = true
+                        }
                     }
                 )
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -91,9 +104,9 @@ struct ServerSelectionView: View {
     
     fileprivate func bottomView() -> NavigationBottomView<AnyView> {
         return NavigationBottomView<AnyView>(shouldActivateNext: $serversViewModel.shouldEnableNextButton,
-                                       nextButtonAction: .action,
-                                       shouldHideBack: serversViewModel.serversSourceView == .settings,
-                                       nextAction: {
+                                             nextButtonAction: .action,
+                                             shouldHideBack: serversViewModel.serversSourceView == .settings,
+                                             nextAction: {
             switch serversViewModel.selectedServerType {
             case .tella:
                 navigateToTellaWebFlow()
@@ -144,62 +157,47 @@ struct ServerSelectionView: View {
         dropboxServerVM.handleSignIn()
     }
     
-    fileprivate func unavailableConnectionsView() -> some View {
-        VStack(spacing: 20) {
-            SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
-            SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
-            ForEach(serversViewModel.unavailableServers, id: \.serverType) { server in
-                TellaButtonView(
-                    title: server.serverType?.serverTitle ?? "",
-                    nextButtonAction: .action,
-                    isValid: .constant(false)
-                )
-            }
-        }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    private var dropboxReportsView: DropboxReportMainView {
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: serversViewModel.mainAppModel,
+                                                                     dropboxRepository: serversViewModel.dropboxRepository))
     }
     
-    private func handleDropboxStateChange(signInState: ViewModelState<Bool>, addServerState: ViewModelState<Bool>) {
-        switch (signInState, addServerState) {
-        case (.loaded(true), .loaded(true)):
-            navigateTo(destination: SuccessLoginView(navigateToAction: {
-                self.popToRoot()
-            }, type: .dropbox))
-        case (_, .error(let message)):
-            Toast.displayToast(message: message)
-        case (.error(let message), _):
-            Toast.displayToast(message: message)
-        default:
-            break
-        }
+    private func showUnavailableConnectionSheet(_ type: ServerConnectionType) {
+        let message = String(format: LocalizableSettings.settServerUnavailableConnectionsDesc.localized,
+                             type.connectionName).addTwolines
+        + LocalizableSettings.settServerUnavailableConnectionsDesc2.localized
+        let content = ConfirmBottomSheet(titleText: LocalizableSettings.settServerUnavailableConnectionsTitle.localized,
+                                         msgText: message,
+                                         actionText: LocalizableLock.loseFileWarningUnderstand.localized,
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss()
+        })
+        showBottomSheetView(content: content)
     }
     
     struct HeaderView: View {
         var body: some View {
             VStack(spacing: 20) {
                 Image("settings.server")
-                Text(LocalizableSettings.settServerSelectionTitle.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                CustomText(LocalizableSettings.settServerSelectionTitle.localized,
+                           style: .heading1Style,
+                           alignment: .center)
                 
                 learnMoreView
-                Text(LocalizableSettings.settServerSelectionPart2Message.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                CustomText(LocalizableSettings.settServerSelectionPart2Message.localized,
+                           style: .body1Style,
+                           alignment: .center)
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
         }
         var learnMoreView: some View {
             Button {
                 TellaUrls.connectionLearnMore.url()?.open()
             } label: {
-                Text(LocalizableSettings.settServerSelectionPart1Message.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Styles.Colors.yellow)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                CustomText(LocalizableSettings.settServerSelectionPart1Message.localized,
+                           style: .body1Style,
+                           alignment: .center,
+                           color: Styles.Colors.yellow)
             }
         }
     }

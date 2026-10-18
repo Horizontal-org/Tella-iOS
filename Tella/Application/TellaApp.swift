@@ -69,19 +69,17 @@ struct TellaApp: App {
         // Cancel foreground uploads and mark background entry; must run even when waiting for background uploads.
         appViewState.homeViewModel.uploadService.cancelTasksIfNeeded()
         
-        if lockAppType == .enterInBackground {
-            appViewState.homeViewModel.shouldSaveCurrentData = true
-        }
-        
         let hasFileOnBackground = appViewState.homeViewModel.uploadService.hasFilesToUploadOnBackground
         guard !hasFileOnBackground else { return }
         
         guard UIApplication.shared.applicationState == .background else {
             return
         }
+        appViewState.homeViewModel.shouldSaveCurrentData = true
         appViewState.homeViewModel.vaultManager.clearTmpDirectory()
         dismissPresentedViewsBeforeLock()
         appViewState.lockAfterBackground()
+        appViewState.homeViewModel.shouldSaveCurrentData = false
     }
     
     func resetApp() {

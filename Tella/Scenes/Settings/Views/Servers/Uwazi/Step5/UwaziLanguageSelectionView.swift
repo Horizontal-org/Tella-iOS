@@ -49,24 +49,18 @@ struct UwaziLanguageSelectionView: View {
     }
 
     fileprivate func bottomView() -> some View {
-        let isDisable = uwaziServerViewModel.selectedLanguage == nil
-        return HStack{
-            Spacer()
-            SettingsBottomView(cancelAction: {
-                self.presentationMode.wrappedValue.dismiss()
-            }, saveAction: {
-                
-                uwaziServerViewModel.handleServerAction()
+        SettingsBottomView(cancelAction: {
+            self.presentationMode.wrappedValue.dismiss()
+        }, saveAction: {
+            uwaziServerViewModel.handleServerAction()
 
-                if uwaziServerViewModel.serversSourceView == .onboarding {
-                    self.popTo(ViewClassType.serverOnboardingView)
-                } else {
-                    navigateTo(destination: UwaziSuccessView())
-                }
-
-            }, saveActionTitle: LocalizableSettings.UwaziLanguageOk.localized, isDisable: isDisable)
-        }
-        .padding(.trailing, 20)
+            if uwaziServerViewModel.serversSourceView == .onboarding {
+                self.popTo(ViewClassType.serverOnboardingView)
+            } else {
+                navigateTo(destination: UwaziSuccessView())
+            }
+        }, saveActionTitle: LocalizableSettings.UwaziLanguageOk.localized,
+           isDisable: uwaziServerViewModel.selectedLanguage == nil)
         .padding(.top, 12)
     }
     
@@ -74,11 +68,10 @@ struct UwaziLanguageSelectionView: View {
         return VStack {
             Spacer()
                 .frame(height: 20)
-            Text(LocalizableSettings.UwaziLanguageMessage.localized)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
+            CustomText(LocalizableSettings.UwaziLanguageMessage.localized,
+                       style: .body1Style,
+                       alignment: .center)
                 .opacity(0.88)
-                .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
         }
@@ -117,13 +110,11 @@ struct UwaziLanguageItemView : View {
         ZStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(languageItem?.languageName ?? "")
-                        .font(.custom(Styles.Fonts.regularFontName, size: 15))
-                        .foregroundColor(.white)
-                    
-                    Text(languageItem?.languageName ?? "")
-                        .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                        .foregroundColor(.white)
+                    CustomText(languageItem?.translatedLanguageName ?? "",
+                               style: .body1Style)
+
+                    CustomText(languageItem?.languageName ?? "",
+                               style: .body2Style)
                 }
                 Spacer()
                 if isCurrentLanguage(languageItem: languageItem) {

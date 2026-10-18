@@ -136,11 +136,15 @@ struct EntityInstanceItemView: View {
     
     private func showDeleteTemplateConfirmationView() {
         
+        let actionText = cardViewModel.type == .template
+            ? LocalizableCommon.commonRemove.localized
+            : LocalizableCommon.commonDelete.localized
+
         sheetManager.showBottomSheet() {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
-                                      cancelText: LocalizableCommon.commonNo.localized,
-                                      actionText: LocalizableCommon.commonYes.localized) {
+                                      cancelText: LocalizableCommon.commonCancel.localized,
+                                      actionText: actionText) {
                 cardViewModel.deleteAction()
             }
         }

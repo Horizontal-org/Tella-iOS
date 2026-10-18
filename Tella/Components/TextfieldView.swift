@@ -59,10 +59,10 @@ struct TextfieldView : View {
     }
     
     private var formattedErrorMessage: String? {
-        if shouldShowError {
-            return errorMessage
-        } else if shouldShowErrorTextOnChange {
+        if shouldShowErrorTextOnChange {
             return validationErrorMessage
+        } else if shouldShowError {
+            return errorMessage
         }
         return nil
     }
@@ -158,7 +158,7 @@ struct TextfieldView : View {
     var dividerView : some View {
         Divider()
             .frame(height: 1)
-            .background(shouldShowError || shouldShowErrorTextOnChange  ? Color(UIColor(hexValue: 0xFF2D2D)) : Color.white)
+            .background(Color.white)
     }
     
     @ViewBuilder
@@ -166,7 +166,7 @@ struct TextfieldView : View {
         if let formattedErrorMessage {
             Text(formattedErrorMessage)
                 .style(.body3Style)
-                .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
+                .foregroundColor(Styles.Colors.lightRed)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -222,12 +222,8 @@ struct TextfieldView : View {
         }
         
         
-        if shouldValidateOnChange {
-            self.shouldShowError = !self.isValid
-            shouldShowErrorOnChange = !self.isValid
-        } else {
-            self.shouldShowError = false
-        }
+        shouldShowErrorOnChange = shouldValidateOnChange && !isValid
+        shouldShowError = false
     }
 }
 
