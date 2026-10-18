@@ -132,7 +132,7 @@ struct CameraZoomTouchControl: View {
                     guard !isExpanded else { return }
                     onSelectZoomLevel(level)
                 } label: {
-                    Text(selected ? level.title + "x" : level.title)
+                    Text(selected ? CameraZoomLevel(factor: displayedZoomFactor).title + "x" : level.title)
                         .font(Font(TypographyStyle.subheading2Style.font))
                         .foregroundColor(selected ? Styles.Colors.backgroundGrey1 : .white)
                         .rotate(rotation)
