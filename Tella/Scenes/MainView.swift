@@ -94,7 +94,7 @@ struct MainView: View  {
             }.tag(MainAppModel.Tabs.settings)
                 .modifier(MainTabBarAppearance())
         }
-        .modifier(TabBarBackgroundModifier())
+        .modifier(MainTabBarAppearance())
     }
 }
 
