@@ -134,8 +134,12 @@ private extension CameraZoomController {
                 .map { CGFloat(truncating: $0) } ?? 1.0
             preferredMaximum = longestLensZoomFactor * 5.0
         }
+        // Allow at least 5x zoom when the capture configuration supports it.
+        let requestedMaximum = device.position == .back
+        ? max(preferredMaximum, 5.0 / displayMultiplier(for: device))
+        : preferredMaximum
         return max(device.minAvailableVideoZoomFactor,
-                   min(preferredMaximum, device.maxAvailableVideoZoomFactor))
+                   min(requestedMaximum, device.maxAvailableVideoZoomFactor))
     }
     
     // MARK: - Device configuration
