@@ -34,9 +34,9 @@ struct TellaWebAddServerURLView: View {
                     Spacer()
                         .frame(height: 24)
                     
-                    Text(LocalizableSettings.serverProjectURL.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                        .foregroundColor(.white)
+                    CustomText(LocalizableSettings.serverProjectURL.localized,
+                               style: .heading1Style,
+                               alignment: .center)
                     
                     Spacer()
                         .frame(height: 40)
@@ -45,7 +45,8 @@ struct TellaWebAddServerURLView: View {
                                   isValid: $serverViewModel.validURL,
                                   shouldShowError: $serverViewModel.shouldShowURLError,
                                   errorMessage: serverViewModel.urlErrorMessage,
-                                  fieldType: .url)
+                                  fieldType: .url,
+                                  placeholder: LocalizableSettings.serverDisplayServerURL.localized)
                     Spacer()
                     
                     NavigationBottomView<AnyView>(shouldActivateNext: $serverViewModel.validURL,
