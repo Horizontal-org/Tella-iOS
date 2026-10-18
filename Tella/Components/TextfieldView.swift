@@ -59,10 +59,10 @@ struct TextfieldView : View {
     }
     
     private var formattedErrorMessage: String? {
-        if shouldShowError {
-            return errorMessage
-        } else if shouldShowErrorTextOnChange {
+        if shouldShowErrorTextOnChange {
             return validationErrorMessage
+        } else if shouldShowError {
+            return errorMessage
         }
         return nil
     }
@@ -222,12 +222,8 @@ struct TextfieldView : View {
         }
         
         
-        if shouldValidateOnChange {
-            self.shouldShowError = !self.isValid
-            shouldShowErrorOnChange = !self.isValid
-        } else {
-            self.shouldShowError = false
-        }
+        shouldShowErrorOnChange = shouldValidateOnChange && !isValid
+        shouldShowError = false
     }
 }
 

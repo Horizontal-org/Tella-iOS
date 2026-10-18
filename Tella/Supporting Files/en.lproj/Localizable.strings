@@ -432,8 +432,9 @@
 "Uwazi_Relationship_SearchBar_Title" = "Search";
 
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
-"Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
-"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
+"Setting_SettServer_UnavailableConnections_Subhead" = "Connection unavailable";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";

@@ -75,9 +75,6 @@ struct ServerSelectionView: View {
             Spacer()
             HeaderView()
             buttonViews()
-            if(!serversViewModel.unavailableServers.isEmpty) {
-                unavailableConnectionsView()
-            }
             Spacer()
             bottomView()
         }.scrollOnOverflow()
@@ -85,15 +82,19 @@ struct ServerSelectionView: View {
     
     fileprivate func buttonViews() -> some View {
         return Group {
-            ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
+            ForEach(serverConnections, id: \.type) { connection in
                 TellaButtonView(
                     title: connection.title,
                     nextButtonAction: .action,
                     isOverlay: serversViewModel.selectedServerType == connection.type,
                     isValid: .constant(true),
                     action: {
-                        serversViewModel.selectedServerType = connection.type
-                        serversViewModel.shouldEnableNextButton = true
+                        if serversViewModel.isConnectionUnavailable(connection.type) {
+                            showUnavailableConnectionSheet(connection.type)
+                        } else {
+                            serversViewModel.selectedServerType = connection.type
+                            serversViewModel.shouldEnableNextButton = true
+                        }
                     }
                 )
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -161,18 +162,18 @@ struct ServerSelectionView: View {
                                                                      dropboxRepository: serversViewModel.dropboxRepository))
     }
     
-    fileprivate func unavailableConnectionsView() -> some View {
-        VStack(spacing: 20) {
-            SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
-            SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
-            ForEach(serversViewModel.unavailableServers, id: \.serverType) { server in
-                TellaButtonView(
-                    title: server.serverType?.serverTitle ?? "",
-                    nextButtonAction: .action,
-                    isValid: .constant(false)
-                )
-            }
-        }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    private func showUnavailableConnectionSheet(_ type: ServerConnectionType) {
+        let message = String(format: LocalizableSettings.settServerUnavailableConnectionsDesc.localized,
+                             type.connectionName).addTwolines
+        + LocalizableSettings.settServerUnavailableConnectionsDesc2.localized
+        let content = ConfirmBottomSheet(titleText: LocalizableSettings.settServerUnavailableConnectionsTitle.localized,
+                                         msgText: message,
+                                         actionText: LocalizableLock.loseFileWarningUnderstand.localized,
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
+            self.dismiss()
+        })
+        showBottomSheetView(content: content)
     }
     
     struct HeaderView: View {
