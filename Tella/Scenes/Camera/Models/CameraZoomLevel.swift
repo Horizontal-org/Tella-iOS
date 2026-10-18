@@ -32,9 +32,10 @@ extension CameraZoomLevel {
         CameraZoomLevel.title(for: factor)
     }
     
-    /// Select a preset only while the camera is at its zoom factor.
+    /// Keep a preset selected between stops so its pill can show the current zoom.
     static func active(for factor: CGFloat, in levels: [CameraZoomLevel]) -> CameraZoomLevel? {
-        levels.first { abs(factor - $0.factor) <= tolerance }
+        levels.filter { $0.factor <= factor + tolerance }.max { $0.factor < $1.factor }
+        ?? levels.min { $0.factor < $1.factor }
     }
     
     private static func title(for factor: CGFloat) -> String {
