@@ -13,6 +13,7 @@ struct CameraControlsView: View {
     
     @StateObject private var orientationHelper = DeviceOrientationHelper()
     @State private var isZoomDialExpanded = false
+    @State private var isPreviewZooming = false
     
     // MARK: - Body
     
@@ -27,8 +28,7 @@ struct CameraControlsView: View {
                                                                              right: geometry.safeAreaInsets.trailing))
             
             ZStack(alignment: .topLeading) {
-                cameraPreview
-                    .cameraFrame(layout.previewFrame)
+                cameraPreview(in: layout)
                 
                 Color.clear
                     .ignoresSafeArea()
@@ -40,12 +40,6 @@ struct CameraControlsView: View {
                     .frame(width: layout.headerFrame.width, height: layout.headerFrame.height)
                     .contentShape(Rectangle())
                     .simultaneousGesture(zoomDismissalGesture)
-                    .background {
-                        if !layout.overlaysHeader {
-                            Styles.Colors.backgroundGrey1
-                                .ignoresSafeArea(edges: .top)
-                        }
-                    }
                     .position(x: layout.headerFrame.midX, y: layout.headerFrame.midY)
                 
                 recordingIndicator(previewFrame: layout.previewFrame,
@@ -54,17 +48,6 @@ struct CameraControlsView: View {
                 
                 viewfinderOverlays
                     .cameraFrame(layout.optionsFrame)
-                if !showsBottomMenu {
-                    (layout.overlaysZoom ? Color.clear : Styles.Colors.backgroundGrey1)
-                        .cameraFrame(layout.zoomFrame)
-                        .allowsHitTesting(false)
-                }
-                
-                if !layout.overlaysShutter && !showsZoomDialBackground {
-                    Styles.Colors.backgroundGrey1
-                        .cameraFrame(layout.shutterFrame)
-                        .allowsHitTesting(false)
-                }
                 
                 if showsZoomDialBackground {
                     CameraZoomDialBackground(zoomFrame: layout.zoomDialFrame,
@@ -79,11 +62,6 @@ struct CameraControlsView: View {
                 
                 modeSelector
                     .simultaneousGesture(zoomDismissalGesture)
-                    .background {
-                        if !layout.overlaysMode {
-                            Styles.Colors.backgroundGrey1.ignoresSafeArea(edges: .bottom)
-                        }
-                    }
                     .cameraFrame(layout.modeFrame)
                 
                 if !showsBottomMenu {
@@ -146,16 +124,63 @@ struct CameraControlsView: View {
     
     // MARK: - Preview
     
-    private var cameraPreview: some View {
-        CameraPreview(session: viewModel.session,
-                      gridIsOn: viewModel.gridIsOn,
-                      isFlipping: viewModel.isFlippingCamera,
-                      onZoomBegan: viewModel.startZoom,
-                      onZoomChanged: viewModel.zoom,
-                      onSwipe: { direction in
-            viewModel.selectCameraType(direction.cameraType)
-        }, onTap: viewModel.hideMenu)
+    /// The capture layer stays on the 3:4 canvas. Photo and video only scale and clip it,
+    /// so the live image eases instead of restarting with the viewfinder.
+    private func cameraPreview(in layout: CameraViewfinderLayout) -> some View {
+        let visible = layout.previewFrame
+        let source = viewModel.usesVideoPreset ? visible : layout.sourceFrame
+        let scale = previewFillScale(source: source.size, visible: visible.size)
+        
+        return ZStack {
+            CameraPreview(session: viewModel.session,
+                          gridIsOn: false,
+                          isFlipping: viewModel.isFlippingCamera)
+            .frame(width: max(source.width, 1), height: max(source.height, 1))
+            .scaleEffect(scale)
+            .allowsHitTesting(false)
+            
+            if viewModel.gridIsOn {
+                CameraPreviewGrid()
+                    .allowsHitTesting(false)
+            }
+        }
+        .frame(width: max(visible.width, 1), height: max(visible.height, 1))
+        .clipped()
+        .contentShape(Rectangle())
+        .onTapGesture(perform: viewModel.hideMenu)
+        .simultaneousGesture(previewSwipeGesture)
+        .simultaneousGesture(previewZoomGesture)
         .cameraFlipBlur(viewModel.isFlippingCamera)
+        .position(x: visible.midX, y: visible.midY)
+    }
+    
+    private func previewFillScale(source: CGSize, visible: CGSize) -> CGFloat {
+        guard source.width > 0, source.height > 0 else { return 1 }
+        return max(visible.width / source.width, visible.height / source.height)
+    }
+    
+    private var previewZoomGesture: some Gesture {
+        MagnificationGesture()
+            .onChanged { scale in
+                if !isPreviewZooming {
+                    isPreviewZooming = true
+                    viewModel.startZoom()
+                }
+                viewModel.zoom(by: scale)
+            }
+            .onEnded { _ in
+                isPreviewZooming = false
+            }
+    }
+    
+    private var previewSwipeGesture: some Gesture {
+        DragGesture(minimumDistance: CameraSwipeDirection.threshold)
+            .onEnded { value in
+                guard !isPreviewZooming,
+                      let direction = CameraSwipeDirection(translationX: value.translation.width,
+                                                           translationY: value.translation.height) else { return }
+                viewModel.selectCameraType(direction.cameraType)
+            }
     }
     
     // MARK: - Header controls
@@ -337,6 +362,26 @@ struct CameraControlsView: View {
     
 }
 
+
+// MARK: - Preview grid
+
+private struct CameraPreviewGrid: View {
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                let width = geometry.size.width
+                let height = geometry.size.height
+                for fraction in [CGFloat(1) / 3, CGFloat(2) / 3] {
+                    path.move(to: CGPoint(x: width * fraction, y: 0))
+                    path.addLine(to: CGPoint(x: width * fraction, y: height))
+                    path.move(to: CGPoint(x: 0, y: height * fraction))
+                    path.addLine(to: CGPoint(x: width, y: height * fraction))
+                }
+            }
+            .stroke(Color.white.opacity(0.5), lineWidth: 1)
+        }
+    }
+}
 
 // MARK: - Status chip
 
