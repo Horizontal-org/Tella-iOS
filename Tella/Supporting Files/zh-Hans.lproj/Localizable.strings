@@ -746,7 +746,7 @@
 "Uwazi_Entity_Geolocation_RecordTitle" = "记录位置";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
-"Uwazi_Entity_Geolocation_AddLocation" = "";
+"Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_Latitude" = "纬度：";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
