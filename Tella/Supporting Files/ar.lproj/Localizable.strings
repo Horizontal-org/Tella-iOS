@@ -151,7 +151,7 @@
 "Camera_DeniedCameraPermission_Expl5" = "Open the Tella app.";
 "Camera_DeniedCameraPermission_Action_Settings" = "Settings";
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
-"Settings_Sett_AppBar" = "Settings";
+"Settings_Sett_AppBar" = "الإعدادات";
 "Settings_Sett_General" = "عام";
 "Settings_Sett_Servers" = "الخوادم";
 "Settings_Sett_Security" = "الأمان";
@@ -758,7 +758,7 @@
 "Camera_MoreAction_Aspect" = "العرض إلى الارتفاع";
 "Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
 "Uwazi_Entity_Delete_SheetTitle" = "Delete entity?";
-"Common_Settings" = "Settings";
+"Common_Settings" = "الإعدادات";
 "Common_Action_Delete" = "حذف";
 "Camera_Flash_On" = "مشغّل";
 "Common_Resolution" = "الدقة";
