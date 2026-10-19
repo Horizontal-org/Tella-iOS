@@ -757,3 +757,11 @@
 "Camera_Grid_Off" = "GRID OFF";
 "Camera_MoreAction_Aspect" = "Aspect";
 "Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "¿Confirma que desea borrar esta entidad?";
+"Common_Settings" = "Configuración";
+"Common_Action_Delete" = "Borrar";
+"Camera_Flash_On" = "Prendido";
+"Common_Resolution" = "Resolución";
+"Camera_Flash_Off" = "Apagado";
+"Common_Action_Cancel" = "Cancelar";
+"Common_Action_Remove" = "Remover";
