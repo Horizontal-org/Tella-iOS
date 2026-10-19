@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "Чернетки";
 "Uwazi_PageViewItem_Outbox" = "Вихідні";
 "Uwazi_PageViewItem_Submitted" = "Надіслані";
-"Uwazi_Delete_SheetTitle" = "Видалити “%@”?";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " Видалити з цього пристрою";
 "Uwazi_Template_DeleteTemplate_SheetAction" = " Видалити шаблон";
 "Uwazi_Deleted_Toast" = "“%@” видалено.";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "НІ";
 "Uwazi_Draft_Delete_YES_SheetAction" = "ТАК";
 "Uwazi_Draft_Edit_SheetSelect" = "Редагувати чернетку";
-"Uwazi_Draft_Delete_SheetSelect" = "Видалити чернетку";
 "Uwazi_Outbox_Delete_SheetExpl" = "Ви впевнені, що хочете видалити цю сутність?";
 "Uwazi_Outbox_OutboxList_Expl" = "Це сутності, які наразі відправляються.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Ваша скринька Вихідні наразі порожня. Сутності, готові до відправлення, з’являтимуться тут.";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "Завантажено %@";
 "Uwazi_Submitted_Files" = "%i файлів, %@";
 "Uwazi_Submitted_File" = "%i файл, %@";
-"Uwazi_Submitted_Delete_SheetTitle" = "Видалити сутність?";
 "Uwazi_Submitted_Delete_SheetExpl" = "Ви впевнені, що хочете видалити цю форму з пристрою? Зверніть увагу: оскільки її вже було відправлено, дані залишаться на сервері вашої організації.";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "СКАСУВАТИ";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "ВИДАЛИТИ";
 "Uwazi_Entity_Relationship_Expl" = "Виберіть сутності, які ви хочете пов'язати з цією властивістю.";
 "Uwazi_Entity_Relationship_Select_title" = "Вибрати сутності";
 "Uwazi_Entity_Relationship_AddMore_title" = "Додати більше сутностей";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "Пошук";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Недоступні з’єднання";
-"Setting_SettServer_UnavailableConnections_Expl" = "Для наведених нижче категорій одночасно може бути ввімкнено лише одне підключення. Щоб додати нове, будь ласка, видаліть поточне в налаштуваннях Підключень.";
 "Setting_SettServer_No_Token" = "Токен відсутній, будь ласка, підключіться знову";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Видалити сервер %@?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Видалити підключення \"%@\"?";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "Це звіти, над якими ви зараз працюєте.";
 "Reports_Outbox_OutboxList_Expl" = "Ці звіти готові до надсилання.";
 "Reports_Submitted_SubmittedList_Expl" = "Це звіти, які ви успішно надіслали.";
-"Reports_DeleteReport_Draft_SheetTitle" = "Видалити звіт";
 "Reports_Outbox_Pause" = "ПРИЗУПИНИТИ";
 "Reports_Outbox_Resume" = "ВІДНОВИТИ";
 "Reports_Outbox_Submit" = "Надіслати";
