@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Exit anyway";
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
 "Reports_Draft_AddFiles" = "Lampirkan berkas di sini";
-"Reports_DeleteReport_SheetTitle" = "Delete report";
+"Reports_DeleteReport_SheetTitle" = "Hapus laporan?";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
 "Reports_DeleteReport_Delete_SheetAction" = "DELETE";
 "Reports_PageViewItem_Draft" = "Drafts";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Contoh Uwazi ini memerlukan verifikasi dua-langkah. Masukkan 6 digit kode dari aplikasi autentikator Anda.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
 "Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
-"Setting_Server_Uwazi_Language_Title" = "Bahasa Uwazi";
+"Setting_Server_Uwazi_Language_Title" = "Bahasa";
 "Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
 "Setting_Server_Uwazi_Language_Ok" = "Oke";
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
@@ -743,7 +743,7 @@
 "Camera_HideGrid" = "Hide grid";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
-"Uwazi_Entity_Geolocation_AddLocation" = "Tambahkan opsi";
+"Uwazi_Entity_Geolocation_AddLocation" = "";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Rekam posisi";
 "Uwazi_Entity_Geolocation_MapHint" = "Sentuh di mana saja selama 3 detik untuk posisi merekam.";
 "Uwazi_Entity_Geolocation_Latitude" = "Lintang:";
