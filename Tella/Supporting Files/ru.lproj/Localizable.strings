@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Exit anyway";
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
 "Reports_Draft_AddFiles" = "Прикрепить файлы здесь";
-"Reports_DeleteReport_SheetTitle" = "Delete report";
+"Reports_DeleteReport_SheetTitle" = "Delete report?";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
 "Reports_DeleteReport_Delete_SheetAction" = "DELETE";
 "Reports_PageViewItem_Draft" = "Drafts";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Для данного экземпляра Uwazi требуется двухэтапная верификация. Введите здесь 6-значный код из приложения-аутентификатора.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
 "Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
-"Setting_Server_Uwazi_Language_Title" = "язык Увази";
+"Setting_Server_Uwazi_Language_Title" = "Язык";
 "Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
 "Setting_Server_Uwazi_Language_Ok" = "OK";
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
@@ -746,7 +746,7 @@
 "Uwazi_Entity_Geolocation_RecordTitle" = "Зафиксировать геолокацию";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
-"Uwazi_Entity_Geolocation_AddLocation" = "Добавить вариант";
+"Uwazi_Entity_Geolocation_AddLocation" = "Добавить местоположение";
 "Uwazi_Entity_Geolocation_Latitude" = "Широта";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
