@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "仍然退出";
 "Reports_Draft_ExitReport_Save_SheetAction" = "保存并退出";
 "Reports_Draft_AddFiles" = "在此附加文件";
-"Reports_DeleteReport_SheetTitle" = "删除报告";
+"Reports_DeleteReport_SheetTitle" = "删除报告？";
 "Reports_DeleteReport_Cancel_SheetAction" = "取消";
 "Reports_DeleteReport_Delete_SheetAction" = "删除";
 "Reports_PageViewItem_Draft" = "草稿";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "此 Uwazi 实例需要两步验证。请在此处输入验证器应用中显示的 6 位数字代码。";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "验证码";
 "Setting_Server_Uwazi_Authentication_Verify" = "验证";
-"Setting_Server_Uwazi_Language_Title" = "Uwazi 语言";
+"Setting_Server_Uwazi_Language_Title" = "语言";
 "Setting_Server_Uwazi_Language_Message" = "这个 Uwazi 集合有数种语言版本。请选择想要下载模板的语言。";
 "Setting_Server_Uwazi_Language_Ok" = "确定";
 "Setting_Server_Uwazi_Language_Cancel" = "取消";
@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "草稿";
 "Uwazi_PageViewItem_Outbox" = "发件箱";
 "Uwazi_PageViewItem_Submitted" = "已提交";
-"Uwazi_Delete_SheetTitle" = "删除”%@“？";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " 从此设备删除";
 "Uwazi_Template_DeleteTemplate_SheetAction" = " 删除模板";
 "Uwazi_Deleted_Toast" = "“%@”已删除。";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "否";
 "Uwazi_Draft_Delete_YES_SheetAction" = "是";
 "Uwazi_Draft_Edit_SheetSelect" = "编辑草稿";
-"Uwazi_Draft_Delete_SheetSelect" = "删除草稿？";
 "Uwazi_Outbox_Delete_SheetExpl" = "是否确定删除此实体？";
 "Uwazi_Outbox_OutboxList_Expl" = "这些是目前正在提交的实体。";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "发件箱目前为空。准备发送的实体将在这里显示。";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "上传于 %@";
 "Uwazi_Submitted_Files" = "%i 个文件，%@";
 "Uwazi_Submitted_File" = "%i 个文件，%@";
-"Uwazi_Submitted_Delete_SheetTitle" = "是否删除实体？";
 "Uwazi_Submitted_Delete_SheetExpl" = "是否确定从设备删除此表单？请注意，由于表单已提交，数据将保留在您所在组织的服务器上。";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "取消";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "删除";
 "Uwazi_Entity_Relationship_Expl" = "选择要连接到此属性的实体。";
 "Uwazi_Entity_Relationship_Select_title" = "选择实体";
 "Uwazi_Entity_Relationship_AddMore_title" = "添加更多实体";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "搜索";
 "Setting_SettServer_GDrive" = "Google 云端硬盘";
 "Setting_SettServer_UnavailableConnections_Subhead" = "连接不可用";
-"Setting_SettServer_UnavailableConnections_Expl" = "对于以下类别，一次只能启用一个连接。要添加新连接，请前往“连接”设置删除当前连接。";
 "Setting_SettServer_No_Token" = "未检测到令牌，请重新连接";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "删除 %@ 服务器？";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "删除“%@”连接？";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "这些是您正在处理的报告。";
 "Reports_Outbox_OutboxList_Expl" = "这些报告已准备好提交";
 "Reports_Submitted_SubmittedList_Expl" = "这些是您已经成功提交的报告。";
-"Reports_DeleteReport_Draft_SheetTitle" = "删除报告";
 "Reports_Outbox_Pause" = "暂停";
 "Reports_Outbox_Resume" = "恢复";
 "Reports_Outbox_Submit" = "提交";
@@ -755,3 +748,21 @@
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "添加选项";
 "Uwazi_Entity_Geolocation_Latitude" = "纬度：";
+"Camera_MoreAction_Flash" = "Flash";
+"Camera_MoreAction_Grid" = "Grid";
+"Camera_Aspect_Full" = "Full";
+"Uwazi_Template_Delete_SheetTitle" = "Remove template?";
+"Camera_Grid_On" = "GRID ON";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Camera_Grid_Off" = "GRID OFF";
+"Camera_MoreAction_Aspect" = "Aspect";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "是否删除实体？";
+"Common_Settings" = "设置";
+"Common_Action_Delete" = "删除";
+"Camera_Flash_On" = "打开";
+"Common_Resolution" = "分辨率";
+"Camera_Flash_Off" = "关闭";
+"Common_Action_Cancel" = "取消";
+"Common_Action_Remove" = "移除";
+"Camera_Flash_Auto" = "自动";
