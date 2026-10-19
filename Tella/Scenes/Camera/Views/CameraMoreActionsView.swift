@@ -33,9 +33,10 @@ struct CameraMoreActionsView: View {
             HStack(spacing: 0) {
                 flashButton
                 gridButton
-                captureFormatButton
+                if viewModel.cameraState.cameraType == .image {
+                    captureFormatButton
+                }
             }
-            settingsButton
         }
         .padding(.horizontal, .extraSmall)
         .padding(.vertical, .normal)
