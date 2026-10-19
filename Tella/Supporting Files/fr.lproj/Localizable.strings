@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "Brouillons";
 "Uwazi_PageViewItem_Outbox" = "Boîte d'envoi";
 "Uwazi_PageViewItem_Submitted" = "Envoyés";
-"Uwazi_Delete_SheetTitle" = "Supprimer “%@”?";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = "Supprimer de cet appareil";
 "Uwazi_Template_DeleteTemplate_SheetAction" = "Supprimer le modèle";
 "Uwazi_Deleted_Toast" = "“%@” a été supprimé.";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "NON";
 "Uwazi_Draft_Delete_YES_SheetAction" = "OUI";
 "Uwazi_Draft_Edit_SheetSelect" = "Modifier le brouillon";
-"Uwazi_Draft_Delete_SheetSelect" = "Supprimer le brouillon";
 "Uwazi_Outbox_Delete_SheetExpl" = "Êtes-vous sûr de vouloir supprimer cette entité ?";
 "Uwazi_Outbox_OutboxList_Expl" = "Il y a sont des entités en cours de soumission.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Votre boîte d'envoi est actuellement vide. Les entités prêtes à envoyer apparaîtront ici.";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "Téléversé sur %@";
 "Uwazi_Submitted_Files" = "%i fichiers, %@";
 "Uwazi_Submitted_File" = "%i fichier, %@";
-"Uwazi_Submitted_Delete_SheetTitle" = "Supprimer l'entité ?";
 "Uwazi_Submitted_Delete_SheetExpl" = "Êtes-vous sûr de vouloir supprimer ce formulaire de votre appareil ? Notez que comme elles ont déjà été soumises, les données resteront sur le serveur de votre organisation.";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "ANNULER";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "SUPPRIMER";
 "Uwazi_Entity_Relationship_Expl" = "Sélectionnez les entités que vous souhaitez connecter à cette propriété.";
 "Uwazi_Entity_Relationship_Select_title" = "Choisir des entités";
 "Uwazi_Entity_Relationship_AddMore_title" = "Ajouter plus d'entités";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "Rechercher";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
-"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
 "Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
 "Reports_Submitted_SubmittedList_Expl" = "These are reports that you have successfully submitted.";
-"Reports_DeleteReport_Draft_SheetTitle" = "Supprimer le rapport";
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
 "Reports_Outbox_Submit" = "Envoyer";
