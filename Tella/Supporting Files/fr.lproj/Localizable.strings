@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Quitter quand même";
 "Reports_Draft_ExitReport_Save_SheetAction" = "enregistrer et quitter";
 "Reports_Draft_AddFiles" = "Joignez des fichiers ici";
-"Reports_DeleteReport_SheetTitle" = "Supprimer le rapport";
+"Reports_DeleteReport_SheetTitle" = "Supprimer le signalement ?";
 "Reports_DeleteReport_Cancel_SheetAction" = "ANNULER";
 "Reports_DeleteReport_Delete_SheetAction" = "SUPPRIMER";
 "Reports_PageViewItem_Draft" = "Brouillons";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Cette instance Uwazi nécessite une vérification en deux étapes. Entrez ici le code à 6 chiffres de votre application d'authentification.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Code d'authentification";
 "Setting_Server_Uwazi_Authentication_Verify" = "VÉRIFIER";
-"Setting_Server_Uwazi_Language_Title" = "Langue Uwazi";
+"Setting_Server_Uwazi_Language_Title" = "Langue";
 "Setting_Server_Uwazi_Language_Message" = "Cette collection Uwazi est disponible en plusieurs langues. Veuillez sélectionner dans quelle langue vous souhaitez télécharger les modèles.";
 "Setting_Server_Uwazi_Language_Ok" = "Valider";
 "Setting_Server_Uwazi_Language_Cancel" = "ANNULER";
