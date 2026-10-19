@@ -757,3 +757,11 @@
 "Camera_Grid_Off" = "GRID OFF";
 "Camera_MoreAction_Aspect" = "Aspect";
 "Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "Delete entity?";
+"Common_Settings" = "Cài đặt";
+"Common_Action_Delete" = "Xóa";
+"Camera_Flash_On" = "Bật";
+"Common_Resolution" = "Độ phân giải";
+"Camera_Flash_Off" = "Tắt";
+"Common_Action_Cancel" = "Hủy bỏ";
+"Common_Action_Remove" = "Di chuyển";
