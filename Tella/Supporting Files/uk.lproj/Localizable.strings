@@ -381,7 +381,7 @@
 "Uwazi_PageViewItem_Outbox" = "Вихідні";
 "Uwazi_PageViewItem_Submitted" = "Надіслані";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " Видалити з цього пристрою";
-"Uwazi_Template_DeleteTemplate_SheetAction" = " Видалити шаблон";
+"Uwazi_Template_DeleteTemplate_SheetAction" = "Видалити шаблон?";
 "Uwazi_Deleted_Toast" = "“%@” видалено.";
 "Uwazi_Draft_DraftList_Expl" = "Це сутності, які ви ще не відправили. Торкніться сутності, щоб продовжити роботу з нею.";
 "Uwazi_Draft_EmptyDraftList_Expl" = "Ваша скринька Чернетки наразі порожня. Сутності, які ви ще не відправили, з’являтимуться тут.";
@@ -765,3 +765,4 @@
 "Camera_Flash_Off" = "Вимкнено";
 "Common_Action_Cancel" = "Скасувати";
 "Common_Action_Remove" = "Вилучити";
+"Camera_Flash_Auto" = "Автоматично";
