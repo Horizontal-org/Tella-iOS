@@ -748,3 +748,13 @@
 "Uwazi_Entity_Geolocation_MapHint" = "برای ثبت کردن موقعیت، هر نقطه‌ای از صفحه را به مدت 3 ثانیه لمس کنید.";
 "Uwazi_Entity_Geolocation_Latitude" = "عرض جغرافیایی:";
 "Uwazi_Entity_Geolocation_Longitude" = "طول جغرافیایی:";
+"Camera_MoreAction_Flash" = "Flash";
+"Camera_MoreAction_Grid" = "Grid";
+"Camera_Aspect_Full" = "Full";
+"Uwazi_Template_Delete_SheetTitle" = "Remove template?";
+"Camera_Grid_On" = "GRID ON";
+"Camera_Flash_Auto" = "Auto";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Camera_Grid_Off" = "GRID OFF";
+"Camera_MoreAction_Aspect" = "Aspect";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
