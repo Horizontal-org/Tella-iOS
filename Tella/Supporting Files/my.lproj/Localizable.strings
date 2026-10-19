@@ -757,3 +757,11 @@
 "Camera_Grid_Off" = "GRID OFF";
 "Camera_MoreAction_Aspect" = "Aspect";
 "Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "Delete entity?";
+"Common_Settings" = "ချိန်ညှိ့သည့်နေရာ";
+"Common_Action_Delete" = "ဖျက်ရန်";
+"Camera_Flash_On" = "ဖွင့်မည်";
+"Common_Resolution" = "ဗီဒီယို အရည်အသွေး";
+"Camera_Flash_Off" = "ပိတ်မည်";
+"Common_Action_Cancel" = "ပယ်ဖျက်ပါ";
+"Common_Action_Remove" = "ဖယ်ရှားပါ";
