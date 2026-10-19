@@ -756,3 +756,12 @@
 "Camera_Grid_Off" = "GRID OFF";
 "Camera_MoreAction_Aspect" = "Aspect";
 "Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "Видалити сутність?";
+"Common_Settings" = "Налаштування";
+"Common_Action_Delete" = "Видалити";
+"Camera_Flash_On" = "Увімкнено";
+"Uwazi_Template_Delete_SheetTitle" = "Видалити шаблон?";
+"Common_Resolution" = "Роздільна здатність";
+"Camera_Flash_Off" = "Вимкнено";
+"Common_Action_Cancel" = "Скасувати";
+"Common_Action_Remove" = "Вилучити";
