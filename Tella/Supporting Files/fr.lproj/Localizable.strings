@@ -242,7 +242,7 @@
 "Settings_Sett_Connections" = "Connexions";
 "Settings_Sett_Feedback" = "Retour d'information";
 "Settings_SettSec_DeleteAfterFail" = "Suppression après échec du déverrouillage";
-"Settings_SettSec_DeleteAfterFail_Off" = "Éteindre";
+"Settings_SettSec_DeleteAfterFail_Off" = "Désactivé";
 "Settings_SettSec_ShowUnlockAttempts" = "Afficher les tentatives de déverrouillage restantes";
 "Settings_SettSec_ShowUnlockAttempts_Expl" = "Sur l’écran de déverrouillage, affichez le nombre restant de tentatives de déverrouillage infructueuses avant que tout ce qui se trouve à l’intérieur de Tella ne soit supprimé";
 "Settings_SettSec_PreserveMetadata" = "Conserver les métadonnées lors de l'importation";
