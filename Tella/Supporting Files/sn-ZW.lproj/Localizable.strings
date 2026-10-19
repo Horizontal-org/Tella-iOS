@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Exit anyway";
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
 "Reports_Draft_AddFiles" = "Kubhanidja swikwama.";
-"Reports_DeleteReport_SheetTitle" = "Delete report";
+"Reports_DeleteReport_SheetTitle" = "Kudzima mushumo/mashoko";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
 "Reports_DeleteReport_Delete_SheetAction" = "DELETE";
 "Reports_PageViewItem_Draft" = "Drafts";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Pa chikamu ichi panovigwa mashoko panodha kuonessessa kaviri. Issa apa codhi hako yo nambe 6 kuti foni hako ione kuti ndijo here nambe igi.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
 "Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
-"Setting_Server_Uwazi_Language_Title" = "Ndimu yo pane vigwa mashoko";
+"Setting_Server_Uwazi_Language_Title" = "Ndhimu";
 "Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
 "Setting_Server_Uwazi_Language_Ok" = "Swakanaka.";
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "Drafts";
 "Uwazi_PageViewItem_Outbox" = "Kubhudha";
 "Uwazi_PageViewItem_Submitted" = "Kuthumira.";
-"Uwazi_Delete_SheetTitle" = "Delete “%@”?";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";
 "Uwazi_Template_DeleteTemplate_SheetAction" = " Delete Template";
 "Uwazi_Deleted_Toast" = "“%@” has been deleted.";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "NO";
 "Uwazi_Draft_Delete_YES_SheetAction" = "YES";
 "Uwazi_Draft_Edit_SheetSelect" = "Kunhoressa swassala";
-"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
 "Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
 "Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "Uploaded on %@";
 "Uwazi_Submitted_Files" = "%i files, %@";
 "Uwazi_Submitted_File" = "%i file, %@";
-"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
 "Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
 "Uwazi_Entity_Relationship_Expl" = "Keta chikwatha chaunodha kubathana.";
 "Uwazi_Entity_Relationship_Select_title" = "Keta chindau";
 "Uwazi_Entity_Relationship_AddMore_title" = "Pakuketa swe paneswamboketwa";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "Search";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Kubhata komujeke ukatiza.";
-"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "Haya ndihoo mashoko auri kunassidjira.";
 "Reports_Outbox_OutboxList_Expl" = "Mashoko haya anaka kuti atumirwa.";
 "Reports_Submitted_SubmittedList_Expl" = "Haya ndihoo mashoko awatumira swakanaka.";
-"Reports_DeleteReport_Draft_SheetTitle" = "Delete report";
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
 "Reports_Outbox_Submit" = "Kutumira";
@@ -755,3 +748,21 @@
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_Latitude" = "Ndivi";
+"Camera_MoreAction_Flash" = "Flash";
+"Camera_MoreAction_Grid" = "Grid";
+"Camera_Aspect_Full" = "Full";
+"Uwazi_Template_Delete_SheetTitle" = "Remove template?";
+"Camera_Grid_On" = "GRID ON";
+"Camera_Flash_Auto" = "Auto";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Camera_Grid_Off" = "GRID OFF";
+"Camera_MoreAction_Aspect" = "Aspect";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "Delete entity?";
+"Common_Settings" = "Kuseta";
+"Common_Action_Delete" = "Kulassa/Bvisa";
+"Camera_Flash_On" = "Pane";
+"Common_Resolution" = "Kuthonga";
+"Camera_Flash_Off" = "Kujimika";
+"Common_Action_Cancel" = "Kuvhala";
+"Common_Action_Remove" = "Kuvhissa";

@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Quitter quand même";
 "Reports_Draft_ExitReport_Save_SheetAction" = "enregistrer et quitter";
 "Reports_Draft_AddFiles" = "Joignez des fichiers ici";
-"Reports_DeleteReport_SheetTitle" = "Supprimer le rapport";
+"Reports_DeleteReport_SheetTitle" = "Supprimer le signalement ?";
 "Reports_DeleteReport_Cancel_SheetAction" = "ANNULER";
 "Reports_DeleteReport_Delete_SheetAction" = "SUPPRIMER";
 "Reports_PageViewItem_Draft" = "Brouillons";
@@ -242,7 +242,7 @@
 "Settings_Sett_Connections" = "Connexions";
 "Settings_Sett_Feedback" = "Retour d'information";
 "Settings_SettSec_DeleteAfterFail" = "Suppression après échec du déverrouillage";
-"Settings_SettSec_DeleteAfterFail_Off" = "Éteindre";
+"Settings_SettSec_DeleteAfterFail_Off" = "Désactivé";
 "Settings_SettSec_ShowUnlockAttempts" = "Afficher les tentatives de déverrouillage restantes";
 "Settings_SettSec_ShowUnlockAttempts_Expl" = "Sur l’écran de déverrouillage, affichez le nombre restant de tentatives de déverrouillage infructueuses avant que tout ce qui se trouve à l’intérieur de Tella ne soit supprimé";
 "Settings_SettSec_PreserveMetadata" = "Conserver les métadonnées lors de l'importation";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Cette instance Uwazi nécessite une vérification en deux étapes. Entrez ici le code à 6 chiffres de votre application d'authentification.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Code d'authentification";
 "Setting_Server_Uwazi_Authentication_Verify" = "VÉRIFIER";
-"Setting_Server_Uwazi_Language_Title" = "Langue Uwazi";
+"Setting_Server_Uwazi_Language_Title" = "Langue";
 "Setting_Server_Uwazi_Language_Message" = "Cette collection Uwazi est disponible en plusieurs langues. Veuillez sélectionner dans quelle langue vous souhaitez télécharger les modèles.";
 "Setting_Server_Uwazi_Language_Ok" = "Valider";
 "Setting_Server_Uwazi_Language_Cancel" = "ANNULER";
@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "Brouillons";
 "Uwazi_PageViewItem_Outbox" = "Boîte d'envoi";
 "Uwazi_PageViewItem_Submitted" = "Envoyés";
-"Uwazi_Delete_SheetTitle" = "Supprimer “%@”?";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = "Supprimer de cet appareil";
 "Uwazi_Template_DeleteTemplate_SheetAction" = "Supprimer le modèle";
 "Uwazi_Deleted_Toast" = "“%@” a été supprimé.";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "NON";
 "Uwazi_Draft_Delete_YES_SheetAction" = "OUI";
 "Uwazi_Draft_Edit_SheetSelect" = "Modifier le brouillon";
-"Uwazi_Draft_Delete_SheetSelect" = "Supprimer le brouillon";
 "Uwazi_Outbox_Delete_SheetExpl" = "Êtes-vous sûr de vouloir supprimer cette entité ?";
 "Uwazi_Outbox_OutboxList_Expl" = "Il y a sont des entités en cours de soumission.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Votre boîte d'envoi est actuellement vide. Les entités prêtes à envoyer apparaîtront ici.";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "Téléversé sur %@";
 "Uwazi_Submitted_Files" = "%i fichiers, %@";
 "Uwazi_Submitted_File" = "%i fichier, %@";
-"Uwazi_Submitted_Delete_SheetTitle" = "Supprimer l'entité ?";
 "Uwazi_Submitted_Delete_SheetExpl" = "Êtes-vous sûr de vouloir supprimer ce formulaire de votre appareil ? Notez que comme elles ont déjà été soumises, les données resteront sur le serveur de votre organisation.";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "ANNULER";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "SUPPRIMER";
 "Uwazi_Entity_Relationship_Expl" = "Sélectionnez les entités que vous souhaitez connecter à cette propriété.";
 "Uwazi_Entity_Relationship_Select_title" = "Choisir des entités";
 "Uwazi_Entity_Relationship_AddMore_title" = "Ajouter plus d'entités";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "Rechercher";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
-"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
 "Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
 "Reports_Submitted_SubmittedList_Expl" = "These are reports that you have successfully submitted.";
-"Reports_DeleteReport_Draft_SheetTitle" = "Supprimer le rapport";
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
 "Reports_Outbox_Submit" = "Envoyer";
@@ -755,3 +748,21 @@
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_Latitude" = "Latitude :";
+"Camera_MoreAction_Flash" = "Flash";
+"Camera_MoreAction_Grid" = "Grid";
+"Camera_Aspect_Full" = "Full";
+"Uwazi_Template_Delete_SheetTitle" = "Remove template?";
+"Camera_Grid_On" = "GRID ON";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Camera_Grid_Off" = "GRID OFF";
+"Camera_MoreAction_Aspect" = "Aspect";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
+"Uwazi_Entity_Delete_SheetTitle" = "Supprimer l'entité ?";
+"Common_Settings" = "Paramètres";
+"Common_Action_Delete" = "Supprimer";
+"Camera_Flash_On" = "Allumer";
+"Common_Resolution" = "Résolution";
+"Camera_Flash_Off" = "Éteindre";
+"Common_Action_Cancel" = "Annuler";
+"Common_Action_Remove" = "Supprimer";
+"Camera_Flash_Auto" = "Automatique";
