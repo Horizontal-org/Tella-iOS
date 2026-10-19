@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Все одно вийти";
 "Reports_Draft_ExitReport_Save_SheetAction" = "зберегти й вийти";
 "Reports_Draft_AddFiles" = "Прикріпіть файли тут";
-"Reports_DeleteReport_SheetTitle" = "Видалити звіт";
+"Reports_DeleteReport_SheetTitle" = "Видалити звіт?";
 "Reports_DeleteReport_Cancel_SheetAction" = "СКАСУВАТИ";
 "Reports_DeleteReport_Delete_SheetAction" = "ВИДАЛИТИ";
 "Reports_PageViewItem_Draft" = "Чернетки";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "Цей сервер Uwazi потребує двоетапної перевірки. Введіть тут 6-значний код із вашої програми для автентифікації.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Код автентифікації";
 "Setting_Server_Uwazi_Authentication_Verify" = "ПІДТВЕРДИТИ";
-"Setting_Server_Uwazi_Language_Title" = "Мова Uwazi";
+"Setting_Server_Uwazi_Language_Title" = "Мова";
 "Setting_Server_Uwazi_Language_Message" = "Ця колекція Uwazi доступна кількома мовами. Будь ласка, виберіть, якою мовою ви бажаєте завантажити шаблони.";
 "Setting_Server_Uwazi_Language_Ok" = "ОК";
 "Setting_Server_Uwazi_Language_Cancel" = "СКАСУВАТИ";
