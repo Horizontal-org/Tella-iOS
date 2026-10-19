@@ -209,7 +209,7 @@
 "Reports_Draft_ExitReport_Exit_SheetAction" = "仍然退出";
 "Reports_Draft_ExitReport_Save_SheetAction" = "保存并退出";
 "Reports_Draft_AddFiles" = "在此附加文件";
-"Reports_DeleteReport_SheetTitle" = "删除报告";
+"Reports_DeleteReport_SheetTitle" = "删除报告？";
 "Reports_DeleteReport_Cancel_SheetAction" = "取消";
 "Reports_DeleteReport_Delete_SheetAction" = "删除";
 "Reports_PageViewItem_Draft" = "草稿";
@@ -296,7 +296,7 @@
 "Setting_Server_Uwazi_Two_Step_Message" = "此 Uwazi 实例需要两步验证。请在此处输入验证器应用中显示的 6 位数字代码。";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "验证码";
 "Setting_Server_Uwazi_Authentication_Verify" = "验证";
-"Setting_Server_Uwazi_Language_Title" = "Uwazi 语言";
+"Setting_Server_Uwazi_Language_Title" = "语言";
 "Setting_Server_Uwazi_Language_Message" = "这个 Uwazi 集合有数种语言版本。请选择想要下载模板的语言。";
 "Setting_Server_Uwazi_Language_Ok" = "确定";
 "Setting_Server_Uwazi_Language_Cancel" = "取消";
@@ -746,7 +746,7 @@
 "Uwazi_Entity_Geolocation_RecordTitle" = "记录位置";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
-"Uwazi_Entity_Geolocation_AddLocation" = "添加选项";
+"Uwazi_Entity_Geolocation_AddLocation" = "";
 "Uwazi_Entity_Geolocation_Latitude" = "纬度：";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
