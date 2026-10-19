@@ -52,6 +52,7 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     @Published private(set) var availableZoomLenses: [CameraZoomLens] = []
     @Published private(set) var flashMode: CameraFlashMode = .off
     @Published private(set) var isFlashAvailable = false
+    @Published private(set) var usesVideoPreset = false
     
     // MARK: - Configuration
     
@@ -60,7 +61,18 @@ final class CameraService: ObservableObject, @unchecked Sendable {
     var cameraType: CameraType = .image {
         didSet {
             guard cameraType != oldValue, isCameraActive else { return }
-            requestCaptureSession()
+            let type = cameraType
+            sessionQueue.async {
+                self.requestedCameraType = type
+                guard self.isSessionActive else { return }
+
+                if type == .image, self.configuredCameraType == .video {
+                    self.switchCaptureMode(to: .image)
+                } else {
+                    self.updateCameraControls(resetZoom: false)
+                }
+                self.updateFlashMode()
+            }
         }
     }
     
@@ -199,6 +211,10 @@ extension CameraService {
         return try await withCheckedThrowingContinuation { continuation in
             sessionQueue.async {
                 self.recordingContinuation = continuation
+                if self.configuredCameraType != .video || !self.hasVideoConfiguration {
+                    self.switchCaptureMode(to: .video)
+                }
+                self.enableRecordingHaptics()
                 guard self.isSessionActive, self.configuredCameraType == .video,
                       self.captureSession.isRunning, !self.captureSession.isInterrupted,
                       self.hasVideoConfiguration,
@@ -329,19 +345,17 @@ private extension CameraService {
     func activateSession() {
         guard isSessionActive, sessionRecordingState == .idle else { return }
         let type = requestedCameraType
-        let needsVideoConfiguration = type == .video && !hasVideoConfiguration
         if inputCamera == nil || photoCapture.photoOutput == nil {
-            setupSession(type: type)
-        } else if configuredCameraType != type || needsVideoConfiguration {
-            switchCaptureMode(to: type)
+            setupSession(type: .image)
+        } else if type == .image, configuredCameraType == .video {
+            switchCaptureMode(to: .image)
         }
-        guard inputCamera != nil, photoCapture.photoOutput != nil,
-              type != .video || hasVideoConfiguration else {
+        guard inputCamera != nil, photoCapture.photoOutput != nil else {
             restoreRecordingHaptics()
             DispatchQueue.main.async { self.reportCaptureFailure() }
             return
         }
-        if type == .video {
+        if hasVideoConfiguration {
             enableRecordingHaptics()
         } else {
             restoreRecordingHaptics()
@@ -423,9 +437,11 @@ private extension CameraService {
         captureSession.commitConfiguration()
         configuredCameraType = type
         updateCameraControls()
+        publishUsesVideoPreset(type == .video)
     }
     
     func switchCaptureMode(to type: CameraType) {
+        let preservedZoom = inputCamera.map { zoomController.displayedZoomFactor(for: $0) }
         captureSession.beginConfiguration()
         if type == .video {
             CameraSessionConfigurator.applyPreset(for: type, to: captureSession)
@@ -439,7 +455,18 @@ private extension CameraService {
         captureSession.commitConfiguration()
         photoCapture.applyResolution(device: inputCamera)
         configuredCameraType = type
-        updateCameraControls()
+        if let device = inputCamera, let preservedZoom {
+            zoomController.setZoomFactor(to: preservedZoom, device: device)
+        }
+        updateCameraControls(resetZoom: false)
+        publishUsesVideoPreset(type == .video)
+    }
+    
+    func publishUsesVideoPreset(_ usesVideoPreset: Bool) {
+        DispatchQueue.main.async {
+            guard self.usesVideoPreset != usesVideoPreset else { return }
+            self.usesVideoPreset = usesVideoPreset
+        }
     }
     
     // MARK: - Recording lifecycle (session queue)
@@ -553,7 +580,7 @@ private extension CameraService {
             CameraFlashController.turnOffTorch(device: inputCamera)
             return
         }
-        if configuredCameraType == .video {
+        if requestedCameraType == .video {
             CameraFlashController.applyVideoTorch(device: inputCamera,
                                                   flashMode: requestedFlashMode,
                                                   isRecording: sessionRecordingState == .starting
@@ -564,12 +591,12 @@ private extension CameraService {
         }
     }
     
-    func updateCameraControls() {
+    func updateCameraControls(resetZoom: Bool = true) {
         let device = inputCamera
-        let isFlashAvailable = configuredCameraType == .video
+        let isFlashAvailable = requestedCameraType == .video
         ? device?.hasTorch ?? false
         : device?.hasFlash ?? false
-        if let device {
+        if resetZoom, let device {
             zoomController.applyDefaultZoom(device: device)
         }
         observeZoomChanges(device: device)

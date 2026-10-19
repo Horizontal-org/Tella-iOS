@@ -114,6 +114,7 @@ struct CameraViewfinderLayout {
     let shutterFrame: CGRect
     let modeFrame: CGRect
     let previewFrame: CGRect
+    let sourceFrame: CGRect
     let optionsFrame: CGRect
     let overlaysHeader: Bool
     let overlaysZoom: Bool
@@ -151,6 +152,7 @@ struct CameraViewfinderLayout {
         let photoFrame = photoWithZoom
         ? fullWidthPhoto
         : CameraAspectRatio.threeByFour.visibleRect(in: available)
+        sourceFrame = photoFrame
         
         let expanded = aspectRatio == .nineBySixteen || aspectRatio == .full
         switch aspectRatio {

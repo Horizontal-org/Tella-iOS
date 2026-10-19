@@ -29,6 +29,7 @@ class CameraViewModel: ObservableObject {
     @Published var cameraState: CameraState = .readyTakingImage
     @Published private(set) var isRecordingTransitioning = false
     @Published private(set) var isFlippingCamera = false
+    @Published private(set) var usesVideoPreset = false
     @Published var formattedCurrentTime: String = "00:00:00"
     @Published var currentTime: TimeInterval = 0.0
     
@@ -193,10 +194,7 @@ class CameraViewModel: ObservableObject {
               cameraState.cameraType != cameraType else { return }
         
         hideMenu()
-        withAnimation(.easeInOut(duration: CameraStyle.Animations.modeChange)) {
-            cameraState = CameraState(cameraType: cameraType)
-        }
-        
+        cameraState = CameraState(cameraType: cameraType)
         service.cameraType = cameraType
     }
     
@@ -456,6 +454,11 @@ class CameraViewModel: ObservableObject {
                     self?.hideFlashOptions()
                 }
             }
+            .store(in: &cancellable)
+        
+        service.$usesVideoPreset
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.usesVideoPreset = $0 }
             .store(in: &cancellable)
     }
     
