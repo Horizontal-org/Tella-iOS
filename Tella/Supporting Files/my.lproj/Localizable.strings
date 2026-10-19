@@ -748,3 +748,12 @@
 "Uwazi_Entity_Geolocation_MapHint" = "တည်နေရာကို မှတ်တမ်းတင်ရန် မည်သည့်နေရာကိုမဆို ၃ စက္ကန့်ကြာ ထိထားပါ။";
 "Uwazi_Entity_Geolocation_Latitude" = "လတ်တီတွဒ် -";
 "Uwazi_Entity_Geolocation_Longitude" = "လောင်ဂျီတွဒ် -";
+"Camera_MoreAction_Flash" = "Flash";
+"Camera_MoreAction_Grid" = "Grid";
+"Camera_Aspect_Full" = "Full";
+"Uwazi_Template_Delete_SheetTitle" = "Remove template?";
+"Camera_Grid_On" = "GRID ON";
+"Setting_SettServer_UnavailableConnections_Expl1" = "Only one %@ Connection can be enabled at a time.";
+"Camera_Grid_Off" = "GRID OFF";
+"Camera_MoreAction_Aspect" = "Aspect";
+"Setting_SettServer_UnavailableConnections_Expl2" = "To add a new connection, please delete the current one by going to Connections Settings.";
