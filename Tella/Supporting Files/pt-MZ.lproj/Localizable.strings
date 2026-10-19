@@ -380,7 +380,6 @@
 "Uwazi_PageViewItem_Draft" = "Drafts";
 "Uwazi_PageViewItem_Outbox" = "Caixa de saída";
 "Uwazi_PageViewItem_Submitted" = "Submeter";
-"Uwazi_Delete_SheetTitle" = "Delete “%@”?";
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";
 "Uwazi_Template_DeleteTemplate_SheetAction" = " Delete Template";
 "Uwazi_Deleted_Toast" = "“%@” has been deleted.";
@@ -391,7 +390,6 @@
 "Uwazi_Draft_Delete_NO_SheetAction" = "NO";
 "Uwazi_Draft_Delete_YES_SheetAction" = "YES";
 "Uwazi_Draft_Edit_SheetSelect" = "Editar rascunho";
-"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
 "Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
 "Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
@@ -403,10 +401,7 @@
 "Uwazi_Submitted_UploadedOn" = "Uploaded on %@";
 "Uwazi_Submitted_Files" = "%i files, %@";
 "Uwazi_Submitted_File" = "%i file, %@";
-"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
 "Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
-"Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
-"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
 "Uwazi_Entity_Relationship_Expl" = "Seleccione as entidades que pretende conectar a esta propriedade.";
 "Uwazi_Entity_Relationship_Select_title" = "Seleccionar entidades";
 "Uwazi_Entity_Relationship_AddMore_title" = "Adicionar mais entidades";
@@ -416,7 +411,6 @@
 "Uwazi_Relationship_SearchBar_Title" = "Search";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Ligações indisponíveis";
-"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
 "Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
 "Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
@@ -430,7 +424,6 @@
 "Reports_Draft_DraftList_Expl" = "Estes são os relatórios em que está a trabalhar.";
 "Reports_Outbox_OutboxList_Expl" = "Estes relatórios estão prontos para serem submetidos.";
 "Reports_Submitted_SubmittedList_Expl" = "Estes são os relatórios que submeteu com sucesso.";
-"Reports_DeleteReport_Draft_SheetTitle" = "Delete report";
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
 "Reports_Outbox_Submit" = "Submeter";
