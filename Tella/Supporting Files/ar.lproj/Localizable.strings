@@ -47,8 +47,8 @@
 "Vault_SortBy_SheetTitle" = "الفرز باستخدام";
 "Vault_SortBy_Name" = "الاسم";
 "Vault_SortBy_Date" = "تاريخ";
-"Vault_SortBy_AscendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الياء إلى الألف";
-"Vault_SortBy_DescendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الألف إلى الياء";
+"Vault_SortBy_AscendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الألف إلى الياء";
+"Vault_SortBy_DescendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الياء إلى الألف";
 "Vault_SortBy_AscendingDate_SheetSelect" = "من الأحدث إلى الأقدم";
 "Vault_SortBy_DescendingDate_SheetSelect" = "من الأقدم إلى الأحدث";
 "Vault_Items_AppBar" = "%i items";
@@ -244,7 +244,7 @@
 "Settings_SettSec_DeleteAfterFail" = "حذف بعد فشل الفتح";
 "Settings_SettSec_DeleteAfterFail_Off" = "ايقاف";
 "Settings_SettSec_ShowUnlockAttempts" = "إظهار محاولات فتح القفل المتبقية";
-"Settings_SettSec_ShowUnlockAttempts_Expl" = "سيتم حذف بيانات Tella الخاصة بك بعد محاولة إلغاء القفل الفاشلة";
+"Settings_SettSec_ShowUnlockAttempts_Expl" = "إظهار عدد محاولات فتح القفل الفاشلة المتبقية على شاشة فتح القفل قبل حذف كل شيء داخل Tella";
 "Settings_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
 "Settings_SettSec_PreserveMetadata_Expl" = "احتفظ ببيانات تعريف EXIF عند استيراد الصور ومقاطع الفيديو إلى Tella. يتضمن ذلك بيانات حول وقت إنشاء الصورة وإعدادات الكاميرا والموقع وجهازك.";
 "Settings_SettDeleteAfterFail_SheetTitle" = "حذف بعد فشل الفتح";
@@ -516,7 +516,7 @@
 "Settings_SettLang_Tsonga_Expl" = "Tsonga";
 "Settings_SettLang_Ndau_Expl" = "Ndau";
 "Settings_SettLang_Azerbaijani_Expl" = "Azerbaijani";
-"Onboarding_NearbySharing_Title" = "مشاركة الملفات فقط";
+"Onboarding_NearbySharing_Title" = "مشاركة الملفات عن قرب";
 "Onboarding_NearbySharing_Expl" = "Share files with devices near you, without an Internet connection.";
 "Onboarding_LockDone_Title" = "اكتمل الضبط";
 "Onboarding_LockDone_Expl" = "يمكنك الذهاب إلى Tella أو الاستمرار في تخصيص الخيارات المتقدمة للتطبيق.";

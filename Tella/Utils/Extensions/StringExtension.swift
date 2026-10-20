@@ -254,6 +254,10 @@ extension String {
             String(format: " • %@", self)
         }
     }
+
+    func appendingValue(_ value: String) -> String {
+        "\(self) \(value)"
+    }
 }
 
 extension String {

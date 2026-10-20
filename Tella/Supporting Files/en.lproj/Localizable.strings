@@ -354,8 +354,8 @@
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
 "Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "Latitude:";
+"Uwazi_Entity_Geolocation_Longitude" = "Longitude:";
 
 "Vault_DeleteFolder_SheetTitle" = "Delete folder?";
 "Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from Tella";

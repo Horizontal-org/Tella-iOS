@@ -120,7 +120,6 @@ struct FileNameStyle: TextFieldStyle {
             .accentColor(Styles.Colors.yellow)
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
-            .keyboardType(.alphabet)
     }
 }
 

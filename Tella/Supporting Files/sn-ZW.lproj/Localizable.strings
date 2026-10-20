@@ -741,13 +741,13 @@
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Please ask the sender to verify their connection details and try again.";
 "Uwazi_Entity_Geolocation_MapHint" = "Baya pamueni no pamueni ko musseswa mutatu kuti uone paswiri.";
 "Camera_ShowGrid" = "Show grid";
-"Uwazi_Entity_Geolocation_Longitude" = "Kupambhama";
+"Uwazi_Entity_Geolocation_Longitude" = "Kupambhama:";
 "Camera_HideGrid" = "Hide grid";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Pauri pabhatika swakanaka kudharika swo kare";
 "Uwazi_Entity_Geolocation_Expl" = "Tap the “Add Location” button and record a position.";
 "Uwazi_Entity_Mandatory_Toast" = "There was a problem with one or more of your answers.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Add location";
-"Uwazi_Entity_Geolocation_Latitude" = "Ndivi";
+"Uwazi_Entity_Geolocation_Latitude" = "Ndivi:";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
 "Camera_Aspect_Full" = "Full";

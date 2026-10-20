@@ -50,7 +50,6 @@ struct BorderedTextFieldView: View {
             .foregroundColor(Color.white)
             .accentColor(.white)
             .disableAutocorrection(true)
-            .keyboardType(.alphabet)
             .autocapitalization(.none)
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)

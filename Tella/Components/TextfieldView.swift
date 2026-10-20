@@ -43,14 +43,12 @@ struct TextfieldView : View {
         switch fieldType {
         case .url:
             return .URL
-        case .text:
-            return .alphabet
         case .code, .pin, .port:
             return .numberPad
         case .ipAddress:
             return .numbersAndPunctuation
         default:
-            return . default
+            return .default
         }
     }
     
