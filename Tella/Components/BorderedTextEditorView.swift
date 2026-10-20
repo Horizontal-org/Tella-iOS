@@ -71,7 +71,6 @@ struct BorderedTextEditorView: View {
                 .accentColor(.white)
                 .multilineTextAlignment(.leading)
                 .disableAutocorrection(true)
-                .keyboardType(.alphabet)
                 .frame(height: max(120,textEditorHeight))
                 .padding(EdgeInsets(top: -7, leading: -5, bottom: -5, trailing: -5))
                 .onChange(of: fieldContent, perform: { value in

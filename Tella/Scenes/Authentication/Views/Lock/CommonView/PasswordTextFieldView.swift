@@ -91,7 +91,6 @@ struct PasswordStyle: TextFieldStyle {
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)
-            .keyboardType(.alphabet)
     }
 }
 
@@ -107,8 +106,6 @@ struct SecurePasswordStyle: TextFieldStyle {
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)
-            .keyboardType(.alphabet)
-        
     }
 }
 
