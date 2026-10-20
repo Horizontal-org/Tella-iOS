@@ -244,7 +244,7 @@
 "Settings_SettSec_DeleteAfterFail" = "حذف بعد فشل الفتح";
 "Settings_SettSec_DeleteAfterFail_Off" = "ايقاف";
 "Settings_SettSec_ShowUnlockAttempts" = "إظهار محاولات فتح القفل المتبقية";
-"Settings_SettSec_ShowUnlockAttempts_Expl" = "سيتم حذف بيانات Tella الخاصة بك بعد محاولة إلغاء القفل الفاشلة";
+"Settings_SettSec_ShowUnlockAttempts_Expl" = "إظهار عدد محاولات فتح القفل الفاشلة المتبقية على شاشة فتح القفل قبل حذف كل شيء داخل Tella";
 "Settings_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
 "Settings_SettSec_PreserveMetadata_Expl" = "احتفظ ببيانات تعريف EXIF عند استيراد الصور ومقاطع الفيديو إلى Tella. يتضمن ذلك بيانات حول وقت إنشاء الصورة وإعدادات الكاميرا والموقع وجهازك.";
 "Settings_SettDeleteAfterFail_SheetTitle" = "حذف بعد فشل الفتح";
