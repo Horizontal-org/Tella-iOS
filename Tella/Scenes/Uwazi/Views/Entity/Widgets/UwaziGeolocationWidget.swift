@@ -45,13 +45,11 @@ struct UwaziGeolocationWidget: View {
     func selectedLocationView(location: UwaziGeoLocation) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             
-            CustomText(String.localizedStringWithFormat(LocalizableUwazi.uwaziEntityGeolocationLatitude.localized,
-                                                        location.lat.displayedLatitude),
+            CustomText(LocalizableUwazi.uwaziEntityGeolocationLatitude.localized.appendingValue(location.lat.displayedLatitude),
                        style: .body2Style,
                        fillsWidth: true)
             
-            CustomText(String.localizedStringWithFormat(LocalizableUwazi.uwaziEntityGeolocationLongitude.localized,
-                                                        location.lon.displayedLongitude),
+            CustomText(LocalizableUwazi.uwaziEntityGeolocationLongitude.localized.appendingValue(location.lon.displayedLongitude),
                        style: .body2Style,
                        fillsWidth: true)
             

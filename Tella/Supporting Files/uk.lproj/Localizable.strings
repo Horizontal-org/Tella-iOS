@@ -741,13 +741,13 @@
 "NearbySharing_Recipient_ConnectionFailed_SheetExpl" = "Попросіть відправника перевірити деталі підключення та спробувати ще раз, будь ласка.";
 "Uwazi_Entity_Geolocation_MapHint" = "Утримуйте пальцем у будь-якому місці протягом 3 секунд, щоб записати положення.";
 "Camera_ShowGrid" = "Показати сітку";
-"Uwazi_Entity_Geolocation_Longitude" = "Довгота: %@";
+"Uwazi_Entity_Geolocation_Longitude" = "Довгота:";
 "Camera_HideGrid" = "Сховати сітку";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Записати місцезнаходження";
 "Uwazi_Entity_Geolocation_Expl" = "Торкніться кнопки «Додати місцезнаходження» та збережіть позицію.";
 "Uwazi_Entity_Mandatory_Toast" = "У одній або кількох ваших відповідях виявлено помилки.";
 "Uwazi_Entity_Geolocation_AddLocation" = "Додати місцезнаходження";
-"Uwazi_Entity_Geolocation_Latitude" = "Широта: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "Широта:";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
 "Camera_Aspect_Full" = "Full";

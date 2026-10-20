@@ -746,8 +746,8 @@
 "Uwazi_Entity_Geolocation_AddLocation" = "Adicionar localização";
 "Uwazi_Entity_Geolocation_RecordTitle" = "Record position";
 "Uwazi_Entity_Geolocation_MapHint" = "Touch anywhere for 3 seconds to record the position.";
-"Uwazi_Entity_Geolocation_Latitude" = "Latitude: %@";
-"Uwazi_Entity_Geolocation_Longitude" = "Longitude: %@";
+"Uwazi_Entity_Geolocation_Latitude" = "Latitude:";
+"Uwazi_Entity_Geolocation_Longitude" = "Longitude:";
 "Camera_MoreAction_Flash" = "Flash";
 "Camera_MoreAction_Grid" = "Grid";
 "Camera_Aspect_Full" = "Full";
