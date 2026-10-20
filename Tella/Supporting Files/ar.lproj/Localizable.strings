@@ -47,8 +47,8 @@
 "Vault_SortBy_SheetTitle" = "الفرز باستخدام";
 "Vault_SortBy_Name" = "الاسم";
 "Vault_SortBy_Date" = "تاريخ";
-"Vault_SortBy_AscendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الياء إلى الألف";
-"Vault_SortBy_DescendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الألف إلى الياء";
+"Vault_SortBy_AscendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الألف إلى الياء";
+"Vault_SortBy_DescendingName_SheetSelect" = "الاسم مرتبة أبجديًّا من الياء إلى الألف";
 "Vault_SortBy_AscendingDate_SheetSelect" = "من الأحدث إلى الأقدم";
 "Vault_SortBy_DescendingDate_SheetSelect" = "من الأقدم إلى الأحدث";
 "Vault_Items_AppBar" = "%i items";
