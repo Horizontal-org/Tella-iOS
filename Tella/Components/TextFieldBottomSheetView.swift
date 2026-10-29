@@ -18,11 +18,13 @@ struct TextFieldBottomSheetView: View {
     var titleText = ""
     var validateButtonText = ""
     var cancelButtonText = ""
+    var placeholder = ""
 
     @Binding var fieldContent : String
 
     var fileName : String = ""
     var shouldHideSheet : Bool = true
+    var shouldClearFieldOnConfirm : Bool = true
 
     var didConfirmAction : (() -> ())
     var didCancelAction : (() -> ())? = nil
@@ -42,7 +44,8 @@ struct TextFieldBottomSheetView: View {
                 .frame(height:12)
 
             FocusedTextFieldBottomSheet(fieldContent: $fieldContent,
-                                        isValid: $isValid)
+                                        isValid: $isValid,
+                                        placeholder: placeholder)
 
             Spacer()
                 .frame(height:8)
@@ -78,7 +81,9 @@ struct TextFieldBottomSheetView: View {
                 BottomButtonActionSheetView(title: validateButtonText, shouldEnable: self.isValid) {
 
                     didConfirmAction()
-                    fieldContent = ""
+                    if shouldClearFieldOnConfirm {
+                        fieldContent = ""
+                    }
 
                     if shouldHideSheet {
                         sheetManager.hide()
@@ -93,12 +98,13 @@ struct FocusedTextFieldBottomSheet : View {
 
     @Binding var fieldContent : String
     @Binding var isValid : Bool
+    var placeholder = ""
 
     @FocusState private var isFocused : Bool
 
     var body: some View {
         ZStack{
-            TextField("", text: $fieldContent)
+            TextField(placeholder, text: $fieldContent)
                 .textFieldStyle(FileNameStyle())
                 .onChange(of: fieldContent, perform: { value in
                     self.isValid = fieldContent.textValidator()
@@ -106,6 +112,7 @@ struct FocusedTextFieldBottomSheet : View {
                 .focused($isFocused)
         }
         .onAppear {
+            isValid = fieldContent.textValidator()
             isFocused = true
         }
     }

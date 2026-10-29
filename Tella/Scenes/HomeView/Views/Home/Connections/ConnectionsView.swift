@@ -41,6 +41,13 @@ struct ConnectionsView: View {
                                     destination: nearbySharingMainView)
             }
             
+            if let ouisyncClient = homeViewModel.mainAppModel.ouisyncClient {
+                ConnectionsItemView(title: LocalizableOuisync.appBar.localized,
+                                    image: "nearby-sharing.home",
+                                    destination: OuisyncMainView(client: ouisyncClient,
+                                                                 mainAppModel: homeViewModel.mainAppModel))
+            }
+            
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
                     

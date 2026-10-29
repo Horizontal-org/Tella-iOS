@@ -761,6 +761,16 @@
 "NearbySharing_Verification_Action_ConfirmContinue" = "Confirm and continue";
 
 
+"Ouisync_AppBar" = "Ouisync";
+"Ouisync_EmptyRepositories" = "No repositories yet.";
+"Ouisync_ImportedRepository" = "Repository imported with access.";
+"Ouisync_EmptyFolder" = "This repository folder is empty.";
+"Ouisync_SavedToVault" = "File saved to the vault.";
+"Ouisync_SaveFile" = "Save";
+"Ouisync_SaveFileMessage" = "Save this file to Tella files? It will stay in the repository.";
+"Ouisync_ImportRepository" = "Import repository";
+"Ouisync_ShareToken" = "Token";
+
 "Common_Action_OK" = "OK";
 "Common_Error_OpeningApp" = "Error opening the app";
 "Common_Action_Yes" = "YES";
