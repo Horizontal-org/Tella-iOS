@@ -50,6 +50,8 @@ class MainAppModel: ObservableObject {
     var networkMonitor: NetworkMonitor
     var nearbySharingServer: NearbySharingServer?
     let uploadService: UploadService
+
+    private(set) var ouisyncClient: (any OuisyncServing)?
     
     private var cancellable: Set<AnyCancellable> = []
     
@@ -123,6 +125,10 @@ class MainAppModel: ObservableObject {
                 )
                 
                 self.nearbySharingServer = NearbySharingServer()
+
+                if self.ouisyncClient == nil {
+                    self.ouisyncClient = NativeOuisyncClient()
+                }
             }
             
         } catch {

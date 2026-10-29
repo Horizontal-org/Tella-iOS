@@ -24,7 +24,17 @@ extension FileManager {
             .temporaryDirectory
             .appendingPathComponent(fileName)
     }
-    
+
+    func createApplicationSupportDirectory(withPath path: String) throws -> URL {
+        let directory = try url(for: .applicationSupportDirectory,
+                                in: .userDomainMask,
+                                appropriateFor: nil,
+                                create: true)
+            .appendingPathComponent(path, isDirectory: true)
+        try createDirectory(at: directory, withIntermediateDirectories: true)
+        return directory
+    }
+
     /// Available free disk space in bytes
     var availableDiskSpace: Int64 {
         do {
