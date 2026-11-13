@@ -30,6 +30,7 @@ class CameraViewModel: ObservableObject {
     @Published private(set) var isRecordingTransitioning = false
     @Published private(set) var isFlippingCamera = false
     @Published private(set) var usesVideoPreset = false
+    @Published private(set) var isSwitchingMode = false
     @Published var formattedCurrentTime: String = "00:00:00"
     @Published var currentTime: TimeInterval = 0.0
     
@@ -459,6 +460,11 @@ class CameraViewModel: ObservableObject {
         service.$usesVideoPreset
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.usesVideoPreset = $0 }
+            .store(in: &cancellable)
+        
+        service.$isSwitchingMode
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.isSwitchingMode = $0 }
             .store(in: &cancellable)
     }
     

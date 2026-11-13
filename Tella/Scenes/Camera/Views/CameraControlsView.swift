@@ -150,7 +150,7 @@ struct CameraControlsView: View {
         .onTapGesture(perform: viewModel.hideMenu)
         .simultaneousGesture(previewSwipeGesture)
         .simultaneousGesture(previewZoomGesture)
-        .cameraFlipBlur(viewModel.isFlippingCamera)
+        .cameraFlipBlur(viewModel.isFlippingCamera || viewModel.isSwitchingMode)
         .position(x: visible.midX, y: visible.midY)
     }
     
