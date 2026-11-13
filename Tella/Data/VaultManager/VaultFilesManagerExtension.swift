@@ -87,6 +87,7 @@ extension VaultFilesManager {
             
             switch type {
             case .image:
+                guard !importedFile.hasStrippedImageMetadata else { return urlFile }
                 guard let data = urlFile.contents()?.byRemovingEXIF() else { return nil}
                 let tempFileurl = vaultManager?.saveDataToTempFile(data: data, pathExtension: urlFile.pathExtension)
                 vaultManager?.deleteTmpFiles(files: [urlFile])

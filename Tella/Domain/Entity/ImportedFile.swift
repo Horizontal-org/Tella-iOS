@@ -15,6 +15,7 @@ struct ImportedFile {
     var asset : PHAsset? = nil
     var parentId : String?
     var shouldPreserveMetadata : Bool = false
+    var hasStrippedImageMetadata = false
     var deleteOriginal : Bool = false
     var fileSource : FileSource
     var fileId : String?
