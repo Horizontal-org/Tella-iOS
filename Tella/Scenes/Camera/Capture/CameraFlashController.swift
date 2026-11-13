@@ -20,7 +20,7 @@ enum CameraFlashController {
         case .auto:
             torchMode = isRecording ? .auto : .off
         case .on:
-            torchMode = .on
+            torchMode = isRecording ? .on : .off
         case .off:
             torchMode = .off
         }
