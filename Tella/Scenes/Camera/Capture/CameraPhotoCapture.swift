@@ -31,6 +31,7 @@ extension CameraPhotoCapture {
         guard session.canAddOutput(photoOutput) else { return }
         
         session.addOutput(photoOutput)
+        photoOutput.maxPhotoQualityPrioritization = .quality
         applyResolution(to: photoOutput, device: CameraSessionConfigurator.videoDevice(in: session))
         self.photoOutput = photoOutput
     }
@@ -49,19 +50,21 @@ extension CameraPhotoCapture {
     func prepareCaptureSettings(flashMode: CameraFlashMode) {
         guard let photoOutput else { return }
         
-        let settings = makeHEVCPhotoSettings(flashMode: flashMode.photoFlashMode)
+        let settings = makePhotoSettings(flashMode: flashMode.photoFlashMode)
         photoOutput.setPreparedPhotoSettingsArray([settings], completionHandler: nil)
     }
     
-    func makeHEVCPhotoSettings(flashMode: AVCaptureDevice.FlashMode) -> AVCapturePhotoSettings {
+    func makePhotoSettings(flashMode: AVCaptureDevice.FlashMode) -> AVCapturePhotoSettings {
         let settings: AVCapturePhotoSettings
-        if photoOutput?.availablePhotoCodecTypes.contains(.hevc) ?? true {
+        // Request HEIC so captures that match the selected aspect ratio can be saved directly.
+        if photoOutput?.availablePhotoCodecTypes.contains(.hevc) == true {
             settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
         } else {
             settings = AVCapturePhotoSettings()
         }
         
         if let photoOutput {
+            settings.photoQualityPrioritization = photoOutput.maxPhotoQualityPrioritization
             if #available(iOS 16.0, *) {
                 settings.maxPhotoDimensions = photoOutput.maxPhotoDimensions
             } else {

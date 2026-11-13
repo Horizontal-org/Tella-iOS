@@ -8,7 +8,6 @@
 //
 
 import CoreGraphics
-import ImageIO
 import UIKit
 
 enum CameraAspectRatio: Hashable, CaseIterable {
@@ -88,14 +87,15 @@ enum CameraAspectRatio: Hashable, CaseIterable {
     
     // MARK: - Image cropping
     
-    static func cropped(_ image: CGImage,
-                        orientation: CGImagePropertyOrientation,
-                        portraitAspectRatio: CGFloat) -> CGImage {
-        let upright = image.oriented(to: orientation) ?? image
-        // Ratios are presented in portrait, but captures follow the device orientation.
-        // Check the normalized pixels so rotated and mirrored metadata behave alike.
-        let aspect = upright.width > upright.height ? 1 / portraitAspectRatio : portraitAspectRatio
-        return upright.centerCropped(to: aspect) ?? upright
+    static func cropRect(width: Int, height: Int, portraitAspectRatio: CGFloat) -> CGRect {
+        // A centered crop commutes with rotation and mirroring. Keep the capture's orientation tag.
+        let aspectRatio = width > height ? 1 / portraitAspectRatio : portraitAspectRatio
+        let cropWidth = min(width, max(1, Int((CGFloat(height) * aspectRatio).rounded())))
+        let cropHeight = min(height, max(1, Int((CGFloat(width) / aspectRatio).rounded())))
+        return CGRect(x: (width - cropWidth) / 2,
+                      y: (height - cropHeight) / 2,
+                      width: cropWidth,
+                      height: cropHeight)
     }
 }
 
@@ -186,59 +186,5 @@ struct CameraViewfinderLayout {
         // Bottom menus replace the zoom controls and stay above the shutter.
         optionsFrame = row(from: max(headerFrame.maxY, previewFrame.minY),
                            to: shutterTop)
-    }
-}
-
-// MARK: - Image helpers
-
-private extension CGImagePropertyOrientation {
-    var uiImageOrientation: UIImage.Orientation {
-        switch self {
-        case .up: return .up
-        case .upMirrored: return .upMirrored
-        case .down: return .down
-        case .downMirrored: return .downMirrored
-        case .left: return .left
-        case .leftMirrored: return .leftMirrored
-        case .right: return .right
-        case .rightMirrored: return .rightMirrored
-        }
-    }
-}
-
-private extension CGImage {
-    func oriented(to orientation: CGImagePropertyOrientation) -> CGImage? {
-        let image = UIImage(cgImage: self, scale: 1, orientation: orientation.uiImageOrientation)
-        if image.imageOrientation == .up { return self }
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        format.opaque = true
-        return UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
-            image.draw(in: CGRect(origin: .zero, size: image.size))
-        }.cgImage
-    }
-    
-    func centerCropped(to aspectRatio: CGFloat) -> CGImage? {
-        let imageWidth = CGFloat(width)
-        let imageHeight = CGFloat(height)
-        let currentAspect = imageWidth / imageHeight
-        
-        guard abs(currentAspect - aspectRatio) > 0.01 else { return self }
-        
-        let cropRect: CGRect
-        if currentAspect > aspectRatio {
-            let cropWidth = imageHeight * aspectRatio
-            cropRect = CGRect(x: (imageWidth - cropWidth) / 2,
-                              y: 0,
-                              width: cropWidth,
-                              height: imageHeight)
-        } else {
-            let cropHeight = imageWidth / aspectRatio
-            cropRect = CGRect(x: 0,
-                              y: (imageHeight - cropHeight) / 2,
-                              width: imageWidth,
-                              height: cropHeight)
-        }
-        return cropping(to: cropRect.integral)
     }
 }
