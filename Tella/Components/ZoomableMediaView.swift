@@ -114,6 +114,9 @@ struct ZoomableImageView: UIViewRepresentable {
 
     func makeUIView(context _: Context) -> ZoomableMediaView {
         let imageView = UIImageView(image: image)
+        if #available(iOS 17.0, *) {
+            imageView.preferredImageDynamicRange = .high
+        }
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
         return ZoomableMediaView(mediaView: imageView)

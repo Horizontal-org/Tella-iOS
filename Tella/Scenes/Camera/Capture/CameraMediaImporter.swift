@@ -78,7 +78,9 @@ extension CameraMediaImporter {
                     try? FileManager.default.removeItem(at: url)
                     return
                 }
-                DispatchQueue.main.async { self.importFile(at: url) }
+                DispatchQueue.main.async {
+                    self.importFile(at: url, hasStrippedImageMetadata: !shouldPreserveMetadata)
+                }
             } catch {
                 debugLog("Unable to save photo: \(error.localizedDescription)")
                 try? FileManager.default.removeItem(at: url)
@@ -104,7 +106,7 @@ private extension CameraMediaImporter {
     
     // MARK: - Vault import
     
-    func importFile(at url: URL) {
+    func importFile(at url: URL, hasStrippedImageMetadata: Bool = false) {
         // Also covers videos and photos already waiting on the main queue when locking starts.
         guard !isCancelled else {
             try? FileManager.default.removeItem(at: url)
@@ -113,6 +115,7 @@ private extension CameraMediaImporter {
         let importedFile = ImportedFile(urlFile: url,
                                         parentId: rootFile?.id,
                                         shouldPreserveMetadata: mainAppModel.settings.preserveMetadata,
+                                        hasStrippedImageMetadata: hasStrippedImageMetadata,
                                         fileSource: .camera)
         if reportsProgress {
             importWithProgress(importedFile)

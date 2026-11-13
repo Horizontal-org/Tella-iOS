@@ -183,7 +183,7 @@ extension CameraService {
                     continuation.resume(throwing: CaptureError.captureFailed)
                     return
                 }
-                let settings = self.photoCapture.makeHEVCPhotoSettings(flashMode: mode.photoFlashMode)
+                let settings = self.photoCapture.makePhotoSettings(flashMode: mode.photoFlashMode)
                 self.pendingPhotos[settings.uniqueID] = PendingPhoto(aspectRatio: portraitAspectRatio,
                                                                      continuation: continuation)
                 if let location {
