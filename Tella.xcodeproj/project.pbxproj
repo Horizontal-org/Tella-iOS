@@ -653,6 +653,14 @@
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
 		20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */; };
 		20FA030D2CD282C3001121F1 /* TrimMediaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */; };
+		A15C0B0100000000000001 /* OuisyncModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000001 /* OuisyncModels.swift */; };
+		A15C0B0100000000000002 /* OuisyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000002 /* OuisyncClient.swift */; };
+		A15C0B010000000000000C /* OuisyncLocalSecretStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F010000000000000C /* OuisyncLocalSecretStore.swift */; };
+		A15C0B0100000000000004 /* NativeOuisyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000004 /* NativeOuisyncClient.swift */; };
+		A15C0B0100000000000006 /* OuisyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000006 /* OuisyncViewModel.swift */; };
+		A15C0B0100000000000007 /* OuisyncMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000007 /* OuisyncMainView.swift */; };
+		A15C0B0100000000000008 /* OuisyncRepositoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F0100000000000008 /* OuisyncRepositoryView.swift */; };
+		A15C0B010000000000000A /* LocalizableOuisync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15C0F010000000000000A /* LocalizableOuisync.swift */; };
 		C0FFEE000000000000000021 /* SQLCipher in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000011 /* SQLCipher */; };
 		C0FFEE000000000000000022 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000012 /* ZIPFoundation */; };
 		C0FFEE000000000000000023 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C0FFEE000000000000000013 /* GoogleSignIn */; };
@@ -1473,6 +1481,14 @@
 		20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFileCancelBottomSheet.swift; sourceTree = "<group>"; };
 		20FA030C2CD282C3001121F1 /* TrimMediaSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimMediaSliderView.swift; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000001 /* OuisyncModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncModels.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000002 /* OuisyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncClient.swift; sourceTree = "<group>"; };
+		A15C0F010000000000000C /* OuisyncLocalSecretStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncLocalSecretStore.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000004 /* NativeOuisyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeOuisyncClient.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000006 /* OuisyncViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncViewModel.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000007 /* OuisyncMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncMainView.swift; sourceTree = "<group>"; };
+		A15C0F0100000000000008 /* OuisyncRepositoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuisyncRepositoryView.swift; sourceTree = "<group>"; };
+		A15C0F010000000000000A /* LocalizableOuisync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableOuisync.swift; sourceTree = "<group>"; };
 		CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplateVM.swift; sourceTree = "<group>"; };
 		CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatePicker.swift; sourceTree = "<group>"; };
@@ -1957,6 +1973,7 @@
 				1203CDE429915C6600D09073 /* Database */,
 				1236EE8328E2226F00973EEA /* Networking */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
+				A15C0D0100000000000001 /* Ouisync */,
 				1203CDE7299283E500D09073 /* Crypto */,
 			);
 			path = Data;
@@ -3154,6 +3171,7 @@
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
 				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
 				126FAACD2D4B954F00F6BCD8 /* LocalizableNearbySharing.swift */,
+				A15C0F010000000000000A /* LocalizableOuisync.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -3656,6 +3674,27 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		A15C0D0100000000000001 /* Ouisync */ = {
+			isa = PBXGroup;
+			children = (
+				A15C0F0100000000000001 /* OuisyncModels.swift */,
+				A15C0F0100000000000002 /* OuisyncClient.swift */,
+				A15C0F010000000000000C /* OuisyncLocalSecretStore.swift */,
+				A15C0F0100000000000004 /* NativeOuisyncClient.swift */,
+			);
+			path = Ouisync;
+			sourceTree = "<group>";
+		};
+		A15C0D0100000000000002 /* Ouisync */ = {
+			isa = PBXGroup;
+			children = (
+				A15C0F0100000000000006 /* OuisyncViewModel.swift */,
+				A15C0F0100000000000007 /* OuisyncMainView.swift */,
+				A15C0F0100000000000008 /* OuisyncRepositoryView.swift */,
+			);
+			path = Ouisync;
+			sourceTree = "<group>";
+		};
 		A1F2E3DE3054800100C0FF06 /* Capture */ = {
 			isa = PBXGroup;
 			children = (
@@ -3774,6 +3813,7 @@
 				D75F9E9A253424F7006F6212 /* Audio */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
 				126FAAD12D4B9CFE00F6BCD8 /* NearbySharing */,
+				A15C0D0100000000000002 /* Ouisync */,
 				127BCA1F2E85208900902C59 /* Onboarding */,
 			);
 			path = Scenes;
@@ -4332,6 +4372,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A15C0B0100000000000001 /* OuisyncModels.swift in Sources */,
+				A15C0B0100000000000002 /* OuisyncClient.swift in Sources */,
+				A15C0B010000000000000C /* OuisyncLocalSecretStore.swift in Sources */,
+				A15C0B0100000000000004 /* NativeOuisyncClient.swift in Sources */,
+				A15C0B0100000000000006 /* OuisyncViewModel.swift in Sources */,
+				A15C0B0100000000000007 /* OuisyncMainView.swift in Sources */,
+				A15C0B0100000000000008 /* OuisyncRepositoryView.swift in Sources */,
+				A15C0B010000000000000A /* LocalizableOuisync.swift in Sources */,
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */,
